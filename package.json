@@ -1,0 +1,23 @@
+{
+  "name": "pickflix",
+  "version": "1.0.0",
+  "description": "A React/Express app that lets you explore movies.",
+  "main": "/backend/app.js",
+  "scripts": {
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crvouga/Pickflix.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/crvouga/Pickflix/issues"
+  },
+  "homepage": "https://github.com/crvouga/Pickflix#readme",
+  "dependencies": {
+    "concurrently": "^5.2.0"
+  }
+}
