@@ -10,7 +10,7 @@ app.get("/", (req, res) => {
 app.use("/tmdb", require("./tmdb"));
 app.use("/youtube", require("./youtube"));
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => {
   console.log(`express server listening on port ${PORT}`);
 });
