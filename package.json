@@ -4,6 +4,7 @@
   "description": "A React/Express app that lets you explore movies.",
   "main": "/backend/app.js",
   "scripts": {
+    "start": "node index.js",
     "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm start\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "heroku-postbuild": "cd frontend && npm install && npm run build"
@@ -20,5 +21,8 @@
   "homepage": "https://github.com/crvouga/Pickflix#readme",
   "dependencies": {
     "concurrently": "^5.2.0"
+  },
+  "engines": {
+    "node": "12.x"
   }
 }
