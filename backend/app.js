@@ -1,10 +1,11 @@
+console.log("hello from app.js");
 require("dotenv").config();
 const express = require("express");
 const app = express();
 const path = require("path");
 
 const buildPath = path.join(__dirname, "..", "frontend", "build");
-
+console.log("buildPath", buildPath);
 app.use(express.static(buildPath));
 
 app.get("/", (req, res) => {
