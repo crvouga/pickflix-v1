@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Grow } from "@material-ui/core";
 import React from "react";
 import MoviePoster from "../movie/MoviePoster";
 import PersonProfile from "../person/PersonProfile";
@@ -26,19 +26,21 @@ export default ({ results, onResultClick }) => {
 
   return (
     <div className={classes.grid}>
-      {results.map((result) => (
+      {results.map((result, i) => (
         <div
           key={result.id}
           className={classes.cell}
           onClick={handleResultClick(result)}
         >
-          {result.mediaType === "movie" ? (
-            <MoviePoster movie={result} />
-          ) : result.mediaType === "person" ? (
-            <PersonProfile person={result} />
-          ) : (
-            <div />
-          )}
+          <Grow in>
+            {result.mediaType === "movie" ? (
+              <MoviePoster movie={result} />
+            ) : result.mediaType === "person" ? (
+              <PersonProfile person={result} />
+            ) : (
+              <div />
+            )}
+          </Grow>
         </div>
       ))}
     </div>

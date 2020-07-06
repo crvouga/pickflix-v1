@@ -19,7 +19,6 @@ export const cancelableRequest = (asyncFn) => (...args) => {
 };
 
 export default ({ text, page }) => {
-  const [results, setResults] = useState([]);
   const deferredText = useDeferredValue(text.toLowerCase().trim(), 1000 / 3);
 
   const query = useQuery(
@@ -30,7 +29,7 @@ export default ({ text, page }) => {
       }
       const response = await axios.get("/api/tmdb/search/multi", {
         ...config,
-        params: { query: deferredText, page: page },
+        params: { query: encodeURI(deferredText), page: page },
       });
       return response.data;
     }),
@@ -38,6 +37,8 @@ export default ({ text, page }) => {
       staleTime: Infinity,
     }
   );
+
+  const [results, setResults] = useState([]);
 
   useEffect(() => {
     if (query.status === "success") {

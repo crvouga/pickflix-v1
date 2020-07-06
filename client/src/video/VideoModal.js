@@ -1,13 +1,10 @@
 import {
   AppBar,
-  Box,
-  ButtonBase,
+  Button,
   Dialog,
   makeStyles,
   Slide,
   Toolbar,
-  Typography,
-  Button,
 } from "@material-ui/core";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
