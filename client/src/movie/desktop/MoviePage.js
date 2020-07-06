@@ -94,7 +94,7 @@ export default () => {
 
   const videosQuery = useQuery(
     ["movie", id, "videos"],
-    () => axios.get(`/tmdb/movie/${id}/videos`).then((res) => res.data),
+    () => axios.get(`/api/tmdb/movie/${id}/videos`).then((res) => res.data),
     {}
   );
 
@@ -169,7 +169,7 @@ export default () => {
   }, [id]);
   const movieDetailsQuery = useQuery(
     ["movie", id, "details"],
-    () => axios.get(`/tmdb/movie/${id}`).then((res) => res.data),
+    () => axios.get(`/api/tmdb/movie/${id}`).then((res) => res.data),
     {}
   );
 

@@ -1,12 +1,14 @@
 import {
   AppBar,
+  Box,
+  ButtonBase,
   Dialog,
-  IconButton,
   makeStyles,
   Slide,
   Toolbar,
+  Typography,
+  Button,
 } from "@material-ui/core";
-import { Close as CloseIcon } from "@material-ui/icons";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import modal from "../common/redux/modal";
@@ -24,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     display: "flex",
     justifyContent: "space-between",
+  },
+  appBar: {
+    backgroundColor: theme.palette.background.default,
   },
 }));
 
@@ -50,11 +55,12 @@ export default () => {
       keepMounted
       fullScreen
     >
-      <AppBar color="default" elevation={0} position="sticky">
+      <AppBar className={classes.appBar} elevation={0} position="sticky">
         <Toolbar variant="dense" className={classes.toolbar}>
-          <IconButton className={classes.iconButton} onClick={handleClose}>
+          <Button onClick={handleClose}>Done</Button>
+          {/* <IconButton className={classes.iconButton} onClick={handleClose}>
             <CloseIcon />
-          </IconButton>
+          </IconButton> */}
           {/* <IconButton className={classes.iconButton}>
             <CastIcon />
           </IconButton> */}

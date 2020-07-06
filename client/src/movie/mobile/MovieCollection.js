@@ -42,7 +42,7 @@ export default ({ details }) => {
   const classes = useStyles();
   const { id: collectionId } = belongsToCollection;
   const query = useQuery(["collection", collectionId], () =>
-    axios.get(`tmdb/collection/${collectionId}`).then((res) => res.data)
+    axios.get(`/api/tmdb/collection/${collectionId}`).then((res) => res.data)
   );
   if (query.status === "error") {
     return null;

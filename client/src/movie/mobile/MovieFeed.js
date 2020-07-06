@@ -4,19 +4,15 @@ import {
   Fade,
   makeStyles,
   Typography,
-  Grow,
 } from "@material-ui/core";
+import axios from "axios";
 import * as R from "ramda";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { useHistory, useParams } from "react-router-dom";
-import axios from "axios";
-import * as utils from "../../utils";
-import MovieListItem from "../MovieListItem";
-import ChipSelection from "../../common/ChipSelection";
-import MovieBackdrop from "../MovieBackdrop";
-import MoviePoster from "../MoviePoster";
 import HorizontalScroll from "../../common/HorizontalScroll";
+import * as utils from "../../utils";
+import MoviePoster from "../MoviePoster";
 
 const makeSubtitle1 = (movie) =>
   [
@@ -97,7 +93,7 @@ export default ({ similar, recommendations, keywords }) => {
     ["movie", selectedKeyword?.id],
     () =>
       axios
-        .get("/tmdb/discover/movie", {
+        .get("/api/tmdb/discover/movie", {
           params: { withKeywords: [selectedKeyword.id] },
         })
         .then((res) => res.data),
@@ -111,7 +107,11 @@ export default ({ similar, recommendations, keywords }) => {
   )(moviesFromKeywordQuery);
 
   const renderMovie = (movie) => (
-    <div className={classes.item} onClick={handleMovieClick(movie)}>
+    <div
+      key={movie.id}
+      className={classes.item}
+      onClick={handleMovieClick(movie)}
+    >
       <MoviePoster movie={movie} />
       {/* <Typography className={classes.itemTitle}>{movie.title}</Typography> */}
       {/* <Typography color="textSecondary" className={classes.itemYear}>

@@ -4,20 +4,14 @@ import {
   InputBase,
   makeStyles,
   Paper,
+  Box,
 } from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    zIndex: theme.zIndex.appBar,
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-  },
+  root: theme.mixins.toolbar,
   input: {
     flex: 1,
   },
@@ -30,10 +24,18 @@ export default ({ loading, onBack, onClear, InputBaseProps }) => {
   const classes = useStyles();
   const { value } = InputBaseProps;
   return (
-    <div className={classes.root}>
-      <IconButton edge="start" onClick={onBack}>
-        <ArrowBackIcon />
-      </IconButton>
+    <Box
+      paddingX={2}
+      display="flex"
+      alignItems="center"
+      width="100%"
+      className={classes.root}
+    >
+      {onBack && (
+        <IconButton edge="start" onClick={onBack}>
+          <ArrowBackIcon />
+        </IconButton>
+      )}
       <InputBase className={classes.input} {...InputBaseProps} />
       {loading ? (
         <CircularProgress
@@ -46,6 +48,6 @@ export default ({ loading, onBack, onClear, InputBaseProps }) => {
           <ClearIcon />
         </IconButton>
       )}
-    </div>
+    </Box>
   );
 };

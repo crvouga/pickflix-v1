@@ -9,8 +9,8 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(buildPath, "index.html"));
 });
 
-app.use("/tmdb", require("./tmdb"));
-app.use("/youtube", require("./youtube"));
+app.use("/api/tmdb", require("./tmdb"));
+app.use("/api/youtube", require("./youtube"));
 
 const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => {

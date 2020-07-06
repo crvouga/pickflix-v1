@@ -28,7 +28,7 @@ const SwipeableViewsKeyboard = bindKeyboard(SwipeableViews);
 
 const fetchPersonPage = (personId) =>
   axios
-    .get(`/tmdb/person/${personId}`, {
+    .get(`/api/tmdb/person/${personId}`, {
       params: {
         appendToResponse: [
           "credits",

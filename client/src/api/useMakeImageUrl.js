@@ -1,6 +1,7 @@
 import * as R from "ramda";
 import { useQuery } from "react-query";
 import axios from "axios";
+
 /* 
 
   INPUT: 
@@ -68,7 +69,7 @@ const makeImageUrl = R.curry(
 export default () => {
   const query = useQuery(
     "TMDBconfiguration",
-    () => axios.get("/tmdb/configuration").then((res) => res.data),
+    () => axios.get("/api/tmdb/configuration").then((res) => res.data),
     {
       staleTime: Infinity,
     }

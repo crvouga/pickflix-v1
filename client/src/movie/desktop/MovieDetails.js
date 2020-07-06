@@ -51,7 +51,7 @@ export default () => {
   const makeImageUrl = useMakeImageUrl();
   const detailsQuery = useQuery(
     ["movie", id, "details"],
-    () => axios.get(`/tmdb/movie/${id}`).then((res) => res.data),
+    () => axios.get(`/api/tmdb/movie/${id}`).then((res) => res.data),
     {}
   );
 

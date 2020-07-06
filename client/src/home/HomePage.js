@@ -1,9 +1,11 @@
 import {
+  Box,
   Chip,
   CircularProgress,
   Fade,
   makeStyles,
   Paper,
+  Typography,
 } from "@material-ui/core";
 import { motion, useAnimation } from "framer-motion";
 import * as R from "ramda";
@@ -13,9 +15,16 @@ import axios from "axios";
 import Scroll from "../common/Scroll";
 import MoviePoster from "../movie/MoviePoster";
 import PersonProfile from "../person/PersonProfile";
+import Header from "./Header";
+import PersonAvatar from "../person/PersonAvatar";
 
 const renderProfile = (person, index) => (
-  <PersonProfile showName quality={2} person={person} />
+  <Box width="120px">
+    <PersonAvatar person={person} />
+    <Box p={1}>
+      <Typography>{person.name}</Typography>
+    </Box>
+  </Box>
 );
 
 const renderPoster = (movie, index) => {
@@ -73,19 +82,21 @@ export default () => {
     ["discover"],
     () =>
       Promise.objectAll({
-        popular: axios.get("/tmdb/movie/popular").then((res) => res.data),
+        popular: axios.get("/api/tmdb/movie/popular").then((res) => res.data),
         personPopular: axios
-          .get("/tmdb/person/popular")
+          .get("/api/tmdb/person/popular")
           .then((res) => res.data),
-        upcoming: axios.get("/tmdb/movie/upcoming").then((res) => res.data),
-        topRated: axios.get("/tmdb/movie/topRated").then((res) => res.data),
-        nowPlaying: axios.get("/tmdb/movie/nowPlaying").then((res) => res.data),
+        upcoming: axios.get("/api/tmdb/movie/upcoming").then((res) => res.data),
+        topRated: axios.get("/api/tmdb/movie/topRated").then((res) => res.data),
+        nowPlaying: axios
+          .get("/api/tmdb/movie/nowPlaying")
+          .then((res) => res.data),
       }),
     {}
   );
   const genresQuery = useQuery(
     "genres",
-    () => axios.get("/tmdb/genre/movie/list").then((res) => res.data),
+    () => axios.get("/api/tmdb/genre/movie/list").then((res) => res.data),
 
     {}
   );
@@ -111,7 +122,7 @@ export default () => {
   return (
     <Fade in>
       <div>
-        <Paper
+        {/* <Paper
           style={{
             display: "flex",
             overflowX: "auto",
@@ -132,7 +143,9 @@ export default () => {
             genresQuery.data.genres.map((genre) => (
               <Chip variant="outlined" label={genre.name} />
             ))}
-        </Paper>
+        </Paper> */}
+
+        <Header movies={popular.results} />
 
         <Scroll
           title="Popular Movies"

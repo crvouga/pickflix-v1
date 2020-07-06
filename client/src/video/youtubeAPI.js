@@ -26,7 +26,7 @@ export const youtbeCommentTextToMarkdown = (youtubeCommentText) =>
 
 export const video = ({ videoId }) =>
   axios
-    .get("/youtube/videos", {
+    .get("/api/youtube/videos", {
       params: {
         id: videoId,
         part: "snippet,statistics",
@@ -36,7 +36,7 @@ export const video = ({ videoId }) =>
 
 export const commentThreadList = ({ videoId }) =>
   axios
-    .get("/youtube/commentThreads", {
+    .get("/api/youtube/commentThreads", {
       params: {
         videoId: videoId,
         part: "snippet",
@@ -47,6 +47,5 @@ export const commentThreadList = ({ videoId }) =>
     })
     .then((res) => res.data)
     .catch((err) => {
-      console.log({ err });
       return err.response.data;
     });

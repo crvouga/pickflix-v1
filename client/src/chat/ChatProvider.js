@@ -1,6 +1,6 @@
 import * as R from "ramda";
 import React, { useState } from "react";
-import TMDB from "../api/tmdb";
+import axios from "axios";
 import ChatContext from "./ChatContext";
 
 export const MESSAGE_CAPCITY = 10;
@@ -54,12 +54,16 @@ export default ({ children }) => {
       )
     );
     if (message.author !== "bot") {
-      TMDB.discover.movie(tagsToDiscoverParameters(tags)).then((response) => {
-        const movies = responseToMovies(response);
-        setTimeout(() => {
-          sendMessage({ author: "bot", movies, tags });
-        }, 1000);
-      });
+      axios
+        .get("/api/tmdb/discover/movie", {
+          params: tagsToDiscoverParameters(tags),
+        })
+        .then((response) => {
+          const movies = response.data.results || [];
+          setTimeout(() => {
+            sendMessage({ author: "bot", movies, tags });
+          }, 1000);
+        });
     }
   };
 

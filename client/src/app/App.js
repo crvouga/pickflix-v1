@@ -4,12 +4,13 @@ import { Route, Switch } from "react-router-dom";
 import ScrollToTop from "../common/ScrollToTop";
 import HomePage from "../home/HomePage";
 import MoviePage from "../movie/MoviePage";
-import NavigationBar from "../navigation/mobile/NavigationBar";
+import NavigationBarBottom from "../navigation/mobile/NavigationBarBottom";
 import NavigationDrawer from "../navigation/mobile/NavigationDrawer";
 import PersonPage from "../person/PersonPage";
 import SearchDialog from "../search/SearchDialog";
 import VideoModal from "../video/VideoModal";
 import Providers from "./Providers";
+import SearchPage from "../search/SearchPage";
 
 const UnauthenticatedApp = () => {
   return (
@@ -19,9 +20,9 @@ const UnauthenticatedApp = () => {
       <VideoModal />
       <Switch>
         <Route path="/" exact render={() => <HomePage />} />
+        <Route path="/search" render={() => <SearchPage />} />
         <Route
           path="/movie/:movieId"
-          component={MoviePage}
           render={({ match }) => <MoviePage movieId={match.params.movieId} />}
         />
         <Route
@@ -54,8 +55,8 @@ export default () => {
       <ScrollToTop />
       <CssBaseline />
       <div className={classes.root}>
-        <NavigationBar />
         <UnauthenticatedApp />
+        <NavigationBarBottom />
       </div>
     </Providers>
   );

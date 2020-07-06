@@ -16,6 +16,7 @@ import MovieFeed from "./MovieFeed";
 import MoviePageLoading from "./MoviePageLoading";
 import MovieReviews from "./MovieReviews";
 import Videos from "./Videos";
+import NavigationBar from "../../navigation/mobile/NavigationBar";
 
 const useStyles = makeStyles((theme) => ({
   details: {
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 
 const fetchMoviePage = (movieId) =>
   axios
-    .get(`/tmdb/movie/${movieId}`, {
+    .get(`/api/tmdb/movie/${movieId}`, {
       params: {
         appendToResponse: [
           "credits",
@@ -85,6 +86,7 @@ export default () => {
 
   return (
     <React.Fragment>
+      {false && <NavigationBar title={details.title} />}
       {images.backdrops.length > 0 && (
         <Header videos={videos} images={images} />
       )}

@@ -57,7 +57,7 @@ export default ({ movie, ...props }) => {
   const classes = useStyles();
   const genresQuery = useQuery(
     "genres",
-    () => axios.get("/tmdb/genre/movie/list").then((res) => res.data),
+    () => axios.get("/api/tmdb/genre/movie/list").then((res) => res.data),
     {
       staleTime: Infinity,
     }

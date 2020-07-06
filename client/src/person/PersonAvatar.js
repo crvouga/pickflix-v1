@@ -1,6 +1,7 @@
 import { Avatar, makeStyles } from "@material-ui/core";
 import React from "react";
 import useMakeImageUrl from "../api/useMakeImageUrl";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -31,8 +32,12 @@ export default ({ person }) => {
   const classes = useStyles();
   const makeImageUrl = useMakeImageUrl();
   const profileURL = makeImageUrl(2, { profilePath });
+  const history = useHistory();
+  const handleClick = () => {
+    history.push(`/person/${person.id}`);
+  };
   return (
-    <div className={classes.root}>
+    <div className={classes.root} onClick={handleClick}>
       <svg className={classes.svg} viewBox="0 0 1 1" />
       <div className={classes.content}>
         <Avatar className={classes.avatar} src={profileURL} />

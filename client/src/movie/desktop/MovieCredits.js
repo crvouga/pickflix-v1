@@ -27,7 +27,7 @@ export default () => {
 
   const creditsQuery = useQuery(
     ["movie", id, "credits"],
-    () => axios.get(`/tmdb/movie/${id}/credits`).then((res) => res.data),
+    () => axios.get(`/api/tmdb/movie/${id}/credits`).then((res) => res.data),
     {}
   );
 

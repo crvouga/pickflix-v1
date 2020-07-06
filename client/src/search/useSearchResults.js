@@ -9,8 +9,9 @@ export const cancelableRequest = (asyncFn) => (...args) => {
   const config = {
     cancelToken: source.token,
   };
-  const promise = asyncFn(...args, config);
+  const promise = asyncFn(args, config);
   promise.cancel = () => {
+    console.log("CANCEL()");
     source.cancel("Query was cancelled by React Query");
   };
 
@@ -21,32 +22,32 @@ export default ({ text, page }) => {
   const [results, setResults] = useState([]);
   const deferredText = useDeferredValue(text.toLowerCase().trim(), 1000 / 3);
 
-  console.log({ deferredText, text });
-
   const query = useQuery(
     ["search", deferredText, page],
-    () =>
-      deferredText.length === 0
-        ? Promise.resolve({ results: [] })
-        : axios
-            .get("/tmdb/search/multi", {
-              params: { query: deferredText, page: page },
-            })
-            .then((res) => res.data),
-    {}
+    cancelableRequest(async (args, config) => {
+      if (deferredText.length === 0) {
+        return { results: [] };
+      }
+      const response = await axios.get("/api/tmdb/search/multi", {
+        ...config,
+        params: { query: deferredText, page: page },
+      });
+      return response.data;
+    }),
+    {
+      staleTime: Infinity,
+    }
   );
 
   useEffect(() => {
-    if (query.status !== "success") {
-      return;
-    }
+    if (query.status === "success") {
+      const data = R.pathOr([], ["data", "results"], query);
 
-    const data = R.pathOr([], ["data", "results"], query);
+      const newResults = R.pipe(R.reject(R.whereEq({ mediaType: "tv" })))(data);
 
-    const newResults = R.pipe(R.reject(R.whereEq({ mediaType: "tv" })))(data);
-
-    if (newResults.length > 0) {
-      setResults(newResults);
+      if (newResults.length > 0) {
+        setResults(newResults);
+      }
     }
   }, [query.status, deferredText, text]);
 
