@@ -1,5 +1,6 @@
 import {
   AppBar,
+  Box,
   Button,
   Dialog,
   makeStyles,
@@ -52,7 +53,7 @@ export default () => {
       keepMounted
       fullScreen
     >
-      <AppBar className={classes.appBar} elevation={0} position="sticky">
+      <AppBar className={classes.appBar} elevation={0} position="fixed">
         <Toolbar variant="dense" className={classes.toolbar}>
           <Button onClick={handleClose}>Done</Button>
           {/* <IconButton className={classes.iconButton} onClick={handleClose}>
@@ -63,9 +64,8 @@ export default () => {
           </IconButton> */}
         </Toolbar>
       </AppBar>
-      <div>
-        <VideoPage videos={videos} />
-      </div>
+      <Box width="100%" height="48px" />
+      <VideoPage videos={videos} />
     </Dialog>
   );
 };
