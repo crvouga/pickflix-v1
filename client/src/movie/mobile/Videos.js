@@ -126,6 +126,9 @@ export default ({ videos }) => {
                 <PlayArrowIcon className={classes.playArrowIcon} />
               </div>
             </ButtonBase>
+            <Typography variant="subtitle2" color="textSecondary">
+              {video.name}
+            </Typography>
           </div>
         ))}
       </HorizontalScroll>

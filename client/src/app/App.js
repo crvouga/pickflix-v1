@@ -1,4 +1,13 @@
-import { CssBaseline, makeStyles } from "@material-ui/core";
+import {
+  CssBaseline,
+  makeStyles,
+  Container,
+  AppBar,
+  Typography,
+  Toolbar,
+  Button,
+  Box,
+} from "@material-ui/core";
 import React from "react";
 import { Route, Switch } from "react-router-dom";
 import ScrollToTop from "../common/ScrollToTop";
@@ -55,7 +64,35 @@ export default () => {
       <ScrollToTop />
       <CssBaseline />
       <div className={classes.root}>
+        {/* <AppBar position="sticky" color="secondary" style={{ color: "white" }}>
+          <Toolbar variant="dense">
+            <Typography
+              color="textPrimary"
+              align="center"
+              style={{ fontWeight: "bold", flex: 1 }}
+            >
+              Sign In Here! It's Super Easy!
+            </Typography>
+
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ color: "white" }}
+            >
+              Sign In
+            </Button>
+          </Toolbar>
+        </AppBar> */}
         <UnauthenticatedApp />
+        <Box p={2} textAlign="center">
+          <Typography gutterBottom color="textSecondary">
+            Pickflix is powered by
+          </Typography>
+          <img
+            style={{ width: "80%", maxWidth: "200px" }}
+            src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg"
+          />
+        </Box>
         <NavigationBarBottom />
       </div>
     </Providers>

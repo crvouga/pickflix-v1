@@ -17,6 +17,7 @@ import MoviePoster from "../movie/MoviePoster";
 import PersonProfile from "../person/PersonProfile";
 import Header from "./Header";
 import PersonAvatar from "../person/PersonAvatar";
+import PageHistory from "../common/PageHistory";
 
 const renderProfile = (person, index) => (
   <Box width="120px">
@@ -148,11 +149,6 @@ export default () => {
         <Header movies={popular.results} />
 
         <Scroll
-          title="Popular Movies"
-          renderItem={renderPoster}
-          items={popular.results}
-        />
-        <Scroll
           title="Top Rated Movies"
           renderItem={renderPoster}
           items={topRated.results}
@@ -172,6 +168,12 @@ export default () => {
           renderItem={renderProfile}
           items={personPopular.results}
         />
+        <Scroll
+          title="Popular Movies"
+          renderItem={renderPoster}
+          items={popular.results}
+        />
+        <PageHistory />
       </div>
     </Fade>
   );

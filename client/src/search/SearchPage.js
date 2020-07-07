@@ -1,8 +1,6 @@
-import { AppBar, Dialog, makeStyles, Typography } from "@material-ui/core";
+import { AppBar, makeStyles, Typography } from "@material-ui/core";
 import React, { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import modal from "../common/redux/modal";
 import SearchBar from "./SearchBar";
 import SearchHistory from "./SearchHistory";
 import SearchResults from "./SearchResults";

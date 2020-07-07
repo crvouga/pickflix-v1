@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
     position: "fixed",
     bottom: 0,
     width: "100%",
+    maxWidth: "100%",
   },
   toolbar: {
     ...theme.mixins.toolbar,
