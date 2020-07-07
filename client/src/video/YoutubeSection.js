@@ -30,31 +30,7 @@ export default ({ youtubeData }) => {
     <div className={classes.root}>
       <YoutubeVideoDetails snippet={snippet} statistics={statistics} />
       <Divider />
-      <Box p={2} fontWeight="bold">
-        <Typography variant="h6">Top Comments</Typography>
-      </Box>
       <YoutubeCommentThreads commentThreads={commentThreadList} />
-      <Box paddingX={2} paddingY={1}>
-        <Typography variant="subtitle2" color="textSecondary">
-          video meta data message {video?.meta?.message}
-        </Typography>
-        <Typography variant="subtitle2" color="textSecondary">
-          video cache expires{" "}
-          {video?.meta?.expires
-            ? moment(video?.meta?.expires).fromNow()
-            : "idk"}
-        </Typography>
-        <Typography variant="subtitle2" color="textSecondary">
-          comment thread list meta data message{" "}
-          {commentThreadList?.meta?.message}
-        </Typography>
-        <Typography variant="subtitle2" color="textSecondary">
-          comment thread list cache expires{" "}
-          {commentThreadList?.meta?.expires
-            ? moment(commentThreadList?.meta?.expires).fromNow()
-            : "idk"}
-        </Typography>
-      </Box>
     </div>
   );
 };

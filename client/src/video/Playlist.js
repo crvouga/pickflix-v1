@@ -69,7 +69,6 @@ export default ({ onVideoClick, videos }) => {
           </div>
 
           <YoutubeThumbnail className={classes.thumbnail} video={video} />
-
           <div className={classes.text}>
             <Typography>{video.name}</Typography>
             <Typography color="textSecondary">{video.type}</Typography>

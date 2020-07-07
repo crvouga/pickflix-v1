@@ -6,7 +6,9 @@ import {
   makeStyles,
   Slide,
   Toolbar,
+  IconButton,
 } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import modal from "../common/redux/modal";
@@ -23,11 +25,14 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbar: {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "center",
   },
   appBar: {
-    backgroundColor: theme.palette.background.default,
+    top: "auto",
+    bottom: 0,
+    backgroundColor: theme.palette.background.paper,
   },
+  toolbarSpace: theme.mixins.toolbar,
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -53,19 +58,14 @@ export default () => {
       keepMounted
       fullScreen
     >
-      <AppBar className={classes.appBar} elevation={0} position="fixed">
-        <Toolbar variant="dense" className={classes.toolbar}>
-          <Button onClick={handleClose}>Done</Button>
-          {/* <IconButton className={classes.iconButton} onClick={handleClose}>
+      <VideoPage videos={videos} />
+      <AppBar className={classes.appBar} position="fixed">
+        <Toolbar className={classes.toolbar}>
+          <IconButton className={classes.iconButton} onClick={handleClose}>
             <CloseIcon />
-          </IconButton> */}
-          {/* <IconButton className={classes.iconButton}>
-            <CastIcon />
-          </IconButton> */}
+          </IconButton>
         </Toolbar>
       </AppBar>
-      <Box width="100%" height="48px" />
-      <VideoPage videos={videos} />
     </Dialog>
   );
 };

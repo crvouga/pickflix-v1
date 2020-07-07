@@ -1,8 +1,8 @@
 import React from "react";
 import ReactPlayer from "react-player";
-import * as youtubeAPI from "./youtubeAPI";
+import { useDispatch, useSelector } from "react-redux";
 import player from "./redux/player";
-import { useSelector, useDispatch } from "react-redux";
+import * as youtubeAPI from "./youtubeAPI";
 
 export default (props) => {
   const playing = useSelector(player.selectors.playing);

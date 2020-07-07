@@ -51,45 +51,12 @@ const useStyles = makeStyles((theme) => ({
   },
   playerContainer: {
     position: "sticky",
-    top: "48px", //appBar height
+    top: 0,
     zIndex: theme.zIndex.appBar,
     width: "100%",
     backgroundColor: "black",
   },
 }));
-
-const Details = ({ detailsData }) => {
-  const { createdAt, updatedAt, message, data } = detailsData;
-  const { snippet, statistics } = data?.items?.[0] || {};
-
-  return (
-    <div>
-      <Box p={1}>
-        <Typography variant="subtitle2" color="textSecondary">
-          Updated {moment(updatedAt).fromNow()}
-        </Typography>
-      </Box>
-      {snippet && statistics && (
-        <YoutubeVideoDetails snippet={snippet} statistics={statistics} />
-      )}
-    </div>
-  );
-};
-
-const Comments = ({ commentsData }) => {
-  const { createdAt, updatedAt, message, data } = commentsData;
-
-  return (
-    <div>
-      <Box p={1}>
-        <Typography variant="subtitle2" color="textSecondary">
-          Updated {moment(updatedAt).fromNow()}
-        </Typography>
-      </Box>
-      <YoutubeCommentThreads commentThreads={data} />
-    </div>
-  );
-};
 
 export default ({ videos }) => {
   const classes = useStyles();
@@ -143,14 +110,13 @@ export default ({ videos }) => {
     },
     {}
   );
-
+  const isPlaylistOpen = useBoolean(false);
   return (
     <div className={classes.root}>
       <AspectRatio ratio={[16, 9]} className={classes.playerContainer}>
         <Player />
       </AspectRatio>
-      {/* <OpenVideosButton videos={videos} onClick={isPlaylistOpen.setTrue} /> 
-       <UnderPlayerDrawer
+      {/* <UnderPlayerDrawer
         open={isPlaylistOpen.value}
         onClose={isPlaylistOpen.setFalse}
       >
@@ -164,7 +130,8 @@ export default ({ videos }) => {
         <div>
           <Playlist onVideoClick={handlePlaylistVideoClick} videos={videos} />
         </div>
-      </UnderPlayerDrawer> */}
+      </UnderPlayerDrawer>
+      <OpenVideosButton videos={videos} onClick={isPlaylistOpen.setTrue} /> */}
 
       <Tabs
         indicatorColor="primary"
