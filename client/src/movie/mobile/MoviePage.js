@@ -17,6 +17,7 @@ import MoviePageLoading from "./MoviePageLoading";
 import MovieReviews from "./MovieReviews";
 import Videos from "./Videos";
 import NavigationBar from "../../navigation/mobile/NavigationBar";
+import LoadingPage from "../../common/LoadingPage";
 
 const useStyles = makeStyles((theme) => ({
   details: {
@@ -66,7 +67,7 @@ export default () => {
   const isDetailsOpen = useBoolean();
 
   if (query.status === "loading") {
-    return <MoviePageLoading />;
+    return <LoadingPage />;
   }
 
   if (query.status === "error") {

@@ -59,6 +59,7 @@ export default () => {
             size="2em"
           />
         </div>
+        <div className={classes.fade} />
       </AspectRatio>
 
       <div className={classes.body}>
@@ -68,7 +69,6 @@ export default () => {
           size="2em"
         />
       </div>
-      <div className={classes.fade} />
     </React.Fragment>
   );
 };

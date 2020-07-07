@@ -84,14 +84,16 @@ export default () => {
           </Toolbar>
         </AppBar> */}
         <UnauthenticatedApp />
-        <Box p={2} textAlign="center">
+        <Box p={2} textAlign="center" marginTop="auto">
           <Typography gutterBottom color="textSecondary">
             Pickflix is powered by
           </Typography>
-          <img
-            style={{ width: "80%", maxWidth: "200px" }}
-            src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg"
-          />
+          <a href="https://www.themoviedb.org/">
+            <img
+              style={{ width: "80%", maxWidth: "200px" }}
+              src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg"
+            />
+          </a>
         </Box>
         <NavigationBarBottom />
       </div>

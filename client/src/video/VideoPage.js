@@ -165,7 +165,7 @@ export default ({ videos }) => {
           <Playlist onVideoClick={handlePlaylistVideoClick} videos={videos} />
         </div>
       </UnderPlayerDrawer> */}
-      <Divider />
+
       <Tabs
         indicatorColor="primary"
         variant="fullWidth"

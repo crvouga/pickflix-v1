@@ -27,13 +27,13 @@ export default ({ ratio, children, classes = {}, ...props }) => {
   const viewBox = [0, 0, ...ratio];
 
   return (
-    <div className={classes.root} {...props}>
+    <Box className={classes.root} {...props}>
       <div className={localClasses.wrapper}>
         <svg className={localClasses.svg} viewBox={viewBox} />
         <div className={clsx(classes.content, localClasses.content)}>
           {children}
         </div>
       </div>
-    </div>
+    </Box>
   );
 };

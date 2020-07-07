@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
   name: {
     marginTop: theme.spacing(1),
+    marginBottom: "auto",
   },
 }));
 

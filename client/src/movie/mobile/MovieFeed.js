@@ -1,4 +1,5 @@
 import {
+  Box,
   Chip,
   CircularProgress,
   Fade,
@@ -92,6 +93,7 @@ export default ({ similar, recommendations, keywords }) => {
   const moviesFromKeywordQuery = useQuery(
     ["movie", selectedKeyword?.id],
     () =>
+      selectedKeyword &&
       axios
         .get("/api/tmdb/discover/movie", {
           params: { withKeywords: [selectedKeyword.id] },
@@ -107,17 +109,13 @@ export default ({ similar, recommendations, keywords }) => {
   )(moviesFromKeywordQuery);
 
   const renderMovie = (movie) => (
-    <div
-      key={movie.id}
-      className={classes.item}
-      onClick={handleMovieClick(movie)}
-    >
+    <Box minWidth={120} maxWidth={120} onClick={handleMovieClick(movie)} m={1}>
       <MoviePoster movie={movie} />
       {/* <Typography className={classes.itemTitle}>{movie.title}</Typography> */}
       {/* <Typography color="textSecondary" className={classes.itemYear}>
         {utils.releaseDateToYear(movie?.releaseDate || "") || ""}
       </Typography> */}
-    </div>
+    </Box>
   );
 
   return (

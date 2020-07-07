@@ -121,7 +121,7 @@ export default ({ videos, images }) => {
           ))}
         </AutoPlaySwipeableViews>
 
-        <Fade in={visible}>
+        <Fade in={videos.length > 0 && visible}>
           <div className={classes.playIconContainer}>
             <IconButton
               className={classes.playIconButton}

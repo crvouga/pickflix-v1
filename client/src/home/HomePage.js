@@ -18,15 +18,9 @@ import PersonProfile from "../person/PersonProfile";
 import Header from "./Header";
 import PersonAvatar from "../person/PersonAvatar";
 import PageHistory from "../common/PageHistory";
-
-const renderProfile = (person, index) => (
-  <Box width="120px">
-    <PersonAvatar person={person} />
-    <Box p={1}>
-      <Typography>{person.name}</Typography>
-    </Box>
-  </Box>
-);
+import MovieBackdrop from "../movie/MovieBackdrop";
+import LoadingPage from "../common/LoadingPage";
+import HorizontalScroll from "../common/HorizontalScroll";
 
 const renderPoster = (movie, index) => {
   return (
@@ -73,47 +67,68 @@ const MovieScroll = ({ movies }) => {
   );
 };
 
+const renderMovieScroll = (title, movies) => (
+  <React.Fragment>
+    <Box p={1}>
+      <Typography variant="h6">{title}</Typography>
+    </Box>
+    <HorizontalScroll>
+      {movies.map((movie) => (
+        <MoviePoster
+          key={movie.id}
+          movie={movie}
+          minWidth="120px"
+          marginX={1}
+        />
+      ))}
+    </HorizontalScroll>
+  </React.Fragment>
+);
+
+const renderProfile = (person) => (
+  <Box key={person.id} minWidth="120px" p={1}>
+    <PersonAvatar person={person} />
+    <Box p={1}>
+      <Typography>{person.name}</Typography>
+    </Box>
+  </Box>
+);
+
+const renderAvatarScroll = (title, persons) => (
+  <React.Fragment>
+    <Box p={1}>
+      <Typography variant="h6">{title}</Typography>
+    </Box>
+    <HorizontalScroll>{persons.map(renderProfile)}</HorizontalScroll>
+  </React.Fragment>
+);
+
 Promise.objectAll = async (object) => {
   const values = await Promise.all(R.values(object));
   return R.zipObj(R.keys(object), values);
 };
 
+const fetchHomePage = () =>
+  Promise.objectAll({
+    popular: axios.get("/api/tmdb/movie/popular").then((res) => res.data),
+    personPopular: axios
+      .get("/api/tmdb/person/popular")
+      .then((res) => res.data),
+    upcoming: axios.get("/api/tmdb/movie/upcoming").then((res) => res.data),
+    topRated: axios.get("/api/tmdb/movie/topRated").then((res) => res.data),
+    nowPlaying: axios.get("/api/tmdb/movie/nowPlaying").then((res) => res.data),
+  });
+
 export default () => {
-  const query = useQuery(
-    ["discover"],
-    () =>
-      Promise.objectAll({
-        popular: axios.get("/api/tmdb/movie/popular").then((res) => res.data),
-        personPopular: axios
-          .get("/api/tmdb/person/popular")
-          .then((res) => res.data),
-        upcoming: axios.get("/api/tmdb/movie/upcoming").then((res) => res.data),
-        topRated: axios.get("/api/tmdb/movie/topRated").then((res) => res.data),
-        nowPlaying: axios
-          .get("/api/tmdb/movie/nowPlaying")
-          .then((res) => res.data),
-      }),
-    {}
-  );
+  const query = useQuery(["discover"], () => fetchHomePage(), {});
   const genresQuery = useQuery(
     "genres",
     () => axios.get("/api/tmdb/genre/movie/list").then((res) => res.data),
-
     {}
   );
 
   if (query.status !== "success") {
-    return (
-      <div
-        style={{
-          width: "100%",
-          marginTop: "30%",
-          textAlign: "center",
-        }}
-      >
-        <CircularProgress disableShrink />
-      </div>
-    );
+    return <LoadingPage />;
   }
 
   const {
@@ -123,56 +138,11 @@ export default () => {
   return (
     <Fade in>
       <div>
-        {/* <Paper
-          style={{
-            display: "flex",
-            overflowX: "auto",
-            flexWrap: "nowrap",
-            position: "sticky",
-            padding: 8,
-            borderRadius: 0,
-            padding: 12,
-            top: R.propOr(
-              0,
-              "clientHeight",
-              document.getElementById("app-bar")
-            ),
-          }}
-        >
-          <Chip variant="outlined" label="Movie" />
-          {genresQuery.status === "success" &&
-            genresQuery.data.genres.map((genre) => (
-              <Chip variant="outlined" label={genre.name} />
-            ))}
-        </Paper> */}
-
         <Header movies={popular.results} />
-
-        <Scroll
-          title="Top Rated Movies"
-          renderItem={renderPoster}
-          items={topRated.results}
-        />
-        <Scroll
-          title="Upcoming Movies"
-          renderItem={renderPoster}
-          items={upcoming.results}
-        />
-        <Scroll
-          title="Now Playing Movies"
-          renderItem={renderPoster}
-          items={nowPlaying.results}
-        />
-        <Scroll
-          title="Popular People"
-          renderItem={renderProfile}
-          items={personPopular.results}
-        />
-        <Scroll
-          title="Popular Movies"
-          renderItem={renderPoster}
-          items={popular.results}
-        />
+        {renderMovieScroll("Top Rated Movies", topRated.results)}
+        {renderMovieScroll("Upcoming Movies", upcoming.results)}
+        {renderMovieScroll("Now Playing Movies", nowPlaying.results)}
+        {renderAvatarScroll("Popular People", personPopular.results)}
         <PageHistory />
       </div>
     </Fade>

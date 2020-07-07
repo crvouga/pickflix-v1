@@ -1,4 +1,11 @@
-import { ButtonBase, Fade, makeStyles, Typography } from "@material-ui/core";
+import {
+  ButtonBase,
+  Fade,
+  makeStyles,
+  Typography,
+  CircularProgress,
+  Box,
+} from "@material-ui/core";
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import AspectRatio from "../common/AspectRatio";
@@ -6,7 +13,8 @@ import useMakeImageUrl from "../api/useMakeImageUrl";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: theme.palette.background.paper,
+    borderRadius: theme.spacing(1),
   },
   image: {
     borderRadius: theme.spacing(1),
@@ -35,21 +43,22 @@ export default ({ movie, ...props }) => {
   };
 
   return (
-    <ButtonBase
-      component={AspectRatio}
+    <AspectRatio
       ratio={[2, 3]}
       onClick={onClick}
       className={classes.root}
       {...props}
     >
       {posterPath ? (
-        <Fade in={loaded}>
-          <img
-            className={classes.image}
-            src={posterURL}
-            onLoad={handleLoaded}
-          />
-        </Fade>
+        <React.Fragment>
+          <Fade in={loaded}>
+            <img
+              className={classes.image}
+              src={posterURL}
+              onLoad={handleLoaded}
+            />
+          </Fade>
+        </React.Fragment>
       ) : (
         <Typography
           align="center"
@@ -59,6 +68,6 @@ export default ({ movie, ...props }) => {
           {title}
         </Typography>
       )}
-    </ButtonBase>
+    </AspectRatio>
   );
 };

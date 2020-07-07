@@ -150,7 +150,12 @@ export default ({ statistics, snippet }) => {
         </div>
       </ButtonBase>
 
-      <Box paddingLeft={2} className={classes.actions} color="text.secondary">
+      <Box
+        padding={2}
+        paddingTop={0}
+        className={classes.actions}
+        color="text.secondary"
+      >
         <Box
           component="span"
           display="flex"

@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
     userSelect: "text",
     // fontSize: "inherit",
     // font: "inherit",
+    wordBreak: "break-word",
     maxWidth: "100%",
     marginTop: -theme.spacing(1.5),
     "& a": {
@@ -65,9 +66,6 @@ const useStyles = makeStyles((theme) => ({
     background: `linear-gradient(${TMDB_Colors.tertiary}, ${TMDB_Colors.secondary})`,
   },
 }));
-
-const TMDB_SVG_URL =
-  "https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg";
 
 const COLLAPSED_HEIGHT = 120;
 

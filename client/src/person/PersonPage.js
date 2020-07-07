@@ -23,6 +23,7 @@ import ChipSelection from "../common/ChipSelection";
 import PageHistory from "../common/PageHistory";
 import MoviePoster from "../movie/MoviePoster";
 import * as utils from "../utils";
+import LoadingPage from "../common/LoadingPage";
 
 const SwipeableViewsKeyboard = bindKeyboard(SwipeableViews);
 
@@ -202,12 +203,9 @@ export default () => {
   }, [query.status]);
 
   if (query.status === "loading") {
-    return (
-      <div className={classes.spinnerContainer}>
-        <CircularProgress disableShrink />
-      </div>
-    );
+    return <LoadingPage />;
   }
+
   if (query.status === "error") {
     return "error";
   }

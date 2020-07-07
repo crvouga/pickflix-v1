@@ -12,9 +12,7 @@ import YoutubeThumbnail from "../../video/YoutubeThumbnail";
 import HorizontalScroll from "../../common/HorizontalScroll";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingBottom: theme.spacing(2),
-  },
+  root: {},
   scroll: {
     display: "flex",
     flexDirection: "row",
@@ -114,24 +112,28 @@ export default ({ videos }) => {
           <UnfoldMoreIcon color="inherit" fontSize="small" />
         </Box>
       </ButtonBase>
-      <HorizontalScroll>
-        {videos.map((video) => (
-          <div
-            className={classes.thumbnailContainer}
-            onClick={handleVideoClick(video)}
-          >
-            <ButtonBase disableTouchRipple>
-              <YoutubeThumbnail video={video} />
-              <div className={classes.playIconContainer}>
-                <PlayArrowIcon className={classes.playArrowIcon} />
+      {videos.length > 0 && (
+        <Box paddingBottom={2}>
+          <HorizontalScroll>
+            {videos.map((video) => (
+              <div
+                className={classes.thumbnailContainer}
+                onClick={handleVideoClick(video)}
+              >
+                <ButtonBase disableTouchRipple>
+                  <YoutubeThumbnail video={video} />
+                  <div className={classes.playIconContainer}>
+                    <PlayArrowIcon className={classes.playArrowIcon} />
+                  </div>
+                </ButtonBase>
+                <Typography variant="subtitle2" color="textSecondary">
+                  {video.name}
+                </Typography>
               </div>
-            </ButtonBase>
-            <Typography variant="subtitle2" color="textSecondary">
-              {video.name}
-            </Typography>
-          </div>
-        ))}
-      </HorizontalScroll>
+            ))}
+          </HorizontalScroll>
+        </Box>
+      )}
     </div>
   );
 };
