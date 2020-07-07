@@ -76,7 +76,7 @@ const renderText = (videos) =>
         R.countBy(R.prop("type")),
         R.toPairs,
         R.map(renderNameNumberPair),
-        R.intersperse(" · ")
+        R.intersperse(" • ")
       )(videos);
 
 export default ({ videos }) => {
@@ -96,7 +96,6 @@ export default ({ videos }) => {
   return (
     <div className={classes.root}>
       <ButtonBase
-        disableTouchRipple
         component="div"
         className={clsx(classes.button, {
           [classes.disabled]: disabled,
@@ -104,8 +103,7 @@ export default ({ videos }) => {
         disabled={disabled}
         onClick={handleClick}
       >
-        <VideoLibraryIcon className={classes.icon} />
-        <Typography noWrap style={{ flex: 1 }}>
+        <Typography noWrap style={{ fontWeight: "bold", flex: 1 }}>
           {renderText(videos)}
         </Typography>
         <Box color="text.secondary">

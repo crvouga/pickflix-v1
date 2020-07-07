@@ -7,15 +7,12 @@ const useStyles = makeStyles((theme) => ({
   review: {
     marginBottom: theme.spacing(2),
   },
-  root: {
-    padding: theme.spacing(1),
-  },
   icon: {
     marginRight: theme.spacing(1),
   },
 }));
 
-const nameNumberPairToComponent = ([name, number]) => (
+const renderNameNumberPair = ([name, number]) => (
   <React.Fragment key={name}>
     {`${name} `}
     <Box component="span" color="text.secondary">
@@ -27,30 +24,26 @@ const nameNumberPairToComponent = ([name, number]) => (
 export default ({ reviews }) => {
   const classes = useStyles();
 
+  if (reviews.results.length === 0) {
+    return null;
+  }
+
   return (
     <div className={classes.root}>
-      <div style={{ textAlign: "left", display: "flex", flex: 1 }}>
-        <CommentIcon className={classes.icon} />
-        <Typography noWrap style={{ flex: 1 }}>
-          {reviews.results.length === 0
-            ? "Reviews"
-            : nameNumberPairToComponent(["Reviews", reviews.results.length])}
+      <Box p={2}>
+        <Typography style={{ fontWeight: "bold" }}>
+          {`Reviews `}
+          <Box component="span" color="text.secondary">
+            {reviews.results.length}
+          </Box>
         </Typography>
-      </div>
-      {reviews.results.length === 0 ? (
-        <Typography align="center" color="textSecondary">
-          No Reviews
-        </Typography>
-      ) : (
-        <div>
-          {reviews.results.map((review, index) => (
-            <React.Fragment>
-              <MovieReview key={review.id} review={review} collapsible />
-              <Divider />
-            </React.Fragment>
-          ))}
-        </div>
-      )}
+      </Box>
+      {reviews.results.map((review, index) => (
+        <React.Fragment>
+          <MovieReview key={review.id} review={review} collapsible />
+          {index !== reviews.results.length - 1 && <Divider />}
+        </React.Fragment>
+      ))}
     </div>
   );
 };

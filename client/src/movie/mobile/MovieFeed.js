@@ -4,6 +4,7 @@ import {
   CircularProgress,
   Fade,
   makeStyles,
+  Collapse,
   Typography,
 } from "@material-ui/core";
 import axios from "axios";
@@ -138,7 +139,7 @@ export default ({ similar, recommendations, keywords }) => {
         </React.Fragment>
       )}
 
-      {/* <Typography className={classes.title}>Keywords</Typography> */}
+      <Typography className={classes.title}>Keywords</Typography>
       <HorizontalScroll>
         {keywords.keywords.map((keyword) => (
           <Chip
@@ -154,12 +155,11 @@ export default ({ similar, recommendations, keywords }) => {
         ))}
       </HorizontalScroll>
 
-      {moviesFromKeywordQuery.status === "loading" && <CircularProgress />}
-      <Fade in={moviesFromKeywordQuery.status === "success"}>
+      <Collapse in={moviesFromKeywordQuery.status === "success"}>
         <HorizontalScroll>
           {moviesFromKeyword.map(renderMovie)}
         </HorizontalScroll>
-      </Fade>
+      </Collapse>
     </React.Fragment>
   );
 };

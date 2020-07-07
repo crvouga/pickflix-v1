@@ -108,12 +108,9 @@ export default ({ credits }) => {
         className={classes.drawerButton}
         onClick={isDrawerOpen.setTrue}
       >
-        <div style={{ textAlign: "left", display: "flex", flex: 1 }}>
-          <PeopleIcon className={classes.drawerButtonIcon} />
-          <Typography noWrap style={{ flex: 1 }}>
-            {"Cast & Crew"}
-          </Typography>
-        </div>
+        <Typography noWrap style={{ flex: 1, fontWeight: "bold" }}>
+          {"Cast & Crew"}
+        </Typography>
         <Box color="text.secondary">
           <UnfoldMoreIcon fontSize="small" />
         </Box>

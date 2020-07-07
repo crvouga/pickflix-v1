@@ -41,7 +41,7 @@ const renderText = (videos) =>
         R.countBy(R.prop("type")),
         R.toPairs,
         R.map(renderNameNumberPair),
-        R.intersperse(" · ")
+        R.intersperse(" • ")
       )(videos);
 export default ({ videos, ...props }) => {
   const classes = useStyles();

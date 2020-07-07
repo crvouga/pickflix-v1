@@ -167,7 +167,6 @@ export default ({ videos }) => {
           <Playlist onVideoClick={handlePlaylistVideoClick} videos={videos} />
         )}
       </SwipeableViews>
-      <div></div>
     </div>
   );
 };
