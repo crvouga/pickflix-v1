@@ -94,6 +94,7 @@ export default ({ statistics, snippet }) => {
     thumbnails,
     title,
   } = snippet;
+
   const {
     commentCount,
     dislikeCount,
@@ -150,12 +151,7 @@ export default ({ statistics, snippet }) => {
         </div>
       </ButtonBase>
 
-      <Box
-        padding={2}
-        paddingTop={0}
-        className={classes.actions}
-        color="text.secondary"
-      >
+      <Box paddingX={2} className={classes.actions} color="text.secondary">
         <Box
           component="span"
           display="flex"

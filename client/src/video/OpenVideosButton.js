@@ -4,7 +4,6 @@ import VideoLibraryIcon from "@material-ui/icons/VideoLibrary";
 import clsx from "clsx";
 import * as R from "ramda";
 import React from "react";
-import modal from "../common/redux/modal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +42,7 @@ const renderText = (videos) =>
         R.map(renderNameNumberPair),
         R.intersperse(" • ")
       )(videos);
+
 export default ({ videos, ...props }) => {
   const classes = useStyles();
   const disabled = videos.length === 0 || false;

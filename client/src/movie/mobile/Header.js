@@ -9,6 +9,7 @@ import useMakeImageUrl from "../../api/useMakeImageUrl";
 import AspectRatio from "../../common/AspectRatio";
 import useBoolean from "../../common/useBoolean";
 import modal from "../../common/redux/modal";
+import player from "../../video/redux/player";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -92,7 +93,8 @@ export default ({ videos, images }) => {
 
   const dispatch = useDispatch();
   const handlePlayIconClick = (e) => {
-    dispatch(modal.actions.open("videoModal", { videos }));
+    dispatch(player.actions.setPlaylist(videos));
+    dispatch(modal.actions.open("videoModal"));
   };
 
   const stopPropagation = (e) => {

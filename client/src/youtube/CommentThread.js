@@ -1,5 +1,5 @@
 import React from "react";
-import YoutubeComment from "./YoutubeComment";
+import YoutubeComment from "./Comment";
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({

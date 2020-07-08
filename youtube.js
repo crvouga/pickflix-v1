@@ -30,7 +30,6 @@ router.get("*", async (req, res) => {
   const path = req.path;
   const params = req.query;
   const cacheKey = `${path}?${stringifyParams(params)}`;
-
   const cacheRawValue = await cache.get(cacheKey, { raw: true });
 
   if (cacheRawValue) {

@@ -1,38 +1,6 @@
 import { camelizeKeys, decamelizeKeys } from "humps";
 import * as R from "ramda";
 
-export const fetchCamelizedJSON = (url, config = {}) => {
-  const controller = new AbortController();
-
-  const promise = fetch(url, {
-    ...config,
-    signal: controller.signal,
-  })
-    .then((response) => response.json())
-    .then(camelizeKeys)
-    .catch((error) => error);
-
-  // lets react-query to cancel request
-  promise.cancel = () => {
-    controller.abort();
-  };
-
-  return promise;
-};
-
-export const queryParamtersToString = R.pipe(
-  decamelizeKeys,
-  R.map(R.when(Array.isArray, R.join(","))),
-  R.toPairs,
-  R.map(R.join("=")),
-  R.join("&"),
-  R.prepend("?"),
-  R.join("")
-);
-
-export const makeURL = (root, endpoint, query = {}) =>
-  R.join("", [root, endpoint, queryParamtersToString(query)]);
-
 const quotient = R.curry((x1, x2) => Math.floor(x1 / x2));
 
 export const minutesToHoursAndMinutes = R.pipe(

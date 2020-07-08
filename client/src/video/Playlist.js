@@ -5,7 +5,8 @@ import clsx from "clsx";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import player from "./redux/player";
-import YoutubeThumbnail from "./YoutubeThumbnail";
+
+import YoutubeThumbnail from "../youtube/Thumbnail";
 
 const useStyles = makeStyles((theme) => ({
   selected: {
@@ -41,14 +42,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default ({ onVideoClick, videos }) => {
+export default ({ onVideoClick }) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const playing = useSelector(player.selectors.playing);
+  const video = useSelector(player.selectors.video);
+  const videos = useSelector(player.selectors.playlist);
 
-  const playing = useSelector((state) => state.player.playing);
-  const video = useSelector((state) => state.player.video);
-
-  const handleVideoClick = (clickedVideo) => () => onVideoClick(clickedVideo);
   const isSelected = (v) => video?.key === v.key;
+  const handleVideoClick = (clickedVideo) => () => {
+    if (clickedVideo.key === video?.key) {
+      dispatch(player.actions.toggle());
+    } else {
+      dispatch(player.actions.setVideo(clickedVideo));
+      dispatch(player.actions.play());
+    }
+  };
 
   return (
     <div>

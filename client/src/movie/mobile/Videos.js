@@ -8,7 +8,8 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import modal from "../../common/redux/modal";
 import player from "../../video/redux/player";
-import YoutubeThumbnail from "../../video/YoutubeThumbnail";
+
+import YoutubeThumbnail from "../../youtube/Thumbnail";
 import HorizontalScroll from "../../common/HorizontalScroll";
 
 const useStyles = makeStyles((theme) => ({
@@ -85,12 +86,13 @@ export default ({ videos }) => {
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    dispatch(modal.actions.open("videoModal", { videos }));
+    dispatch(player.actions.setPlaylist(videos));
+    dispatch(modal.actions.open("videoModal"));
   };
 
   const handleVideoClick = (video) => () => {
-    dispatch(modal.actions.open("videoModal", { videos }));
     dispatch(player.actions.setVideo(video));
+    handleClick();
   };
 
   return (

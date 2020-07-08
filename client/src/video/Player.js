@@ -2,12 +2,12 @@ import React from "react";
 import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
 import player from "./redux/player";
-import * as youtubeAPI from "./youtubeAPI";
+import * as youtubeAPI from "../youtube/api";
 
 export default (props) => {
+  const dispatch = useDispatch();
   const playing = useSelector(player.selectors.playing);
   const video = useSelector(player.selectors.video);
-  const dispatch = useDispatch();
   const handlePlay = () => {
     dispatch(player.actions.play());
   };

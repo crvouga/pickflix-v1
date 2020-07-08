@@ -40,7 +40,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default () => {
-  const { videos = [] } = useSelector(modal.selectors.props("videoModal"));
   const isOpen = useSelector(modal.selectors.isOpen("videoModal"));
   const dispatch = useDispatch();
   const handleClose = () => {
@@ -58,7 +57,7 @@ export default () => {
       keepMounted
       fullScreen
     >
-      <VideoPage videos={videos} />
+      <VideoPage />
       <AppBar className={classes.appBar} position="fixed">
         <Toolbar className={classes.toolbar}>
           <IconButton className={classes.iconButton} onClick={handleClose}>

@@ -1,8 +1,18 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
+import { takeEvery, select, put } from "redux-saga/effects";
+
+const initialState = {
+  playing: false,
+  video: null,
+  playlist: [],
+  isPlaylistOpen: false,
+};
 
 const selectors = {
   playing: (state) => state.player.playing,
   video: (state) => state.player.video,
+  playlist: (state) => state.player.playlist,
+  isPlaylistOpen: (state) => state.player.isPlaylistOpen,
 };
 
 const actions = {
@@ -10,11 +20,7 @@ const actions = {
   pause: createAction("player/pause"),
   toggle: createAction("player/toggle"),
   setVideo: createAction("player/setVideo"),
-};
-
-const initialState = {
-  playing: false,
-  video: null,
+  setPlaylist: createAction("player/setPlaylist"),
 };
 
 const reducer = createReducer(initialState, {
@@ -30,10 +36,24 @@ const reducer = createReducer(initialState, {
   [actions.setVideo]: (state, action) => {
     state.video = action.payload;
   },
+  [actions.setPlaylist]: (state, action) => {
+    state.playlist = action.payload;
+  },
 });
+
+function* saga() {
+  yield takeEvery(actions.setPlaylist, function* () {
+    const playlist = yield select(selectors.playlist);
+    const video = yield select(selectors.video);
+    if (playlist.every((playlistVideo) => playlistVideo?.key !== video?.key)) {
+      yield put(actions.setVideo(playlist?.[0]));
+    }
+  });
+}
 
 export default {
   reducer,
   actions,
   selectors,
+  saga,
 };
