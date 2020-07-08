@@ -5,7 +5,7 @@ import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
-import useMakeImageUrl from "../../api/useMakeImageUrl";
+import useMakeImageUrl from "../../tmdb/useMakeImageUrl";
 import AspectRatio from "../../common/AspectRatio";
 import useBoolean from "../../common/useBoolean";
 import modal from "../../common/redux/modal";

@@ -27,7 +27,7 @@ import {
   voteAverageToFiveStarRating,
 } from "../../utils";
 import MoviePoster from "../MoviePoster";
-import useMakeImageUrl from "../../api/useMakeImageUrl";
+import useMakeImageUrl from "../../tmdb/useMakeImageUrl";
 
 const useStyles = makeStyles((theme) => ({
   poster: {

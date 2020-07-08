@@ -1,7 +1,7 @@
 import { makeStyles, Typography, ButtonBase } from "@material-ui/core";
 import MovieIcon from "@material-ui/icons/Movie";
 import React from "react";
-import useMakeImageUrl from "../api/useMakeImageUrl";
+import useMakeImageUrl from "../tmdb/useMakeImageUrl";
 import AspectRatio from "../common/AspectRatio";
 
 const width = 180;

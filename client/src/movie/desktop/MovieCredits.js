@@ -11,7 +11,7 @@ import {
 import * as R from "ramda";
 import React, { useContext, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import useMakeImageUrl from "../../api/useMakeImageUrl";
+import useMakeImageUrl from "../../tmdb/useMakeImageUrl";
 import { useQuery } from "react-query";
 import axios from "axios";
 const useStyles = makeStyles((theme) => ({

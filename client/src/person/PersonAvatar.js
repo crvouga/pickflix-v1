@@ -1,6 +1,6 @@
 import { Avatar, makeStyles } from "@material-ui/core";
 import React from "react";
-import useMakeImageUrl from "../api/useMakeImageUrl";
+import useMakeImageUrl from "../tmdb/useMakeImageUrl";
 import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({

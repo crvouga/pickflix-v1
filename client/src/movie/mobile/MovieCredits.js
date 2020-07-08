@@ -20,7 +20,7 @@ import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import * as R from "ramda";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import useMakeImageUrl from "../../api/useMakeImageUrl";
+import useMakeImageUrl from "../../tmdb/useMakeImageUrl";
 import ChipSelection from "../../common/ChipSelection";
 import HorizontalScroll from "../../common/HorizontalScroll";
 import useBoolean from "../../common/useBoolean";

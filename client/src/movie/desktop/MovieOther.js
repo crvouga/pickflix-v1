@@ -9,9 +9,8 @@ import * as R from "ramda";
 import React from "react";
 import { useQuery } from "react-query";
 import { useHistory, useParams } from "react-router-dom";
-import axios from "axios";
-import useMakeImageUrl from "../../api/useMakeImageUrl";
 import Scroll from "../../common/Scroll";
+import useMakeImageUrl from "../../tmdb/useMakeImageUrl";
 import MoviePoster from "../MoviePoster";
 const useStyles = makeStyles((theme) => ({}));
 

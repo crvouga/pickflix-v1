@@ -18,7 +18,7 @@ import { useQuery } from "react-query";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import SwipeableViews from "react-swipeable-views";
 import { bindKeyboard } from "react-swipeable-views-utils";
-import useMakeImageUrl from "../api/useMakeImageUrl";
+import useMakeImageUrl from "../tmdb/useMakeImageUrl";
 import ChipSelection from "../common/ChipSelection";
 import PageHistory from "../common/PageHistory";
 import MoviePoster from "../movie/MoviePoster";

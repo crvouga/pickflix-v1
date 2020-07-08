@@ -3,7 +3,7 @@ import { fade } from "@material-ui/core/styles/colorManipulator";
 import React, { useState } from "react";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
-import useMakeImageUrl from "../api/useMakeImageUrl";
+import useMakeImageUrl from "../tmdb/useMakeImageUrl";
 import AspectRatio from "../common/AspectRatio";
 import moment from "moment";
 import { useHistory } from "react-router";

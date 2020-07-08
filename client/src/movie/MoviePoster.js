@@ -9,7 +9,7 @@ import {
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import AspectRatio from "../common/AspectRatio";
-import useMakeImageUrl from "../api/useMakeImageUrl";
+import useMakeImageUrl from "../tmdb/useMakeImageUrl";
 
 const useStyles = makeStyles((theme) => ({
   root: {
