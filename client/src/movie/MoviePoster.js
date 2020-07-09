@@ -9,7 +9,7 @@ import {
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import AspectRatio from "../common/AspectRatio";
-import useMakeImageUrl from "../tmdb/useMakeImageUrl";
+import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,8 +35,7 @@ export default ({ movie, ...props }) => {
   const [loaded, setLoaded] = useState(false);
   const handleLoaded = () => setLoaded(true);
   const classes = useStyles();
-  const makeImageUrl = useMakeImageUrl();
-  const posterURL = makeImageUrl(2, { posterPath });
+  const posterURL = makeTMDbImageURL(2, { posterPath });
 
   const onClick = () => {
     history.push(`/movie/${id}`);

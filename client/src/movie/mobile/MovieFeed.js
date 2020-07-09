@@ -139,27 +139,32 @@ export default ({ similar, recommendations, keywords }) => {
         </React.Fragment>
       )}
 
-      <Typography className={classes.title}>Keywords</Typography>
-      <HorizontalScroll>
-        {keywords.keywords.map((keyword) => (
-          <Chip
-            className={classes.chip}
-            key={keyword.id}
-            label={keyword.name}
-            clickable
-            variant={
-              keyword.id === selectedKeyword?.id ? "default" : "outlined"
-            }
-            onClick={() => setSelectedKeyword(keyword)}
-          />
-        ))}
-      </HorizontalScroll>
+      {keywords.keywords.length > 0 && (
+        <React.Fragment>
+          <Typography className={classes.title}>Keywords</Typography>
 
-      <Collapse in={moviesFromKeywordQuery.status === "success"}>
-        <HorizontalScroll>
-          {moviesFromKeyword.map(renderMovie)}
-        </HorizontalScroll>
-      </Collapse>
+          <HorizontalScroll>
+            {keywords.keywords.map((keyword) => (
+              <Chip
+                className={classes.chip}
+                key={keyword.id}
+                label={keyword.name}
+                clickable
+                variant={
+                  keyword.id === selectedKeyword?.id ? "default" : "outlined"
+                }
+                onClick={() => setSelectedKeyword(keyword)}
+              />
+            ))}
+          </HorizontalScroll>
+
+          <Collapse in={moviesFromKeywordQuery.status === "success"}>
+            <HorizontalScroll>
+              {moviesFromKeyword.map(renderMovie)}
+            </HorizontalScroll>
+          </Collapse>
+        </React.Fragment>
+      )}
     </React.Fragment>
   );
 };

@@ -100,7 +100,7 @@ export default ({ collapsible, review }) => {
 
       <div className={classes.content}>
         <Typography variant="subtitle2" color="textSecondary">
-          {author} · TMBD <LaunchIcon className={classes.icon} />
+          {author} · TMDb <LaunchIcon className={classes.icon} />
         </Typography>
 
         {collapsible ? (

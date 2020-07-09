@@ -1,10 +1,8 @@
 import { makeStyles, Typography, ButtonBase } from "@material-ui/core";
 import MovieIcon from "@material-ui/icons/Movie";
 import React from "react";
-import useMakeImageUrl from "../tmdb/useMakeImageUrl";
+import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import AspectRatio from "../common/AspectRatio";
-
-const width = 180;
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -36,9 +34,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default ({ movie, ...props }) => {
   const { backdropPath, posterPath } = movie;
-  const makeImageUrl = useMakeImageUrl();
-  const backdropURL = makeImageUrl(2, { backdropPath });
-  const posterURL = makeImageUrl(2, { posterPath });
+  const backdropURL = makeTMDbImageURL(2, { backdropPath });
+  const posterURL = makeTMDbImageURL(2, { posterPath });
   const classes = useStyles({ backdropURL, posterURL });
 
   return (

@@ -1,21 +1,15 @@
 import { createMuiTheme } from "@material-ui/core";
-
-const tmdbPalette = {
-  // SOURCE: https://www.themoviedb.org/about/logos-attribution
-  primary: "#0d253f",
-  secondary: "#01b4e4",
-  tertiary: "#90cea1",
-};
+import { palette } from "../tmdb/attribution";
 
 export default () =>
   createMuiTheme({
     palette: {
       type: "dark",
       primary: {
-        main: tmdbPalette.secondary,
+        main: palette.secondary,
       },
       secondary: {
-        main: tmdbPalette.tertiary,
+        main: palette.tertiary,
       },
       background: {
         paper: "#202020",

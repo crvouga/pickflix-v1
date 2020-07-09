@@ -15,6 +15,7 @@ import React, { useContext } from "react";
 import ChatContext from "./ChatContext";
 import typeToIcon from "./typeToIcon";
 import useChatInputOptions from "./useChatInputOptions";
+import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,14 +33,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const renderOption = (makeImageUrl) => (option, props) => {
+const renderOption = (option, props) => {
   return (
     <React.Fragment>
       {option.logoPath ? (
-        <img src={makeImageUrl(1, option)} style={{ marginRight: 12 }} />
+        <img src={makeTMDbImageURL(1, option)} style={{ marginRight: 12 }} />
       ) : (
         <ListItemAvatar>
-          <Avatar src={makeImageUrl(1, option)}>
+          <Avatar src={makeTMDbImageURL(1, option)}>
             {typeToIcon(option.type)}
           </Avatar>
         </ListItemAvatar>
@@ -64,13 +65,15 @@ const renderInput = (params) => {
   );
 };
 
-const renderTag = (makeImageUrl) => (tag, props) => (
+const renderTag = (tag, props) => (
   <Chip
     key={tag.name}
     {...props}
     size="small"
     label={tag.name}
-    avatar={<Avatar src={makeImageUrl(2, tag)}>{typeToIcon(tag.type)}</Avatar>}
+    avatar={
+      <Avatar src={makeTMDbImageURL(2, tag)}>{typeToIcon(tag.type)}</Avatar>
+    }
   />
 );
 

@@ -19,8 +19,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     justifyContent: "space-around",
-    padding: theme.spacing(1),
-    paddingTop: 0,
     overflowX: "auto",
     flexWrap: "nowrap",
   },
@@ -36,10 +34,6 @@ export default () => {
   const theme = useTheme();
 
   const actions = [
-    {
-      icon: true ? <FavoriteBorderIcon /> : <FavoriteIcon />,
-      text: "Favorite",
-    },
     // {
     //   icon: <ThumbUpIcon />,
     //   text: "Like",
@@ -48,13 +42,17 @@ export default () => {
     //   icon: <ThumbDownIcon />,
     //   text: "Dislike",
     // },
-    // {
-    //   icon: true ? <VisibilityOffIcon /> : <VisibilityIcon />,
-    //   text: "Seen It",
-    // },
+    {
+      icon: true ? <VisibilityOffIcon /> : <VisibilityIcon />,
+      text: "Watched",
+    },
     {
       icon: true ? <BookmarkBorderIcon /> : <BookmarkIcon />,
       text: "Watchlist",
+    },
+    {
+      icon: true ? <FavoriteBorderIcon /> : <FavoriteIcon />,
+      text: "Favorite",
     },
     {
       icon: true ? <PlaylistAddIcon /> : <PlaylistAddCheckIcon />,

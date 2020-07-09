@@ -127,7 +127,7 @@ export default ({ videos }) => {
                   </div>
                 </ButtonBase>
                 <Typography variant="subtitle2" color="textSecondary">
-                  {video.name}
+                  {video.type}
                 </Typography>
               </div>
             ))}

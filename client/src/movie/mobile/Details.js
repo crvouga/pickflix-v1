@@ -1,31 +1,20 @@
-import { Grid, Link, Typography, useTheme } from "@material-ui/core";
+import { Grid, Typography, useTheme } from "@material-ui/core";
 import * as R from "ramda";
 import React from "react";
+import Chips from "../../common/Chips";
 import * as utils from "../../utils";
+
+import numeral from "numeral";
+const commas = (_) => numeral(_).format("0,0");
 
 export default ({ details }) => {
   const theme = useTheme();
 
-  const budget = details.budget
-    ? `$${utils.numberToNumberWithCommas(details.budget)}`
-    : "-";
-
-  const revenue = details.revenue
-    ? `$${utils.numberToNumberWithCommas(details.revenue)}`
-    : "-";
-
+  const budget = details.budget ? `$${commas(details.budget)}` : "-";
+  const revenue = details.revenue ? `$${commas(details.revenue)}` : "-";
   const voteAverage =
     details.voteAverage === 0 ? `-/10 ★` : `${details.voteAverage}/10 ★`;
-
-  const voteCount =
-    details.voteCount > 0
-      ? `${utils.numberToNumberWithCommas(details.voteCount)} votes`
-      : "No Votes";
-
-  const genres =
-    details.genres.length > 0
-      ? R.join(" · ", R.pluck("name", details.genres))
-      : "-";
+  const voteCount = `${commas(details.voteCount)} votes`;
 
   const releaseDate = details.releaseDate
     ? utils.numberDateToWordDate(details.releaseDate)
@@ -35,28 +24,9 @@ export default ({ details }) => {
     ? utils.minutesToHoursAndMinutes(details.runtime)
     : "-";
 
-  const productionCountries =
-    details.productionCountries.length > 0
-      ? R.join(" · ", R.pluck("name", details.productionCountries))
-      : "-";
-
-  const productionCompanies =
-    details.productionCompanies.length > 0
-      ? R.join(" · ", R.pluck("name", details.productionCompanies))
-      : "-";
-
   return (
-    <div style={{ padding: theme.spacing(1), paddingBottom: theme.spacing(4) }}>
-      <Typography gutterBottom align="center" style={{ fontWeight: "bold" }}>
-        {details.tagline}
-      </Typography>
-      <Typography
-        style={{ paddingBottom: theme.spacing(3) }}
-        variant="body1"
-        color="textSecondary"
-      >
-        {details.overview}
-      </Typography>
+    <React.Fragment>
+      <Typography style={{ fontWeight: "bold" }}>Details</Typography>
 
       <Grid container>
         <Grid item xs>
@@ -107,23 +77,25 @@ export default ({ details }) => {
       </Grid>
 
       <Typography>Genres</Typography>
-      <Typography gutterBottom color="textSecondary">
-        {genres}
-      </Typography>
+      <Chips
+        chips={details.genres}
+        getLabel={R.prop("name")}
+        marginBottom={1}
+      />
 
       <Typography>Production Companies</Typography>
-      <Typography gutterBottom color="textSecondary">
-        {productionCompanies}
-      </Typography>
+      <Chips
+        chips={details.productionCompanies}
+        getLabel={R.prop("name")}
+        marginBottom={1}
+      />
 
       <Typography>Production Countries</Typography>
-      <Typography gutterBottom color="textSecondary">
-        {productionCountries}
-      </Typography>
-
-      {/* <Link color="textSecondary" href={details.homepage}>
-        {details.homepage ? "Home Page" : "-"}
-      </Link> */}
-    </div>
+      <Chips
+        chips={details.productionCountries}
+        getLabel={R.prop("name")}
+        marginBottom={1}
+      />
+    </React.Fragment>
   );
 };

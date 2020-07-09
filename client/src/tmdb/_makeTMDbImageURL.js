@@ -1,10 +1,8 @@
 import * as R from "ramda";
-import axios from "axios";
 
 /* 
 
   INPUT: 
-  
   TMDBconfiguration = 
     {
       ...
@@ -31,9 +29,9 @@ import axios from "axios";
 
 const allImageTypes = ["profile", "poster", "backdrop", "still", "logo"];
 
-export default (TMDBconfiguration, sizeIndex, objectWithImagePath) => {
+export default (TMDbconfiguration, sizeIndex, objectWithImagePath) => {
   if (
-    R.isNil(TMDBconfiguration) ||
+    R.isNil(TMDbconfiguration) ||
     R.isNil(sizeIndex) ||
     R.isNil(objectWithImagePath)
   ) {
@@ -55,8 +53,8 @@ export default (TMDBconfiguration, sizeIndex, objectWithImagePath) => {
     return null;
   }
 
-  const secureBaseUrl = TMDBconfiguration.images.secureBaseUrl;
-  const sizes = TMDBconfiguration.images[`${imageType}Sizes`];
+  const secureBaseUrl = TMDbconfiguration.images.secureBaseUrl;
+  const sizes = TMDbconfiguration.images[`${imageType}Sizes`];
   const size = R.nth(R.clamp(0, sizes.length - 1, sizeIndex), sizes);
   const url = `${secureBaseUrl}${size}${path}`;
 

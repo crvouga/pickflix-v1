@@ -1,42 +1,21 @@
-import { ButtonBase, Collapse, Divider, makeStyles } from "@material-ui/core";
+import { Box, Divider, makeStyles, Typography } from "@material-ui/core";
 import axios from "axios";
+import moment from "moment";
+import momentDurationFormatSetup from "moment-duration-format";
 import React from "react";
-import { useQuery } from "react-query";
-import { useLocation, useParams } from "react-router-dom";
-import ExpandIcon from "../../common/ExpandIcon";
-import PageHistory from "../../common/PageHistory";
-import useBoolean from "../../common/useBoolean";
+import Chips from "../../common/Chips";
+import Footer from "../../common/Footer";
+import MoviePosterScroll from "../MoviePosterScroll";
+import ActionBar from "./ActionBar";
+import Details from "./Details";
 import Header from "./Header";
-import MovieActions from "./MovieActions";
+import Keywords from "./Keywords";
 import MovieCollection from "./MovieCollection";
 import MovieCredits from "./MovieCredits";
-import MovieDetails from "./MovieDetails";
-import MovieDetailsPreview from "./MovieDetailsPreview";
-import MovieFeed from "./MovieFeed";
-import MoviePageLoading from "./MoviePageLoading";
 import MovieReviews from "./MovieReviews";
+import Title from "./Title";
 import Videos from "./Videos";
-import NavigationBar from "../../navigation/mobile/NavigationBar";
-import LoadingPage from "../../common/LoadingPage";
-
-const useStyles = makeStyles((theme) => ({
-  details: {
-    padding: theme.spacing(1),
-    paddingTop: theme.spacing(2),
-    width: "100%",
-  },
-  expandIcon: {
-    marginTop: 0,
-  },
-  spinnerContainer: {
-    textAlign: "center",
-    marginTop: theme.spacing(8),
-  },
-
-  loading: {
-    width: "100%",
-  },
-}));
+momentDurationFormatSetup(moment);
 
 const fetchMoviePage = (movieId) =>
   axios
@@ -55,25 +34,7 @@ const fetchMoviePage = (movieId) =>
     })
     .then((response) => response.data);
 
-export default () => {
-  const classes = useStyles();
-  //
-  const location = useLocation();
-
-  const { movieId } = useParams();
-  const queryKey = location.pathname;
-  const query = useQuery(queryKey, () => fetchMoviePage(movieId), {});
-  //
-  const isDetailsOpen = useBoolean();
-
-  if (query.status === "loading") {
-    return <LoadingPage />;
-  }
-
-  if (query.status === "error") {
-    return "error";
-  }
-
+export default ({ data }) => {
   const {
     credits,
     reviews,
@@ -83,35 +44,48 @@ export default () => {
     videos: { results: videos },
     recommendations,
     ...details
-  } = query.data;
+  } = data;
+
+  const subtitle1 = [
+    moment(details.releaseDate).format("Y"),
+    moment.duration(details.runtime, "minutes").format("h[h] m[m]"),
+  ].join(" • ");
 
   return (
     <React.Fragment>
-      {false && <NavigationBar title={details.title} />}
+      {/* <NavigationBar title={details.title} /> */}
       {images.backdrops.length > 0 && (
         <Header videos={videos} images={images} />
       )}
 
-      <ButtonBase
-        component="div"
-        onClick={isDetailsOpen.toggle}
-        className={classes.details}
-      >
-        <MovieDetailsPreview details={details} />
-        <ExpandIcon
-          className={classes.expandIcon}
-          expanded={isDetailsOpen.value}
-        />
-      </ButtonBase>
+      <Box p={2} paddingBottom={0}>
+        <Typography align="left" variant="h5" style={{ flex: 1 }}>
+          {details.title}
+        </Typography>
+        <Typography variant="subtitle1" color="textSecondary">
+          {subtitle1}
+        </Typography>
+      </Box>
 
-      <MovieActions />
+      <Chips
+        p={1}
+        paddingLeft={2}
+        chips={details.genres}
+        getLabel={(_) => _.name}
+      />
+      <ActionBar />
 
-      <Collapse in={isDetailsOpen.value}>
-        <MovieDetails details={details} />
-      </Collapse>
-      <Divider />
+      <Box paddingX={2} paddingBottom={2}>
+        {details.tagline !== details.overview && (
+          <Typography align="center" style={{ fontWeight: "bold" }}>
+            {details.tagline}
+          </Typography>
+        )}
+        <Typography variant="body1" color="textSecondary">
+          {details.overview}
+        </Typography>
+      </Box>
 
-      <Videos videos={videos} />
       <Divider />
 
       <MovieCredits credits={credits} />
@@ -120,17 +94,26 @@ export default () => {
       <MovieCollection details={details} />
       <Divider />
 
-      <MovieFeed
-        keywords={keywords}
-        similar={similar}
-        recommendations={recommendations}
-      />
+      <Videos videos={videos} />
+      <Divider />
+
+      <Title>Recommendations</Title>
+      <MoviePosterScroll movies={recommendations.results} />
+      <Title>Similar</Title>
+      <MoviePosterScroll movies={similar.results} />
+      <Title>Keywords</Title>
+      <Keywords keywords={keywords.keywords} />
+
+      <Divider />
+      <Box p={2}>
+        <Details details={details} />
+      </Box>
       <Divider />
 
       <MovieReviews reviews={reviews} />
       <Divider />
 
-      <PageHistory />
+      <Footer />
     </React.Fragment>
   );
 };

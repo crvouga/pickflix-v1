@@ -1,19 +1,20 @@
 import {
   Avatar,
   Chip,
+  CircularProgress,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
   makeStyles,
-  CircularProgress,
 } from "@material-ui/core";
-import * as R from "ramda";
-import React, { useContext, useState } from "react";
-import { useHistory, useParams } from "react-router-dom";
-import useMakeImageUrl from "../../tmdb/useMakeImageUrl";
-import { useQuery } from "react-query";
 import axios from "axios";
+import * as R from "ramda";
+import React, { useState } from "react";
+import { useQuery } from "react-query";
+import { useHistory, useParams } from "react-router-dom";
+import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
+
 const useStyles = makeStyles((theme) => ({
   chipContainer: {
     display: "flex",
@@ -33,7 +34,6 @@ export default () => {
 
   const classes = useStyles();
   const history = useHistory();
-  const makeImageUrl = useMakeImageUrl();
   const [selectedDepartment, setSelectedDepartment] = useState("Acting");
 
   if (creditsQuery.status !== "success") {
@@ -70,7 +70,7 @@ export default () => {
             onClick={() => history.push(`/person/${credit.id}`)}
           >
             <ListItemAvatar>
-              <Avatar src={makeImageUrl(2, credit)} />
+              <Avatar src={makeTMDbImageURL(2, credit)} />
             </ListItemAvatar>
             <ListItemText
               primary={credit.name}

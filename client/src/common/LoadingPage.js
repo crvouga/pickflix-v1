@@ -4,7 +4,14 @@ import React from "react";
 
 export default () => {
   return (
-    <Box textAlign="center" marginTop={12} color="text.secondary">
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      width="100vw"
+      height="80vh"
+      color="text.secondary"
+    >
       <CircularProgress color="inherit" disableShrink size="2em" />
     </Box>
   );

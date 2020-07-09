@@ -20,7 +20,7 @@ import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import * as R from "ramda";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import useMakeImageUrl from "../../tmdb/useMakeImageUrl";
+import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 import ChipSelection from "../../common/ChipSelection";
 import HorizontalScroll from "../../common/HorizontalScroll";
 import useBoolean from "../../common/useBoolean";
@@ -100,7 +100,7 @@ export default ({ credits }) => {
 
   const topCast = R.take(15, cast);
   const directors = R.filter(R.whereEq({ job: "Director" }), crew);
-  const makeImageUrl = useMakeImageUrl();
+
   return (
     <React.Fragment>
       <ButtonBase
@@ -146,7 +146,7 @@ export default ({ credits }) => {
                   onClick={handleCreditClick(credit)}
                 >
                   <ListItemAvatar>
-                    <Avatar src={makeImageUrl(2, credit)} />
+                    <Avatar src={makeTMDbImageURL(2, credit)} />
                   </ListItemAvatar>
                   <ListItemText
                     primary={credit.name}
@@ -169,7 +169,7 @@ export default ({ credits }) => {
             <div className={classes.creditRoot}>
               <Avatar
                 className={classes.avatar}
-                src={makeImageUrl(3, credit)}
+                src={makeTMDbImageURL(3, credit)}
               />
               <Typography>{credit.name}</Typography>
               <Typography color="textSecondary">

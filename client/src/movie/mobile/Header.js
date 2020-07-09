@@ -5,7 +5,7 @@ import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
-import useMakeImageUrl from "../../tmdb/useMakeImageUrl";
+import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 import AspectRatio from "../../common/AspectRatio";
 import useBoolean from "../../common/useBoolean";
 import modal from "../../common/redux/modal";
@@ -71,7 +71,6 @@ const useStyles = makeStyles((theme) => {
 
 export default ({ videos, images }) => {
   const classes = useStyles();
-  const makeImageUrl = useMakeImageUrl();
   const [index, setIndex] = useState(0);
 
   const handleChange = (newIndex) => {
@@ -117,7 +116,7 @@ export default ({ videos, images }) => {
           {backdrops.map(({ filePath }, index) => (
             <img
               key={filePath}
-              src={makeImageUrl(2, { backdropPath: filePath })}
+              src={makeTMDbImageURL(2, { backdropPath: filePath })}
               className={classes.backdrop}
             />
           ))}

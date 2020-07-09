@@ -1,33 +1,28 @@
 import {
-  Chip,
-  Grid,
-  Paper,
-  GridList,
-  GridListTile,
-  GridListTileBar,
-  Typography,
-  CircularProgress,
   Card,
-  CardMedia,
   CardHeader,
+  CardMedia,
+  Chip,
+  CircularProgress,
+  Grid,
+  Typography,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import LinkIcon from "@material-ui/icons/Link";
 import Rating from "@material-ui/lab/Rating";
+import axios from "axios";
 import * as R from "ramda";
-import React, { useContext } from "react";
+import React from "react";
 import ReactMarkdown from "react-markdown";
 import { useQuery } from "react-query";
 import { useParams } from "react-router";
-import axios from "axios";
+import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 import {
   minutesToHoursAndMinutes,
   numberToNumberWithCommas,
   releaseDateToYear,
   voteAverageToFiveStarRating,
 } from "../../utils";
-import MoviePoster from "../MoviePoster";
-import useMakeImageUrl from "../../tmdb/useMakeImageUrl";
 
 const useStyles = makeStyles((theme) => ({
   poster: {
@@ -48,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const { id } = useParams();
   const classes = useStyles();
-  const makeImageUrl = useMakeImageUrl();
   const detailsQuery = useQuery(
     ["movie", id, "details"],
     () => axios.get(`/api/tmdb/movie/${id}`).then((res) => res.data),
@@ -108,7 +102,7 @@ export default () => {
         <Grid item>
           <img
             style={{ width: "180px", height: "auto" }}
-            src={makeImageUrl(3, { posterPath })}
+            src={makeTMDbImageURL(3, { posterPath })}
           />
         </Grid>
         <Grid item>
@@ -170,12 +164,12 @@ export default () => {
             />
             <CardMedia
               style={{ margin: 0, width: 240, height: 100 }}
-              image={makeImageUrl(Infinity, productionCompany)}
+              image={makeTMDbImageURL(Infinity, productionCompany)}
             />
             {/* <img
               key={productionCompany.name}
               style={{ width: 240, height: "auto" }}
-              src={makeImageUrl(Infinity, productionCompany)}
+              src={makeTMDbImageURL(Infinity, productionCompany)}
             /> */}
           </Card>
         ))}

@@ -21,6 +21,8 @@ import PageHistory from "../common/PageHistory";
 import MovieBackdrop from "../movie/MovieBackdrop";
 import LoadingPage from "../common/LoadingPage";
 import HorizontalScroll from "../common/HorizontalScroll";
+import Footer from "../common/Footer";
+import MoviePosterScroll from "../movie/MoviePosterScroll";
 
 const renderPoster = (movie, index) => {
   return (
@@ -72,16 +74,7 @@ const renderMovieScroll = (title, movies) => (
     <Box p={1}>
       <Typography variant="h6">{title}</Typography>
     </Box>
-    <HorizontalScroll>
-      {movies.map((movie) => (
-        <MoviePoster
-          key={movie.id}
-          movie={movie}
-          minWidth="120px"
-          marginX={1}
-        />
-      ))}
-    </HorizontalScroll>
+    <MoviePosterScroll movies={movies} />
   </React.Fragment>
 );
 
@@ -103,21 +96,19 @@ const renderAvatarScroll = (title, persons) => (
   </React.Fragment>
 );
 
-Promise.objectAll = async (object) => {
-  const values = await Promise.all(R.values(object));
-  return R.zipObj(R.keys(object), values);
+const urlByName = {
+  popular: "/api/tmdb/movie/popular",
+  personPopular: "/api/tmdb/person/popular",
+  upcoming: "/api/tmdb/movie/upcoming",
+  topRated: "/api/tmdb/movie/topRated",
+  nowPlaying: "/api/tmdb/movie/nowPlaying",
 };
-
-const fetchHomePage = () =>
-  Promise.objectAll({
-    popular: axios.get("/api/tmdb/movie/popular").then((res) => res.data),
-    personPopular: axios
-      .get("/api/tmdb/person/popular")
-      .then((res) => res.data),
-    upcoming: axios.get("/api/tmdb/movie/upcoming").then((res) => res.data),
-    topRated: axios.get("/api/tmdb/movie/topRated").then((res) => res.data),
-    nowPlaying: axios.get("/api/tmdb/movie/nowPlaying").then((res) => res.data),
-  });
+const names = R.keys(urlByName);
+const urls = R.values(urlByName);
+const fetchHomePage = async () => {
+  const responses = await Promise.all(R.map((url) => axios.get(url), urls));
+  return R.zipObj(names, R.pluck("data", responses));
+};
 
 export default () => {
   const query = useQuery(["discover"], () => fetchHomePage(), {});
@@ -136,15 +127,13 @@ export default () => {
   } = query;
 
   return (
-    <Fade in>
-      <div>
-        <Header movies={popular.results} />
-        {renderMovieScroll("Top Rated Movies", topRated.results)}
-        {renderMovieScroll("Upcoming Movies", upcoming.results)}
-        {renderMovieScroll("Now Playing Movies", nowPlaying.results)}
-        {renderAvatarScroll("Popular People", personPopular.results)}
-        <PageHistory />
-      </div>
-    </Fade>
+    <div>
+      <Header movies={popular.results} />
+      {renderMovieScroll("Top Rated Movies", topRated.results)}
+      {renderMovieScroll("Upcoming Movies", upcoming.results)}
+      {renderMovieScroll("Now Playing Movies", nowPlaying.results)}
+      {renderAvatarScroll("Popular People", personPopular.results)}
+      <Footer />
+    </div>
   );
 };

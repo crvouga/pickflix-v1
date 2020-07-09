@@ -4,6 +4,7 @@ import {
   Collapse,
   makeStyles,
   Typography,
+  Paper,
 } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
@@ -55,21 +56,30 @@ export default () => {
         <Player />
       </AspectRatio>
 
+      {/* white space */}
       <AspectRatio ratio={[16, 9]} width="100%" />
-      <ButtonBase
-        component={Box}
-        p={2}
-        width="100%"
-        display="flex"
-        flexDirection="row"
-        onClick={isPlaylistOpen.toggle}
-      >
-        <Typography style={{ flex: 1 }}>Playlist</Typography>
-        <ExpandIcon style={{ zIndex: 1000 }} expanded={isPlaylistOpen.value} />
-      </ButtonBase>
-      <Collapse in={isPlaylistOpen.value}>
-        <Playlist />
-      </Collapse>
+
+      <Paper>
+        <ButtonBase
+          component={Box}
+          paddingX={2}
+          paddingY={2}
+          width="100%"
+          display="flex"
+          flexDirection="row"
+          onClick={isPlaylistOpen.toggle}
+        >
+          <Typography style={{ flex: 1 }}>Playlist</Typography>
+          <ExpandIcon
+            style={{ zIndex: 1000 }}
+            expanded={isPlaylistOpen.value}
+          />
+        </ButtonBase>
+
+        <Collapse in={isPlaylistOpen.value}>
+          <Playlist />
+        </Collapse>
+      </Paper>
 
       <YoutubeVideoSection videoId={videoKey} />
     </div>

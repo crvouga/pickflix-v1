@@ -1,11 +1,41 @@
-import { useMediaQuery, useTheme } from "@material-ui/core";
+import axios from "axios";
 import React from "react";
-import DesktopMoviePage from "./desktop/MoviePage";
+import { useQuery } from "react-query";
+import ErrorPage from "../common/ErrorPage";
+import LoadingPage from "../common/LoadingPage";
 import MobileMoviePage from "./mobile/MoviePage";
 
-export default () => {
-  const theme = useTheme();
-  const isDesktop = useMediaQuery(theme.breakpoints.up("sm"));
+const fetchMoviePage = (movieId) =>
+  axios
+    .get(`/api/tmdb/movie/${movieId}`, {
+      params: {
+        appendToResponse: [
+          "credits",
+          "reviews",
+          "similar",
+          "recommendations",
+          "keywords",
+          "videos",
+          "images",
+        ],
+      },
+    })
+    .then((response) => response.data);
 
-  return <MobileMoviePage />; //isDesktop ? <DesktopMoviePage /> : <MobileMoviePage />;
+export default ({ movieId }) => {
+  const query = useQuery(
+    `/movie/${movieId}`,
+    () => fetchMoviePage(movieId),
+    {}
+  );
+
+  if (query.status === "loading") {
+    return <LoadingPage />;
+  }
+
+  if (query.status === "error") {
+    return <ErrorPage />;
+  }
+
+  return <MobileMoviePage data={query.data} />;
 };

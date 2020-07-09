@@ -1,5 +1,4 @@
 import {
-  CircularProgress,
   Fade,
   Grid,
   IconButton,
@@ -18,12 +17,12 @@ import { useQuery } from "react-query";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import SwipeableViews from "react-swipeable-views";
 import { bindKeyboard } from "react-swipeable-views-utils";
-import useMakeImageUrl from "../tmdb/useMakeImageUrl";
 import ChipSelection from "../common/ChipSelection";
-import PageHistory from "../common/PageHistory";
-import MoviePoster from "../movie/MoviePoster";
-import * as utils from "../utils";
+import Footer from "../common/Footer";
 import LoadingPage from "../common/LoadingPage";
+import MoviePoster from "../movie/MoviePoster";
+import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
+import * as utils from "../utils";
 
 const SwipeableViewsKeyboard = bindKeyboard(SwipeableViews);
 
@@ -169,10 +168,10 @@ const onExit = (el, index, removeElement) => {
     removeElement();
   };
 };
+
 export default () => {
   const classes = useStyles();
   const history = useHistory();
-  const makeImageUrl = useMakeImageUrl();
   const [selectedKey, setSelectedKey] = useState("All");
   const [index, setIndex] = useState(0);
   const handleIndexChange = (e, newIndex) => setIndex(newIndex);
@@ -240,122 +239,120 @@ export default () => {
     .filter(R.identity)
     .join(" · ");
 
-  const profileURL = makeImageUrl(2, details);
+  const profileURL = makeTMDbImageURL(2, details);
 
   return (
-    <Fade in>
-      <div className={classes.root}>
-        <div className={classes.header}>
-          <SwipeableViewsKeyboard
-            className={classes.swipeableViews}
-            value={index}
-            onChange={handleIndexChange}
-          >
-            {allImages.map((image, i) => (
-              <img
-                className={classes.image}
-                key={image.filePath}
-                src={makeImageUrl(3, { profilePath: image.filePath })}
-              />
-            ))}
-          </SwipeableViewsKeyboard>
+    <div className={classes.root}>
+      <div className={classes.header}>
+        <SwipeableViewsKeyboard
+          className={classes.swipeableViews}
+          value={index}
+          onChange={handleIndexChange}
+        >
+          {allImages.map((image, i) => (
+            <img
+              className={classes.image}
+              key={image.filePath}
+              src={makeTMDbImageURL(3, { profilePath: image.filePath })}
+            />
+          ))}
+        </SwipeableViewsKeyboard>
 
-          <Typography align="left" variant="h6">
-            {name}
-          </Typography>
-          <Typography align="left" color="textSecondary" variant="subtitle1">
-            {subtitle1}
-          </Typography>
-        </div>
-
-        <div className={classes.bar} style={stickyStyles}>
-          <ChipSelection
-            keys={keys}
-            selectedKey={selectedKey}
-            onChipClick={setSelectedKey}
-            style={{ flex: 1 }}
-          />
-          <IconButton style={{ marginRight: 12 }} onClick={handleClick}>
-            <TuneIcon />
-          </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-          >
-            <MenuItem
-              selected={sortType === "MostPopular"}
-              onClick={handleSortSelect("MostPopular")}
-            >
-              Most Popular
-            </MenuItem>
-            <MenuItem
-              selected={sortType === "NewestFirst"}
-              onClick={handleSortSelect("NewestFirst")}
-            >
-              Newest First
-            </MenuItem>
-            <MenuItem onClick={handleSortSelect("OldestFirst")}>
-              Oldest First
-            </MenuItem>
-          </Menu>
-        </div>
-
-        <Flipper flipKey={R.join(",", R.pluck("creditId", visibleCredits))}>
-          <div className={classes.grid}>
-            {visibleCredits.map((credit) => (
-              <Flipped
-                flipId={credit.creditId}
-                key={credit.creditId}
-                // onAppear={onElementAppear}
-                // onExit={onExit}
-              >
-                <div
-                  className={classes.cell}
-                  onClick={() => history.push(`/movie/${credit.id}`)}
-                >
-                  <MoviePoster movie={credit} />
-                </div>
-              </Flipped>
-            ))}
-          </div>
-        </Flipper>
-        <div className={classes.details}>
-          <Grid item container xs>
-            <Grid item xs>
-              <Typography>Birthday</Typography>
-              <Typography gutterBottom color="textSecondary">
-                {birthday}
-              </Typography>
-            </Grid>
-
-            <Grid item xs>
-              <Typography>Deathday</Typography>
-              <Typography gutterBottom color="textSecondary">
-                {deathday}
-              </Typography>
-            </Grid>
-          </Grid>
-          <Grid item container xs>
-            <Grid item xs>
-              <Typography>Place of Birth</Typography>
-              <Typography gutterBottom color="textSecondary">
-                {placeOfBirth}
-              </Typography>
-            </Grid>
-
-            <Grid item xs>
-              <Typography>Known For</Typography>
-              <Typography gutterBottom color="textSecondary">
-                {knownForDepartment}
-              </Typography>
-            </Grid>
-          </Grid>
-          <ReactMarkdown>{biography}</ReactMarkdown>
-        </div>
-        <PageHistory />
+        <Typography align="left" variant="h6">
+          {name}
+        </Typography>
+        <Typography align="left" color="textSecondary" variant="subtitle1">
+          {subtitle1}
+        </Typography>
       </div>
-    </Fade>
+
+      <div className={classes.bar} style={stickyStyles}>
+        <ChipSelection
+          chips={keys}
+          selected={selectedKey}
+          onSelect={setSelectedKey}
+          style={{ flex: 1 }}
+        />
+        <IconButton style={{ marginRight: 12 }} onClick={handleClick}>
+          <TuneIcon />
+        </IconButton>
+        <Menu
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem
+            selected={sortType === "MostPopular"}
+            onClick={handleSortSelect("MostPopular")}
+          >
+            Most Popular
+          </MenuItem>
+          <MenuItem
+            selected={sortType === "NewestFirst"}
+            onClick={handleSortSelect("NewestFirst")}
+          >
+            Newest First
+          </MenuItem>
+          <MenuItem onClick={handleSortSelect("OldestFirst")}>
+            Oldest First
+          </MenuItem>
+        </Menu>
+      </div>
+
+      <Flipper flipKey={R.join(",", R.pluck("creditId", visibleCredits))}>
+        <div className={classes.grid}>
+          {visibleCredits.map((credit) => (
+            <Flipped
+              flipId={credit.creditId}
+              key={credit.creditId}
+              // onAppear={onElementAppear}
+              // onExit={onExit}
+            >
+              <div
+                className={classes.cell}
+                onClick={() => history.push(`/movie/${credit.id}`)}
+              >
+                <MoviePoster movie={credit} />
+              </div>
+            </Flipped>
+          ))}
+        </div>
+      </Flipper>
+      <div className={classes.details}>
+        <Grid item container xs>
+          <Grid item xs>
+            <Typography>Birthday</Typography>
+            <Typography gutterBottom color="textSecondary">
+              {birthday}
+            </Typography>
+          </Grid>
+
+          <Grid item xs>
+            <Typography>Deathday</Typography>
+            <Typography gutterBottom color="textSecondary">
+              {deathday}
+            </Typography>
+          </Grid>
+        </Grid>
+        <Grid item container xs>
+          <Grid item xs>
+            <Typography>Place of Birth</Typography>
+            <Typography gutterBottom color="textSecondary">
+              {placeOfBirth}
+            </Typography>
+          </Grid>
+
+          <Grid item xs>
+            <Typography>Known For</Typography>
+            <Typography gutterBottom color="textSecondary">
+              {knownForDepartment}
+            </Typography>
+          </Grid>
+        </Grid>
+        <ReactMarkdown>{biography}</ReactMarkdown>
+      </div>
+      <Footer />
+    </div>
   );
 };

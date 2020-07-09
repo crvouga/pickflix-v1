@@ -1,34 +1,30 @@
+import { Box, Chip } from "@material-ui/core";
 import React from "react";
-import { Chip, makeStyles } from "@material-ui/core";
+import HorizontalScroll from "./HorizontalScroll";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    overflowX: "auto",
-    flexWrap: "nowrap",
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-  },
-  chip: {
-    marginLeft: theme.spacing(1),
-  },
-}));
-
-export default ({ selectedKey, keys, onChipClick, style }) => {
-  const classes = useStyles();
-
+export default ({
+  chips,
+  selected,
+  getKey = (x) => x,
+  getLabel = (x) => x,
+  onSelect,
+  ContainerProps,
+  ChipProps,
+}) => {
   return (
-    <div className={classes.root}>
-      {keys.map((key) => (
-        <Chip
-          className={classes.chip}
-          key={key}
-          label={key}
+    <HorizontalScroll {...ContainerProps}>
+      {chips.map((chip) => (
+        <Box
+          key={getKey(chip)}
+          marginRight={1 / 2}
+          component={Chip}
+          label={getLabel(chip)}
           clickable
-          onClick={() => onChipClick(key)}
-          variant={key === selectedKey ? "default" : "outlined"}
-        />
+          onClick={() => onSelect(chip)}
+          variant={getKey(chip) === getKey(selected) ? "default" : "outlined"}
+          {...ChipProps}
+        ></Box>
       ))}
-    </div>
+    </HorizontalScroll>
   );
 };

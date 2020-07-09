@@ -1,6 +1,6 @@
 import { Avatar, makeStyles } from "@material-ui/core";
 import React from "react";
-import useMakeImageUrl from "../tmdb/useMakeImageUrl";
+import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,8 +30,7 @@ const useStyles = makeStyles((theme) => ({
 export default ({ person }) => {
   const { profilePath } = person;
   const classes = useStyles();
-  const makeImageUrl = useMakeImageUrl();
-  const profileURL = makeImageUrl(2, { profilePath });
+  const profileURL = makeTMDbImageURL(2, { profilePath });
   const history = useHistory();
   const handleClick = () => {
     history.push(`/person/${person.id}`);

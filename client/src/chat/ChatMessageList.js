@@ -13,6 +13,7 @@ import { useHistory } from "react-router";
 import MoviePoster from "../movie/MoviePoster";
 import ChatContext from "./ChatContext";
 import typeToIcon from "./typeToIcon";
+import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 
 const useStyles = makeStyles((theme) => ({
   chatMessagesRoot: {
@@ -98,7 +99,7 @@ const ChatMesssage = ({
                 onClick={() => onTagClick(tag)}
                 key={tag.id}
                 avatar={
-                  <Avatar src={makeImageUrl(2, tag)}>
+                  <Avatar src={makeTMDbImageURL(2, tag)}>
                     {typeToIcon(tag.type)}
                   </Avatar>
                 }

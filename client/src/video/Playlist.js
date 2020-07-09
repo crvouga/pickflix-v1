@@ -60,7 +60,7 @@ export default ({ onVideoClick }) => {
   };
 
   return (
-    <div>
+    <React.Fragment>
       {videos.map((video) => (
         <ButtonBase
           onClick={handleVideoClick(video)}
@@ -84,6 +84,6 @@ export default ({ onVideoClick }) => {
           </div>
         </ButtonBase>
       ))}
-    </div>
+    </React.Fragment>
   );
 };

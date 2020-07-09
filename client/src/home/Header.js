@@ -1,13 +1,12 @@
-import { makeStyles, Typography, Box } from "@material-ui/core";
+import { Box, makeStyles, Typography } from "@material-ui/core";
 import { fade } from "@material-ui/core/styles/colorManipulator";
+import moment from "moment";
 import React, { useState } from "react";
+import { useHistory } from "react-router";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
-import useMakeImageUrl from "../tmdb/useMakeImageUrl";
 import AspectRatio from "../common/AspectRatio";
-import moment from "moment";
-import { useHistory } from "react-router";
-import MoviePoster from "../movie/MoviePoster";
+import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -51,8 +50,7 @@ const useStyles = makeStyles((theme) => {
 
 const HeaderItem = ({ movie }) => {
   const history = useHistory();
-  const makeImageUrl = useMakeImageUrl();
-  const movieBackdropURL = makeImageUrl(3, {
+  const movieBackdropURL = makeTMDbImageURL(3, {
     backdropPath: movie.backdropPath,
   });
   const classes = useStyles({

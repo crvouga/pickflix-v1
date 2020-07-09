@@ -10,7 +10,7 @@ import React from "react";
 import { useQuery } from "react-query";
 import { useHistory, useParams } from "react-router-dom";
 import Scroll from "../../common/Scroll";
-import useMakeImageUrl from "../../tmdb/useMakeImageUrl";
+import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 import MoviePoster from "../MoviePoster";
 const useStyles = makeStyles((theme) => ({}));
 
@@ -31,7 +31,6 @@ export default () => {
   const classes = useStyles();
   const { id } = useParams();
   const history = useHistory();
-  const makeImageUrl = useMakeImageUrl();
 
   const recommendationsQuery = useQuery(
     ["movie", id, "recommendation"],
@@ -95,7 +94,7 @@ export default () => {
                 width: "100%",
                 height: "auto",
               }}
-              src={makeImageUrl(3, movie)}
+              src={makeTMDbImageURL(3, movie)}
             />
           </GridListTile>
         ))}
@@ -124,7 +123,7 @@ export default () => {
                 width: "100%",
                 height: "auto",
               }}
-              src={makeImageUrl(3, movie)}
+              src={makeTMDbImageURL(3, movie)}
             />
           </GridListTile>
         ))}
