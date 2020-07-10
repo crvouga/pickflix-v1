@@ -38,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "0.75em",
     marginLeft: "-0.5em",
   },
+  subtitle1: {
+    wordBreak: "break-word",
+  },
   text: {
     wordBreak: "break-word",
     userSelect: "text",
@@ -98,7 +101,11 @@ export default ({ comment }) => {
         <Avatar src={authorProfileImageUrl} onClick={handleAvatarClick} />
       </div>
       <div>
-        <Typography variant="subtitle2" color="textSecondary">
+        <Typography
+          className={classes.subtitle1}
+          variant="subtitle2"
+          color="textSecondary"
+        >
           {subtitle1}
         </Typography>
         <Typography component="div" variant="body1">
