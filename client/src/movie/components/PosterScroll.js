@@ -7,7 +7,7 @@ export default ({ movies, ContainerProps, PosterProps }) => {
     <HorizontalScroll paddingLeft={2} marginBottom={2} {...ContainerProps}>
       {movies.map((movie) => (
         <Poster
-          key={movie.id}
+          key={movie.creditId || movie.id}
           movie={movie}
           minWidth={150}
           maxWidth={150}

@@ -18,7 +18,7 @@ export default ({ reviews }) => {
       </Title>
 
       {reviews.results.map((review, index) => (
-        <React.Fragment>
+        <React.Fragment key={review.id}>
           <Review
             key={review.id}
             review={review}

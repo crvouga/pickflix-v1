@@ -12,9 +12,6 @@ import * as R from "ramda";
 import React, { useEffect, useState } from "react";
 import { Flipped, Flipper } from "react-flip-toolkit";
 import { useQuery } from "react-query";
-import { useHistory } from "react-router-dom";
-import SwipeableViews from "react-swipeable-views";
-import { bindKeyboard } from "react-swipeable-views-utils";
 import ChipSelection from "../common/components/ChipSelection";
 import ErrorPage from "../common/page/ErrorPage";
 import Footer from "../common/page/Footer";
@@ -22,8 +19,6 @@ import LoadingPage from "../common/page/LoadingPage";
 import MoviePoster from "../movie/components/Poster";
 import MoviePosterScroll from "../movie/components/PosterScroll";
 import Header from "./Header";
-
-const SwipeableViewsKeyboard = bindKeyboard(SwipeableViews);
 
 const fetchPersonPage = (personId) =>
   axios
@@ -38,94 +33,6 @@ const fetchPersonPage = (personId) =>
       },
     })
     .then((res) => res.data);
-
-const useStyles = makeStyles((theme) => ({
-  root: {},
-  header: {
-    padding: theme.spacing(1),
-  },
-  details: {
-    padding: theme.spacing(1),
-  },
-  avatar: {
-    width: 120,
-    height: 120,
-    margin: "auto",
-    marginBottom: theme.spacing(1),
-  },
-  row: {
-    display: "flex",
-    flexDirection: "row",
-  },
-  tile: {
-    textAlign: "center",
-  },
-  poster: {
-    width: "100%",
-    // maxWidth: "180px",
-  },
-
-  chipContainer: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "nowrap",
-    overflowX: "auto",
-    padding: theme.spacing(1),
-
-    flex: 1,
-  },
-  bar: {
-    zIndex: theme.zIndex.appBar,
-    backgroundColor: theme.palette.background.default,
-    display: "flex",
-    flexDirection: "row",
-  },
-  gridButton: {},
-
-  chip: {
-    marginRight: theme.spacing(1),
-  },
-  grid: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    overflowX: "hidden",
-  },
-  cell: {
-    width: "33.33%",
-    padding: theme.spacing(0.5),
-  },
-  poster: {
-    width: "100%",
-    borderRadius: theme.spacing(1),
-  },
-  bio: {
-    padding: theme.spacing(1),
-  },
-  list: {},
-  listItem: {
-    display: "flex",
-    flexDirection: "row",
-    width: "100%",
-    textAlign: "left",
-    marginBottom: theme.spacing(1),
-  },
-  listItemImage: {},
-  listItemText: {},
-  spinnerContainer: {
-    textAlign: "center",
-    marginTop: theme.spacing(8),
-  },
-  image: {
-    //width: "auto",
-    borderRadius: theme.spacing(1),
-    margin: "auto",
-    height: "240px",
-  },
-  swipeableViews: {
-    textAlign: "center",
-  },
-}));
 
 const toCreditsByKey = (credits) => {
   const { cast, crew } = credits;
@@ -146,8 +53,6 @@ const sortersByType = {
 };
 
 export default ({ personId }) => {
-  const classes = useStyles();
-  const history = useHistory();
   const [selectedKey, setSelectedKey] = useState("All");
 
   const query = useQuery(`/person/${personId}`, () =>
@@ -195,7 +100,7 @@ export default ({ personId }) => {
   const keys = R.sortBy(R.identity, R.keys(creditsByKey));
 
   return (
-    <div className={classes.root}>
+    <Box>
       <Header details={details} credits={credits} />
       <Box p={2} component={Typography} style={{ fontWeight: "bold" }}>
         Known For
@@ -245,21 +150,21 @@ export default ({ personId }) => {
       </Box>
 
       <Flipper flipKey={R.join(",", R.pluck("creditId", visibleCredits))}>
-        <div className={classes.grid}>
+        <Box
+          display="flex"
+          flexDirection="row"
+          overflowx="hidden"
+          flexWrap="wrap"
+        >
           {visibleCredits.map((credit) => (
             <Flipped flipId={credit.creditId} key={credit.creditId}>
-              <div
-                className={classes.cell}
-                onClick={() => history.push(`/movie/${credit.id}`)}
-              >
-                <MoviePoster movie={credit} />
-              </div>
+              <MoviePoster movie={credit} width="33.33%" />
             </Flipped>
           ))}
-        </div>
+        </Box>
       </Flipper>
 
       <Footer />
-    </div>
+    </Box>
   );
 };

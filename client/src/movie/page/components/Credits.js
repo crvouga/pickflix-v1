@@ -106,8 +106,7 @@ export default ({ credits }) => {
 
   return (
     <React.Fragment>
-      <ButtonBase
-        component={Box}
+      <Box
         onClick={isDrawerOpen.setTrue}
         p={2}
         display="flex"
@@ -120,7 +119,7 @@ export default ({ credits }) => {
         <Box color="text.secondary">
           <UnfoldMoreIcon fontSize="small" />
         </Box>
-      </ButtonBase>
+      </Box>
 
       <Dialog
         fullScreen

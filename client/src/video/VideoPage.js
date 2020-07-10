@@ -59,8 +59,7 @@ export default () => {
       <AspectRatio ratio={[16, 9]} width="100%" />
 
       <Paper>
-        <ButtonBase
-          component={Box}
+        <Box
           p={2}
           width="100%"
           display="flex"
@@ -69,7 +68,7 @@ export default () => {
         >
           <Typography style={{ flex: 1 }}>Playlist</Typography>
           <ExpandIcon expanded={isPlaylistOpen.value} />
-        </ButtonBase>
+        </Box>
 
         <Collapse in={isPlaylistOpen.value}>
           <Playlist />

@@ -118,18 +118,12 @@ export default ({ statistics, snippet }) => {
     .filter((_) => _)
     .join(" • ");
 
-  const subtitle2 = [
-    `👍${formatNumberShort(likeCount)}`,
-    `👎${formatNumberShort(dislikeCount)}`,
-  ].join(" • ");
-
   return (
     <React.Fragment>
-      <ButtonBase
-        component={Box}
+      <Box
         onClick={isDetailsOpen.toggle}
-        className={classes.details}
         p={2}
+        paddingBottom={0}
         display="flex"
         flexDirection="row"
         justifyContent="space-between"
@@ -142,22 +136,22 @@ export default ({ statistics, snippet }) => {
           </Typography>
         </Box>
 
-        <ExpandIcon
-          marginBottom="auto"
-          width="0.7em"
-          height="0.7em"
-          expanded={isDetailsOpen.value}
-        />
-      </ButtonBase>
+        <ExpandIcon marginBottom="auto" expanded={isDetailsOpen.value} />
+      </Box>
 
-      <Box paddingX={2} className={classes.actions} color="text.secondary">
+      <Box
+        paddingX={2}
+        color="text.secondary"
+        display="flex"
+        flexDirection="row"
+      >
         <Box
           component="span"
           display="flex"
           flexDirection="row"
           marginRight={2}
         >
-          <IconButton className={classes.iconButton} color="inherit">
+          <IconButton color="inherit">
             <ThumbUpIcon className={classes.icon} />
           </IconButton>
           <Typography className={classes.iconLabel} color="inherit">

@@ -24,8 +24,11 @@ export const youtbeCommentTextToMarkdown = (youtubeCommentText) =>
     /* "_italic_"   ->   "*italic*" */
     .replace(/_/g, "*");
 
-export const details = ({ videoId }) =>
-  axios
+export const details = ({ videoId }) => {
+  if (!videoId) {
+    return Promise.resolve({});
+  }
+  return axios
     .get("/api/youtube/videos", {
       params: {
         id: videoId,
@@ -37,8 +40,12 @@ export const details = ({ videoId }) =>
       console.error(err);
       return err.response.data;
     });
+};
 
 export const commentThreadList = ({ videoId }) => {
+  if (!videoId) {
+    return Promise.resolve({});
+  }
   return axios
     .get("/api/youtube/commentThreads", {
       params: {

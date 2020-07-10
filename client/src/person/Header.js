@@ -65,9 +65,8 @@ export default ({ details, credits }) => {
         </Box>
       </Box>
       {details.biography && (
-        <ButtonBase
+        <Box
           onClick={isBioExpanded.toggle}
-          component={Box}
           p={2}
           textAlign="left"
           display="flex"
@@ -82,12 +81,12 @@ export default ({ details, credits }) => {
           </Box>
           <Collapse in={isBioExpanded.value} collapsedHeight="10em">
             <Box marginTop={-2}>
-              <Typography color="textSecondary" varaint="body2">
+              <Typography component="div" color="textSecondary" varaint="body2">
                 <ReactMarkdown>{details.biography}</ReactMarkdown>
               </Typography>
             </Box>
           </Collapse>
-        </ButtonBase>
+        </Box>
       )}
     </React.Fragment>
   );

@@ -8,7 +8,7 @@ export default ({ chips, getLabel = getLabelDefault, ...props }) => {
   return (
     <HorizontalScroll {...props}>
       {chips.map((chip) => (
-        <Box key={chip.id} marginRight={1}>
+        <Box key={chip.id || getLabel(chip)} marginRight={1}>
           <Chip label={getLabel(chip)} variant="outlined" />
         </Box>
       ))}

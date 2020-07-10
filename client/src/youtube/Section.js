@@ -5,6 +5,8 @@ import * as youtubeAPI from "./api";
 import CommentThreadList from "./components/CommentThreadList";
 import Details from "./components/Details";
 
+const Error = () => "error";
+
 const Loading = () => (
   <Box color="text.secondary" textAlign="center" marginY={5}>
     <CircularProgress color="inherit" disableShrink size="2em" />
@@ -23,7 +25,7 @@ const DetailsContainer = ({ videoId }) => {
   }
 
   if (query.status === "error") {
-    return "error";
+    return <Error />;
   }
 
   const snippet = query.data?.items?.[0]?.snippet || {};
@@ -44,7 +46,7 @@ const CommentThreadListContainer = ({ videoId }) => {
   }
 
   if (query.status === "error") {
-    return "error";
+    return <Error />;
   }
 
   const commentThreadList = query.data;

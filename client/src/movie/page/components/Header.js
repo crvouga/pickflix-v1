@@ -30,7 +30,7 @@ export default ({ details }) => {
 
   return (
     <React.Fragment>
-      <Box p={2}>
+      <Box p={2} paddingBottom={0}>
         <Typography align="left" variant="h5" style={{ flex: 1 }}>
           {details.title}
         </Typography>
@@ -46,12 +46,11 @@ export default ({ details }) => {
         <ActionBar />
       </Box>
 
-      <ButtonBase
+      <Box
         onClick={isOverviewExpanded.toggle}
         className={clsx({ [classes.fadeBottom]: !isOverviewExpanded.value })}
-        component={Box}
         p={2}
-        paddingTop={1}
+        paddingTop={0}
         flexDirection="column"
         display="flex"
       >
@@ -65,7 +64,7 @@ export default ({ details }) => {
             {details.overview}
           </Typography>
         </Collapse>
-      </ButtonBase>
+      </Box>
     </React.Fragment>
   );
 };
