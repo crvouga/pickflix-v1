@@ -13,6 +13,7 @@ import {
   Slide,
   Toolbar,
   Typography,
+  Paper,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
@@ -127,34 +128,38 @@ export default ({ credits }) => {
         TransitionComponent={Transition}
         PaperProps={{ classes: { root: classes.paper } }}
       >
-        <ChipSelection
-          ContainerProps={{
-            p: 2,
-          }}
-          chips={departments}
-          selected={selectedDepartment}
-          onSelect={setSelectedDepartment}
-        />
+        <Box component={Paper} position="sticky" top={0} zIndex={2}>
+          <ChipSelection
+            ContainerProps={{
+              p: 2,
+            }}
+            chips={departments}
+            selected={selectedDepartment}
+            onSelect={setSelectedDepartment}
+          />
+        </Box>
 
-        <List>
-          {R.propOr([], selectedDepartment, creditsByDepartment).map(
-            (credit) => (
-              <ListItem
-                key={credit.creditId}
-                button
-                onClick={handleCreditClick(credit)}
-              >
-                <ListItemAvatar>
-                  <Avatar src={makeTMDbImageURL(2, credit)} />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={credit.name}
-                  secondary={credit.character || credit.job}
-                />
-              </ListItem>
-            )
-          )}
-        </List>
+        <div>
+          <List>
+            {R.propOr([], selectedDepartment, creditsByDepartment).map(
+              (credit) => (
+                <ListItem
+                  key={credit.creditId}
+                  button
+                  onClick={handleCreditClick(credit)}
+                >
+                  <ListItemAvatar>
+                    <Avatar src={makeTMDbImageURL(2, credit)} />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={credit.name}
+                    secondary={credit.character || credit.job}
+                  />
+                </ListItem>
+              )
+            )}
+          </List>
+        </div>
         <AppBar className={classes.appBar} position="fixed">
           <Toolbar className={classes.toolbar}>
             <IconButton
