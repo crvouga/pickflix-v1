@@ -32,12 +32,10 @@ export default ({ commentThreadList }) => {
         <Typography style={{ fontWeight: "bold" }}>Top Comments</Typography>
       </Box>
       {items.map((commentThread) => (
-        <React.Fragment>
-          <YoutubeCommentThread
-            key={commentThread.id}
-            commentThread={commentThread}
-          />
-        </React.Fragment>
+        <YoutubeCommentThread
+          key={commentThread.id}
+          commentThread={commentThread}
+        />
       ))}
     </div>
   );

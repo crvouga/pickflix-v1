@@ -45,10 +45,7 @@ export default ({ movie, ...props }) => {
   };
 
   return (
-    <ButtonBase
-      disableRipple
-      disableTouchRipple
-      component={AspectRatio}
+    <AspectRatio
       ratio={[16, 9]}
       className={classes.root}
       onClick={handleClick}
@@ -63,6 +60,6 @@ export default ({ movie, ...props }) => {
           </Typography>
         </div>
       )}
-    </ButtonBase>
+    </AspectRatio>
   );
 };

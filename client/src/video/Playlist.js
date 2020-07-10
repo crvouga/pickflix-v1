@@ -62,6 +62,7 @@ export default ({ onVideoClick }) => {
     <React.Fragment>
       {videos.map((video) => (
         <ButtonBase
+          key={video.key}
           onClick={handleVideoClick(video)}
           component="div"
           className={clsx(classes.root, {

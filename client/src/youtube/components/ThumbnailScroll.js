@@ -10,7 +10,7 @@ export default ({ videos, onClick, ...props }) => {
     return null;
   }
 
-  const handleClick = (clickedVideo) => {
+  const handleClick = (clickedVideo) => () => {
     onClick(clickedVideo);
   };
 
@@ -27,11 +27,8 @@ export default ({ videos, onClick, ...props }) => {
           <Box position="relative">
             <YoutubeThumbnail video={video} />
             <Cover>
-              <Box
-                component={PlayArrowIcon}
-                width={48}
-                height={48}
-                style={{ opacity: 0.7 }}
+              <PlayArrowIcon
+                style={{ width: "48px", height: "48px", opacity: 0.7 }}
               />
             </Cover>
           </Box>

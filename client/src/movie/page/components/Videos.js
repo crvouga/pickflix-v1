@@ -13,7 +13,8 @@ export default ({ videos }) => {
     dispatch(modal.actions.open("videoModal"));
   };
 
-  const handleThumbnailClick = (video) => () => {
+  const handleThumbnailClick = (video) => {
+    console.log("handleThumbnailClick", { video });
     dispatch(player.actions.setVideo(video));
     handleClick();
   };
