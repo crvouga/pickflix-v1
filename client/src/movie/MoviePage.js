@@ -3,7 +3,7 @@ import React from "react";
 import { useQuery } from "react-query";
 import ErrorPage from "../common/ErrorPage";
 import LoadingPage from "../common/LoadingPage";
-import MobileMoviePage from "./mobile/MoviePage";
+import MobileMoviePage from "./mobile";
 
 const fetchMoviePage = (movieId) =>
   axios

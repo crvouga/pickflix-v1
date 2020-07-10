@@ -28,13 +28,7 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     color: theme.palette.text.secondary,
   },
-  details: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    padding: theme.spacing(2),
-    paddingBottom: 0,
-  },
+
   expandIconContainer: {
     marginBottom: "auto",
   },
@@ -132,23 +126,28 @@ export default ({ statistics, snippet }) => {
   return (
     <React.Fragment>
       <ButtonBase
-        component="div"
+        component={Box}
         onClick={isDetailsOpen.toggle}
         className={classes.details}
+        p={2}
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
       >
-        <div className={classes.mainDetails}>
+        <Box>
           <Typography variant="h6">{title}</Typography>
 
           <Typography color="textSecondary" variant="subtitle1">
             {subtitle1}
           </Typography>
-        </div>
-        <div className={classes.expandIconContainer}>
-          <ExpandIcon
-            className={classes.expandIcon}
-            expanded={isDetailsOpen.value}
-          />
-        </div>
+        </Box>
+
+        <ExpandIcon
+          marginBottom="auto"
+          width="0.7em"
+          height="0.7em"
+          expanded={isDetailsOpen.value}
+        />
       </ButtonBase>
 
       <Box paddingX={2} className={classes.actions} color="text.secondary">

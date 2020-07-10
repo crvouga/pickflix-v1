@@ -3,12 +3,13 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import clsx from "clsx";
 import React from "react";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import { Box } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   expand: {
+    width: "100%",
+    height: "100%",
     transform: "rotate(0deg)",
-    margin: "auto",
-    zIndex: -1,
     transition: theme.transitions.create("transform", {
       duration: theme.transitions.duration.shortest,
     }),
@@ -18,15 +19,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default ({ expanded, className, ...props }) => {
+export default ({ expanded, ...props }) => {
   const classes = useStyles();
-
+  const className = clsx(classes.expand, {
+    [classes.expandOpen]: expanded,
+  });
   return (
-    <ArrowDropDownIcon
-      className={clsx(className, classes.expand, {
-        [classes.expandOpen]: expanded,
-      })}
-      {...props}
-    />
+    <Box display="inline-block" width="2em" height="2em" {...props}>
+      <ArrowDropDownIcon className={className} />
+    </Box>
   );
 };

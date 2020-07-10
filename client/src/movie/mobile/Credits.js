@@ -13,6 +13,7 @@ import {
   Dialog,
   Slide,
   AppBar,
+  Button,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import PeopleIcon from "@material-ui/icons/People";
@@ -25,17 +26,9 @@ import ChipSelection from "../../common/ChipSelection";
 import HorizontalScroll from "../../common/HorizontalScroll";
 import useBoolean from "../../common/useBoolean";
 import UnderPlayerDrawer from "../../video/UnderPlayerDrawer";
+import PersonAvatar from "../../person/PersonAvatar";
 
 const useStyles = makeStyles((theme) => ({
-  drawerButton: {
-    textAlign: "left",
-    width: "100%",
-    padding: theme.spacing(1),
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-    display: "flex",
-    flexDirection: "row",
-  },
   drawerBar: {
     paddingLeft: 0,
     display: "flex",
@@ -68,6 +61,19 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     backgroundColor: theme.palette.background.default,
   },
+  iconButton: {
+    display: "block",
+  },
+  toolbar: {
+    display: "flex",
+    justifyContent: "center",
+  },
+  appBar: {
+    top: "auto",
+    bottom: 0,
+    backgroundColor: theme.palette.background.paper,
+  },
+  toolbarSpace: theme.mixins.toolbar,
 }));
 
 const shorten = R.pipe(
@@ -104,9 +110,12 @@ export default ({ credits }) => {
   return (
     <React.Fragment>
       <ButtonBase
-        component="div"
-        className={classes.drawerButton}
+        component={Box}
         onClick={isDrawerOpen.setTrue}
+        p={2}
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
       >
         <Typography noWrap style={{ flex: 1, fontWeight: "bold" }}>
           {"Cast & Crew"}
@@ -122,61 +131,61 @@ export default ({ credits }) => {
         TransitionComponent={Transition}
         PaperProps={{ classes: { root: classes.paper } }}
       >
-        <AppBar position="sticky" color="default">
-          <Toolbar className={classes.drawerBar}>
-            <IconButton onClick={isDrawerOpen.setFalse}>
+        <ChipSelection
+          ContainerProps={{
+            p: 2,
+          }}
+          chips={departments}
+          selected={selectedDepartment}
+          onSelect={setSelectedDepartment}
+        />
+
+        <List>
+          {R.propOr([], selectedDepartment, creditsByDepartment).map(
+            (credit) => (
+              <ListItem
+                key={credit.creditId}
+                button
+                onClick={handleCreditClick(credit)}
+              >
+                <ListItemAvatar>
+                  <Avatar src={makeTMDbImageURL(2, credit)} />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={credit.name}
+                  secondary={credit.character || credit.job}
+                />
+              </ListItem>
+            )
+          )}
+        </List>
+        <AppBar className={classes.appBar} position="fixed">
+          <Toolbar className={classes.toolbar}>
+            <IconButton
+              className={classes.iconButton}
+              onClick={isDrawerOpen.setFalse}
+            >
               <CloseIcon />
             </IconButton>
           </Toolbar>
         </AppBar>
-        <div>
-          <ChipSelection
-            keys={departments}
-            selectedKey={selectedDepartment}
-            onChipClick={setSelectedDepartment}
-          />
-        </div>
-        <div>
-          <List>
-            {R.propOr([], selectedDepartment, creditsByDepartment).map(
-              (credit) => (
-                <ListItem
-                  key={credit.creditId}
-                  button
-                  onClick={handleCreditClick(credit)}
-                >
-                  <ListItemAvatar>
-                    <Avatar src={makeTMDbImageURL(2, credit)} />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={credit.name}
-                    secondary={credit.character || credit.job}
-                  />
-                </ListItem>
-              )
-            )}
-          </List>
-        </div>
       </Dialog>
 
-      <HorizontalScroll>
+      <HorizontalScroll p={2} paddingTop={0}>
         {[...directors, ...topCast].map((credit) => (
-          <ButtonBase
-            component="div"
+          <Box
+            marginRight={1}
+            minWidth={120}
+            maxWidth={120}
             key={credit.creditId}
             onClick={handleCreditClick(credit)}
           >
-            <div className={classes.creditRoot}>
-              <Avatar
-                className={classes.avatar}
-                src={makeTMDbImageURL(3, credit)}
-              />
-              <Typography>{credit.name}</Typography>
-              <Typography color="textSecondary">
-                {credit.job || shorten(credit.character)}
-              </Typography>
-            </div>
-          </ButtonBase>
+            <PersonAvatar person={credit} width="100%" marginBottom={1} />
+            <Typography>{credit.name}</Typography>
+            <Typography color="textSecondary">
+              {credit.job || shorten(credit.character)}
+            </Typography>
+          </Box>
         ))}
       </HorizontalScroll>
     </React.Fragment>

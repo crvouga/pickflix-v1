@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   ButtonBase,
   Collapse,
   makeStyles,
@@ -22,9 +23,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     flexDirection: "row",
-    padding: theme.spacing(1),
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
     maxWidth: "100%",
   },
   icon: {
@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
 
 const COLLAPSED_HEIGHT = 120;
 
-export default ({ collapsible, review }) => {
+export default ({ collapsible, review, ...props }) => {
   const isExpanded = useBoolean(false);
   const markdownRef = useRef();
   const classes = useStyles();
@@ -93,7 +93,7 @@ export default ({ collapsible, review }) => {
   );
 
   return (
-    <div className={classes.root}>
+    <Box className={classes.root} {...props}>
       <Avatar className={classes.avatar} component="a" href={url}>
         {initials}
       </Avatar>
@@ -126,6 +126,6 @@ export default ({ collapsible, review }) => {
           bodyComponent
         )}
       </div>
-    </div>
+    </Box>
   );
 };

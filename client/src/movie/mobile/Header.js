@@ -1,140 +1,71 @@
-import { Fade, IconButton, makeStyles } from "@material-ui/core";
-import { fade } from "@material-ui/core/styles/colorManipulator";
-import PlayIcon from "@material-ui/icons/PlayArrow";
-import React, { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import SwipeableViews from "react-swipeable-views";
-import { autoPlay } from "react-swipeable-views-utils";
-import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
-import AspectRatio from "../../common/AspectRatio";
+import {
+  Box,
+  ButtonBase,
+  Collapse,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
+import clsx from "clsx";
+import moment from "moment";
+import momentDurationFormatSetup from "moment-duration-format";
+import React from "react";
+import ChipScroll from "../../common/ChipScroll";
 import useBoolean from "../../common/useBoolean";
-import modal from "../../common/redux/modal";
-import player from "../../video/redux/player";
+import ActionBar from "./ActionBar";
+momentDurationFormatSetup(moment);
 
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
+const useStyles = makeStyles((theme) => ({
+  fadeBottom: {
+    "mask-image": "linear-gradient(to bottom, black 50%, transparent 100%)",
+  },
+}));
 
-const useStyles = makeStyles((theme) => {
-  const backgroundDefaultColorFade = `
-    linear-gradient(
-      ${fade(theme.palette.background.default, 0)},
-      ${fade(theme.palette.background.default, 1)}
-    )`;
-
-  return {
-    root: {
-      position: "relative",
-      width: "100%",
-      backgroundColor: "black",
-    },
-    layer: {
-      posiiton: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-    },
-
-    backdrop: {
-      width: "100%",
-    },
-    fade: {
-      pointerEvents: "none",
-      position: "absolute",
-      bottom: 0,
-      left: 0,
-      background: backgroundDefaultColorFade,
-      width: "100%",
-      height: theme.spacing(8),
-    },
-
-    playIconContainer: {
-      pointerEvents: "none",
-
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    playIconButton: {
-      pointerEvents: "auto",
-    },
-    playIcon: {
-      opacity: 0.8,
-      fontSize: "2em",
-    },
-  };
-});
-
-export default ({ videos, images }) => {
+export default ({ details }) => {
   const classes = useStyles();
-  const [index, setIndex] = useState(0);
-
-  const handleChange = (newIndex) => {
-    setIndex(newIndex);
-  };
-
-  const [visible, setVisible] = useState(true);
-  const timeoutRef = useRef();
-  const handleMouseDown = () => {
-    setVisible(false);
-    clearTimeout(timeoutRef.current);
-  };
-  const handleMouseUp = () => {
-    timeoutRef.current = setTimeout(() => setVisible(true), 1000);
-  };
-
-  const imageLoaded = useBoolean(false);
-  const { backdrops, posters } = images;
-
-  const dispatch = useDispatch();
-  const handlePlayIconClick = (e) => {
-    dispatch(player.actions.setPlaylist(videos));
-    dispatch(modal.actions.open("videoModal"));
-  };
-
-  const stopPropagation = (e) => {
-    e.stopPropagation();
-  };
+  const isOverviewExpanded = useBoolean();
+  const subtitle1 = [
+    moment(details.releaseDate).format("Y"),
+    moment.duration(details.runtime, "minutes").format("h[h] m[m]"),
+  ].join(" • ");
 
   return (
-    <div className={classes.root}>
-      <AspectRatio
-        ratio={[16, 9]}
-        onTouchStart={handleMouseDown}
-        onTouchEnd={handleMouseUp}
-      >
-        <AutoPlaySwipeableViews
-          autoPlay={imageLoaded.value}
-          interval={4000}
-          value={index}
-          onChange={handleChange}
-        >
-          {backdrops.map(({ filePath }, index) => (
-            <img
-              key={filePath}
-              src={makeTMDbImageURL(2, { backdropPath: filePath })}
-              className={classes.backdrop}
-            />
-          ))}
-        </AutoPlaySwipeableViews>
+    <React.Fragment>
+      <Box p={2}>
+        <Typography align="left" variant="h5" style={{ flex: 1 }}>
+          {details.title}
+        </Typography>
+        <Typography variant="subtitle1" color="textSecondary">
+          {subtitle1}
+        </Typography>
 
-        <Fade in={videos.length > 0 && visible}>
-          <div className={classes.playIconContainer}>
-            <IconButton
-              className={classes.playIconButton}
-              onClick={handlePlayIconClick}
-              onTouchStart={stopPropagation}
-            >
-              <PlayIcon className={classes.playIcon} />
-            </IconButton>
-          </div>
-        </Fade>
-      </AspectRatio>
-      <div className={classes.fade} />
-    </div>
+        <ChipScroll
+          paddingY={1}
+          chips={details.genres}
+          getLabel={(_) => _.name}
+        />
+        <ActionBar />
+      </Box>
+
+      <ButtonBase
+        onClick={isOverviewExpanded.toggle}
+        className={clsx({ [classes.fadeBottom]: !isOverviewExpanded.value })}
+        component={Box}
+        p={2}
+        paddingTop={1}
+        flexDirection="column"
+        display="flex"
+      >
+        <Collapse collapsedHeight="10em" in={isOverviewExpanded.value}>
+          {details.tagline !== details.overview && (
+            <Typography align="center" style={{ fontWeight: "bold" }}>
+              {details.tagline}
+            </Typography>
+          )}
+          <Typography variant="body1" color="textSecondary">
+            {details.overview}
+          </Typography>
+        </Collapse>
+      </ButtonBase>
+    </React.Fragment>
   );
 };

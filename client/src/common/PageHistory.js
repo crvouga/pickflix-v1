@@ -7,6 +7,7 @@ import {
   DialogContentText,
   DialogActions,
   Button,
+  Box,
 } from "@material-ui/core";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import HistoryIcon from "@material-ui/icons/History";
@@ -19,6 +20,7 @@ import MoviePoster from "../movie/MoviePoster";
 import PersonProfile from "../person/PersonProfile";
 import useLocalStorage from "./useLocalStorage";
 import useBoolean from "./useBoolean";
+import HorizontalScroll from "./HorizontalScroll";
 
 const useEntityHistory = () => {
   const [entities, setEntities] = useLocalStorage("history", []);
@@ -79,18 +81,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "-0.25em",
   },
 
-  scroll: {
-    display: "flex",
-    flexWrap: "nowrap",
-    overflowX: "scroll",
-  },
-
-  entity: {
-    minWidth: "120px",
-    width: "120px",
-
-    margin: theme.spacing(1),
-  },
   disabled: {
     color: theme.palette.action.disabled,
   },
@@ -144,9 +134,9 @@ export default () => {
           No Recently Viewed
         </Typography>
       )}
-      <div className={classes.scroll}>
+      <HorizontalScroll paddingLeft={2}>
         {entities.map((entity) => (
-          <div key={entity.id} className={classes.entity}>
+          <Box key={entity.id} minWidth={150} maxWidth={150} marginRight={1}>
             {entity.mediaType === "person" ? (
               <PersonProfile person={entity} />
             ) : entity.mediaType === "movie" ? (
@@ -154,9 +144,9 @@ export default () => {
             ) : (
               <div />
             )}
-          </div>
+          </Box>
         ))}
-      </div>
+      </HorizontalScroll>
     </div>
   );
 };

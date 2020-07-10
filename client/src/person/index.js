@@ -1,11 +1,12 @@
 import {
-  Fade,
   Grid,
   IconButton,
+  Box,
   makeStyles,
   Menu,
   MenuItem,
   Typography,
+  Collapse,
 } from "@material-ui/core";
 import TuneIcon from "@material-ui/icons/Tune";
 import axios from "axios";
@@ -23,7 +24,10 @@ import LoadingPage from "../common/LoadingPage";
 import MoviePoster from "../movie/MoviePoster";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import * as utils from "../utils";
-
+import ErrorPage from "../common/ErrorPage";
+import PersonAvatar from "./PersonAvatar";
+import Header from "./Header";
+import MoviePosterScroll from "../movie/MoviePosterScroll";
 const SwipeableViewsKeyboard = bindKeyboard(SwipeableViews);
 
 const fetchPersonPage = (personId) =>
@@ -146,38 +150,14 @@ const sortersByType = {
   ),
 };
 
-const onElementAppear = (el, index) => {
-  spring({
-    onUpdate: (val) => {
-      el.style.opacity = val;
-    },
-  });
-};
-
-const onExit = (el, index, removeElement) => {
-  spring({
-    config: { overshootClamping: true },
-    onUpdate: (val) => {
-      el.style.opacity = 1 - val;
-    },
-    onComplete: removeElement,
-  });
-
-  return () => {
-    el.style.opacity = "";
-    removeElement();
-  };
-};
-
-export default () => {
+export default ({ personId }) => {
   const classes = useStyles();
   const history = useHistory();
   const [selectedKey, setSelectedKey] = useState("All");
-  const [index, setIndex] = useState(0);
-  const handleIndexChange = (e, newIndex) => setIndex(newIndex);
-  const location = useLocation();
-  const { personId } = useParams();
-  const query = useQuery(location.pathname, () => fetchPersonPage(personId));
+
+  const query = useQuery(`/person/${personId}`, () =>
+    fetchPersonPage(personId)
+  );
 
   const [sortType, setSortType] = useState("MostPopular");
   const [anchorEl, setAnchorEl] = useState(null);
@@ -206,19 +186,12 @@ export default () => {
   }
 
   if (query.status === "error") {
-    return "error";
+    return <ErrorPage />;
   }
 
   const descendPopularity = R.sort(R.descend(R.prop("popularity")));
 
   const { credits, images, taggedImages, ...details } = query.data;
-  const allImages = descendPopularity(
-    R.concat(images.profiles, taggedImages.results)
-  );
-  const { knownForDepartment, biography, placeOfBirth, name } = details;
-  const birthday = utils.numberDateToWordDate(details.birthday) || "-";
-  const deathday = utils.numberDateToWordDate(details.deathday) || "-";
-  const age = utils.getAge(details.birthday);
 
   const creditsByKey = R.map(descendPopularity, toCreditsByKey(credits));
   const sorter = R.propOr(R.sortBy(R.prop("title")), sortType, sortersByType);
@@ -226,52 +199,28 @@ export default () => {
 
   const keys = R.sortBy(R.identity, R.keys(creditsByKey));
 
-  const stickyStyles = {
-    position: "sticky",
-    top: utils.getElementBottom(document.getElementById("app-bar")),
-  };
-
-  const subtitle1 = [
-    knownForDepartment ? knownForDepartment : false,
-    details.birthday && !details.deathday ? `${age} years old` : false,
-    `${R.length(R.concat(credits.cast, credits.crew))} credits`,
-  ]
-    .filter(R.identity)
-    .join(" · ");
-
-  const profileURL = makeTMDbImageURL(2, details);
-
   return (
     <div className={classes.root}>
-      <div className={classes.header}>
-        <SwipeableViewsKeyboard
-          className={classes.swipeableViews}
-          value={index}
-          onChange={handleIndexChange}
-        >
-          {allImages.map((image, i) => (
-            <img
-              className={classes.image}
-              key={image.filePath}
-              src={makeTMDbImageURL(3, { profilePath: image.filePath })}
-            />
-          ))}
-        </SwipeableViewsKeyboard>
+      <Header details={details} credits={credits} />
+      <Box p={2} component={Typography} style={{ fontWeight: "bold" }}>
+        Known For
+      </Box>
+      <MoviePosterScroll movies={creditsByKey[details.knownForDepartment]} />
 
-        <Typography align="left" variant="h6">
-          {name}
-        </Typography>
-        <Typography align="left" color="textSecondary" variant="subtitle1">
-          {subtitle1}
-        </Typography>
-      </div>
-
-      <div className={classes.bar} style={stickyStyles}>
+      <Box
+        p={2}
+        paddingBottom={1}
+        component={Typography}
+        style={{ fontWeight: "bold" }}
+      >
+        Filmography
+      </Box>
+      <Box display="flex" flexDirection="row">
         <ChipSelection
+          ContainerProps={{ paddingX: 2, paddingY: 1, flex: 1 }}
           chips={keys}
           selected={selectedKey}
           onSelect={setSelectedKey}
-          style={{ flex: 1 }}
         />
         <IconButton style={{ marginRight: 12 }} onClick={handleClick}>
           <TuneIcon />
@@ -298,17 +247,12 @@ export default () => {
             Oldest First
           </MenuItem>
         </Menu>
-      </div>
+      </Box>
 
       <Flipper flipKey={R.join(",", R.pluck("creditId", visibleCredits))}>
         <div className={classes.grid}>
           {visibleCredits.map((credit) => (
-            <Flipped
-              flipId={credit.creditId}
-              key={credit.creditId}
-              // onAppear={onElementAppear}
-              // onExit={onExit}
-            >
+            <Flipped flipId={credit.creditId} key={credit.creditId}>
               <div
                 className={classes.cell}
                 onClick={() => history.push(`/movie/${credit.id}`)}
@@ -319,39 +263,7 @@ export default () => {
           ))}
         </div>
       </Flipper>
-      <div className={classes.details}>
-        <Grid item container xs>
-          <Grid item xs>
-            <Typography>Birthday</Typography>
-            <Typography gutterBottom color="textSecondary">
-              {birthday}
-            </Typography>
-          </Grid>
 
-          <Grid item xs>
-            <Typography>Deathday</Typography>
-            <Typography gutterBottom color="textSecondary">
-              {deathday}
-            </Typography>
-          </Grid>
-        </Grid>
-        <Grid item container xs>
-          <Grid item xs>
-            <Typography>Place of Birth</Typography>
-            <Typography gutterBottom color="textSecondary">
-              {placeOfBirth}
-            </Typography>
-          </Grid>
-
-          <Grid item xs>
-            <Typography>Known For</Typography>
-            <Typography gutterBottom color="textSecondary">
-              {knownForDepartment}
-            </Typography>
-          </Grid>
-        </Grid>
-        <ReactMarkdown>{biography}</ReactMarkdown>
-      </div>
       <Footer />
     </div>
   );

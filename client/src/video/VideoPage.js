@@ -14,13 +14,12 @@ import useBoolean from "../common/useBoolean";
 import Player from "./Player";
 import Playlist from "./Playlist";
 import player from "./redux/player";
-
-import YoutubeVideoSection from "../youtube/Section";
+import YoutubeSection from "../youtube/Section";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: "100%",
-    backgroundColor: theme.palette.background.default,
+    // backgroundColor: theme.palette.background.default,
   },
   noComment: {
     marginTop: theme.spacing(2),
@@ -51,7 +50,7 @@ export default () => {
   const isPlaylistOpen = useBoolean(false);
 
   return (
-    <div className={classes.root}>
+    <Box>
       <AspectRatio ratio={[16, 9]} className={classes.playerContainer}>
         <Player />
       </AspectRatio>
@@ -62,18 +61,14 @@ export default () => {
       <Paper>
         <ButtonBase
           component={Box}
-          paddingX={2}
-          paddingY={2}
+          p={2}
           width="100%"
           display="flex"
           flexDirection="row"
           onClick={isPlaylistOpen.toggle}
         >
           <Typography style={{ flex: 1 }}>Playlist</Typography>
-          <ExpandIcon
-            style={{ zIndex: 1000 }}
-            expanded={isPlaylistOpen.value}
-          />
+          <ExpandIcon expanded={isPlaylistOpen.value} />
         </ButtonBase>
 
         <Collapse in={isPlaylistOpen.value}>
@@ -81,7 +76,7 @@ export default () => {
         </Collapse>
       </Paper>
 
-      <YoutubeVideoSection videoId={videoKey} />
-    </div>
+      <YoutubeSection videoId={videoKey} />
+    </Box>
   );
 };

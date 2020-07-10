@@ -7,6 +7,7 @@ export default (props) => {
       component={Typography}
       style={{ fontWeight: "bold" }}
       paddingX={2}
+      paddingBottom={1}
       {...props}
     />
   );

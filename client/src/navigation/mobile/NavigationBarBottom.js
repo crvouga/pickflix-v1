@@ -10,6 +10,7 @@ import { useHistory } from "react-router";
 const useStyles = makeStyles((theme) => ({
   root: {
     position: "fixed",
+    left: 0,
     bottom: 0,
     width: "100%",
     maxWidth: "100%",
@@ -19,7 +20,8 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
   },
 }));
-export default function SimpleBottomNavigation() {
+
+export default () => {
   const classes = useStyles();
   const history = useHistory();
   const pathname = history.location.pathname;
@@ -50,4 +52,4 @@ export default function SimpleBottomNavigation() {
       <div className={classes.toolbar} />
     </React.Fragment>
   );
-}
+};

@@ -1,33 +1,17 @@
-import { Avatar, makeStyles } from "@material-ui/core";
+import { Avatar, makeStyles, Box } from "@material-ui/core";
 import React from "react";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { useHistory } from "react-router";
+import AspectRatio from "../common/AspectRatio";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
     width: "100%",
     height: "100%",
   },
-  svg: {
-    width: "100%",
-    display: "block",
-    visibility: "hidden",
-  },
-  content: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-  },
-  root: {
-    position: "relative",
-    width: "100%",
-    height: "auto",
-  },
 }));
 
-export default ({ person }) => {
+export default ({ person, ...props }) => {
   const { profilePath } = person;
   const classes = useStyles();
   const profileURL = makeTMDbImageURL(2, { profilePath });
@@ -36,11 +20,8 @@ export default ({ person }) => {
     history.push(`/person/${person.id}`);
   };
   return (
-    <div className={classes.root} onClick={handleClick}>
-      <svg className={classes.svg} viewBox="0 0 1 1" />
-      <div className={classes.content}>
-        <Avatar className={classes.avatar} src={profileURL} />
-      </div>
-    </div>
+    <AspectRatio ratio={[1, 1]} onClick={handleClick} {...props}>
+      <Avatar className={classes.avatar} src={profileURL} />
+    </AspectRatio>
   );
 };

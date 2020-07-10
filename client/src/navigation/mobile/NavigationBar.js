@@ -26,12 +26,12 @@ export default ({ title, ...props }) => {
   return (
     <HideOnScroll>
       <AppBar
-        position="sticky"
+        position="fixed"
         className={classes.appBar}
         color="default"
         {...props}
       >
-        <Toolbar variant="dense" style={{ width: "100%" }}>
+        <Toolbar>
           <IconButton edge="start" onClick={handleArrowBackClick}>
             <ArrowBackIcon />
           </IconButton>

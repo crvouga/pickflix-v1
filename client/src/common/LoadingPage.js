@@ -8,7 +8,7 @@ export default () => {
       display="flex"
       justifyContent="center"
       alignItems="center"
-      width="100vw"
+      width="100%"
       height="80vh"
       color="text.secondary"
     >

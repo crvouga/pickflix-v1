@@ -15,12 +15,11 @@ import HomePage from "../home/HomePage";
 import MoviePage from "../movie/MoviePage";
 import NavigationBarBottom from "../navigation/mobile/NavigationBarBottom";
 import NavigationDrawer from "../navigation/mobile/NavigationDrawer";
-import PersonPage from "../person/PersonPage";
+import PersonPage from "../person";
 import SearchDialog from "../search/SearchDialog";
 import VideoModal from "../video/VideoModal";
 import Providers from "./Providers";
 import SearchPage from "../search/SearchPage";
-import Footer from "../common/Footer";
 
 const UnauthenticatedApp = () => {
   return (
@@ -55,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
     "-ms-user-select": "none",
     "user-select": "none",
     "touch-action": "manipulation",
+    padding: 0,
   },
 }));
 
@@ -64,10 +64,10 @@ export default () => {
     <Providers>
       <ScrollToTop />
       <CssBaseline />
-      <div className={classes.root}>
+      <Container maxWidth="xs" className={classes.root}>
         <UnauthenticatedApp />
-        <NavigationBarBottom />
-      </div>
+      </Container>
+      <NavigationBarBottom />
     </Providers>
   );
 };
