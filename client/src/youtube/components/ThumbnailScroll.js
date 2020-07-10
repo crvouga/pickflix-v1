@@ -1,8 +1,8 @@
 import { Box, Typography } from "@material-ui/core";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import React from "react";
-import Cover from "../common/components/Cover";
-import HorizontalScroll from "../common/components/HorizontalScroll";
+import Cover from "../../common/components/Cover";
+import HorizontalScroll from "../../common/components/HorizontalScroll";
 import YoutubeThumbnail from "./Thumbnail";
 
 export default ({ videos, onClick, ...props }) => {

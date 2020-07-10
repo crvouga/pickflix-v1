@@ -1,9 +1,9 @@
-import { Divider, Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import * as youtubeAPI from "./api";
-import CommentThreadList from "./CommentThreadList";
-import Details from "./Details";
+import CommentThreadList from "./components/CommentThreadList";
+import Details from "./components/Details";
 
 const Loading = () => (
   <Box color="text.secondary" textAlign="center" marginY={5}>

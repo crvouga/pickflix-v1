@@ -10,7 +10,7 @@ import moment from "moment";
 import numeral from "numeral";
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import * as youtubeAPI from "./api";
+import * as youtubeAPI from "../api";
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import React from "react";
-import * as youtubeAPI from "./api";
-import AspectRatio from "../common/components/AspectRatio";
+import * as youtubeAPI from "../api";
+import AspectRatio from "../../common/components/AspectRatio";
 
 const useStyles = makeStyles((theme) => ({
   root: {
