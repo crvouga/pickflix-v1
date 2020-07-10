@@ -1,33 +1,28 @@
 import {
-  Grid,
-  IconButton,
   Box,
+  IconButton,
   makeStyles,
   Menu,
   MenuItem,
   Typography,
-  Collapse,
 } from "@material-ui/core";
 import TuneIcon from "@material-ui/icons/Tune";
 import axios from "axios";
 import * as R from "ramda";
 import React, { useEffect, useState } from "react";
-import { Flipped, Flipper, spring } from "react-flip-toolkit";
-import ReactMarkdown from "react-markdown";
+import { Flipped, Flipper } from "react-flip-toolkit";
 import { useQuery } from "react-query";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import SwipeableViews from "react-swipeable-views";
 import { bindKeyboard } from "react-swipeable-views-utils";
-import ChipSelection from "../common/ChipSelection";
-import Footer from "../common/Footer";
-import LoadingPage from "../common/LoadingPage";
-import MoviePoster from "../movie/MoviePoster";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-import * as utils from "../utils";
-import ErrorPage from "../common/ErrorPage";
-import PersonAvatar from "./PersonAvatar";
+import ChipSelection from "../common/components/ChipSelection";
+import ErrorPage from "../common/page/ErrorPage";
+import Footer from "../common/page/Footer";
+import LoadingPage from "../common/page/LoadingPage";
+import MoviePoster from "../movie/components/Poster";
+import MoviePosterScroll from "../movie/components/PosterScroll";
 import Header from "./Header";
-import MoviePosterScroll from "../movie/MoviePosterScroll";
+
 const SwipeableViewsKeyboard = bindKeyboard(SwipeableViews);
 
 const fetchPersonPage = (personId) =>

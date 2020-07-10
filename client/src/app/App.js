@@ -10,22 +10,20 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import ScrollToTop from "../common/ScrollToTop";
+import ScrollToTop from "../common/components/ScrollToTop";
 import HomePage from "../home/HomePage";
-import MoviePage from "../movie/MoviePage";
+import MoviePage from "../movie";
 import NavigationBarBottom from "../navigation/mobile/NavigationBarBottom";
 import NavigationDrawer from "../navigation/mobile/NavigationDrawer";
 import PersonPage from "../person";
-import SearchDialog from "../search/SearchDialog";
 import VideoModal from "../video/VideoModal";
 import Providers from "./Providers";
-import SearchPage from "../search/SearchPage";
+import SearchPage from "../search";
 
 const UnauthenticatedApp = () => {
   return (
     <React.Fragment>
       <NavigationDrawer />
-      <SearchDialog />
       <VideoModal />
       <Switch>
         <Route path="/" exact render={() => <HomePage />} />

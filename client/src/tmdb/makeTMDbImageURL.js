@@ -1,10 +1,9 @@
-import { curry } from "ramda";
 import axios from "axios";
-import _makeTMDbImageURL from "./_makeTMDbImageURL";
+import makeImageURL from "./_makeTMDbImageURL";
 
 let TMDbConfiguration;
 axios.get("/api/tmdb/configuration").then((res) => {
   TMDbConfiguration = res.data;
 });
 
-export default (...args) => _makeTMDbImageURL(TMDbConfiguration, ...args);
+export default (...args) => makeImageURL(TMDbConfiguration, ...args);

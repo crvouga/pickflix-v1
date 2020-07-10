@@ -2,7 +2,7 @@ import { Avatar, makeStyles, Box } from "@material-ui/core";
 import React from "react";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { useHistory } from "react-router";
-import AspectRatio from "../common/AspectRatio";
+import AspectRatio from "../common/components/AspectRatio";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {

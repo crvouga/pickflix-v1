@@ -1,28 +1,15 @@
-import {
-  Box,
-  Chip,
-  CircularProgress,
-  Fade,
-  makeStyles,
-  Paper,
-  Typography,
-} from "@material-ui/core";
-import { motion, useAnimation } from "framer-motion";
+import { Box, makeStyles, Typography } from "@material-ui/core";
+import axios from "axios";
 import * as R from "ramda";
 import React from "react";
 import { useQuery } from "react-query";
-import axios from "axios";
-import Scroll from "../common/Scroll";
-import MoviePoster from "../movie/MoviePoster";
-import PersonProfile from "../person/PersonProfile";
-import Header from "./Header";
+import HorizontalScroll from "../common/components/HorizontalScroll";
+import Footer from "../common/page/Footer";
+import LoadingPage from "../common/page/LoadingPage";
+import MoviePoster from "../movie/components/Poster";
+import MoviePosterScroll from "../movie/components/PosterScroll";
 import PersonAvatar from "../person/PersonAvatar";
-import PageHistory from "../common/PageHistory";
-import MovieBackdrop from "../movie/MovieBackdrop";
-import LoadingPage from "../common/LoadingPage";
-import HorizontalScroll from "../common/HorizontalScroll";
-import Footer from "../common/Footer";
-import MoviePosterScroll from "../movie/MoviePosterScroll";
+import Header from "./Header";
 
 const renderPoster = (movie, index) => {
   return (
@@ -42,32 +29,6 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
   },
 }));
-
-const MovieScroll = ({ movies }) => {
-  const classes = useStyles();
-  const controls = useAnimation();
-
-  return (
-    <div
-      style={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "row",
-        overflowX: "auto",
-        flexWrap: "nowrap",
-        overflowY: "none",
-      }}
-    >
-      {movies.map((movie) => (
-        <motion.div key={movie.id} animate={controls}>
-          <div className={classes.posterContainer}>
-            <MoviePoster movie={movie} />
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  );
-};
 
 const renderMovieScroll = (title, movies) => (
   <React.Fragment>

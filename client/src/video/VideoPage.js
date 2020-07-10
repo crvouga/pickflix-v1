@@ -3,18 +3,18 @@ import {
   ButtonBase,
   Collapse,
   makeStyles,
-  Typography,
   Paper,
+  Typography,
 } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
-import AspectRatio from "../common/AspectRatio";
-import ExpandIcon from "../common/ExpandIcon";
-import useBoolean from "../common/useBoolean";
+import AspectRatio from "../common/components/AspectRatio";
+import ExpandIcon from "../common/components/ExpandIcon";
+import useBoolean from "../common/hooks/useBoolean";
+import YoutubeSection from "../youtube/Section";
 import Player from "./Player";
 import Playlist from "./Playlist";
 import player from "./redux/player";
-import YoutubeSection from "../youtube/Section";
 
 const useStyles = makeStyles((theme) => ({
   root: {

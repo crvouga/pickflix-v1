@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
-import AspectRatio from "../common/AspectRatio";
+import AspectRatio from "../common/components/AspectRatio";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);

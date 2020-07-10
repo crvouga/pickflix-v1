@@ -1,22 +1,9 @@
 import { Box, Typography } from "@material-ui/core";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import React from "react";
-import HorizontalScroll from "../common/HorizontalScroll";
+import Cover from "../common/components/Cover";
+import HorizontalScroll from "../common/components/HorizontalScroll";
 import YoutubeThumbnail from "./Thumbnail";
-import Cover from "../common/Cover";
-const Layer = (props) => (
-  <Box
-    position="absolute"
-    top={0}
-    left={0}
-    width="100%"
-    height="100%"
-    display="flex"
-    justifyContent="center"
-    alignItems="center"
-    {...props}
-  />
-);
 
 export default ({ videos, onClick, ...props }) => {
   if (videos.length === 0) {

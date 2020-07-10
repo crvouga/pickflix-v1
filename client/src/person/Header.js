@@ -11,8 +11,8 @@ import moment from "moment";
 import * as R from "ramda";
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import ExpandIcon from "../common/ExpandIcon";
-import useBoolean from "../common/useBoolean";
+import ExpandIcon from "../common/components/ExpandIcon";
+import useBoolean from "../common/hooks/useBoolean";
 import PersonAvatar from "./PersonAvatar";
 
 const useStyles = makeStyles((theme) => ({
