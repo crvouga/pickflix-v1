@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
 import MobileMoviePage from "./page";
+import { useParams } from "react-router";
 
 const fetchMoviePage = (movieId) =>
   axios
@@ -22,7 +23,8 @@ const fetchMoviePage = (movieId) =>
     })
     .then((response) => response.data);
 
-export default ({ movieId }) => {
+export default () => {
+  const { movieId } = useParams();
   const query = useQuery(
     `/movie/${movieId}`,
     () => fetchMoviePage(movieId),

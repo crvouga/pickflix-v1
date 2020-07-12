@@ -1,49 +1,31 @@
-import {
-  CssBaseline,
-  makeStyles,
-  Container,
-  AppBar,
-  Typography,
-  Toolbar,
-  Button,
-  Box,
-} from "@material-ui/core";
+import { Container, CssBaseline, makeStyles } from "@material-ui/core";
 import React from "react";
-import { Route, Switch } from "react-router-dom";
-import ScrollToTop from "../common/components/ScrollToTop";
 import HomePage from "../home/HomePage";
 import MoviePage from "../movie";
 import NavigationBarBottom from "../navigation/mobile/NavigationBarBottom";
 import NavigationDrawer from "../navigation/mobile/NavigationDrawer";
 import PersonPage from "../person";
-import VideoModal from "../video/VideoModal";
-import Providers from "./Providers";
 import SearchPage from "../search";
+import VideoModal from "../video/VideoModal";
+import { AnimatedRoute, AnimatedSwitch } from "./animated-react-router";
+import Providers from "./Providers";
 
 const UnauthenticatedApp = () => {
   return (
     <React.Fragment>
       <NavigationDrawer />
       <VideoModal />
-      <Switch>
-        <Route path="/" exact render={() => <HomePage />} />
-        <Route path="/search" render={() => <SearchPage />} />
-        <Route
-          path="/movie/:movieId"
-          render={({ match }) => <MoviePage movieId={match.params.movieId} />}
-        />
-        <Route
-          path="/person/:personId"
-          render={({ match }) => (
-            <PersonPage personId={match.params.personId} />
-          )}
-        />
-      </Switch>
+      <AnimatedSwitch>
+        <AnimatedRoute exact path="/" component={HomePage} />
+        <AnimatedRoute exact path="/search" component={SearchPage} />
+        <AnimatedRoute exact path="/movie/:movieId" component={MoviePage} />
+        <AnimatedRoute exact path="/person/:personId" component={PersonPage} />
+      </AnimatedSwitch>
     </React.Fragment>
   );
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   root: {
     " -webkit-touch-callout": "none",
     "-webkit-user-select": "none",
@@ -54,13 +36,12 @@ const useStyles = makeStyles((theme) => ({
     "touch-action": "manipulation",
     padding: 0,
   },
-}));
+});
 
 export default () => {
   const classes = useStyles();
   return (
     <Providers>
-      <ScrollToTop />
       <CssBaseline />
       <Container maxWidth="xs" className={classes.root}>
         <UnauthenticatedApp />

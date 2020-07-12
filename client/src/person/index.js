@@ -1,11 +1,4 @@
-import {
-  Box,
-  IconButton,
-  makeStyles,
-  Menu,
-  MenuItem,
-  Typography,
-} from "@material-ui/core";
+import { Box, IconButton, Menu, MenuItem, Typography } from "@material-ui/core";
 import TuneIcon from "@material-ui/icons/Tune";
 import axios from "axios";
 import * as R from "ramda";
@@ -13,12 +6,14 @@ import React, { useEffect, useState } from "react";
 import { Flipped, Flipper } from "react-flip-toolkit";
 import { useQuery } from "react-query";
 import ChipSelection from "../common/components/ChipSelection";
+import Page from "../common/page/Page";
 import ErrorPage from "../common/page/ErrorPage";
 import Footer from "../common/page/Footer";
 import LoadingPage from "../common/page/LoadingPage";
 import MoviePoster from "../movie/components/Poster";
 import MoviePosterScroll from "../movie/components/PosterScroll";
 import Header from "./Header";
+import { useParams } from "react-router";
 
 const fetchPersonPage = (personId) =>
   axios
@@ -52,7 +47,9 @@ const sortersByType = {
   ),
 };
 
-export default ({ personId }) => {
+export default () => {
+  const { personId } = useParams();
+
   const [selectedKey, setSelectedKey] = useState("All");
 
   const query = useQuery(`/person/${personId}`, () =>
@@ -100,7 +97,7 @@ export default ({ personId }) => {
   const keys = R.sortBy(R.identity, R.keys(creditsByKey));
 
   return (
-    <Box>
+    <Page>
       <Header details={details} credits={credits} />
       <Box p={2} component={Typography} style={{ fontWeight: "bold" }}>
         Known For
@@ -165,6 +162,6 @@ export default ({ personId }) => {
       </Flipper>
 
       <Footer />
-    </Box>
+    </Page>
   );
 };

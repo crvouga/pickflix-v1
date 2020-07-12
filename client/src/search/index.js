@@ -5,6 +5,7 @@ import SearchHistory from "./components/SearchHistory";
 import SearchBar from "./components/SearchBar";
 import SearchResults from "./components/SearchResults";
 import useSearchState from "./hooks/useSearchState";
+import Page from "../common/page/Page";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -84,7 +85,7 @@ export default () => {
   };
 
   return (
-    <div>
+    <Page>
       <AppBar className={classes.appBar} position="sticky" color="default">
         <SearchBar
           loading={searchState.query.status === "loading"}
@@ -126,6 +127,6 @@ export default () => {
           /> */}
         </React.Fragment>
       )}
-    </div>
+    </Page>
   );
 };

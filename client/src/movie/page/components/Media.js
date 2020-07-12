@@ -75,13 +75,14 @@ export default ({ videos, images }) => {
             className={classes.image}
           />
         ))}
-        {posters.map(({ filePath }) => (
-          <img
-            key={filePath}
-            src={makeTMDbImageURL(2, { posterPath: filePath })}
-            className={classes.image}
-          />
-        ))}
+        {backdrops.length === 0 &&
+          posters.map(({ filePath }) => (
+            <img
+              key={filePath}
+              src={makeTMDbImageURL(2, { posterPath: filePath })}
+              className={classes.image}
+            />
+          ))}
       </AutoPlaySwipeableViews>
       <Fade in={videos.length > 0 && isPlayIconVisible.value}>
         <Cover>

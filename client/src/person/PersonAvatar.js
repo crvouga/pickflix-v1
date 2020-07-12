@@ -4,12 +4,12 @@ import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { useHistory } from "react-router";
 import AspectRatio from "../common/components/AspectRatio";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   avatar: {
     width: "100%",
     height: "100%",
   },
-}));
+});
 
 export default ({ person, ...props }) => {
   const { profilePath } = person;

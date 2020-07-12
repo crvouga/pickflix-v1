@@ -1,4 +1,4 @@
-import { Box, makeStyles, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import axios from "axios";
 import * as R from "ramda";
 import React from "react";
@@ -6,33 +6,14 @@ import { useQuery } from "react-query";
 import HorizontalScroll from "../common/components/HorizontalScroll";
 import Footer from "../common/page/Footer";
 import LoadingPage from "../common/page/LoadingPage";
-import MoviePoster from "../movie/components/Poster";
+import Page from "../common/page/Page";
 import MoviePosterScroll from "../movie/components/PosterScroll";
 import PersonAvatar from "../person/PersonAvatar";
 import Header from "./Header";
 
-const renderPoster = (movie, index) => {
-  return (
-    <div
-      style={{ width: "120px" }}
-      // onClick={() => history.push(`/movie/${movie.id}`)}
-    >
-      <MoviePoster movie={movie} />
-    </div>
-  );
-};
-
-const useStyles = makeStyles((theme) => ({
-  posterContainer: {
-    width: 120,
-
-    margin: theme.spacing(1),
-  },
-}));
-
 const renderMovieScroll = (title, movies) => (
   <React.Fragment>
-    <Box p={1}>
+    <Box p={1} paddingLeft={2}>
       <Typography variant="h6">{title}</Typography>
     </Box>
     <MoviePosterScroll movies={movies} />
@@ -40,33 +21,35 @@ const renderMovieScroll = (title, movies) => (
 );
 
 const renderProfile = (person) => (
-  <Box key={person.id} minWidth="120px" p={1}>
+  <Box key={person.id} minWidth="120px" marginRight={1}>
     <PersonAvatar person={person} />
     <Box p={1}>
-      <Typography>{person.name}</Typography>
+      <Typography style={{ wordBreak: "break-word" }}>{person.name}</Typography>
     </Box>
   </Box>
 );
 
 const renderAvatarScroll = (title, persons) => (
   <React.Fragment>
-    <Box p={1}>
+    <Box p={1} paddingLeft={2}>
       <Typography variant="h6">{title}</Typography>
     </Box>
-    <HorizontalScroll>{persons.map(renderProfile)}</HorizontalScroll>
+    <HorizontalScroll paddingLeft={2}>
+      {persons.map(renderProfile)}
+    </HorizontalScroll>
   </React.Fragment>
 );
 
-const urlByName = {
-  popular: "/api/tmdb/movie/popular",
-  personPopular: "/api/tmdb/person/popular",
-  upcoming: "/api/tmdb/movie/upcoming",
-  topRated: "/api/tmdb/movie/topRated",
-  nowPlaying: "/api/tmdb/movie/nowPlaying",
-};
-const names = R.keys(urlByName);
-const urls = R.values(urlByName);
 const fetchHomePage = async () => {
+  const urlByName = {
+    popular: "/api/tmdb/movie/popular",
+    personPopular: "/api/tmdb/person/popular",
+    upcoming: "/api/tmdb/movie/upcoming",
+    topRated: "/api/tmdb/movie/topRated",
+    nowPlaying: "/api/tmdb/movie/nowPlaying",
+  };
+  const names = R.keys(urlByName);
+  const urls = R.values(urlByName);
   const responses = await Promise.all(R.map((url) => axios.get(url), urls));
   return R.zipObj(names, R.pluck("data", responses));
 };
@@ -88,13 +71,13 @@ export default () => {
   } = query;
 
   return (
-    <div>
+    <Page>
       <Header movies={popular.results} />
       {renderMovieScroll("Top Rated Movies", topRated.results)}
       {renderMovieScroll("Upcoming Movies", upcoming.results)}
       {renderMovieScroll("Now Playing Movies", nowPlaying.results)}
       {renderAvatarScroll("Popular People", personPopular.results)}
       <Footer />
-    </div>
+    </Page>
   );
 };

@@ -11,6 +11,7 @@ import Media from "./components/Media";
 import Reviews from "./components/Reviews";
 import Title from "./components/Title";
 import Videos from "./components/Videos";
+import Page from "../../common/page/Page";
 
 export default ({ data }) => {
   const {
@@ -25,7 +26,7 @@ export default ({ data }) => {
   } = data;
 
   return (
-    <Box>
+    <Page>
       {images.backdrops.length > 0 && (
         <Media videos={videos.results} images={images} />
       )}
@@ -73,6 +74,6 @@ export default ({ data }) => {
       <Divider />
 
       <Footer />
-    </Box>
+    </Page>
   );
 };
