@@ -8,7 +8,7 @@ export const AnimatedSwitch = (props) => {
     <div style={{ position: "relative" }}>
       <Route
         render={({ location }) => (
-          <AnimatePresence initial={false}>
+          <AnimatePresence exitBeforeEnter={false} initial={false}>
             <Switch location={location} key={location.pathname} {...props} />
           </AnimatePresence>
         )}
@@ -21,11 +21,11 @@ const variant = {
   in: {
     x: 0,
   },
+  out: {
+    opacity: 0,
+  },
   initial: {
     x: "100%",
-  },
-  out: {
-    x: "-100%",
   },
 };
 
@@ -44,7 +44,7 @@ export const AnimatedRoute = (props) => {
   const classes = useStyles();
   return (
     <motion.div
-      className={classes.root}
+      transition={{ duration: 0.2, ease: "easeIn" }}
       variants={variant}
       initial="initial"
       animate="in"

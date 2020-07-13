@@ -9,6 +9,7 @@ import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import React from "react";
+import HorizontalScroll from "../../common/components/HorizontalScroll";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,10 +41,10 @@ export default () => {
       icon: true ? <BookmarkBorderIcon /> : <BookmarkIcon />,
       text: "Watchlist",
     },
-    {
-      icon: <ThumbUpIcon />,
-      text: "Like",
-    },
+    // {
+    //   icon: <ThumbUpIcon />,
+    //   text: "Like",
+    // },
     {
       icon: true ? <FavoriteBorderIcon /> : <FavoriteIcon />,
       text: "Favorite",

@@ -9,8 +9,10 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import moment from "moment";
 import numeral from "numeral";
 import React from "react";
-import ReactMarkdown from "react-markdown";
 import * as youtubeAPI from "../api";
+import Markdown from "../../common/components/Markdown";
+import ExpandHeight from "../../common/components/ExpandHeight";
+import useBoolean from "../../common/hooks/useBoolean";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,21 +42,6 @@ const useStyles = makeStyles((theme) => ({
   },
   subtitle1: {
     wordBreak: "break-word",
-  },
-  text: {
-    wordBreak: "break-word",
-    userSelect: "text",
-    paddingRight: theme.spacing(2),
-
-    maxWidth: "100%",
-    marginTop: -theme.spacing(2),
-    marginBottom: -theme.spacing(2),
-
-    "& a": {
-      color: theme.palette.info.main,
-      textDecoration: "none",
-      wordBreak: "break-all",
-    },
   },
 }));
 
@@ -95,6 +82,8 @@ export default ({ comment }) => {
 
   const source = youtubeAPI.youtbeCommentTextToMarkdown(textDisplay);
 
+  const isExpanded = useBoolean(false);
+
   return (
     <div className={classes.root}>
       <div className={classes.avatar}>
@@ -108,9 +97,13 @@ export default ({ comment }) => {
         >
           {subtitle1}
         </Typography>
-        <Typography component="div" variant="body1">
-          <ReactMarkdown className={classes.text} source={source} />
-        </Typography>
+        <ExpandHeight
+          collapsedHeight="10em"
+          in={isExpanded.value}
+          onClick={isExpanded.toggle}
+        >
+          <Markdown source={source} color="textPrimary" />
+        </ExpandHeight>
         <div className={classes.actions}>
           <IconButton className={classes.iconButton} color="inherit">
             <ThumbUpIcon className={classes.icon} />

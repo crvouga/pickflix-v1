@@ -4,6 +4,8 @@ import React from "react";
 import { useQuery } from "react-query";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
 import MovieBackdrop from "../components/Backdrop";
+import ExpandHeight from "../../common/components/ExpandHeight";
+import useBoolean from "../../common/hooks/useBoolean";
 
 export default ({ details }) => {
   const { belongsToCollection } = details;
@@ -12,8 +14,9 @@ export default ({ details }) => {
     return null;
   }
 
-  const { id: collectionId } = belongsToCollection;
+  const isOverviewExpanded = useBoolean(false);
 
+  const { id: collectionId } = belongsToCollection;
   const query = useQuery(
     ["collection", collectionId],
     () =>
@@ -36,9 +39,15 @@ export default ({ details }) => {
     <React.Fragment>
       <Box padding={2}>
         <Typography style={{ fontWeight: "bold" }}>{name}</Typography>
-        <Typography gutterBottom color="textSecondary" variant="body1">
-          {overview}
-        </Typography>
+        <ExpandHeight
+          collapsedHeight="10em"
+          in={isOverviewExpanded.value}
+          onClick={isOverviewExpanded.toggle}
+        >
+          <Typography gutterBottom color="textSecondary" variant="body1">
+            {overview}
+          </Typography>
+        </ExpandHeight>
       </Box>
 
       <HorizontalScroll paddingLeft={2} paddingBottom={2}>

@@ -1,9 +1,10 @@
 import * as R from "ramda";
 
-/* 
+const allImageTypes = ["profile", "poster", "backdrop", "still", "logo"];
 
-  INPUT: 
-  TMDBconfiguration = 
+/** 
+  INPUT:
+  TMDbconfiguration =
     {
       ...
       images: {
@@ -14,7 +15,7 @@ import * as R from "ramda";
         ...
       }
     }
-    
+
   sizeIndex = 
     some index of profileSizes OR posterSizes OR logoSizes OR ...
 
@@ -24,11 +25,7 @@ import * as R from "ramda";
   OUTPUT:
   url = 
     secureBaseUrl + (profileSize OR posterSize OR logoSize OR ...) + (profilePath OR posterSize OR logoSize OR ...)
-
 */
-
-const allImageTypes = ["profile", "poster", "backdrop", "still", "logo"];
-
 export default (TMDbconfiguration, sizeIndex, objectWithImagePath) => {
   if (
     R.isNil(TMDbconfiguration) ||

@@ -12,8 +12,8 @@ import React from "react";
 import ChipScroll from "../../common/components/ChipScroll";
 import useBoolean from "../../common/hooks/useBoolean";
 import ActionBar from "./ActionBar";
+import ExpandHeight from "../../common/components/ExpandHeight";
 momentDurationFormatSetup(moment);
-
 const useStyles = makeStyles((theme) => ({
   fadeBottom: {
     "mask-image": "linear-gradient(to bottom, black 50%, transparent 100%)",
@@ -46,24 +46,21 @@ export default ({ details }) => {
         <ActionBar />
       </Box>
 
-      <Box
-        onClick={isOverviewExpanded.toggle}
-        className={clsx({ [classes.fadeBottom]: !isOverviewExpanded.value })}
-        p={2}
-        paddingTop={0}
-        flexDirection="column"
-        display="flex"
-      >
-        <Collapse collapsedHeight="10em" in={isOverviewExpanded.value}>
-          {details.tagline !== details.overview && (
-            <Typography align="center" style={{ fontWeight: "bold" }}>
-              {details.tagline}
-            </Typography>
-          )}
+      <Box p={2} paddingTop={0} flexDirection="column" display="flex">
+        {details.tagline !== details.overview && (
+          <Typography align="center" style={{ fontWeight: "bold" }}>
+            {details.tagline}
+          </Typography>
+        )}
+        <ExpandHeight
+          collapsedHeight="10em"
+          in={isOverviewExpanded.value}
+          onClick={isOverviewExpanded.toggle}
+        >
           <Typography variant="body1" color="textSecondary">
             {details.overview}
           </Typography>
-        </Collapse>
+        </ExpandHeight>
       </Box>
     </React.Fragment>
   );

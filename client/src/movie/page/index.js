@@ -1,4 +1,4 @@
-import { Box, Divider } from "@material-ui/core";
+import { Box, Divider, Typography } from "@material-ui/core";
 import React from "react";
 import Footer from "../../common/page/Footer";
 import MoviePosterScroll from "../components/PosterScroll";
@@ -37,10 +37,10 @@ export default ({ data }) => {
       <Credits credits={credits} />
       <Divider />
 
-      <Collection details={details} />
+      <Videos videos={videos.results} />
       <Divider />
 
-      <Videos videos={videos.results} />
+      <Collection details={details} />
       <Divider />
 
       <Box paddingTop={2}>

@@ -3,7 +3,6 @@ import * as R from "ramda";
 import React from "react";
 import { useQuery } from "react-query";
 import axios from "axios";
-import * as utils from "../../utils";
 import MovieBackdrop from "./MovieBackdrop";
 
 const useStyles = makeStyles((theme) => ({
@@ -34,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
 
 const makeSubtitle1 = (movie) =>
   [
-    movie.releaseDate && utils.releaseDateToYear(movie.releaseDate),
-    movie.runtime && utils.minutesToHoursAndMinutes(movie.runtime),
+    movie.releaseDate,
+    movie.runtime 
     movie.voteCount > 0 && `${movie.voteAverage}/10 ★`,
     movie.status !== "Released" && movie.status,
   ]

@@ -1,12 +1,6 @@
-import {
-  ButtonBase,
-  Fade,
-  makeStyles,
-  Typography,
-  CircularProgress,
-  Box,
-} from "@material-ui/core";
-import React, { useState } from "react";
+import { makeStyles, Typography } from "@material-ui/core";
+import React from "react";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useHistory } from "react-router";
 import AspectRatio from "../../common/components/AspectRatio";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
@@ -32,8 +26,6 @@ const useStyles = makeStyles((theme) => ({
 export default ({ movie, ...props }) => {
   const { id, posterPath, title } = movie;
   const history = useHistory();
-  const [loaded, setLoaded] = useState(false);
-  const handleLoaded = () => setLoaded(true);
   const classes = useStyles();
   const posterURL = makeTMDbImageURL(2, { posterPath });
 
@@ -49,15 +41,7 @@ export default ({ movie, ...props }) => {
       {...props}
     >
       {posterPath ? (
-        <React.Fragment>
-          <Fade in={loaded}>
-            <img
-              className={classes.image}
-              src={posterURL}
-              onLoad={handleLoaded}
-            />
-          </Fade>
-        </React.Fragment>
+        <LazyLoadImage className={classes.image} src={posterURL} />
       ) : (
         <Typography
           align="center"

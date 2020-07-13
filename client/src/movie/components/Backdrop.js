@@ -4,6 +4,7 @@ import React from "react";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 import AspectRatio from "../../common/components/AspectRatio";
 import { useHistory } from "react-router";
+import { LazyLoadComponent } from "react-lazy-load-image-component";
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -52,7 +53,9 @@ export default ({ movie, ...props }) => {
       {...props}
     >
       {backdropURL || posterURL ? (
-        <div className={classes.image} />
+        <LazyLoadComponent>
+          <div className={classes.image} />
+        </LazyLoadComponent>
       ) : (
         <div className={classes.fallback}>
           <Typography align="center" color="textSecondary">

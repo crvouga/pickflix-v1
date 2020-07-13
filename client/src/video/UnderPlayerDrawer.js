@@ -1,7 +1,9 @@
 import { Drawer, useTheme } from "@material-ui/core";
 import * as R from "ramda";
 import React, { useEffect } from "react";
-import * as utils from "../utils";
+
+const getElementBottom = (DOMquery) =>
+  document.querySelector(DOMquery)?.getBoundingClientRect?.()?.bottom || 0;
 
 export default (props) => {
   const theme = useTheme();
@@ -20,7 +22,7 @@ export default (props) => {
   const PaperProps = R.mergeDeepLeft(props.PaperProps, {
     style: {
       backgroundColor: theme.palette.background.default,
-      top: utils.getElementBottom(document.getElementById("player")),
+      top: getBottom("#player"),
     },
   });
 

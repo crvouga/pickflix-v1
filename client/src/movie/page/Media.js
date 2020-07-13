@@ -31,6 +31,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const stopPropagation = (e) => {
+  e.stopPropagation();
+};
+
 const useDelayedTrueBoolean = (initial) => {
   const [visible, setVisible] = useState(initial);
   const timeoutRef = useRef();
@@ -56,15 +60,13 @@ export default ({ videos, images }) => {
     dispatch(modal.actions.open("videoModal"));
   };
 
-  const stopPropagation = (e) => {
-    e.stopPropagation();
-  };
-
   return (
     <AspectRatio
       ratio={[16, 9]}
       onTouchStart={isPlayIconVisible.setFalse}
+      onMouseDown={isPlayIconVisible.setFalse}
       onTouchEnd={isPlayIconVisible.setTrue}
+      onMouseUp={isPlayIconVisible.setTrue}
       className={classes.fadeBottom}
     >
       <AutoPlaySwipeableViews interval={4000} value={index} onChange={setIndex}>
@@ -75,14 +77,6 @@ export default ({ videos, images }) => {
             className={classes.image}
           />
         ))}
-        {backdrops.length === 0 &&
-          posters.map(({ filePath }) => (
-            <img
-              key={filePath}
-              src={makeTMDbImageURL(2, { posterPath: filePath })}
-              className={classes.image}
-            />
-          ))}
       </AutoPlaySwipeableViews>
       <Fade in={videos.length > 0 && isPlayIconVisible.value}>
         <Cover>
@@ -90,6 +84,7 @@ export default ({ videos, images }) => {
             <IconButton
               color="default"
               onClick={handlePlayIconClick}
+              onMouseDown={stopPropagation}
               onTouchStart={stopPropagation}
             >
               <PlayIcon className={classes.playIcon} />

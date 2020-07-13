@@ -5,6 +5,7 @@ import {
   Collapse,
   makeStyles,
   Typography,
+  Button,
 } from "@material-ui/core";
 import clsx from "clsx";
 import moment from "moment";
@@ -14,7 +15,8 @@ import ReactMarkdown from "react-markdown";
 import ExpandIcon from "../common/components/ExpandIcon";
 import useBoolean from "../common/hooks/useBoolean";
 import PersonAvatar from "./PersonAvatar";
-
+import ExpandHeight from "../common/components/ExpandHeight";
+import Markdown from "../common/components/Markdown";
 const useStyles = makeStyles((theme) => ({
   fadeBottom: {
     "mask-image": "linear-gradient(to bottom, black 50%, transparent 100%)",
@@ -65,27 +67,19 @@ export default ({ details, credits }) => {
         </Box>
       </Box>
       {details.biography && (
-        <Box
-          onClick={isBioExpanded.toggle}
-          p={2}
-          textAlign="left"
-          display="flex"
-          flexDirection="column"
-          className={clsx({ [classes.fadeBottom]: !isBioExpanded.value })}
-        >
+        <Box p={2} textAlign="left" display="flex" flexDirection="column">
           <Box width="100%" display="flex" flexDirection="row">
             <Typography style={{ fontWeight: "bold", flex: 1 }}>
               Biography
             </Typography>
-            <ExpandIcon expanded={isBioExpanded.value} />
           </Box>
-          <Collapse in={isBioExpanded.value} collapsedHeight="10em">
-            <Box marginTop={-2}>
-              <Typography component="div" color="textSecondary" varaint="body2">
-                <ReactMarkdown>{details.biography}</ReactMarkdown>
-              </Typography>
-            </Box>
-          </Collapse>
+          <ExpandHeight
+            in={isBioExpanded.value}
+            collapsedHeight="8em"
+            onClick={isBioExpanded.toggle}
+          >
+            <Markdown>{details.biography}</Markdown>
+          </ExpandHeight>
         </Box>
       )}
     </React.Fragment>
