@@ -19,7 +19,7 @@ export const AnimatedSwitch = (props) => {
 
 const variant = {
   in: {
-    x: 0,
+    opacity: 1,
   },
   out: {
     opacity: 0,

@@ -1,32 +1,15 @@
-import {
-  Box,
-  ButtonBase,
-  Chip,
-  Collapse,
-  makeStyles,
-  Typography,
-  Button,
-} from "@material-ui/core";
-import clsx from "clsx";
+import { Box, makeStyles, Typography } from "@material-ui/core";
 import moment from "moment";
 import * as R from "ramda";
 import React from "react";
-import ReactMarkdown from "react-markdown";
-import ExpandIcon from "../common/components/ExpandIcon";
-import useBoolean from "../common/hooks/useBoolean";
-import PersonAvatar from "./PersonAvatar";
 import ExpandHeight from "../common/components/ExpandHeight";
 import Markdown from "../common/components/Markdown";
-const useStyles = makeStyles((theme) => ({
-  fadeBottom: {
-    "mask-image": "linear-gradient(to bottom, black 50%, transparent 100%)",
-  },
-}));
+import useBoolean from "../common/hooks/useBoolean";
+import PersonAvatar from "./PersonAvatar";
 
 const toYear = (_) => moment(_).format("YYYY");
 
 export default ({ details, credits }) => {
-  const classes = useStyles();
   const isBioExpanded = useBoolean(false);
 
   const allCredits = R.concat(credits.crew, credits.cast);
