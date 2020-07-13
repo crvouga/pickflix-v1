@@ -17,7 +17,7 @@ import React, { useEffect } from "react";
 import { queryCache } from "react-query";
 import { useLocation, useParams } from "react-router";
 import MoviePoster from "../../movie/components/Poster";
-import PersonProfile from "../../person/PersonProfile";
+import PersonAvatar from "../../person/PersonAvatar";
 import HorizontalScroll from "../components/HorizontalScroll";
 import useBoolean from "../hooks/useBoolean";
 import useLocalStorage from "../hooks/useLocalStorage";
@@ -138,7 +138,10 @@ export default () => {
         {entities.map((entity) => (
           <Box key={entity.id} minWidth={150} maxWidth={150} marginRight={1}>
             {entity.mediaType === "person" ? (
-              <PersonProfile person={entity} />
+              <React.Fragment>
+                <PersonAvatar person={entity} />
+                <Typography align="center">{entity.name}</Typography>
+              </React.Fragment>
             ) : entity.mediaType === "movie" ? (
               <MoviePoster movie={entity} />
             ) : (

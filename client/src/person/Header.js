@@ -21,8 +21,7 @@ export default ({ details, credits }) => {
   )(allMovies);
 
   const creditsByDepartment = R.groupBy(R.prop("department"), credits.crew);
-  creditsByDepartment["Acting"] = credits.cast;
-  const departmentFrequencies = R.map(R.length, creditsByDepartment);
+  creditsByDepartment.Acting = credits.cast;
 
   return (
     <React.Fragment>

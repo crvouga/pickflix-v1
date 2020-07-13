@@ -23,7 +23,6 @@ export default ({ collapsedHeight, children, ...props }) => {
   const minHeight = Math.min(collapsedHeightPixels, childHeight);
   const isFadeBottom = !props.in && childHeight > minHeight;
 
-  debugger;
   return (
     <div
       className={clsx({

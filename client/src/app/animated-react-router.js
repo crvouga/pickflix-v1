@@ -42,15 +42,5 @@ const useStyles = makeStyles({
 
 export const AnimatedRoute = (props) => {
   const classes = useStyles();
-  return (
-    <motion.div
-      transition={{ duration: 0.2, ease: "easeIn" }}
-      variants={variant}
-      initial="initial"
-      animate="in"
-      exit="out"
-    >
-      <Route {...props} />
-    </motion.div>
-  );
+  return <Route {...props} />;
 };

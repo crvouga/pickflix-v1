@@ -1,12 +1,11 @@
 import { AppBar, makeStyles, Typography } from "@material-ui/core";
 import React, { useEffect, useRef } from "react";
 import { useHistory } from "react-router";
-import SearchHistory from "./components/SearchHistory";
+import Page from "../common/page/Page";
 import SearchBar from "./components/SearchBar";
+import SearchHistory from "./components/SearchHistory";
 import SearchResults from "./components/SearchResults";
 import useSearchState from "./hooks/useSearchState";
-import Page from "../common/page/Page";
-
 const useStyles = makeStyles((theme) => ({
   paper: {
     backgroundColor: theme.palette.background.default,
