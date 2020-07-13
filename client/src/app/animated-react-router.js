@@ -25,7 +25,7 @@ const variant = {
     opacity: 0,
   },
   initial: {
-    x: "100%",
+    opacity: 0,
   },
 };
 
