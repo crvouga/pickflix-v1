@@ -60,6 +60,11 @@ export default ({ videos, images }) => {
     dispatch(modal.actions.open("videoModal"));
   };
 
+  const handleChangeIndex = (newIndex) => {
+    setIndex(newIndex);
+    isPlayIconVisible.setFalse();
+  };
+
   return (
     <AspectRatio
       ratio={[16, 9]}
@@ -69,7 +74,11 @@ export default ({ videos, images }) => {
       onMouseUp={isPlayIconVisible.setTrue}
       className={classes.fadeBottom}
     >
-      <AutoPlaySwipeableViews interval={4000} value={index} onChange={setIndex}>
+      <AutoPlaySwipeableViews
+        onChangeIndex={handleChangeIndex}
+        interval={4000}
+        value={index}
+      >
         {backdrops.map(({ filePath }) => (
           <img
             key={filePath}
