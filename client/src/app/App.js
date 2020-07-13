@@ -3,7 +3,6 @@ import React from "react";
 import HomePage from "../home/HomePage";
 import MoviePage from "../movie";
 import NavigationBarBottom from "../navigation/mobile/NavigationBarBottom";
-import NavigationDrawer from "../navigation/mobile/NavigationDrawer";
 import PersonPage from "../person";
 import SearchPage from "../search";
 import VideoModal from "../video/VideoModal";
@@ -13,7 +12,6 @@ import Providers from "./Providers";
 const UnauthenticatedApp = () => {
   return (
     <React.Fragment>
-      <NavigationDrawer />
       <VideoModal />
       <AnimatedSwitch>
         <AnimatedRoute exact path="/" component={HomePage} />

@@ -2,15 +2,15 @@ import { Box, Divider } from "@material-ui/core";
 import React from "react";
 import Footer from "../../common/page/Footer";
 import MoviePosterScroll from "../components/PosterScroll";
-import Collection from "./components/Collection";
-import Credits from "./components/Credits";
-import Details from "./components/Details";
-import Header from "./components/Header";
-import Keywords from "./components/Keywords";
-import Media from "./components/Media";
-import Reviews from "./components/Reviews";
-import Title from "./components/Title";
-import Videos from "./components/Videos";
+import Collection from "./Collection";
+import Credits from "./Credits";
+import Details from "./Details";
+import Header from "./Header";
+import Keywords from "./Keywords";
+import Media from "./Media";
+import Reviews from "./Reviews";
+import Title from "./Title";
+import Videos from "./Videos";
 import Page from "../../common/page/Page";
 
 export default ({ data }) => {
