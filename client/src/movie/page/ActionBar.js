@@ -1,4 +1,4 @@
-import { IconButton, makeStyles, Toolbar, Typography } from "@material-ui/core";
+import { IconButton, makeStyles, Box, Typography } from "@material-ui/core";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
@@ -10,16 +10,11 @@ import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    justifyContent: "space-around",
-    overflowX: "auto",
-    flexWrap: "nowrap",
-  },
   iconButton: {
     color: theme.palette.text.secondary,
     display: "flex",
     flexDirection: "column",
+    width: "48px",
   },
 }));
 
@@ -54,7 +49,12 @@ export default () => {
   ];
 
   return (
-    <Toolbar className={classes.root}>
+    <Box
+      display="flex"
+      justifyContent="space-around"
+      overflowX="auto"
+      flexWrap="nowrap"
+    >
       {actions.map(({ icon, text, onClick }) => (
         <IconButton
           key={text}
@@ -65,6 +65,6 @@ export default () => {
           <Typography variant="subtitle2">{text}</Typography>
         </IconButton>
       ))}
-    </Toolbar>
+    </Box>
   );
 };

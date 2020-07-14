@@ -1,6 +1,7 @@
 import { Box, Divider, Typography } from "@material-ui/core";
 import moment from "moment";
 import momentDurationFormatSetup from "moment-duration-format";
+import * as R from "ramda";
 import React from "react";
 import ChipScroll from "../../common/components/ChipScroll";
 import ExpandHeight from "../../common/components/ExpandHeight";
@@ -8,16 +9,17 @@ import useBoolean from "../../common/hooks/useBoolean";
 import ActionBar from "./ActionBar";
 momentDurationFormatSetup(moment);
 
-const toCertification = (releaseDates) =>
-  releaseDates?.results
-    // [..., {..., iso31661, releaseDates}]
-    .find((_) => _.iso31661 === "US")
-    // { iso31661: "US", releaseDates }
-    ?.releaseDates /* */
-    // [..., { ..., certification: "" | "G" | "PG" | ... }]
-    .map((_) => _.certification)
-    // [..., certification]
-    .find((_) => _ !== "");
+const toCertification = R.pipe(
+  R.propOr([], "results"),
+  // [..., {..., iso31661, releaseDates}]
+  R.find(R.whereEq({ iso31661: "US" })),
+  // { iso31661: "US", releaseDates: [...] }
+  R.propOr([], "releaseDates"),
+  // [..., { ..., certification: "" | "G" | "PG" | ... }]
+  R.pluck("certification"),
+  // [..., certification]
+  R.find(R.complement(R.isEmpty))
+);
 
 const toSubtitle1 = ({ details, releaseDates }) =>
   [
@@ -35,19 +37,20 @@ export default ({ details, releaseDates }) => {
 
   return (
     <React.Fragment>
-      <Box p={2} paddingBottom={0}>
+      <Box paddingX={2}>
         <Typography align="left" variant="h5" style={{ flex: 1 }}>
           {details.title}
         </Typography>
         <Typography variant="subtitle1" color="textSecondary">
           {subtitle1}
         </Typography>
-
-        <ChipScroll
-          paddingY={1}
-          chips={details.genres}
-          getLabel={(_) => _.name}
-        />
+      </Box>
+      <ChipScroll
+        chips={details.genres}
+        getLabel={(_) => _.name}
+        BoxProps={{ paddingY: 1, paddingLeft: 2 }}
+      />
+      <Box paddingX={2}>
         <ActionBar />
       </Box>
 

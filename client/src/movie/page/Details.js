@@ -17,8 +17,10 @@ const renderChipScroll = (title, chips) => (
     <ChipScroll
       chips={chips}
       getLabel={R.prop("name")}
-      paddingLeft={2}
-      marginBottom={2}
+      BoxProps={{
+        paddingLeft: 2,
+        marginBottom: 2,
+      }}
     />
   </React.Fragment>
 );

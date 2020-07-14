@@ -4,12 +4,18 @@ import HorizontalScroll from "./HorizontalScroll";
 
 const getLabelDefault = (chip) => chip.label;
 
-export default ({ chips, getLabel = getLabelDefault, ...props }) => {
+export default ({
+  chips,
+  getLabel = getLabelDefault,
+  BoxProps,
+  ChipProps,
+  ChipBoxProps,
+}) => {
   return (
-    <HorizontalScroll {...props}>
+    <HorizontalScroll {...BoxProps}>
       {chips.map((chip) => (
-        <Box key={chip.id || getLabel(chip)} marginRight={1}>
-          <Chip label={getLabel(chip)} variant="outlined" />
+        <Box key={chip.id || getLabel(chip)} marginRight={1} {...ChipBoxProps}>
+          <Chip label={getLabel(chip)} variant="outlined" {...ChipProps} />
         </Box>
       ))}
     </HorizontalScroll>
