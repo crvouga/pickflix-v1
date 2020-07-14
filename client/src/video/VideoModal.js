@@ -9,7 +9,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import modal from "../common/redux/modal";
 import player from "./redux/player";
@@ -49,7 +49,10 @@ export default () => {
     dispatch(modal.actions.close("videoModal"));
   };
   const location = useLocation();
-  useEffect(handleClose, [location.pathname]);
+  useEffect(() => {
+    console.log("CLOSE");
+    handleClose();
+  }, [location.pathname]);
 
   return (
     <Dialog
