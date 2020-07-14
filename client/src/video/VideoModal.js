@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import modal from "../common/redux/modal";
 import player from "./redux/player";
 import VideoPage from "./VideoPage";
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -40,13 +41,15 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default () => {
+  const classes = useStyles();
   const isOpen = useSelector(modal.selectors.isOpen("videoModal"));
   const dispatch = useDispatch();
   const handleClose = () => {
     dispatch(player.actions.pause());
     dispatch(modal.actions.close("videoModal"));
   };
-  const classes = useStyles();
+  const location = useLocation();
+  useEffect(handleClose, [location.pathname]);
 
   return (
     <Dialog

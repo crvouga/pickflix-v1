@@ -5,7 +5,7 @@ import {
   Paper,
   Typography,
 } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import AspectRatio from "react-aspect-ratio";
 import "react-aspect-ratio/aspect-ratio.css";
@@ -15,25 +15,8 @@ import Player from "../youtube/Player";
 import YoutubeSection from "../youtube/Section";
 import Playlist from "./Playlist";
 import player from "./redux/player";
+
 const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: "100%",
-    // backgroundColor: theme.palette.background.default,
-  },
-  noComment: {
-    marginTop: theme.spacing(2),
-  },
-  commentsContainer: {
-    display: "block",
-  },
-  commentsTitle: {
-    padding: theme.spacing(1),
-  },
-  commentIcon: {
-    marginTop: "0.5em",
-    width: "0.7em",
-    height: "0.7em",
-  },
   playerContainer: {
     position: "sticky",
     top: 0,

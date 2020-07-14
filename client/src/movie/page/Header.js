@@ -8,21 +8,16 @@ import useBoolean from "../../common/hooks/useBoolean";
 import ActionBar from "./ActionBar";
 momentDurationFormatSetup(moment);
 
-const toCertification = (releaseDates) => {
-  const result = releaseDates?.results.find(
-    ({ iso31661 }) => iso31661 === "US"
-  );
-
-  if (!result) {
-    return null;
-  }
-
-  const certification = result.releaseDates
+const toCertification = (releaseDates) =>
+  releaseDates?.results
+    // [..., {..., iso31661, releaseDates}]
+    .find((_) => _.iso31661 === "US")
+    // { iso31661: "US", releaseDates }
+    ?.releaseDates /* */
+    // [..., { ..., certification: "" | "G" | "PG" | ... }]
     .map((_) => _.certification)
+    // [..., certification]
     .find((_) => _ !== "");
-
-  return certification;
-};
 
 const toSubtitle1 = ({ details, releaseDates }) =>
   [

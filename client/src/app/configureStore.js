@@ -12,6 +12,7 @@ function* rootSaga() {
       yield put(player.actions.pause());
     }
   });
+
   yield fork(player.saga);
 }
 
