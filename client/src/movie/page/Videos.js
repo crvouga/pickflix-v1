@@ -14,7 +14,6 @@ export default ({ videos }) => {
   };
 
   const handleThumbnailClick = (video) => {
-    console.log("handleThumbnailClick", { video });
     dispatch(player.actions.setVideo(video));
     handleClick();
   };

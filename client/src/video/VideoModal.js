@@ -50,7 +50,6 @@ export default () => {
   };
   const location = useLocation();
   useEffect(() => {
-    console.log("CLOSE");
     handleClose();
   }, [location.pathname]);
 

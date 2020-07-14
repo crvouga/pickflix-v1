@@ -18,7 +18,6 @@ export default () => {
   };
 
   const close = (name) => {
-    console.log({ name });
     pushState(name, { isOpen: false });
   };
 

@@ -5,7 +5,6 @@ export default () => {
     "DOMContentLoaded",
     () => {
       FastClick.attach(document.body);
-      console.log("fast clicked attached");
     },
     false
   );

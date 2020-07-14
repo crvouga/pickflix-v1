@@ -11,7 +11,6 @@ export const cancelableRequest = (asyncFn) => (...args) => {
   };
   const promise = asyncFn(args, config);
   promise.cancel = () => {
-    console.log("CANCEL()");
     source.cancel("Query was cancelled by React Query");
   };
 
