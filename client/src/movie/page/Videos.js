@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import modal from "../../common/redux/modal";
 import OpenVideosButton from "../../video/OpenVideosButton";
 import player from "../../video/redux/player";
-import ThumbnailScroll from "../../youtube/components/ThumbnailScroll";
+import ThumbnailScroll from "../../youtube/ThumbnailScroll";
 
 export default ({ videos }) => {
   const dispatch = useDispatch();

@@ -9,19 +9,17 @@ const useStyles = makeStyles({
   },
 });
 
+const toPixels = (_) => units.convert("px", _, document.body);
+
 export default ({ collapsedHeight, children, ...props }) => {
   const classes = useStyles();
   const ref = useRef();
 
-  const childHeight = ref.current?.offsetHeight || 0;
-  const collapsedHeightPixels = units.convert(
-    "px",
-    collapsedHeight,
-    document.body
-  );
-
+  const collapsedHeightPixels = toPixels(collapsedHeight);
+  const childHeight = ref.current?.offsetHeight || collapsedHeightPixels;
   const minHeight = Math.min(collapsedHeightPixels, childHeight);
-  const isFadeBottom = !props.in && childHeight > minHeight;
+  const isFadeBottom = (!props.in && childHeight > minHeight) || !ref.current;
+  const isIn = childHeight > minHeight && props.in;
 
   return (
     <div
@@ -29,7 +27,7 @@ export default ({ collapsedHeight, children, ...props }) => {
         [classes.fadeBottom]: isFadeBottom,
       })}
     >
-      <Collapse collapsedHeight={minHeight} {...props}>
+      <Collapse collapsedHeight={minHeight} {...props} in={isIn}>
         <div ref={ref}>{children}</div>
       </Collapse>
     </div>

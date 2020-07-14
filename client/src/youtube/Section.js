@@ -2,8 +2,8 @@ import { Box, CircularProgress } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import * as youtubeAPI from "./api";
-import CommentThreadList from "./components/CommentThreadList";
-import Details from "./components/Details";
+import CommentThreadList from "./CommentThreadList";
+import Details from "./Details";
 
 const Error = () => "error";
 
@@ -21,7 +21,7 @@ const DetailsContainer = ({ videoId }) => {
   );
 
   if (query.status === "loading") {
-    return <Loading />;
+    return null;
   }
 
   if (query.status === "error") {

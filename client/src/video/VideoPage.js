@@ -1,21 +1,20 @@
 import {
   Box,
-  ButtonBase,
   Collapse,
   makeStyles,
   Paper,
   Typography,
 } from "@material-ui/core";
 import React from "react";
-import { useSelector } from "react-redux";
-import AspectRatio from "../common/components/AspectRatio";
+import { useSelector, useDispatch } from "react-redux";
+import AspectRatio from "react-aspect-ratio";
+import "react-aspect-ratio/aspect-ratio.css";
 import ExpandIcon from "../common/components/ExpandIcon";
 import useBoolean from "../common/hooks/useBoolean";
+import Player from "../youtube/Player";
 import YoutubeSection from "../youtube/Section";
-import Player from "./Player";
 import Playlist from "./Playlist";
 import player from "./redux/player";
-
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: "100%",
@@ -36,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     height: "0.7em",
   },
   playerContainer: {
-    position: "fixed",
+    position: "sticky",
     top: 0,
     width: "100%",
     zIndex: theme.zIndex.appBar,
@@ -45,18 +44,28 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
+  const isPlaylistOpen = useBoolean(false);
+  const playing = useSelector(player.selectors.playing);
   const video = useSelector(player.selectors.video);
   const videoKey = video?.key;
-  const isPlaylistOpen = useBoolean(false);
+  const dispatch = useDispatch();
+  const handlePlay = () => {
+    dispatch(player.actions.play());
+  };
+  const handlePause = () => {
+    dispatch(player.actions.pause());
+  };
 
   return (
     <Box>
-      <AspectRatio ratio={[16, 9]} className={classes.playerContainer}>
-        <Player />
+      <AspectRatio ratio="16/9" className={classes.playerContainer}>
+        <Player
+          onPlay={handlePlay}
+          onPause={handlePause}
+          playing={playing}
+          video={video}
+        />
       </AspectRatio>
-
-      {/* white space */}
-      <AspectRatio ratio={[16, 9]} width="100%" />
 
       <Paper>
         <Box

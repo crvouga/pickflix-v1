@@ -46,7 +46,7 @@ export default ({ collapsible, review, ...props }) => {
           onClick={isExpanded.toggle}
           collapsedHeight="12em"
         >
-          <Markdown>{review.content}</Markdown>
+          <Markdown color="textPrimary">{review.content}</Markdown>
         </ExpandHeight>
       </Box>
     </Box>

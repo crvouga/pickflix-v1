@@ -9,10 +9,10 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import moment from "moment";
 import numeral from "numeral";
 import React from "react";
-import * as youtubeAPI from "../api";
-import Markdown from "../../common/components/Markdown";
-import ExpandHeight from "../../common/components/ExpandHeight";
-import useBoolean from "../../common/hooks/useBoolean";
+import * as youtubeAPI from "./api";
+import Markdown from "../common/components/Markdown";
+import ExpandHeight from "../common/components/ExpandHeight";
+import useBoolean from "../common/hooks/useBoolean";
 
 const useStyles = makeStyles((theme) => ({
   root: {

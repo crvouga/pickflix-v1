@@ -8,9 +8,7 @@ export const AnimatedSwitch = (props) => {
     <div style={{ position: "relative" }}>
       <Route
         render={({ location }) => (
-          <AnimatePresence exitBeforeEnter={true} initial={false}>
-            <Switch location={location} key={location.pathname} {...props} />
-          </AnimatePresence>
+          <Switch location={location} key={location.pathname} {...props} />
         )}
       />
     </div>
@@ -28,27 +26,35 @@ const useStyles = makeStyles({
   },
 });
 
+const transition = {
+  duration: 0.2,
+  ease: "linear",
+};
+
 const variants = {
   hidden: {
     opacity: 0,
-    duration: 0.3,
   },
   visible: {
     opacity: 1,
-    duration: 0.3,
   },
 };
 
+const scrollToTop = () => {
+  window.scrollTo(0, 0);
+};
+
 export const AnimatedRoute = (props) => {
-  const classes = useStyles();
   return (
-    <motion.div
-      initial="hidden"
-      animate="visible"
-      exit="hidden"
-      variants={variants}
-    >
-      <Route {...props} />
-    </motion.div>
+    <Route {...props} />
+    // <motion.div
+    //   initial="hidden"
+    //   animate="visible"
+    //   exit="hidden"
+    //   variants={variants}
+    //   onAnimationComplete={scrollToTop}
+    // >
+    //   <Route {...props} />
+    // </motion.div>
   );
 };

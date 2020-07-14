@@ -1,8 +1,8 @@
 import { Box, Typography } from "@material-ui/core";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import React from "react";
-import Cover from "../../common/components/Cover";
-import HorizontalScroll from "../../common/components/HorizontalScroll";
+import Layer from "../common/components/Layer";
+import HorizontalScroll from "../common/components/HorizontalScroll";
 import YoutubeThumbnail from "./Thumbnail";
 
 export default ({ videos, onClick, ...props }) => {
@@ -26,11 +26,11 @@ export default ({ videos, onClick, ...props }) => {
         >
           <Box position="relative">
             <YoutubeThumbnail video={video} />
-            <Cover>
+            <Layer display="flex" justifyContent="center" alignItems="center">
               <PlayArrowIcon
                 style={{ width: "48px", height: "48px", opacity: 0.7 }}
               />
-            </Cover>
+            </Layer>
           </Box>
 
           <Typography variant="subtitle2" color="textSecondary">

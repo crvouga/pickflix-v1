@@ -2,7 +2,8 @@ import { Avatar, makeStyles, Box } from "@material-ui/core";
 import React from "react";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { useHistory } from "react-router";
-import AspectRatio from "../common/components/AspectRatio";
+import AspectRatio from "react-aspect-ratio";
+import "react-aspect-ratio/aspect-ratio.css";
 
 const useStyles = makeStyles({
   avatar: {
@@ -20,8 +21,8 @@ export default ({ person, ...props }) => {
     history.push(`/person/${person.id}`);
   };
   return (
-    <AspectRatio ratio={[1, 1]} onClick={handleClick} {...props}>
+    <Box component={AspectRatio} ratio="1/1" onClick={handleClick} {...props}>
       <Avatar className={classes.avatar} src={profileURL} />
-    </AspectRatio>
+    </Box>
   );
 };

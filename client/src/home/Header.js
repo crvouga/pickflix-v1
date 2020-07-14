@@ -1,95 +1,63 @@
 import { Box, makeStyles, Typography } from "@material-ui/core";
-import { fade } from "@material-ui/core/styles/colorManipulator";
 import moment from "moment";
 import React, { useState } from "react";
+import AspectRatio from "react-aspect-ratio";
+import "react-aspect-ratio/aspect-ratio.css";
 import { useHistory } from "react-router";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
-import AspectRatio from "../common/components/AspectRatio";
+import Layer from "../common/components/Layer";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-const useStyles = makeStyles((theme) => {
-  const backgroundDefaultColorFade = `
-    linear-gradient(
-      ${fade(theme.palette.background.default, 0)},
-      ${fade(theme.palette.background.default, 1)}
-    )`;
-
-  return {
-    root: {
-      position: "relative",
-      width: "100%",
-      backgroundColor: "black",
-    },
-    layer: {
-      posiiton: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-    },
-
-    fade: {
-      background: backgroundDefaultColorFade,
-    },
-
-    item: {
-      width: "100%",
-      position: "relative",
-      backgroundImage: ({ movieBackdropURL }) => `url(${movieBackdropURL})`,
-      backgroundSize: "cover",
-    },
-    content: {
-      display: "flex",
-      flexDirection: "column-reverse",
-    },
-  };
+const useStyles = makeStyles({
+  box: {
+    backgroundImage: ({ movieBackdropURL }) => `url(${movieBackdropURL})`,
+    backgroundSize: "cover",
+    maxWidth: "100%",
+    minWidth: "100%",
+    "mask-image": "linear-gradient(to bottom, black 50%, transparent 100%)",
+  },
 });
 
 const HeaderItem = ({ movie }) => {
   const history = useHistory();
-  const movieBackdropURL = makeTMDbImageURL(3, {
+  const handleClick = () => {
+    history.push(`/movie/${movie.id}`);
+  };
+  const movieBackdropURL = makeTMDbImageURL(2, {
     backdropPath: movie.backdropPath,
   });
   const classes = useStyles({
     movieBackdropURL,
   });
 
-  const handleClick = () => {
-    history.push(`/movie/${movie.id}`);
-  };
-
   return (
-    <AspectRatio
-      onClick={handleClick}
-      ratio={[16, 9]}
-      classes={{ content: classes.content, root: classes.item }}
-    >
-      <Box paddingX={2} paddingY={3} className={classes.fade}>
+    <Box onClick={handleClick} position="relative">
+      <AspectRatio ratio="16/9" className={classes.box} />
+      <Layer
+        display="flex"
+        flexDirection="column-reverse"
+        paddingX={2}
+        paddingY={3}
+      >
+        <Typography variant="subtitle1">
+          {moment(movie.releaseDate).format("Y")}
+        </Typography>
         <Typography variant="h6" style={{ fontWeight: "bold" }} noWrap>
           {movie.title}
         </Typography>
-        <Typography variant="subtitle1">
-          {moment(movie.tagline).format("Y")}
-        </Typography>
-      </Box>
-    </AspectRatio>
+      </Layer>
+    </Box>
   );
 };
 
 export default ({ movies }) => {
-  const classes = useStyles();
   const [index, setIndex] = useState(0);
 
   return (
-    <AutoPlaySwipeableViews
-      autoPlay
-      interval={5000}
-      value={index}
-      onChange={setIndex}
-    >
+    <AutoPlaySwipeableViews interval={5000} value={index} onChange={setIndex}>
       {movies.map((movie) => (
         <HeaderItem key={movie.id} movie={movie} />
       ))}

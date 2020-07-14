@@ -4,8 +4,9 @@ import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
-import AspectRatio from "../../common/components/AspectRatio";
-import Cover from "../../common/components/Cover";
+import AspectRatio from "react-aspect-ratio";
+import "react-aspect-ratio/aspect-ratio.css";
+import Layer from "../../common/components/Layer";
 import modal from "../../common/redux/modal";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 import player from "../../video/redux/player";
@@ -13,6 +14,9 @@ import player from "../../video/redux/player";
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const useStyles = makeStyles((theme) => ({
+  noPointer: {
+    pointerEvents: "none",
+  },
   image: {
     width: "100%",
     height: "auto",
@@ -21,19 +25,17 @@ const useStyles = makeStyles((theme) => ({
     opacity: 0.9,
     fontSize: "2em",
   },
-  fadeBottom: {
+  root: {
+    width: "100%",
     "mask-image": "linear-gradient(to bottom, black 50%, transparent 100%)",
   },
   buttonCotaniner: {
+    pointerEvents: "all",
     borderRadius: "50%",
     backgroundColor: theme.palette.background.default,
-    opacity: 0.6,
+    opacity: 0.5,
   },
 }));
-
-const stopPropagation = (e) => {
-  e.stopPropagation();
-};
 
 const useDelayedTrueBoolean = (initial) => {
   const [visible, setVisible] = useState(initial);
@@ -47,6 +49,8 @@ const useDelayedTrueBoolean = (initial) => {
   };
   return { value: visible, setTrue, setFalse };
 };
+
+const stopPropagation = (e) => e.stopPropagation();
 
 export default ({ videos, images }) => {
   const classes = useStyles();
@@ -62,17 +66,14 @@ export default ({ videos, images }) => {
 
   const handleChangeIndex = (newIndex) => {
     setIndex(newIndex);
-    isPlayIconVisible.setFalse();
   };
 
   return (
     <AspectRatio
-      ratio={[16, 9]}
+      ratio="16/9"
+      className={classes.root}
       onTouchStart={isPlayIconVisible.setFalse}
-      onMouseDown={isPlayIconVisible.setFalse}
       onTouchEnd={isPlayIconVisible.setTrue}
-      onMouseUp={isPlayIconVisible.setTrue}
-      className={classes.fadeBottom}
     >
       <AutoPlaySwipeableViews
         onChangeIndex={handleChangeIndex}
@@ -87,19 +88,23 @@ export default ({ videos, images }) => {
           />
         ))}
       </AutoPlaySwipeableViews>
-      <Fade in={videos.length > 0 && isPlayIconVisible.value}>
-        <Cover>
+      <Fade in={videos.length !== 0 && isPlayIconVisible.value}>
+        <Layer
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          className={classes.noPointer}
+        >
           <Box className={classes.buttonCotaniner}>
             <IconButton
               color="default"
-              onClick={handlePlayIconClick}
-              onMouseDown={stopPropagation}
               onTouchStart={stopPropagation}
+              onClick={handlePlayIconClick}
             >
               <PlayIcon className={classes.playIcon} />
             </IconButton>
           </Box>
-        </Cover>
+        </Layer>
       </Fade>
     </AspectRatio>
   );

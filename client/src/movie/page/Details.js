@@ -42,7 +42,7 @@ export default ({ details }) => {
           <Typography style={{ fontWeight: "bold" }}>Details</Typography>
         </Box>
 
-        <Grid container>
+        <Grid container spacing={2}>
           <Grid item xs>
             <Typography>Budget</Typography>
             <Typography gutterBottom color="textSecondary">
@@ -58,7 +58,7 @@ export default ({ details }) => {
           </Grid>
         </Grid>
 
-        <Grid container>
+        <Grid container spacing={2}>
           <Grid item xs>
             <Typography>Vote Average</Typography>
             <Typography gutterBottom color="textSecondary">
@@ -74,7 +74,7 @@ export default ({ details }) => {
           </Grid>
         </Grid>
 
-        <Grid container>
+        <Grid container spacing={2}>
           <Grid item xs>
             <Typography>Release Date</Typography>
             <Typography gutterBottom color="textSecondary">

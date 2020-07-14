@@ -8,12 +8,10 @@ import SearchPage from "../search";
 import VideoModal from "../video/VideoModal";
 import { AnimatedRoute, AnimatedSwitch } from "./animated-react-router";
 import Providers from "./Providers";
-import ScrollToTop from "../common/components/ScrollToTop";
 
 const UnauthenticatedApp = () => {
   return (
     <React.Fragment>
-      <ScrollToTop />
       <VideoModal />
       <AnimatedSwitch>
         <AnimatedRoute exact path="/" component={HomePage} />

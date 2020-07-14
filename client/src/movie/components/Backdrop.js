@@ -1,22 +1,19 @@
-import { makeStyles, Typography, ButtonBase } from "@material-ui/core";
+import { Box, makeStyles, Typography, ButtonBase } from "@material-ui/core";
 import MovieIcon from "@material-ui/icons/Movie";
 import React from "react";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
-import AspectRatio from "../../common/components/AspectRatio";
 import { useHistory } from "react-router";
-import { LazyLoadComponent } from "react-lazy-load-image-component";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/opacity.css";
+import AspectRatio from "react-aspect-ratio";
+import "react-aspect-ratio/aspect-ratio.css";
 
 const useStyles = makeStyles((theme) => ({
   image: {
     borderRadius: theme.spacing(1),
     width: "100%",
     height: "100%",
-    backgroundImage: ({ posterURL, backdropURL }) =>
-      `url(${backdropURL || posterURL})`,
-    backgroundPosition: "center",
-    backgroundSize: "cover",
   },
-
   fallback: {
     backgroundColor: "#202020",
     width: "100%",
@@ -46,16 +43,19 @@ export default ({ movie, ...props }) => {
   };
 
   return (
-    <AspectRatio
-      ratio={[16, 9]}
+    <Box
+      component={AspectRatio}
+      ratio="16/9"
       className={classes.root}
       onClick={handleClick}
       {...props}
     >
       {backdropURL || posterURL ? (
-        <LazyLoadComponent>
-          <div className={classes.image} />
-        </LazyLoadComponent>
+        <LazyLoadImage
+          effect="opacity"
+          className={classes.image}
+          src={backdropURL || posterURL}
+        />
       ) : (
         <div className={classes.fallback}>
           <Typography align="center" color="textSecondary">
@@ -63,6 +63,6 @@ export default ({ movie, ...props }) => {
           </Typography>
         </div>
       )}
-    </AspectRatio>
+    </Box>
   );
 };

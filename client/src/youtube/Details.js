@@ -12,8 +12,8 @@ import moment from "moment";
 import numeral from "numeral";
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import ExpandIcon from "../../common/components/ExpandIcon";
-import useBoolean from "../../common/hooks/useBoolean";
+import ExpandIcon from "../common/components/ExpandIcon";
+import useBoolean from "../common/hooks/useBoolean";
 
 const useStyles = makeStyles((theme) => ({
   mainDetails: {
@@ -136,7 +136,7 @@ export default ({ statistics, snippet }) => {
           </Typography>
         </Box>
 
-        <ExpandIcon marginBottom="auto" expanded={isDetailsOpen.value} />
+        <ExpandIcon expanded={isDetailsOpen.value} />
       </Box>
 
       <Box

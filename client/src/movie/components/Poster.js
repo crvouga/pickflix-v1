@@ -1,8 +1,10 @@
-import { makeStyles, Typography } from "@material-ui/core";
+import { Box, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
+import AspectRatio from "react-aspect-ratio";
+import "react-aspect-ratio/aspect-ratio.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/opacity.css";
 import { useHistory } from "react-router";
-import AspectRatio from "../../common/components/AspectRatio";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 
 const useStyles = makeStyles((theme) => ({
@@ -34,14 +36,19 @@ export default ({ movie, ...props }) => {
   };
 
   return (
-    <AspectRatio
-      ratio={[2, 3]}
+    <Box
+      component={AspectRatio}
+      ratio="2/3"
       onClick={onClick}
       className={classes.root}
       {...props}
     >
       {posterPath ? (
-        <LazyLoadImage className={classes.image} src={posterURL} />
+        <LazyLoadImage
+          effect="opacity"
+          className={classes.image}
+          src={posterURL}
+        />
       ) : (
         <Typography
           align="center"
@@ -51,6 +58,6 @@ export default ({ movie, ...props }) => {
           {title}
         </Typography>
       )}
-    </AspectRatio>
+    </Box>
   );
 };

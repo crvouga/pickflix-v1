@@ -8,10 +8,11 @@ import { BrowserRouter } from "react-router-dom";
 import { ParallaxProvider } from "react-scroll-parallax";
 import configureStore from "./configureStore";
 import configureTheme from "./configureTheme";
+import configureFastClick from "./configureFastClick";
 
 const store = configureStore();
-
 const theme = configureTheme();
+configureFastClick();
 
 export default ({ children }) => {
   return (

@@ -4,7 +4,7 @@ import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import clsx from "clsx";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import YoutubeThumbnail from "../youtube/components/Thumbnail";
+import YoutubeThumbnail from "../youtube/Thumbnail";
 import player from "./redux/player";
 
 const useStyles = makeStyles((theme) => ({
