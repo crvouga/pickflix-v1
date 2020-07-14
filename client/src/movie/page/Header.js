@@ -37,7 +37,7 @@ export default ({ details, releaseDates }) => {
 
   return (
     <React.Fragment>
-      <Box paddingX={2}>
+      <Box paddingX={2} paddingTop={2}>
         <Typography align="left" variant="h5" style={{ flex: 1 }}>
           {details.title}
         </Typography>

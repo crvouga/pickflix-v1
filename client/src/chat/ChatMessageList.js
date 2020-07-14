@@ -10,10 +10,11 @@ import clsx from "clsx";
 import * as R from "ramda";
 import React, { useContext, useEffect } from "react";
 import { useHistory } from "react-router";
-import MoviePoster from "../movie/MoviePoster";
+import MoviePoster from "../movie/components/Poster";
 import ChatContext from "./ChatContext";
 import typeToIcon from "./typeToIcon";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
+import PosterScroll from "../movie/components/PosterScroll";
 
 const useStyles = makeStyles((theme) => ({
   chatMessagesRoot: {
@@ -110,26 +111,7 @@ const ChatMesssage = ({
         </div>
       </Slide>
 
-      {movies.length > 0 && (
-        <div className={classes.scroll}>
-          {movies.map((movie, index) => (
-            // <Grow
-            //   in
-            //   key={movie.id}
-            //   timeout={{ enter: Math.min(1200, index * 200 + 400) }}
-            // >
-            <div key={movie.id} style={{ marginLeft: 12 }}>
-              <MoviePoster
-                onClick={() => onMoviePosterClick(movie)}
-                showYear
-                quality={2}
-                {...movie}
-              />
-            </div>
-            // </Grow>
-          ))}
-        </div>
-      )}
+      {movies.length > 0 && <PosterScroll movies={movies} />}
     </div>
   );
 };

@@ -52,12 +52,10 @@ const renderOption = (option, props) => {
 };
 
 const renderInput = (params) => {
-  const classes = useStyles();
   return (
     <TextField
       {...params}
       autoFocus
-      className={classes.textField}
       variant="outlined"
       color="primary"
       label="Movie Data..."

@@ -1,15 +1,12 @@
-import { Box, Paper, Chip, makeStyles } from "@material-ui/core";
+import { Box, Paper, Chip } from "@material-ui/core";
 import * as R from "ramda";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import HorizontalScroll from "../common/components/HorizontalScroll";
 import discover from "./redux/discover";
-const useStyles = makeStyles((theme) => ({
-  root: {},
-}));
+import ChatFab from "../chat/ChatFab";
 
 export default () => {
-  const classes = useStyles();
   const chips = useSelector(discover.selectors.chips);
   const suggestions = useSelector(discover.selectors.suggestions);
   const dispatch = useDispatch();
@@ -34,6 +31,7 @@ export default () => {
             </Box>
           ))}
         </HorizontalScroll>
+        <ChatFab />
       </Box>
     </div>
   );

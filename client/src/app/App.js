@@ -9,10 +9,12 @@ import SearchPage from "../search";
 import VideoModal from "../video/VideoModal";
 import { AnimatedRoute, AnimatedSwitch } from "./animated-react-router";
 import Providers from "./Providers";
+import ChatModal from "../chat/ChatModal";
 
 const UnauthenticatedApp = () => {
   return (
     <React.Fragment>
+      <ChatModal />
       <VideoModal />
       <AnimatedSwitch>
         <AnimatedRoute exact path="/" component={HomePage} />

@@ -1,6 +1,6 @@
-import { useQuery } from "react-query";
-import TMDB from "../api/tmdb";
+import axios from "axios";
 import * as R from "ramda";
+import { useQuery } from "react-query";
 
 const rangeStep = (start, step, end) =>
   R.unfold((n) => (n > end ? false : [n, n + step]), start);
@@ -62,32 +62,49 @@ const sortByOptions = R.map(
 );
 
 export default (text) => {
-  const genresQuery = useQuery(["genres"], () => TMDB.genre.movie.list(), {});
+  const genresQuery = useQuery(
+    ["genres"],
+    () => axios.get("/api/tmdb/genre/movie/list").then((_) => _.data),
+    {}
+  );
 
   const params = {
-    query: text,
+    query: encodeURI(text),
   };
+
   const personSearchQuery = useQuery(
     ["person", "search", text],
-    () => Promise.resolve({ results: [] }),
+    () =>
+      text.length === 0
+        ? Promise.resolve({ results: [] })
+        : axios.get("/api/tmdb/search/person", { params }).then((_) => _.data),
     {}
   );
 
   const companySearchQuery = useQuery(
     ["company", "search", text],
-    () => Promise.resolve({ results: [] }),
+    () =>
+      text.length === 0
+        ? Promise.resolve({ results: [] })
+        : axios.get("/api/tmdb/search/company", { params }).then((_) => _.data),
     {}
   );
 
   const keywordSearchQuery = useQuery(
     ["keyword", "search", text],
-    () => Promise.resolve({ results: [] }),
+    () =>
+      text.length === 0
+        ? Promise.resolve({ results: [] })
+        : axios.get("/api/tmdb/search/keyword", { params }).then((_) => _.data),
     {}
   );
 
   const movieSearchQuery = useQuery(
     ["movie", "search", text],
-    () => Promise.resolve({ results: [] }), //TMDB.search.movie(params),
+    () =>
+      text.length === 0
+        ? Promise.resolve({ results: [] })
+        : axios.get("/api/tmdb/search/movie", { params }).then((_) => _.data),
     {}
   );
 

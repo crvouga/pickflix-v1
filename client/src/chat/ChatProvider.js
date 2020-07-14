@@ -2,6 +2,7 @@ import * as R from "ramda";
 import React, { useState } from "react";
 import axios from "axios";
 import ChatContext from "./ChatContext";
+import useLocalStorage from "../common/hooks/useLocalStorage";
 
 export const MESSAGE_CAPCITY = 10;
 
@@ -42,7 +43,7 @@ const tagsToDiscoverParameters = R.pipe(
 const responseToMovies = R.pipe(R.propOr([], "results"));
 
 export default ({ children }) => {
-  const [messageList, setMessageList] = useState([]);
+  const [messageList, setMessageList] = useLocalStorage("chat/messageList", []);
   const [text, setText] = useState("");
   const [tags, setTags] = useState([]);
 
