@@ -57,15 +57,17 @@ export default ({ details, releaseDates }) => {
             {details.tagline}
           </Typography>
         )}
-        <ExpandHeight
-          collapsedHeight="10em"
-          in={isOverviewExpanded.value}
-          onClick={isOverviewExpanded.toggle}
-        >
-          <Typography variant="body1" color="textSecondary">
-            {details.overview}
-          </Typography>
-        </ExpandHeight>
+        {details.overview && (
+          <ExpandHeight
+            collapsedHeight="10em"
+            in={isOverviewExpanded.value}
+            onClick={isOverviewExpanded.toggle}
+          >
+            <Typography variant="body1" color="textSecondary">
+              {details.overview}
+            </Typography>
+          </ExpandHeight>
+        )}
       </Box>
       <Divider />
     </React.Fragment>

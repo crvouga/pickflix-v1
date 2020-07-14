@@ -10,7 +10,8 @@ import Layer from "../../common/components/Layer";
 import modal from "../../common/redux/modal";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 import player from "../../video/redux/player";
-
+import Poster from "../components/Poster";
+import * as R from "ramda";
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const useStyles = makeStyles((theme) => ({
@@ -52,12 +53,35 @@ const useDelayedTrueBoolean = (initial) => {
 
 const stopPropagation = (e) => e.stopPropagation();
 
+const renderPoster = (poster) => (
+  <Box key={poster.filePath} width="100%" position="relative">
+    <Layer
+      style={{
+        filter: "blur(8px)",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundImage: `url(${makeTMDbImageURL(2, {
+          posterPath: poster.filePath,
+        })})`,
+      }}
+    />
+    <Poster margin="auto" width="40%" movie={{ posterPath: poster.filePath }} />
+  </Box>
+);
+
+const renderBackdrop = (backdrop) => (
+  <img
+    key={backdrop.filePath}
+    src={makeTMDbImageURL(2, { backdropPath: backdrop.filePath })}
+    style={{ width: "100%", height: "100%" }}
+  />
+);
+
 export default ({ videos, images }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [index, setIndex] = useState(0);
   const isPlayIconVisible = useDelayedTrueBoolean(true);
-  const { backdrops, posters } = images;
 
   const handlePlayIconClick = (e) => {
     dispatch(player.actions.setPlaylist(videos));
@@ -67,6 +91,17 @@ export default ({ videos, images }) => {
   const handleChangeIndex = (newIndex) => {
     setIndex(newIndex);
   };
+
+  const { backdrops, posters } = images;
+
+  if (backdrops.length === 0 && posters.length === 0) {
+    return null;
+  }
+
+  const imageComponents = R.take(
+    20,
+    R.concat(backdrops.map(renderBackdrop), posters.map(renderPoster))
+  );
 
   return (
     <AspectRatio
@@ -80,14 +115,9 @@ export default ({ videos, images }) => {
         interval={4000}
         value={index}
       >
-        {backdrops.map(({ filePath }) => (
-          <img
-            key={filePath}
-            src={makeTMDbImageURL(2, { backdropPath: filePath })}
-            className={classes.image}
-          />
-        ))}
+        {imageComponents}
       </AutoPlaySwipeableViews>
+
       <Fade in={videos.length !== 0 && isPlayIconVisible.value}>
         <Layer
           display="flex"
@@ -95,7 +125,7 @@ export default ({ videos, images }) => {
           alignItems="center"
           className={classes.noPointer}
         >
-          <Box className={classes.buttonCotaniner}>
+          <div className={classes.buttonCotaniner}>
             <IconButton
               color="default"
               onTouchStart={stopPropagation}
@@ -103,7 +133,7 @@ export default ({ videos, images }) => {
             >
               <PlayIcon className={classes.playIcon} />
             </IconButton>
-          </Box>
+          </div>
         </Layer>
       </Fade>
     </AspectRatio>

@@ -17,7 +17,8 @@ export default ({ details, credits }) => {
 
   const [oldestMovie, newestMovie] = R.compose(
     R.juxt([R.head, R.last]),
-    R.sort(R.ascend(R.pipe(R.prop("releaseDate"), (_) => new Date(_))))
+    R.sortBy((_) => moment(_.releaseDate).format("YYYYMMDD")),
+    R.reject(R.where({ releaseDate: R.isEmpty }))
   )(allMovies);
 
   const creditsByDepartment = R.groupBy(R.prop("department"), credits.crew);
@@ -26,30 +27,49 @@ export default ({ details, credits }) => {
   return (
     <React.Fragment>
       <Box p={2} paddingBottom={0}>
-        <Box display="flex" flexDirection="row" marginBottom={2}>
-          <PersonAvatar
-            person={details}
-            // TODO fix this
-            minWidth="120px"
-            maxWidth="120px"
-            minHeight="120px"
-            maxHeight="120px"
-            marginRight={2}
-          />
+        <Box display="flex" flexDirection="row" marginBottom={1}>
+          <PersonAvatar person={details} width="120px" marginRight={2} />
           <Box>
-            <Typography variant="h5">{details.name}</Typography>
-            <Typography color="textSecondary" variant="subtitle1">
-              Movies {allMovies.length}
+            <Typography variant="h6" style={{ fontWeight: "bold" }}>
+              {details.name}
             </Typography>
-            <Typography color="textSecondary" variant="subtitle1">
-              Years Active {toYear(oldestMovie.releaseDate)} -{" "}
-              {toYear(newestMovie.releaseDate)}
+            <Typography component="div">
+              <Box component="span" color="text.secondary">
+                Movies
+              </Box>{" "}
+              <Box fontWeight="bold" component="span">
+                {allMovies.length}
+              </Box>
+            </Typography>
+            <Typography component="div">
+              <Box component="span" color="text.secondary">
+                Credits
+              </Box>{" "}
+              <Box fontWeight="bold" component="span">
+                {allCredits.length}
+              </Box>
+            </Typography>
+            <Typography component="div">
+              <Box component="span" color="text.secondary">
+                Active
+              </Box>{" "}
+              <Box fontWeight="bold" component="span">
+                {toYear(oldestMovie.releaseDate)} -{" "}
+                {toYear(newestMovie.releaseDate)}
+              </Box>
             </Typography>
           </Box>
         </Box>
       </Box>
+
       {details.biography && (
-        <Box p={2} textAlign="left" display="flex" flexDirection="column">
+        <Box
+          p={2}
+          paddingTop={0}
+          textAlign="left"
+          display="flex"
+          flexDirection="column"
+        >
           <Box width="100%" display="flex" flexDirection="row">
             <Typography style={{ fontWeight: "bold", flex: 1 }}>
               Biography

@@ -21,8 +21,10 @@ export default ({ person, ...props }) => {
     history.push(`/person/${person.id}`);
   };
   return (
-    <Box component={AspectRatio} ratio="1/1" onClick={handleClick} {...props}>
-      <Avatar className={classes.avatar} src={profileURL} />
+    <Box onClick={handleClick} {...props}>
+      <AspectRatio ratio="1/1">
+        <Avatar className={classes.avatar} src={profileURL} />
+      </AspectRatio>
     </Box>
   );
 };

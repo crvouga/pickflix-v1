@@ -1,15 +1,13 @@
 import { IconButton, makeStyles, Toolbar, Typography } from "@material-ui/core";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
+import ThumbUpIcon from "@material-ui/icons/ThumbUp";
+import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
-import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import React from "react";
-import HorizontalScroll from "../../common/components/HorizontalScroll";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,14 +39,14 @@ export default () => {
       icon: true ? <BookmarkBorderIcon /> : <BookmarkIcon />,
       text: "Watchlist",
     },
-    // {
-    //   icon: <ThumbUpIcon />,
-    //   text: "Like",
-    // },
     {
-      icon: true ? <FavoriteBorderIcon /> : <FavoriteIcon />,
-      text: "Favorite",
+      icon: true ? <ThumbUpOutlinedIcon /> : <ThumbUpIcon />,
+      text: "Like",
     },
+    // {
+    //   icon: true ? <FavoriteBorderIcon /> : <FavoriteIcon />,
+    //   text: "Favorite",
+    // },
     {
       icon: true ? <PlaylistAddIcon /> : <PlaylistAddCheckIcon />,
       text: "Save",
