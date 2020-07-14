@@ -5,14 +5,12 @@ const initialState = {
   playing: false,
   video: null,
   playlist: [],
-  isPlaylistOpen: false,
 };
 
 const selectors = {
   playing: (state) => state.player.playing,
   video: (state) => state.player.video,
   playlist: (state) => state.player.playlist,
-  isPlaylistOpen: (state) => state.player.isPlaylistOpen,
 };
 
 const actions = {
@@ -42,6 +40,7 @@ const reducer = createReducer(initialState, {
 });
 
 function* saga() {
+  // set video when playlist changes
   yield takeEvery(actions.setPlaylist, function* () {
     const playlist = yield select(selectors.playlist);
     const video = yield select(selectors.video);

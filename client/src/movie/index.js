@@ -18,6 +18,7 @@ const fetchMoviePage = (movieId) =>
           "keywords",
           "videos",
           "images",
+          "release_dates",
         ],
       },
     })

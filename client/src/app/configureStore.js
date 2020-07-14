@@ -5,6 +5,7 @@ import player from "../video/redux/player";
 import modal from "../common/redux/modal";
 
 function* rootSaga() {
+  // ensure player is not playing when modal is not open
   yield takeEvery(player.actions.play, function* () {
     const isVideoModalOpen = yield select(modal.selectors.isOpen("videoModal"));
     if (!isVideoModalOpen) {

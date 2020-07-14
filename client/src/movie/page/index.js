@@ -22,15 +22,15 @@ export default ({ data }) => {
     similar,
     videos,
     recommendations,
+    releaseDates,
     ...details
   } = data;
 
   return (
     <Page>
-      {images.backdrops.length > 0 && (
-        <Media videos={videos.results} images={images} />
-      )}
-      <Header details={details} />
+      <Media videos={videos.results} images={images} />
+
+      <Header details={details} releaseDates={releaseDates} />
 
       <Divider />
 

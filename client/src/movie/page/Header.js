@@ -1,32 +1,42 @@
-import {
-  Box,
-  ButtonBase,
-  Collapse,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
-import clsx from "clsx";
+import { Box, Typography } from "@material-ui/core";
 import moment from "moment";
 import momentDurationFormatSetup from "moment-duration-format";
 import React from "react";
 import ChipScroll from "../../common/components/ChipScroll";
+import ExpandHeight from "../../common/components/ExpandHeight";
 import useBoolean from "../../common/hooks/useBoolean";
 import ActionBar from "./ActionBar";
-import ExpandHeight from "../../common/components/ExpandHeight";
 momentDurationFormatSetup(moment);
-const useStyles = makeStyles((theme) => ({
-  fadeBottom: {
-    "mask-image": "linear-gradient(to bottom, black 50%, transparent 100%)",
-  },
-}));
 
-export default ({ details }) => {
-  const classes = useStyles();
+const toCertification = (releaseDates) => {
+  const result = releaseDates?.results.find(
+    ({ iso31661 }) => iso31661 === "US"
+  );
+
+  if (!result) {
+    return null;
+  }
+
+  const certification = result.releaseDates
+    .map((_) => _.certification)
+    .find((_) => _ !== "");
+
+  return certification;
+};
+
+const toSubtitle1 = ({ details, releaseDates }) =>
+  [
+    details.releaseDate && moment(details.releaseDate).format("Y"),
+    details.runtime &&
+      moment.duration(details.runtime, "minutes").format("h[h] m[m]"),
+    toCertification(releaseDates),
+  ]
+    .filter((_) => _)
+    .join(" • ");
+
+export default ({ details, releaseDates }) => {
   const isOverviewExpanded = useBoolean();
-  const subtitle1 = [
-    moment(details.releaseDate).format("Y"),
-    moment.duration(details.runtime, "minutes").format("h[h] m[m]"),
-  ].join(" • ");
+  const subtitle1 = toSubtitle1({ details, releaseDates });
 
   return (
     <React.Fragment>

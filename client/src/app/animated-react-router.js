@@ -1,18 +1,15 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React from "react";
-import { Route, Switch } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Route, Switch, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 
 export const AnimatedSwitch = (props) => {
-  return (
-    <div style={{ position: "relative" }}>
-      <Route
-        render={({ location }) => (
-          <Switch location={location} key={location.pathname} {...props} />
-        )}
-      />
-    </div>
-  );
+  const location = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
+  return <Switch location={location} key={location.pathname} {...props} />;
 };
 
 const useStyles = makeStyles({
@@ -38,10 +35,6 @@ const variants = {
   visible: {
     opacity: 1,
   },
-};
-
-const scrollToTop = () => {
-  window.scrollTo(0, 0);
 };
 
 export const AnimatedRoute = (props) => {
