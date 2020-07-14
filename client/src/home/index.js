@@ -11,15 +11,6 @@ import MoviePosterScroll from "../movie/components/PosterScroll";
 import PersonAvatar from "../person/PersonAvatar";
 import Header from "./Header";
 
-const renderMovieScroll = (title, movies) => (
-  <React.Fragment>
-    <Box p={1} paddingLeft={2}>
-      <Typography variant="h6">{title}</Typography>
-    </Box>
-    <MoviePosterScroll movies={movies} />
-  </React.Fragment>
-);
-
 const renderProfile = (person) => (
   <Box key={person.id} minWidth="120px" marginRight={1}>
     <PersonAvatar person={person} />
@@ -32,7 +23,7 @@ const renderProfile = (person) => (
 const renderAvatarScroll = (title, persons) => (
   <React.Fragment>
     <Box p={1} paddingLeft={2}>
-      <Typography variant="h6">{title}</Typography>
+      <Typography style={{ fontWeight: "bold" }}>{title}</Typography>
     </Box>
     <HorizontalScroll paddingLeft={2}>
       {persons.map(renderProfile)}
@@ -56,11 +47,6 @@ const fetchHomePage = async () => {
 
 export default () => {
   const query = useQuery(["discover"], () => fetchHomePage(), {});
-  const genresQuery = useQuery(
-    "genres",
-    () => axios.get("/api/tmdb/genre/movie/list").then((res) => res.data),
-    {}
-  );
 
   if (query.status !== "success") {
     return <LoadingPage />;
@@ -73,9 +59,9 @@ export default () => {
   return (
     <Page>
       <Header movies={popular.results} />
-      {renderMovieScroll("Top Rated Movies", topRated.results)}
-      {renderMovieScroll("Upcoming Movies", upcoming.results)}
-      {renderMovieScroll("Now Playing Movies", nowPlaying.results)}
+      <MoviePosterScroll title="Top Rated" movies={topRated.results} />
+      <MoviePosterScroll title="Trending" movies={upcoming.results} />
+      <MoviePosterScroll title="Now Playing" movies={nowPlaying.results} />
       {renderAvatarScroll("Popular People", personPopular.results)}
       <Footer />
     </Page>

@@ -114,7 +114,7 @@ export default () => {
       </Box>
       <Box display="flex" flexDirection="row">
         <ChipSelection
-          ContainerProps={{ paddingX: 2, paddingY: 1, flex: 1 }}
+          BoxProps={{ paddingX: 2, paddingY: 1, flex: 1 }}
           chips={keys}
           selected={selectedKey}
           onSelect={setSelectedKey}

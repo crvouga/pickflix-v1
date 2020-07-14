@@ -4,6 +4,7 @@ import modal from "../../common/redux/modal";
 import OpenVideosButton from "../../video/OpenVideosButton";
 import player from "../../video/redux/player";
 import ThumbnailScroll from "../../youtube/ThumbnailScroll";
+import { Divider } from "@material-ui/core";
 
 export default ({ videos }) => {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ export default ({ videos }) => {
         onClick={handleThumbnailClick}
         paddingX={2}
       />
+      <Divider />
     </React.Fragment>
   );
 };

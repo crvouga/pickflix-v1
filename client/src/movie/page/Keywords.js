@@ -7,13 +7,15 @@ import { useParams } from "react-router-dom";
 import ChipSelection from "../../common/components/ChipSelection";
 import MoviePosterScroll from "../components/PosterScroll";
 
+const removeMovieById = (movieId, movies) =>
+  R.reject(R.where({ id: R.eqBy(String, movieId) }), movies);
+
 export default ({ keywords }) => {
   const { movieId } = useParams();
-  const removeCurrentMovie = R.reject(R.where({ id: R.eqBy(String, movieId) }));
 
   const [selectedKeyword, setSelectedKeyword] = useState(keywords?.[0]);
 
-  const query = useQuery(
+  const { data } = useQuery(
     ["movie", selectedKeyword?.id],
     () =>
       selectedKeyword &&
@@ -26,33 +28,29 @@ export default ({ keywords }) => {
     {}
   );
 
-  const moviesFromKeyword = R.pipe(
-    R.pathOr([], ["data", "results"]),
-    removeCurrentMovie
-  )(query);
+  const moviesFromKeyword = removeMovieById(movieId, data?.results || []);
 
-  const keywordCount = keywords.length > 0;
-
-  if (keywordCount === 0) {
+  if (keywords.length === 0) {
     return null;
   }
 
   return (
     <React.Fragment>
+      <Box paddingLeft={2}>
+        <Typography style={{ fontWeight: "bold" }}>Keywords</Typography>
+      </Box>
       <ChipSelection
         chips={keywords}
         selected={selectedKeyword}
-        getKey={(_) => _.id}
-        getLabel={(_) => _.name}
+        getKey={R.prop("id")}
+        getLabel={R.prop("name")}
         onSelect={setSelectedKeyword}
-        ContainerProps={{
+        BoxProps={{
           paddingLeft: 2,
           paddingBottom: 1,
         }}
       />
-      <Collapse in={query.status === "success"}>
-        <MoviePosterScroll movies={moviesFromKeyword} />
-      </Collapse>
+      <MoviePosterScroll movies={moviesFromKeyword} />
     </React.Fragment>
   );
 };

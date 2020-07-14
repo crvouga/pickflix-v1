@@ -2,18 +2,18 @@ import {
   AppBar,
   Avatar,
   Box,
-  ButtonBase,
   Dialog,
+  Divider,
   IconButton,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
   makeStyles,
+  Paper,
   Slide,
   Toolbar,
   Typography,
-  Paper,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
@@ -21,8 +21,8 @@ import * as R from "ramda";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import ChipSelection from "../../common/components/ChipSelection";
-import useBoolean from "../../common/hooks/useBoolean";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
+import useBoolean from "../../common/hooks/useBoolean";
 import PersonAvatar from "../../person/PersonAvatar";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 
@@ -130,7 +130,7 @@ export default ({ credits }) => {
       >
         <Box component={Paper} position="sticky" top={0} zIndex={2}>
           <ChipSelection
-            ContainerProps={{
+            BoxProps={{
               p: 2,
             }}
             chips={departments}
@@ -189,6 +189,7 @@ export default ({ credits }) => {
           </Box>
         ))}
       </HorizontalScroll>
+      <Divider />
     </React.Fragment>
   );
 };

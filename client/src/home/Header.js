@@ -42,12 +42,14 @@ const HeaderItem = ({ movie }) => {
         paddingX={2}
         paddingY={3}
       >
-        <Typography variant="subtitle1">
-          {moment(movie.releaseDate).format("Y")}
-        </Typography>
-        <Typography variant="h6" style={{ fontWeight: "bold" }} noWrap>
-          {movie.title}
-        </Typography>
+        <div>
+          <Typography variant="h6" style={{ fontWeight: "bold" }} noWrap>
+            {movie.title}
+          </Typography>
+          <Typography variant="subtitle1">
+            {moment(movie.releaseDate).format("Y")}
+          </Typography>
+        </div>
       </Layer>
     </Box>
   );

@@ -1,19 +1,50 @@
-import { Box, Divider, Typography } from "@material-ui/core";
 import React from "react";
 import Footer from "../../common/page/Footer";
-import MoviePosterScroll from "../components/PosterScroll";
+import Page from "../../common/page/Page";
 import Collection from "./Collection";
 import Credits from "./Credits";
 import Details from "./Details";
 import Header from "./Header";
-import Keywords from "./Keywords";
 import Media from "./Media";
+import RelatedMovies from "./RelatedMovies";
 import Reviews from "./Reviews";
-import Title from "./Title";
 import Videos from "./Videos";
-import Page from "../../common/page/Page";
+import { useParams } from "react-router";
+import LoadingPage from "../../common/page/LoadingPage";
+import ErrorPage from "../../common/page/ErrorPage";
+import axios from "axios";
+import { useQuery } from "react-query";
 
-export default ({ data }) => {
+const fetchMoviePage = (movieId) =>
+  axios
+    .get(`/api/tmdb/movie/${movieId}`, {
+      params: {
+        appendToResponse: [
+          "credits",
+          "reviews",
+          "similar",
+          "recommendations",
+          "keywords",
+          "videos",
+          "images",
+          "release_dates",
+        ],
+      },
+    })
+    .then((response) => response.data);
+
+export default () => {
+  const { movieId } = useParams();
+
+  const { status, data } = useQuery(
+    `/movie/${movieId}`,
+    () => fetchMoviePage(movieId),
+    {}
+  );
+
+  if (status === "loading") return <LoadingPage />;
+  if (status === "error") return <ErrorPage />;
+
   const {
     credits,
     reviews,
@@ -29,50 +60,17 @@ export default ({ data }) => {
   return (
     <Page>
       <Media videos={videos.results} images={images} />
-
       <Header details={details} releaseDates={releaseDates} />
-
-      <Divider />
-
       <Credits credits={credits} />
-      <Divider />
-
       <Videos videos={videos.results} />
-      <Divider />
-
       <Collection details={details} />
-      <Divider />
-
-      <Box paddingTop={2}>
-        {recommendations.results.length > 0 && (
-          <React.Fragment>
-            <Title>Recommendations</Title>
-            <MoviePosterScroll movies={recommendations.results} />
-          </React.Fragment>
-        )}
-
-        {similar.results.length > 0 && (
-          <React.Fragment>
-            <Title>Similar</Title>
-            <MoviePosterScroll movies={similar.results} />
-          </React.Fragment>
-        )}
-
-        {keywords.keywords.length > 0 && (
-          <React.Fragment>
-            <Title>Keywords</Title>
-            <Keywords keywords={keywords.keywords} />
-          </React.Fragment>
-        )}
-      </Box>
-      <Divider />
-
+      <RelatedMovies
+        recommendations={recommendations.results}
+        similar={similar.results}
+        keywords={keywords.keywords}
+      />
       <Details details={details} />
-      <Divider />
-
       <Reviews reviews={reviews} />
-      <Divider />
-
       <Footer />
     </Page>
   );

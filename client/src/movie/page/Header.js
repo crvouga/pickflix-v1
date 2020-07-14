@@ -1,4 +1,4 @@
-import { Box, Typography } from "@material-ui/core";
+import { Box, Divider, Typography } from "@material-ui/core";
 import moment from "moment";
 import momentDurationFormatSetup from "moment-duration-format";
 import React from "react";
@@ -67,6 +67,7 @@ export default ({ details, releaseDates }) => {
           </Typography>
         </ExpandHeight>
       </Box>
+      <Divider />
     </React.Fragment>
   );
 };

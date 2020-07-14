@@ -1,4 +1,4 @@
-import { Box, Grid, Typography, useTheme } from "@material-ui/core";
+import { Box, Grid, Typography, useTheme, Divider } from "@material-ui/core";
 import moment from "moment";
 import momentDurationFormatSetup from "moment-duration-format";
 import numeral from "numeral";
@@ -93,6 +93,7 @@ export default ({ details }) => {
       {renderChipScroll("Genres", details.genres)}
       {renderChipScroll("Production Companies", details.productionCompanies)}
       {renderChipScroll("Production Countries", details.productionCountries)}
+      <Divider />
     </React.Fragment>
   );
 };

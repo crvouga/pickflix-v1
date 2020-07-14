@@ -8,11 +8,11 @@ export default ({
   getKey = (x) => x,
   getLabel = (x) => x,
   onSelect,
-  ContainerProps,
+  BoxProps,
   ChipProps,
 }) => {
   return (
-    <HorizontalScroll {...ContainerProps}>
+    <HorizontalScroll {...BoxProps}>
       {chips.map((chip) => (
         <Box
           key={getKey(chip)}

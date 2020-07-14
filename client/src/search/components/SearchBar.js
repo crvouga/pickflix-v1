@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default ({ loading, onBack, onClear, InputBaseProps }) => {
+export default ({ loading, onClear, InputBaseProps }) => {
   const classes = useStyles();
   const { value } = InputBaseProps;
   return (
@@ -31,11 +31,6 @@ export default ({ loading, onBack, onClear, InputBaseProps }) => {
       width="100%"
       className={classes.root}
     >
-      {onBack && (
-        <IconButton edge="start" onClick={onBack}>
-          <ArrowBackIcon />
-        </IconButton>
-      )}
       <InputBase className={classes.input} {...InputBaseProps} />
       {loading ? (
         <CircularProgress

@@ -15,7 +15,7 @@ export default ({ videos, onClick, ...props }) => {
   };
 
   return (
-    <HorizontalScroll {...props}>
+    <HorizontalScroll paddingBottom={1} {...props}>
       {videos.map((video) => (
         <Box
           key={video.id}
@@ -33,7 +33,7 @@ export default ({ videos, onClick, ...props }) => {
             </Layer>
           </Box>
 
-          <Typography variant="subtitle2" color="textSecondary">
+          <Typography variant="subtitle1" color="textSecondary">
             {video.type}
           </Typography>
         </Box>

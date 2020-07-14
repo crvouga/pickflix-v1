@@ -6,6 +6,7 @@ import SearchBar from "./components/SearchBar";
 import SearchHistory from "./components/SearchHistory";
 import SearchResults from "./components/SearchResults";
 import useSearchState from "./hooks/useSearchState";
+import ChipSelection from "../common/components/ChipSelection";
 
 const useStyles = makeStyles((theme) => ({
   paper: {

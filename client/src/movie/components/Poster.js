@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default ({ movie, ...props }) => {
   const { id, posterPath, title } = movie;
+
   const history = useHistory();
   const classes = useStyles();
   const posterURL = makeTMDbImageURL(2, { posterPath });
@@ -38,7 +39,7 @@ export default ({ movie, ...props }) => {
   return (
     <Box
       component={AspectRatio}
-      ratio="2/3"
+      ratio="18/24"
       onClick={onClick}
       className={classes.root}
       {...props}
@@ -52,7 +53,7 @@ export default ({ movie, ...props }) => {
       ) : (
         <Typography
           align="center"
-          color="textSecondary"
+          color="textPrimary"
           className={classes.fallback}
         >
           {title}

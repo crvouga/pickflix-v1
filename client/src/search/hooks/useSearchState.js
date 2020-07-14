@@ -12,6 +12,7 @@ export default () => {
     setText,
     page,
     setPage,
+
     ...searchResults,
     ...searchHistory,
   };

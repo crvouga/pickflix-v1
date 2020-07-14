@@ -29,6 +29,7 @@ export default ({ reviews }) => {
           {index !== reviews.results.length - 1 && <Divider />}
         </React.Fragment>
       ))}
+      <Divider />
     </React.Fragment>
   );
 };

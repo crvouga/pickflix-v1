@@ -1,6 +1,7 @@
 import { Container, CssBaseline, makeStyles } from "@material-ui/core";
 import React from "react";
-import HomePage from "../home/HomePage";
+import DiscoverPage from "../discover";
+import HomePage from "../home";
 import MoviePage from "../movie";
 import NavigationBarBottom from "../navigation/mobile/NavigationBarBottom";
 import PersonPage from "../person";
@@ -15,6 +16,7 @@ const UnauthenticatedApp = () => {
       <VideoModal />
       <AnimatedSwitch>
         <AnimatedRoute exact path="/" component={HomePage} />
+        <AnimatedRoute exact path="/discover" component={DiscoverPage} />
         <AnimatedRoute exact path="/search" component={SearchPage} />
         <AnimatedRoute exact path="/movie/:movieId" component={MoviePage} />
         <AnimatedRoute exact path="/person/:personId" component={PersonPage} />

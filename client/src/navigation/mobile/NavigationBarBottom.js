@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import HomeIcon from "@material-ui/icons/Home";
 import SearchIcon from "@material-ui/icons/Search";
+import ExploreIcon from "@material-ui/icons/Explore";
 import React from "react";
 import { useHistory } from "react-router";
 
@@ -38,6 +39,11 @@ export default () => {
         className={classes.root}
       >
         <BottomNavigationAction value="/" label="Home" icon={<HomeIcon />} />
+        <BottomNavigationAction
+          value="/discover"
+          label="Discover"
+          icon={<ExploreIcon />}
+        />
         <BottomNavigationAction
           value="/search"
           label="Search"

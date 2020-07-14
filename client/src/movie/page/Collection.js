@@ -1,4 +1,4 @@
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, Divider } from "@material-ui/core";
 import axios from "axios";
 import React from "react";
 import { useQuery } from "react-query";
@@ -39,15 +39,17 @@ export default ({ details }) => {
     <React.Fragment>
       <Box padding={2}>
         <Typography style={{ fontWeight: "bold" }}>{name}</Typography>
-        <ExpandHeight
-          collapsedHeight="10em"
-          in={isOverviewExpanded.value}
-          onClick={isOverviewExpanded.toggle}
-        >
-          <Typography gutterBottom color="textSecondary" variant="body1">
-            {overview}
-          </Typography>
-        </ExpandHeight>
+        {overview && (
+          <ExpandHeight
+            collapsedHeight="10em"
+            in={isOverviewExpanded.value}
+            onClick={isOverviewExpanded.toggle}
+          >
+            <Typography gutterBottom color="textSecondary" variant="body1">
+              {overview}
+            </Typography>
+          </ExpandHeight>
+        )}
       </Box>
 
       <HorizontalScroll paddingLeft={2} paddingBottom={2}>
@@ -58,6 +60,7 @@ export default ({ details }) => {
           </Box>
         ))}
       </HorizontalScroll>
+      <Divider />
     </React.Fragment>
   );
 };
