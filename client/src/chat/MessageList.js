@@ -8,13 +8,12 @@ import {
 } from "@material-ui/core";
 import clsx from "clsx";
 import * as R from "ramda";
-import React, { useContext, useEffect } from "react";
-import { useHistory } from "react-router";
-import MoviePoster from "../movie/components/Poster";
-import ChatContext from "./ChatContext";
-import typeToIcon from "./typeToIcon";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import PosterScroll from "../movie/components/PosterScroll";
+import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
+import chat from "./redux/chat";
+import typeToIcon from "./typeToIcon";
 
 const useStyles = makeStyles((theme) => ({
   chatMessagesRoot: {
@@ -113,9 +112,8 @@ const ChatMesssage = ({
 
 export default () => {
   const classes = useStyles();
-  const chat = useContext(ChatContext);
-
-  const lastMessageId = R.propOr("", "id", R.last(chat.messageList));
+  const messageList = useSelector(chat.selectors.messageList);
+  const lastMessageId = R.propOr("", "id", R.last(messageList));
 
   useEffect(() => {
     document
@@ -125,13 +123,7 @@ export default () => {
 
   return (
     <div className={classes.chatMessagesRoot}>
-      {chat.messageList.length === chat.MESSAGE_CAPACITY && (
-        <Typography color="textSecondary" style={{ textAlign: "center" }}>
-          Sorry I don't save a lot of messages
-        </Typography>
-      )}
-
-      {chat.messageList.map((message) => (
+      {messageList.map((message) => (
         <ChatMesssage key={message.id} {...message} />
       ))}
       <div id="chat-messages-bottom" style={{ marginTop: "100px" }} />

@@ -1,10 +1,10 @@
-import { Box, Paper, Chip } from "@material-ui/core";
+import { Box, Chip, Paper } from "@material-ui/core";
 import * as R from "ramda";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ChatFab from "../chat/Fab";
 import HorizontalScroll from "../common/components/HorizontalScroll";
 import discover from "./redux/discover";
-import ChatFab from "../chat/ChatFab";
 
 export default () => {
   const chips = useSelector(discover.selectors.chips);

@@ -49,12 +49,7 @@ export default () => {
   ];
 
   return (
-    <Box
-      display="flex"
-      justifyContent="space-around"
-      overflowX="auto"
-      flexWrap="nowrap"
-    >
+    <Box display="flex" justifyContent="space-around" flexWrap="nowrap">
       {actions.map(({ icon, text, onClick }) => (
         <IconButton
           key={text}

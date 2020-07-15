@@ -4,6 +4,7 @@ import { fork, select, put, takeEvery } from "redux-saga/effects";
 import player from "../video/redux/player";
 import modal from "../common/redux/modal";
 import discover from "../discover/redux/discover";
+import chat from "../chat/redux/chat";
 
 function* rootSaga() {
   // ensure player is not playing when modal is not open
@@ -15,12 +16,14 @@ function* rootSaga() {
   });
   yield fork(player.saga);
   yield fork(discover.saga);
+  yield fork(chat.saga);
 }
 
 const rootReducer = {
   player: player.reducer,
   modal: modal.reducer,
   discover: discover.reducer,
+  chat: chat.reducer,
 };
 
 const sagaMiddleware = createSagaMiddleware();

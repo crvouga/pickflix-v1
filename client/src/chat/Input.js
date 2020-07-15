@@ -1,25 +1,23 @@
 import {
   Avatar,
-  Box,
   Button,
   Chip,
   ListItemAvatar,
   ListItemText,
   makeStyles,
   Paper,
-  InputBase,
 } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import * as R from "ramda";
-import React, { useContext, useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import modal from "../common/redux/modal";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-import ChatContext from "./ChatContext";
+import chat from "./redux/chat";
 import typeToIcon from "./typeToIcon";
-import useChatInputOptions from "./useChatInputOptions";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -81,13 +79,23 @@ const renderTag = (tag, props) => (
 const renderTags = (tags, getTagProps) =>
   tags.map((tag, index) => renderTag(tag, getTagProps({ ...tag, index })));
 
-export default function ChatInput() {
+export default () => {
   const classes = useStyles();
-  const { text, tags, setText, setTags, sendMessage, isLoading } = useContext(
-    ChatContext
-  );
+  const dispatch = useDispatch();
+  const text = useSelector(chat.selectors.text);
+  const tags = useSelector(chat.selectors.tags);
+  const options = useSelector(chat.selectors.options);
 
-  const options = useChatInputOptions(text);
+  const onChange = (e, newTags, reason) => {
+    dispatch(chat.actions.setTags(newTags));
+  };
+  const onInputChange = (e, newText) => {
+    dispatch(chat.actions.setText(newText));
+  };
+  const onSend = () => {
+    dispatch(chat.actions.sendMessage({ author: "user", tags }));
+  };
+
   const inputRef = useRef();
   const isChatOpen = useSelector(modal.selectors.isOpen("chat"));
   useEffect(() => {
@@ -95,16 +103,6 @@ export default function ChatInput() {
       setTimeout(() => inputRef.current.focus(), 200);
     }
   }, [isChatOpen, inputRef.current]);
-  const onChange = (e, newTags, reason) => {
-    setTags(newTags);
-  };
-  const onInputChange = (e, newText) => {
-    setText(newText);
-  };
-
-  const onSend = () => {
-    sendMessage({ author: "user", tags });
-  };
 
   const onFocus = () => {
     document
@@ -115,7 +113,6 @@ export default function ChatInput() {
   return (
     <Paper className={classes.root}>
       <Autocomplete
-        loading={isLoading}
         openOnFocus
         className={classes.autocomplete}
         multiple
@@ -147,4 +144,4 @@ export default function ChatInput() {
       </Button>
     </Paper>
   );
-}
+};

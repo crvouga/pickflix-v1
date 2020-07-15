@@ -9,8 +9,9 @@ export const cancelableRequest = (asyncFn) => (...args) => {
   const config = {
     cancelToken: source.token,
   };
-  const promise = asyncFn(args, config);
+  const promise = asyncFn(config, ...args);
   promise.cancel = () => {
+    console.log("Query was cancelled by React Query");
     source.cancel("Query was cancelled by React Query");
   };
 
@@ -22,7 +23,7 @@ export default ({ text, page }) => {
 
   const query = useQuery(
     ["search", deferredText, page],
-    cancelableRequest(async (args, config) => {
+    cancelableRequest(async (config, ...args) => {
       if (deferredText.length === 0) {
         return { results: [] };
       }
