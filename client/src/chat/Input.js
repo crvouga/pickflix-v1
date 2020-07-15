@@ -1,15 +1,13 @@
 import {
   Avatar,
   Box,
-  Button,
   Chip,
-  InputBase,
-  Paper,
-  IconButton,
-  TextField,
   Fab,
+  InputBase,
+  makeStyles,
 } from "@material-ui/core";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import clsx from "clsx";
 import matchSorter from "match-sorter";
 import * as R from "ramda";
 import React, { useEffect, useRef } from "react";
@@ -20,7 +18,18 @@ import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import chat from "./redux/chat";
 import typeToIcon from "./typeToIcon";
 
+const useStyles = makeStyles((theme) => ({
+  border: {
+    border: `1px solid ${theme.palette.text.secondary}`,
+    borderRadius: "2em",
+  },
+  borderBottom: {
+    borderBottom: `1px solid ${theme.palette.text.secondary}`,
+  },
+}));
+
 export default () => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const text = useSelector(chat.selectors.text);
   const tags = useSelector(chat.selectors.tags);
@@ -38,11 +47,13 @@ export default () => {
     dispatch(chat.actions.setText(e.target.value));
   };
   const handleSelectOption = (option) => () => {
+    inputRef.current.focus();
     const newTags = R.union(tags, [option]);
     dispatch(chat.actions.setText(""));
     dispatch(chat.actions.setTags(newTags));
   };
   const handleTagDelete = (tag) => () => {
+    inputRef.current.focus();
     const newTags = R.without([tag], tags);
     dispatch(chat.actions.setTags(newTags));
   };
@@ -55,47 +66,61 @@ export default () => {
 
   const filteredOptions = matchSorter(options, text, {
     keys: ["name"],
+    threshold: matchSorter.rankings.NO_MATCH,
   });
-
-  console.log({ filteredOptions });
 
   return (
     <Box>
-      <HorizontalScroll p={2} maxWidth="100%">
-        {tags.map((tag) => (
-          <Box key={tag.id} marginRight={1}>
-            <Chip
-              onDelete={handleTagDelete(tag)}
-              label={tag.name}
-              avatar={
-                <Avatar src={makeTMDbImageURL(2, tag)}>
-                  {typeToIcon(tag.type)}
-                </Avatar>
-              }
-            />
+      <div className={classes.border}>
+        {tags.length > 0 && (
+          <Box
+            display="flex"
+            flexDirection="row"
+            flexWrap="wrap"
+            maxWidth="100%"
+            className={classes.borderBottom}
+          >
+            {tags.map((tag) => (
+              <Box key={tag.id} margin={1}>
+                <Chip
+                  size="small"
+                  onDelete={handleTagDelete(tag)}
+                  label={tag.name}
+                  avatar={
+                    <Avatar src={makeTMDbImageURL(2, tag)}>
+                      {typeToIcon(tag.type)}
+                    </Avatar>
+                  }
+                />
+              </Box>
+            ))}
           </Box>
-        ))}
-      </HorizontalScroll>
-      <Box display="flex" flexDirection="row" maxWidth="100vw">
-        <Box
-          component={InputBase}
-          flex={1}
-          paddingLeft={2}
-          value={text}
-          onChange={handleInputChange}
-          inputRef={inputRef}
-        />
-        <Fab
-          size="small"
-          onClick={handleSend}
-          color="primary"
-          variant="contained"
-        >
-          <ArrowUpwardIcon />
-        </Fab>
-      </Box>
+        )}
+        <Box display="flex" flexDirection="row">
+          <Box
+            component={InputBase}
+            flex={1}
+            paddingLeft={2}
+            value={text}
+            onChange={handleInputChange}
+            inputRef={inputRef}
+            placeholder="Person, Genre, Date, Company, Keyword, ..."
+          />
+          <Fab
+            size="small"
+            onClick={handleSend}
+            color="primary"
+            disabled={tags.length === 0}
+          >
+            <ArrowUpwardIcon
+              style={{ color: tags.length === 0 ? "inherit" : "white" }}
+            />
+          </Fab>
+        </Box>
+      </div>
 
       <HorizontalScroll p={1}>
+        <div id="option-list-start" />
         {filteredOptions.map((option) => (
           <Box key={option.id} marginRight={1}>
             <Chip
