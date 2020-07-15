@@ -11,4 +11,6 @@ export default {
   setTags: createAction("chat/setTags"),
   setText: createAction("chat/setText"),
   setOptions: createAction("chat/setOptions"),
+  setFocus: createAction("chat/setFocus"),
+  messageListScroll: createAction("chat/messageListScroll"),
 };

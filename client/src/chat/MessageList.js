@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import clsx from "clsx";
 import * as R from "ramda";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PosterScroll from "../movie/components/PosterScroll";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
@@ -139,9 +139,22 @@ export default () => {
     }
   }, [isChatModalOpen]);
 
+  const focused = useSelector(chat.selectors.focused);
+  const [previousScrollTop, setPreviousScrollTop] = useState(0);
+  const handleScroll = (e) => {
+    const newScrollTop = e.currentTarget.scrollTop;
+    if (previousScrollTop > newScrollTop) {
+      //scrolling up
+      if (focused) dispatch(chat.actions.setFocus(false));
+    } else {
+      //scrolling down
+    }
+    setPreviousScrollTop(newScrollTop);
+  };
+
   return (
-    <div className={classes.chatMessagesRoot}>
-      {R.takeLast(50, messageList).map((message) => (
+    <div onScroll={handleScroll} className={classes.chatMessagesRoot}>
+      {R.takeLast(25, messageList).map((message) => (
         <ChatMesssage
           onTagClick={handleTagClick}
           key={message.id}

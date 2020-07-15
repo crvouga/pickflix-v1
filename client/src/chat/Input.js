@@ -17,6 +17,7 @@ import modal from "../common/redux/modal";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import chat from "./redux/chat";
 import typeToIcon from "./typeToIcon";
+import useBoolean from "../common/hooks/useBoolean";
 
 const useStyles = makeStyles((theme) => ({
   border: {
@@ -52,7 +53,7 @@ export default () => {
     dispatch(chat.actions.setText(""));
     dispatch(chat.actions.setTags(newTags));
   };
-  const handleTagDelete = (tag) => () => {
+  const handleTagDelete = (tag) => (e) => {
     inputRef.current.focus();
     const newTags = R.without([tag], tags);
     dispatch(chat.actions.setTags(newTags));
@@ -64,13 +65,37 @@ export default () => {
     dispatch(chat.actions.sendMessage({ author: "user", tags }));
   };
 
+  const inputFocused = useBoolean(false);
+  const focus = () => {
+    inputRef.current.focus();
+  };
+
   const filteredOptions = matchSorter(options, text, {
-    keys: ["name", "type"],
+    keys: ["name"],
     threshold: matchSorter.rankings.NO_MATCH,
   });
+  const focused = useSelector(chat.selectors.focused);
+
+  const handleBlur = () => {
+    dispatch(chat.actions.setFocus(false));
+  };
+
+  const handleFocus = () => {
+    dispatch(chat.actions.setFocus(true));
+  };
+
+  useEffect(() => {
+    if (inputRef.current) {
+      if (focused) {
+        inputRef.current.focus();
+      } else {
+        inputRef.current.blur();
+      }
+    }
+  }, [inputRef.current, focused]);
 
   return (
-    <Box>
+    <Box onClick={focus}>
       <div className={classes.border}>
         {tags.length > 0 && (
           <Box
@@ -104,6 +129,8 @@ export default () => {
             value={text}
             onChange={handleInputChange}
             inputRef={inputRef}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             placeholder="Person, Genre, Date, Company, Keyword, ..."
           />
           <Fab

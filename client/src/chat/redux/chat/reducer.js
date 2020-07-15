@@ -7,13 +7,18 @@ export default createReducer(
     tags: [],
     text: "",
     options: [],
+    focused: true, // chat input is focus state
   },
   {
     [actions.sendMessage]: (state, action) => {
-      state.messageList.push(action.payload);
+      const messageList = state.messageList;
+      messageList.push(action.payload);
+      messageList.slice(Math.max(messageList.length - 100, 0));
     },
     [actions.recieveMessage]: (state, action) => {
-      state.messageList.push(action.payload);
+      const messageList = state.messageList;
+      messageList.push(action.payload);
+      messageList.slice(Math.max(messageList.length - 100, 0));
     },
     [actions.setTags]: (state, action) => {
       state.tags = action.payload;
@@ -23,6 +28,9 @@ export default createReducer(
     },
     [actions.setOptions]: (state, action) => {
       state.options = action.payload;
+    },
+    [actions.setFocus]: (state, action) => {
+      state.focused = action.payload;
     },
   }
 );
