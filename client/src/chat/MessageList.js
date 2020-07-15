@@ -10,11 +10,11 @@ import clsx from "clsx";
 import * as R from "ramda";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import modal from "../common/redux/modal";
 import PosterScroll from "../movie/components/PosterScroll";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import chat from "./redux/chat";
 import typeToIcon from "./typeToIcon";
-import modal from "../common/redux/modal";
 const useStyles = makeStyles((theme) => ({
   chatMessagesRoot: {
     flex: 1,
@@ -140,6 +140,13 @@ export default () => {
   }, [isChatModalOpen]);
 
   const focused = useSelector(chat.selectors.focused);
+  useEffect(() => {
+    if (focused) {
+      document
+        .getElementById("chat-messages-bottom")
+        .scrollIntoView({ behavior: "smooth" });
+    }
+  }, [focused]);
   const [previousScrollTop, setPreviousScrollTop] = useState(0);
   const handleScroll = (e) => {
     const newScrollTop = e.currentTarget.scrollTop;
