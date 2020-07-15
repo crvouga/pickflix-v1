@@ -54,6 +54,15 @@ export default function* () {
     );
     const movies = response.data.results;
     yield delay(500);
-    yield put(actions.recieveMessage({ tags: message.tags, movies }));
+    if (movies.length === 0) {
+      yield put(
+        actions.recieveMessage({
+          text: "Couldn't find any movies 🤷‍♂️",
+          movies,
+        })
+      );
+    } else {
+      yield put(actions.recieveMessage({ tags: message.tags, movies }));
+    }
   });
 }

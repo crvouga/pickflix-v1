@@ -1,13 +1,4 @@
-import {
-  AppBar,
-  Typography,
-  Dialog,
-  IconButton,
-  Slide,
-  Toolbar,
-  Avatar,
-  Box,
-} from "@material-ui/core";
+import { AppBar, Dialog, IconButton, Slide, Toolbar } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,7 +6,6 @@ import { useHistory } from "react-router";
 import modal from "../common/redux/modal";
 import Input from "./Input";
 import MessageList from "./MessageList";
-import MovieIcon from "@material-ui/icons/Movie";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -28,15 +18,7 @@ export default () => {
     dispatch(modal.actions.close("chat"));
   };
   useEffect(() => history.listen(close), []);
-  useEffect(() => {
-    if (isOpen) {
-      setTimeout(() => {
-        document
-          .getElementById("chat-messages-bottom")
-          .scrollIntoView({ behavior: "smooth" });
-      }, 300);
-    }
-  }, [isOpen]);
+
   return (
     <Dialog
       fullScreen

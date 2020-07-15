@@ -123,7 +123,7 @@ export default () => {
 
   return (
     <div className={classes.chatMessagesRoot}>
-      {messageList.slice(0, 50).map((message) => (
+      {R.takeLast(50, messageList).map((message) => (
         <ChatMesssage key={message.id} {...message} />
       ))}
       <div id="chat-messages-bottom" style={{ marginTop: "100px" }} />

@@ -1,100 +1,30 @@
 import {
   Avatar,
+  Box,
   Button,
   Chip,
-  ListItemAvatar,
-  ListItemText,
-  makeStyles,
+  InputBase,
   Paper,
+  IconButton,
+  TextField,
+  Fab,
 } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import matchSorter from "match-sorter";
 import * as R from "ramda";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import HorizontalScroll from "../common/components/HorizontalScroll";
 import modal from "../common/redux/modal";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import chat from "./redux/chat";
 import typeToIcon from "./typeToIcon";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-  },
-  autocomplete: {
-    flex: 1,
-  },
-  suggestions: {
-    height: "360px",
-  },
-  button: {},
-  textField: {
-    borderRadius: theme.spacing(5),
-  },
-}));
-
-const renderOption = (option, props) => {
-  return (
-    <React.Fragment>
-      {option.logoPath ? (
-        <img src={makeTMDbImageURL(1, option)} style={{ marginRight: 12 }} />
-      ) : (
-        <ListItemAvatar>
-          <Avatar src={makeTMDbImageURL(1, option)}>
-            {typeToIcon(option.type)}
-          </Avatar>
-        </ListItemAvatar>
-      )}
-
-      <ListItemText primary={option.name} secondary={option.type} />
-    </React.Fragment>
-  );
-};
-
-const renderInput = (params) => {
-  return (
-    <TextField
-      {...params}
-      autoFocus
-      variant="outlined"
-      color="primary"
-      label="Movie Data..."
-    />
-  );
-};
-
-const renderTag = (tag, props) => (
-  <Chip
-    key={tag.name}
-    {...props}
-    size="small"
-    label={tag.name}
-    avatar={
-      <Avatar src={makeTMDbImageURL(2, tag)}>{typeToIcon(tag.type)}</Avatar>
-    }
-  />
-);
-
-const renderTags = (tags, getTagProps) =>
-  tags.map((tag, index) => renderTag(tag, getTagProps({ ...tag, index })));
-
 export default () => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const text = useSelector(chat.selectors.text);
   const tags = useSelector(chat.selectors.tags);
   const options = useSelector(chat.selectors.options);
-
-  const onChange = (e, newTags, reason) => {
-    dispatch(chat.actions.setTags(newTags));
-  };
-  const onInputChange = (e, newText) => {
-    dispatch(chat.actions.setText(newText));
-  };
-  const onSend = () => {
-    dispatch(chat.actions.sendMessage({ author: "user", tags }));
-  };
 
   const inputRef = useRef();
   const isChatOpen = useSelector(modal.selectors.isOpen("chat"));
@@ -104,44 +34,83 @@ export default () => {
     }
   }, [isChatOpen, inputRef.current]);
 
-  const onFocus = () => {
-    document
-      .getElementById("chat-messages-bottom")
-      .scrollIntoView({ behavior: "smooth" });
+  const handleInputChange = (e) => {
+    dispatch(chat.actions.setText(e.target.value));
+  };
+  const handleSelectOption = (option) => () => {
+    const newTags = R.union(tags, [option]);
+    dispatch(chat.actions.setText(""));
+    dispatch(chat.actions.setTags(newTags));
+  };
+  const handleTagDelete = (tag) => () => {
+    const newTags = R.without([tag], tags);
+    dispatch(chat.actions.setTags(newTags));
+  };
+  const handleSend = () => {
+    inputRef.current.focus();
+    dispatch(chat.actions.setText(""));
+    dispatch(chat.actions.setTags([]));
+    dispatch(chat.actions.sendMessage({ author: "user", tags }));
   };
 
+  const filteredOptions = matchSorter(options, text, {
+    keys: ["name"],
+  });
+
+  console.log({ filteredOptions });
+
   return (
-    <Paper className={classes.root}>
-      <Autocomplete
-        openOnFocus
-        className={classes.autocomplete}
-        multiple
-        options={options}
-        onChange={onChange}
-        value={tags}
-        inputValue={text}
-        onInputChange={onInputChange}
-        onFocus={onFocus}
-        // groupBy={R.pipe(R.prop("type"), capitalize)}
-        getOptionLabel={R.prop("name")}
-        renderTags={renderTags}
-        renderOption={renderOption}
-        renderInput={(params) => {
-          return (
-            <TextField
-              {...params}
-              inputRef={inputRef}
-              autoFocus
-              variant="outlined"
-              color="primary"
-              label="Movie Data..."
+    <Box>
+      <HorizontalScroll p={2} maxWidth="100%">
+        {tags.map((tag) => (
+          <Box key={tag.id} marginRight={1}>
+            <Chip
+              onDelete={handleTagDelete(tag)}
+              label={tag.name}
+              avatar={
+                <Avatar src={makeTMDbImageURL(2, tag)}>
+                  {typeToIcon(tag.type)}
+                </Avatar>
+              }
             />
-          );
-        }}
-      />
-      <Button onClick={onSend} color="primary" variant="contained">
-        <ArrowUpwardIcon />
-      </Button>
-    </Paper>
+          </Box>
+        ))}
+      </HorizontalScroll>
+      <Box display="flex" flexDirection="row" maxWidth="100vw">
+        <Box
+          component={InputBase}
+          flex={1}
+          paddingLeft={2}
+          value={text}
+          onChange={handleInputChange}
+          inputRef={inputRef}
+        />
+        <Fab
+          size="small"
+          onClick={handleSend}
+          color="primary"
+          variant="contained"
+        >
+          <ArrowUpwardIcon />
+        </Fab>
+      </Box>
+
+      <HorizontalScroll p={1}>
+        {filteredOptions.map((option) => (
+          <Box key={option.id} marginRight={1}>
+            <Chip
+              onClick={handleSelectOption(option)}
+              label={option.name}
+              variant="outlined"
+              avatar={
+                <Avatar src={makeTMDbImageURL(2, option)}>
+                  {typeToIcon(option.type)}
+                </Avatar>
+              }
+            />
+          </Box>
+        ))}
+      </HorizontalScroll>
+    </Box>
   );
 };

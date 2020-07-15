@@ -54,7 +54,7 @@ export default function* () {
     const optionByType = {
       dateRange: dateRangeOptions,
       genre: genreOptions,
-      person: response.person.results || [],
+      person: response.person.results || [], //R.project(["id", "name", "profilePath"], response.person.results || [])
       company: response.company.results || [],
       keyword: response.keyword.results || [],
     };

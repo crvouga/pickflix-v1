@@ -20,4 +20,4 @@ const iconByType = {
   movie: <MovieIcon />,
 };
 
-export default R.prop(R.__, iconByType);
+export default R.propOr(<div />, R.__, iconByType);
