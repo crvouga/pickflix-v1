@@ -1,6 +1,6 @@
 import { fork } from "redux-saga/effects";
-import optionsSaga from "./optionsSaga";
-import botSaga from "./botSaga";
+import optionsSaga from "./options";
+import botSaga from "./bot";
 
 export default function* () {
   yield fork(optionsSaga);

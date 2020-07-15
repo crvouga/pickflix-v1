@@ -1,5 +1,13 @@
 import { createReducer } from "@reduxjs/toolkit";
 import actions from "./actions";
+import * as R from "ramda";
+
+const MESSAGE_LIST_CAPACITY = 20;
+
+const appendMessage = (state, action) => {
+  state.messageList.push(action.payload);
+  state.messageList = R.takeLast(MESSAGE_LIST_CAPACITY, state.messageList);
+};
 
 export default createReducer(
   {
@@ -7,19 +15,11 @@ export default createReducer(
     tags: [],
     text: "",
     options: [],
-    focused: true, // chat input is focus state
+    isFetchingOptions: false,
   },
   {
-    [actions.sendMessage]: (state, action) => {
-      const messageList = state.messageList;
-      messageList.push(action.payload);
-      messageList.slice(Math.max(messageList.length - 100, 0));
-    },
-    [actions.recieveMessage]: (state, action) => {
-      const messageList = state.messageList;
-      messageList.push(action.payload);
-      messageList.slice(Math.max(messageList.length - 100, 0));
-    },
+    [actions.sendMessage]: appendMessage,
+    [actions.recieveMessage]: appendMessage,
     [actions.setTags]: (state, action) => {
       state.tags = action.payload;
     },
@@ -29,8 +29,8 @@ export default createReducer(
     [actions.setOptions]: (state, action) => {
       state.options = action.payload;
     },
-    [actions.setFocus]: (state, action) => {
-      state.focused = action.payload;
+    [actions.setIsFetchingOptions]: (state, action) => {
+      state.isFetchingOptions = action.payload;
     },
   }
 );

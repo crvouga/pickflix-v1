@@ -1,21 +1,20 @@
 import axios from "axios";
 import * as R from "ramda";
 import { call, delay, put, select, takeLatest } from "redux-saga/effects";
-import actions from "./actions";
-import * as selectors from "./selectors";
+import actions from "../actions";
+import * as selectors from "../selectors";
 const rangeStep = (start, step, end) =>
   R.unfold((n) => (n > end ? false : [n, n + step]), start);
 
-const dateRangeOptions = R.map(
-  (year) => ({
-    type: "dateRange",
-    year,
-    range: [year, year + 9],
-    name: `${year}s`,
-    id: year,
-  }),
-  rangeStep(1880, 10, new Date().getFullYear())
-);
+const decades = rangeStep(1940, 10, new Date().getFullYear());
+
+const dateRangeOptions = decades.map((year) => ({
+  type: "dateRange",
+  year,
+  range: [year, year + 9],
+  name: `${year}s`,
+  id: year,
+}));
 
 const fetchGenres = () => axios.get("/api/tmdb/genre/movie/list");
 
@@ -30,7 +29,7 @@ const fetchSearch = async (endpoint, params) => {
 const fetchAllSearches = async (params) => {
   const [person, company, keyword] = await Promise.all([
     fetchSearch("/api/tmdb/search/person", params),
-    fetchSearch("/api/tmdb/search/company", params),
+    Promise.resolve({ results: [] }), //fetchSearch("/api/tmdb/search/company", params),
     fetchSearch("/api/tmdb/search/keyword", params),
   ]);
   return {
@@ -49,13 +48,18 @@ export default function* () {
   yield takeLatest(actions.setText, function* () {
     yield delay(200);
     const text = yield select(selectors.text);
-    const params = { query: encodeURI(text.trim()) };
-    const response = yield call(fetchAllSearches, params);
+    yield put(actions.setIsFetchingOptions(true));
+    const response = yield call(fetchAllSearches, {
+      query: encodeURI(text.trim()),
+    });
 
     const optionByType = {
       dateRange: dateRangeOptions,
       genre: genreOptions,
-      person: response.person.results || [], //R.project(["id", "name", "profilePath"], response.person.results || [])
+      person: R.project(
+        ["id", "name", "profilePath"],
+        response.person.results || []
+      ),
       company: response.company.results || [],
       keyword: response.keyword.results || [],
     };
@@ -66,5 +70,6 @@ export default function* () {
     )(optionByType);
 
     yield put(actions.setOptions(options));
+    yield put(actions.setIsFetchingOptions(false));
   });
 }

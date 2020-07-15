@@ -8,15 +8,16 @@ import {
 } from "@material-ui/core";
 import clsx from "clsx";
 import * as R from "ramda";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import modal from "../common/redux/modal";
 import PosterScroll from "../movie/components/PosterScroll";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import chat from "./redux/chat";
+import RefsContext from "./RefsContext";
 import typeToIcon from "./typeToIcon";
-import { motion } from "framer-motion";
-import useBoolean from "../common/hooks/useBoolean";
+import useDragCallback from "./useDragCallback";
+
 const useStyles = makeStyles((theme) => ({
   chatMessagesRoot: {
     flex: 1,
@@ -117,70 +118,58 @@ const ChatMesssage = ({
   );
 };
 
+const useMessageListScrollBehavior = () => {
+  const refs = useContext(RefsContext);
+  const isChatModalOpen = useSelector(modal.selectors.isOpen("chat"));
+  const latestMessage = useSelector(chat.selectors.latestMessage);
+
+  useEffect(() => {
+    if (refs.messageListBottom.current) {
+      refs.messageListBottom.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [latestMessage?.id]);
+
+  useEffect(() => {
+    if (isChatModalOpen && refs.messageListBottom.current) {
+      refs.messageListBottom.current.scrollIntoView();
+    }
+  }, [isChatModalOpen]);
+};
+
 export default () => {
+  useMessageListScrollBehavior();
+
   const classes = useStyles();
-  const messageList = useSelector(chat.selectors.messageList);
-  const lastMessageId = R.propOr("", "id", R.last(messageList));
-  const dispatch = useDispatch();
+  const refs = useContext(RefsContext);
   const tags = useSelector(chat.selectors.tags);
+  const messageList = useSelector(chat.selectors.messageList);
+  const dispatch = useDispatch();
   const handleTagClick = (tag) => {
+    refs.input.current.focus();
     const newTags = R.union([tag], tags);
     dispatch(chat.actions.setTags(newTags));
   };
 
-  useEffect(() => {
-    document
-      .getElementById("chat-messages-bottom")
-      .scrollIntoView({ behavior: "smooth" });
-  }, [lastMessageId]);
-
-  const isChatModalOpen = useSelector(modal.selectors.isOpen("chat"));
-  useEffect(() => {
-    if (isChatModalOpen) {
-      document.getElementById("chat-messages-bottom").scrollIntoView();
-    }
-  }, [isChatModalOpen]);
-
-  const focused = useSelector(chat.selectors.focused);
-  useEffect(() => {
-    if (focused) {
-      document
-        .getElementById("chat-messages-bottom")
-        .scrollIntoView({ behavior: "smooth" });
-    }
-  }, [focused]);
-
-  const touching = useBoolean(false);
-  const [previousScrollTop, setPreviousScrollTop] = useState(0);
-  const handleScroll = (e) => {
-    const newScrollTop = e.currentTarget.scrollTop;
-    if (previousScrollTop > newScrollTop) {
-      // console.log("scroll up");
-      if (touching.value) {
-        // console.log("drag up");
-        dispatch(chat.actions.setFocus(false));
-      }
-    } else {
-      // console.log("scroll down");
-    }
-    setPreviousScrollTop(newScrollTop);
-  };
+  const dragProps = useDragCallback({
+    onDragUp: () => {
+      refs.input.current.blur();
+    },
+  });
 
   return (
     <div
-      onTouchStart={touching.setTrue}
-      onTouchEnd={touching.setFalse}
-      onScroll={handleScroll}
+      {...dragProps}
+      ref={refs.messageList}
       className={classes.chatMessagesRoot}
     >
-      {R.takeLast(25, messageList).map((message) => (
+      {messageList.map((message) => (
         <ChatMesssage
           onTagClick={handleTagClick}
           key={message.id}
           {...message}
         />
       ))}
-      <div id="chat-messages-bottom" style={{ marginTop: "100px" }} />
+      <div ref={refs.messageListBottom} style={{ marginTop: "100px" }} />
     </div>
   );
 };
