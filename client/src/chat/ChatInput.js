@@ -1,22 +1,25 @@
 import {
   Avatar,
+  Box,
   Button,
   Chip,
   ListItemAvatar,
   ListItemText,
   makeStyles,
   Paper,
+  InputBase,
 } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import * as R from "ramda";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
+import modal from "../common/redux/modal";
+import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import ChatContext from "./ChatContext";
 import typeToIcon from "./typeToIcon";
 import useChatInputOptions from "./useChatInputOptions";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -80,9 +83,18 @@ const renderTags = (tags, getTagProps) =>
 
 export default function ChatInput() {
   const classes = useStyles();
-  const { text, tags, setText, setTags, sendMessage } = useContext(ChatContext);
-  const options = useChatInputOptions(text);
+  const { text, tags, setText, setTags, sendMessage, isLoading } = useContext(
+    ChatContext
+  );
 
+  const options = useChatInputOptions(text);
+  const inputRef = useRef();
+  const isChatOpen = useSelector(modal.selectors.isOpen("chat"));
+  useEffect(() => {
+    if (isChatOpen && inputRef.current) {
+      setTimeout(() => inputRef.current.focus(), 200);
+    }
+  }, [isChatOpen, inputRef.current]);
   const onChange = (e, newTags, reason) => {
     setTags(newTags);
   };
@@ -103,6 +115,8 @@ export default function ChatInput() {
   return (
     <Paper className={classes.root}>
       <Autocomplete
+        loading={isLoading}
+        openOnFocus
         className={classes.autocomplete}
         multiple
         options={options}
@@ -110,12 +124,23 @@ export default function ChatInput() {
         value={tags}
         inputValue={text}
         onInputChange={onInputChange}
-        // onFocus={onFocus}
+        onFocus={onFocus}
         // groupBy={R.pipe(R.prop("type"), capitalize)}
         getOptionLabel={R.prop("name")}
         renderTags={renderTags}
         renderOption={renderOption}
-        renderInput={renderInput}
+        renderInput={(params) => {
+          return (
+            <TextField
+              {...params}
+              inputRef={inputRef}
+              autoFocus
+              variant="outlined"
+              color="primary"
+              label="Movie Data..."
+            />
+          );
+        }}
       />
       <Button onClick={onSend} color="primary" variant="contained">
         <ArrowUpwardIcon />

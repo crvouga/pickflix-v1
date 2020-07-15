@@ -74,11 +74,6 @@ const ChatMesssage = ({
 }) => {
   const classes = useStyles({ movies });
 
-  const history = useHistory();
-  const onMoviePosterClick = (movie) => {
-    history.push(`/movie/${movie.id}`);
-  };
-
   const className =
     author === "user" ? classes.messageRight : classes.messageLeft;
 

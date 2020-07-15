@@ -43,11 +43,13 @@ const tagsToDiscoverParameters = R.pipe(
 const responseToMovies = R.pipe(R.propOr([], "results"));
 
 export default ({ children }) => {
-  const [messageList, setMessageList] = useLocalStorage("chat/messageList", []);
+  const [isLoading, setIsLoading] = useState(false);
+  const [messageList, setMessageList] = useState([]);
   const [text, setText] = useState("");
   const [tags, setTags] = useState([]);
 
   const sendMessage = (message) => {
+    console.log(message);
     setMessageList(
       R.pipe(
         R.append(R.assoc("id", Math.random(), message)),
@@ -55,11 +57,13 @@ export default ({ children }) => {
       )
     );
     if (message.author !== "bot") {
+      setIsLoading(true);
       axios
         .get("/api/tmdb/discover/movie", {
           params: tagsToDiscoverParameters(tags),
         })
         .then((response) => {
+          setIsLoading(false);
           const movies = response.data.results || [];
           setTimeout(() => {
             sendMessage({ author: "bot", movies, tags });
@@ -75,6 +79,7 @@ export default ({ children }) => {
     setTags,
     messageList,
     sendMessage,
+    isLoading,
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
