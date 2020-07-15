@@ -49,7 +49,8 @@ export default function* () {
   yield takeLatest(actions.setText, function* () {
     yield delay(200);
     const text = yield select(selectors.text);
-    const response = yield call(fetchAllSearches, { query: encodeURI(text) });
+    const params = { query: encodeURI(text.trim()) };
+    const response = yield call(fetchAllSearches, params);
 
     const optionByType = {
       dateRange: dateRangeOptions,

@@ -15,6 +15,8 @@ import PosterScroll from "../movie/components/PosterScroll";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import chat from "./redux/chat";
 import typeToIcon from "./typeToIcon";
+import { motion } from "framer-motion";
+import useBoolean from "../common/hooks/useBoolean";
 const useStyles = makeStyles((theme) => ({
   chatMessagesRoot: {
     flex: 1,
@@ -147,20 +149,30 @@ export default () => {
         .scrollIntoView({ behavior: "smooth" });
     }
   }, [focused]);
+
+  const touching = useBoolean(false);
   const [previousScrollTop, setPreviousScrollTop] = useState(0);
   const handleScroll = (e) => {
     const newScrollTop = e.currentTarget.scrollTop;
     if (previousScrollTop > newScrollTop) {
-      //scrolling up
-      if (focused) dispatch(chat.actions.setFocus(false));
+      // console.log("scroll up");
+      if (touching.value) {
+        // console.log("drag up");
+        dispatch(chat.actions.setFocus(false));
+      }
     } else {
-      //scrolling down
+      // console.log("scroll down");
     }
     setPreviousScrollTop(newScrollTop);
   };
 
   return (
-    <div onScroll={handleScroll} className={classes.chatMessagesRoot}>
+    <div
+      onTouchStart={touching.setTrue}
+      onTouchEnd={touching.setFalse}
+      onScroll={handleScroll}
+      className={classes.chatMessagesRoot}
+    >
       {R.takeLast(25, messageList).map((message) => (
         <ChatMesssage
           onTagClick={handleTagClick}

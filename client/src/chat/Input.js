@@ -7,7 +7,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
-import clsx from "clsx";
+import Layer from "../common/components/Layer";
 import matchSorter from "match-sorter";
 import * as R from "ramda";
 import React, { useEffect, useRef } from "react";
@@ -20,6 +20,12 @@ import typeToIcon from "./typeToIcon";
 import useBoolean from "../common/hooks/useBoolean";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    backgroundColor: "transparent",
+  },
+  backdrop: {
+    filter: "blur(5px)",
+  },
   border: {
     border: `1px solid ${theme.palette.text.secondary}`,
     borderRadius: "2em",
@@ -35,46 +41,7 @@ export default () => {
   const text = useSelector(chat.selectors.text);
   const tags = useSelector(chat.selectors.tags);
   const options = useSelector(chat.selectors.options);
-
   const inputRef = useRef();
-  const isChatOpen = useSelector(modal.selectors.isOpen("chat"));
-  useEffect(() => {
-    if (isChatOpen && inputRef.current) {
-      setTimeout(() => inputRef.current.focus(), 200);
-    }
-  }, [isChatOpen, inputRef.current]);
-
-  const handleInputChange = (e) => {
-    dispatch(chat.actions.setText(e.target.value));
-  };
-  const handleSelectOption = (option) => () => {
-    inputRef.current.focus();
-    const newTags = R.union(tags, [option]);
-    dispatch(chat.actions.setText(""));
-    dispatch(chat.actions.setTags(newTags));
-  };
-  const handleTagDelete = (tag) => (e) => {
-    inputRef.current.focus();
-    const newTags = R.without([tag], tags);
-    dispatch(chat.actions.setTags(newTags));
-  };
-  const handleSend = () => {
-    inputRef.current.focus();
-    dispatch(chat.actions.setText(""));
-    dispatch(chat.actions.setTags([]));
-    dispatch(chat.actions.sendMessage({ author: "user", tags }));
-  };
-
-  const inputFocused = useBoolean(false);
-  const focus = () => {
-    inputRef.current.focus();
-  };
-
-  const filteredOptions = matchSorter(options, text, {
-    keys: ["name"],
-    threshold: matchSorter.rankings.NO_MATCH,
-  });
-  const focused = useSelector(chat.selectors.focused);
 
   const handleBlur = () => {
     dispatch(chat.actions.setFocus(false));
@@ -83,6 +50,40 @@ export default () => {
   const handleFocus = () => {
     dispatch(chat.actions.setFocus(true));
   };
+
+  const isChatOpen = useSelector(modal.selectors.isOpen("chat"));
+  useEffect(() => {
+    if (isChatOpen) {
+      setTimeout(handleFocus, 200);
+    }
+  }, [isChatOpen]);
+
+  const handleInputChange = (e) => {
+    dispatch(chat.actions.setText(e.target.value));
+  };
+  const handleSelectOption = (option) => () => {
+    handleFocus();
+    const newTags = R.union(tags, [option]);
+    dispatch(chat.actions.setText(""));
+    dispatch(chat.actions.setTags(newTags));
+  };
+  const handleTagDelete = (tag) => (e) => {
+    handleFocus();
+    const newTags = R.without([tag], tags);
+    dispatch(chat.actions.setTags(newTags));
+  };
+  const handleSend = () => {
+    handleFocus();
+    dispatch(chat.actions.setText(""));
+    dispatch(chat.actions.setTags([]));
+    dispatch(chat.actions.sendMessage({ author: "user", tags }));
+  };
+
+  const filteredOptions = matchSorter(options, text, {
+    keys: ["name"],
+    threshold: matchSorter.rankings.NO_MATCH,
+  });
+  const focused = useSelector(chat.selectors.focused);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -95,10 +96,12 @@ export default () => {
   }, [inputRef.current, focused]);
 
   return (
-    <Box onClick={focus}>
+    <Box className={classes.root} onClick={handleFocus} position="relative">
+      <Layer className={classes.backdrop} />
       <div className={classes.border}>
         {tags.length > 0 && (
           <Box
+            backgroundColor="transparent"
             display="flex"
             flexDirection="row"
             flexWrap="wrap"
@@ -121,8 +124,9 @@ export default () => {
             ))}
           </Box>
         )}
-        <Box display="flex" flexDirection="row">
+        <Box backgroundColor="transparent" display="flex" flexDirection="row">
           <Box
+            backgroundColor="transparent"
             component={InputBase}
             flex={1}
             paddingLeft={2}
@@ -146,10 +150,9 @@ export default () => {
         </Box>
       </div>
 
-      <HorizontalScroll p={1}>
-        <div id="option-list-start" />
+      <HorizontalScroll p={1} backgroundColor="transparent">
         {filteredOptions.map((option) => (
-          <Box key={option.id} marginRight={1}>
+          <Box backgroundColor="transparent" key={option.id} marginRight={1}>
             <Chip
               onClick={handleSelectOption(option)}
               label={option.name}
