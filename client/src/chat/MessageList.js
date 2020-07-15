@@ -9,12 +9,12 @@ import {
 import clsx from "clsx";
 import * as R from "ramda";
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PosterScroll from "../movie/components/PosterScroll";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import chat from "./redux/chat";
 import typeToIcon from "./typeToIcon";
-
+import modal from "../common/redux/modal";
 const useStyles = makeStyles((theme) => ({
   chatMessagesRoot: {
     flex: 1,
@@ -105,7 +105,12 @@ const ChatMesssage = ({
         </div>
       </Slide>
 
-      {movies.length > 0 && <PosterScroll movies={movies} />}
+      {movies.length > 0 && (
+        <PosterScroll
+          movies={movies}
+          PosterProps={{ minWidth: 120, maxWidth: 120, marginRight: 1 }}
+        />
+      )}
     </div>
   );
 };
@@ -114,6 +119,12 @@ export default () => {
   const classes = useStyles();
   const messageList = useSelector(chat.selectors.messageList);
   const lastMessageId = R.propOr("", "id", R.last(messageList));
+  const dispatch = useDispatch();
+  const tags = useSelector(chat.selectors.tags);
+  const handleTagClick = (tag) => {
+    const newTags = R.union([tag], tags);
+    dispatch(chat.actions.setTags(newTags));
+  };
 
   useEffect(() => {
     document
@@ -121,10 +132,21 @@ export default () => {
       .scrollIntoView({ behavior: "smooth" });
   }, [lastMessageId]);
 
+  const isChatModalOpen = useSelector(modal.selectors.isOpen("chat"));
+  useEffect(() => {
+    if (isChatModalOpen) {
+      document.getElementById("chat-messages-bottom").scrollIntoView();
+    }
+  }, [isChatModalOpen]);
+
   return (
     <div className={classes.chatMessagesRoot}>
       {R.takeLast(50, messageList).map((message) => (
-        <ChatMesssage key={message.id} {...message} />
+        <ChatMesssage
+          onTagClick={handleTagClick}
+          key={message.id}
+          {...message}
+        />
       ))}
       <div id="chat-messages-bottom" style={{ marginTop: "100px" }} />
     </div>

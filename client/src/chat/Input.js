@@ -65,7 +65,7 @@ export default () => {
   };
 
   const filteredOptions = matchSorter(options, text, {
-    keys: ["name"],
+    keys: ["name", "type"],
     threshold: matchSorter.rankings.NO_MATCH,
   });
 
