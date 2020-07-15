@@ -1,8 +1,16 @@
-import { AppBar, Dialog, IconButton, Slide, Toolbar } from "@material-ui/core";
+import {
+  AppBar,
+  Box,
+  Dialog,
+  IconButton,
+  Slide,
+  Toolbar,
+} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
+import BlurBackdrop from "../common/components/BlurBackdrop";
 import modal from "../common/redux/modal";
 import Input from "./Input";
 import MessageList from "./MessageList";
@@ -43,19 +51,16 @@ export default () => {
       TransitionComponent={Transition}
       keepMounted
       onClose={close}
-      id="draggable-dialog-title"
     >
-      <AppBar
-        style={{ cursor: "move" }}
-        id="draggable-dialog-title"
-        color="default"
-        position="sticky"
-      >
-        <Toolbar>
-          <IconButton edge="start" onClick={close}>
-            <CloseIcon />
-          </IconButton>
-        </Toolbar>
+      <AppBar position="fixed" color="transparent">
+        <Box position="relative">
+          <BlurBackdrop />
+          <Toolbar>
+            <IconButton edge="start" onClick={close}>
+              <CloseIcon />
+            </IconButton>
+          </Toolbar>
+        </Box>
       </AppBar>
       <RefsContext.Provider value={refs}>
         <MessageList />

@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Chip,
   makeStyles,
   Paper,
@@ -21,17 +22,8 @@ import useDragCallback from "./useDragCallback";
 const useStyles = makeStyles((theme) => ({
   chatMessagesRoot: {
     flex: 1,
-    overflowY: "auto",
-    padding: theme.spacing(1),
-    paddingBottom: theme.spacing(8),
+    overflowY: "scroll",
     backgroundColor: theme.palette.background.default,
-  },
-
-  scroll: {
-    display: "flex",
-    flexWrap: "nowrap",
-    overflowX: "auto",
-    marginBottom: theme.spacing(2),
   },
 
   bubble: {
@@ -48,22 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
   bubbleRight: {
     borderBottomRightRadius: 0,
-    backgroundColor: theme.palette.info.dark,
-  },
-
-  messageRight: {
-    margin: theme.spacing(1),
-    display: "flex",
-    flexDirection: "row-reverse",
-  },
-
-  messageLeft: {
-    margin: theme.spacing(1),
-    display: "flex",
-    flexDirection: "row",
-  },
-  message: {
-    height: (movies) => (movies.length > 0 ? "200px" : "auto"),
+    backgroundColor: theme.palette.primary.main,
   },
 }));
 
@@ -76,22 +53,26 @@ const ChatMesssage = ({
 }) => {
   const classes = useStyles({ movies });
 
-  const className =
-    author === "user" ? classes.messageRight : classes.messageLeft;
-
   const bubbleClassName = clsx(
     classes.bubble,
     author === "user" ? classes.bubbleRight : classes.bubbleLeft
   );
 
-  const direction = author === "user" ? "left" : "right";
-
   return (
-    <div className={classes.message}>
-      <Slide in direction={direction}>
-        <div className={className}>
-          <Paper className={bubbleClassName}>
-            <Typography variant="subtitle1">{text}</Typography>
+    <Box>
+      <Slide in direction={author === "user" ? "left" : "right"}>
+        <Box
+          display="flex"
+          margin={1}
+          flexDirection={author === "user" ? "row-reverse" : "row"}
+        >
+          <Paper
+            className={clsx(classes.bubble, {
+              [classes.bubbleRight]: author === "user",
+              [classes.bubbleLeft]: author !== "user",
+            })}
+          >
+            <Typography variant="body2">{text}</Typography>
             {tags.map((tag) => (
               <Chip
                 onClick={() => onTagClick(tag)}
@@ -105,16 +86,17 @@ const ChatMesssage = ({
               />
             ))}
           </Paper>
-        </div>
+        </Box>
       </Slide>
 
       {movies.length > 0 && (
         <PosterScroll
+          BoxProps={{ marginBottom: 4 }}
           movies={movies}
           PosterProps={{ minWidth: 120, maxWidth: 120, marginRight: 1 }}
         />
       )}
-    </div>
+    </Box>
   );
 };
 

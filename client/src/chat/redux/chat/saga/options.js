@@ -42,7 +42,7 @@ const fetchAllSearches = async (params) => {
 export default function* () {
   const response = yield call(fetchGenres);
   const genreOptions = R.map(R.assoc("type", "genre"), response.data.genres);
-  const options = R.unnest([genreOptions, dateRangeOptions]);
+  const options = R.concat(genreOptions, dateRangeOptions);
   yield put(actions.setOptions(options));
 
   yield takeLatest(actions.setText, function* () {
