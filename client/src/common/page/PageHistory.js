@@ -75,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     padding: theme.spacing(1),
     flex: 1,
+    fontWeight: "bold",
   },
 
   icon: {

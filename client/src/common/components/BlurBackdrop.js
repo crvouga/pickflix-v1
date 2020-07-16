@@ -6,15 +6,13 @@ import Layer from "./Layer";
 const useStyles = makeStyles((theme) => ({
   backdrop: {
     backgroundColor: theme.palette.background.paper,
-    opacity: "0.8",
+    opacity: ({ opacity }) => opacity,
     // for some reason opacity(0.8) backdrop filter is not working!!!
-    backdropFilter: "blur(5px)",
+    backdropFilter: ({ blur }) => `blur(${blur})`,
   },
 }));
 
-export default (props) => {
-  const classes = useStyles();
-  return (
-    <Layer {...props} className={clsx(props.className, classes.backdrop)} />
-  );
+export default ({ className, opacity = 0.8, blur = "5px", ...props }) => {
+  const classes = useStyles({ opacity, blur });
+  return <Layer {...props} className={clsx(className, classes.backdrop)} />;
 };

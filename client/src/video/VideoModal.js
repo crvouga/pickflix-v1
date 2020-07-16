@@ -15,6 +15,7 @@ import modal from "../common/redux/modal";
 import player from "./redux/player";
 import VideoPage from "./VideoPage";
 import { useLocation } from "react-router-dom";
+import BlurBackdrop from "../common/components/BlurBackdrop";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -31,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     top: "auto",
     bottom: 0,
-    backgroundColor: theme.palette.background.paper,
   },
   toolbarSpace: theme.mixins.toolbar,
 }));
@@ -63,12 +63,15 @@ export default () => {
       fullScreen
     >
       <VideoPage />
-      <AppBar className={classes.appBar} position="fixed">
-        <Toolbar className={classes.toolbar}>
-          <IconButton className={classes.iconButton} onClick={handleClose}>
-            <CloseIcon />
-          </IconButton>
-        </Toolbar>
+      <AppBar className={classes.appBar} position="fixed" color="transparent">
+        <Box position="relative">
+          <BlurBackdrop opacity={0.5} />
+          <Toolbar className={classes.toolbar}>
+            <IconButton className={classes.iconButton} onClick={handleClose}>
+              <CloseIcon />
+            </IconButton>
+          </Toolbar>
+        </Box>
       </AppBar>
     </Dialog>
   );
