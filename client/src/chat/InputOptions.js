@@ -36,11 +36,12 @@ export default () => {
   });
 
   return (
-    <HorizontalScroll p={1} paddingBottom={0}>
+    <HorizontalScroll p={1}>
       <div ref={optionsBeginningRef} />
       {filteredOptions.map((option) => (
         <Box key={option.id} marginRight={1}>
           <Chip
+            style={{ fontSize: "1.25em" }}
             onClick={handleSelectOption(option)}
             label={option.name}
             variant="outlined"

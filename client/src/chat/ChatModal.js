@@ -5,6 +5,7 @@ import {
   IconButton,
   Slide,
   Toolbar,
+  makeStyles,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useEffect, useRef } from "react";
@@ -30,17 +31,20 @@ export default () => {
   useEffect(() => history.listen(close), []);
 
   const messageListBottomRef = useRef();
-  const messageListRef = useRef();
   const inputRef = useRef();
+
   useEffect(() => {
     if (inputRef.current) {
-      inputRef.current.focus();
+      if (isOpen) {
+        inputRef.current.focus();
+      } else {
+        inputRef.current.blur();
+      }
     }
   }, [inputRef.current, isOpen]);
 
   const refs = {
     messageListBottom: messageListBottomRef,
-    messageList: messageListRef,
     input: inputRef,
   };
 
@@ -52,7 +56,7 @@ export default () => {
       keepMounted
       onClose={close}
     >
-      <AppBar position="fixed" color="transparent">
+      <AppBar position="sticky" color="transparent">
         <Box position="relative">
           <BlurBackdrop />
           <Toolbar>
