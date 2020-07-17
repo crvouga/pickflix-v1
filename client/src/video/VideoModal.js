@@ -53,14 +53,14 @@ export default () => {
         top="auto"
         bottom="0"
         width="100%"
-        p={2}
+        p={1}
         textAlign="center"
       >
-        <ButtonBase onClick={handleClose}>
+        <Box component={ButtonBase} onClick={handleClose} borderRadius="50%">
           <Box component={Paper} elevation={4} p={2} borderRadius="50%">
             <CloseIcon />
           </Box>
-        </ButtonBase>
+        </Box>
       </Box>
     </Dialog>
   );

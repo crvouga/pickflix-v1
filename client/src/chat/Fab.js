@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   chatFab: {
     zIndex: theme.zIndex.drawer - 1,
     position: "fixed",
-    bottom: theme.spacing(2) + 48,
+    bottom: theme.spacing(2) + 56,
     right: theme.spacing(2),
   },
 }));

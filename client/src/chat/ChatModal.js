@@ -20,7 +20,7 @@ import MessageList from "./MessageList";
 import RefsContext from "./RefsContext";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction="left" ref={ref} {...props} />;
 });
 
 export default () => {
@@ -65,11 +65,11 @@ export default () => {
         <Input />
       </RefsContext.Provider>
       <Box position="fixed" top={0} left={0} width="100%" p={1}>
-        <ButtonBase onClick={handleClose}>
+        <Box component={ButtonBase} onClick={handleClose} borderRadius="50%">
           <Box component={Paper} elevation={4} p={2} borderRadius="50%">
             <CloseIcon />
           </Box>
-        </ButtonBase>
+        </Box>
       </Box>
     </Dialog>
   );
