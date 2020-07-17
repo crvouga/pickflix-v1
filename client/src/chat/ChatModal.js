@@ -1,4 +1,4 @@
-import { ButtonBase, Dialog, makeStyles } from "@material-ui/core";
+import { ButtonBase, Dialog, makeStyles, Slide } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   gutter: {
-    height: "72px",
+    height: "86px",
   },
   paper: {
     backgroundColor: theme.palette.background.default,
@@ -40,6 +40,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const preventDefault = (e) => e.preventDefault();
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 export default () => {
   const classes = useStyles();
@@ -76,6 +80,7 @@ export default () => {
         fullScreen
         open={isOpen}
         keepMounted
+        TransitionComponent={Transition}
         onClose={handleClose}
         PaperProps={{ classes: { root: classes.paper } }}
       >
