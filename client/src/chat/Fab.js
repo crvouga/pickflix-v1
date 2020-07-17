@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import modal from "../common/redux/modal";
 
 const useStyles = makeStyles((theme) => ({
-  chatFab: {
+  fab: {
     zIndex: theme.zIndex.drawer - 1,
     position: "fixed",
     bottom: theme.spacing(2) + 56,
@@ -21,7 +21,7 @@ export default () => {
     dispatch(modal.actions.open("chat"));
   };
   return (
-    <Fab color="primary" className={classes.chatFab} onClick={handleClick}>
+    <Fab color="primary" className={classes.fab} onClick={handleClick}>
       <QuestionAnswerIcon />
     </Fab>
   );

@@ -19,6 +19,11 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "100%",
     backgroundColor: theme.palette.background.default,
   },
+  fab: {
+    borderRadius: "50%",
+    padding: theme.spacing(2),
+    backgroundColor: theme.palette.background.paper,
+  },
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -56,11 +61,9 @@ export default () => {
         p={1}
         textAlign="center"
       >
-        <Box component={ButtonBase} onClick={handleClose} borderRadius="50%">
-          <Box component={Paper} elevation={4} p={2} borderRadius="50%">
-            <CloseIcon />
-          </Box>
-        </Box>
+        <ButtonBase onClick={handleClose} className={classes.fab}>
+          <CloseIcon />
+        </ButtonBase>
       </Box>
     </Dialog>
   );
