@@ -1,11 +1,4 @@
-import {
-  Box,
-  ButtonBase,
-  Dialog,
-  Paper,
-  Slide,
-  makeStyles,
-} from "@material-ui/core";
+import { ButtonBase, Dialog, makeStyles } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,17 +8,38 @@ import Input from "./Input";
 import MessageList from "./MessageList";
 import RefsContext from "./RefsContext";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="left" ref={ref} {...props} />;
-});
-
 const useStyles = makeStyles((theme) => ({
   fab: {
+    position: "fixed",
+    top: theme.spacing(1),
+    left: theme.spacing(1),
     borderRadius: "50%",
     padding: theme.spacing(2),
     backgroundColor: theme.palette.background.paper,
   },
+  messageListContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100vw",
+    height: "100vh",
+    overflowY: "scroll",
+  },
+  inputContainer: {
+    position: "fixed",
+    top: "auto",
+    bottom: 0,
+    width: "100%",
+  },
+  gutter: {
+    height: "72px",
+  },
+  paper: {
+    backgroundColor: theme.palette.background.default,
+  },
 }));
+
+const preventDefault = (e) => e.preventDefault();
 
 export default () => {
   const classes = useStyles();
@@ -50,7 +64,6 @@ export default () => {
     if (refs.input.current) {
       if (isOpen) {
         refs.messageListBottom.current.scrollIntoView();
-        refs.input.current.focus();
       } else {
         refs.input.current.blur();
       }
@@ -58,22 +71,32 @@ export default () => {
   }, [refs.input.current, isOpen]);
 
   return (
-    <Dialog
-      fullScreen
-      open={isOpen}
-      TransitionComponent={Transition}
-      keepMounted
-      onClose={handleClose}
-    >
-      <RefsContext.Provider value={refs}>
-        <MessageList />
-        <Input />
-      </RefsContext.Provider>
-      <Box position="fixed" top={0} left={0} width="100%" p={1}>
+    <RefsContext.Provider value={refs}>
+      <Dialog
+        fullScreen
+        open={isOpen}
+        keepMounted
+        onClose={handleClose}
+        PaperProps={{ classes: { root: classes.paper } }}
+      >
+        <div
+          onClick={preventDefault}
+          onTouchStart={preventDefault}
+          onMouseDown={preventDefault}
+        >
+          <div className={classes.messageListContainer}>
+            <MessageList />
+            <div className={classes.gutter} />
+          </div>
+          <div className={classes.inputContainer}>
+            <Input />
+          </div>
+        </div>
+
         <ButtonBase onClick={handleClose} className={classes.fab}>
           <CloseIcon />
         </ButtonBase>
-      </Box>
-    </Dialog>
+      </Dialog>
+    </RefsContext.Provider>
   );
 };

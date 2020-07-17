@@ -18,18 +18,12 @@ export default () => {
   };
 
   const handleSend = () => {
-    refs.input.current.focus();
     dispatch(chat.actions.setText(""));
     dispatch(chat.actions.setTags([]));
     dispatch(chat.actions.sendMessage({ author: "user", tags }));
   };
 
-  const handleFocus = () => {
-    if (refs.messageListBottom.current) {
-      refs.messageListBottom.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
+  const handleFocus = () => {};
   const handleBlur = () => {};
 
   return (

@@ -19,10 +19,22 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "100%",
     backgroundColor: theme.palette.background.default,
   },
+
   fab: {
     borderRadius: "50%",
     padding: theme.spacing(2),
     backgroundColor: theme.palette.background.paper,
+    margin: theme.spacing(1),
+    pointerEvents: "all",
+  },
+
+  fabContainer: {
+    position: "fixed",
+    top: "auto",
+    bottom: 0,
+    width: "100%",
+    textAlign: "center",
+    pointerEvents: "none",
   },
 }));
 
@@ -53,18 +65,11 @@ export default () => {
       fullScreen
     >
       <VideoPage />
-      <Box
-        position="fixed"
-        top="auto"
-        bottom="0"
-        width="100%"
-        p={1}
-        textAlign="center"
-      >
+      <div className={classes.fabContainer}>
         <ButtonBase onClick={handleClose} className={classes.fab}>
           <CloseIcon />
         </ButtonBase>
-      </Box>
+      </div>
     </Dialog>
   );
 };

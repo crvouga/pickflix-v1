@@ -28,6 +28,10 @@ export default ({ onTagClick, message }) => {
   const { author = undefined, text = "", tags = [], movies = [] } = message;
   const classes = useStyles({ movies });
 
+  const handleTagClick = (tag) => (e) => {
+    onTagClick(tag, e);
+  };
+
   return (
     <Box>
       <Slide in direction={author === "user" ? "left" : "right"}>
@@ -50,7 +54,7 @@ export default ({ onTagClick, message }) => {
             <Typography variant="body2">{text}</Typography>
             {tags.map((tag) => (
               <Chip
-                onClick={() => onTagClick(tag)}
+                onClick={handleTagClick(tag)}
                 key={tag.id}
                 avatar={
                   <Avatar src={makeTMDbImageURL(2, tag)}>
@@ -63,13 +67,14 @@ export default ({ onTagClick, message }) => {
           </Box>
         </Box>
       </Slide>
-      <Fade in={movies.length > 0}>
+
+      {movies.length > 0 && (
         <PosterScroll
           BoxProps={{ marginBottom: 4 }}
           movies={movies}
           PosterProps={{ minWidth: 120, maxWidth: 120, marginRight: 1 }}
         />
-      </Fade>
+      )}
     </Box>
   );
 };

@@ -1,9 +1,10 @@
 import { Box, makeStyles } from "@material-ui/core";
-import React from "react";
+import React, { useContext } from "react";
 import BlurBackdrop from "../common/components/BlurBackdrop";
 import InputField from "./InputField";
 import InputOptions from "./InputOptions";
 import InputTags from "./InputTags";
+import RefsContext from "./RefsContext";
 
 const r = 18;
 
@@ -20,9 +21,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
+  const refs = useContext(RefsContext);
+
+  const focus = (e) => {
+    refs.input.current.focus();
+  };
 
   return (
-    <Box position="fixed" top="auto" bottom="0" width="100vw">
+    <div onClick={focus}>
       <Box position="relative">
         <BlurBackdrop className={classes.borderRadiusTop} />
         <div className={classes.border}>
@@ -31,6 +37,6 @@ export default () => {
         </div>
         <InputOptions />
       </Box>
-    </Box>
+    </div>
   );
 };

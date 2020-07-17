@@ -6,12 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import HorizontalScroll from "../common/components/HorizontalScroll";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import chat from "./redux/chat";
-import RefsContext from "./RefsContext";
+
 import typeToIcon from "./typeToIcon";
 
 export default () => {
-  const optionsBeginningRef = useRef();
-  const refs = useContext(RefsContext);
+  const optionsRef = useRef();
 
   const options = useSelector(chat.selectors.options);
   const text = useSelector(chat.selectors.text);
@@ -20,15 +19,16 @@ export default () => {
   const dispatch = useDispatch();
 
   const handleSelectOption = (option) => () => {
-    refs.input.current.focus();
     const newTags = R.union(tags, [option]);
     dispatch(chat.actions.setText(""));
     dispatch(chat.actions.setTags(newTags));
   };
 
   useEffect(() => {
-    optionsBeginningRef.current.scrollIntoView();
-  }, [options]);
+    if (optionsRef.current) {
+      optionsRef.current.scrollLeft = 0;
+    }
+  }, [text]);
 
   const filteredOptions = matchSorter(options, text, {
     keys: ["name"],
@@ -36,8 +36,7 @@ export default () => {
   });
 
   return (
-    <HorizontalScroll p={1}>
-      <div ref={optionsBeginningRef} />
+    <HorizontalScroll p={1} ref={optionsRef}>
       {filteredOptions.map((option) => (
         <Box key={option.id} marginRight={1}>
           <Chip

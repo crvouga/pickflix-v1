@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default ({ className, ...props }) => {
+export default React.forwardRef(({ className, ...props }, ref) => {
   const classes = useStyles();
-  return <Box {...props} className={clsx(className, classes.root)} />;
-};
+  return <Box ref={ref} {...props} className={clsx(className, classes.root)} />;
+});
