@@ -1,17 +1,8 @@
-import {
-  Box,
-  ButtonBase,
-  Dialog,
-  makeStyles,
-  Paper,
-  Slide,
-} from "@material-ui/core";
+import { ButtonBase, Dialog, makeStyles, Slide } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
 import modal from "../common/redux/modal";
-import player from "./redux/player";
 import VideoPage from "./VideoPage";
 
 const useStyles = makeStyles((theme) => ({
@@ -47,13 +38,8 @@ export default () => {
   const isOpen = useSelector(modal.selectors.isOpen("video"));
   const dispatch = useDispatch();
   const handleClose = () => {
-    dispatch(player.actions.pause());
     dispatch(modal.actions.close("video"));
   };
-  const location = useLocation();
-  useEffect(() => {
-    handleClose();
-  }, [location.pathname]);
 
   return (
     <Dialog

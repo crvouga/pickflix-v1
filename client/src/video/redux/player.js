@@ -1,5 +1,7 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import { takeEvery, select, put } from "redux-saga/effects";
+import { takeEvery, select, put, fork } from "redux-saga/effects";
+import modalSaga from "./modalSaga";
+import actions from "./actions";
 
 const initialState = {
   playing: false,
@@ -11,14 +13,6 @@ const selectors = {
   playing: (state) => state.player.playing,
   video: (state) => state.player.video,
   playlist: (state) => state.player.playlist,
-};
-
-const actions = {
-  play: createAction("player/play"),
-  pause: createAction("player/pause"),
-  toggle: createAction("player/toggle"),
-  setVideo: createAction("player/setVideo"),
-  setPlaylist: createAction("player/setPlaylist"),
 };
 
 const reducer = createReducer(initialState, {
@@ -40,10 +34,12 @@ const reducer = createReducer(initialState, {
 });
 
 function* saga() {
+  yield fork(modalSaga);
   // set video when playlist changes
   yield takeEvery(actions.setPlaylist, function* () {
     const playlist = yield select(selectors.playlist);
     const video = yield select(selectors.video);
+    //if current video is not in playlist
     if (playlist.every((playlistVideo) => playlistVideo?.key !== video?.key)) {
       yield put(actions.setVideo(playlist?.[0]));
     }

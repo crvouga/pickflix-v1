@@ -3,6 +3,7 @@ import axios from "axios";
 export const embedConfig = {
   embedOptions: {},
   playerVars: {
+    rel: 0,
     showinfo: 0,
     autoplay: 0,
     enablejsapi: 1,

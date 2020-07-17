@@ -1,5 +1,4 @@
-import { combineReducers } from "@reduxjs/toolkit";
-import { fork, put, select, takeEvery } from "redux-saga/effects";
+import { fork } from "redux-saga/effects";
 import chat from "../chat/redux/chat";
 import modal from "../common/redux/modal";
 import discover from "../discover/redux/discover";
@@ -12,12 +11,12 @@ const actions = {
   chat: chat.actions,
 };
 
-const reducer = combineReducers({
+const reducer = {
   player: player.reducer,
   modal: modal.reducer,
   discover: discover.reducer,
   chat: chat.reducer,
-});
+};
 
 const selectors = {
   player: player.selectors,
@@ -27,13 +26,6 @@ const selectors = {
 };
 
 function* saga() {
-  // ensure player is not playing when modal is not open
-  yield takeEvery(player.actions.play, function* () {
-    const isVideoModalOpen = yield select(modal.selectors.isOpen("video"));
-    if (!isVideoModalOpen) {
-      yield put(player.actions.pause());
-    }
-  });
   yield fork(player.saga);
   yield fork(discover.saga);
   yield fork(chat.saga);

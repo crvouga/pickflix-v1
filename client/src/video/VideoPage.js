@@ -32,9 +32,11 @@ export default () => {
   const video = useSelector(player.selectors.video);
   const videoKey = video?.key;
   const dispatch = useDispatch();
+
   const handlePlay = () => {
     dispatch(player.actions.play());
   };
+
   const handlePause = () => {
     dispatch(player.actions.pause());
   };
