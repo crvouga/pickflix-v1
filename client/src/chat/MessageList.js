@@ -1,21 +1,19 @@
-import { Box, makeStyles } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import * as R from "ramda";
 import React, { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import modal from "../common/redux/modal";
 import Message from "./Message";
 import chat from "./redux/chat";
 import RefsContext from "./RefsContext";
 import useDragCallback from "./useDragCallback";
 
-const useStyles = makeStyles((theme) => ({
-  toolbar: theme.mixins.toolbar,
-}));
-
-const useMessageListScrollBehavior = () => {
+export default () => {
   const refs = useContext(RefsContext);
-  const isChatModalOpen = useSelector(modal.selectors.isOpen("chat"));
+
+  const tags = useSelector(chat.selectors.tags);
+  const messageList = useSelector(chat.selectors.messageList);
   const latestMessage = useSelector(chat.selectors.latestMessage);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (refs.messageListBottom.current) {
@@ -23,33 +21,17 @@ const useMessageListScrollBehavior = () => {
     }
   }, [latestMessage?.id]);
 
-  useEffect(() => {
-    if (isChatModalOpen && refs.messageListBottom.current) {
-      refs.messageListBottom.current.scrollIntoView();
-    }
-  }, [isChatModalOpen]);
-};
-
-export default () => {
-  useMessageListScrollBehavior();
-  const classes = useStyles();
-  const refs = useContext(RefsContext);
-
-  const tags = useSelector(chat.selectors.tags);
-  const messageList = useSelector(chat.selectors.messageList);
-  const dispatch = useDispatch();
+  const dragProps = useDragCallback({
+    onDragUp: () => {
+      refs.input.current.blur();
+    },
+  });
 
   const handleTagClick = (tag) => {
     refs.input.current.focus();
     const newTags = R.union([tag], tags);
     dispatch(chat.actions.setTags(newTags));
   };
-
-  const dragProps = useDragCallback({
-    onDragUp: () => {
-      refs.input.current.blur();
-    },
-  });
 
   return (
     <Box
@@ -63,9 +45,12 @@ export default () => {
       style={{ overflowY: "scroll" }}
       bgcolor="background.default"
     >
-      <div className={classes.toolbar} />
       {messageList.map((message) => (
-        <Message onTagClick={handleTagClick} key={message.id} {...message} />
+        <Message
+          key={message.id}
+          message={message}
+          onTagClick={handleTagClick}
+        />
       ))}
       <Box height="150px" />
       <div ref={refs.messageListBottom} />

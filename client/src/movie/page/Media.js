@@ -85,7 +85,7 @@ export default ({ videos, images }) => {
 
   const handlePlayIconClick = (e) => {
     dispatch(player.actions.setPlaylist(videos));
-    dispatch(modal.actions.open("videoModal"));
+    dispatch(modal.actions.open("video"));
   };
 
   const handleChangeIndex = (newIndex) => {

@@ -11,7 +11,7 @@ export default ({ videos }) => {
 
   const handleClick = () => {
     dispatch(player.actions.setPlaylist(videos));
-    dispatch(modal.actions.open("videoModal"));
+    dispatch(modal.actions.open("video"));
   };
 
   const handleThumbnailClick = (video) => {

@@ -6,6 +6,8 @@ import {
   Slide,
   Toolbar,
   makeStyles,
+  ButtonBase,
+  Paper,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useEffect, useRef } from "react";
@@ -25,28 +27,30 @@ export default () => {
   const history = useHistory();
   const isOpen = useSelector(modal.selectors.isOpen("chat"));
   const dispatch = useDispatch();
-  const close = () => {
+  const handleClose = () => {
     dispatch(modal.actions.close("chat"));
   };
-  useEffect(() => history.listen(close), []);
+  useEffect(() => {
+    return history.listen(handleClose);
+  }, []);
 
   const messageListBottomRef = useRef();
   const inputRef = useRef();
-
-  useEffect(() => {
-    if (inputRef.current) {
-      if (isOpen) {
-        inputRef.current.focus();
-      } else {
-        inputRef.current.blur();
-      }
-    }
-  }, [inputRef.current, isOpen]);
-
   const refs = {
     messageListBottom: messageListBottomRef,
     input: inputRef,
   };
+
+  useEffect(() => {
+    if (refs.input.current) {
+      if (isOpen) {
+        refs.messageListBottom.current.scrollIntoView();
+        refs.input.current.focus();
+      } else {
+        refs.input.current.blur();
+      }
+    }
+  }, [refs.input.current, isOpen]);
 
   return (
     <Dialog
@@ -54,22 +58,19 @@ export default () => {
       open={isOpen}
       TransitionComponent={Transition}
       keepMounted
-      onClose={close}
+      onClose={handleClose}
     >
-      <AppBar position="sticky" color="transparent">
-        <Box position="relative">
-          <BlurBackdrop />
-          <Toolbar>
-            <IconButton edge="start" onClick={close}>
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
-        </Box>
-      </AppBar>
       <RefsContext.Provider value={refs}>
         <MessageList />
         <Input />
       </RefsContext.Provider>
+      <Box position="fixed" top={0} left={0} width="100%" p={1}>
+        <ButtonBase onClick={handleClose}>
+          <Box component={Paper} elevation={4} p={2} borderRadius="50%">
+            <CloseIcon />
+          </Box>
+        </ButtonBase>
+      </Box>
     </Dialog>
   );
 };

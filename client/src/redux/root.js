@@ -29,7 +29,7 @@ const selectors = {
 function* saga() {
   // ensure player is not playing when modal is not open
   yield takeEvery(player.actions.play, function* () {
-    const isVideoModalOpen = yield select(modal.selectors.isOpen("videoModal"));
+    const isVideoModalOpen = yield select(modal.selectors.isOpen("video"));
     if (!isVideoModalOpen) {
       yield put(player.actions.pause());
     }

@@ -1,39 +1,24 @@
 import {
-  AppBar,
   Box,
-  Button,
+  ButtonBase,
   Dialog,
   makeStyles,
+  Paper,
   Slide,
-  Toolbar,
-  IconButton,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import modal from "../common/redux/modal";
 import player from "./redux/player";
 import VideoPage from "./VideoPage";
-import { useLocation } from "react-router-dom";
-import BlurBackdrop from "../common/components/BlurBackdrop";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     maxWidth: "100%",
     backgroundColor: theme.palette.background.default,
   },
-  iconButton: {
-    display: "block",
-  },
-  toolbar: {
-    display: "flex",
-    justifyContent: "center",
-  },
-  appBar: {
-    top: "auto",
-    bottom: 0,
-  },
-  toolbarSpace: theme.mixins.toolbar,
 }));
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -42,11 +27,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default () => {
   const classes = useStyles();
-  const isOpen = useSelector(modal.selectors.isOpen("videoModal"));
+  const isOpen = useSelector(modal.selectors.isOpen("video"));
   const dispatch = useDispatch();
   const handleClose = () => {
     dispatch(player.actions.pause());
-    dispatch(modal.actions.close("videoModal"));
+    dispatch(modal.actions.close("video"));
   };
   const location = useLocation();
   useEffect(() => {
@@ -63,16 +48,20 @@ export default () => {
       fullScreen
     >
       <VideoPage />
-      <AppBar className={classes.appBar} position="fixed" color="transparent">
-        <Box position="relative">
-          <BlurBackdrop opacity={0.5} />
-          <Toolbar className={classes.toolbar}>
-            <IconButton className={classes.iconButton} onClick={handleClose}>
-              <CloseIcon />
-            </IconButton>
-          </Toolbar>
-        </Box>
-      </AppBar>
+      <Box
+        position="fixed"
+        top="auto"
+        bottom="0"
+        width="100%"
+        p={2}
+        textAlign="center"
+      >
+        <ButtonBase onClick={handleClose}>
+          <Box component={Paper} elevation={4} p={2} borderRadius="50%">
+            <CloseIcon />
+          </Box>
+        </ButtonBase>
+      </Box>
     </Dialog>
   );
 };
