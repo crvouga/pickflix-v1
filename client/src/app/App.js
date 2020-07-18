@@ -3,7 +3,7 @@ import React from "react";
 import DiscoverPage from "../discover";
 import HomePage from "../home";
 import MoviePage from "../movie";
-import NavigationBarBottom from "../navigation/mobile/NavigationBarBottom";
+import NavigationBarBottom from "./NavigationBarBottom";
 import PersonPage from "../person";
 import SearchPage from "../search";
 import VideoModal from "../video/VideoModal";
@@ -27,25 +27,11 @@ const UnauthenticatedApp = () => {
   );
 };
 
-const useStyles = makeStyles({
-  root: {
-    " -webkit-touch-callout": "none",
-    "-webkit-user-select": "none",
-    "-khtml-user-select": "none",
-    "-moz-user-select": "none",
-    "-ms-user-select": "none",
-    "user-select": "none",
-    "touch-action": "manipulation",
-    padding: 0,
-  },
-});
-
 export default () => {
-  const classes = useStyles();
   return (
     <Providers>
       <CssBaseline />
-      <Container maxWidth="xs" className={classes.root}>
+      <Container style={{ padding: 0 }} maxWidth="xs">
         <UnauthenticatedApp />
       </Container>
       <NavigationBarBottom />

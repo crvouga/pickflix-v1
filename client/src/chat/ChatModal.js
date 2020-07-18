@@ -1,4 +1,12 @@
-import { ButtonBase, Dialog, makeStyles, Slide } from "@material-ui/core";
+import {
+  ButtonBase,
+  Dialog,
+  makeStyles,
+  Slide,
+  Container,
+  useMediaQuery,
+  useTheme,
+} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,19 +25,26 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
     backgroundColor: theme.palette.background.paper,
   },
+  root: {
+    width: "100%",
+    height: "100vh",
+    position: "relative",
+  },
   messageListContainer: {
-    position: "absolute",
+    positon: "absolute",
     top: 0,
     left: 0,
-    width: "100vw",
-    height: "100vh",
+    width: "100%",
+    height: "100%",
     overflowY: "scroll",
   },
   inputContainer: {
-    position: "fixed",
+    position: "absolute",
+    left: 0,
     top: "auto",
     bottom: 0,
     width: "100%",
+    textAlign: "center",
   },
   gutter: {
     height: "86px",
@@ -40,10 +55,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const preventDefault = (e) => e.preventDefault();
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 export default () => {
   const classes = useStyles();
@@ -80,27 +91,30 @@ export default () => {
         fullScreen
         open={isOpen}
         keepMounted
-        TransitionComponent={Transition}
         onClose={handleClose}
         PaperProps={{ classes: { root: classes.paper } }}
       >
-        <div
-          onClick={preventDefault}
-          onTouchStart={preventDefault}
-          onMouseDown={preventDefault}
-        >
-          <div className={classes.messageListContainer}>
-            <MessageList />
-            <div className={classes.gutter} />
+        <Container style={{ padding: 0 }} maxWidth="xs">
+          <div
+            /* prevent input blurring */
+            onClick={preventDefault}
+            onTouchStart={preventDefault}
+            onMouseDown={preventDefault}
+            className={classes.root}
+          >
+            <div className={classes.messageListContainer}>
+              <MessageList />
+              <div className={classes.gutter} />
+            </div>
+            <div className={classes.inputContainer}>
+              <Input />
+            </div>
           </div>
-          <div className={classes.inputContainer}>
-            <Input />
-          </div>
-        </div>
 
-        <ButtonBase onClick={handleClose} className={classes.fab}>
-          <CloseIcon />
-        </ButtonBase>
+          <ButtonBase onClick={handleClose} className={classes.fab}>
+            <CloseIcon />
+          </ButtonBase>
+        </Container>
       </Dialog>
     </RefsContext.Provider>
   );

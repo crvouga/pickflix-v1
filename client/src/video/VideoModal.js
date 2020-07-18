@@ -1,4 +1,10 @@
-import { ButtonBase, Dialog, makeStyles, Slide } from "@material-ui/core";
+import {
+  Container,
+  ButtonBase,
+  Dialog,
+  makeStyles,
+  Slide,
+} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
   fabContainer: {
     position: "fixed",
+    left: 0,
     top: "auto",
     bottom: 0,
     width: "100%",
@@ -28,10 +35,6 @@ const useStyles = makeStyles((theme) => ({
     pointerEvents: "none",
   },
 }));
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
 
 export default () => {
   const classes = useStyles();
@@ -43,19 +46,21 @@ export default () => {
 
   return (
     <Dialog
-      TransitionComponent={Transition}
       PaperProps={{ classes: { root: classes.paper } }}
       onClose={handleClose}
       open={isOpen}
       keepMounted
       fullScreen
     >
-      <VideoPage />
-      <div className={classes.fabContainer}>
-        <ButtonBase onClick={handleClose} className={classes.fab}>
-          <CloseIcon />
-        </ButtonBase>
-      </div>
+      <Container style={{ padding: 0 }} maxWidth="xs">
+        <VideoPage />
+
+        <div className={classes.fabContainer}>
+          <ButtonBase onClick={handleClose} className={classes.fab}>
+            <CloseIcon />
+          </ButtonBase>
+        </div>
+      </Container>
     </Dialog>
   );
 };
