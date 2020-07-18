@@ -3,8 +3,8 @@ const express = require("express");
 const app = express();
 const path = require("path");
 
-app.use("/api/tmdb", require("./tmdb"));
-app.use("/api/youtube", require("./youtube"));
+app.use("/api/tmdb", require("./api/tmdb"));
+app.use("/api/youtube", require("./api/youtube"));
 
 const buildPath = path.join(__dirname, "client", "build");
 app.use(express.static(buildPath));
