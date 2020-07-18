@@ -8,7 +8,7 @@ import { BrowserRouter } from "react-router-dom";
 import { ParallaxProvider } from "react-scroll-parallax";
 import { PersistGate } from "redux-persist/integration/react";
 import attachFastClick from "./attachFastClick";
-import configureStore from "../redux/configureStore";
+import configureStore from "./redux/configureStore";
 import configureTheme from "./configureTheme";
 attachFastClick();
 
