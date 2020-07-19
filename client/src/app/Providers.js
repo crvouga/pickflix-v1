@@ -8,28 +8,33 @@ import { BrowserRouter } from "react-router-dom";
 import { ParallaxProvider } from "react-scroll-parallax";
 import { PersistGate } from "redux-persist/integration/react";
 import attachFastClick from "./attachFastClick";
-import configureStore from "./redux/configureStore";
+import configureStore from "./configureStore";
 import configureTheme from "./configureTheme";
+import configureFirebase from "./configureFirebase";
+import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 attachFastClick();
 
-const { store, persistor } = configureStore();
 const theme = configureTheme();
+const { store, persistor } = configureStore();
+const rrfProps = configureFirebase(store);
 
 export default ({ children }) => {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
-        <BrowserRouter>
-          <ThemeProvider theme={theme}>
-            <ParallaxProvider>
-              <SnackbarProvider>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  {children}
-                </MuiPickersUtilsProvider>
-              </SnackbarProvider>
-            </ParallaxProvider>
-          </ThemeProvider>
-        </BrowserRouter>
+        <ReactReduxFirebaseProvider {...rrfProps}>
+          <BrowserRouter>
+            <ThemeProvider theme={theme}>
+              <ParallaxProvider>
+                <SnackbarProvider>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    {children}
+                  </MuiPickersUtilsProvider>
+                </SnackbarProvider>
+              </ParallaxProvider>
+            </ThemeProvider>
+          </BrowserRouter>
+        </ReactReduxFirebaseProvider>
       </PersistGate>
     </Provider>
   );

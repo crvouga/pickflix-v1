@@ -52,7 +52,7 @@ export default () => {
       keepMounted
       fullScreen
     >
-      <Container style={{ padding: 0 }} maxWidth="xs">
+      <Container disableGutters maxWidth="xs">
         <VideoPage />
 
         <div className={classes.fabContainer}>

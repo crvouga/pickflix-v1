@@ -1,8 +1,8 @@
 import { createMuiTheme } from "@material-ui/core";
 import { palette } from "../tmdb/attribution";
 
-export default () =>
-  createMuiTheme({
+export default () => {
+  return createMuiTheme({
     palette: {
       type: "dark",
       primary: {
@@ -17,3 +17,4 @@ export default () =>
       },
     },
   });
+};

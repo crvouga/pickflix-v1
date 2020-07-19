@@ -24,7 +24,5 @@ function* fetchInitialSuggestions() {
 
 export default function* () {
   yield fork(fetchInitialSuggestions);
-  yield takeEvery(actions.setChips, function* () {
-    console.log("addChip");
-  });
+  yield takeEvery(actions.setChips, function* () {});
 }

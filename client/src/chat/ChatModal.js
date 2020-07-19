@@ -94,7 +94,7 @@ export default () => {
         onClose={handleClose}
         PaperProps={{ classes: { root: classes.paper } }}
       >
-        <Container style={{ padding: 0 }} maxWidth="xs">
+        <Container disableGutters maxWidth="xs">
           <div
             /* prevent input blurring */
             onClick={preventDefault}
