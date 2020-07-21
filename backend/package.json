@@ -1,0 +1,36 @@
+{
+  "name": "pickflix-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "@keyv/mongo": "^1.1.0",
+    "axios": "^0.19.2",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "humps": "^2.0.1",
+    "keyv": "^4.0.1",
+    "node-fetch": "^2.6.0",
+    "qs": "^6.9.4",
+    "ramda": "^0.27.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/crvouga/pickflix-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/crvouga/pickflix-backend/issues"
+  },
+  "homepage": "https://github.com/crvouga/pickflix-backend#readme"
+}
