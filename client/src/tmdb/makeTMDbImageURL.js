@@ -1,8 +1,8 @@
-import axios from "axios";
+import api from "../api";
 import makeImageURL from "./_makeTMDbImageURL";
 
 let TMDbConfiguration;
-axios.get("/api/tmdb/configuration").then((res) => {
+api.get("/api/tmdb/configuration").then((res) => {
   TMDbConfiguration = res.data;
 });
 

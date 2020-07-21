@@ -1,11 +1,11 @@
 import * as R from "ramda";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import axios from "axios";
+import api from "../../api";
 import useDeferredValue from "../../common/hooks/useDeferredValue";
 
 export const cancelableRequest = (asyncFn) => (...args) => {
-  const source = axios.CancelToken.source();
+  const source = api.CancelToken.source();
   const config = {
     cancelToken: source.token,
   };
@@ -27,7 +27,7 @@ export default ({ text, page }) => {
       if (deferredText.length === 0) {
         return { results: [] };
       }
-      const response = await axios.get("/api/tmdb/search/multi", {
+      const response = await api.get("/api/tmdb/search/multi", {
         ...config,
         params: { query: encodeURI(deferredText), page: page },
       });

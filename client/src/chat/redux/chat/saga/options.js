@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../../../api";
 import * as R from "ramda";
 import { call, delay, put, select, takeLatest } from "redux-saga/effects";
 import actions from "../actions";
@@ -16,13 +16,13 @@ const dateRangeOptions = decades.map((year) => ({
   id: year,
 }));
 
-const fetchGenres = () => axios.get("/api/tmdb/genre/movie/list");
+const fetchGenres = () => api.get("/api/tmdb/genre/movie/list");
 
 const fetchSearch = async (endpoint, params) => {
   if (params.query.length === 0) {
     return { results: [] };
   }
-  const response = await axios.get(endpoint, { params });
+  const response = await api.get(endpoint, { params });
   return response.data;
 };
 

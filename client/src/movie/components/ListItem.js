@@ -2,7 +2,7 @@ import { ButtonBase, makeStyles, Typography } from "@material-ui/core";
 import * as R from "ramda";
 import React from "react";
 import { useQuery } from "react-query";
-import axios from "axios";
+import api from "../../api";
 import MovieBackdrop from "./MovieBackdrop";
 
 const useStyles = makeStyles((theme) => ({
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     width: "50%",
     marginRight: theme.spacing(1),
   },
-  itemText: {
+  itemText: {˜
     flex: 1,
     overflow: "hidden",
     height: "100%",
@@ -56,7 +56,7 @@ export default ({ movie, ...props }) => {
   const classes = useStyles();
   const genresQuery = useQuery(
     "genres",
-    () => axios.get("/api/tmdb/genre/movie/list").then((res) => res.data),
+    () => api.get("/api/tmdb/genre/movie/list").then((res) => res.data),
     {
       staleTime: Infinity,
     }

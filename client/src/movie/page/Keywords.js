@@ -1,5 +1,5 @@
 import { Box, Collapse, Typography } from "@material-ui/core";
-import axios from "axios";
+import api from "../../api";
 import * as R from "ramda";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
@@ -19,7 +19,7 @@ export default ({ keywords }) => {
     ["movie", selectedKeyword?.id],
     () =>
       selectedKeyword &&
-      axios
+      api
         .get("/api/tmdb/discover/movie", {
           params: { withKeywords: [selectedKeyword.id] },
         })

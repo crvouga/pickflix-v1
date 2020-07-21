@@ -1,6 +1,6 @@
 import { Box, IconButton, Menu, MenuItem, Typography } from "@material-ui/core";
 import TuneIcon from "@material-ui/icons/Tune";
-import axios from "axios";
+import api from "../api";
 import * as R from "ramda";
 import React, { useEffect, useState } from "react";
 import { Flipped, Flipper } from "react-flip-toolkit";
@@ -16,7 +16,7 @@ import Header from "./Header";
 import { useParams } from "react-router";
 
 const fetchPersonPage = (personId) =>
-  axios
+  api
     .get(`/api/tmdb/person/${personId}`, {
       params: {
         appendToResponse: [

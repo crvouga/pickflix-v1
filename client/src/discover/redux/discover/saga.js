@@ -1,7 +1,7 @@
 import * as selectors from "./selectors";
 import actions from "./actions";
 import { takeEvery, call, fork, put, select } from "redux-saga/effects";
-import axios from "axios";
+import api from "../../../api";
 import * as R from "ramda";
 
 const renameKeys = R.curry((keysMap, obj) =>
@@ -12,7 +12,7 @@ const renameKeys = R.curry((keysMap, obj) =>
   )
 );
 
-const fetchGenres = () => axios.get("/api/tmdb/genre/movie/list");
+const fetchGenres = () => api.get("/api/tmdb/genre/movie/list");
 
 function* fetchInitialSuggestions() {
   const response = yield call(fetchGenres);

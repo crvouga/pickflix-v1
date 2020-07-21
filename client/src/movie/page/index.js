@@ -12,11 +12,11 @@ import Videos from "./Videos";
 import { useParams } from "react-router";
 import LoadingPage from "../../common/page/LoadingPage";
 import ErrorPage from "../../common/page/ErrorPage";
-import axios from "axios";
+import api from "../../api";
 import { useQuery } from "react-query";
 
 const fetchMoviePage = (movieId) =>
-  axios
+  api
     .get(`/api/tmdb/movie/${movieId}`, {
       params: {
         appendToResponse: [

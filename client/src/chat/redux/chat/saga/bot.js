@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../../../../api";
 import * as R from "ramda";
 import { call, takeLatest, put, delay } from "redux-saga/effects";
 import actions from "../actions";
@@ -37,7 +37,7 @@ const tagsToParams = (tags) => {
 };
 
 const fetchDiscoverMovies = (params) =>
-  axios.get("/api/tmdb/discover/movie", {
+  api.get("/api/tmdb/discover/movie", {
     params,
   });
 

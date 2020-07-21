@@ -1,5 +1,5 @@
 import { Box, Typography } from "@material-ui/core";
-import axios from "axios";
+import api from "../api";
 import * as R from "ramda";
 import React from "react";
 import { useQuery } from "react-query";
@@ -41,7 +41,7 @@ const fetchHomePage = async () => {
   };
   const names = R.keys(urlByName);
   const urls = R.values(urlByName);
-  const responses = await Promise.all(R.map((url) => axios.get(url), urls));
+  const responses = await Promise.all(R.map((url) => api.get(url), urls));
   return R.zipObj(names, R.pluck("data", responses));
 };
 
