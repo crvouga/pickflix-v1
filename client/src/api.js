@@ -1,13 +1,12 @@
 import axios from "axios";
 
-const isInDevMode =
-  !process.env.NODE_ENV || process.env.NODE_ENV === "development";
+const baseURL =
+  !process.env.NODE_ENV || process.env.NODE_ENV === "development"
+    ? "http://localhost:9000/"
+    : "https://pickflix-backend.herokuapp.com/";
 
-const production = "https://pickflix-backend.herokuapp.com/";
-const development = "http://localhost:9000/";
-
-const baseURL = isInDevMode ? development : production;
-
-export default axios.create({
+const api = axios.create({
   baseURL: baseURL,
 });
+
+export default api;
