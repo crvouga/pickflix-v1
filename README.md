@@ -1,5 +1,5 @@
-# 🎬 🎥 🍿 Pickflix
+# 🎬🎥Pickflix
 
-A React/Express app that lets you explore movies.
+An app that helps you pick flixs🍿 to watch.
 
 # https://pickflix.web.app/

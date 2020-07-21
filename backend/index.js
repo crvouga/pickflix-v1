@@ -4,6 +4,8 @@ const cors = require("cors");
 
 const app = express();
 
+const clientOrigin = `https://pickflix.web.app/`;
+
 const corsOptions = (origin, callback) => {
   // allow access if in dev mode
   if (process.env.NODE_ENV === "development") {
@@ -12,7 +14,7 @@ const corsOptions = (origin, callback) => {
 
   // allow access if client is calling api
   const originHostname = new URL(origin).hostname;
-  const clientHostname = new URL(process.env.CLIENT_ORIGIN).hostname;
+  const clientHostname = new URL(clientOrigin).hostname;
 
   if (originHostname === clientHostname) {
     return callback(null, true);
