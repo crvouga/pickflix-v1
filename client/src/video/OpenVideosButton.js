@@ -7,20 +7,22 @@ export default ({ videos, ...props }) => {
   const disabled = videos.length === 0 || false;
 
   return (
-    <ButtonBase
-      component={Box}
-      color={disabled ? "text.disabled" : "primary"}
-      disabled={disabled}
-      p={2}
-      display="flex"
-      justifyContent="space-between"
-      {...props}
-    >
-      <Typography noWrap style={{ fontWeight: "bold", flex: 1 }}>
-        {renderText(videos)}
-      </Typography>
-      <Box color="text.secondary">
-        <UnfoldMoreIcon color="inherit" fontSize="small" />
+    <ButtonBase style={{ width: "100%" }} disabled={disabled}>
+      <Box
+        color={disabled ? "text.disabled" : "primary"}
+        p={2}
+        display="flex"
+        justifyContent="space-between"
+        width="100%"
+        textAlign="left"
+        {...props}
+      >
+        <Typography noWrap style={{ fontWeight: "bold", flex: 1 }}>
+          {renderText(videos)}
+        </Typography>
+        <Box color="text.secondary">
+          <UnfoldMoreIcon color="inherit" fontSize="small" />
+        </Box>
       </Box>
     </ButtonBase>
   );
