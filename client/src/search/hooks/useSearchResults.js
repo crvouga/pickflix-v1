@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import api from "../../api";
 import useDeferredValue from "../../common/hooks/useDeferredValue";
+import axios from "axios";
 
 export const cancelableRequest = (asyncFn) => (...args) => {
-  const source = api.CancelToken.source();
+  const source = axios.CancelToken.source();
   const config = {
     cancelToken: source.token,
   };
