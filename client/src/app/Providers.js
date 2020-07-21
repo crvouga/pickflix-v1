@@ -1,17 +1,17 @@
 import DateFnsUtils from "@date-io/date-fns";
 import { ThemeProvider } from "@material-ui/core";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import { SnackbarProvider } from "notistack";
 import React from "react";
 import { Provider } from "react-redux";
+import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 import { BrowserRouter } from "react-router-dom";
 import { ParallaxProvider } from "react-scroll-parallax";
 import { PersistGate } from "redux-persist/integration/react";
 import attachFastClick from "./attachFastClick";
+import configureFirebase from "./configureFirebase";
 import configureStore from "./configureStore";
 import configureTheme from "./configureTheme";
-import configureFirebase from "./configureFirebase";
-import { ReactReduxFirebaseProvider } from "react-redux-firebase";
+import SnackbarProvider from "./SnackbarProvider";
 attachFastClick();
 
 const theme = configureTheme();

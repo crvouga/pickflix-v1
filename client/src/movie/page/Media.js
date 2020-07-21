@@ -99,7 +99,7 @@ export default ({ videos, images }) => {
   }
 
   const imageComponents = R.take(
-    20,
+    10,
     R.concat(backdrops.map(renderBackdrop), posters.map(renderPoster))
   );
 

@@ -62,7 +62,9 @@ export default () => {
   const isOpen = useSelector(modal.selectors.isOpen("chat"));
   const dispatch = useDispatch();
   const handleClose = () => {
-    dispatch(modal.actions.close("chat"));
+    if (isOpen) {
+      dispatch(modal.actions.close("chat"));
+    }
   };
   useEffect(() => {
     return history.listen(handleClose);

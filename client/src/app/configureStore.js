@@ -9,6 +9,7 @@ import chat from "../chat/redux/chat";
 import modal from "../common/redux/modal";
 import discover from "../discover/redux/discover";
 import player from "../video/redux/player";
+import signIn from "../auth/signIn/redux/signIn";
 
 const persistFirebaseReducer = persistReducer(
   { key: "firebaseState", storage, stateReconciler: hardSet },
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   modal: modal.reducer,
   discover: discover.reducer,
   chat: chat.reducer,
+  signIn: signIn.reducer,
 });
 
 function* saga() {

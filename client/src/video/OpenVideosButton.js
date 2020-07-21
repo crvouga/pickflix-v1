@@ -7,7 +7,8 @@ export default ({ videos, ...props }) => {
   const disabled = videos.length === 0 || false;
 
   return (
-    <Box
+    <ButtonBase
+      component={Box}
       color={disabled ? "text.disabled" : "primary"}
       disabled={disabled}
       p={2}
@@ -21,6 +22,6 @@ export default ({ videos, ...props }) => {
       <Box color="text.secondary">
         <UnfoldMoreIcon color="inherit" fontSize="small" />
       </Box>
-    </Box>
+    </ButtonBase>
   );
 };

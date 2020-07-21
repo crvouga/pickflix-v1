@@ -10,9 +10,9 @@ const actions = {
   close: createAction("modal/close", createPayload),
 };
 
-const initialSttae = {};
+const initialState = {};
 
-const reducer = createReducer(initialSttae, {
+const reducer = createReducer(initialState, {
   [actions.open]: (state, { payload: { name, props } }) => {
     state[name] = { isOpen: true, props };
   },
