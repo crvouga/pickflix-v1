@@ -2,7 +2,7 @@
 
 A React/Express app that lets you explore movies.
 
-# https://vouga-pickflix.herokuapp.com/
+# https://pickflix.web.app/
 
 ###### Important Developer Links
 Youtube:
