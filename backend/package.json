@@ -1,5 +1,5 @@
 {
-  "name": "pickflix-backend",
+  "name": "backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -24,13 +24,8 @@
     "ramda": "^0.27.0"
   },
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/crvouga/pickflix-backend.git"
+    "type": "git"
   },
   "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/crvouga/pickflix-backend/issues"
-  },
-  "homepage": "https://github.com/crvouga/pickflix-backend#readme"
+  "license": "ISC"
 }
