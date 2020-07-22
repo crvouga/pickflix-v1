@@ -29,7 +29,12 @@ export default ({ children, source, ...props }) => {
       varaint="body2"
       {...props}
     >
-      <ReactMarkdown className={classes.markdown} source={source}>
+      <ReactMarkdown
+        // extremely nested <blockquote>...</blockquote> was rendering in youtube comments making it too wide
+        disallowedTypes={["blockquote"]}
+        className={classes.markdown}
+        source={source}
+      >
         {children}
       </ReactMarkdown>
     </Typography>

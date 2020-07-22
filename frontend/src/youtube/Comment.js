@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     padding: `${theme.spacing(2)}px ${theme.spacing(1)}px`,
     display: "flex",
     flexDirection: "row",
-    maxWidth: "100vw",
+    maxWidth: "100%",
   },
   avatar: {
     paddingRight: theme.spacing(1),

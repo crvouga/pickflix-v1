@@ -6,6 +6,7 @@ import {
   Container,
   useMediaQuery,
   useTheme,
+  Paper,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useEffect, useRef } from "react";
@@ -31,6 +32,8 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
   },
   messageListContainer: {
+    paddingTop: "72px",
+    paddingBottom: "86px",
     positon: "absolute",
     top: 0,
     left: 0,
@@ -111,7 +114,6 @@ export default () => {
           >
             <div className={classes.messageListContainer}>
               <MessageList />
-              <div className={classes.gutter} />
             </div>
             <div className={classes.inputContainer}>
               <Input />

@@ -64,8 +64,7 @@ export default ({ details, credits }) => {
 
       {details.biography && (
         <Box
-          p={2}
-          paddingTop={0}
+          paddingX={2}
           textAlign="left"
           display="flex"
           flexDirection="column"
