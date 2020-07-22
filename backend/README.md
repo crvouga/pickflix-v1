@@ -6,10 +6,10 @@
 ### Endpoints
 Base URL: https://pickflix-backend.herokuapp.com/.  
 
-__GET__ /api/tmdb/_...any valid TMDb API endpoint_  
+__GET__ /api/tmdb/_...any valid TMDb API endpoint_     
 Docs: https://developers.themoviedb.org/3
 
-__GET__ /api/youtube/_...any valid Youtube API endpoint_. 
+__GET__ /api/youtube/_...any valid Youtube API endpoint_.    
 Docs: https://developers.google.com/youtube/v3
 
 ### Deployment
