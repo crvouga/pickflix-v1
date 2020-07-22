@@ -1,6 +1,6 @@
 # Backend
 ### Job
-* protects API key protection 
+* protects API keys 
 * caches Youtube API responses in fear of maxing out quota
 
 ### Endpoints
