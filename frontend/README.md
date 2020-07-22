@@ -1,11 +1,5 @@
 # Pickflix Frontend
 
-### Stack
-React & Redux
-
-### Authentication
-Firebase
-
 ### Deployment
 Deployed with Firebase Hosting
 
