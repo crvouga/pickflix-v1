@@ -36,6 +36,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const TransitionComponent = React.forwardRef((props, ref) => (
+  <Slide direction="up" ref={ref} {...props} />
+));
+
 export default () => {
   const classes = useStyles();
   const isOpen = useSelector(modal.selectors.isOpen("video"));
@@ -51,6 +55,7 @@ export default () => {
       open={isOpen}
       keepMounted
       fullScreen
+      TransitionComponent={TransitionComponent}
     >
       <Container disableGutters maxWidth="xs">
         <VideoPage />

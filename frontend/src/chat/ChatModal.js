@@ -54,6 +54,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const TransitionComponent = React.forwardRef((props, ref) => (
+  <Slide direction="up" ref={ref} {...props} />
+));
+
 const preventDefault = (e) => e.preventDefault();
 
 export default () => {
@@ -95,6 +99,7 @@ export default () => {
         keepMounted
         onClose={handleClose}
         PaperProps={{ classes: { root: classes.paper } }}
+        TransitionComponent={TransitionComponent}
       >
         <Container disableGutters maxWidth="xs">
           <div
