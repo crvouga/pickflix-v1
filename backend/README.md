@@ -1,11 +1,19 @@
 # Pickflix Backend
+Purpose: Protects API key protection and caches Youtube API responses in fear of maxing out quota
 
-### Dev Notes
+### Endpoints
+GET /api/tmdb/...any valid TMDb API endpoint
+https://developers.themoviedb.org/3
 
+GET /api/youtube/...any valid Youtube API endpoint
+https://developers.google.com/youtube/v3
+Note: caches responses in mongodb database
+
+### Deployment
 How to step continous deployment of the backend subdir using Heroku
 https://stackoverflow.com/questions/39197334/automated-heroku-deploy-from-subfolder
 
-#### Configuration of .env variables
+### Configuration of .env variables
 
 This for heroku to only deploy backend subdir
 PROJECT_PATH=backend
