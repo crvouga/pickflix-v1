@@ -1,12 +1,9 @@
 import {
   ButtonBase,
+  Container,
   Dialog,
   makeStyles,
   Slide,
-  Container,
-  useMediaQuery,
-  useTheme,
-  Paper,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useEffect, useRef } from "react";
@@ -39,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     width: "100%",
     height: "100%",
+    maxHeight: "100%",
     overflowY: "scroll",
   },
   inputContainer: {
