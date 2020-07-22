@@ -4,11 +4,11 @@
 * caches Youtube API responses in fear of maxing out quota
 
 ### Endpoints
-GET /api/tmdb/...any valid TMDb API endpoint
+__GET__ /api/tmdb/...any valid TMDb API endpoint
 
 Docs: https://developers.themoviedb.org/3
 
-GET /api/youtube/...any valid Youtube API endpoint
+__GET__ /api/youtube/...any valid Youtube API endpoint
 
 Docs: https://developers.google.com/youtube/v3
 
@@ -23,24 +23,23 @@ https://stackoverflow.com/questions/39197334/automated-heroku-deploy-from-subfol
 
 ### Configuration of .env variables
 
-This for heroku to only deploy backend subdir
-
 PROJECT_PATH=backend
 
-YOUTUBE_API_KEY
+NOTE: PROJECT_PATH is for heroku to only deploy backend subdir. Heroku Build pack: https://github.com/timanovsky/subdir-heroku-buildpack
 
-https://console.developers.google.com/apis/api/youtube.googleapis.com/credentials?project=pickflix
 
-TMDB_API_KEY
+YOUTUBE_API_KEY=🤫🔑
 
-https://www.themoviedb.org/settings/api
+API Key: https://console.developers.google.com/apis/api/youtube.googleapis.com/credentials?project=pickflix
 
-MONGODB_CONNECTION_URI
+TMDB_API_KEY=🤫🔑
 
-https://cloud.mongodb.com/v2/5ebb5d21f7a74e506ce600db#clusters
+API Key: https://www.themoviedb.org/settings/api
+
+MONGODB_CONNECTION_URI=🤫🔑
+
+Connection URI: https://cloud.mongodb.com/v2/5ebb5d21f7a74e506ce600db#clusters
 
 🚨IMPORTANT NOTE ON keyv BUG🐛🚨
 
 MONGODB_CONNECTION_URI must begin with "mongodb://" (and not "mongodb+srv://" for example) for the library keyv to work!
-
-
