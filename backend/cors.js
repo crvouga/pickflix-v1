@@ -8,17 +8,16 @@ module.exports = () =>
   cors({
     origin: (origin, callback) => {
       /** allow access if in dev mode */
+      console.log({ env });
       if (env === "development") {
         return callback(null, true);
       }
 
+      console.log({ origin, clientOrigin });
       /**  allow access if client is calling api */
       const originHostname = new URL(origin).hostname;
       const clientHostname = new URL(clientOrigin).hostname;
-      console.log({
-        originHostname,
-        clientHostname,
-      });
+      console.log({ originHostname, clientHostname });
 
       if (originHostname === clientHostname) {
         return callback(null, true);
