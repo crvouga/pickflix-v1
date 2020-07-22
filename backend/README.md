@@ -17,7 +17,7 @@ Deployed to Heroku
 
 https://dashboard.heroku.com/apps/pickflix-backend
 
-How to step continous deployment of the backend subdir using Heroku
+How to step continous deployment of the backend subdir using Heroku 
 
 https://stackoverflow.com/questions/39197334/automated-heroku-deploy-from-subfolder
 
