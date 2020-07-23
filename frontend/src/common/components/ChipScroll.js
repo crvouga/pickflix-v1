@@ -7,15 +7,22 @@ const getLabelDefault = (chip) => chip.label;
 export default ({
   chips,
   getLabel = getLabelDefault,
+  onChipClick,
   BoxProps,
   ChipProps,
   ChipBoxProps,
 }) => {
+  const handleChipClick = (chip) => () => onChipClick?.(chip);
   return (
     <HorizontalScroll {...BoxProps}>
       {chips.map((chip) => (
         <Box key={chip.id || getLabel(chip)} marginRight={1} {...ChipBoxProps}>
-          <Chip label={getLabel(chip)} variant="outlined" {...ChipProps} />
+          <Chip
+            onClick={handleChipClick(chip)}
+            label={getLabel(chip)}
+            variant="outlined"
+            {...ChipProps}
+          />
         </Box>
       ))}
     </HorizontalScroll>

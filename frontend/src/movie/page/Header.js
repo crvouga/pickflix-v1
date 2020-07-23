@@ -7,6 +7,9 @@ import ChipScroll from "../../common/components/ChipScroll";
 import ExpandHeight from "../../common/components/ExpandHeight";
 import useBoolean from "../../common/hooks/useBoolean";
 import ActionBar from "./ActionBar";
+import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
+import discover from "../../discover/redux/discover";
 momentDurationFormatSetup(moment);
 
 const toCertification = R.pipe(
@@ -35,6 +38,13 @@ export default ({ details, releaseDates }) => {
   const isOverviewExpanded = useBoolean();
   const subtitle1 = toSubtitle1({ details, releaseDates });
 
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const handleChipClick = (chip) => {
+    history.push("/discover");
+    dispatch(discover.actions.setChips([R.assoc("type", "genre", chip)]));
+  };
+
   return (
     <React.Fragment>
       <Box paddingX={2} paddingTop={2}>
@@ -48,7 +58,11 @@ export default ({ details, releaseDates }) => {
       <ChipScroll
         chips={details.genres}
         getLabel={(_) => _.name}
+        onChipClick={handleChipClick}
         BoxProps={{ paddingY: 1, paddingLeft: 2 }}
+        ChipProps={{
+          clickable: true,
+        }}
       />
       <Box paddingX={2}>
         <ActionBar />

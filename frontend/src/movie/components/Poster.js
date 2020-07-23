@@ -25,12 +25,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default ({ movie, ...props }) => {
+export default ({ movie, sizeIndex = 2, ...props }) => {
   const { id, posterPath, title } = movie;
 
   const history = useHistory();
   const classes = useStyles();
-  const posterURL = makeTMDbImageURL(2, { posterPath });
+  const posterURL = makeTMDbImageURL(sizeIndex, { posterPath });
 
   const onClick = () => {
     history.push(`/movie/${id}`);

@@ -4,14 +4,22 @@ import actions from "./actions";
 export default createReducer(
   {
     chips: [],
-    suggestions: [],
+    options: [],
+    responses: [],
+    status: "loading",
   },
   {
     [actions.setChips]: (state, action) => {
       state.chips = action.payload;
     },
-    [actions.setSuggestions]: (state, action) => {
-      state.suggestions = action.payload;
+    [actions.setOptions]: (state, action) => {
+      state.options = action.payload;
+    },
+    [actions.setResponses]: (state, action) => {
+      state.responses = action.payload;
+    },
+    [actions.setStatus]: (state, action) => {
+      state.status = action.payload;
     },
   }
 );
