@@ -4,6 +4,8 @@ import {
   Dialog,
   makeStyles,
   Slide,
+  Fab,
+  Box,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useEffect, useRef } from "react";
@@ -29,8 +31,6 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
   },
   messageListContainer: {
-    paddingTop: "72px",
-    paddingBottom: "86px",
     positon: "absolute",
     top: 0,
     left: 0,
@@ -111,7 +111,9 @@ export default () => {
             className={classes.root}
           >
             <div className={classes.messageListContainer}>
+              <Box height="64px" />
               <MessageList />
+              <Box height="86px" />
             </div>
             <div className={classes.inputContainer}>
               <Input />
