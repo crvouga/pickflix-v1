@@ -1,8 +1,19 @@
-import api from "../../../../api";
+import axios from "axios";
 import * as R from "ramda";
-import { call, delay, put, select, takeLatest } from "redux-saga/effects";
+import {
+  call,
+  cancelled,
+  delay,
+  put,
+  select,
+  takeLatest,
+  all,
+} from "redux-saga/effects";
+import api from "../../../../api";
 import actions from "../actions";
 import * as selectors from "../selectors";
+import { queryCache } from "react-query";
+
 const rangeStep = (start, step, end) =>
   R.unfold((n) => (n > end ? false : [n, n + step]), start);
 
@@ -18,25 +29,19 @@ const dateRangeOptions = decades.map((year) => ({
 
 const fetchGenres = () => api.get("/api/tmdb/genre/movie/list");
 
-const fetchSearch = async (endpoint, params) => {
-  if (params.query.length === 0) {
+const fetchSearch = async (endpoint, config) => {
+  if (config.params.query.length === 0) {
     return { results: [] };
   }
-  const response = await api.get(endpoint, { params });
+  const URL = "/api/tmdb/search" + endpoint;
+  const response = await queryCache.prefetchQuery(
+    ["search", endpoint, config.params],
+    () => api.get(URL, config),
+    {
+      staleTime: Infinity,
+    }
+  );
   return response.data;
-};
-
-const fetchAllSearches = async (params) => {
-  const [person, company, keyword] = await Promise.all([
-    fetchSearch("/api/tmdb/search/person", params),
-    Promise.resolve({ results: [] }), //fetchSearch("/api/tmdb/search/company", params),
-    fetchSearch("/api/tmdb/search/keyword", params),
-  ]);
-  return {
-    person,
-    company,
-    keyword,
-  };
 };
 
 export default function* () {
@@ -46,30 +51,50 @@ export default function* () {
   yield put(actions.setOptions(options));
 
   yield takeLatest(actions.setText, function* () {
-    yield delay(200);
-    const text = yield select(selectors.text);
-    yield put(actions.setIsFetchingOptions(true));
-    const response = yield call(fetchAllSearches, {
-      query: encodeURI(text.trim()),
-    });
+    const cancelSource = axios.CancelToken.source();
+    try {
+      yield delay(200);
+      const text = yield select(selectors.text);
 
-    const optionByType = {
-      dateRange: dateRangeOptions,
-      genre: genreOptions,
-      person: R.project(
-        ["id", "name", "profilePath"],
-        response.person.results || []
-      ),
-      company: response.company.results || [],
-      keyword: response.keyword.results || [],
-    };
+      const config = {
+        cancelToken: cancelSource.token,
+        params: {
+          query: encodeURI(text.trim()),
+        },
+      };
 
-    const options = R.pipe(
-      R.toPairs,
-      R.chain(([type, options]) => R.map(R.assoc("type", type), options))
-    )(optionByType);
+      yield put(actions.setStatus("loading"));
+      const response = yield all({
+        person: call(fetchSearch, "/person", config),
+        keyword: call(fetchSearch, "/keyword", config),
+        // company: call(fetchSearch, "/company", config)
+      });
+      yield put(actions.setStatus("success"));
 
-    yield put(actions.setOptions(options));
-    yield put(actions.setIsFetchingOptions(false));
+      const optionByType = {
+        dateRange: dateRangeOptions,
+        genre: genreOptions,
+        person: R.project(
+          ["id", "name", "profilePath"],
+          response.person.results || []
+        ),
+        keyword: response.keyword.results || [],
+        // company: response.company.results || [],
+      };
+
+      const newOptions = R.pipe(
+        R.toPairs,
+        R.chain(([type, options]) => R.map(R.assoc("type", type), options))
+      )(optionByType);
+
+      yield put(actions.setOptions(newOptions));
+    } catch (error) {
+      yield put(actions.setStatus("error"));
+    } finally {
+      if (yield cancelled()) {
+        yield call(() => cancelSource.cancel());
+        console.log("cancel!");
+      }
+    }
   });
 }

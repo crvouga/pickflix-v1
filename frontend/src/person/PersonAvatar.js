@@ -1,9 +1,10 @@
-import { Avatar, makeStyles, Box } from "@material-ui/core";
+import { Avatar, Box, makeStyles } from "@material-ui/core";
+import { push } from "connected-react-router";
 import React from "react";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-import { useHistory } from "react-router";
 import AspectRatio from "react-aspect-ratio";
 import "react-aspect-ratio/aspect-ratio.css";
+import { useDispatch } from "react-redux";
+import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 
 const useStyles = makeStyles({
   avatar: {
@@ -16,9 +17,9 @@ export default ({ person, ...props }) => {
   const { profilePath } = person;
   const classes = useStyles();
   const profileURL = makeTMDbImageURL(2, { profilePath });
-  const history = useHistory();
+  const dispatch = useDispatch();
   const handleClick = () => {
-    history.push(`/person/${person.id}`);
+    dispatch(push(`/person/${person.id}`));
   };
   return (
     <Box onClick={handleClick} {...props}>

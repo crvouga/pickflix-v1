@@ -17,15 +17,15 @@ import {
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
+import { push } from "connected-react-router";
 import * as R from "ramda";
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import ChipSelection from "../../common/components/ChipSelection";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
 import useBoolean from "../../common/hooks/useBoolean";
 import PersonAvatar from "../../person/PersonAvatar";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
-
 const useStyles = makeStyles((theme) => ({
   drawerBar: {
     paddingLeft: 0,
@@ -88,7 +88,6 @@ const Transition = React.forwardRef((props, ref) => {
 export default ({ credits }) => {
   const isDrawerOpen = useBoolean(false);
   const classes = useStyles();
-  const history = useHistory();
 
   const { cast, crew } = credits;
 
@@ -98,8 +97,9 @@ export default ({ credits }) => {
   const departments = R.sortBy(R.identity, R.keys(creditsByDepartment));
   const [selectedDepartment, setSelectedDepartment] = useState(departments[0]);
 
+  const dispatch = useDispatch();
   const handleCreditClick = (credit) => () => {
-    history.push(`/person/${credit.id}`);
+    dispatch(push(`/person/${credit.id}`));
   };
 
   const topCast = R.take(15, cast);

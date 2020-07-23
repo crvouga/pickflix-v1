@@ -1,14 +1,14 @@
 import { Box, makeStyles, Typography } from "@material-ui/core";
+import { push } from "connected-react-router";
 import moment from "moment";
 import React, { useState } from "react";
 import AspectRatio from "react-aspect-ratio";
 import "react-aspect-ratio/aspect-ratio.css";
-import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
 import Layer from "../common/components/Layer";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const useStyles = makeStyles({
@@ -22,9 +22,9 @@ const useStyles = makeStyles({
 });
 
 const HeaderItem = ({ movie }) => {
-  const history = useHistory();
+  const dispatch = useDispatch();
   const handleClick = () => {
-    history.push(`/movie/${movie.id}`);
+    dispatch(push(`/movie/${movie.id}`));
   };
   const movieBackdropURL = makeTMDbImageURL(2, {
     backdropPath: movie.backdropPath,

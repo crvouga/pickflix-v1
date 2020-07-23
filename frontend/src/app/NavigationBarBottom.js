@@ -7,6 +7,8 @@ import SearchIcon from "@material-ui/icons/Search";
 import ExploreIcon from "@material-ui/icons/Explore";
 import React from "react";
 import { useHistory } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { push } from "connected-react-router";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,10 +26,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const history = useHistory();
-  const pathname = history.location.pathname;
+  const dispatch = useDispatch();
+  const pathname = useSelector((state) => state.router.location.pathname);
   const handleChange = (event, newValue) => {
-    history.push(newValue);
+    dispatch(push(newValue));
   };
 
   return (

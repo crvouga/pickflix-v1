@@ -1,12 +1,14 @@
-import { Box, makeStyles, Typography, ButtonBase } from "@material-ui/core";
+import { Box, makeStyles, Typography } from "@material-ui/core";
 import MovieIcon from "@material-ui/icons/Movie";
+import { push } from "connected-react-router";
 import React from "react";
-import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
-import { useHistory } from "react-router";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/opacity.css";
 import AspectRatio from "react-aspect-ratio";
 import "react-aspect-ratio/aspect-ratio.css";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/opacity.css";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
+import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -37,9 +39,10 @@ export default ({ movie, ...props }) => {
   const backdropURL = makeTMDbImageURL(2, { backdropPath });
   const posterURL = makeTMDbImageURL(2, { posterPath });
   const classes = useStyles({ backdropURL, posterURL });
-  const history = useHistory();
+
+  const dispatch = useDispatch();
   const handleClick = () => {
-    history.push(`/movie/${movie.id}`);
+    dispatch(push(`/movie/${movie.id}`));
   };
 
   return (

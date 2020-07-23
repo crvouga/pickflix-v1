@@ -1,51 +1,30 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { firebaseReducer } from "react-redux-firebase";
+import { configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
-import hardSet from "redux-persist/lib/stateReconciler/hardSet";
 import storage from "redux-persist/lib/storage";
 import createSagaMiddleware from "redux-saga";
-import { fork } from "redux-saga/effects";
-import chat from "../chat/redux/chat";
-import modal from "../common/redux/modal";
-import discover from "../discover/redux/discover";
-import player from "../video/redux/player";
-import signIn from "../auth/signIn/redux/signIn";
+import configureRoot from "./configureRoot";
+import { createBrowserHistory } from "history";
+import { routerMiddleware } from "connected-react-router";
 
-const persistFirebaseReducer = persistReducer(
-  { key: "firebaseState", storage, stateReconciler: hardSet },
-  firebaseReducer
-);
+const history = createBrowserHistory();
 
-const rootReducer = combineReducers({
-  firebase: persistFirebaseReducer,
-  player: player.reducer,
-  modal: modal.reducer,
-  discover: discover.reducer,
-  chat: chat.reducer,
-  signIn: signIn.reducer,
-});
-
-function* saga() {
-  yield fork(player.saga);
-  yield fork(discover.saga);
-  yield fork(chat.saga);
-}
+const root = configureRoot(history);
 
 const persistConfig = {
   key: "root",
   storage,
 };
+const reducer = persistReducer(persistConfig, root.reducer);
 
 const sagaMiddleware = createSagaMiddleware();
+const middleware = [sagaMiddleware, routerMiddleware(history)];
 
 export default () => {
-  const persistedReducer = persistReducer(persistConfig, rootReducer);
   const store = configureStore({
-    reducer: persistedReducer,
-    middleware: [sagaMiddleware],
+    reducer,
+    middleware,
   });
-  sagaMiddleware.run(saga);
+  sagaMiddleware.run(root.saga);
   const persistor = persistStore(store);
-
-  return { store, persistor };
+  return { store, persistor, history };
 };

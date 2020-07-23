@@ -11,5 +11,5 @@ export default {
   setTags: createAction("chat/setTags"),
   setText: createAction("chat/setText"),
   setOptions: createAction("chat/setOptions"),
-  setIsFetchingOptions: createAction("chat/setIsFetchingOptions"),
+  setStatus: createAction("chat/setStatus"),
 };

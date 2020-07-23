@@ -15,7 +15,7 @@ export default createReducer(
     tags: [],
     text: "",
     options: [],
-    isFetchingOptions: false,
+    status: "loading",
   },
   {
     [actions.sendMessage]: appendMessage,
@@ -29,8 +29,8 @@ export default createReducer(
     [actions.setOptions]: (state, action) => {
       state.options = action.payload;
     },
-    [actions.setIsFetchingOptions]: (state, action) => {
-      state.isFetchingOptions = action.payload;
+    [actions.setStatus]: (state, action) => {
+      state.status = action.payload;
     },
   }
 );

@@ -10,6 +10,7 @@ import {
 import api from "../../../api";
 import actions from "./actions";
 import * as selectors from "./selectors";
+import { queryCache } from "react-query";
 
 const fetchGenres = () => api.get("/api/tmdb/genre/movie/list");
 
@@ -54,6 +55,18 @@ const tagsToParams = (tags) => {
   return params;
 };
 
+const fetchDiscover = async (config) => {
+  const response = await queryCache.prefetchQuery(
+    ["discover", config.params],
+    () => api.get("/api/tmdb/discover/movie", config),
+    {
+      staleTime: Infinity,
+    }
+  );
+
+  return response.data;
+};
+
 export default function* () {
   yield fork(fetchInitialOptions);
 
@@ -67,13 +80,14 @@ export default function* () {
       const currentPage = yield select(selectors.currentPage);
       const chips = yield select(selectors.chips);
       yield put(actions.setStatus("loading"));
-      const rawResponse = yield call(api.get, "/api/tmdb/discover/movie", {
+      const config = {
         params: {
           ...tagsToParams(chips),
           page: currentPage + 1,
         },
-      });
-      const response = rawResponse.data;
+      };
+      const response = yield call(fetchDiscover, config);
+
       yield put(actions.setStatus("success"));
       const responses = yield select(selectors.responses);
       yield put(actions.setResponses(R.append(response, responses)));

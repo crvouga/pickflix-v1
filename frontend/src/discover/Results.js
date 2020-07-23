@@ -7,16 +7,17 @@ import Poster from "../movie/components/Poster";
 import discover from "./redux/discover";
 
 export default () => {
-  const [ref, inView, entry] = useInView();
   const results = useSelector(discover.selectors.results);
   const totalResults = useSelector(discover.selectors.totalResults);
   const status = useSelector(discover.selectors.status);
   const dispatch = useDispatch();
+  const [ref, inView, entry] = useInView();
   useEffect(() => {
     if (inView) {
       dispatch(discover.actions.load());
     }
   }, [inView]);
+
   return (
     <div>
       <Box p={1} paddingBottom={0}>
@@ -34,7 +35,7 @@ export default () => {
       >
         {results.map((result) => (
           <Box key={result.id} p={1} width="50%">
-            <Poster key={result.id} movie={result} sizeIndex={Infinity} />
+            <Poster key={result.id} movie={result} sizeIndex={4} />
           </Box>
         ))}
         <Box width="100%" textAlign="center" m={2}>

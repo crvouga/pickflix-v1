@@ -1,15 +1,16 @@
 import { Box, Divider, Typography } from "@material-ui/core";
+import { push } from "connected-react-router";
 import moment from "moment";
 import momentDurationFormatSetup from "moment-duration-format";
 import * as R from "ramda";
 import React from "react";
+import { useDispatch } from "react-redux";
 import ChipScroll from "../../common/components/ChipScroll";
 import ExpandHeight from "../../common/components/ExpandHeight";
 import useBoolean from "../../common/hooks/useBoolean";
-import ActionBar from "./ActionBar";
-import { useHistory } from "react-router";
-import { useDispatch } from "react-redux";
 import discover from "../../discover/redux/discover";
+import ActionBar from "./ActionBar";
+
 momentDurationFormatSetup(moment);
 
 const toCertification = R.pipe(
@@ -38,10 +39,9 @@ export default ({ details, releaseDates }) => {
   const isOverviewExpanded = useBoolean();
   const subtitle1 = toSubtitle1({ details, releaseDates });
 
-  const history = useHistory();
   const dispatch = useDispatch();
   const handleChipClick = (chip) => {
-    history.push("/discover");
+    dispatch(push("/discover"));
     dispatch(discover.actions.setChips([R.assoc("type", "genre", chip)]));
   };
 

@@ -8,7 +8,7 @@ import RefsContext from "./RefsContext";
 export default () => {
   const refs = useContext(RefsContext);
 
-  const isFetchingOptions = useSelector(chat.selectors.isFetchingOptions);
+  const status = useSelector(chat.selectors.status);
   const text = useSelector(chat.selectors.text);
   const tags = useSelector(chat.selectors.tags);
 
@@ -40,7 +40,7 @@ export default () => {
         onBlur={handleBlur}
       />
 
-      <Grow in={isFetchingOptions}>
+      <Grow in={status === "loading"}>
         <Box marginY="auto" marginRight={1}>
           <CircularProgress disableShrink size="2em" />
         </Box>

@@ -1,21 +1,20 @@
-import React, { useState } from "react";
 import {
-  Box,
   Avatar,
+  Box,
   Button,
-  Typography,
-  DialogTitle,
-  DialogContent,
   Dialog,
   DialogActions,
+  DialogContent,
+  DialogTitle,
+  Typography,
 } from "@material-ui/core";
-import { useSelector } from "react-redux";
+import { push } from "connected-react-router";
+import { useSnackbar } from "notistack";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useFirebase } from "react-redux-firebase";
 import { useHistory } from "react-router";
-import JSONPretty from "react-json-pretty";
 import useBoolean from "../../common/hooks/useBoolean";
-import { useSnackbar } from "notistack";
-
 const DeleteAccount = () => {
   const firebase = useFirebase();
   const open = useBoolean();
@@ -75,8 +74,9 @@ export default () => {
       enqueueSnackbar(`${auth.email} signed out`, { variant: "info" });
     });
   };
+  const dispatch = useDispatch();
   const signIn = () => {
-    history.push("/signIn");
+    dispatch(push("/signIn"));
   };
 
   return (

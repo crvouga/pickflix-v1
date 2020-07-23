@@ -1,12 +1,12 @@
 import { AppBar, makeStyles, Typography } from "@material-ui/core";
+import { push } from "connected-react-router";
 import React, { useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import Page from "../common/page/Page";
 import SearchBar from "./components/SearchBar";
 import SearchHistory from "./components/SearchHistory";
 import SearchResults from "./components/SearchResults";
 import useSearchState from "./hooks/useSearchState";
-import ChipSelection from "../common/components/ChipSelection";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -72,8 +72,10 @@ export default () => {
     searchState.setText("");
   };
 
+  const dispatch = useDispatch();
   const handleResultClick = (result) => {
-    history.push(`/${result.mediaType}/${result.id}`);
+    dispatch(push(`/${result.mediaType}/${result.id}`));
+
     searchState.addHistory(result);
   };
 
