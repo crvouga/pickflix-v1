@@ -55,7 +55,7 @@ export default () => {
       open={isOpen}
       keepMounted
       fullScreen
-      TransitionComponent={TransitionComponent}
+      // TransitionComponent={TransitionComponent}
     >
       <Container disableGutters maxWidth="xs">
         <VideoPage />

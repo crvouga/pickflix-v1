@@ -5,17 +5,18 @@ import {
   Paper,
   Typography,
 } from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from "react";
 import AspectRatio from "react-aspect-ratio";
 import "react-aspect-ratio/aspect-ratio.css";
+import ReactPlayer from "react-player/lib/players/YouTube";
+import { useDispatch, useSelector } from "react-redux";
 import ExpandIcon from "../common/components/ExpandIcon";
 import useBoolean from "../common/hooks/useBoolean";
-import Player from "../youtube/Player";
+import modal from "../common/redux/modal";
+import * as youtubeAPI from "../youtube/api";
 import YoutubeSection from "../youtube/Section";
 import Playlist from "./Playlist";
 import player from "./redux/player";
-import modal from "../common/redux/modal";
 
 const useStyles = makeStyles((theme) => ({
   playerContainer: {
@@ -29,13 +30,8 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const classes = useStyles();
   const isPlaylistOpen = useBoolean(false);
-
-  const isVideoOpen = useSelector(modal.selectors.isOpen("video"));
   const isPlaying = useSelector(player.selectors.isPlaying);
-  const playing = isPlaying && isVideoOpen;
-
   const video = useSelector(player.selectors.video);
-  const videoKey = video?.key;
   const dispatch = useDispatch();
 
   const handlePlay = () => {
@@ -46,14 +42,25 @@ export default () => {
     dispatch(player.actions.pause());
   };
 
+  const handleProgress = (progress) => {
+    dispatch(player.actions.progress(progress));
+  };
+
   return (
-    <Box>
+    <div>
       <AspectRatio ratio="16/9" className={classes.playerContainer}>
-        <Player
+        <ReactPlayer
+          width="100%"
+          height="100%"
+          controls
           onPlay={handlePlay}
           onPause={handlePause}
-          playing={playing}
-          video={video}
+          onProgress={handleProgress}
+          playing={isPlaying}
+          url={youtubeAPI.videoKeyToEmbedURL(video?.key)}
+          config={{
+            youtube: youtubeAPI.embedConfig,
+          }}
         />
       </AspectRatio>
 
@@ -68,13 +75,12 @@ export default () => {
           <Typography style={{ flex: 1 }}>Playlist</Typography>
           <ExpandIcon expanded={isPlaylistOpen.value} />
         </Box>
-
         <Collapse in={isPlaylistOpen.value}>
           <Playlist />
         </Collapse>
       </Paper>
 
-      <YoutubeSection videoId={videoKey} />
-    </Box>
+      <YoutubeSection videoId={video?.key} />
+    </div>
   );
 };

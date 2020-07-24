@@ -97,7 +97,7 @@ export default () => {
         keepMounted
         onClose={handleClose}
         PaperProps={{ classes: { root: classes.paper } }}
-        TransitionComponent={TransitionComponent}
+        // TransitionComponent={TransitionComponent}
       >
         <Container disableGutters maxWidth="xs">
           <div
