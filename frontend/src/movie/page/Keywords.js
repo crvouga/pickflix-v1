@@ -1,10 +1,10 @@
-import { Box, Typography } from "@material-ui/core";
+import { Box, Chip, Typography } from "@material-ui/core";
 import * as R from "ramda";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { useSelector } from "react-redux";
 import api from "../../api";
-import ChipSelection from "../../common/components/ChipSelection";
+import HorizontalScroll from "../../common/components/HorizontalScroll";
 import router from "../../common/redux/router";
 import MoviePosterScroll from "../components/PosterScroll";
 
@@ -37,20 +37,23 @@ export default ({ keywords }) => {
 
   return (
     <React.Fragment>
-      <Box paddingLeft={2}>
+      <Box paddingLeft={2} paddingBottom={1}>
         <Typography style={{ fontWeight: "bold" }}>Keywords</Typography>
       </Box>
-      <ChipSelection
-        chips={keywords}
-        selected={selectedKeyword}
-        getKey={R.prop("id")}
-        getLabel={R.prop("name")}
-        onSelect={setSelectedKeyword}
-        BoxProps={{
-          paddingLeft: 2,
-          paddingBottom: 1,
-        }}
-      />
+      <HorizontalScroll paddingLeft={2} paddingBottom={1}>
+        {keywords.map((keyword) => (
+          <Box key={keyword.id} marginRight={1}>
+            <Chip
+              label={keyword.name}
+              onClick={() => setSelectedKeyword(keyword)}
+              clickable
+              variant={
+                keyword.id === selectedKeyword.id ? "default" : "outlined"
+              }
+            />
+          </Box>
+        ))}
+      </HorizontalScroll>
       <MoviePosterScroll movies={moviesFromKeyword} />
     </React.Fragment>
   );
