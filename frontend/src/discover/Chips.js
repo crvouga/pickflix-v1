@@ -1,6 +1,6 @@
-import { Box, Chip, Paper, makeStyles } from "@material-ui/core";
+import { Box, Chip, makeStyles, Paper } from "@material-ui/core";
 import * as R from "ramda";
-import React, { useRef, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import HorizontalScroll from "../common/components/HorizontalScroll";
 import discover from "./redux/discover";
@@ -11,6 +11,10 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
     width: "100%",
     zIndex: theme.zIndex.appBar,
+  },
+  chipRoot: {
+    color: "#000",
+    backgroundColor: "#fff",
   },
 }));
 
@@ -48,6 +52,7 @@ export default () => {
             key={chip.id}
           >
             <Chip
+              classes={{ root: classes.chipRoot }}
               style={{ fontSize: "inherit" }}
               label={discover.selectors.toLabel(chip)}
             />

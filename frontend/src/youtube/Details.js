@@ -62,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     height: "0.7em",
   },
   iconLabel: {
-    marginTop: "0.75em",
+    marginTop: "0.6em",
     marginLeft: "-0.5em",
   },
 }));

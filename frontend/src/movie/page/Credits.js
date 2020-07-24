@@ -2,6 +2,7 @@ import {
   AppBar,
   Avatar,
   Box,
+  Chip,
   Dialog,
   Divider,
   IconButton,
@@ -21,7 +22,6 @@ import { push } from "connected-react-router";
 import * as R from "ramda";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import ChipSelection from "../../common/components/ChipSelection";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
 import useBoolean from "../../common/hooks/useBoolean";
 import PersonAvatar from "../../person/PersonAvatar";
@@ -129,14 +129,19 @@ export default ({ credits }) => {
         PaperProps={{ classes: { root: classes.paper } }}
       >
         <Box component={Paper} position="sticky" top={0} zIndex={2}>
-          <ChipSelection
-            BoxProps={{
-              p: 2,
-            }}
-            chips={departments}
-            selected={selectedDepartment}
-            onSelect={setSelectedDepartment}
-          />
+          <HorizontalScroll p={2}>
+            {departments.map((department) => (
+              <Chip
+                key={department}
+                label={department}
+                clickable
+                onClick={() => setSelectedDepartment(department)}
+                variant={
+                  departments === selectedDepartment ? "default" : "outlined"
+                }
+              />
+            ))}
+          </HorizontalScroll>
         </Box>
 
         <div>

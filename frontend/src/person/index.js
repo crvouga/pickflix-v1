@@ -1,19 +1,27 @@
-import { Box, IconButton, Menu, MenuItem, Typography } from "@material-ui/core";
+import {
+  Box,
+  Chip,
+  IconButton,
+  Menu,
+  MenuItem,
+  Typography,
+  Paper,
+} from "@material-ui/core";
 import TuneIcon from "@material-ui/icons/Tune";
-import api from "../api";
 import * as R from "ramda";
 import React, { useEffect, useState } from "react";
 import { Flipped, Flipper } from "react-flip-toolkit";
 import { useQuery } from "react-query";
-import ChipSelection from "../common/components/ChipSelection";
-import Page from "../common/page/Page";
+import { useParams } from "react-router";
+import api from "../api";
+import HorizontalScroll from "../common/components/HorizontalScroll";
 import ErrorPage from "../common/page/ErrorPage";
 import Footer from "../common/page/Footer";
 import LoadingPage from "../common/page/LoadingPage";
+import Page from "../common/page/Page";
 import MoviePoster from "../movie/components/Poster";
 import MoviePosterScroll from "../movie/components/PosterScroll";
 import Header from "./Header";
-import { useParams } from "react-router";
 
 const fetchPersonPage = (personId) =>
   api
@@ -105,23 +113,43 @@ export default () => {
       <MoviePosterScroll movies={creditsByKey[details.knownForDepartment]} />
 
       <Box
-        p={2}
-        paddingBottom={1}
+        paddingX={2}
+        paddingTop={1}
         component={Typography}
         style={{ fontWeight: "bold" }}
       >
         Filmography
       </Box>
-      <Box display="flex" flexDirection="row">
-        <ChipSelection
-          BoxProps={{ paddingX: 2, paddingY: 1, flex: 1 }}
-          chips={keys}
-          selected={selectedKey}
-          onSelect={setSelectedKey}
-        />
-        <IconButton style={{ marginRight: 12 }} onClick={handleClick}>
+      <Box
+        bgcolor="background.default"
+        display="flex"
+        flexDirection="row"
+        position="sticky"
+        top={0}
+        zIndex={2}
+      >
+        <HorizontalScroll paddingX={2} paddingY={2} flex={1}>
+          {keys.map((key) => (
+            <Box key={key} marginRight={1}>
+              <Chip
+                label={key}
+                clickable
+                onClick={() => setSelectedKey(key)}
+                variant={key === selectedKey ? "default" : "outlined"}
+              />
+            </Box>
+          ))}
+        </HorizontalScroll>
+        {/* <Box
+          paddingRight={2}
+          display="flex"
+          flexDirection="column"
+          justifyContent="center"
+        > */}
+        <IconButton onClick={handleClick}>
           <TuneIcon />
         </IconButton>
+        {/* </Box> */}
         <Menu
           anchorEl={anchorEl}
           keepMounted
@@ -140,7 +168,10 @@ export default () => {
           >
             Newest First
           </MenuItem>
-          <MenuItem onClick={handleSortSelect("OldestFirst")}>
+          <MenuItem
+            selected={sortType === "OldestFirst"}
+            onClick={handleSortSelect("OldestFirst")}
+          >
             Oldest First
           </MenuItem>
         </Menu>

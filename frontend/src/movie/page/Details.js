@@ -1,10 +1,9 @@
-import { Box, Grid, Typography, useTheme, Divider } from "@material-ui/core";
+import { Box, Chip, Divider, Grid, Typography } from "@material-ui/core";
 import moment from "moment";
 import momentDurationFormatSetup from "moment-duration-format";
 import numeral from "numeral";
-import * as R from "ramda";
 import React from "react";
-import ChipScroll from "../../common/components/ChipScroll";
+import HorizontalScroll from "../../common/components/HorizontalScroll";
 momentDurationFormatSetup(moment);
 
 const commas = (_) => numeral(_).format("0,0");
@@ -14,14 +13,13 @@ const renderChipScroll = (title, chips) => (
     <Box component={Typography} paddingLeft={2}>
       {title}
     </Box>
-    <ChipScroll
-      chips={chips}
-      getLabel={R.prop("name")}
-      BoxProps={{
-        paddingLeft: 2,
-        marginBottom: 2,
-      }}
-    />
+    <HorizontalScroll paddingLeft={2} marginBottom={2}>
+      {chips.map((chip) => (
+        <Box key={chip.name} marginRight={1}>
+          <Chip label={chip.name} variant="outlined" />
+        </Box>
+      ))}
+    </HorizontalScroll>
   </React.Fragment>
 );
 

@@ -1,12 +1,12 @@
-import { Box, Divider, Typography } from "@material-ui/core";
+import { Box, Chip, Divider, Typography } from "@material-ui/core";
 import { push } from "connected-react-router";
 import moment from "moment";
 import momentDurationFormatSetup from "moment-duration-format";
 import * as R from "ramda";
 import React from "react";
 import { useDispatch } from "react-redux";
-import ChipScroll from "../../common/components/ChipScroll";
 import ExpandHeight from "../../common/components/ExpandHeight";
+import HorizontalScroll from "../../common/components/HorizontalScroll";
 import useBoolean from "../../common/hooks/useBoolean";
 import discover from "../../discover/redux/discover";
 import ActionBar from "./ActionBar";
@@ -40,9 +40,9 @@ export default ({ details, releaseDates }) => {
   const subtitle1 = toSubtitle1({ details, releaseDates });
 
   const dispatch = useDispatch();
-  const handleChipClick = (chip) => {
+  const handleGenreClick = (genre) => () => {
     dispatch(push("/discover"));
-    dispatch(discover.actions.setChips([R.assoc("type", "genre", chip)]));
+    dispatch(discover.actions.setChips([R.assoc("type", "genre", genre)]));
   };
 
   return (
@@ -55,15 +55,19 @@ export default ({ details, releaseDates }) => {
           {subtitle1}
         </Typography>
       </Box>
-      <ChipScroll
-        chips={details.genres}
-        getLabel={(_) => _.name}
-        onChipClick={handleChipClick}
-        BoxProps={{ paddingY: 1, paddingLeft: 2 }}
-        ChipProps={{
-          clickable: true,
-        }}
-      />
+      <HorizontalScroll paddingLeft={2} paddingY={1}>
+        {details.genres.map((genre) => (
+          <Box key={genre.id} marginRight={1}>
+            <Chip
+              label={genre.name}
+              clickable
+              variant="outlined"
+              onClick={handleGenreClick(genre)}
+            />
+          </Box>
+        ))}
+      </HorizontalScroll>
+
       <Box paddingX={2}>
         <ActionBar />
       </Box>
@@ -76,7 +80,7 @@ export default ({ details, releaseDates }) => {
         )}
         {details.overview && (
           <ExpandHeight
-            collapsedHeight="10em"
+            collapsedHeight="7.5em"
             in={isOverviewExpanded.value}
             onClick={isOverviewExpanded.toggle}
           >
