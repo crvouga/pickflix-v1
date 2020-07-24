@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 export default ({ onVideoClick }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const playing = useSelector(player.selectors.playing);
+  const isPlaying = useSelector(player.selectors.isPlaying);
   const video = useSelector(player.selectors.video);
   const videos = useSelector(player.selectors.playlist);
 
@@ -72,7 +72,7 @@ export default ({ onVideoClick }) => {
           <div className={classes.marker}>
             {isSelected(video) && (
               <div className={classes.icon}>
-                {playing ? <PauseIcon /> : <PlayArrowIcon />}
+                {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
               </div>
             )}
           </div>

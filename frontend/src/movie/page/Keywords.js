@@ -1,17 +1,18 @@
-import { Box, Collapse, Typography } from "@material-ui/core";
-import api from "../../api";
+import { Box, Typography } from "@material-ui/core";
 import * as R from "ramda";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import api from "../../api";
 import ChipSelection from "../../common/components/ChipSelection";
+import router from "../../common/redux/router";
 import MoviePosterScroll from "../components/PosterScroll";
 
 const removeMovieById = (movieId, movies) =>
   R.reject(R.where({ id: R.eqBy(String, movieId) }), movies);
 
 export default ({ keywords }) => {
-  const { movieId } = useParams();
+  const { movieId } = useSelector(router.selectors.query);
 
   const [selectedKeyword, setSelectedKeyword] = useState(keywords?.[0]);
 

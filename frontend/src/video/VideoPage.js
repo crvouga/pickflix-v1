@@ -15,6 +15,7 @@ import Player from "../youtube/Player";
 import YoutubeSection from "../youtube/Section";
 import Playlist from "./Playlist";
 import player from "./redux/player";
+import modal from "../common/redux/modal";
 
 const useStyles = makeStyles((theme) => ({
   playerContainer: {
@@ -28,7 +29,11 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const classes = useStyles();
   const isPlaylistOpen = useBoolean(false);
-  const playing = useSelector(player.selectors.playing);
+
+  const isVideoOpen = useSelector(modal.selectors.isOpen("video"));
+  const isPlaying = useSelector(player.selectors.isPlaying);
+  const playing = isPlaying && isVideoOpen;
+
   const video = useSelector(player.selectors.video);
   const videoKey = video?.key;
   const dispatch = useDispatch();

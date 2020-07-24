@@ -6,7 +6,6 @@ import "react-aspect-ratio/aspect-ratio.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/opacity.css";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 
 const useStyles = makeStyles((theme) => ({

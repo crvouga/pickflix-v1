@@ -5,7 +5,6 @@ import { ConnectedRouter } from "connected-react-router";
 import React from "react";
 import { Provider } from "react-redux";
 import { ReactReduxFirebaseProvider } from "react-redux-firebase";
-import { BrowserRouter } from "react-router-dom";
 import { ParallaxProvider } from "react-scroll-parallax";
 import { PersistGate } from "redux-persist/integration/react";
 import attachFastClick from "./attachFastClick";

@@ -1,16 +1,14 @@
 import {
+  Box,
   ButtonBase,
   Container,
   Dialog,
   makeStyles,
   Slide,
-  Fab,
-  Box,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router";
 import modal from "../common/redux/modal";
 import Input from "./Input";
 import MessageList from "./MessageList";
@@ -61,20 +59,7 @@ const TransitionComponent = React.forwardRef((props, ref) => (
 
 const preventDefault = (e) => e.preventDefault();
 
-export default () => {
-  const classes = useStyles();
-  const history = useHistory();
-  const isOpen = useSelector(modal.selectors.isOpen("chat"));
-  const dispatch = useDispatch();
-  const handleClose = () => {
-    if (isOpen) {
-      dispatch(modal.actions.close("chat"));
-    }
-  };
-  useEffect(() => {
-    return history.listen(handleClose);
-  }, []);
-
+const useChatRefs = (isChatOpen) => {
   const messageListBottomRef = useRef();
   const inputRef = useRef();
   const refs = {
@@ -84,19 +69,31 @@ export default () => {
 
   useEffect(() => {
     if (refs.input.current) {
-      if (isOpen) {
+      if (isChatOpen) {
         refs.messageListBottom.current.scrollIntoView();
       } else {
         refs.input.current.blur();
       }
     }
-  }, [refs.input.current, isOpen]);
+  }, [refs.input.current, isChatOpen]);
+
+  return refs;
+};
+
+export default () => {
+  const classes = useStyles();
+  const isChatOpen = useSelector(modal.selectors.isOpen("chat"));
+  const dispatch = useDispatch();
+  const handleClose = () => {
+    dispatch(modal.actions.close("chat"));
+  };
+  const refs = useChatRefs(isChatOpen);
 
   return (
     <RefsContext.Provider value={refs}>
       <Dialog
         fullScreen
-        open={isOpen}
+        open={isChatOpen}
         keepMounted
         onClose={handleClose}
         PaperProps={{ classes: { root: classes.paper } }}

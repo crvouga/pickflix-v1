@@ -1,5 +1,7 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import * as R from "ramda";
+import router from "./router";
+import { takeEvery, put } from "redux-saga/effects";
 
 const createPayload = (name, props) => ({
   payload: { name, props },
@@ -12,27 +14,36 @@ const actions = {
 
 const initialState = {};
 
-const reducer = createReducer(initialState, {
-  [actions.open]: (state, { payload: { name, props } }) => {
-    state[name] = { isOpen: true, props };
-  },
-
-  [actions.close]: (state, { payload: { name, props } }) => {
-    state[name] = { isOpen: false, props };
-  },
-});
+const reducer = createReducer(initialState, {});
 
 const selectors = {
   isOpen: R.curry((name, state) =>
-    R.pathOr(false, ["modal", name, "isOpen"], state)
+    R.pathOr(false, ["router", "location", "state", name, "isOpen"], state)
   ),
   props: R.curry((name, state) =>
-    R.pathOr({}, ["modal", name, "props"], state)
+    R.pathOr({}, ["router", "location", "state", name, "props"], state)
   ),
 };
+
+function* saga() {
+  yield takeEvery(actions.open, function* (action) {
+    const { name, props } = action.payload;
+    yield put(
+      router.actions.push({ state: { [name]: { isOpen: true, props } } })
+    );
+  });
+
+  yield takeEvery(actions.close, function* (action) {
+    const { name, props } = action.payload;
+    yield put(
+      router.actions.push({ state: { [name]: { isOpen: false, props } } })
+    );
+  });
+}
 
 export default {
   reducer,
   actions,
   selectors,
+  saga,
 };

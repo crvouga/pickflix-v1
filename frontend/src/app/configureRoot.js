@@ -20,6 +20,7 @@ function* saga() {
   yield fork(player.saga);
   yield fork(discover.saga);
   yield fork(chat.saga);
+  yield fork(modal.saga);
 }
 
 export default (history) => {
