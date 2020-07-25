@@ -7,6 +7,7 @@ export default () => {
       type: "dark",
       primary: {
         main: palette.secondary,
+        dark: palette.primary,
       },
       secondary: {
         main: palette.tertiary,

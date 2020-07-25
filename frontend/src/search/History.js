@@ -18,6 +18,10 @@ export default () => {
     dispatch(search.actions.setHistory([]));
   };
 
+  const handleResultClick = (result) => {
+    dispatch(search.actions.chose(result));
+  };
+
   return (
     <div>
       <ClearHistoryModal
@@ -50,7 +54,7 @@ export default () => {
           <DeleteForeverIcon />
         </IconButton>
       </Box>
-      <ResultGrid results={history} />
+      <ResultGrid results={history} onResultClick={handleResultClick} />
     </div>
   );
 };

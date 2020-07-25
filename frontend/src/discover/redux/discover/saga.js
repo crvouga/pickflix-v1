@@ -14,15 +14,7 @@ import { queryCache } from "react-query";
 
 const fetchGenres = () => api.get("/api/tmdb/genre/movie/list");
 
-function* fetchInitialOptions() {
-  const response = yield call(fetchGenres);
-  const genres = R.map(R.assoc("type", "genre"), response.data.genres);
-  const chips = yield select(selectors.chips);
-  const newChips = R.union(chips, genres);
-  yield put(actions.setOptions(newChips));
-}
-
-const tagsToParams = (tags) => {
+const optionsToParams = (options) => {
   const {
     person = [],
     keyword = [],
@@ -30,7 +22,7 @@ const tagsToParams = (tags) => {
     company = [],
     dateRange = [],
     sortBy = [],
-  } = R.groupBy(R.prop("type"), tags);
+  } = R.groupBy(R.prop("type"), options);
 
   const params = {
     withPeople: R.pluck("id", person),
@@ -55,6 +47,19 @@ const tagsToParams = (tags) => {
   return params;
 };
 
+function* initialOptions() {
+  const response = yield call(fetchGenres);
+  const options = yield select(selectors.options);
+
+  const newOptions = R.pipe(
+    R.path(["data", "genres"]),
+    R.map(R.assoc("type", "genre")),
+    R.union(options)
+  )(response);
+
+  yield put(actions.setOptions(newOptions));
+}
+
 const fetchDiscover = async (config) => {
   const response = await queryCache.prefetchQuery(
     ["discover", config.params],
@@ -68,26 +73,25 @@ const fetchDiscover = async (config) => {
 };
 
 export default function* () {
-  yield fork(fetchInitialOptions);
+  yield fork(initialOptions);
 
-  yield takeEvery(actions.setChips, function* () {
+  yield takeEvery(actions.setInput, function* () {
     yield put(actions.setResponses([]));
-    yield put(actions.load());
+    yield put(actions.fetch());
   });
 
-  yield takeLeading(actions.load, function* () {
+  yield takeLeading(actions.fetch, function* () {
     try {
       const currentPage = yield select(selectors.currentPage);
-      const chips = yield select(selectors.chips);
-      yield put(actions.setStatus("loading"));
+      const input = yield select(selectors.input);
       const config = {
         params: {
-          ...tagsToParams(chips),
+          ...optionsToParams(input.options),
           page: currentPage + 1,
         },
       };
+      yield put(actions.setStatus("loading"));
       const response = yield call(fetchDiscover, config);
-
       yield put(actions.setStatus("success"));
       const responses = yield select(selectors.responses);
       yield put(actions.setResponses(R.append(response, responses)));

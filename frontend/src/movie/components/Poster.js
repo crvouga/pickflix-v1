@@ -5,6 +5,8 @@ import AspectRatio from "react-aspect-ratio";
 import "react-aspect-ratio/aspect-ratio.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/opacity.css";
+import "react-lazy-load-image-component/src/effects/blur.css";
+
 import { useDispatch } from "react-redux";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 
@@ -12,6 +14,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
     borderRadius: theme.spacing(1),
+    width: "100%",
+    height: "100%",
   },
   image: {
     borderRadius: theme.spacing(1),

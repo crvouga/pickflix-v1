@@ -1,6 +1,7 @@
 import * as R from "ramda";
 
-export const chips = (state) => state.discover.chips;
+export const input = (state) => state.discover.input;
+export const inputOptions = (state) => input(state)?.options || [];
 export const options = (state) => state.discover.options;
 export const responses = (state) => state.discover.responses;
 export const status = (state) => state.discover.status;

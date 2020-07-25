@@ -21,7 +21,7 @@ export default () => {
   const classes = useStyles();
   const inputRef = useRef();
   const input = useSelector(search.selectors.input);
-  const status = useSelector(search.selectors.status);
+
   const dispatch = useDispatch();
 
   const handleClear = () => {

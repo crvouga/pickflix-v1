@@ -1,9 +1,9 @@
 import { createAction } from "@reduxjs/toolkit";
 
 export default {
-  setChips: createAction("discover/setChips"),
+  setInput: createAction("discover/setInput"),
   setOptions: createAction("discover/setOptions"),
   setResponses: createAction("discover/setResponses"),
-  load: createAction("discover/load"),
   setStatus: createAction("discover/setStatus"),
+  fetch: createAction("discover/load"),
 };
