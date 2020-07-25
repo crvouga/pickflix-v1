@@ -39,7 +39,7 @@ export default () => {
       >
         {results.map((result) => (
           <Box p={1} width="50%" key={result.id}>
-            <Poster key={result.id} movie={result} sizeIndex={4} />
+            <Poster movie={result} ImageProps={{ sizeIndex: 4 }} />
           </Box>
         ))}
         <Box width="100%" textAlign="center" m={2}>

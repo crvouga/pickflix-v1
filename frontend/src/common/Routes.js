@@ -11,8 +11,6 @@ import PersonPage from "../person";
 import SearchPage from "../search";
 import VideoModal from "../video/VideoModal";
 import NavigationBarBottom from "./NavigationBarBottom";
-import { useSelector } from "react-redux";
-import { useSnackbar } from "notistack";
 
 export default () => {
   const location = useLocation();

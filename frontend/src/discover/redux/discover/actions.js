@@ -5,5 +5,5 @@ export default {
   setOptions: createAction("discover/setOptions"),
   setResponses: createAction("discover/setResponses"),
   setStatus: createAction("discover/setStatus"),
-  fetch: createAction("discover/load"),
+  fetch: createAction("discover/fetch"),
 };

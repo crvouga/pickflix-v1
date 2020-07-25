@@ -1,4 +1,10 @@
-import { Box, makeStyles, Typography } from "@material-ui/core";
+import {
+  Box,
+  makeStyles,
+  Typography,
+  useTheme,
+  Paper,
+} from "@material-ui/core";
 import { push } from "connected-react-router";
 import React from "react";
 import AspectRatio from "react-aspect-ratio";
@@ -11,60 +17,57 @@ import { useDispatch } from "react-redux";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: theme.palette.background.paper,
-    borderRadius: theme.spacing(1),
-    width: "100%",
-    height: "100%",
-  },
   image: {
     borderRadius: theme.spacing(1),
-    width: "100%",
-    height: "100%",
   },
   fallback: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+
+    textAlign: "center",
     padding: theme.spacing(1),
     width: "100%",
-    height: "100%",
     wordBreak: "break-word",
     fontWeight: "bold",
   },
 }));
 
-export default ({ movie, sizeIndex = 2, ...props }) => {
+export default ({ movie, sizeIndex = 3, ...props }) => {
   const { id, posterPath, title } = movie;
-
+  const theme = useTheme();
   const classes = useStyles();
   const posterURL = makeTMDbImageURL(sizeIndex, { posterPath });
   const dispatch = useDispatch();
 
-  const onClick = () => {
+  const handleClick = () => {
     dispatch(push(`/movie/${id}`));
   };
 
   return (
     <Box
-      component={AspectRatio}
-      ratio="18/24"
-      onClick={onClick}
-      className={classes.root}
+      component={Paper}
+      borderRadius={theme.spacing(1)}
+      onClick={handleClick}
+      variant="outlined"
       {...props}
     >
-      {posterPath ? (
-        <LazyLoadImage
-          effect="opacity"
-          className={classes.image}
-          src={posterURL}
-        />
-      ) : (
-        <Typography
-          align="center"
-          color="textPrimary"
-          className={classes.fallback}
-        >
-          {title}
-        </Typography>
-      )}
+      <AspectRatio ratio="18/24">
+        {posterPath ? (
+          <LazyLoadImage
+            effect="opacity"
+            src={posterURL}
+            width="100%"
+            height="100%"
+            className={classes.image}
+          />
+        ) : (
+          <Typography component="div" className={classes.fallback}>
+            {title}
+          </Typography>
+        )}
+      </AspectRatio>
     </Box>
   );
 };

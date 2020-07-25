@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router";
 import api from "../../api";
@@ -14,6 +14,8 @@ import RelatedMovies from "./RelatedMovies";
 import Reviews from "./Reviews";
 import SkeletonPage from "./SkeletonPage";
 import Videos from "./Videos";
+import recentlyViewed from "../../router/redux/recentlyViewed";
+import { useDispatch } from "react-redux";
 
 const fetchMoviePage = (movieId) =>
   api
@@ -41,6 +43,14 @@ export default () => {
     () => fetchMoviePage(movieId),
     {}
   );
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (status === "success") {
+      dispatch(recentlyViewed.actions.viewed("movie", data));
+    }
+  }, [status]);
+
   if (status === "loading") return <SkeletonPage />;
   if (status === "error") return <ErrorPage />;
 

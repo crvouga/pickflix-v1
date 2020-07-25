@@ -5,7 +5,7 @@ import { AspectRatio } from "react-aspect-ratio";
 
 export default () => {
   return (
-    <div>
+    <Box overflow="hidden">
       <AspectRatio ratio="16/9">
         <Skeleton variant="rect" width="100%" height="100%" />
       </AspectRatio>
@@ -41,6 +41,6 @@ export default () => {
           <Skeleton width="25%" />
         </Typography>
       </Box>
-    </div>
+    </Box>
   );
 };

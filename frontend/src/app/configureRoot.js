@@ -7,7 +7,8 @@ import storage from "redux-persist/lib/storage";
 import { spawn } from "redux-saga/effects";
 import signIn from "../auth/signIn/redux/signIn";
 import chat from "../chat/redux/chat";
-import modal from "../common/redux/modal";
+import modal from "../router/redux/modal";
+import recentlyViewed from "../router/redux/recentlyViewed";
 import discover from "../discover/redux/discover";
 import search from "../search/redux";
 import player from "../video/redux/player";
@@ -24,6 +25,7 @@ function* saga() {
     spawn(chat.saga),
     spawn(modal.saga),
     spawn(search.saga),
+    spawn(recentlyViewed.saga),
   ];
 }
 
@@ -37,6 +39,7 @@ export default (history) => {
     chat: chat.reducer,
     signIn: signIn.reducer,
     search: search.reducer,
+    recentlyViewed: recentlyViewed.reducer,
   });
 
   return {

@@ -14,7 +14,7 @@ export default createReducer(
     [actions.setInput]: (state, action) => {
       state.input = action.payload;
     },
-    [actions.options]: (state, action) => {
+    [actions.setOptions]: (state, action) => {
       state.options = action.payload;
     },
     [actions.setResponses]: (state, action) => {

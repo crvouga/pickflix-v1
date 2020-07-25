@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     bottom: 0,
     width: "100%",
     maxWidth: "100%",
+    zIndex: theme.zIndex.appBar,
   },
   toolbar: {
     ...theme.mixins.toolbar,

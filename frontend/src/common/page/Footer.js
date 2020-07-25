@@ -1,11 +1,11 @@
 import React from "react";
 import TMDbAttribution from "../../tmdb/TMDbAttribution";
-import PageHistory from "./PageHistory";
+import RecentlyViewed from "../RecentlyViewed";
 
 export default () => {
   return (
     <React.Fragment>
-      <PageHistory />
+      <RecentlyViewed />
       <TMDbAttribution />
     </React.Fragment>
   );

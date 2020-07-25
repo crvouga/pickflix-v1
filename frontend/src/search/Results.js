@@ -1,9 +1,7 @@
-import { Box, Grow, Typography, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
-import MoviePoster from "../movie/components/Poster";
-import PersonAvatar from "../person/PersonAvatar";
 import search from "./redux";
 import ResultGrid from "./ResultGrid";
 
@@ -15,6 +13,7 @@ export default () => {
 
   useEffect(() => {
     if (inView) {
+      console.log("FETCH");
       dispatch(search.actions.fetch());
     }
   }, [inView]);
@@ -26,9 +25,11 @@ export default () => {
   return (
     <div>
       <ResultGrid results={results} onResultClick={handleResultClick} />
-      <Box textAlign="center" width="100%" p={2}>
-        {status === "loading" && <CircularProgress />}
-      </Box>
+      {status === "loading" && (
+        <Box p={2} textAlign="center">
+          <CircularProgress />
+        </Box>
+      )}
       <div ref={ref} />
     </div>
   );

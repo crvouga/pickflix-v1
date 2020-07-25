@@ -22,6 +22,8 @@ import Page from "../common/page/Page";
 import MoviePoster from "../movie/components/Poster";
 import MoviePosterScroll from "../movie/components/PosterScroll";
 import Header from "./Header";
+import { useDispatch } from "react-redux";
+import recentlyViewed from "../router/redux/recentlyViewed";
 
 const fetchPersonPage = (personId) =>
   api
@@ -64,6 +66,8 @@ export default () => {
     fetchPersonPage(personId)
   );
 
+  const dispatch = useDispatch();
+
   const [sortType, setSortType] = useState("MostPopular");
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -82,6 +86,7 @@ export default () => {
 
   useEffect(() => {
     if (query.status === "success") {
+      dispatch(recentlyViewed.actions.viewed("person", query.data));
       setSelectedKey(query.data.knownForDepartment);
     }
   }, [query.status]);
@@ -126,7 +131,7 @@ export default () => {
         flexDirection="row"
         position="sticky"
         top={0}
-        zIndex={2}
+        zIndex={1}
       >
         <HorizontalScroll paddingX={2} paddingY={2} flex={1}>
           {keys.map((key) => (
@@ -186,7 +191,7 @@ export default () => {
         >
           {visibleCredits.map((credit) => (
             <Flipped flipId={credit.creditId} key={credit.creditId}>
-              <MoviePoster movie={credit} width="33.33%" />
+              <MoviePoster movie={credit} minWidth="33.33%" maxWidth="33.33%" />
             </Flipped>
           ))}
         </Box>

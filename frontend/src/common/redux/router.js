@@ -17,6 +17,10 @@ function* saga() {
 
 */
 
+const actionTypes = {
+  LOCATION_CHANGE: "@@router/LOCATION_CHANGE",
+};
+
 const wrapActionCreator = (actionCreator) =>
   createAction(actionCreator().type, actionCreator);
 
@@ -35,4 +39,4 @@ const selectors = {
   query: (state) => state.router.location.query,
 };
 
-export default { selectors, actions };
+export default { selectors, actions, actionTypes };

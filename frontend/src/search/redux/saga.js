@@ -5,6 +5,8 @@ import {
   delay,
   put,
   select,
+  cancelled,
+  takeLatest,
 } from "redux-saga/effects";
 import actions from "./actions";
 import * as selectors from "./selectors";
@@ -19,26 +21,37 @@ const fetchSearch = async (config) => {
   return response.data;
 };
 
-export default function* () {
-  yield takeEvery(actions.setInput, function* () {
-    yield delay(200);
+function* fetchResponseSaga() {
+  const input = yield select(selectors.input);
+  const currentPage = yield select(selectors.currentPage);
+  const config = {
+    params: {
+      page: currentPage + 1,
+      query: encodeURI(input.text),
+    },
+  };
+  yield put(actions.setStatus("loading"));
+  const response = yield call(fetchSearch, config);
+  yield put(actions.setStatus("success"));
+  return response;
+}
 
-    yield put(actions.setResponses([]));
-    yield put(actions.fetch());
+export default function* () {
+  yield takeLatest(actions.setInput, function* () {
+    try {
+      yield delay(1000);
+      yield put(actions.setResponses([]));
+      yield put(actions.fetch());
+    } catch (e) {
+    } finally {
+      if (yield cancelled()) {
+        console.log("CANCELLLED");
+      }
+    }
   });
 
   yield takeLeading(actions.fetch, function* () {
-    const input = yield select(selectors.input);
-    const currentPage = yield select(selectors.currentPage);
-    const config = {
-      params: {
-        page: currentPage + 1,
-        query: encodeURI(input.text),
-      },
-    };
-    yield put(actions.setStatus("loading"));
-    const response = yield call(fetchSearch, config);
-    yield put(actions.setStatus("success"));
+    const response = yield fetchResponseSaga();
     const responses = yield select(selectors.responses);
     yield put(actions.setResponses(R.append(response, responses)));
   });
@@ -46,7 +59,12 @@ export default function* () {
   yield takeEvery(actions.chose, function* (action) {
     const result = action.payload;
     const history = yield select(selectors.history);
-    const newHistory = R.append(result, R.uniqBy(R.prop("id"), history));
+    const newHistory = R.pipe(
+      R.append(result),
+      R.uniqBy(R.prop("id")),
+      R.take(100)
+    )(history);
+
     yield put(actions.setHistory(newHistory));
   });
 }
