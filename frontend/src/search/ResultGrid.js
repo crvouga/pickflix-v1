@@ -1,15 +1,15 @@
 import { Box, Grow, Typography } from "@material-ui/core";
 import React from "react";
-import MoviePoster from "../../movie/components/Poster";
-import PersonAvatar from "../../person/PersonAvatar";
+import MoviePoster from "../movie/components/Poster";
+import PersonAvatar from "../person/PersonAvatar";
 
-export default ({ results, onResultClick }) => {
-  const handleResultClick = (result) => () => onResultClick(result);
+export default ({ results, onChose }) => {
+  const handleChose = (result) => () => onChose(result);
 
   return (
     <Box display="flex" flexDirection="row" flexWrap="wrap">
       {results.map((result) => (
-        <Box key={result.id} onClick={handleResultClick(result)} width="33.33%">
+        <Box key={result.id} onClick={handleChose(result)} width="33.33%">
           <Grow in>
             {result.mediaType === "movie" ? (
               <MoviePoster movie={result} />

@@ -10,7 +10,6 @@ export default function* () {
       yield take(router.actions.push);
       const currentPathname = yield select(router.selectors.pathname);
       const isChatOpen = yield select(modal.selectors.isOpen("chat"));
-      console.log({ currentPathname, previousPathname });
       if (previousPathname !== currentPathname && isChatOpen) {
         yield put(modal.actions.close("chat"));
       }
