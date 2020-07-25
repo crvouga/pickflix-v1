@@ -1,4 +1,8 @@
 import React from "react";
+import { useQuery } from "react-query";
+import { useParams } from "react-router";
+import api from "../../api";
+import ErrorPage from "../../common/page/ErrorPage";
 import Footer from "../../common/page/Footer";
 import Page from "../../common/page/Page";
 import Collection from "./Collection";
@@ -8,12 +12,8 @@ import Header from "./Header";
 import Media from "./Media";
 import RelatedMovies from "./RelatedMovies";
 import Reviews from "./Reviews";
+import SkeletonPage from "./SkeletonPage";
 import Videos from "./Videos";
-import { useParams } from "react-router";
-import LoadingPage from "../../common/page/LoadingPage";
-import ErrorPage from "../../common/page/ErrorPage";
-import api from "../../api";
-import { useQuery } from "react-query";
 
 const fetchMoviePage = (movieId) =>
   api
@@ -41,8 +41,7 @@ export default () => {
     () => fetchMoviePage(movieId),
     {}
   );
-
-  if (status === "loading") return <LoadingPage />;
+  if (status === "loading") return <SkeletonPage />;
   if (status === "error") return <ErrorPage />;
 
   const {

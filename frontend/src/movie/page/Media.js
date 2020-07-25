@@ -98,10 +98,7 @@ export default ({ videos, images }) => {
     return null;
   }
 
-  const imageComponents = R.take(
-    10,
-    R.concat(backdrops.map(renderBackdrop), posters.map(renderPoster))
-  );
+  const imageComponents = backdrops.map(renderBackdrop);
 
   return (
     <AspectRatio

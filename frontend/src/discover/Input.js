@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 
   chipOutlined: {
     marginLeft: theme.spacing(1),
-    color: "inherit",
+    color: theme.palette.text.secondary,
 
     fontSize: "1.25em",
     fontWeight: "bold",
@@ -78,7 +78,7 @@ export default () => {
       <Flipper flipKey={optionsToFlipKey(options)}>
         <HorizontalScroll ref={ref} paddingY={2}>
           {inputOptions.map((option) => (
-            <Flipped scale={false} flipId={option.id} key={option.id}>
+            <Flipped flipId={option.id} key={option.id}>
               <Chip
                 clickable
                 onClick={handleInputOptionClick(option)}
@@ -88,7 +88,7 @@ export default () => {
             </Flipped>
           ))}
           {options.map((option) => (
-            <Flipped scale={false} flipId={option.id} key={option.id}>
+            <Flipped translate={false} flipId={option.id} key={option.id}>
               <Chip
                 clickable
                 onClick={handleOptionClick(option)}
