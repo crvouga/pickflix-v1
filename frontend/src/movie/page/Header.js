@@ -42,7 +42,9 @@ export default ({ details, releaseDates }) => {
   const dispatch = useDispatch();
   const handleGenreClick = (genre) => () => {
     dispatch(push("/discover"));
-    dispatch(discover.actions.setChips([R.assoc("type", "genre", genre)]));
+    dispatch(
+      discover.actions.setInput({ options: [R.assoc("type", "genre", genre)] })
+    );
   };
 
   return (

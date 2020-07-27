@@ -5,7 +5,7 @@ import units from "units-css";
 
 const useStyles = makeStyles({
   fadeBottom: {
-    "mask-image": "linear-gradient(to bottom, black 50%, transparent 100%)",
+    maskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
   },
 });
 

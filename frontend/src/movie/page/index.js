@@ -1,10 +1,13 @@
+import { Fade } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import api from "../../api";
 import ErrorPage from "../../common/page/ErrorPage";
 import Footer from "../../common/page/Footer";
 import Page from "../../common/page/Page";
+import recentlyViewed from "../../common/redux/recentlyViewed";
 import Collection from "./Collection";
 import Credits from "./Credits";
 import Details from "./Details";
@@ -14,8 +17,6 @@ import RelatedMovies from "./RelatedMovies";
 import Reviews from "./Reviews";
 import SkeletonPage from "./SkeletonPage";
 import Videos from "./Videos";
-import recentlyViewed from "../../router/redux/recentlyViewed";
-import { useDispatch } from "react-redux";
 
 const fetchMoviePage = (movieId) =>
   api
@@ -67,20 +68,26 @@ export default () => {
   } = data;
 
   return (
-    <Page>
-      <Media videos={videos.results} images={images} />
-      <Header details={details} releaseDates={releaseDates} />
-      <Credits credits={credits} />
-      <Videos videos={videos.results} />
-      <Collection details={details} />
-      <RelatedMovies
-        recommendations={recommendations.results}
-        similar={similar.results}
-        keywords={keywords.keywords}
-      />
-      <Details details={details} />
-      <Reviews reviews={reviews} />
-      <Footer />
-    </Page>
+    <Fade in>
+      <Page>
+        <Media videos={videos.results} images={images} />
+        <Header
+          details={details}
+          releaseDates={releaseDates}
+          keywords={keywords}
+        />
+        <Credits credits={credits} />
+        <Videos videos={videos.results} />
+        <Collection details={details} />
+        <RelatedMovies
+          recommendations={recommendations.results}
+          similar={similar.results}
+          keywords={keywords.keywords}
+        />
+        <Details details={details} />
+        <Reviews reviews={reviews} />
+        <Footer />
+      </Page>
+    </Fade>
   );
 };

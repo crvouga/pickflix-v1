@@ -6,13 +6,13 @@ const useStyles = makeStyles({
   root: {
     display: "flex",
     flexWrap: "nowrap",
-    overflowX: "scroll",
+    overflowX: ({ lock }) => (lock ? "hidden" : "scroll"),
     overflowY: "hidden",
     transform: "translateZ(0)",
   },
 });
 
-export default React.forwardRef(({ className, ...props }, ref) => {
-  const classes = useStyles();
+export default React.forwardRef(({ className, lock, ...props }, ref) => {
+  const classes = useStyles({ lock });
   return <Box ref={ref} {...props} className={clsx(className, classes.root)} />;
 });

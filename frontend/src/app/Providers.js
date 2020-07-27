@@ -12,6 +12,8 @@ import configureFirebase from "./configureFirebase";
 import configureStore from "./configureStore";
 import configureTheme from "./configureTheme";
 import SnackbarProvider from "./SnackbarProvider";
+import { ReactQueryDevtoolsPanel } from "react-query-devtools";
+
 attachFastClick();
 
 const theme = configureTheme();

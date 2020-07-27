@@ -1,17 +1,17 @@
 import { Box, Fade, IconButton, makeStyles } from "@material-ui/core";
 import PlayIcon from "@material-ui/icons/PlayArrow";
 import React, { useRef, useState } from "react";
+import AspectRatio from "react-aspect-ratio";
+import "react-aspect-ratio/aspect-ratio.css";
 import { useDispatch } from "react-redux";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
-import AspectRatio from "react-aspect-ratio";
-import "react-aspect-ratio/aspect-ratio.css";
 import Layer from "../../common/components/Layer";
 import modal from "../../common/redux/modal";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 import player from "../../video/redux/player";
 import Poster from "../components/Poster";
-import * as R from "ramda";
+
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
   root: {
     width: "100%",
-    "mask-image": "linear-gradient(to bottom, black 50%, transparent 100%)",
+    maskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
   },
   buttonCotaniner: {
     pointerEvents: "all",

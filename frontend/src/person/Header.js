@@ -6,10 +6,21 @@ import ExpandHeight from "../common/components/ExpandHeight";
 import Markdown from "../common/components/Markdown";
 import useBoolean from "../common/hooks/useBoolean";
 import PersonAvatar from "./PersonAvatar";
+import AspectRatio from "react-aspect-ratio";
+import "react-aspect-ratio/aspect-ratio.css";
+import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
+import Layer from "../common/components/Layer";
 
 const toYear = (_) => moment(_).format("YYYY");
 
-export default ({ details, credits }) => {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: "100%",
+  },
+}));
+
+export default ({ images, taggedImages, details, credits }) => {
+  const classes = useStyles();
   const isBioExpanded = useBoolean(false);
 
   const allCredits = R.concat(credits.crew, credits.cast);
@@ -24,59 +35,58 @@ export default ({ details, credits }) => {
   const creditsByDepartment = R.groupBy(R.prop("department"), credits.crew);
   creditsByDepartment.Acting = credits.cast;
 
+  const oldestRelease = toYear(oldestMovie.releaseDate);
+  const newestRelease = toYear(newestMovie.releaseDate);
+  const subtitle1 = [
+    details.knownForDepartment,
+    `${allMovies.length} movie${allMovies.length === 1 ? "" : "s"}`,
+    `${oldestRelease} to ${newestRelease}`,
+  ].join(" • ");
+
   return (
     <React.Fragment>
-      <Box p={2} paddingBottom={0}>
-        <Box display="flex" flexDirection="row" marginBottom={1}>
-          <PersonAvatar person={details} width="120px" marginRight={2} />
-          <Box>
-            <Typography variant="h6" style={{ fontWeight: "bold" }}>
-              {details.name}
-            </Typography>
-            <Typography component="div">
-              <Box component="span" color="text.secondary">
-                Movies
-              </Box>{" "}
-              <Box fontWeight="bold" component="span">
-                {allMovies.length}
-              </Box>
-            </Typography>
-            <Typography component="div">
-              <Box component="span" color="text.secondary">
-                Credits
-              </Box>{" "}
-              <Box fontWeight="bold" component="span">
-                {allCredits.length}
-              </Box>
-            </Typography>
-            <Typography component="div">
-              <Box component="span" color="text.secondary">
-                Active
-              </Box>{" "}
-              <Box fontWeight="bold" component="span">
-                {toYear(oldestMovie.releaseDate)} -{" "}
-                {toYear(newestMovie.releaseDate)}
-              </Box>
-            </Typography>
-          </Box>
+      <AspectRatio ratio="21/9" className={classes.root}>
+        <Box
+          position="relative"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Layer
+            style={{
+              filter: "blur(16px)",
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundImage: `url(${makeTMDbImageURL(2, details)})`,
+              maskImage:
+                "linear-gradient(to bottom, black 50%, transparent 100%)",
+            }}
+          />
+
+          <PersonAvatar person={details} width="144px" m="auto" />
         </Box>
+      </AspectRatio>
+
+      <Box paddingX={2} paddingTop={4}>
+        <Typography variant="h5">{details.name}</Typography>
+
+        <Typography variant="subtitle1" color="textSecondary">
+          {subtitle1}
+        </Typography>
       </Box>
 
       {details.biography && (
         <Box
           paddingX={2}
+          paddingBottom={1}
           textAlign="left"
           display="flex"
           flexDirection="column"
         >
-          <Box width="100%" display="flex" flexDirection="row">
-            <Typography style={{ fontWeight: "bold", flex: 1 }}>
-              Biography
-            </Typography>
-          </Box>
           <ExpandHeight
             in={isBioExpanded.value}
-            collapsedHeight="8em"
+            collapsedHeight="7.5em"
             onClick={isBioExpanded.toggle}
           >
             <Markdown>{details.biography}</Markdown>

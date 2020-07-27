@@ -17,7 +17,7 @@ const useStyles = makeStyles({
     backgroundSize: "cover",
     maxWidth: "100%",
     minWidth: "100%",
-    "mask-image": "linear-gradient(to bottom, black 50%, transparent 100%)",
+    maskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
   },
 });
 
