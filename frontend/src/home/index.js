@@ -1,15 +1,16 @@
 import { Box, Typography } from "@material-ui/core";
-import api from "../api";
 import * as R from "ramda";
 import React from "react";
 import { useQuery } from "react-query";
+import api from "../api";
 import HorizontalScroll from "../common/components/HorizontalScroll";
+import ErrorPage from "../common/page/ErrorPage";
 import Footer from "../common/page/Footer";
-import LoadingPage from "../common/page/LoadingPage";
 import Page from "../common/page/Page";
 import MoviePosterScroll from "../movie/components/PosterScroll";
 import PersonAvatar from "../person/PersonAvatar";
 import Header from "./Header";
+import SkeletonPage from "./SkeletonPage";
 
 const renderProfile = (person) => (
   <Box key={person.id} minWidth="120px" marginRight={1}>
@@ -48,9 +49,8 @@ const fetchHomePage = async () => {
 export default () => {
   const query = useQuery(["discover"], () => fetchHomePage(), {});
 
-  if (query.status !== "success") {
-    return <LoadingPage />;
-  }
+  if (query.status === "loading") return <SkeletonPage />;
+  if (query.status === "error") return <ErrorPage />;
 
   const {
     data: { personPopular, popular, topRated, upcoming, nowPlaying },
