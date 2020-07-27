@@ -32,8 +32,9 @@ export default () => {
         <Typography variant="subtitle1">
           <Skeleton animation="wave" width="33.33%" />
         </Typography>
+
         <Box paddingBottom={1}>
-          <Skeleton animation="wave" width="100%" height="3em" />
+          <Skeleton animation="wave" width="75%" height="3em" />
         </Box>
         <Box
           paddingBottom={1}

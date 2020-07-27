@@ -29,12 +29,17 @@ export default () => {
         <Typography variant="h4">
           <Skeleton animation="wave" width="33.33%" />
         </Typography>
-        <Typography gutterBottom variant="subtitle1">
+        <Typography variant="subtitle1">
           <Skeleton animation="wave" width="80%" />
         </Typography>
-        <Skeleton animation="wave" variant="rect" width="100%" height="7.5em" />
       </Box>
       <PosterScrollSkeleton title movies={[{ id: 1 }, { id: 2 }, { id: 3 }]} />
+      <Box paddingX={2}>
+        <Box paddingBottom={1}>
+          <Skeleton animation="wave" variant="text" width="25%" height="2em" />
+        </Box>
+        <Skeleton animation="wave" variant="rect" width="100%" height="7.5em" />
+      </Box>
     </Box>
   );
 };

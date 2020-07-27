@@ -2,14 +2,11 @@ import { Box, makeStyles, Typography } from "@material-ui/core";
 import moment from "moment";
 import * as R from "ramda";
 import React from "react";
-import ExpandHeight from "../common/components/ExpandHeight";
-import Markdown from "../common/components/Markdown";
-import useBoolean from "../common/hooks/useBoolean";
-import PersonAvatar from "./PersonAvatar";
 import AspectRatio from "react-aspect-ratio";
 import "react-aspect-ratio/aspect-ratio.css";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import Layer from "../common/components/Layer";
+import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
+import PersonAvatar from "./PersonAvatar";
 
 const toYear = (_) => moment(_).format("YYYY");
 
@@ -21,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default ({ images, taggedImages, details, credits }) => {
   const classes = useStyles();
-  const isBioExpanded = useBoolean(false);
 
   const allCredits = R.concat(credits.crew, credits.cast);
   const allMovies = R.uniqBy(R.prop("id"), allCredits);
@@ -68,31 +64,13 @@ export default ({ images, taggedImages, details, credits }) => {
         </Box>
       </AspectRatio>
 
-      <Box paddingX={2} paddingTop={4}>
+      <Box paddingX={2} paddingTop={4} paddingBottom={1}>
         <Typography variant="h5">{details.name}</Typography>
 
         <Typography variant="subtitle1" color="textSecondary">
           {subtitle1}
         </Typography>
       </Box>
-
-      {details.biography && (
-        <Box
-          paddingX={2}
-          paddingBottom={1}
-          textAlign="left"
-          display="flex"
-          flexDirection="column"
-        >
-          <ExpandHeight
-            in={isBioExpanded.value}
-            collapsedHeight="7.5em"
-            onClick={isBioExpanded.toggle}
-          >
-            <Markdown>{details.biography}</Markdown>
-          </ExpandHeight>
-        </Box>
-      )}
     </React.Fragment>
   );
 };

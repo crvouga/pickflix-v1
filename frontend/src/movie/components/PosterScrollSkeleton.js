@@ -9,7 +9,12 @@ export default ({ movies, title, BoxProps, PosterProps }) => {
     <React.Fragment>
       {title && (
         <Box paddingLeft={2} paddingBottom={1}>
-          <Skeleton animation="wave" variant="text" width="25%" height="2em" />
+          <Skeleton
+            animation="wave"
+            variant="text"
+            width="33.33%"
+            height="2em"
+          />
         </Box>
       )}
       <HorizontalScroll paddingLeft={2} marginBottom={2} lock {...BoxProps}>
