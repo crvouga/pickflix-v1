@@ -15,9 +15,9 @@ const useStyles = makeStyles({
   box: {
     backgroundImage: ({ movieBackdropURL }) => `url(${movieBackdropURL})`,
     backgroundSize: "cover",
-    maxWidth: "100%",
-    minWidth: "100%",
-    maskImage: "linear-gradient(to bottom, black 50%, transparent 100%)",
+    width: "100%",
+    height: "100%",
+    maskImage: "linear-gradient(to bottom, black 0%, transparent 100%)",
   },
 });
 
@@ -34,22 +34,20 @@ const HeaderItem = ({ movie }) => {
   });
 
   return (
-    <Box onClick={handleClick} position="relative">
-      <AspectRatio ratio="16/9" className={classes.box} />
+    <Box component={AspectRatio} ratio="16/9" onClick={handleClick}>
+      <div className={classes.box} />
       <Layer
-        display="flex"
-        flexDirection="column-reverse"
         paddingX={2}
         paddingY={3}
+        display="flex"
+        flexDirection="column-reverse"
       >
-        <div>
-          <Typography variant="h6" style={{ fontWeight: "bold" }} noWrap>
-            {movie.title}
-          </Typography>
-          <Typography variant="subtitle1">
-            {moment(movie.releaseDate).format("Y")}
-          </Typography>
-        </div>
+        <Typography variant="subtitle1">
+          {moment(movie.releaseDate).format("Y")}
+        </Typography>
+        <Typography variant="h6" style={{ fontWeight: "bold" }} noWrap>
+          {movie.title}
+        </Typography>
       </Layer>
     </Box>
   );
@@ -59,10 +57,14 @@ export default ({ movies }) => {
   const [index, setIndex] = useState(0);
 
   return (
-    <AutoPlaySwipeableViews interval={5000} value={index} onChange={setIndex}>
+    <SwipeableViews
+      // interval={5000}
+      value={index}
+      onChange={setIndex}
+    >
       {movies.map((movie) => (
         <HeaderItem key={movie.id} movie={movie} />
       ))}
-    </AutoPlaySwipeableViews>
+    </SwipeableViews>
   );
 };

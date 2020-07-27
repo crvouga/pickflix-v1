@@ -38,8 +38,8 @@ function* fetchResponseSaga() {
 
 export default function* () {
   yield takeLatest(actions.setInput, function* () {
+    yield delay(1000 / 3);
     try {
-      yield delay(1000);
       yield put(actions.setResponses([]));
       yield put(actions.fetch());
     } catch (e) {

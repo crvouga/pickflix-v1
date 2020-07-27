@@ -75,31 +75,27 @@ export default () => {
 
   return (
     <Paper className={classes.paper}>
-      <Flipper flipKey={optionsToFlipKey(options)}>
-        <HorizontalScroll ref={ref} paddingY={2}>
-          {inputOptions.map((option) => (
-            <Flipped flipId={option.id} key={option.id}>
-              <Chip
-                clickable
-                onClick={handleInputOptionClick(option)}
-                classes={{ root: classes.chipRoot }}
-                label={discover.selectors.toLabel(option)}
-              />
-            </Flipped>
-          ))}
-          {options.map((option) => (
-            <Flipped translate={false} flipId={option.id} key={option.id}>
-              <Chip
-                clickable
-                onClick={handleOptionClick(option)}
-                classes={{ outlined: classes.chipOutlined }}
-                label={discover.selectors.toLabel(option)}
-                variant="outlined"
-              />
-            </Flipped>
-          ))}
-        </HorizontalScroll>
-      </Flipper>
+      <HorizontalScroll ref={ref} paddingY={2}>
+        {inputOptions.map((option) => (
+          <Chip
+            key={option.id}
+            clickable
+            onClick={handleInputOptionClick(option)}
+            classes={{ root: classes.chipRoot }}
+            label={discover.selectors.toLabel(option)}
+          />
+        ))}
+        {options.map((option) => (
+          <Chip
+            key={option.id}
+            clickable
+            onClick={handleOptionClick(option)}
+            classes={{ outlined: classes.chipOutlined }}
+            label={discover.selectors.toLabel(option)}
+            variant="outlined"
+          />
+        ))}
+      </HorizontalScroll>
     </Paper>
   );
 };

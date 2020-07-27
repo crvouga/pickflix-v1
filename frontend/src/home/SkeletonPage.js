@@ -11,8 +11,21 @@ const BoxProps = { paddingLeft: 2 };
 export default () => {
   return (
     <Box overflow="hidden">
-      <AspectRatio ratio="16/9">
-        <Skeleton animation="wave" variant="rect" width="100%" height="100%" />
+      <AspectRatio ratio="16/9" style={{ width: "100%" }}>
+        <Box
+          display="flex"
+          flexDirection="column-reverse"
+          paddingX={2}
+          paddingY={3}
+          width="100%"
+        >
+          <Typography variant="subtitle1">
+            <Skeleton animation="wave" width="2.5em" />
+          </Typography>
+          <Typography variant="h5">
+            <Skeleton animation="wave" width="6em" />
+          </Typography>
+        </Box>
       </AspectRatio>
       <PosterScrollSkeleton BoxProps={BoxProps} title movies={movies} />
       <PosterScrollSkeleton BoxProps={BoxProps} title movies={movies} />
