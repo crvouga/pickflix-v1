@@ -3,12 +3,12 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import React from "react";
 import { AspectRatio } from "react-aspect-ratio";
 import HorizontalScroll from "../common/components/HorizontalScroll";
-import PosterSkeleton from "../movie/components/PosterSkeleton";
-import PosterScrollSkeleton from "../movie/components/PosterScrollSkeleton";
+import Poster from "../movie/components/Poster";
 
 export default () => {
   return (
     <Box overflow="hidden">
+      {/* Header Section */}
       <AspectRatio ratio="21/9">
         <Box
           width="100%"
@@ -25,15 +25,26 @@ export default () => {
           />
         </Box>
       </AspectRatio>
-      <Box paddingX={2} paddingTop={3} paddingBottom={1}>
+
+      {/* Header Text */}
+      <Box paddingX={2} paddingTop={3}>
         <Typography variant="h4">
           <Skeleton animation="wave" width="33.33%" />
         </Typography>
         <Typography variant="subtitle1">
-          <Skeleton animation="wave" width="80%" />
+          <Skeleton animation="wave" width="16em" />
         </Typography>
       </Box>
-      <PosterScrollSkeleton title movies={[{ id: 1 }, { id: 2 }, { id: 3 }]} />
+      <Box paddingLeft={2} paddingBottom={1}>
+        <Skeleton animation="wave" width="120px" height="2em" />
+      </Box>
+
+      {/* Known For Section */}
+      <HorizontalScroll paddingLeft={2}>
+        {[0, 1, 2, 3, 4, 5, 6, 7].map((movie, index) => (
+          <Poster key={index} movie={movie} marginRight={2} />
+        ))}
+      </HorizontalScroll>
       <Box paddingX={2}>
         <Box paddingBottom={1}>
           <Skeleton animation="wave" variant="text" width="25%" height="2em" />

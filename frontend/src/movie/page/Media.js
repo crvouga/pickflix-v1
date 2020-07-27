@@ -6,7 +6,7 @@ import "react-aspect-ratio/aspect-ratio.css";
 import { useDispatch } from "react-redux";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
-import Layer from "../../common/components/Layer";
+import AbsolutePositionBox from "../../common/components/AbsolutePositionBox";
 import modal from "../../common/redux/modal";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 import player from "../../video/redux/player";
@@ -33,8 +33,8 @@ const useStyles = makeStyles((theme) => ({
   buttonCotaniner: {
     pointerEvents: "all",
     borderRadius: "50%",
-    backgroundColor: theme.palette.background.default,
-    opacity: 0.5,
+    background: `radial-gradient(circle at center, ${theme.palette.background.default} 0, transparent 80%)`,
+    opacity: 0.8,
   },
 }));
 
@@ -55,7 +55,7 @@ const stopPropagation = (e) => e.stopPropagation();
 
 const renderPoster = (poster) => (
   <Box key={poster.filePath} width="100%" position="relative">
-    <Layer
+    <AbsolutePositionBox
       style={{
         filter: "blur(8px)",
         backgroundRepeat: "no-repeat",
@@ -115,24 +115,26 @@ export default ({ videos, images }) => {
         {imageComponents}
       </AutoPlaySwipeableViews>
 
-      <Fade in={videos.length !== 0 && isPlayIconVisible.value}>
-        <Layer
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          className={classes.noPointer}
-        >
-          <div className={classes.buttonCotaniner}>
-            <IconButton
-              color="default"
-              onTouchStart={stopPropagation}
-              onClick={handlePlayIconClick}
-            >
-              <PlayIcon className={classes.playIcon} />
-            </IconButton>
-          </div>
-        </Layer>
-      </Fade>
+      {videos.length && (
+        <Fade in={isPlayIconVisible.value}>
+          <AbsolutePositionBox
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            className={classes.noPointer}
+          >
+            <div className={classes.buttonCotaniner}>
+              <IconButton
+                color="default"
+                onTouchStart={stopPropagation}
+                onClick={handlePlayIconClick}
+              >
+                <PlayIcon className={classes.playIcon} />
+              </IconButton>
+            </div>
+          </AbsolutePositionBox>
+        </Fade>
+      )}
     </AspectRatio>
   );
 };

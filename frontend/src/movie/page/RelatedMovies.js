@@ -1,7 +1,17 @@
-import { Box, Divider } from "@material-ui/core";
+import { Box, Chip, Divider, Typography } from "@material-ui/core";
 import React from "react";
-import MoviePosterScroll from "../components/PosterScroll";
-import Keywords from "./Keywords";
+import Poster from "../components/Poster";
+import HorizontalScroll from "../../common/components/HorizontalScroll";
+
+const Title = (props) => (
+  <Typography
+    component={Box}
+    paddingLeft={2}
+    paddingBottom={1}
+    style={{ fontWeight: "bold" }}
+    {...props}
+  />
+);
 
 export default ({ keywords, similar, recommendations }) => {
   if (
@@ -16,12 +26,41 @@ export default ({ keywords, similar, recommendations }) => {
     <React.Fragment>
       <Box paddingTop={2}>
         {recommendations?.length > 0 && (
-          <MoviePosterScroll title="Recommendations" movies={recommendations} />
+          <React.Fragment>
+            <Title>Recommendations</Title>
+            <HorizontalScroll paddingLeft={2} marginBottom={2}>
+              {recommendations.map((movie) => (
+                <Poster key={movie.id} movie={movie} marginRight={2} />
+              ))}
+            </HorizontalScroll>
+          </React.Fragment>
         )}
+
         {similar?.length > 0 && (
-          <MoviePosterScroll title="Similar" movies={similar} />
+          <React.Fragment>
+            <Title>Similar</Title>
+            <HorizontalScroll paddingLeft={2} marginBottom={2}>
+              {similar.map((movie) => (
+                <Poster key={movie.id} movie={movie} marginRight={2} />
+              ))}
+            </HorizontalScroll>
+          </React.Fragment>
         )}
-        {keywords?.length > 0 && <Keywords keywords={keywords} />}
+
+        {keywords?.length > 0 && (
+          <React.Fragment>
+            <Title>Keywords</Title>
+            <HorizontalScroll paddingLeft={2}>
+              {keywords.map((keyword) => (
+                <Chip
+                  key={keyword.id}
+                  label={keyword.name}
+                  variant="outlined"
+                />
+              ))}
+            </HorizontalScroll>
+          </React.Fragment>
+        )}
       </Box>
       <Divider />
     </React.Fragment>

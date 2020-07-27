@@ -1,7 +1,7 @@
 import { Box, Typography } from "@material-ui/core";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import React from "react";
-import Layer from "../common/components/Layer";
+import AbsolutePositionBox from "../common/components/AbsolutePositionBox";
 import HorizontalScroll from "../common/components/HorizontalScroll";
 import YoutubeThumbnail from "./Thumbnail";
 
@@ -26,11 +26,15 @@ export default ({ videos, onClick, ...props }) => {
         >
           <Box position="relative">
             <YoutubeThumbnail video={video} />
-            <Layer display="flex" justifyContent="center" alignItems="center">
+            <AbsolutePositionBox
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
               <PlayArrowIcon
                 style={{ width: "48px", height: "48px", opacity: 0.7 }}
               />
-            </Layer>
+            </AbsolutePositionBox>
           </Box>
 
           <Typography variant="subtitle1" color="textSecondary">

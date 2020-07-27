@@ -1,16 +1,13 @@
-import { Box, Divider, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
 import React from "react";
 import { AspectRatio } from "react-aspect-ratio";
-import PosterScrollSkeleton from "../movie/components/PosterScrollSkeleton";
-
-const movies = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
-
-const BoxProps = { paddingLeft: 2 };
+import HorizontalScroll from "../common/components/HorizontalScroll";
+import Poster from "../movie/components/Poster";
 
 export default () => {
   return (
-    <Box overflow="hidden">
+    <div style={{ overflow: "hidden" }}>
       <AspectRatio ratio="16/9" style={{ width: "100%" }}>
         <Box
           display="flex"
@@ -27,9 +24,20 @@ export default () => {
           </Typography>
         </Box>
       </AspectRatio>
-      <PosterScrollSkeleton BoxProps={BoxProps} title movies={movies} />
-      <PosterScrollSkeleton BoxProps={BoxProps} title movies={movies} />
-      <PosterScrollSkeleton BoxProps={BoxProps} title movies={movies} />
-    </Box>
+      {[0, 1, 2].map((_, i) => (
+        <React.Fragment key={i}>
+          <Box paddingLeft={2} paddingBottom={1}>
+            <Typography>
+              <Skeleton animation="wave" variant="text" width="20%" />
+            </Typography>
+          </Box>
+          <HorizontalScroll lock paddingLeft={2} marginBottom={2}>
+            {[0, 1, 2, 3, 4, 5].map((movie, index) => (
+              <Poster key={index} movie={movie} marginRight={2} />
+            ))}
+          </HorizontalScroll>
+        </React.Fragment>
+      ))}
+    </div>
   );
 };

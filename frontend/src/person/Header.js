@@ -4,7 +4,7 @@ import * as R from "ramda";
 import React from "react";
 import AspectRatio from "react-aspect-ratio";
 import "react-aspect-ratio/aspect-ratio.css";
-import Layer from "../common/components/Layer";
+import AbsolutePositionBox from "../common/components/AbsolutePositionBox";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import PersonAvatar from "./PersonAvatar";
 
@@ -48,7 +48,7 @@ export default ({ images, taggedImages, details, credits }) => {
           justifyContent="center"
           alignItems="center"
         >
-          <Layer
+          <AbsolutePositionBox
             style={{
               filter: "blur(16px)",
               backgroundRepeat: "no-repeat",

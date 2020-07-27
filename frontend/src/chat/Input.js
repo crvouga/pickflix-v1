@@ -1,6 +1,6 @@
 import { Box, makeStyles } from "@material-ui/core";
 import React, { useContext } from "react";
-import BlurBackdrop from "../common/components/BlurBackdrop";
+import AbsolutePositionBox from "../common/components/AbsolutePositionBox";
 import InputField from "./InputField";
 import InputOptions from "./InputOptions";
 import InputTags from "./InputTags";
@@ -30,7 +30,7 @@ export default () => {
   return (
     <div onClick={focus}>
       <Box position="relative">
-        <BlurBackdrop className={classes.borderRadiusTop} />
+        <AbsolutePositionBox className={classes.borderRadiusTop} />
         <div className={classes.border}>
           <InputTags />
           <InputField />

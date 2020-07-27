@@ -6,6 +6,7 @@ export default () => {
   return (
     <div>
       <Input />
+
       <Results />
     </div>
   );

@@ -7,10 +7,22 @@ import HorizontalScroll from "../common/components/HorizontalScroll";
 import ErrorPage from "../common/page/ErrorPage";
 import Footer from "../common/page/Footer";
 import Page from "../common/page/Page";
-import MoviePosterScroll from "../movie/components/PosterScroll";
+import Poster from "../movie/components/Poster";
 import PersonAvatar from "../person/PersonAvatar";
 import Header from "./Header";
 import SkeletonPage from "./SkeletonPage";
+
+const Title = ({ text, ...props }) => (
+  <Box
+    component={Typography}
+    paddingLeft={2}
+    paddingBottom={1}
+    style={{ fontWeight: "bold" }}
+    {...props}
+  >
+    {text}
+  </Box>
+);
 
 const renderProfile = (person) => (
   <Box key={person.id} minWidth="120px" marginRight={1}>
@@ -23,11 +35,23 @@ const renderProfile = (person) => (
 
 const renderAvatarScroll = (title, persons) => (
   <React.Fragment>
+    <Title text={title} />
     <Box p={1} paddingLeft={2}>
       <Typography style={{ fontWeight: "bold" }}>{title}</Typography>
     </Box>
     <HorizontalScroll paddingLeft={2}>
       {persons.map(renderProfile)}
+    </HorizontalScroll>
+  </React.Fragment>
+);
+
+const renderMovieScroll = (title, movies) => (
+  <React.Fragment>
+    <Title text={title} />
+    <HorizontalScroll paddingLeft={2} marginBottom={2}>
+      {movies.map((movie, i) => (
+        <Poster key={i} movie={movie} marginRight={2} />
+      ))}
     </HorizontalScroll>
   </React.Fragment>
 );
@@ -59,9 +83,9 @@ export default () => {
   return (
     <Page>
       <Header movies={popular.results} />
-      <MoviePosterScroll title="Top Rated" movies={topRated.results} />
-      <MoviePosterScroll title="Trending" movies={upcoming.results} />
-      <MoviePosterScroll title="Now Playing" movies={nowPlaying.results} />
+      {renderMovieScroll("Top Rated", topRated.results)}
+      {renderMovieScroll("Trending", upcoming.results)}
+      {renderMovieScroll("Now Playing", nowPlaying.results)}
       {renderAvatarScroll("Popular People", personPopular.results)}
       <Footer />
     </Page>

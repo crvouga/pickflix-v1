@@ -7,7 +7,7 @@ import "react-aspect-ratio/aspect-ratio.css";
 import { useDispatch } from "react-redux";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
-import Layer from "../common/components/Layer";
+import AbsolutePositionBox from "../common/components/AbsolutePositionBox";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -36,7 +36,7 @@ const HeaderItem = ({ movie }) => {
   return (
     <Box component={AspectRatio} ratio="16/9" onClick={handleClick}>
       <div className={classes.box} />
-      <Layer
+      <AbsolutePositionBox
         paddingX={2}
         paddingY={3}
         display="flex"
@@ -48,7 +48,7 @@ const HeaderItem = ({ movie }) => {
         <Typography variant="h6" style={{ fontWeight: "bold" }} noWrap>
           {movie.title}
         </Typography>
-      </Layer>
+      </AbsolutePositionBox>
     </Box>
   );
 };

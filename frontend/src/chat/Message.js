@@ -6,11 +6,11 @@ import {
   Paper,
   Slide,
   Typography,
-  Fade,
 } from "@material-ui/core";
 import clsx from "clsx";
 import React from "react";
-import PosterScroll from "../movie/components/PosterScroll";
+import HorizontalScroll from "../common/components/HorizontalScroll";
+import Poster from "../movie/components/Poster";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import typeToIcon from "./typeToIcon";
 
@@ -69,10 +69,11 @@ export default ({ onTagClick, message }) => {
       </Slide>
 
       {movies.length > 0 && (
-        <PosterScroll
-          movies={movies}
-          PosterProps={{ minWidth: 120, maxWidth: 120, marginRight: 1 }}
-        />
+        <HorizontalScroll>
+          {movies.map((movie) => (
+            <Poster key={movie.id} movie={movie} width="120px" />
+          ))}
+        </HorizontalScroll>
       )}
     </Box>
   );

@@ -1,18 +1,17 @@
-import { Box, Typography } from "@material-ui/core";
+import { Typography, Box } from "@material-ui/core";
 import * as R from "ramda";
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import api from "../api";
-import ExpandHeight from "../common/components/ExpandHeight";
-import Markdown from "../common/components/Markdown";
-import useBoolean from "../common/hooks/useBoolean";
+import HorizontalScroll from "../common/components/HorizontalScroll";
 import ErrorPage from "../common/page/ErrorPage";
 import Footer from "../common/page/Footer";
 import Page from "../common/page/Page";
 import recentlyViewed from "../common/redux/recentlyViewed";
-import MoviePosterScroll from "../movie/components/PosterScroll";
+import Poster from "../movie/components/Poster";
+import Biography from "./Biography";
 import Filmography from "./Filmography";
 import Header from "./Header";
 import SkeletonPage from "./SkeletonPage";
@@ -43,7 +42,7 @@ const descendPopularity = R.sort(R.descend(R.prop("popularity")));
 
 export default () => {
   const { personId } = useParams();
-  const isBioExpanded = useBoolean(false);
+
   const query = useQuery(`/person/${personId}`, () =>
     fetchPersonPage(personId)
   );
@@ -71,39 +70,19 @@ export default () => {
         images={images}
         taggedImages={taggedImages}
       />
-
-      <MoviePosterScroll
-        title={`Known For ${details.knownForDepartment}`}
-        movies={creditsByKey[details.knownForDepartment]}
-      />
-      <Box
-        paddingX={2}
-        paddingTop={1}
-        component={Typography}
-        style={{ fontWeight: "bold" }}
-      >
-        Biography
+      <Box paddingLeft={2} paddingBottom={1}>
+        <Typography style={{ fontWeight: "bold" }}>
+          Known For {details.knownForDepartment}
+        </Typography>
       </Box>
-      {details.biography && (
-        <Box
-          paddingX={2}
-          paddingBottom={1}
-          textAlign="left"
-          display="flex"
-          flexDirection="column"
-        >
-          <ExpandHeight
-            in={isBioExpanded.value}
-            collapsedHeight="7.5em"
-            onClick={isBioExpanded.toggle}
-          >
-            <Markdown>{details.biography}</Markdown>
-          </ExpandHeight>
-        </Box>
-      )}
+      <HorizontalScroll paddingLeft={2}>
+        {creditsByKey[details.knownForDepartment].map((movie, index) => (
+          <Poster key={index} movie={movie} marginRight={2} />
+        ))}
+      </HorizontalScroll>
 
+      <Biography details={details} />
       <Filmography credits={credits} details={details} />
-
       <Footer />
     </Page>
   );

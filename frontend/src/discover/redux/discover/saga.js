@@ -81,6 +81,7 @@ export default function* () {
   });
 
   yield takeLeading(actions.fetch, function* () {
+    yield put(actions.setStatus("loading"));
     try {
       const currentPage = yield select(selectors.currentPage);
       const input = yield select(selectors.input);
@@ -90,7 +91,6 @@ export default function* () {
           page: currentPage + 1,
         },
       };
-      yield put(actions.setStatus("loading"));
       const response = yield call(fetchDiscover, config);
       yield put(actions.setStatus("success"));
       const responses = yield select(selectors.responses);
