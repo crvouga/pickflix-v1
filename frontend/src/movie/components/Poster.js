@@ -35,78 +35,46 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Fallback = ({ title }) => {
-  const classes = useStyles();
-  return (
-    <Typography component="div" className={classes.fallback}>
-      {title}
-    </Typography>
-  );
-};
-
 export default trackWindowScroll((props) => {
   const {
-    skeleton,
-    SkeletonProps,
     scrollPosition,
-    movie,
+    skeleton,
+    SkeletonProps = {},
+    movie = {},
     sizeIndex = 3,
     ...restOfProps
   } = props;
 
+  const classes = useStyles();
   const isLoading = useBoolean(true);
-  const { id, posterPath, title } = movie || {};
+  const { id, posterPath, title } = movie;
   const theme = useTheme();
-
-  const posterURL = makeTMDbImageURL(sizeIndex, { posterPath });
   const dispatch = useDispatch();
+  const posterURL = makeTMDbImageURL(sizeIndex, { posterPath });
 
   const handleClick = () => {
     dispatch(push(`/movie/${id}`));
   };
 
-  if (skeleton)
-    return (
-      <Box
-        component={Paper}
-        borderRadius={theme.spacing(1)}
-        variant="outlined"
-        minWidth="150px"
-        width="150px"
-        {...restOfProps}
-        minWidth={restOfProps.width}
-        width={restOfProps.width}
-      >
-        <AspectRatio
-          ratio="18/24"
-          style={{ position: "relative", width: "100%" }}
-        >
-          <Skeleton
-            style={{ borderRadius: theme.spacing(1) }}
-            variant="rect"
-            width="100%"
-            height="100%"
-            {...SkeletonProps}
-          />
-        </AspectRatio>
-      </Box>
-    );
-
   return (
     <Box
       component={Paper}
-      borderRadius={theme.spacing(1)}
+      borderRadius={theme.spacing(2)}
       onClick={handleClick}
       variant="outlined"
-      minWidth="150px"
-      width="150px"
+      width="180px"
+      overflow="hidden"
       {...restOfProps}
     >
       <AspectRatio
         ratio="18/24"
         style={{ position: "relative", width: "100%" }}
       >
-        {posterPath ? (
+        {!skeleton && !posterPath && (
+          <Typography className={classes.fallback}>{title}</Typography>
+        )}
+
+        {!skeleton && posterPath && (
           <LazyLoadImage
             scrollPosition={scrollPosition}
             beforeLoad={isLoading.setTrue}
@@ -115,16 +83,13 @@ export default trackWindowScroll((props) => {
             src={posterURL}
             width="100%"
             height="100%"
-            style={{ borderRadius: theme.spacing(1) }}
           />
-        ) : (
-          <Fallback title={title} />
         )}
 
-        {(isLoading.value || !posterPath) && (
+        {(skeleton || (posterPath && isLoading.value)) && (
           <AbsolutePositionBox>
             <Skeleton
-              style={{ borderRadius: theme.spacing(1) }}
+              animation="wave"
               variant="rect"
               width="100%"
               height="100%"

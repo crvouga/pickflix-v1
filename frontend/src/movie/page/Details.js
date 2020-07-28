@@ -8,20 +8,25 @@ momentDurationFormatSetup(moment);
 
 const commas = (_) => numeral(_).format("0,0");
 
-const renderChipScroll = (title, chips) => (
-  <React.Fragment>
-    <Box component={Typography} paddingLeft={2}>
-      {title}
-    </Box>
-    <HorizontalScroll paddingLeft={2} marginBottom={2}>
-      {chips.map((chip) => (
-        <Box key={chip.name} marginRight={1}>
-          <Chip label={chip.name} variant="outlined" />
-        </Box>
-      ))}
-    </HorizontalScroll>
-  </React.Fragment>
-);
+const renderChipScroll = (title, chips) => {
+  if (chips.length === 0) {
+    return null;
+  }
+  return (
+    <React.Fragment>
+      <Box component={Typography} paddingLeft={2}>
+        {title}
+      </Box>
+      <HorizontalScroll paddingLeft={2} marginBottom={2}>
+        {chips.map((chip) => (
+          <Box key={chip.name} marginRight={1} marginBottom={1}>
+            <Chip clickable label={chip.name} variant="outlined" />
+          </Box>
+        ))}
+      </HorizontalScroll>
+    </React.Fragment>
+  );
+};
 
 export default ({ details }) => {
   const budget = details.budget ? `$${commas(details.budget)}` : "-";
@@ -36,7 +41,7 @@ export default ({ details }) => {
     .format("h[h] m[m]");
 
   return (
-    <React.Fragment>
+    <Box>
       <Box p={2} paddingBottom={0}>
         <Box paddingBottom={2}>
           <Typography style={{ fontWeight: "bold" }}>Details</Typography>
@@ -90,10 +95,11 @@ export default ({ details }) => {
           </Grid>
         </Grid>
       </Box>
+
       {renderChipScroll("Genres", details.genres)}
       {renderChipScroll("Production Companies", details.productionCompanies)}
       {renderChipScroll("Production Countries", details.productionCountries)}
       <Divider />
-    </React.Fragment>
+    </Box>
   );
 };

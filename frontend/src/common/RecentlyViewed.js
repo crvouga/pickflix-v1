@@ -16,7 +16,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import HorizontalScroll from "./components/HorizontalScroll";
 import useBoolean from "./hooks/useBoolean";
-import MoviePoster from "../movie/components/Poster";
+import Poster from "../movie/components/Poster";
 import PersonAvatar from "../person/PersonAvatar";
 import recentlyViewed from "./redux/recentlyViewed";
 
@@ -97,14 +97,14 @@ export default () => {
       )}
       <HorizontalScroll paddingLeft={2}>
         {recentlyViewedEntities.map((entity) => (
-          <Box key={entity.id} minWidth={150} maxWidth={150} marginRight={1}>
+          <Box key={entity.id} width="150px" marginRight={1}>
             {entity.mediaType === "person" ? (
               <React.Fragment>
                 <PersonAvatar person={entity} />
                 <Typography align="center">{entity.name}</Typography>
               </React.Fragment>
             ) : entity.mediaType === "movie" ? (
-              <MoviePoster movie={entity} />
+              <Poster movie={entity} width="100%" />
             ) : (
               <div />
             )}

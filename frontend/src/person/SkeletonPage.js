@@ -41,8 +41,8 @@ export default () => {
 
       {/* Known For Section */}
       <HorizontalScroll paddingLeft={2}>
-        {[0, 1, 2, 3, 4, 5, 6, 7].map((movie, index) => (
-          <Poster key={index} movie={movie} marginRight={2} />
+        {[0, 1, 2, 3, 4, 5, 6, 7].map((_, index) => (
+          <Poster key={index} skeleton marginRight={2} />
         ))}
       </HorizontalScroll>
       <Box paddingX={2}>

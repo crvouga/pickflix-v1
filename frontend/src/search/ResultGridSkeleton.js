@@ -18,7 +18,7 @@ export default () => {
       overflow="hidden"
     >
       {results.map((result) => (
-        <Box key={result.id} minWidth="33.33%" maxWidth="33.33%">
+        <Box key={result.id} width="33.33%">
           {result.mediaType === "movie" && <MoviePosterSkeleton />}
 
           {result.mediaType === "person" && (

@@ -181,8 +181,7 @@ export default ({ credits }) => {
         {[...directors, ...topCast].map((credit) => (
           <Box
             marginRight={1}
-            minWidth={120}
-            maxWidth={120}
+            width={120}
             key={credit.creditId}
             onClick={handleCreditClick(credit)}
           >

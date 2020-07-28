@@ -3,7 +3,7 @@ import api from "../../api";
 import React from "react";
 import { useQuery } from "react-query";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
-import MovieBackdrop from "../components/Backdrop";
+import Backdrop from "../components/Backdrop";
 import ExpandHeight from "../../common/components/ExpandHeight";
 import useBoolean from "../../common/hooks/useBoolean";
 
@@ -54,8 +54,8 @@ export default ({ details }) => {
 
       <HorizontalScroll paddingLeft={2} paddingBottom={2}>
         {parts.map((part) => (
-          <Box key={part.id} marginRight={1} minWidth={240} maxWidth={240}>
-            <MovieBackdrop movie={part} />
+          <Box key={part.id} marginRight={1} width={240}>
+            <Backdrop movie={part} />
             <Typography color="textSecondary">{part.title}</Typography>
           </Box>
         ))}

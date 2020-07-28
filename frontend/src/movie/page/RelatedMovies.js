@@ -13,12 +13,8 @@ const Title = (props) => (
   />
 );
 
-export default ({ keywords, similar, recommendations }) => {
-  if (
-    recommendations.length === 0 &&
-    similar.length === 0 &&
-    keywords.length === 0
-  ) {
+export default ({ similar, recommendations }) => {
+  if (recommendations.length === 0 && similar.length === 0) {
     return null;
   }
 
@@ -42,21 +38,6 @@ export default ({ keywords, similar, recommendations }) => {
             <HorizontalScroll paddingLeft={2} marginBottom={2}>
               {similar.map((movie) => (
                 <Poster key={movie.id} movie={movie} marginRight={2} />
-              ))}
-            </HorizontalScroll>
-          </React.Fragment>
-        )}
-
-        {keywords?.length > 0 && (
-          <React.Fragment>
-            <Title>Keywords</Title>
-            <HorizontalScroll paddingLeft={2}>
-              {keywords.map((keyword) => (
-                <Chip
-                  key={keyword.id}
-                  label={keyword.name}
-                  variant="outlined"
-                />
               ))}
             </HorizontalScroll>
           </React.Fragment>

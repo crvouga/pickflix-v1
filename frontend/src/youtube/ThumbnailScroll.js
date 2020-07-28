@@ -19,8 +19,7 @@ export default ({ videos, onClick, ...props }) => {
       {videos.map((video) => (
         <Box
           key={video.id}
-          maxWidth={240}
-          minWidth={240}
+          width={240}
           marginRight={1}
           onClick={handleClick(video)}
         >

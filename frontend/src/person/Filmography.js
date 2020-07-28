@@ -122,7 +122,7 @@ export default ({ credits, details }) => {
         >
           {visibleCredits.map((credit) => (
             <Flipped flipId={credit.creditId} key={credit.creditId}>
-              <MoviePoster movie={credit} minWidth="33.33%" maxWidth="33.33%" />
+              <MoviePoster movie={credit} width="33.33%" />
             </Flipped>
           ))}
         </Box>

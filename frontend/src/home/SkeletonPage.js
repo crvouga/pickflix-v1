@@ -33,7 +33,7 @@ export default () => {
           </Box>
           <HorizontalScroll lock paddingLeft={2} marginBottom={2}>
             {[0, 1, 2, 3, 4, 5].map((movie, index) => (
-              <Poster key={index} movie={movie} marginRight={2} />
+              <Poster skeleton key={index} movie={movie} marginRight={2} />
             ))}
           </HorizontalScroll>
         </React.Fragment>

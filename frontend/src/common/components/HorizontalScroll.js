@@ -5,10 +5,14 @@ import clsx from "clsx";
 const useStyles = makeStyles({
   root: {
     display: "flex",
+    flexDirection: "row",
     flexWrap: "nowrap",
     overflowX: ({ lock }) => (lock ? "hidden" : "scroll"),
     overflowY: "hidden",
     transform: "translateZ(0)",
+    "& *": {
+      flexShrink: 0,
+    },
   },
 });
 

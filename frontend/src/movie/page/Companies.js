@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     overflowX: "auto",
   },
   part: {
-    minWidth: "240px",
+    width: "240px",
 
     padding: theme.spacing(1),
   },

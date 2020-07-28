@@ -25,7 +25,7 @@ const Title = ({ text, ...props }) => (
 );
 
 const renderProfile = (person) => (
-  <Box key={person.id} minWidth="120px" marginRight={1}>
+  <Box key={person.id} width="120px" marginRight={1}>
     <PersonAvatar person={person} />
     <Box p={1}>
       <Typography style={{ wordBreak: "break-word" }}>{person.name}</Typography>
@@ -36,9 +36,6 @@ const renderProfile = (person) => (
 const renderAvatarScroll = (title, persons) => (
   <React.Fragment>
     <Title text={title} />
-    <Box p={1} paddingLeft={2}>
-      <Typography style={{ fontWeight: "bold" }}>{title}</Typography>
-    </Box>
     <HorizontalScroll paddingLeft={2}>
       {persons.map(renderProfile)}
     </HorizontalScroll>

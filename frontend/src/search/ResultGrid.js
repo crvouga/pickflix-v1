@@ -1,6 +1,6 @@
 import { Box, Grow, Typography } from "@material-ui/core";
 import React from "react";
-import MoviePoster from "../movie/components/Poster";
+import Poster from "../movie/components/Poster";
 import PersonAvatar from "../person/PersonAvatar";
 
 export default ({ results, onResultClick }) => {
@@ -9,14 +9,9 @@ export default ({ results, onResultClick }) => {
   return (
     <Box display="flex" flexDirection="row" flexWrap="wrap" width="100%">
       {results.map((result) => (
-        <Box
-          key={result.id}
-          onClick={handleResultClick(result)}
-          minWidth="33.33%"
-          maxWidth="33.33%"
-        >
+        <Box key={result.id} onClick={handleResultClick(result)} width="33.33%">
           {result.mediaType === "movie" ? (
-            <MoviePoster movie={result} />
+            <Poster movie={result} width="100%" />
           ) : result.mediaType === "person" ? (
             <Box marginBottom="auto" p={1}>
               <PersonAvatar person={result} marginBottom={1} />

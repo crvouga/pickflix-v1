@@ -10,12 +10,11 @@ import discover from "./redux/discover";
 const resultsToFlipKey = R.pipe(R.pluck("id"), R.join(","));
 
 export default () => {
-  const inputOptions = useSelector(discover.selectors.inputOptions);
   const results = useSelector(discover.selectors.results);
   const totalResults = useSelector(discover.selectors.totalResults);
   const status = useSelector(discover.selectors.status);
   const dispatch = useDispatch();
-  const ref = useRef();
+
   const [triggerRef, inView] = useInView();
   const canFetchMore = results.length < totalResults;
 
@@ -40,22 +39,14 @@ export default () => {
       >
         {results.map((result) => (
           <Box p={1} width="50%" key={result.id}>
-            <Poster movie={result} minWidth="100%" width="100%" />
+            <Poster movie={result} width="100%" />
           </Box>
         ))}
 
         {(status === "loading" || (!canFetchMore && results.length === 0)) &&
           R.range(0, 12).map((_, index) => (
             <Box p={1} width="50%" key={index}>
-              <Poster
-                key={index}
-                skeleton
-                minWidth="100%"
-                width="100%"
-                SkeletonProps={{
-                  animation: status === "loading" ? undefined : "none",
-                }}
-              />
+              <Poster key={index} skeleton width="100%" />
             </Box>
           ))}
         <div ref={triggerRef} />

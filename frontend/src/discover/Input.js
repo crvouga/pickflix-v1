@@ -1,10 +1,9 @@
-import { Box, Chip, makeStyles, Paper, Fab } from "@material-ui/core";
+import { Chip, makeStyles, Paper } from "@material-ui/core";
 import * as R from "ramda";
-import React, { useEffect, useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import HorizontalScroll from "../common/components/HorizontalScroll";
 import discover from "./redux/discover";
-import { Flipped, Flipper } from "react-flip-toolkit";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -34,67 +33,64 @@ const sortOptions = R.sortBy(R.prop("name"));
 
 const optionsToFlipKey = R.pipe(R.pluck("id"), R.join(","));
 
-const selectors = {
-  options: (state) =>
-    R.pipe(
-      discover.selectors.options,
-      //sortOptions,
-      R.without(discover.selectors.inputOptions(state))
-    )(state),
-};
-
 export default () => {
-  const inputOptions = useSelector(discover.selectors.inputOptions);
-  const options = useSelector(selectors.options);
+  const input = useSelector(discover.selectors.input);
+  const options = useSelector(discover.selectors.optionWithoutInput);
   const dispatch = useDispatch();
 
-  const handleInputOptionClick = (option) => () => {
+  const handleInputChipClick = (type, chip) => () => {
     const newInput = {
-      options: R.difference(inputOptions, [option]),
+      ...input,
+      [type]: R.difference(input[type] || [], [chip]),
     };
 
     dispatch(discover.actions.setInput(newInput));
   };
 
-  const handleOptionClick = (option) => () => {
+  const handleOptionChipClick = (type, chip) => () => {
     const newInput = {
-      options: R.union([option], inputOptions),
+      ...input,
+      [type]: R.union(input[type], [chip]),
     };
+
     dispatch(discover.actions.setInput(newInput));
   };
 
   const ref = useRef();
 
   useEffect(() => {
-    if (ref.current) {
-      ref.current.scrollLeft = 0;
-    }
-  }, [inputOptions.length]);
+    ref.current.scrollLeft = 0;
+  }, [R.length(R.unnest(R.values(input)))]);
 
   const classes = useStyles();
 
   return (
     <Paper className={classes.paper}>
       <HorizontalScroll ref={ref} paddingY={2}>
-        {inputOptions.map((option) => (
-          <Chip
-            key={option.id}
-            clickable
-            onClick={handleInputOptionClick(option)}
-            classes={{ root: classes.chipRoot }}
-            label={discover.selectors.toLabel(option)}
-          />
-        ))}
-        {options.map((option) => (
-          <Chip
-            key={option.id}
-            clickable
-            onClick={handleOptionClick(option)}
-            classes={{ outlined: classes.chipOutlined }}
-            label={discover.selectors.toLabel(option)}
-            variant="outlined"
-          />
-        ))}
+        {R.toPairs(input).map(([type, chips]) =>
+          chips.map((chip) => (
+            <Chip
+              key={chip.id}
+              clickable
+              onClick={handleInputChipClick(type, chip)}
+              classes={{ root: classes.chipRoot }}
+              label={chip.name}
+            />
+          ))
+        )}
+
+        {R.toPairs(options).map(([type, chips]) =>
+          chips.map((chip) => (
+            <Chip
+              key={chip.id}
+              clickable
+              onClick={handleOptionChipClick(type, chip)}
+              variant="outlined"
+              classes={{ outlined: classes.chipOutlined }}
+              label={chip.name}
+            />
+          ))
+        )}
       </HorizontalScroll>
     </Paper>
   );

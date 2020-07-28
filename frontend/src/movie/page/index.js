@@ -17,6 +17,7 @@ import RelatedMovies from "./RelatedMovies";
 import Reviews from "./Reviews";
 import SkeletonPage from "./SkeletonPage";
 import Videos from "./Videos";
+import Discover from "./Discover";
 
 const fetchMoviePage = (movieId) =>
   api
@@ -82,10 +83,10 @@ export default () => {
         <RelatedMovies
           recommendations={recommendations.results}
           similar={similar.results}
-          keywords={keywords.keywords}
         />
-        <Details details={details} />
+        <Discover details={details} keywords={keywords.keywords} />
         <Reviews reviews={reviews} />
+        <Details details={details} keywords={keywords.keywords} />
         <Footer />
       </Page>
     </Fade>

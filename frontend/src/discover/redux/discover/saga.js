@@ -14,7 +14,7 @@ import { queryCache } from "react-query";
 
 const fetchGenres = () => api.get("/api/tmdb/genre/movie/list");
 
-const optionsToParams = (options) => {
+const inputToParams = (input) => {
   const {
     person = [],
     keyword = [],
@@ -22,7 +22,7 @@ const optionsToParams = (options) => {
     company = [],
     dateRange = [],
     sortBy = [],
-  } = R.groupBy(R.prop("type"), options);
+  } = input;
 
   const params = {
     withPeople: R.pluck("id", person),
@@ -51,11 +51,10 @@ function* initialOptions() {
   const response = yield call(fetchGenres);
   const options = yield select(selectors.options);
 
-  const newOptions = R.pipe(
-    R.path(["data", "genres"]),
-    R.map(R.assoc("type", "genre")),
-    R.union(options)
-  )(response);
+  const newOptions = {
+    ...options,
+    genres: response.data.genres,
+  };
 
   yield put(actions.setOptions(newOptions));
 }
@@ -87,7 +86,7 @@ export default function* () {
       const input = yield select(selectors.input);
       const config = {
         params: {
-          ...optionsToParams(input.options),
+          ...inputToParams(input),
           page: currentPage + 1,
         },
       };

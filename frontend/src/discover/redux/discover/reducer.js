@@ -3,10 +3,8 @@ import actions from "./actions";
 
 export default createReducer(
   {
-    input: {
-      options: [],
-    },
-    options: [],
+    input: {},
+    options: {},
     responses: [],
     status: "loading",
   },
