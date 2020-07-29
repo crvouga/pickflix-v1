@@ -17,7 +17,6 @@ import {
 import "react-lazy-load-image-component/src/effects/blur.css";
 import "react-lazy-load-image-component/src/effects/opacity.css";
 import { useDispatch } from "react-redux";
-import AbsolutePositionBox from "../../common/components/AbsolutePositionBox";
 import useBoolean from "../../common/hooks/useBoolean";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 
@@ -88,17 +87,15 @@ export default trackWindowScroll((props) => {
           />
         )}
 
-        {(skeleton || (posterPath && isLoading.value)) && (
-          <AbsolutePositionBox>
-            <Skeleton
-              animation="wave"
-              variant="rect"
-              width="100%"
-              height="100%"
-              style={{ borderRadius: theme.spacing(2) }}
-              {...SkeletonProps}
-            />
-          </AbsolutePositionBox>
+        {skeleton && (
+          <Skeleton
+            animation="wave"
+            variant="rect"
+            width="100%"
+            height="100%"
+            style={{ borderRadius: theme.spacing(2) }}
+            {...SkeletonProps}
+          />
         )}
       </AspectRatio>
     </Box>
