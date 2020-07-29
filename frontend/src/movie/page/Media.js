@@ -54,7 +54,7 @@ const useDelayedTrueBoolean = (initial) => {
 const stopPropagation = (e) => e.stopPropagation();
 
 const renderPoster = (poster) => (
-  <Box key={poster.filePath} width="100%" position="relative">
+  <Box key={poster.filePath} width="100%" height="100%" position="relative">
     <AbsolutePositionBox
       style={{
         filter: "blur(8px)",
@@ -98,7 +98,10 @@ export default ({ videos, images }) => {
     return null;
   }
 
-  const imageComponents = backdrops.map(renderBackdrop);
+  const imageComponents =
+    backdrops.length === 0
+      ? posters.map(renderPoster)
+      : backdrops.map(renderBackdrop);
 
   return (
     <AspectRatio

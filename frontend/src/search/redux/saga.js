@@ -1,17 +1,17 @@
+import * as R from "ramda";
 import {
-  takeLeading,
-  takeEvery,
   call,
+  cancelled,
   delay,
   put,
   select,
-  cancelled,
+  takeEvery,
   takeLatest,
+  takeLeading,
 } from "redux-saga/effects";
+import api from "../../api";
 import actions from "./actions";
 import * as selectors from "./selectors";
-import api from "../../api";
-import * as R from "ramda";
 
 const fetchSearch = async (config) => {
   if (config.params.query === "") {
@@ -22,22 +22,23 @@ const fetchSearch = async (config) => {
 };
 
 function* fetchResponseSaga() {
-  const input = yield select(selectors.input);
+  const text = yield select(selectors.text);
   const currentPage = yield select(selectors.currentPage);
   const config = {
     params: {
       page: currentPage + 1,
-      query: encodeURI(input.text),
+      query: encodeURI(text),
     },
   };
-  yield put(actions.setStatus("loading"));
+
   const response = yield call(fetchSearch, config);
   yield put(actions.setStatus("success"));
   return response;
 }
 
 export default function* () {
-  yield takeLatest(actions.setInput, function* () {
+  yield takeLatest(actions.setText, function* () {
+    yield put(actions.setStatus("loading"));
     yield delay(1000 / 3);
     try {
       yield put(actions.setResponses([]));
@@ -45,7 +46,6 @@ export default function* () {
     } catch (e) {
     } finally {
       if (yield cancelled()) {
-        console.log("CANCELLLED");
       }
     }
   });
@@ -58,13 +58,13 @@ export default function* () {
 
   yield takeEvery(actions.chose, function* (action) {
     const result = action.payload;
-    const history = yield select(selectors.history);
-    const newHistory = R.pipe(
+    const recentlySearched = yield select(selectors.recentlySearched);
+    const newRecentlySearched = R.pipe(
       R.append(result),
       R.uniqBy(R.prop("id")),
       R.take(100)
-    )(history);
+    )(recentlySearched);
 
-    yield put(actions.setHistory(newHistory));
+    yield put(actions.setRecentlySearched(newRecentlySearched));
   });
 }

@@ -18,8 +18,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default ({ images, taggedImages, details, credits }) => {
   const classes = useStyles();
-
   const allCredits = R.concat(credits.crew, credits.cast);
+
   const allMovies = R.uniqBy(R.prop("id"), allCredits);
 
   const [oldestMovie, newestMovie] = R.compose(
@@ -31,8 +31,8 @@ export default ({ images, taggedImages, details, credits }) => {
   const creditsByDepartment = R.groupBy(R.prop("department"), credits.crew);
   creditsByDepartment.Acting = credits.cast;
 
-  const oldestRelease = toYear(oldestMovie.releaseDate);
-  const newestRelease = toYear(newestMovie.releaseDate);
+  const oldestRelease = toYear(oldestMovie?.releaseDate);
+  const newestRelease = toYear(newestMovie?.releaseDate);
   const subtitle1 = [
     details.knownForDepartment,
     `${allMovies.length} movie${allMovies.length === 1 ? "" : "s"}`,

@@ -1,18 +1,9 @@
 import * as R from "ramda";
-import {
-  call,
-  fork,
-  put,
-  select,
-  takeEvery,
-  takeLeading,
-} from "redux-saga/effects";
-import api from "../../../api";
-import actions from "./actions";
-import * as selectors from "./selectors";
 import { queryCache } from "react-query";
-
-const fetchGenres = () => api.get("/api/tmdb/genre/movie/list");
+import { call, put, select, takeEvery, takeLeading } from "redux-saga/effects";
+import api from "../../../api";
+import actions from "../actions";
+import * as selectors from "../selectors";
 
 const inputToParams = (input) => {
   const {
@@ -47,18 +38,6 @@ const inputToParams = (input) => {
   return params;
 };
 
-function* initialOptions() {
-  const response = yield call(fetchGenres);
-  const options = yield select(selectors.options);
-
-  const newOptions = {
-    ...options,
-    genres: response.data.genres,
-  };
-
-  yield put(actions.setOptions(newOptions));
-}
-
 const fetchDiscover = async (config) => {
   const response = await queryCache.prefetchQuery(
     ["discover", config.params],
@@ -72,7 +51,7 @@ const fetchDiscover = async (config) => {
 };
 
 export default function* () {
-  yield fork(initialOptions);
+  yield put(actions.fetch());
 
   yield takeEvery(actions.setInput, function* () {
     yield put(actions.setResponses([]));

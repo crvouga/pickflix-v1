@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import search from "./redux";
 
 export default () => {
-  const input = useSelector(search.selectors.input);
+  const text = useSelector(search.selectors.text);
   const totalResults = useSelector(search.selectors.totalResults);
   const currentPage = useSelector(search.selectors.currentPage);
   const status = useSelector(search.selectors.status);
@@ -12,11 +12,11 @@ export default () => {
   const subtitle =
     status === "loading"
       ? "searching..."
-      : input.text === ""
+      : text === ""
       ? ""
       : totalResults === 0
-      ? `No results for "${input.text}"`
-      : `Showing results for "${input.text}"`;
+      ? `No results for "${text}"`
+      : `Showing results for "${text}"`;
 
   return (
     <Box paddingX={1}>

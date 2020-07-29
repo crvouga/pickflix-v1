@@ -68,7 +68,7 @@ const fetchHomePage = async () => {
 };
 
 export default () => {
-  const query = useQuery(["discover"], () => fetchHomePage(), {});
+  const query = useQuery(["home"], () => fetchHomePage(), {});
 
   if (query.status === "loading") return <SkeletonPage />;
   if (query.status === "error") return <ErrorPage />;

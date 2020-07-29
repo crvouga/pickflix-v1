@@ -1,7 +1,8 @@
 import { AppBar, makeStyles } from "@material-ui/core";
-import React from "react";
+import React, { useRef } from "react";
 import { useSelector } from "react-redux";
-import History from "./History";
+import TMDbAttribution from "../tmdb/TMDbAttribution";
+import EmptyResults from "./EmptyResults";
 import Input from "./Input";
 import search from "./redux";
 import Results from "./Results";
@@ -15,15 +16,19 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const input = useSelector(search.selectors.input);
+  const text = useSelector(search.selectors.text);
+  const inputRef = useRef();
+  const blur = () => {
+    inputRef.current.blur();
+  };
   return (
-    <div>
+    <div onMouseDown={blur}>
       <AppBar className={classes.appBar} position="sticky" color="default">
-        <Input />
+        <Input ref={inputRef} />
       </AppBar>
 
-      {input.text === "" ? (
-        <History />
+      {text === "" ? (
+        <EmptyResults />
       ) : (
         <React.Fragment>
           <Status />

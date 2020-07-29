@@ -114,12 +114,7 @@ export default ({ credits, details }) => {
       </Box>
 
       <Flipper flipKey={R.join(",", R.pluck("creditId", visibleCredits))}>
-        <Box
-          display="flex"
-          flexDirection="row"
-          overflowx="hidden"
-          flexWrap="wrap"
-        >
+        <Box display="flex" flexDirection="row" flexWrap="wrap">
           {visibleCredits.map((credit) => (
             <Flipped flipId={credit.creditId} key={credit.creditId}>
               <MoviePoster movie={credit} width="33.33%" />

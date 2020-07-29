@@ -6,7 +6,7 @@ import useBoolean from "../common/hooks/useBoolean";
 
 export default ({ details }) => {
   const isBioExpanded = useBoolean(false);
-  console.log({ details });
+
   if (!details.biography) {
     return null;
   }

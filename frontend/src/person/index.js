@@ -76,9 +76,11 @@ export default () => {
         </Typography>
       </Box>
       <HorizontalScroll paddingLeft={2}>
-        {creditsByKey[details.knownForDepartment].map((movie, index) => (
-          <Poster key={index} movie={movie} marginRight={2} />
-        ))}
+        {R.propOr([], details.knownForDepartment, creditsByKey).map(
+          (movie, index) => (
+            <Poster key={index} movie={movie} marginRight={2} />
+          )
+        )}
       </HorizontalScroll>
 
       <Biography details={details} />

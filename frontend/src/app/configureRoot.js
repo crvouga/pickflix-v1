@@ -9,7 +9,7 @@ import signIn from "../auth/signIn/redux/signIn";
 import chat from "../chat/redux/chat";
 import modal from "../common/redux/modal";
 import recentlyViewed from "../common/redux/recentlyViewed";
-import discover from "../discover/redux/discover";
+import discover from "../discover/redux";
 import search from "../search/redux";
 import player from "../video/redux/player";
 

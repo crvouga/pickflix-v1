@@ -18,8 +18,3 @@ export const totalResults = R.pipe(
   R.head,
   R.propOr(0, "totalResults")
 );
-
-export const toLabel = (chip) =>
-  R.prop(chip.type, {
-    genre: chip.name,
-  });

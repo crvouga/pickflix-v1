@@ -3,7 +3,7 @@ import * as R from "ramda";
 import React from "react";
 import { useDispatch } from "react-redux";
 import router from "../../common/redux/router";
-import discover from "../../discover/redux/discover";
+import discover from "../../discover/redux";
 import Title from "./Title";
 
 const useStyles = makeStyles((theme) => ({
@@ -23,12 +23,8 @@ export default ({ details, keywords }) => {
 
   const dispatch = useDispatch();
   const handleChipClick = (type, chip) => () => {
-    dispatch(
-      discover.actions.setInput({
-        [type]: [chip],
-      })
-    );
     dispatch(router.actions.push("/discover"));
+    dispatch(discover.actions.setInput({ [type]: [chip] }));
   };
 
   return (

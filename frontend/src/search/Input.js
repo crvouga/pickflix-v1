@@ -1,46 +1,42 @@
-import {
-  Box,
-  CircularProgress,
-  IconButton,
-  InputBase,
-  makeStyles,
-} from "@material-ui/core";
+import { Box, IconButton, InputBase, makeStyles } from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import search from "./redux";
 
 const useStyles = makeStyles((theme) => ({
   root: theme.mixins.toolbar,
   input: {
+    fontSize: "1.25em",
+    fontWeight: "bold",
     flex: 1,
   },
 }));
 
-export default () => {
+export default React.forwardRef((props, ref) => {
   const classes = useStyles();
-  const inputRef = useRef();
-  const input = useSelector(search.selectors.input);
+  const text = useSelector(search.selectors.text);
 
   const dispatch = useDispatch();
 
   const handleClear = () => {
-    dispatch(search.actions.setInput({ text: "" }));
+    dispatch(search.actions.setText(""));
   };
 
   const handleInputChange = (e) => {
     const newText = e.target.value;
-    dispatch(search.actions.setInput({ text: newText }));
+    dispatch(search.actions.setText(newText));
   };
 
   useEffect(() => {
-    inputRef.current && inputRef.current.focus();
-    dispatch(search.actions.setInput({ text: "" }));
+    ref.current && ref.current.focus();
+    dispatch(search.actions.setText(""));
   }, []);
 
   return (
     <Box
       paddingX={2}
+      paddingY={1}
       display="flex"
       alignItems="center"
       width="100%"
@@ -48,14 +44,15 @@ export default () => {
     >
       <InputBase
         className={classes.input}
-        inputRef={inputRef}
-        value={input.text}
-        placeholder={"Search Movie or Person"}
+        inputRef={ref}
+        value={text}
+        placeholder="Search Movie or Person"
         onChange={handleInputChange}
       />
-      <IconButton disabled={input.text === ""} onClick={handleClear}>
+
+      <IconButton disabled={text === ""} onClick={handleClear}>
         <ClearIcon />
       </IconButton>
     </Box>
   );
-};
+});

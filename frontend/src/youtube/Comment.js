@@ -46,28 +46,24 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default ({ comment }) => {
+  const { kind, etag, id, snippet } = comment;
   const {
-    kind,
-    etag,
-    id,
-    snippet: {
-      authorDisplayName,
-      authorProfileImageUrl,
-      authorChannelUrl,
-      authorChannelId: { value },
-      channelId,
-      videoId,
-      textDisplay,
-      textOriginal,
-      parentId,
-      canRate,
-      viewerRating,
-      likeCount,
-      moderationStatus,
-      publishedAt,
-      updatedAt,
-    },
-  } = comment;
+    authorDisplayName,
+    authorProfileImageUrl,
+    authorChannelUrl,
+    authorChannelId,
+    channelId,
+    videoId,
+    textDisplay,
+    textOriginal,
+    parentId,
+    canRate,
+    viewerRating,
+    likeCount,
+    moderationStatus,
+    publishedAt,
+    updatedAt,
+  } = snippet;
 
   const classes = useStyles();
 

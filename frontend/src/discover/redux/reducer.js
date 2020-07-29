@@ -3,17 +3,21 @@ import actions from "./actions";
 
 export default createReducer(
   {
-    input: {},
+    text: "",
     options: {},
-    responses: [],
+    input: {},
     status: "loading",
+    responses: [],
   },
   {
-    [actions.setInput]: (state, action) => {
-      state.input = action.payload;
+    [actions.setText]: (state, action) => {
+      state.text = action.payload;
     },
     [actions.setOptions]: (state, action) => {
       state.options = action.payload;
+    },
+    [actions.setInput]: (state, action) => {
+      state.input = action.payload;
     },
     [actions.setResponses]: (state, action) => {
       state.responses = action.payload;

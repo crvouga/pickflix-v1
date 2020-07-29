@@ -6,7 +6,7 @@ import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
 import Poster from "../movie/components/Poster";
 import TMDbAttribution from "../tmdb/TMDbAttribution";
-import discover from "./redux/discover";
+import discover from "./redux";
 const resultsToFlipKey = R.pipe(R.pluck("id"), R.join(","));
 
 export default () => {
@@ -14,7 +14,7 @@ export default () => {
   const totalResults = useSelector(discover.selectors.totalResults);
   const status = useSelector(discover.selectors.status);
   const dispatch = useDispatch();
-
+  const ref = useRef();
   const [triggerRef, inView] = useInView();
   const canFetchMore = results.length < totalResults;
 
@@ -25,7 +25,7 @@ export default () => {
   }, [inView]);
 
   return (
-    <div>
+    <div ref={ref}>
       <Box p={1} paddingBottom={0}>
         <Typography variant="subtitle2" color="textSecondary">
           Total Results {numeral(totalResults).format("0,0")}

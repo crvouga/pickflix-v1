@@ -1,13 +1,18 @@
-import { Box, Typography } from "@material-ui/core";
-import Skeleton from "@material-ui/lab/Skeleton";
+import { Box } from "@material-ui/core";
 import * as R from "ramda";
 import React from "react";
-import MoviePosterSkeleton from "../movie/components/PosterSkeleton";
-import PersonAvatarSkeleton from "../person/PersonAvatarSkeleton";
+import MediaEntity from "../common/MediaEntity";
 
-const shuffle = R.sortBy(Math.random);
-const randomElement = R.pipe(shuffle, R.head);
-const results = R.times((i) => ({ mediaType: "movie", id: i }), 3 * 5);
+const movieResults = R.times(
+  (i) => ({ mediaType: "movie", id: Math.random() }),
+  3 * 5
+);
+const personResults = R.times(
+  (i) => ({ mediaType: "person", id: Math.random() }),
+  3 * 5
+);
+const results = R.unnest(R.zip(movieResults, personResults));
+
 export default () => {
   return (
     <Box
@@ -19,16 +24,7 @@ export default () => {
     >
       {results.map((result) => (
         <Box key={result.id} width="33.33%">
-          {result.mediaType === "movie" && <MoviePosterSkeleton />}
-
-          {result.mediaType === "person" && (
-            <Box marginBottom="auto" p={1}>
-              <PersonAvatarSkeleton />
-              <Typography>
-                <Skeleton />
-              </Typography>
-            </Box>
-          )}
+          <MediaEntity entity={result} skeleton width="100%" />
         </Box>
       ))}
     </Box>

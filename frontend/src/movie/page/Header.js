@@ -4,13 +4,13 @@ import moment from "moment";
 import momentDurationFormatSetup from "moment-duration-format";
 import * as R from "ramda";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ExpandHeight from "../../common/components/ExpandHeight";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
 import useBoolean from "../../common/hooks/useBoolean";
-import discover from "../../discover/redux/discover";
+import discover from "../../discover/redux";
 import ActionBar from "./ActionBar";
-
+import router from "../../common/redux/router";
 momentDurationFormatSetup(moment);
 
 const toCertification = R.pipe(
@@ -41,10 +41,8 @@ export default ({ details, releaseDates }) => {
 
   const dispatch = useDispatch();
   const handleGenreClick = (genre) => () => {
-    dispatch(push("/discover"));
-    dispatch(
-      discover.actions.setInput({ options: [R.assoc("type", "genre", genre)] })
-    );
+    dispatch(router.actions.push("/discover"));
+    dispatch(discover.actions.setInput({ genre: [genre] }));
   };
 
   return (

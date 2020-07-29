@@ -53,7 +53,9 @@ export default trackWindowScroll((props) => {
   const posterURL = makeTMDbImageURL(sizeIndex, { posterPath });
 
   const handleClick = () => {
-    dispatch(push(`/movie/${id}`));
+    if (id) {
+      dispatch(push(`/movie/${id}`));
+    }
   };
 
   return (
@@ -63,7 +65,6 @@ export default trackWindowScroll((props) => {
       onClick={handleClick}
       variant="outlined"
       width="180px"
-      overflow="hidden"
       {...restOfProps}
     >
       <AspectRatio
@@ -76,6 +77,7 @@ export default trackWindowScroll((props) => {
 
         {!skeleton && posterPath && (
           <LazyLoadImage
+            style={{ borderRadius: theme.spacing(2) }}
             scrollPosition={scrollPosition}
             beforeLoad={isLoading.setTrue}
             afterLoad={isLoading.setFalse}
@@ -93,6 +95,7 @@ export default trackWindowScroll((props) => {
               variant="rect"
               width="100%"
               height="100%"
+              style={{ borderRadius: theme.spacing(2) }}
               {...SkeletonProps}
             />
           </AbsolutePositionBox>
