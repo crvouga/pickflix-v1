@@ -1,91 +1,84 @@
 import { yupResolver } from "@hookform/resolvers";
-import { Box, Button, Paper, TextField, Typography } from "@material-ui/core";
-import { useSnackbar } from "notistack";
-import React from "react";
+import { Box, Button, TextField, Typography } from "@material-ui/core";
+import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { useFirebase } from "react-redux-firebase";
 import * as yup from "yup";
-import signIn from "./redux/signIn";
+import auth from "../redux";
 
 const schema = yup.object().shape({});
 
 export default () => {
-  const firebase = useFirebase();
   const dispatch = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
-  const { email } = useSelector(signIn.selectors.form);
+  const { email } = useSelector(auth.selectors.formValues);
   const { handleSubmit, errors, setError, control } = useForm({
     resolver: yupResolver(schema),
   });
+  const formErrors = useSelector(auth.selectors.formErrors);
+  useEffect(() => {
+    Object.entries(formErrors).forEach(([key, value]) => setError(key, value));
+  }, [formErrors]);
 
   const handleCancel = () => {
-    dispatch(signIn.actions.setStep(signIn.Step.signIn));
+    dispatch(auth.actions.setFormStep(auth.FormStep.signIn));
   };
 
   const submit = (data) => {
-    firebase
-      .login({ email, password: data.password })
-      .then((result) => {
-        enqueueSnackbar(`${result.user.user.email} signed in`, {
-          variant: "info",
-        });
+    dispatch(
+      auth.actions.signIn({
+        method: auth.Method.Password,
+        email,
+        password: data.password,
       })
-      .catch((error) => {
-        if (error.code === "auth/wrong-password") {
-          setError("password", { message: error.message });
-        }
-      });
+    );
   };
 
   return (
-    <Paper>
-      <Box padding={4} maxWidth="360px" m="auto" marginTop={6}>
-        <Typography gutterBottom variant="h6" style={{ fontWeight: "bold" }}>
-          Sign in with email
-        </Typography>
-        <form onSubmit={handleSubmit(submit)}>
-          <TextField
-            name="email"
-            label="Email"
-            defaultValue={email}
-            fullWidth
-            disabled
-          />
-          <Controller
-            control={control}
-            as={TextField}
-            type="password"
-            name="password"
-            label="Password"
-            fullWidth
-            defaultValue=""
-            autoFocus
-            error={Boolean(errors?.password)}
-            helperText={errors?.password?.message}
-            autoComplete="on"
-          />
-          <Box textAlign="right" marginTop={2} p={2}>
-            <Box display="inline-block" marginRight={2}>
-              <Button
-                color="primary"
-                onClick={handleCancel}
-                style={{ fontWeight: "bold" }}
-              >
-                Cancel
-              </Button>
-            </Box>
+    <React.Fragment>
+      <Typography gutterBottom variant="h6" style={{ fontWeight: "bold" }}>
+        Sign in with email
+      </Typography>
+      <form onSubmit={handleSubmit(submit)}>
+        <TextField
+          name="email"
+          label="Email"
+          defaultValue={email}
+          fullWidth
+          disabled
+        />
+        <Controller
+          control={control}
+          as={TextField}
+          type="password"
+          name="password"
+          label="Password"
+          fullWidth
+          defaultValue=""
+          autoFocus
+          error={Boolean(errors?.password)}
+          helperText={errors?.password?.message}
+          autoComplete="on"
+        />
+        <Box textAlign="right" marginTop={2} p={2}>
+          <Box display="inline-block" marginRight={2}>
             <Button
-              type="submit"
-              variant="contained"
               color="primary"
+              onClick={handleCancel}
               style={{ fontWeight: "bold" }}
             >
-              Sign In
+              Cancel
             </Button>
           </Box>
-        </form>
-      </Box>
-    </Paper>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            style={{ fontWeight: "bold" }}
+          >
+            Sign In
+          </Button>
+        </Box>
+      </form>
+    </React.Fragment>
   );
 };

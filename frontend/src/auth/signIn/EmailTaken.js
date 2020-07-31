@@ -1,75 +1,71 @@
-import { Box, Button, Paper, Typography } from "@material-ui/core";
-import { useSnackbar } from "notistack";
+import {
+  Box,
+  Button,
+  Paper,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+} from "@material-ui/core";
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useFirebase } from "react-redux-firebase";
-import signIn from "./redux/signIn";
+import { useDispatch, useSelector } from "react-redux";
+import auth from "../redux";
+import { GoogleIcon } from "./socialLoginIcons";
+import SignInButton from "./SignInButton";
 
-const methodToName = {
-  "google.com": "Google",
+const methodToIcon = {
+  [auth.Method.Google]: <GoogleIcon />,
 };
 
-const methodToProvider = {
-  "google.com": "google",
+const methodToText = {
+  [auth.Method.Google]: "Sign in with Google",
 };
 
 export default () => {
-  const { enqueueSnackbar } = useSnackbar();
-  const firebase = useFirebase();
-  const form = useSelector(signIn.selectors.form);
-  const signInMethods = useSelector(signIn.selectors.methods);
-  const method = signInMethods[0];
+  const form = useSelector(auth.selectors.formValues);
+  const signInMethods = useSelector(auth.selectors.signInMethods);
+
   const dispatch = useDispatch();
+
   const handleCancel = () => {
-    dispatch(signIn.actions.setStep("signIn"));
+    dispatch(auth.actions.setFormStep(auth.FormStep.signIn));
   };
 
   const handleSignIn = (method) => () => {
-    const provider = methodToProvider[method];
-    firebase
-      .login({ provider, type: "popup" })
-      .then((result) => {
-        enqueueSnackbar(`${result.user.email} signed in`, {
-          variant: "info",
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    dispatch(auth.actions.signIn({ method }));
   };
 
   return (
-    <Paper>
-      <Box padding={4} maxWidth="360px" m="auto" marginTop={6}>
-        <Typography gutterBottom variant="h6" style={{ fontWeight: "bold" }}>
-          Sign in
-        </Typography>
-        <Typography gutterBottom variant="h6" style={{ fontWeight: "bold" }}>
-          You already have an account
-        </Typography>
-        <Typography gutterBottom variant="body1">
-          You’ve already used <b>{form.email}</b>. Sign in with{" "}
-          {methodToName[method]} to continue.
-        </Typography>
-        <Box textAlign="right">
-          <Box display="inline-block" marginRight={2}>
-            <Button
-              color="primary"
-              onClick={handleCancel}
-              style={{ fontWeight: "bold" }}
-            >
-              Cancel
-            </Button>
-          </Box>
-          <Button
+    <React.Fragment>
+      <Typography gutterBottom variant="h6" style={{ fontWeight: "bold" }}>
+        Sign in
+      </Typography>
+      <Typography gutterBottom style={{ fontWeight: "bold" }}>
+        You already have an account with the following providers.
+      </Typography>
+
+      <List>
+        {signInMethods.map((method) => (
+          <SignInButton
+            key={method}
             onClick={handleSignIn(method)}
+            icon={methodToIcon[method]}
+            text={methodToText[method]}
+          />
+        ))}
+      </List>
+
+      <Box textAlign="right">
+        <Box display="inline-block" marginRight={2}>
+          <Button
             color="primary"
-            variant="contained"
+            onClick={handleCancel}
+            style={{ fontWeight: "bold" }}
           >
-            Sign in with {methodToName[method]}
+            Cancel
           </Button>
         </Box>
       </Box>
-    </Paper>
+    </React.Fragment>
   );
 };

@@ -1,22 +1,14 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import { connectRouter } from "connected-react-router";
-import { firebaseReducer } from "react-redux-firebase";
-import { persistReducer } from "redux-persist";
-import hardSet from "redux-persist/lib/stateReconciler/hardSet";
-import storage from "redux-persist/lib/storage";
 import { spawn } from "redux-saga/effects";
-import signIn from "../auth/signIn/redux/signIn";
+import auth from "../auth/redux";
+import signIn from "../auth/signIn/redux";
 import chat from "../chat/redux/chat";
 import modal from "../common/redux/modal";
 import recentlyViewed from "../common/redux/recentlyViewed";
 import discover from "../discover/redux";
 import search from "../search/redux";
 import player from "../video/redux/player";
-
-const persistFirebaseReducer = persistReducer(
-  { key: "firebaseState", storage, stateReconciler: hardSet },
-  firebaseReducer
-);
 
 function* saga() {
   yield* [
@@ -26,13 +18,13 @@ function* saga() {
     spawn(modal.saga),
     spawn(search.saga),
     spawn(recentlyViewed.saga),
+    spawn(auth.saga),
   ];
 }
 
 export default (history) => {
   const reducer = combineReducers({
     router: connectRouter(history),
-    firebase: persistFirebaseReducer,
     player: player.reducer,
     modal: modal.reducer,
     discover: discover.reducer,
@@ -40,6 +32,7 @@ export default (history) => {
     signIn: signIn.reducer,
     search: search.reducer,
     recentlyViewed: recentlyViewed.reducer,
+    auth: auth.reducer,
   });
 
   return {

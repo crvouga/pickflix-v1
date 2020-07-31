@@ -12,17 +12,9 @@ const firebaseConfig = {
   measurementId: "G-KKRGTNKYBF",
 };
 
-export default (store) => {
-  firebase.initializeApp(firebaseConfig);
-  const rrfConfig = {
-    // userProfile: "users",
-    // useFirestoreForProfile: true // Firestore for Profile instead of Realtime DB
-  };
-  const rrfProps = {
-    firebase,
-    config: rrfConfig,
-    dispatch: store.dispatch,
-    // createFirestoreInstance // <- needed if using firestore
-  };
-  return rrfProps;
-};
+firebase.initializeApp(firebaseConfig);
+
+// backend will handle auth persistence
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+
+export default firebase;

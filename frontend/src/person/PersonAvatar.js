@@ -6,7 +6,6 @@ import AspectRatio from "react-aspect-ratio";
 import "react-aspect-ratio/aspect-ratio.css";
 import { useDispatch } from "react-redux";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-import useBoolean from "../common/hooks/useBoolean";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -24,19 +23,13 @@ export default ({ person, skeleton, ...restOfProps }) => {
   const handleClick = () => {
     dispatch(push(`/person/${person.id}`));
   };
-  const isLoading = useBoolean(true);
+
   return (
     <Box onClick={handleClick} {...restOfProps}>
       <AspectRatio ratio="1/1">
-        {!skeleton && (
-          <Avatar
-            imgProps={{ onload: isLoading.setFalse }}
-            className={classes.avatar}
-            src={profileURL}
-          />
-        )}
+        {!skeleton && <Avatar className={classes.avatar} src={profileURL} />}
 
-        {(skeleton || isLoading.value) && (
+        {skeleton && (
           <Skeleton
             variant="circle"
             animation="wave"

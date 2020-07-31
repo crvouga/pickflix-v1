@@ -1,24 +1,43 @@
 import {
   Avatar,
   Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Typography,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
 } from "@material-ui/core";
 import { push } from "connected-react-router";
 import { useSnackbar } from "notistack";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useFirebase } from "react-redux-firebase";
-import { useHistory } from "react-router";
 import useBoolean from "../../common/hooks/useBoolean";
-const DeleteAccount = () => {
-  const firebase = useFirebase();
+import firebase from "../firebase";
+import auth from "../redux";
+import DeleteAccountModal from "./DeleteAccountModal";
+import Todo from "./Todo";
+
+export default () => {
+  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
+  const user = useSelector(auth.selectors.user);
   const open = useBoolean();
   const [error, setError] = useState({});
+
+  const handleSignOut = () => {
+    if (user) {
+      const email = user.email;
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          enqueueSnackbar(`${email} signed out`, { variant: "info" });
+        });
+    }
+  };
+
+  const handleSignIn = () => {
+    dispatch(push("/signIn"));
+  };
 
   const handleDeleteAccount = () => {
     const user = firebase.auth().currentUser;
@@ -26,68 +45,49 @@ const DeleteAccount = () => {
       user
         .delete()
         .then(() => {
-          console.log("user deleted!");
           open.setFalse();
         })
         .catch((error) => {
           setError(error);
           console.error(error);
         });
+    } else {
+      setError({ message: "There is no user signed in" });
     }
   };
 
   return (
-    <Box color="error.main">
-      <Dialog open={open.value} onClose={open.setFalse}>
-        <DialogTitle>Delete Account</DialogTitle>
-        <DialogContent>
-          Are you sure you want to permanently delete your account?{" "}
-          {error.message}
-        </DialogContent>
-
-        <DialogActions>
-          <Button onClick={open.setFalse}>Cancel</Button>
-          <Box color="error.main">
-            <Button
-              variant="contained"
-              color="inherit"
-              onClick={handleDeleteAccount}
-            >
-              Delete
-            </Button>
-          </Box>
-        </DialogActions>
-      </Dialog>
-      <Button variant="contained" color="inherit" onClick={open.setTrue}>
-        Delete Account
-      </Button>
-    </Box>
-  );
-};
-export default () => {
-  const history = useHistory();
-  const firebase = useFirebase();
-  const auth = useSelector((state) => state.firebase.auth);
-  const { enqueueSnackbar } = useSnackbar();
-  const logout = () => {
-    firebase.logout().then((result) => {
-      enqueueSnackbar(`${auth.email} signed out`, { variant: "info" });
-    });
-  };
-  const dispatch = useDispatch();
-  const signIn = () => {
-    dispatch(push("/signIn"));
-  };
-
-  return (
-    <Box>
-      <Avatar style={{ backgroundColor: "white" }} src={auth.photoURL} />
-      <Typography>{auth.displayName}</Typography>
-      <Typography>{auth.email}</Typography>
-
-      <Button onClick={logout}>Sign Out</Button>
-      <Button onClick={signIn}>Sign In</Button>
-      <DeleteAccount />
-    </Box>
+    <div>
+      <List>
+        {user && (
+          <ListItem divider>
+            <ListItemAvatar>
+              <Avatar
+                style={{ backgroundColor: "white" }}
+                src={user.photoURL}
+              />
+            </ListItemAvatar>
+            <ListItemText primary={user.displayName} secondary={user.email} />
+          </ListItem>
+        )}
+        <ListItem button onClick={handleSignIn}>
+          <ListItemText primary="Sign In" />
+        </ListItem>
+        <ListItem button onClick={handleSignOut} divider>
+          <ListItemText primary="Sign Out" />
+        </ListItem>
+        <Box color="error.main">
+          <ListItem button onClick={open.setTrue}>
+            <ListItemText primary="Delete Account" />
+          </ListItem>
+        </Box>
+      </List>
+      <DeleteAccountModal
+        DialogProps={{ open: open.value, onClose: open.setFalse }}
+        onDeleteAccount={handleDeleteAccount}
+        error={error}
+      />
+      <Todo />
+    </div>
   );
 };
