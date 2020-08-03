@@ -1,36 +1,31 @@
 import { yupResolver } from "@hookform/resolvers";
 import { Box, Button, TextField, Typography } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as yup from "yup";
-import auth from "../redux";
+import form from "./redux";
 
-const schema = yup.object().shape({});
+const schema = yup.object().shape({
+  email: yup.string().email().required(),
+});
 
 export default () => {
   const dispatch = useDispatch();
-  const { email } = useSelector(auth.selectors.formValues);
-  const { handleSubmit, errors, setError, control } = useForm({
+
+  const { handleSubmit, errors, control } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      email: "crvouga@gmail.com",
+    },
   });
-  const formErrors = useSelector(auth.selectors.formErrors);
-  useEffect(() => {
-    Object.entries(formErrors).forEach(([key, value]) => setError(key, value));
-  }, [formErrors]);
 
   const handleCancel = () => {
-    dispatch(auth.actions.setFormStep(auth.FormStep.signIn));
+    dispatch(form.actions.reset());
   };
 
-  const submit = (data) => {
-    dispatch(
-      auth.actions.signIn({
-        method: auth.Method.Password,
-        email,
-        password: data.password,
-      })
-    );
+  const handleNext = async (data) => {
+    dispatch(form.actions.nextStep(data));
   };
 
   return (
@@ -38,26 +33,17 @@ export default () => {
       <Typography gutterBottom variant="h6" style={{ fontWeight: "bold" }}>
         Sign in with email
       </Typography>
-      <form onSubmit={handleSubmit(submit)}>
-        <TextField
+      <form onSubmit={handleSubmit(handleNext)}>
+        <Controller
+          as={TextField}
           name="email"
           label="Email"
-          defaultValue={email}
-          fullWidth
-          disabled
-        />
-        <Controller
           control={control}
-          as={TextField}
-          type="password"
-          name="password"
-          label="Password"
+          defaultValue="crvouga@gmail.com"
           fullWidth
-          defaultValue=""
+          error={errors?.email}
+          helperText={errors?.email?.message}
           autoFocus
-          error={Boolean(errors?.password)}
-          helperText={errors?.password?.message}
-          autoComplete="on"
         />
         <Box textAlign="right" marginTop={2} p={2}>
           <Box display="inline-block" marginRight={2}>
@@ -75,7 +61,7 @@ export default () => {
             color="primary"
             style={{ fontWeight: "bold" }}
           >
-            Sign In
+            Next
           </Button>
         </Box>
       </form>

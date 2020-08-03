@@ -8,7 +8,7 @@ import {
 import React from "react";
 
 export default ({ icon, text, ...props }) => (
-  <Box marginBottom={2} component={Paper} {...props}>
+  <Box marginBottom={2} component={Paper} variant="outlined" {...props}>
     <ListItem button>
       <ListItemIcon>{icon}</ListItemIcon>
       <ListItemText

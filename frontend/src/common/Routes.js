@@ -1,8 +1,8 @@
 import { Container, CssBaseline } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { Route, Switch, useLocation } from "react-router";
-import AccountPage from "../auth/account";
-import SignInPage from "../auth/signIn";
+import UserPage from "../auth/account";
+import SignInPage from "../auth/signInForm";
 import ChatModal from "../chat/ChatModal";
 import DiscoverPage from "../discover";
 import HomePage from "../home";
@@ -31,7 +31,7 @@ export default () => {
           <Route path="/movie/:movieId" component={MoviePage} />
           <Route path="/person/:personId" component={PersonPage} />
           <Route path="/signIn" component={SignInPage} />
-          <Route path="/account" component={AccountPage} />
+          <Route path="/account" component={UserPage} />
         </Switch>
       </Container>
       <NavigationBarBottom />

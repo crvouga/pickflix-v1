@@ -1,36 +1,36 @@
 import { Avatar, Box } from "@material-ui/core";
 import EmailIcon from "@material-ui/icons/Email";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import auth from "../redux";
+import form from "./redux";
 import SignInButton from "./SignInButton";
 import { GoogleIcon } from "./socialLoginIcons";
 
 export default () => {
   const dispatch = useDispatch();
 
-  const handleGoogleSignIn = () => {
-    dispatch(auth.actions.signIn({ method: auth.Method.Google }));
+  const handleSignInWithGoogle = () => {
+    dispatch(form.actions.signIn({ method: form.SignInMethod.Google }));
   };
 
-  const handleEmailSignIn = () => {
-    dispatch(auth.actions.nextFormStep());
+  const handleSignInWithPassword = () => {
+    dispatch(form.actions.setStep(form.Step.email));
   };
 
   return (
     <React.Fragment>
       <Box marginBottom={4}>
-        <Avatar style={{ margin: "auto", width: "100px", height: "100px" }} />
+        <Avatar style={{ margin: "auto ", width: "100px", height: "100px" }} />
       </Box>
       <SignInButton
         icon={<GoogleIcon />}
         text="Sign in with Google"
-        onClick={handleGoogleSignIn}
+        onClick={handleSignInWithGoogle}
       />
       <SignInButton
         icon={<EmailIcon />}
         text="Sign in with email"
-        onClick={handleEmailSignIn}
+        onClick={handleSignInWithPassword}
       />
     </React.Fragment>
   );

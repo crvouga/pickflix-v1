@@ -2,13 +2,13 @@ import { combineReducers } from "@reduxjs/toolkit";
 import { connectRouter } from "connected-react-router";
 import { spawn } from "redux-saga/effects";
 import auth from "../auth/redux";
-import signIn from "../auth/signIn/redux";
 import chat from "../chat/redux/chat";
 import modal from "../common/redux/modal";
 import recentlyViewed from "../common/redux/recentlyViewed";
 import discover from "../discover/redux";
 import search from "../search/redux";
 import player from "../video/redux/player";
+import signInForm from "../auth/signInForm/redux";
 
 function* saga() {
   yield* [
@@ -19,6 +19,7 @@ function* saga() {
     spawn(search.saga),
     spawn(recentlyViewed.saga),
     spawn(auth.saga),
+    spawn(signInForm.saga),
   ];
 }
 
@@ -29,9 +30,9 @@ export default (history) => {
     modal: modal.reducer,
     discover: discover.reducer,
     chat: chat.reducer,
-    signIn: signIn.reducer,
     search: search.reducer,
     recentlyViewed: recentlyViewed.reducer,
+    [signInForm.namespace]: signInForm.reducer,
     auth: auth.reducer,
   });
 

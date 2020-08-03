@@ -1,63 +1,52 @@
 import { yupResolver } from "@hookform/resolvers";
 import { Box, Button, TextField, Typography } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";
-import auth from "../redux";
+import form from "./redux";
 
-const schema = yup.object().shape({
-  displayName: yup.string().required("Display name is required"),
-  password: yup.string().required("Password is required").min(6),
-  confirmPassword: yup
-    .string()
-    .oneOf([yup.ref("password"), null], "Passwords must match"),
-});
+const schema = yup.object().shape({});
 
 export default () => {
-  const status = useSelector(auth.selectors.status);
   const dispatch = useDispatch();
-  const { email } = useSelector(auth.selectors.formValues);
+  const values = useSelector(form.selectors.values);
+
   const { handleSubmit, errors, control } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {
-      password: "      ",
-      confirmPassword: "      ",
-      displayName: "Chris Vouga",
-      email: email,
-    },
+    defaultValues: { ...values, password: "" },
   });
 
   const handleCancel = () => {
-    dispatch(auth.actions.setFormStep(auth.FormStep.signIn));
+    dispatch(form.actions.reset());
   };
 
   const submit = (data) => {
-    dispatch(auth.actions.register(data));
+    dispatch(
+      form.actions.signIn({
+        method: form.SignInMethod.Password,
+        email: data.email,
+        password: data.password,
+      })
+    );
   };
 
   return (
     <React.Fragment>
       <Typography gutterBottom variant="h6" style={{ fontWeight: "bold" }}>
-        Create an Account
+        Sign in with email
       </Typography>
       <form onSubmit={handleSubmit(submit)}>
         <Controller
+          control={control}
           as={TextField}
+          type="email"
           name="email"
           label="Email"
-          control={control}
           fullWidth
           disabled
-        />
-        <Controller
-          as={TextField}
-          name="displayName"
-          label="Display Name"
-          control={control}
-          fullWidth
-          error={errors?.displayName}
-          helperText={errors?.displayName?.message}
+          error={Boolean(errors?.email)}
+          helperText={errors?.email?.message}
         />
         <Controller
           control={control}
@@ -66,18 +55,10 @@ export default () => {
           name="password"
           label="Password"
           fullWidth
-          error={errors?.password}
+          autoFocus
+          error={Boolean(errors?.password)}
           helperText={errors?.password?.message}
-        />
-        <Controller
-          control={control}
-          as={TextField}
-          type="password"
-          name="confirmPassword"
-          label="Confirm Password"
-          fullWidth
-          error={errors?.confirmPassword}
-          helperText={errors?.confirmPassword?.message}
+          autoComplete="on"
         />
         <Box textAlign="right" marginTop={2} p={2}>
           <Box display="inline-block" marginRight={2}>
@@ -90,13 +71,12 @@ export default () => {
             </Button>
           </Box>
           <Button
-            disabled={status === "loading"}
             type="submit"
             variant="contained"
             color="primary"
             style={{ fontWeight: "bold" }}
           >
-            Create Account
+            Sign In
           </Button>
         </Box>
       </form>
