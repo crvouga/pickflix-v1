@@ -1,27 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const admin = require("../firebaseAdmin");
-
-const isAuthenticated = async (req, res, next) => {
-  try {
-    const sessionCookie = req.cookies.session || "";
-    const checkForRevocation = true;
-    const decodedIdToken = await admin
-      .auth()
-      .verifySessionCookie(sessionCookie, checkForRevocation);
-    const uid = decodedIdToken.uid;
-    const user = await admin.auth().getUser(uid);
-    req.user = user;
-    next();
-  } catch (error) {
-    res.status(401);
-    res.json({ status: "error", error });
-  }
-};
-
-router.get("/user", isAuthenticated, (req, res) => {
-  res.json({ user: req.user });
-});
+const authenticated = require("../middlewares/authenticated");
 
 router.post("/sessionSignIn", async (req, res) => {
   try {
@@ -49,7 +29,11 @@ router.post("/sessionSignOut", async (req, res) => {
   res.json({ status: "success" });
 });
 
-router.delete("/deleteAccount", isAuthenticated, async (req, res) => {
+router.get("/user", authenticated, (req, res) => {
+  res.json({ user: req.user });
+});
+
+router.delete("/user", authenticated, async (req, res) => {
   try {
     const uid = req.user.uid;
     await admin.auth().deleteUser(uid);

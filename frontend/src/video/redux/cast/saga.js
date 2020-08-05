@@ -1,14 +1,3 @@
-import ChromecastAPI from "chromecast-api";
-
-// client.on("device", function (device) {
-//   var mediaURL =
-//     "http://commondatastorage.googleapis.com/gtv-videos-bucket/big_buck_bunny_1080p.mp4";
-
-//   device.play(mediaURL, function (err) {
-//     if (!err) console.log("Playing in your chromecast");
-//   });
-// });
-
 const appendScriptTag = (url) => {
   const script = document.createElement("script");
   script.type = "text/javascript";
@@ -40,9 +29,7 @@ const initializeCastApi = () => {
 //     initializeCastApi();
 //   }
 // };
-
-export default function* () {
-  // const removeScriptTag = appendScriptTag(
-  //   "https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"
-  // );
-}
+// const removeScriptTag = appendScriptTag(
+//   "https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"
+// );
+export default function* () {}

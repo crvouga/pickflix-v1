@@ -5,7 +5,9 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  LinearProgress,
 } from "@material-ui/core";
+import { Alert, AlertTitle } from "@material-ui/lab";
 import { push } from "connected-react-router";
 import { useSnackbar } from "notistack";
 import React, { useState } from "react";
@@ -19,8 +21,9 @@ export default () => {
   const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const user = useSelector(auth.selectors.user);
+  const status = useSelector(auth.selectors.status);
+  const error = useSelector(auth.selectors.error);
   const open = useBoolean();
-  const [error, setError] = useState({});
 
   const handleSignOut = () => {
     dispatch(auth.actions.signOut());
@@ -37,6 +40,12 @@ export default () => {
 
   return (
     <div>
+      {/* {error && (
+        <Alert style={{ maxWidth: "100%" }} severity="error">
+          {JSON.stringify(error)}
+        </Alert>
+      )} */}
+      {status === "loading" && <LinearProgress />}
       <List>
         {user && (
           <ListItem divider>
@@ -49,6 +58,7 @@ export default () => {
             <ListItemText primary={user.displayName} secondary={user.email} />
           </ListItem>
         )}
+
         <ListItem button onClick={handleSignIn}>
           <ListItemText primary="Sign In" />
         </ListItem>
@@ -64,7 +74,6 @@ export default () => {
       <DeleteAccountModal
         DialogProps={{ open: open.value, onClose: open.setFalse }}
         onDeleteAccount={handleDeleteAccount}
-        error={error}
       />
       <Todo />
     </div>

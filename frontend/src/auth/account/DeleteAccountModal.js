@@ -14,7 +14,7 @@ export default ({ DialogProps, error, onDeleteAccount }) => {
       <DialogTitle>Delete Account</DialogTitle>
       <DialogContent>
         Are you sure you want to permanently delete your account?
-        <Box color="error.main">{error.message}</Box>
+        {error && <Box color="error.main">{error.message}</Box>}
       </DialogContent>
       <DialogActions>
         <Button onClick={DialogProps.onClose}>Cancel</Button>
