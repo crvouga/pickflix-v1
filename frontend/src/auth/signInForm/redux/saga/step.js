@@ -12,7 +12,7 @@ function* emailStepToNextStepSaga(action) {
   const signInMethods = yield call(() =>
     firebase.auth().fetchSignInMethodsForEmail(email)
   );
-  yield delay(1000);
+
   yield put(actions.setStatus(null));
 
   const nextStep =

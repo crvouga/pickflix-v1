@@ -13,6 +13,7 @@ const root = configureRoot(history);
 const persistConfig = {
   key: "root",
   storage,
+  blacklist: ["signInForm", "auth"],
 };
 const reducer = persistReducer(persistConfig, root.reducer);
 

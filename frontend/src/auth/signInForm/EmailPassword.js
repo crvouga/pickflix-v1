@@ -23,8 +23,8 @@ export default () => {
 
   const submit = (data) => {
     dispatch(
-      form.actions.signIn({
-        method: form.SignInMethod.Password,
+      form.actions.submit({
+        signInMethod: form.SignInMethod.Password,
         email: data.email,
         password: data.password,
       })

@@ -1,7 +1,7 @@
 import { fork } from "redux-saga/effects";
-import stepSaga from "./step";
-import signInSaga from "./signIn";
+import step from "./step";
+import submit from "./submit";
 
 export default function* () {
-  yield* [fork(stepSaga), fork(signInSaga)];
+  yield* [fork(step), fork(submit)];
 }

@@ -12,7 +12,7 @@ import ReactPlayer from "react-player/lib/players/YouTube";
 import { useDispatch, useSelector } from "react-redux";
 import ExpandIcon from "../common/components/ExpandIcon";
 import useBoolean from "../common/hooks/useBoolean";
-import modal from "../common/redux/modal";
+import useScript from "../common/hooks/useScript";
 import * as youtubeAPI from "../youtube/api";
 import YoutubeSection from "../youtube/Section";
 import Playlist from "./Playlist";
@@ -48,6 +48,8 @@ export default () => {
 
   return (
     <div>
+      {/* <button is="google-cast-button" />
+      <google-cast-launcher /> */}
       <AspectRatio ratio="16/9" className={classes.playerContainer}>
         <ReactPlayer
           width="100%"

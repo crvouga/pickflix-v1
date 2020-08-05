@@ -1,8 +1,13 @@
 import api from "../api";
 
 export const embedConfig = {
-  embedOptions: {},
+  embedOptions: {
+    enablejsapi: 1,
+    enablecastapi: 1,
+  },
   playerVars: {
+    enablejsapi: 1,
+    enablecastapi: 1,
     rel: 0,
     showinfo: 0,
     autoplay: 0,

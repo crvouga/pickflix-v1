@@ -1,16 +1,22 @@
-import { Avatar, Box } from "@material-ui/core";
+import {
+  Avatar,
+  Box,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from "@material-ui/core";
 import EmailIcon from "@material-ui/icons/Email";
-import React, { useEffect } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import form from "./redux";
-import SignInButton from "./SignInButton";
 import { GoogleIcon } from "./socialLoginIcons";
 
 export default () => {
   const dispatch = useDispatch();
 
   const handleSignInWithGoogle = () => {
-    dispatch(form.actions.signIn({ method: form.SignInMethod.Google }));
+    dispatch(form.actions.submit({ signInMethod: form.SignInMethod.Google }));
   };
 
   const handleSignInWithPassword = () => {
@@ -19,19 +25,23 @@ export default () => {
 
   return (
     <React.Fragment>
-      <Box marginBottom={4}>
+      <Box marginBottom={2}>
         <Avatar style={{ margin: "auto ", width: "100px", height: "100px" }} />
       </Box>
-      <SignInButton
-        icon={<GoogleIcon />}
-        text="Sign in with Google"
-        onClick={handleSignInWithGoogle}
-      />
-      <SignInButton
-        icon={<EmailIcon />}
-        text="Sign in with email"
-        onClick={handleSignInWithPassword}
-      />
+      <List>
+        <ListItem divider button onClick={handleSignInWithGoogle}>
+          <ListItemIcon>
+            <GoogleIcon />
+          </ListItemIcon>
+          <ListItemText primary="Sign in with Google" />
+        </ListItem>
+        <ListItem divider button onClick={handleSignInWithPassword}>
+          <ListItemIcon>
+            <EmailIcon />
+          </ListItemIcon>
+          <ListItemText primary="Sign in with email" />
+        </ListItem>
+      </List>
     </React.Fragment>
   );
 };

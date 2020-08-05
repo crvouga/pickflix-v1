@@ -5,14 +5,18 @@ const clientOrigin = `https://pickflix.web.app`;
 const env = process.env.NODE_ENV || "development";
 
 module.exports = cors({
+  //
+  preflightContinue: true,
+  credentials: true,
+
   origin: (origin, callback) => {
-    /** allow access if in dev mode */
+    /** allow access if in dev env */
     if (env === "development") {
       return callback(null, true);
     }
 
-    /** Assuming an undefined origin is from from browser then allow access if origin is from browser */
-    if (!origin) {
+    /** Assuming an undefined origin is from a browser then allow access if origin is from a browser */
+    if (origin === undefined) {
       return callback(null, true);
     }
 

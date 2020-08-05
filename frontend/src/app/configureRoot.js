@@ -9,6 +9,7 @@ import discover from "../discover/redux";
 import search from "../search/redux";
 import player from "../video/redux/player";
 import signInForm from "../auth/signInForm/redux";
+import cast from "../video/redux/cast";
 
 function* saga() {
   yield* [
@@ -20,6 +21,7 @@ function* saga() {
     spawn(recentlyViewed.saga),
     spawn(auth.saga),
     spawn(signInForm.saga),
+    spawn(cast.saga),
   ];
 }
 
@@ -34,6 +36,7 @@ export default (history) => {
     recentlyViewed: recentlyViewed.reducer,
     [signInForm.namespace]: signInForm.reducer,
     auth: auth.reducer,
+    [cast.namespace]: cast.reducer,
   });
 
   return {

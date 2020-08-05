@@ -11,7 +11,6 @@ import { useSnackbar } from "notistack";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useBoolean from "../../common/hooks/useBoolean";
-import firebase from "../firebase";
 import auth from "../redux";
 import DeleteAccountModal from "./DeleteAccountModal";
 import Todo from "./Todo";
@@ -24,15 +23,7 @@ export default () => {
   const [error, setError] = useState({});
 
   const handleSignOut = () => {
-    if (user) {
-      const email = user.email;
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          enqueueSnackbar(`${email} signed out`, { variant: "info" });
-        });
-    }
+    dispatch(auth.actions.signOut());
   };
 
   const handleSignIn = () => {
@@ -40,20 +31,8 @@ export default () => {
   };
 
   const handleDeleteAccount = () => {
-    const user = firebase.auth().currentUser;
-    if (user) {
-      user
-        .delete()
-        .then(() => {
-          open.setFalse();
-        })
-        .catch((error) => {
-          setError(error);
-          console.error(error);
-        });
-    } else {
-      setError({ message: "There is no user signed in" });
-    }
+    dispatch(auth.actions.deleteAccount());
+    open.setFalse();
   };
 
   return (

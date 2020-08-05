@@ -4,13 +4,15 @@ import {
   CircularProgress,
   List,
   Typography,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
 } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import firebase from "../firebase";
 import form from "./redux";
-import SignInButton from "./SignInButton";
 import { GoogleIcon } from "./socialLoginIcons";
 
 const methodToIcon = {
@@ -30,20 +32,28 @@ const SignInMethods = () => {
   );
   const dispatch = useDispatch();
   const handleSignIn = (method) => () => {
-    dispatch(form.actions.signIn({ method }));
+    dispatch(
+      form.actions.submit({
+        signInMethod: method,
+        customParameters: { login_hint: email },
+      })
+    );
   };
-  if (query.status === "loading") return <CircularProgress />;
+  if (query.status === "loading")
+    return (
+      <Box textAlign="center">
+        <CircularProgress disableShrink />
+      </Box>
+    );
   if (query.status === "error") return "error";
   const signInMethods = query.data;
   return (
     <List>
       {signInMethods.map((method) => (
-        <SignInButton
-          key={method}
-          onClick={handleSignIn(method)}
-          icon={methodToIcon[method]}
-          text={methodToText[method]}
-        />
+        <ListItem key={method} divider button onClick={handleSignIn(method)}>
+          <ListItemIcon>{methodToIcon[method]}</ListItemIcon>
+          <ListItemText primary={methodToText[method]} />
+        </ListItem>
       ))}
     </List>
   );

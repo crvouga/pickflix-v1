@@ -3,26 +3,27 @@ const router = express.Router();
 const uuid = require("uuid").v4;
 const db = require("../db");
 
+const authenticated = require("../middlewares/authenicated");
+
 const makeTodo = (description) => ({
   id: uuid(),
   status: "progress",
   description,
 });
 
-const initialTodos = [
+const todos = [
   makeTodo("get database working"),
   makeTodo("make desktop version"),
   makeTodo("pull more videos from youtube"),
 ];
 
 router.get("/", (req, res) => {
-  console.log("GET");
   res.json({
-    todos: initialTodos,
+    todos,
   });
 });
 
-router.post("/", (req, res) => {
+router.post("/", authenticated, (req, res) => {
   console.log("POST", req.body);
 });
 
