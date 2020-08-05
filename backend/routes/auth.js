@@ -2,16 +2,13 @@ const express = require("express");
 const router = express.Router();
 const admin = require("../firebaseAdmin");
 
-const adminAuth = admin.auth();
-
 const isAuthenticated = async (req, res, next) => {
   try {
     const sessionCookie = req.cookies.session || "";
     const checkForRevocation = true;
-    const decodedIdToken = await adminAuth.verifySessionCookie(
-      sessionCookie,
-      checkForRevocation
-    );
+    const decodedIdToken = await admin
+      .auth()
+      .verifySessionCookie(sessionCookie, checkForRevocation);
     const uid = decodedIdToken.uid;
     const user = await admin.auth().getUser(uid);
     req.user = user;
@@ -29,9 +26,8 @@ router.get("/user", isAuthenticated, (req, res) => {
 router.post("/sessionSignIn", async (req, res) => {
   try {
     const idToken = req.body.idToken;
-
     const expiresIn = 1000 * 60 * 60 * 24 * 7;
-    const sessionCookie = await adminAuth.createSessionCookie(idToken, {
+    const sessionCookie = await admin.auth().createSessionCookie(idToken, {
       expiresIn,
     });
     const options = {
@@ -56,7 +52,7 @@ router.post("/sessionSignOut", async (req, res) => {
 router.delete("/deleteAccount", isAuthenticated, async (req, res) => {
   try {
     const uid = req.user.uid;
-    await adminAuth.deleteUser(uid);
+    await admin.auth().deleteUser(uid);
     res.json({ status: "success", message: "User was successfully deleted" });
   } catch (error) {
     res.json({ status: "error", error });
