@@ -18,7 +18,6 @@ import DeleteAccountModal from "./DeleteAccountModal";
 import Todo from "./Todo";
 
 export default () => {
-  const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const user = useSelector(auth.selectors.user);
   const status = useSelector(auth.selectors.status);

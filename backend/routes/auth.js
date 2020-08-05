@@ -3,20 +3,29 @@ const router = express.Router();
 const admin = require("../firebaseAdmin");
 const authenticated = require("../middlewares/authenticated");
 
-router.post("/sessionSignIn", async (req, res) => {
+const env = process.env.NODE_ENV || "development";
+const sessionCookieExpiresIn = 1000 * 60 * 60 * 24 * 14; // 2 weeks
+const sessionCookieOptions =
+  env === "development"
+    ? {
+        maxAge: sessionCookieExpiresIn,
+        httpOnly: false,
+        secure: false,
+        domain: null,
+      }
+    : {
+        maxAge: sessionCookieExpiresIn,
+        httpOnly: true,
+        secure: true,
+      };
+
+router.post("/signIn", async (req, res) => {
   try {
     const idToken = req.body.idToken;
-    const expiresIn = 1000 * 60 * 60 * 24 * 7;
     const sessionCookie = await admin.auth().createSessionCookie(idToken, {
-      expiresIn,
+      expiresIn: sessionCookieExpiresIn,
     });
-    const options = {
-      maxAge: expiresIn,
-      httpOnly: false,
-      secure: false,
-      domain: null,
-    };
-    res.cookie("session", sessionCookie, options);
+    res.cookie("session", sessionCookie, sessionCookieOptions);
     res.json({ status: "success" });
   } catch (error) {
     res.status(401);
@@ -24,7 +33,7 @@ router.post("/sessionSignIn", async (req, res) => {
   }
 });
 
-router.post("/sessionSignOut", async (req, res) => {
+router.post("/signOut", async (req, res) => {
   res.clearCookie("session");
   res.json({ status: "success" });
 });
