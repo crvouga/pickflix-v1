@@ -23,8 +23,8 @@ Heroku Build pack: https://github.com/timanovsky/subdir-heroku-buildpack.
 MONGODB_CONNECTION_URI must begin with "mongodb://" (and not "mongodb+srv://" for example) for the library keyv to work!   
 
 ### Authentication Flow
-- authenticate on client with firebase
-- client POST to sign in endpoint with a firebase user idToken
-- use firebase admin manage cookie session
-🚨IMPORTANT NOTE ON chrome web browser cookie BUG🐛🚨.  
+- authenticate on client with firebase.  
+- client POST to sign in endpoint with a firebase user idToken.   
+- use firebase admin manage cookie session.   
+🚨IMPORTANT NOTE ON chrome web browser cookie BUG🐛🚨.     
 chrome for whatever reason doesn't set cookies when using localhost so when developing in chrome use the local network (like http://192.168.7.30) instead and make sure the local network is white listed for firebase authentication (https://console.firebase.google.com/project/pickflix/authentication/providers).
