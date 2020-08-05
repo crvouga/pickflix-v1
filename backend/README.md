@@ -27,4 +27,6 @@ MONGODB_CONNECTION_URI must begin with "mongodb://" (and not "mongodb+srv://" fo
 - client POST to sign in endpoint with a firebase user idToken.   
 - use firebase admin manage cookie session.   
 🚨IMPORTANT NOTE ON chrome web browser cookie BUG🐛🚨.     
-chrome for whatever reason doesn't set cookies when using localhost so when developing in chrome use the local network (like http://192.168.7.30) instead and make sure the local network is white listed for firebase authentication (https://console.firebase.google.com/project/pickflix/authentication/providers).
+chrome for whatever reason doesn't set cookies when using localhost so when developing in chrome use the local network (like http://192.168.7.30) instead and make sure the local network is white listed for firebase authentication (https://console.firebase.google.com/project/pickflix/authentication/providers).    
+
+CSRF protection is handle by the csurf library. NOTE: "XSRF-TOKEN" is attached to every response is sent back in the request by Axios implicitly.
