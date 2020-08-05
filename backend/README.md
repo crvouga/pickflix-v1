@@ -1,7 +1,4 @@
 # Backend
-### Job
-* protects API keys 
-* caches Youtube API responses in fear of maxing out quota
 
 ### Endpoints
 Base URL: https://pickflix-backend.herokuapp.com/.  
