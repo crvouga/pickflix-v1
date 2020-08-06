@@ -12,7 +12,7 @@ const api = axios.create({
   withCredentials: true,
   // CSRF protection
   xsrfCookieName: "XSRF-TOKEN",
-  xsrfHeaderName: "CSRF-TOKEN",
+  xsrfHeaderName: "X-XSRF-TOKEN", //"CSRF-TOKEN""
 });
 
 export default api;

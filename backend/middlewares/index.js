@@ -8,7 +8,7 @@ module.exports = (app) => {
   app.use(require("./cors"));
 
   // CSRF protection
-  app.use(csurf({ cookie: true }));
+  app.use(csurf({ cookie: { sameSite: "none" } }));
   app.use((req, res, next) => {
     // NOTE: Axios will send this back header implicitly
     res.cookie("XSRF-TOKEN", req.csrfToken());
