@@ -15,14 +15,13 @@ const XSRF_TOKEN_cookieOptions =
         httpOnly: false /* so client can send it back in body */,
       };
 
-const names = ["csrf-token", "xsrf-token", "x-csrf-token", "x-xsrf-token"];
-const allNames = [].concat(
-  names.map((name) => name.toLowerCase()),
-  names.map((name) => name.toUpperCase())
-);
-
 //differs from default by checking cookies for token
 const requestToTokenValue = (req) => {
+  const names = ["csrf-token", "xsrf-token", "x-csrf-token", "x-xsrf-token"];
+  const allNames = [].concat(
+    names.map((name) => name.toLowerCase()),
+    names.map((name) => name.toUpperCase())
+  );
   const values = [].concat(
     [req.body._csrf || false, req.query._csrf || false],
     allNames.map((name) => req.headers[name] || false),
@@ -33,20 +32,20 @@ const requestToTokenValue = (req) => {
 };
 
 module.exports = (app) => {
-  app.use(
-    csurf({
-      value: requestToTokenValue,
-      cookie: _csurfCookieOptions,
-    })
-  );
-  app.use((req, res, next) => {
-    res.cookie("XSRF-TOKEN", req.csrfToken(), XSRF_TOKEN_cookieOptions);
-    next();
-  });
-  app.use((err, req, res, next) => {
-    if (err.code !== "EBADCSRFTOKEN") return next(err);
-    // handle CSRF token errors here
-    res.status(403);
-    res.send("bad csrf token");
-  });
+  // app.use(
+  //   csurf({
+  //     value: requestToTokenValue,
+  //     cookie: _csurfCookieOptions,
+  //   })
+  // );
+  // app.use((req, res, next) => {
+  //   res.cookie("XSRF-TOKEN", req.csrfToken(), XSRF_TOKEN_cookieOptions);
+  //   next();
+  // });
+  // app.use((err, req, res, next) => {
+  //   if (err.code !== "EBADCSRFTOKEN") return next(err);
+  //   // handle CSRF token errors here
+  //   res.status(403);
+  //   res.send("bad csrf token");
+  // });
 };
