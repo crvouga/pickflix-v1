@@ -31,12 +31,12 @@ const requestToTokenValue = (req) => {
 };
 
 module.exports = (app) => {
-  app.use(
-    csurf({
-      value: requestToTokenValue,
-      cookie: _csurfCookieOptions,
-    })
-  );
+  // app.use(
+  //   csurf({
+  //     value: requestToTokenValue,
+  //     cookie: _csurfCookieOptions,
+  //   })
+  // );
   app.use((req, res, next) => {
     res.cookie("XSRF-TOKEN", req.csrfToken(), XSRF_TOKEN_cookieOptions);
     next();

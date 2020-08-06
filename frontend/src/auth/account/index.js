@@ -1,21 +1,21 @@
 import {
   Avatar,
   Box,
+  LinearProgress,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  LinearProgress,
 } from "@material-ui/core";
-import { Alert, AlertTitle } from "@material-ui/lab";
+import { Alert } from "@material-ui/lab";
 import { push } from "connected-react-router";
-import { useSnackbar } from "notistack";
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useBoolean from "../../common/hooks/useBoolean";
 import auth from "../redux";
 import DeleteUserModal from "./DeleteUserModal";
 import Todo from "./Todo";
+import PrettyJSON from "react-json-pretty";
 
 export default () => {
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ export default () => {
     <div>
       {error && (
         <Alert style={{ maxWidth: "100%" }} severity="error">
-          {error.message}
+          <PrettyJSON data={error} />
         </Alert>
       )}
       {status === "loading" && <LinearProgress />}

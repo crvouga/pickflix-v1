@@ -1,5 +1,5 @@
 import axios from "axios";
-import Cookies from "js-cookie";
+
 const env = process.env.NODE_ENV || "development";
 
 export const baseURL =
