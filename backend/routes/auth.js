@@ -2,27 +2,24 @@ const express = require("express");
 const router = express.Router();
 const admin = require("../firebaseAdmin");
 const authenticated = require("../middlewares/authenticated");
+const clientDomain = require("../constants").clientDomain;
 
 const env = process.env.NODE_ENV || "development";
 const sessionCookieExpiresIn = 1000 * 60 * 60 * 24 * 14; // 2 weeks
-const sessionCookieOptions = {
-  maxAge: sessionCookieExpiresIn,
-  httpOnly: false,
-  secure: false,
-};
-
-// env === "development"
-//   ? {
-//       maxAge: sessionCookieExpiresIn,
-//       httpOnly: false,
-//       secure: false,
-//     }
-//   : {
-//       maxAge: sessionCookieExpiresIn,
-//       httpOnly: true,
-//       secure: true,
-//       sameSite: "none",
-//     };
+const sessionCookieOptions =
+  env === "development"
+    ? {
+        maxAge: sessionCookieExpiresIn,
+        httpOnly: false,
+        secure: false,
+      }
+    : {
+        maxAge: sessionCookieExpiresIn,
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        domain: clientDomain,
+      };
 
 router.post("/signIn", async (req, res) => {
   try {

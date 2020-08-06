@@ -1,19 +1,26 @@
 const csurf = require("csurf");
+const clientDomain = require("../constants").clientDomain;
 
 const env = process.env.NODE_ENV || "development";
-const _csurfCookieOptions = {};
-// env === "development"
-//   ? {}
-//   : { secure: true, sameSite: "none", httpOnly: true };
+const _csurfCookieOptions =
+  env === "development"
+    ? {}
+    : {
+        domain: clientDomain,
+        secure: true,
+        sameSite: "none",
+        httpOnly: true,
+      };
 
-const XSRF_TOKEN_cookieOptions = {};
-// env === "development"
-//   ? {}
-//   : {
-//       secure: true,
-//       sameSite: "none",
-//       httpOnly: false /* so client can send it back in body */,
-//     };
+const XSRF_TOKEN_cookieOptions =
+  env === "development"
+    ? {}
+    : {
+        domain: clientDomain,
+        secure: true,
+        sameSite: "none",
+        httpOnly: false /* so client can send it back in body */,
+      };
 
 //differs from default by checking cookies for token
 const requestToTokenValue = (req) => {

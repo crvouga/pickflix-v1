@@ -1,6 +1,5 @@
 const cors = require("cors");
-
-const clientOrigin = `https://pickflix.web.app`;
+const clientOrigin = require("../constants").clientOrigin;
 
 const env = process.env.NODE_ENV || "development";
 
