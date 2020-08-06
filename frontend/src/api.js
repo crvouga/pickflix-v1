@@ -4,7 +4,7 @@ const env = process.env.NODE_ENV || "development";
 
 export const baseURL =
   env === "development"
-    ? "http://192.168.7.30:9000"
+    ? "http://192.168.7.30:5000"
     : "https://pickflix-backend.herokuapp.com";
 
 const api = axios.create({
