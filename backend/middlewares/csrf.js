@@ -20,6 +20,7 @@ const allNames = [].concat(
   names.map((name) => name.toLowerCase()),
   names.map((name) => name.toUpperCase())
 );
+
 const requestToTokenValue = (req) => {
   const values = [].concat(
     [req.body._csrf || false, req.query._csrf || false],
@@ -37,14 +38,14 @@ module.exports = (app) => {
   //     cookie: _csurfCookieOptions,
   //   })
   // );
-  app.use((req, res, next) => {
-    res.cookie("XSRF-TOKEN", req.csrfToken(), XSRF_TOKEN_cookieOptions);
-    next();
-  });
-  app.use((err, req, res, next) => {
-    if (err.code !== "EBADCSRFTOKEN") return next(err);
-    // handle CSRF token errors here
-    res.status(403);
-    res.send("form tampered with");
-  });
+  // app.use((req, res, next) => {
+  //   res.cookie("XSRF-TOKEN", req.csrfToken(), XSRF_TOKEN_cookieOptions);
+  //   next();
+  // });
+  // app.use((err, req, res, next) => {
+  //   if (err.code !== "EBADCSRFTOKEN") return next(err);
+  //   // handle CSRF token errors here
+  //   res.status(403);
+  //   res.send("form tampered with");
+  // });
 };
