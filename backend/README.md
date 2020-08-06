@@ -1,7 +1,4 @@
 # Backend
-### Job
-* protects API keys 
-* caches Youtube API responses in fear of maxing out quota
 
 ### Endpoints
 Base URL: https://pickflix-backend.herokuapp.com/.  
@@ -21,20 +18,15 @@ https://stackoverflow.com/questions/39197334/automated-heroku-deploy-from-subfol
 
 Heroku Build pack: https://github.com/timanovsky/subdir-heroku-buildpack.  
 
-### Configuration of .env variables
-
-PROJECT_PATH=backend.  
-NOTE: PROJECT_PATH is for heroku to only deploy backend subdir. 
-
-
-YOUTUBE_API_KEY=...   
-API Key: https://console.developers.google.com/apis/api/youtube.googleapis.com/credentials?project=pickflix.  
-
-TMDB_API_KEY=...   
-API Key: https://www.themoviedb.org/settings/api.  
-
-MONGODB_CONNECTION_URI=...        
-Connection URI: https://cloud.mongodb.com/v2/5ebb5d21f7a74e506ce600db#clusters.  
-
+### For configuration of .env variable see .env.documentation
 🚨IMPORTANT NOTE ON keyv BUG🐛🚨.  
 MONGODB_CONNECTION_URI must begin with "mongodb://" (and not "mongodb+srv://" for example) for the library keyv to work!   
+
+### Authentication Flow
+- authenticate on client with firebase.  
+- client POST to sign in endpoint with a firebase user idToken.   
+- use firebase admin manage cookie session.   
+🚨IMPORTANT NOTE ON chrome web browser cookie BUG🐛🚨.     
+chrome for whatever reason doesn't set cookies when using localhost so when developing in chrome use the local network (like http://192.168.7.30) instead and make sure the local network is white listed for firebase authentication (https://console.firebase.google.com/project/pickflix/authentication/providers).    
+
+CSRF protection is handle by the csurf library. NOTE: "XSRF-TOKEN" is attached to every response is sent back in the request by Axios implicitly.
