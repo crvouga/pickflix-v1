@@ -3,8 +3,17 @@ const cookieParser = require("cookie-parser");
 const csurf = require("csurf");
 
 const env = process.env.NODE_ENV || "development";
-const cookieOptions =
-  env === "development" ? true : { secure: true, sameSite: "none" };
+const _csurfCookieOptions =
+  env === "development" ? {} : { secure: true, sameSite: "none" };
+
+const XSRF_TOKEN_cookieOptions =
+  env === "development"
+    ? {}
+    : {
+        secure: true,
+        sameSite: "none",
+        httpOnly: false /* so client can send it back in body */,
+      };
 
 module.exports = (app) => {
   app.use(bodyParser.json());
@@ -12,10 +21,9 @@ module.exports = (app) => {
   app.use(require("./cors"));
 
   // CSRF protection
-  app.use(csurf({ cookie: cookieOptions }));
+  app.use(csurf({ cookie: _csurfCookieOptions }));
   app.use((req, res, next) => {
-    // NOTE: Axios will send this back header implicitly
-    res.cookie("XSRF-TOKEN", req.csrfToken());
+    res.cookie("XSRF-TOKEN", req.csrfToken(), XSRF_TOKEN_cookieOptions);
     next();
   });
 };
