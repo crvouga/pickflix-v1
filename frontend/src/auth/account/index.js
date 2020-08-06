@@ -16,6 +16,7 @@ import auth from "../redux";
 import DeleteUserModal from "./DeleteUserModal";
 import Todo from "./Todo";
 import PrettyJSON from "react-json-pretty";
+import Cookies from "js-cookie";
 
 export default () => {
   const dispatch = useDispatch();
@@ -41,7 +42,8 @@ export default () => {
     <div>
       {error && (
         <Alert style={{ maxWidth: "100%" }} severity="error">
-          <PrettyJSON data={error} />
+          <PrettyJSON data={error.response?.data} />
+          <PrettyJSON data={{ cookies: Cookies.get() }} />
         </Alert>
       )}
       {status === "loading" && <LinearProgress />}

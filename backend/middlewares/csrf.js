@@ -21,6 +21,7 @@ const allNames = [].concat(
   names.map((name) => name.toUpperCase())
 );
 
+//differs from default by checking cookies for token
 const requestToTokenValue = (req) => {
   const values = [].concat(
     [req.body._csrf || false, req.query._csrf || false],
@@ -32,20 +33,20 @@ const requestToTokenValue = (req) => {
 };
 
 module.exports = (app) => {
-  // app.use(
-  //   csurf({
-  //     value: requestToTokenValue,
-  //     cookie: _csurfCookieOptions,
-  //   })
-  // );
-  // app.use((req, res, next) => {
-  //   res.cookie("XSRF-TOKEN", req.csrfToken(), XSRF_TOKEN_cookieOptions);
-  //   next();
-  // });
-  // app.use((err, req, res, next) => {
-  //   if (err.code !== "EBADCSRFTOKEN") return next(err);
-  //   // handle CSRF token errors here
-  //   res.status(403);
-  //   res.send("form tampered with");
-  // });
+  app.use(
+    csurf({
+      value: requestToTokenValue,
+      cookie: _csurfCookieOptions,
+    })
+  );
+  app.use((req, res, next) => {
+    res.cookie("XSRF-TOKEN", req.csrfToken(), XSRF_TOKEN_cookieOptions);
+    next();
+  });
+  app.use((err, req, res, next) => {
+    if (err.code !== "EBADCSRFTOKEN") return next(err);
+    // handle CSRF token errors here
+    res.status(403);
+    res.send("bad csrf token");
+  });
 };
