@@ -1,19 +1,19 @@
 const csurf = require("csurf");
 
 const env = process.env.NODE_ENV || "development";
-const _csurfCookieOptions =
-  env === "development"
-    ? {}
-    : { secure: true, sameSite: "none", httpOnly: true };
+const _csurfCookieOptions = {};
+// env === "development"
+//   ? {}
+//   : { secure: true, sameSite: "none", httpOnly: true };
 
-const XSRF_TOKEN_cookieOptions =
-  env === "development"
-    ? {}
-    : {
-        secure: true,
-        sameSite: "none",
-        httpOnly: false /* so client can send it back in body */,
-      };
+const XSRF_TOKEN_cookieOptions = {};
+// env === "development"
+//   ? {}
+//   : {
+//       secure: true,
+//       sameSite: "none",
+//       httpOnly: false /* so client can send it back in body */,
+//     };
 
 //differs from default by checking cookies for token
 const requestToTokenValue = (req) => {
@@ -32,20 +32,20 @@ const requestToTokenValue = (req) => {
 };
 
 module.exports = (app) => {
-  // app.use(
-  //   csurf({
-  //     value: requestToTokenValue,
-  //     cookie: _csurfCookieOptions,
-  //   })
-  // );
-  // app.use((req, res, next) => {
-  //   res.cookie("XSRF-TOKEN", req.csrfToken(), XSRF_TOKEN_cookieOptions);
-  //   next();
-  // });
-  // app.use((err, req, res, next) => {
-  //   if (err.code !== "EBADCSRFTOKEN") return next(err);
-  //   // handle CSRF token errors here
-  //   res.status(403);
-  //   res.send("bad csrf token");
-  // });
+  app.use(
+    csurf({
+      value: requestToTokenValue,
+      cookie: _csurfCookieOptions,
+    })
+  );
+  app.use((req, res, next) => {
+    res.cookie("XSRF-TOKEN", req.csrfToken(), XSRF_TOKEN_cookieOptions);
+    next();
+  });
+  app.use((err, req, res, next) => {
+    if (err.code !== "EBADCSRFTOKEN") return next(err);
+    // handle CSRF token errors here
+    res.status(403);
+    res.send("bad csrf token");
+  });
 };
