@@ -5,19 +5,12 @@ const authenticated = require("../middlewares/authenticated");
 
 const env = process.env.NODE_ENV || "development";
 const sessionCookieExpiresIn = 1000 * 60 * 60 * 24 * 14; // 2 weeks
-const sessionCookieOptions =
-  env === "development"
-    ? {
-        maxAge: sessionCookieExpiresIn,
-        httpOnly: false,
-        secure: false,
-        domain: null,
-      }
-    : {
-        maxAge: sessionCookieExpiresIn,
-        httpOnly: true,
-        secure: true,
-      };
+const sessionCookieOptions = {
+  maxAge: sessionCookieExpiresIn,
+  httpOnly: false,
+  secure: false,
+  domain: null,
+};
 
 router.post("/signIn", async (req, res) => {
   try {
