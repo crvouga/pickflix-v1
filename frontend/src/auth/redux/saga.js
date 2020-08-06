@@ -6,6 +6,7 @@ const postSignIn = (idToken) => api.post("/api/auth/signIn", { idToken });
 const postSignOut = () => api.post("/api/auth/signOut");
 const getUser = () => api.get("/api/auth/user");
 const deleteUser = () => api.delete("/api/auth/user");
+
 export default function* () {
   yield put(actions.setError(null));
 

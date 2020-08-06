@@ -18,6 +18,7 @@ const sessionCookieOptions =
         httpOnly: true,
         secure: true,
         sameSite: "none",
+        domain: null,
       };
 
 router.post("/signIn", async (req, res) => {
