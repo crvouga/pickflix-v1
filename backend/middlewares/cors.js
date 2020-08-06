@@ -6,7 +6,7 @@ const env = process.env.NODE_ENV || "development";
 
 module.exports = cors({
   //
-  preflightContinue: true,
+
   credentials: true,
 
   origin: (origin, callback) => {

@@ -10,6 +10,7 @@ export const baseURL =
 const api = axios.create({
   baseURL: baseURL,
   withCredentials: true,
+  // CSRF protection
   xsrfCookieName: "XSRF-TOKEN",
   xsrfHeaderName: "CSRF-TOKEN",
 });

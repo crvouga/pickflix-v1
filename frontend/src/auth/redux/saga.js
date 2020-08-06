@@ -1,51 +1,68 @@
-import { call, put, takeEvery, takeLeading } from "redux-saga/effects";
+import { call, put, takeLeading } from "redux-saga/effects";
 import api from "../../api";
 import actions from "./actions";
 
-function* tryCatch(saga) {
-  try {
-    yield put(actions.setError(null));
-    yield put(actions.setStatus("loading"));
-    yield* saga();
-  } catch (error) {
-    yield put(actions.setError(error));
-  } finally {
-    yield put(actions.setStatus(null));
-  }
-}
-
+const postSignIn = (idToken) => api.post("/api/auth/signIn", { idToken });
+const postSignOut = () => api.post("/api/auth/signOut");
+const getUser = () => api.get("/api/auth/user");
+const deleteUser = () => api.delete("/api/auth/user");
 export default function* () {
   yield put(actions.setError(null));
 
-  yield takeEvery(actions.signIn, function* (action) {
-    yield tryCatch(function* () {
+  yield takeLeading(actions.signIn, function* (action) {
+    try {
+      yield put(actions.setError(null));
+      yield put(actions.setStatus("loading"));
       const idToken = action.payload.idToken;
-      yield call(api, api.post, "/api/auth/signIn", { idToken });
+      yield call(postSignIn, idToken);
       yield put(actions.getUser());
-    });
+    } catch (error) {
+      yield put(actions.setError(error));
+    } finally {
+      yield put(actions.setStatus(null));
+    }
   });
 
   yield takeLeading(actions.signOut, function* () {
-    yield tryCatch(function* () {
-      yield call(api, api.post, "/api/auth/signOut");
+    try {
+      yield put(actions.setError(null));
+      yield put(actions.setStatus("loading"));
+
+      yield call(postSignOut);
       yield put(actions.setUser(false));
-    });
+    } catch (error) {
+      yield put(actions.setError(error));
+    } finally {
+      yield put(actions.setStatus(null));
+    }
   });
 
-  yield takeEvery(actions.getUser, function* () {
-    yield tryCatch(function* () {
-      const response = yield call(api, api.get, "/api/auth/user");
+  yield takeLeading(actions.getUser, function* () {
+    try {
+      yield put(actions.setError(null));
+      yield put(actions.setStatus("loading"));
+      const response = yield call(getUser);
       const user = response.data.user;
       yield put(actions.setUser(user));
-    });
+    } catch (error) {
+      yield put(actions.setError(error));
+    } finally {
+      yield put(actions.setStatus(null));
+    }
   });
 
   yield put(actions.getUser());
 
-  yield takeLeading(actions.deleteAccount, function* () {
-    yield tryCatch(function* () {
-      yield call(api, api.delete, "/api/auth/user");
+  yield takeLeading(actions.deleteUser, function* () {
+    try {
+      yield put(actions.setError(null));
+      yield put(actions.setStatus("loading"));
+      yield call(deleteUser);
       yield put(actions.setUser(false));
-    });
+    } catch (error) {
+      yield put(actions.setError(error));
+    } finally {
+      yield put(actions.setStatus(null));
+    }
   });
 }

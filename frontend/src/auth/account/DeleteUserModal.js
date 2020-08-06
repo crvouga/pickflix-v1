@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import React from "react";
 
-export default ({ DialogProps, error, onDeleteAccount }) => {
+export default ({ DialogProps, error, onDelete }) => {
   return (
     <Dialog {...DialogProps}>
       <DialogTitle>Delete Account</DialogTitle>
@@ -19,7 +19,7 @@ export default ({ DialogProps, error, onDeleteAccount }) => {
       <DialogActions>
         <Button onClick={DialogProps.onClose}>Cancel</Button>
         <Box color="error.main">
-          <Button color="inherit" onClick={onDeleteAccount}>
+          <Button color="inherit" onClick={onDelete}>
             Delete
           </Button>
         </Box>

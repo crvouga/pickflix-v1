@@ -7,7 +7,7 @@ import Poster from "../movie/components/Poster";
 
 export default () => {
   return (
-    <div style={{ overflow: "hidden" }}>
+    <div style={{ overflowY: "hidden", overflow: "hidden" }}>
       <AspectRatio ratio="16/9" style={{ width: "100%" }}>
         <Box
           display="flex"

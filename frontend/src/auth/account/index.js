@@ -14,7 +14,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useBoolean from "../../common/hooks/useBoolean";
 import auth from "../redux";
-import DeleteAccountModal from "./DeleteAccountModal";
+import DeleteUserModal from "./DeleteUserModal";
 import Todo from "./Todo";
 
 export default () => {
@@ -32,8 +32,8 @@ export default () => {
     dispatch(push("/signIn"));
   };
 
-  const handleDeleteAccount = () => {
-    dispatch(auth.actions.deleteAccount());
+  const handleDeleteUser = () => {
+    dispatch(auth.actions.deleteUser());
     open.setFalse();
   };
 
@@ -70,9 +70,9 @@ export default () => {
           </ListItem>
         </Box>
       </List>
-      <DeleteAccountModal
+      <DeleteUserModal
         DialogProps={{ open: open.value, onClose: open.setFalse }}
-        onDeleteAccount={handleDeleteAccount}
+        onDelete={handleDeleteUser}
       />
       <Todo />
     </div>

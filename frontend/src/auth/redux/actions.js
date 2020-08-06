@@ -8,5 +8,5 @@ export default {
   signIn: createAction("auth/signIn"),
   signOut: createAction("auth/signOut"),
   getUser: createAction("auth/getUser"),
-  deleteAccount: createAction("auth/deleteAccount"),
+  deleteUser: createAction("auth/deleteAccount"),
 };
