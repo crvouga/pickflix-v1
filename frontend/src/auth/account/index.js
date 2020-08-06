@@ -41,7 +41,7 @@ export default () => {
     <div>
       {error && (
         <Alert style={{ maxWidth: "100%" }} severity="error">
-          {JSON.stringify(error)}
+          {error.message}
         </Alert>
       )}
       {status === "loading" && <LinearProgress />}
