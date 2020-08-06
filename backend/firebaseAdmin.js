@@ -1,4 +1,4 @@
-//SOUCE: https://console.firebase.google.com/project/pickflix/settings/serviceaccounts/adminsdk
+//SOURCE: https://console.firebase.google.com/project/pickflix/settings/serviceaccounts/adminsdk
 const admin = require("firebase-admin");
 
 const serviceAccount = JSON.parse(
