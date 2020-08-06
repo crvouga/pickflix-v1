@@ -11,14 +11,12 @@ const sessionCookieOptions =
         maxAge: sessionCookieExpiresIn,
         httpOnly: false,
         secure: false,
-        domain: null,
       }
     : {
         maxAge: sessionCookieExpiresIn,
         httpOnly: true,
         secure: true,
         sameSite: "none",
-        domain: null,
       };
 
 router.post("/signIn", async (req, res) => {

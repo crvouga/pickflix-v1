@@ -13,6 +13,11 @@ module.exports = async (req, res, next) => {
     next();
   } catch (error) {
     res.status(401);
-    res.json({ status: "error", error });
+    res.json({
+      message: "authenticated middleware failed",
+      status: "error",
+      error,
+      cookies: req.cookies,
+    });
   }
 };
