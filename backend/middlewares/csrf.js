@@ -15,10 +15,25 @@ const XSRF_TOKEN_cookieOptions =
         httpOnly: false /* so client can send it back in body */,
       };
 
+const names = ["csrf-token", "xsrf-token", "x-csrf-token", "x-xsrf-token"];
+const allNames = [].concat(
+  names.map((name) => name.toLowerCase()),
+  names.map((name) => name.toUpperCase())
+);
+const requestToTokenValue = (req) => {
+  const values = [].concat(
+    [req.body._csrf || false, req.query._csrf || false],
+    allNames.map((name) => req.headers[name] || false),
+    allNames.map((name) => req.cookies[name] || false)
+  );
+  const value = values.find((value) => value);
+  return value;
+};
+
 module.exports = (app) => {
   app.use(
     csurf({
-      value: (req) => req.cookies["XSRF-TOKEN"],
+      value: requestToTokenValue,
       cookie: _csurfCookieOptions,
     })
   );
