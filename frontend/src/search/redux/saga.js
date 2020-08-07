@@ -12,6 +12,7 @@ import {
 import backendAPI from "../../backendAPI";
 import actions from "./actions";
 import * as selectors from "./selectors";
+import axios from "axios";
 
 const fetchSearch = async (config) => {
   if (config.params.query === "") {
@@ -21,39 +22,40 @@ const fetchSearch = async (config) => {
   return response.data;
 };
 
-function* fetchResponseSaga() {
+function* fetchSaga(config) {
   const text = yield select(selectors.text);
   const currentPage = yield select(selectors.currentPage);
-  const config = {
+  yield put(actions.setStatus("loading"));
+  const response = yield call(fetchSearch, {
+    ...config,
     params: {
       page: currentPage + 1,
       query: encodeURI(text),
     },
-  };
-
-  const response = yield call(fetchSearch, config);
+  });
   yield put(actions.setStatus("success"));
-  return response;
+  const responses = yield select(selectors.responses);
+  yield put(actions.setResponses(R.append(response, responses)));
 }
 
 export default function* () {
   yield takeLatest(actions.setText, function* () {
     yield put(actions.setStatus("loading"));
-    yield delay(1000 / 3);
+    yield delay(1000 / 5);
+
+    const cancelSource = axios.CancelToken.source();
     try {
       yield put(actions.setResponses([]));
-      yield put(actions.fetch());
-    } catch (e) {
+      yield* fetchSaga({ cancelToken: cancelSource.token });
     } finally {
       if (yield cancelled()) {
+        yield call(() => cancelSource.cancel());
       }
     }
   });
 
   yield takeLeading(actions.fetch, function* () {
-    const response = yield fetchResponseSaga();
-    const responses = yield select(selectors.responses);
-    yield put(actions.setResponses(R.append(response, responses)));
+    yield* fetchSaga();
   });
 
   yield takeEvery(actions.chose, function* (action) {

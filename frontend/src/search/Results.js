@@ -1,9 +1,10 @@
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, CircularProgress, Fade } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
 import search from "./redux";
 import ResultGrid from "./ResultGrid";
+import Status from "./Status";
 
 export default () => {
   const dispatch = useDispatch();
@@ -13,7 +14,6 @@ export default () => {
 
   useEffect(() => {
     if (inView) {
-      console.log("FETCH");
       dispatch(search.actions.fetch());
     }
   }, [inView]);
@@ -24,6 +24,7 @@ export default () => {
 
   return (
     <div>
+      <Status />
       <ResultGrid results={results} onResultClick={handleResultClick} />
       {status === "loading" && (
         <Box p={2} textAlign="center">

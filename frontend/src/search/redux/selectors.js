@@ -13,3 +13,4 @@ export const results = R.pipe(
 export const currentPage = R.pipe(responses, R.last, R.propOr(0, "page"));
 export const totalResults = R.pipe(responses, R.head, R.prop("totalResults"));
 export const totalPages = R.pipe(responses, R.head, R.prop("totalPages"));
+export const isTextEmpty = R.pipe(text, R.isEmpty);

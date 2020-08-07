@@ -1,8 +1,9 @@
 import { Box, IconButton, InputBase, makeStyles } from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import search from "./redux";
+import * as R from "ramda";
 
 const useStyles = makeStyles((theme) => ({
   root: theme.mixins.toolbar,
@@ -13,25 +14,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default React.forwardRef((props, ref) => {
+const decorate = R.compose(React.memo, React.forwardRef);
+export default decorate((props, ref) => {
   const classes = useStyles();
-  const text = useSelector(search.selectors.text);
-
   const dispatch = useDispatch();
 
   const handleClear = () => {
-    dispatch(search.actions.setText(""));
+    ref.current.value = "";
   };
 
-  const handleInputChange = (e) => {
-    const newText = e.target.value;
-    dispatch(search.actions.setText(newText));
+  const handleChange = (e) => {
+    dispatch(search.actions.setText(e.target.value));
   };
-
-  useEffect(() => {
-    ref.current && ref.current.focus();
-    dispatch(search.actions.setText(""));
-  }, []);
 
   return (
     <Box
@@ -43,14 +37,12 @@ export default React.forwardRef((props, ref) => {
       className={classes.root}
     >
       <InputBase
-        className={classes.input}
         inputRef={ref}
-        value={text}
+        className={classes.input}
         placeholder="Search Movie or Person"
-        onChange={handleInputChange}
+        onChange={handleChange}
       />
-
-      <IconButton disabled={text === ""} onClick={handleClear}>
+      <IconButton onClick={handleClear}>
         <ClearIcon />
       </IconButton>
     </Box>
