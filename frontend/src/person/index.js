@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
-import api from "../api";
+import backendAPI from "../backendAPI";
 import HorizontalScroll from "../common/components/HorizontalScroll";
 import ErrorPage from "../common/page/ErrorPage";
 import Footer from "../common/page/Footer";
@@ -17,7 +17,7 @@ import Header from "./Header";
 import SkeletonPage from "./SkeletonPage";
 
 const fetchPersonPage = (personId) =>
-  api
+  backendAPI
     .get(`/api/tmdb/person/${personId}`, {
       params: {
         appendToResponse: [

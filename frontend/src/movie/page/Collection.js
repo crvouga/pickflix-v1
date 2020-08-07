@@ -1,5 +1,5 @@
 import { Box, Typography, Divider } from "@material-ui/core";
-import api from "../../api";
+import backendAPI from "../../backendAPI";
 import React from "react";
 import { useQuery } from "react-query";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
@@ -21,7 +21,9 @@ export default ({ details }) => {
     ["collection", collectionId],
     () =>
       collectionId &&
-      api.get(`/api/tmdb/collection/${collectionId}`).then((res) => res.data),
+      backendAPI
+        .get(`/api/tmdb/collection/${collectionId}`)
+        .then((res) => res.data),
     {}
   );
 

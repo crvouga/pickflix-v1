@@ -1,7 +1,6 @@
 import { push } from "connected-react-router";
 import { call, put, takeLeading } from "redux-saga/effects";
 import firebase from "../../../firebase";
-import auth from "../../../redux";
 import actions from "../actions";
 import { SignInMethod } from "../constants";
 
@@ -51,11 +50,8 @@ function* registerFlow(action) {
 
 function* submitSuccessFlow(action) {
   try {
-    const idToken = yield call(() => action.payload.user.getIdToken());
-    yield put(auth.actions.signIn({ idToken }));
     yield put(actions.reset());
     yield put(push("/account"));
-    yield call(() => firebase.auth().signOut());
   } catch (error) {
     yield put(actions.setError(error));
   }

@@ -28,17 +28,15 @@ export default () => {
       <Box width="360px" component={Paper}>
         {status === "loading" && <LinearProgress variant="query" />}
         <ErrorMessage />
-        <Box p={4}>
+        {
           {
-            {
-              [form.Step.signIn]: <SignIn />,
-              [form.Step.email]: <Email />,
-              [form.Step.emailTaken]: <EmailTaken />,
-              [form.Step.emailRegister]: <EmailRegister />,
-              [form.Step.emailPassword]: <EmailPassword />,
-            }[step]
-          }
-        </Box>
+            [form.Step.signIn]: <SignIn />,
+            [form.Step.email]: <Email />,
+            [form.Step.emailTaken]: <EmailTaken />,
+            [form.Step.emailRegister]: <EmailRegister />,
+            [form.Step.emailPassword]: <EmailPassword />,
+          }[step]
+        }
       </Box>
     </Box>
   );

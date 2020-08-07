@@ -67,14 +67,15 @@ export default () => {
   };
 
   return (
-    <React.Fragment>
-      <Typography gutterBottom variant="h6" style={{ fontWeight: "bold" }}>
-        Sign in
-      </Typography>
-      <Typography gutterBottom style={{ fontWeight: "bold" }}>
-        You already have an account with the following providers.
-      </Typography>
-
+    <Box paddingY={4} paddingX={2}>
+      <Box paddingX={2}>
+        <Typography gutterBottom variant="h6" style={{ fontWeight: "bold" }}>
+          Sign in
+        </Typography>
+        <Typography gutterBottom style={{ fontWeight: "bold" }}>
+          You already have an account with the following providers.
+        </Typography>
+      </Box>
       <SignInMethods />
 
       <Box textAlign="right">
@@ -88,6 +89,6 @@ export default () => {
           </Button>
         </Box>
       </Box>
-    </React.Fragment>
+    </Box>
   );
 };

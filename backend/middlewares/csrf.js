@@ -6,7 +6,6 @@ const _csurfCookieOptions =
   env === "development"
     ? {}
     : {
-        domain: clientDomain,
         secure: true,
         sameSite: "none",
         httpOnly: true,
@@ -16,7 +15,6 @@ const XSRF_TOKEN_cookieOptions =
   env === "development"
     ? {}
     : {
-        domain: clientDomain,
         secure: true,
         sameSite: "none",
         httpOnly: false /* so client can send it back in body */,

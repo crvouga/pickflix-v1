@@ -1,4 +1,4 @@
-import api from "../api";
+import backendAPI from "../backendAPI";
 
 export const embedConfig = {
   embedOptions: {
@@ -34,7 +34,7 @@ export const details = ({ videoId }) => {
   if (!videoId) {
     return Promise.resolve({});
   }
-  return api
+  return backendAPI
     .get("/api/youtube/videos", {
       params: {
         id: videoId,
@@ -52,7 +52,7 @@ export const commentThreadList = ({ videoId }) => {
   if (!videoId) {
     return Promise.resolve({});
   }
-  return api
+  return backendAPI
     .get("/api/youtube/commentThreads", {
       params: {
         videoId: videoId,

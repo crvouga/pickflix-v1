@@ -9,7 +9,7 @@ import {
   takeLatest,
   takeLeading,
 } from "redux-saga/effects";
-import api from "../../api";
+import backendAPI from "../../backendAPI";
 import actions from "./actions";
 import * as selectors from "./selectors";
 
@@ -17,7 +17,7 @@ const fetchSearch = async (config) => {
   if (config.params.query === "") {
     return { results: [] };
   }
-  const response = await api.get("/api/tmdb/search/multi", config);
+  const response = await backendAPI.get("/api/tmdb/search/multi", config);
   return response.data;
 };
 

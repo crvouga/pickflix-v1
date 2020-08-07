@@ -1,10 +1,10 @@
 import * as R from "ramda";
 import { call, fork, put, select } from "redux-saga/effects";
-import api from "../../../api";
+import backendAPI from "../../../backendAPI";
 import actions from "../actions";
 import * as selectors from "../selectors";
 
-const fetchGenres = () => api.get("/api/tmdb/genre/movie/list");
+const fetchGenres = () => backendAPI.get("/api/tmdb/genre/movie/list");
 
 function* initializeOptions() {
   const response = yield call(fetchGenres);

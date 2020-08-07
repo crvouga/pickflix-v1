@@ -14,7 +14,7 @@ import * as R from "ramda";
 import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { v4 as uuidv4 } from "uuid";
-import api from "../../api";
+import backendAPI from "../../backendAPI";
 
 const makeTodo = (description) => ({
   id: uuidv4(),
@@ -25,8 +25,10 @@ export default () => {
   const [value, setValue] = useState("");
   const [todos, setTodos] = useState([]);
 
-  const query = useQuery(["todos"], () =>
-    api.get("/api/todo/").then((res) => res.data)
+  const query = useQuery(
+    ["todos"],
+    () => backendAPI.get("/api/todo/").then((res) => res.data),
+    {}
   );
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export default () => {
 
   const handleAdd = async () => {
     setTodos(R.prepend(makeTodo(value)));
-    const response = await api.post("/api/todo", { description: value });
+    const response = await backendAPI.post("/api/todo", { description: value });
   };
 
   const handleDelete = (todo) => () => {
@@ -47,6 +49,13 @@ export default () => {
   const handleChange = (e, newValue) => {
     setValue(e.target.value);
   };
+  if (query.status === "loading")
+    return (
+      <Box width="100%" p={2} textAlign="center">
+        <CircularProgress />
+      </Box>
+    );
+  if (query.status === "error") return "error";
 
   return (
     <div>
@@ -73,12 +82,6 @@ export default () => {
             </ListItemSecondaryAction>
           </ListItem>
         ))}
-
-        {query.status === "loading" && (
-          <Box width="100%" p={2} textAlign="center">
-            <CircularProgress />
-          </Box>
-        )}
       </List>
     </div>
   );

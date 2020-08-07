@@ -9,7 +9,7 @@ import {
   takeLatest,
   all,
 } from "redux-saga/effects";
-import api from "../../../../api";
+import backendAPI from "../../../../backendAPI";
 import actions from "../actions";
 import * as selectors from "../selectors";
 import { queryCache } from "react-query";
@@ -27,7 +27,7 @@ const dateRangeOptions = decades.map((year) => ({
   id: year,
 }));
 
-const fetchGenres = () => api.get("/api/tmdb/genre/movie/list");
+const fetchGenres = () => backendAPI.get("/api/tmdb/genre/movie/list");
 
 const fetchSearch = async (endpoint, config) => {
   if (config.params.query.length === 0) {
@@ -36,7 +36,7 @@ const fetchSearch = async (endpoint, config) => {
   const URL = "/api/tmdb/search" + endpoint;
   const response = await queryCache.prefetchQuery(
     ["search", endpoint, config.params],
-    () => api.get(URL, config),
+    () => backendAPI.get(URL, config),
     {
       staleTime: Infinity,
     }

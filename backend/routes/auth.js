@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const admin = require("../firebaseAdmin");
-const authenticated = require("../middlewares/authenticated");
-const clientDomain = require("../constants").clientDomain;
+const authenticateSession = require("../middlewares/authenticateSession");
 
 const env = process.env.NODE_ENV || "development";
 const sessionCookieExpiresIn = 1000 * 60 * 60 * 24 * 14; // 2 weeks
@@ -18,7 +17,6 @@ const sessionCookieOptions =
         httpOnly: true,
         secure: true,
         sameSite: "none",
-        domain: clientDomain,
       };
 
 router.post("/signIn", async (req, res) => {
@@ -40,11 +38,11 @@ router.post("/signOut", async (req, res) => {
   res.json({ status: "success" });
 });
 
-router.get("/user", authenticated, (req, res) => {
+router.get("/user", authenticateSession, (req, res) => {
   res.json({ user: req.user });
 });
 
-router.delete("/user", authenticated, async (req, res) => {
+router.delete("/user", authenticateSession, async (req, res) => {
   try {
     const uid = req.user.uid;
     await admin.auth().deleteUser(uid);

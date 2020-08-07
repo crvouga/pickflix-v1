@@ -1,7 +1,7 @@
 import * as R from "ramda";
 import { queryCache } from "react-query";
 import { call, put, select, takeEvery, takeLeading } from "redux-saga/effects";
-import api from "../../../api";
+import backendAPI from "../../../backendAPI";
 import actions from "../actions";
 import * as selectors from "../selectors";
 
@@ -41,7 +41,7 @@ const inputToParams = (input) => {
 const fetchDiscover = async (config) => {
   const response = await queryCache.prefetchQuery(
     ["discover", config.params],
-    () => api.get("/api/tmdb/discover/movie", config),
+    () => backendAPI.get("/api/tmdb/discover/movie", config),
     {
       staleTime: Infinity,
     }

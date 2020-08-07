@@ -24,7 +24,7 @@ export default () => {
   };
 
   return (
-    <React.Fragment>
+    <Box paddingY={4} paddingX={2}>
       <Box marginBottom={2}>
         <Avatar style={{ margin: "auto ", width: "100px", height: "100px" }} />
       </Box>
@@ -42,6 +42,6 @@ export default () => {
           <ListItemText primary="Sign in with email" />
         </ListItem>
       </List>
-    </React.Fragment>
+    </Box>
   );
 };

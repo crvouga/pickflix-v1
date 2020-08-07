@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
-import api from "../../api";
+import backendAPI from "../../backendAPI";
 import ErrorPage from "../../common/page/ErrorPage";
 import Footer from "../../common/page/Footer";
 import Page from "../../common/page/Page";
@@ -20,7 +20,7 @@ import Videos from "./Videos";
 import Discover from "./Discover";
 
 const fetchMoviePage = (movieId) =>
-  api
+  backendAPI
     .get(`/api/tmdb/movie/${movieId}`, {
       params: {
         appendToResponse: [

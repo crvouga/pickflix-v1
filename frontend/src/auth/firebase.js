@@ -14,7 +14,4 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-// backend will handle auth persistence
-firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
-
 export default firebase;

@@ -29,7 +29,7 @@ export default () => {
   };
 
   return (
-    <React.Fragment>
+    <Box p={4}>
       <Typography gutterBottom variant="h6" style={{ fontWeight: "bold" }}>
         Sign in with email
       </Typography>
@@ -65,6 +65,6 @@ export default () => {
           </Button>
         </Box>
       </form>
-    </React.Fragment>
+    </Box>
   );
 };

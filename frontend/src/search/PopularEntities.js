@@ -2,14 +2,14 @@ import { Box, Typography } from "@material-ui/core";
 import * as R from "ramda";
 import React from "react";
 import { useQuery } from "react-query";
-import api from "../api";
+import backendAPI from "../backendAPI";
 import ResultGrid from "./ResultGrid";
 import ResultGridSkeleton from "./ResultGridSkeleton";
 
 const fetchPopularEntities = async () => {
   const responses = await Promise.all([
-    api.get("/api/tmdb/movie/popular"),
-    api.get("/api/tmdb/person/popular"),
+    backendAPI.get("/api/tmdb/movie/popular"),
+    backendAPI.get("/api/tmdb/person/popular"),
   ]);
   const [movieResults, personResults] = R.map(
     R.pathOr([], ["data", "results"]),

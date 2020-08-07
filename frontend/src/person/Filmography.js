@@ -10,7 +10,6 @@ import TuneIcon from "@material-ui/icons/Tune";
 import * as R from "ramda";
 import React, { useState } from "react";
 import { Flipped, Flipper } from "react-flip-toolkit";
-import api from "../api";
 import HorizontalScroll from "../common/components/HorizontalScroll";
 import MoviePoster from "../movie/components/Poster";
 

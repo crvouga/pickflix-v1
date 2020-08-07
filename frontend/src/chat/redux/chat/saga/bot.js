@@ -1,4 +1,4 @@
-import api from "../../../../api";
+import backendAPI from "../../../../backendAPI";
 import * as R from "ramda";
 import { call, takeLatest, put, delay } from "redux-saga/effects";
 import actions from "../actions";
@@ -37,7 +37,7 @@ const tagsToParams = (tags) => {
 };
 
 const fetchDiscoverMovies = (params) =>
-  api.get("/api/tmdb/discover/movie", {
+  backendAPI.get("/api/tmdb/discover/movie", {
     params,
   });
 
