@@ -6,7 +6,7 @@ const R = require("ramda");
 
 const router = express.Router();
 
-const cache = new Keyv(process.env.MONGODB_CONNECTION_URI);
+let cache = new Keyv(process.env.MONGODB_CONNECTION_URI);
 cache.on("error", (err) => {
   console.log("mongodb connection Error", err);
 });

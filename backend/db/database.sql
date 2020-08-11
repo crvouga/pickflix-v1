@@ -1,7 +1,6 @@
-CREATE DATABASE todo;
-
 CREATE TABLE todo
 (
   todo_id SERIAL PRIMARY KEY,
-  description VARCHAR(255)
+  content VARCHAR(255),
+  done VARCHAR(1)
 );

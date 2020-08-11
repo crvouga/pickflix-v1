@@ -15,9 +15,6 @@ export default () => {
 
   const { handleSubmit, errors, control } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {
-      email: "crvouga@gmail.com",
-    },
   });
 
   const handleCancel = () => {
@@ -45,26 +42,26 @@ export default () => {
           helperText={errors?.email?.message}
           autoFocus
         />
-        <Box textAlign="right" marginTop={2} p={2}>
-          <Box display="inline-block" marginRight={2}>
-            <Button
-              color="primary"
-              onClick={handleCancel}
-              style={{ fontWeight: "bold" }}
-            >
-              Cancel
-            </Button>
-          </Box>
+      </form>
+      <Box textAlign="right" marginTop={2} p={2}>
+        <Box display="inline-block" marginRight={2}>
           <Button
-            type="submit"
-            variant="contained"
             color="primary"
+            onClick={handleCancel}
             style={{ fontWeight: "bold" }}
           >
-            Next
+            Cancel
           </Button>
         </Box>
-      </form>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          style={{ fontWeight: "bold" }}
+        >
+          Next
+        </Button>
+      </Box>
     </Box>
   );
 };

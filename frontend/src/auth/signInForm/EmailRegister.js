@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers";
 import { Box, Button, TextField, Typography } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import * as yup from "yup";

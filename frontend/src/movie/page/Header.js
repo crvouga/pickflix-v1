@@ -42,7 +42,8 @@ export default ({ details, releaseDates }) => {
   const dispatch = useDispatch();
   const handleGenreClick = (genre) => () => {
     dispatch(router.actions.push("/discover"));
-    dispatch(discover.actions.setInput({ genre: [genre] }));
+    const newTags = R.map(R.assoc("type", "genre"), [genre]);
+    dispatch(discover.actions.selected(newTags));
   };
 
   return (

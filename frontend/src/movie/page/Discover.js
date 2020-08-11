@@ -22,9 +22,10 @@ export default ({ details, keywords }) => {
   };
 
   const dispatch = useDispatch();
-  const handleChipClick = (type, chip) => () => {
+  const handleClickChip = (type, tag) => () => {
+    const newTags = [R.assoc("type", type, tag)];
+    dispatch(discover.actions.selected(newTags));
     dispatch(router.actions.push("/discover"));
-    dispatch(discover.actions.setInput({ [type]: [chip] }));
   };
 
   return (
@@ -42,7 +43,7 @@ export default ({ details, keywords }) => {
             <Box key={chip.name} marginRight={1} marginBottom={1}>
               <Chip
                 classes={{ root: classes.chipRoot }}
-                onClick={handleChipClick(type, chip)}
+                onClick={handleClickChip(type, chip)}
                 clickable
                 label={chip.name}
                 variant="outlined"

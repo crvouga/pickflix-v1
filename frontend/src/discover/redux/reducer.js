@@ -1,29 +1,57 @@
 import { createReducer } from "@reduxjs/toolkit";
-import actions from "./actions";
+import * as R from "ramda";
+import * as actions from "./actions";
+
+const setter = R.curry((key, state, action) =>
+  R.assoc(key, action.payload, state)
+);
 
 export default createReducer(
   {
-    text: "",
-    options: {},
-    input: {},
-    status: "loading",
+    open: false,
+    tagQuery: "",
+    tags: {},
+    selectedTags: {},
     responses: [],
+    responseStatus: "loading",
   },
   {
-    [actions.setText]: (state, action) => {
-      state.text = action.payload;
+    [actions.setOpen]: setter("open"),
+    [actions.setTagQuery]: setter("tagQuery"),
+    [actions.setTags]: setter("tags"),
+    [actions.setResponses]: setter("responses"),
+    [actions.setResponseStatus]: setter("responseStatus"),
+    [actions.tagQueryChanged]: (state, action) => {
+      state.tagQuery = action.payload;
     },
-    [actions.setOptions]: (state, action) => {
-      state.options = action.payload;
+    //
+    [actions.newTags]: (state, action) => {
+      const tags = action.payload;
+      for (const tag of tags) {
+        state.tags[tag.id] = tag;
+      }
     },
-    [actions.setInput]: (state, action) => {
-      state.input = action.payload;
+    [actions.selected]: (state, action) => {
+      const tags = action.payload;
+      for (const tag of tags) {
+        state.tag[tag.id] = tag;
+        state.selectedTags[tag.id] = tag;
+      }
     },
-    [actions.setResponses]: (state, action) => {
-      state.responses = action.payload;
+    [actions.unselected]: (state, action) => {
+      const tags = action.payload;
+      for (const tag of tags) {
+        delete state.selectedTags[tag.id];
+      }
     },
-    [actions.setStatus]: (state, action) => {
-      state.status = action.payload;
+    [actions.toggle]: (state, action) => {
+      const tag = action.payload;
+
+      if (state.selectedTags[tag.id]) {
+        delete state.selectedTags[tag.id];
+      } else {
+        state.selectedTags[tag.id] = tag;
+      }
     },
   }
 );

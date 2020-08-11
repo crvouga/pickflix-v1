@@ -1,8 +1,8 @@
 import { fork } from "redux-saga/effects";
-import optionsSaga from "./options";
+import newTagsSaga from "./newTags";
 import resultsSaga from "./results";
 
 export default function* () {
-  yield fork(optionsSaga);
+  yield fork(newTagsSaga);
   yield fork(resultsSaga);
 }

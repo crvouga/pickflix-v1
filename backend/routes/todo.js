@@ -10,15 +10,11 @@ const makeTodo = (description) => ({
   description,
 });
 
-const todos = [
-  makeTodo("get database working"),
-  makeTodo("make desktop version"),
-  makeTodo("pull more videos from youtube"),
-];
-
-router.get("/", (req, res) => {
+router.get("/", authenicateToken, async (req, res) => {
+  const userId = req.user.uid;
+  // const todos = await db.query(`SELECT * FROM todos WHERE userId=${userId}`);
   res.json({
-    todos,
+    todos: [],
   });
 });
 

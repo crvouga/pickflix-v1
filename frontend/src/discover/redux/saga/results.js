@@ -2,10 +2,11 @@ import * as R from "ramda";
 import { queryCache } from "react-query";
 import { call, put, select, takeEvery, takeLeading } from "redux-saga/effects";
 import backendAPI from "../../../backendAPI";
-import actions from "../actions";
+import * as actions from "../actions";
 import * as selectors from "../selectors";
 
-const inputToParams = (input) => {
+const tagsToParams = (tags) => {
+  console.log(tags);
   const {
     person = [],
     keyword = [],
@@ -13,14 +14,14 @@ const inputToParams = (input) => {
     company = [],
     dateRange = [],
     sortBy = [],
-  } = input;
+  } = R.groupBy(R.prop("type"), tags);
 
-  const params = {
-    withPeople: R.pluck("id", person),
-    withKeywords: R.pluck("id", keyword),
-    withGenres: R.pluck("id", genre),
-    withCompanies: R.pluck("id", company),
-  };
+  const params = R.map(R.pluck("id"), {
+    withPeople: person,
+    withKeywords: keyword,
+    withGenres: genre,
+    withCompanies: company,
+  });
 
   if (sortBy.length > 0) {
     params.sortBy = R.head(sortBy).sortBy;
@@ -51,30 +52,34 @@ const fetchDiscover = async (config) => {
 };
 
 export default function* () {
-  yield put(actions.fetch());
-
-  yield takeEvery(actions.setInput, function* () {
-    yield put(actions.setResponses([]));
-    yield put(actions.fetch());
-  });
+  yield takeEvery(
+    [actions.selected, actions.unselected, actions.toggle],
+    function* () {
+      yield put(actions.setResponses([]));
+      yield put(actions.fetch());
+    }
+  );
 
   yield takeLeading(actions.fetch, function* () {
-    yield put(actions.setStatus("loading"));
+    yield put(actions.setResponseStatus("loading"));
     try {
       const currentPage = yield select(selectors.currentPage);
-      const input = yield select(selectors.input);
+      const selectedTags = yield select(selectors.selectedTags);
       const config = {
         params: {
-          ...inputToParams(input),
+          ...tagsToParams(selectedTags),
           page: currentPage + 1,
         },
       };
       const response = yield call(fetchDiscover, config);
-      yield put(actions.setStatus("success"));
+      yield put(actions.setResponseStatus("success"));
       const responses = yield select(selectors.responses);
-      yield put(actions.setResponses(R.append(response, responses)));
+      const newReponses = R.append(response, responses);
+      yield put(actions.setResponses(newReponses));
     } catch (e) {
-      yield put(actions.setStatus("error"));
+      yield put(actions.setResponseStatus("error"));
     }
   });
+
+  yield put(actions.fetch());
 }

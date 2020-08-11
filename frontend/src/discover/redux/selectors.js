@@ -1,11 +1,16 @@
 import * as R from "ramda";
 
-export const input = (state) => state.discover.input || {};
-export const options = (state) => state.discover.options || [];
-export const optionWithoutInput = (state) =>
-  R.mergeWith(R.difference, options(state), input(state));
+export const tagResponses = (state) => state.discover.tagResponses || [];
+export const tagResponseStatus = (state) =>
+  state.discover.tagResponseStatus || "loading";
+export const tagQuery = (state) => state.discover.tagQuery || "";
+export const open = (state) => state.discover.open || false;
+export const selectedTags = (state) =>
+  R.values(state.discover.selectedTags) || [];
+export const tags = (state) => R.values(state.discover.tags) || [];
 export const responses = (state) => state.discover.responses || [];
-export const status = (state) => state.discover.status || "loading";
+export const responseStatus = (state) =>
+  state.discover.responseStatus || "loading";
 export const results = R.pipe(
   responses,
   R.pluck("results"),
@@ -17,4 +22,8 @@ export const totalResults = R.pipe(
   responses,
   R.head,
   R.propOr(0, "totalResults")
+);
+export const unselectedTags = R.pipe(
+  R.juxt([tags, selectedTags]),
+  R.apply(R.difference)
 );
