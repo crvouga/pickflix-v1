@@ -1,14 +1,9 @@
 import { fork } from "redux-saga/effects";
-import searchResponses from "./search";
-import discoverResponses from "./discoverResponses";
+import search from "./search";
+import responses from "./responses";
 import activeTags from "./activeTags";
 import tags from "./tags";
 
 export default function* () {
-  yield* [
-    fork(activeTags),
-    fork(searchResponses),
-    fork(discoverResponses),
-    fork(tags),
-  ];
+  yield* [fork(activeTags), fork(search), fork(responses), fork(tags)];
 }

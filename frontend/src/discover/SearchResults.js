@@ -13,10 +13,14 @@ export default () => {
   const searchResults = useSelector(discover.selectors.searchResults);
   const searchText = useSelector(discover.selectors.searchText);
 
-  const sortedTags = matchSorter(R.union(tags, searchResults), searchText, {
-    keys: ["name"],
-    threshold: matchSorter.rankings.NO_MATCH,
-  });
+  const sortedTags = matchSorter(
+    R.uniqBy(R.prop("id"), R.concat(tags, searchResults)),
+    searchText,
+    {
+      keys: ["name"],
+      threshold: matchSorter.rankings.NO_MATCH,
+    }
+  );
 
   const handleClickTag = (tag) => () => {
     dispatch(discover.actions.activateTags([tag]));

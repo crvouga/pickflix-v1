@@ -70,7 +70,7 @@ export default () => {
         images={images}
         taggedImages={taggedImages}
       />
-      <Box paddingLeft={2} paddingBottom={1}>
+      {/* <Box paddingLeft={2} paddingBottom={1}>
         <Typography style={{ fontWeight: "bold" }}>
           Known For {details.knownForDepartment}
         </Typography>
@@ -81,7 +81,7 @@ export default () => {
             <Poster key={index} movie={movie} marginRight={2} />
           )
         )}
-      </HorizontalScroll>
+      </HorizontalScroll> */}
 
       <Biography details={details} />
       <Filmography credits={credits} details={details} />

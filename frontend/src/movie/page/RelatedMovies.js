@@ -26,7 +26,7 @@ export default ({ similar, recommendations }) => {
             <Title>Recommendations</Title>
             <HorizontalScroll paddingLeft={2} marginBottom={2}>
               {recommendations.map((movie) => (
-                <Poster key={movie.id} movie={movie} marginRight={2} />
+                <Poster key={movie.id} movie={movie} marginRight={1} />
               ))}
             </HorizontalScroll>
           </React.Fragment>
@@ -37,7 +37,7 @@ export default ({ similar, recommendations }) => {
             <Title>Similar</Title>
             <HorizontalScroll paddingLeft={2} marginBottom={2}>
               {similar.map((movie) => (
-                <Poster key={movie.id} movie={movie} marginRight={2} />
+                <Poster key={movie.id} movie={movie} marginRight={1} />
               ))}
             </HorizontalScroll>
           </React.Fragment>

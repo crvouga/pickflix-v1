@@ -1,16 +1,22 @@
-import { IconButton, InputBase, makeStyles, Paper } from "@material-ui/core";
+import {
+  Box,
+  IconButton,
+  InputBase,
+  makeStyles,
+  Paper,
+  CircularProgress,
+} from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import discover from "./redux";
 import modal from "../common/redux/modal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     marginBottom: theme.spacing(1),
-  },
-  searchBar: {
     position: "sticky",
+    zIndex: theme.zIndex.modal + 1,
     top: 0,
     width: "100%",
     display: "flex",
@@ -29,30 +35,30 @@ const useStylesInputBase = makeStyles((theme) => ({
 
 export default React.forwardRef((props, ref) => {
   const classes = useStyles();
+
   const classesInputBase = useStylesInputBase();
+  const status = useSelector(discover.selectors.searchStatus);
   const dispatch = useDispatch();
   const handleClose = () => {
     dispatch(modal.actions.close("discover/SearchModal"));
   };
   const handleChangeInputBase = (e) => {
-    console.log("handleChangeInputBase");
     dispatch(discover.actions.setSearchText(e.target.value));
   };
 
   return (
     <Paper className={classes.root}>
-      <div className={classes.searchBar}>
-        <IconButton edge="start" onClick={handleClose}>
-          <ArrowBackIcon />
-        </IconButton>
-        <InputBase
-          autoFocus
-          inputRef={ref}
-          classes={classesInputBase}
-          placeholder="Genre, People, Date, ..."
-          onChange={handleChangeInputBase}
-        />
-      </div>
+      <IconButton edge="start" onClick={handleClose}>
+        <ArrowBackIcon />
+      </IconButton>
+      <InputBase
+        autoFocus
+        inputRef={ref}
+        classes={classesInputBase}
+        placeholder="Genre, Person, Keyword, ..."
+        onChange={handleChangeInputBase}
+      />
+      <Box>{status === "loading" && <CircularProgress disableShrink />}</Box>
     </Paper>
   );
 });

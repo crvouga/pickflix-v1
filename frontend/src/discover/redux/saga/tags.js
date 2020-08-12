@@ -9,11 +9,24 @@ const getGenres = async () => {
   return response.data.genres;
 };
 
+const rangeStep = (start, step, end) =>
+  R.unfold((n) => (n > end ? false : [n, n + step]), start);
+
+const decades = rangeStep(1940, 10, new Date().getFullYear());
+
+const dateRangeTags = decades.map((year) => ({
+  type: "dateRange",
+  year,
+  range: [year, year + 9],
+  name: `${year}s`,
+  id: year,
+}));
+
 export default function* () {
   yield takeEvery(actions.addTags, function* (action) {
     const oldTags = yield select(selectors.tags);
     const tags = action.payload;
-    const newTags = R.union(tags, oldTags);
+    const newTags = R.concat(tags, oldTags);
     yield put(actions.setTags(newTags));
   });
 
@@ -24,7 +37,8 @@ export default function* () {
     yield put(actions.setTags(newTags));
   });
 
-  const genres = yield call(getGenres);
-  const genreTags = R.map(R.assoc("type", "genre"), genres);
-  yield put(actions.addTags(genreTags));
+  // const genres = yield call(getGenres);
+  // const genreTags = R.map(R.assoc("type", "genre"), genres);
+  // yield put(actions.addTags(genreTags));
+  yield put(actions.addTags(dateRangeTags));
 }

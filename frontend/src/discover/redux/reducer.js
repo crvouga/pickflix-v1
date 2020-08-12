@@ -9,15 +9,19 @@ export default createReducer(
   {
     tags: [],
     activeTags: [],
-    discoverResponses: [],
+    responses: [],
+    status: null,
     searchText: "",
     searchResults: [],
+    searchStatus: null,
   },
   {
     [actions.setTags]: setPayload("tags"),
     [actions.setActiveTags]: setPayload("activeTags"),
-    [actions.setDiscoverResponses]: setPayload("discoverResponses"),
+    [actions.setResponses]: setPayload("responses"),
+    [actions.setStatus]: setPayload("status"),
     [actions.setSearchText]: setPayload("searchText"),
     [actions.setSearchResults]: setPayload("searchResults"),
+    [actions.setSearchStatus]: setPayload("searchStatus"),
   }
 );

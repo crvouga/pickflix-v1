@@ -1,5 +1,5 @@
 import {
-  fork,
+  all,
   cancelled,
   call,
   delay,
@@ -24,7 +24,7 @@ const getSearchKeyword = async (config) => {
 };
 
 const getSearchCompany = async (config) => {
-  const response = await backendAPI.get("/api/tmdb/search/keyword", config);
+  const response = await backendAPI.get("/api/tmdb/search/company", config);
   return response.data;
 };
 
@@ -47,43 +47,50 @@ export default function* () {
       },
     };
 
-    yield fork(function* () {
-      const response = yield call(getSearchPerson, config);
-      const results = R.map(R.assoc("type", "person"), response.results);
-      const searchResults = yield select(selectors.searchResults);
+    yield put(actions.setSearchStatus("loading"));
 
-      yield put(
-        actions.setSearchResults(
-          R.unionWith(R.prop("id"), results, searchResults)
-        )
-      );
-    });
+    try {
+      yield all([
+        call(function* () {
+          const response = yield call(getSearchPerson, config);
+          const results = R.map(R.assoc("type", "person"), response.results);
+          const searchResults = yield select(selectors.searchResults);
 
-    yield fork(function* () {
-      const response = yield call(getSearchCompany, config);
-      const results = R.map(R.assoc("type", "company"), response.results);
-      const searchResults = yield select(selectors.searchResults);
-      yield put(
-        actions.setSearchResults(
-          R.unionWith(R.prop("id"), results, searchResults)
-        )
-      );
-    });
+          yield put(
+            actions.setSearchResults(
+              R.unionWith(R.prop("id"), results, searchResults)
+            )
+          );
+        }),
+        call(function* () {
+          const response = yield call(getSearchCompany, config);
+          const results = R.map(R.assoc("type", "company"), response.results);
+          const searchResults = yield select(selectors.searchResults);
+          yield put(
+            actions.setSearchResults(
+              R.unionWith(R.prop("id"), results, searchResults)
+            )
+          );
+        }),
 
-    yield fork(function* () {
-      const response = yield call(getSearchKeyword, config);
-      const results = R.map(R.assoc("type", "keyword"), response.results);
-      const searchResults = yield select(selectors.searchResults);
-      yield put(
-        actions.setSearchResults(
-          R.unionWith(R.prop("id"), results, searchResults)
-        )
-      );
-    });
-
-    if (yield cancelled()) {
-      console.log("cancelled()");
-      yield call(() => cancelSource.cancel());
+        call(function* () {
+          const response = yield call(getSearchKeyword, config);
+          const results = R.map(R.assoc("type", "keyword"), response.results);
+          const searchResults = yield select(selectors.searchResults);
+          yield put(
+            actions.setSearchResults(
+              R.unionWith(R.prop("id"), results, searchResults)
+            )
+          );
+        }),
+      ]);
+      yield put(actions.setSearchStatus("success"));
+    } catch (error) {
+    } finally {
+      if (yield cancelled()) {
+        console.log("cancelled()");
+        yield call(() => cancelSource.cancel());
+      }
     }
   });
 }

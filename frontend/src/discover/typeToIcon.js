@@ -14,7 +14,7 @@ const iconByType = {
   person: <PersonIcon />,
   company: <BusinessIcon />,
   keyword: <LocalOfferIcon />,
-  genre: <PlayArrowIcon />,
+  //genre: <PlayArrowIcon />,
   dateRange: <DateRangeIcon />, //<AccessTimeIcon />,
   money: <AttachMoneyIcon />,
   sortBy: <SortIcon />,
@@ -22,4 +22,4 @@ const iconByType = {
   country: <LanguageIcon />,
 };
 
-export default R.propOr(<div />, R.__, iconByType);
+export default R.propOr(null, R.__, iconByType);

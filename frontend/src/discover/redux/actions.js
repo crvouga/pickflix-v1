@@ -3,11 +3,11 @@ import { createAction } from "@reduxjs/toolkit";
 // document
 export const setTags = createAction("[discover] SET_TAGS");
 export const setActiveTags = createAction("[discover] SET_ACTIVE_TAGS");
-export const setDiscoverResponses = createAction(
-  "[discover] SET_DISCOVER_RESONSES"
-);
+export const setResponses = createAction("[discover] SET_RESONSES");
+export const setStatus = createAction("[discover] SET_STATUS");
 export const setSearchText = createAction("[discover] SET_SEARCH_TEXT");
 export const setSearchResults = createAction("[discover] SET_SEARCH_RESULTS");
+export const setSearchStatus = createAction("[discover] SET_SEARCH_STATUS");
 
 // command
 export const requestDiscover = createAction("[discover] REQUEST_DISCOVER");

@@ -5,6 +5,7 @@ import {
   Menu,
   MenuItem,
   Typography,
+  makeStyles,
 } from "@material-ui/core";
 import TuneIcon from "@material-ui/icons/Tune";
 import * as R from "ramda";
@@ -33,7 +34,15 @@ const sortersByType = {
 
 const descendPopularity = R.sort(R.descend(R.prop("popularity")));
 
+const useStylesChip = makeStyles((theme) => ({
+  root: {
+    fontWeight: "bold",
+    fontSize: "1.25em",
+  },
+}));
+
 export default ({ credits, details }) => {
+  const classesChip = useStylesChip();
   const [selectedKey, setSelectedKey] = useState(details.knownForDepartment);
   const [sortType, setSortType] = useState("MostPopular");
   const [anchorEl, setAnchorEl] = useState(null);
@@ -48,7 +57,10 @@ export default ({ credits, details }) => {
   const creditsByKey = R.map(descendPopularity, toCreditsByKey(credits));
   const sorter = R.propOr(R.sortBy(R.prop("title")), sortType, sortersByType);
   const visibleCredits = sorter(R.propOr([], selectedKey, creditsByKey));
-  const keys = R.sortBy(R.identity, R.keys(creditsByKey));
+  const sortedKeys = R.sort(
+    R.descend(R.pipe(R.prop(R.__, creditsByKey), R.length)),
+    R.keys(creditsByKey)
+  );
 
   return (
     <React.Fragment>
@@ -69,13 +81,14 @@ export default ({ credits, details }) => {
         zIndex={1}
       >
         <HorizontalScroll paddingX={2} paddingY={2} flex={1}>
-          {keys.map((key) => (
+          {sortedKeys.map((key) => (
             <Box key={key} marginRight={1}>
               <Chip
                 label={key}
                 clickable
                 onClick={() => setSelectedKey(key)}
                 variant={key === selectedKey ? "default" : "outlined"}
+                classes={classesChip}
               />
             </Box>
           ))}
@@ -116,7 +129,9 @@ export default ({ credits, details }) => {
         <Box display="flex" flexDirection="row" flexWrap="wrap">
           {visibleCredits.map((credit) => (
             <Flipped flipId={credit.creditId} key={credit.creditId}>
-              <MoviePoster movie={credit} width="33.33%" />
+              <Box width="50%" p={1 / 2}>
+                <MoviePoster movie={credit} width="100%" />
+              </Box>
             </Flipped>
           ))}
         </Box>

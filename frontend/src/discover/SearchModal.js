@@ -7,7 +7,7 @@ import SearchTagsResults from "./SearchResults";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
-    backgroundColor: theme.palette.background.default, //"rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0, 0, 0, 0.5)", // theme.palette.background.default,
   },
 }));
 

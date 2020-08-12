@@ -1,5 +1,5 @@
 import { Box, Fab, useTheme } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
+import SearchIcon from "@material-ui/icons/Search";
 import React from "react";
 import { useDispatch } from "react-redux";
 import modal from "../common/redux/modal";
@@ -24,7 +24,7 @@ export default () => {
       <SearchModal />
       <Box position="fixed" bottom="64px" right="12px">
         <Fab onClick={handleClickOpen} color="primary">
-          <AddIcon color="action" />
+          <SearchIcon color="action" />
         </Fab>
       </Box>
     </div>

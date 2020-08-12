@@ -1,4 +1,4 @@
-import { Box, makeStyles, Paper } from "@material-ui/core";
+import { Box, makeStyles, Paper, LinearProgress } from "@material-ui/core";
 import * as R from "ramda";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,12 +26,12 @@ export default () => {
   }, [activeTags]);
 
   return (
-    <Paper>
-      <Box display="flex" flexDirection="row">
+    <>
+      <Box display="flex" flexDirection="row" bgcolor="background.default">
         <HorizontalScroll p={2} ref={ref}>
           {activeTags.map((tag) => (
             <Box marginRight={1} key={tag.id}>
-              <Tag tag={tag} onClick={handleClickTagActive(tag)} />
+              <Tag active tag={tag} onClick={handleClickTagActive(tag)} />
             </Box>
           ))}
           {inactiveTags.map((tag) => (
@@ -45,6 +45,6 @@ export default () => {
           ))}
         </HorizontalScroll>
       </Box>
-    </Paper>
+    </>
   );
 };

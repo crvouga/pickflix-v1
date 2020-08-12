@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import router from "../../common/redux/router";
 import discover from "../../discover/redux";
 import Title from "./Title";
+import Tag from "../../discover/Tag";
 
 const useStyles = makeStyles((theme) => ({
   chipRoot: {
@@ -41,13 +42,9 @@ export default ({ details, keywords }) => {
         {R.toPairs(chipsByType).map(([type, chips]) =>
           chips.map((chip) => (
             <Box key={chip.name} marginRight={1} marginBottom={1}>
-              <Chip
-                classes={{ root: classes.chipRoot }}
+              <Tag
+                tag={R.assoc("type", type, chip)}
                 onClick={handleClickChip(type, chip)}
-                clickable
-                label={chip.name}
-                variant="outlined"
-                style={{ fontWeight: "bold", fontSize: "1.25em" }}
               />
             </Box>
           ))

@@ -34,31 +34,29 @@ const tagsToParams = (tags) => {
 };
 
 const getDiscoverMovie = async (config) => {
-  const response = await queryCache.prefetchQuery({
-    queryKey: "discoverResponses",
-    queryFn: () => backendAPI.get("/api/tmdb/discover/movie", config),
-  });
-
+  const response = await backendAPI.get("/api/tmdb/discover/movie", config);
   return response.data;
 };
 
 export default function* () {
   yield takeLeading(actions.requestDiscover, function* () {
     const tags = yield select(selectors.activeTags);
-    const currentPage = yield select(selectors.currentPageDiscover);
+    const currentPage = yield select(selectors.currentPage);
     const config = {
       params: {
         ...tagsToParams(tags),
         page: currentPage + 1,
       },
     };
+    yield put(actions.setStatus("loading"));
     const response = yield call(getDiscoverMovie, config);
-    const responses = yield select(selectors.discoverResponses);
-    yield put(actions.setDiscoverResponses(R.append(response, responses)));
+    yield put(actions.setStatus("success"));
+    const responses = yield select(selectors.responses);
+    yield put(actions.setResponses(R.append(response, responses)));
   });
 
   yield takeEvery(actions.setActiveTags, function* () {
-    yield put(actions.setDiscoverResponses([]));
+    yield put(actions.setResponses([]));
     yield put(actions.requestDiscover());
   });
 }

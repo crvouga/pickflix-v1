@@ -41,7 +41,7 @@ export default ({ images, taggedImages, details, credits }) => {
 
   return (
     <React.Fragment>
-      <AspectRatio ratio="21/9" className={classes.root}>
+      {/* <AspectRatio ratio="21/9" className={classes.root}>
         <Box
           position="relative"
           display="flex"
@@ -62,9 +62,11 @@ export default ({ images, taggedImages, details, credits }) => {
 
           <PersonAvatar person={details} width="144px" m="auto" />
         </Box>
-      </AspectRatio>
-
-      <Box paddingX={2} paddingTop={4} paddingBottom={1}>
+      </AspectRatio> */}
+      <Box textAlign="center" p={2}>
+        <PersonAvatar person={details} width="144px" m="auto" />
+      </Box>
+      <Box paddingX={2}>
         <Typography variant="h5">{details.name}</Typography>
 
         <Typography variant="subtitle1" color="textSecondary">
