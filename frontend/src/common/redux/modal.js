@@ -8,8 +8,8 @@ const createPayload = (name, props) => ({
 });
 
 const actions = {
-  open: createAction("modal/open", createPayload),
-  close: createAction("modal/close", createPayload),
+  open: createAction("[modal] open", createPayload),
+  close: createAction("[modal] close", createPayload),
 };
 
 const initialState = {};

@@ -1,13 +1,18 @@
 import { createAction } from "@reduxjs/toolkit";
 
-export const setOpen = createAction("discover/setOpen");
-export const setTagQuery = createAction("discover/setTagQuery");
-export const setTags = createAction("discover/setTags");
-export const setResponses = createAction("discover/setResponses");
-export const setResponseStatus = createAction("discover/setResponseStatus");
-export const fetch = createAction("discover/fetch");
-export const selected = createAction("discover/selected");
-export const unselected = createAction("discover/unselected");
-export const toggle = createAction("discover/toggle");
-export const newTags = createAction("discover/newTags");
-export const tagQueryChanged = createAction("discover/tagQueryChanged");
+// document
+export const setTags = createAction("[discover] SET_TAGS");
+export const setActiveTags = createAction("[discover] SET_ACTIVE_TAGS");
+export const setDiscoverResponses = createAction(
+  "[discover] SET_DISCOVER_RESONSES"
+);
+export const setSearchText = createAction("[discover] SET_SEARCH_TEXT");
+export const setSearchResults = createAction("[discover] SET_SEARCH_RESULTS");
+
+// command
+export const requestDiscover = createAction("[discover] REQUEST_DISCOVER");
+export const requestSearch = createAction("[discover] REQUEST_SEARCH");
+export const activateTags = createAction("[discover] ACTIVATE_TAGS");
+export const deactivateTags = createAction("[discover] DEACTIVATE_TAGS");
+export const addTags = createAction("[discover] ADD_TAGS");
+export const subtractTags = createAction("[discover] SUBTRACT_TAGS");

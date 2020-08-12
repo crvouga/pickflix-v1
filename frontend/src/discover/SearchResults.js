@@ -1,26 +1,26 @@
-import { Box, makeStyles } from "@material-ui/core";
+import { Box } from "@material-ui/core";
+import matchSorter from "match-sorter";
+import * as R from "ramda";
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import modal from "../common/redux/modal";
 import discover from "./redux";
 import Tag from "./Tag";
-import * as R from "ramda";
-import matchSorter from "match-sorter";
-
-const useStyles = makeStyles((theme) => ({}));
 
 export default () => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const tags = useSelector(discover.selectors.tags);
-  const tagQuery = useSelector(discover.selectors.tagQuery);
+  const searchResults = useSelector(discover.selectors.searchResults);
+  const searchText = useSelector(discover.selectors.searchText);
 
-  const sortedTags = matchSorter(tags, tagQuery, {
+  const sortedTags = matchSorter(R.union(tags, searchResults), searchText, {
     keys: ["name"],
     threshold: matchSorter.rankings.NO_MATCH,
   });
+
   const handleClickTag = (tag) => () => {
-    dispatch(discover.actions.toggle(tag));
-    dispatch(discover.actions.setOpen(false));
+    dispatch(discover.actions.activateTags([tag]));
+    dispatch(modal.actions.close("discover/SearchModal"));
   };
 
   return (

@@ -1,11 +1,9 @@
 import { Dialog, makeStyles } from "@material-ui/core";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import discover from "./redux";
-import SearchTagsInput from "./SearchTagsInput";
-import SearchTagsResults from "./SearchTagsResults";
-import { useRef } from "react";
-import { useEffect } from "react";
+import modal from "../common/redux/modal";
+import SearchTagsInput from "./SearchInput";
+import SearchTagsResults from "./SearchResults";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
@@ -15,25 +13,17 @@ const useStylesDialog = makeStyles((theme) => ({
 
 export default () => {
   const classesDialog = useStylesDialog();
-  const open = useSelector(discover.selectors.open);
+  const open = useSelector(modal.selectors.isOpen("discover/SearchModal"));
   const dispatch = useDispatch();
   const handleClose = () => {
-    dispatch(discover.actions.setOpen(false));
+    dispatch(modal.actions.close("discover/SearchModal"));
   };
-  const paperRef = useRef();
-
-  useEffect(() => {
-    if (open && paperRef.current) {
-      paperRef.current.scrollTop = 0;
-    }
-  }, [open, paperRef.current]);
   return (
     <Dialog
       classes={classesDialog}
       fullScreen
       open={open}
       onClose={handleClose}
-      PaperProps={{ ref: paperRef }}
     >
       <SearchTagsInput />
       <SearchTagsResults />

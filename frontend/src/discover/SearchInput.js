@@ -3,6 +3,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import React from "react";
 import { useDispatch } from "react-redux";
 import discover from "./redux";
+import modal from "../common/redux/modal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,10 +32,11 @@ export default React.forwardRef((props, ref) => {
   const classesInputBase = useStylesInputBase();
   const dispatch = useDispatch();
   const handleClose = () => {
-    dispatch(discover.actions.setOpen(false));
+    dispatch(modal.actions.close("discover/SearchModal"));
   };
   const handleChangeInputBase = (e) => {
-    dispatch(discover.actions.tagQueryChanged(e.target.value));
+    console.log("handleChangeInputBase");
+    dispatch(discover.actions.setSearchText(e.target.value));
   };
 
   return (
@@ -44,6 +46,7 @@ export default React.forwardRef((props, ref) => {
           <ArrowBackIcon />
         </IconButton>
         <InputBase
+          autoFocus
           inputRef={ref}
           classes={classesInputBase}
           placeholder="Genre, People, Date, ..."

@@ -24,7 +24,7 @@ export default ({ details, keywords }) => {
   const dispatch = useDispatch();
   const handleClickChip = (type, tag) => () => {
     const newTags = [R.assoc("type", type, tag)];
-    dispatch(discover.actions.selected(newTags));
+    dispatch(discover.actions.activateTags(newTags));
     dispatch(router.actions.push("/discover"));
   };
 

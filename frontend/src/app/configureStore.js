@@ -14,17 +14,21 @@ const persistConfig = {
   key: "root",
   storage,
 };
-const reducer = persistReducer(persistConfig, root.reducer);
+const persistedReducer = persistReducer(persistConfig, root.reducer);
 
 const sagaMiddleware = createSagaMiddleware();
 const middleware = [sagaMiddleware, routerMiddleware(history)];
 
 export default () => {
   const store = configureStore({
-    reducer,
+    reducer: persistedReducer,
     middleware,
   });
   sagaMiddleware.run(root.saga);
   const persistor = persistStore(store);
-  return { store, persistor, history };
+  return {
+    store,
+    persistor,
+    history,
+  };
 };

@@ -1,36 +1,33 @@
-import { Box, Typography, CircularProgress } from "@material-ui/core";
-import numeral from "numeral";
-import * as R from "ramda";
+import { Box } from "@material-ui/core";
 import React, { useEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
 import Poster from "../movie/components/Poster";
-import TMDbAttribution from "../tmdb/TMDbAttribution";
 import discover from "./redux";
-const resultsToFlipKey = R.pipe(R.pluck("id"), R.join(","));
 
 export default () => {
-  const results = useSelector(discover.selectors.results);
-  const totalResults = useSelector(discover.selectors.totalResults);
-  const responseStatus = useSelector(discover.selectors.responseStatus);
+  const results = useSelector(discover.selectors.discoverResults);
+  const canRequestMoreDiscover = useSelector(
+    discover.selectors.canRequestMoreDiscover
+  );
+
   const dispatch = useDispatch();
 
   const [triggerRef, inView] = useInView();
-  const canFetchMore = results.length < totalResults;
 
   useEffect(() => {
-    if (inView && canFetchMore) {
-      dispatch(discover.actions.fetch());
+    if (inView && canRequestMoreDiscover) {
+      dispatch(discover.actions.requestDiscover());
     }
   }, [inView]);
 
-  const selectedTags = useSelector(discover.selectors.selectedTags);
+  const activeTags = useSelector(discover.selectors.activeTags);
   const ref = useRef();
   useEffect(() => {
     if (ref.current) {
       ref.current.scrollTop = 0;
     }
-  }, [selectedTags]);
+  }, [activeTags]);
 
   return (
     <>
@@ -48,7 +45,6 @@ export default () => {
           </Box>
         ))}
         <div ref={triggerRef} />
-        {responseStatus === "loading" && <CircularProgress />}
       </Box>
     </>
   );

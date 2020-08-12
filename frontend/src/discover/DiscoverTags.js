@@ -7,12 +7,15 @@ import discover from "./redux";
 import Tag from "./Tag";
 
 export default () => {
-  const selectedTags = useSelector(discover.selectors.selectedTags);
-  const unselectedTags = useSelector(discover.selectors.unselectedTags);
+  const activeTags = useSelector(discover.selectors.activeTags);
+  const inactiveTags = useSelector(discover.selectors.inactiveTags);
 
   const dispatch = useDispatch();
-  const handleClickTag = (tag) => () => {
-    dispatch(discover.actions.toggle(tag));
+  const handleClickTagActive = (tag) => () => {
+    dispatch(discover.actions.deactivateTags([tag]));
+  };
+  const handleClickTagInactive = (tag) => () => {
+    dispatch(discover.actions.activateTags([tag]));
   };
 
   const ref = useRef();
@@ -20,20 +23,24 @@ export default () => {
     if (ref.current) {
       ref.current.scrollLeft = 0;
     }
-  }, [selectedTags]);
+  }, [activeTags]);
 
   return (
     <Paper>
       <Box display="flex" flexDirection="row">
         <HorizontalScroll p={2} ref={ref}>
-          {selectedTags.map((tag) => (
+          {activeTags.map((tag) => (
             <Box marginRight={1} key={tag.id}>
-              <Tag tag={tag} onClick={handleClickTag(tag)} />
+              <Tag tag={tag} onClick={handleClickTagActive(tag)} />
             </Box>
           ))}
-          {unselectedTags.map((tag) => (
+          {inactiveTags.map((tag) => (
             <Box marginRight={1} key={tag.id}>
-              <Tag tag={tag} onClick={handleClickTag(tag)} variant="outlined" />
+              <Tag
+                tag={tag}
+                onClick={handleClickTagInactive(tag)}
+                variant="outlined"
+              />
             </Box>
           ))}
         </HorizontalScroll>
