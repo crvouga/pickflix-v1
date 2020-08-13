@@ -4,6 +4,7 @@ import * as R from "ramda";
 import React from "react";
 import { useDispatch } from "react-redux";
 import search from "./redux";
+import { useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: theme.mixins.toolbar,
@@ -23,6 +24,7 @@ export default R.compose(
 
   const handleClear = () => {
     ref.current.value = "";
+    dispatch(search.actions.setText(""));
   };
 
   const handleChange = (e) => {

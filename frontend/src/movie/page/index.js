@@ -13,11 +13,11 @@ import Credits from "./Credits";
 import Details from "./Details";
 import Header from "./Header";
 import Media from "./Media";
+import NavBar from "./NavBar";
 import RelatedMovies from "./RelatedMovies";
 import Reviews from "./Reviews";
 import SkeletonPage from "./SkeletonPage";
 import Videos from "./Videos";
-import Discover from "./Discover";
 
 const fetchMoviePage = (movieId) =>
   backendAPI
@@ -71,6 +71,7 @@ export default () => {
   return (
     <Fade in>
       <Page>
+        {/* <NavBar details={details} /> */}
         <Media videos={videos.results} images={images} />
         <Header
           details={details}
@@ -84,7 +85,7 @@ export default () => {
           recommendations={recommendations.results}
           similar={similar.results}
         />
-        <Discover details={details} keywords={keywords.keywords} />
+
         <Reviews reviews={reviews} />
         <Details details={details} keywords={keywords.keywords} />
         <Footer />

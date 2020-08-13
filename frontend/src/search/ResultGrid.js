@@ -11,9 +11,8 @@ export default ({ results = [], onResultClick = () => {} }) => {
         <Box
           key={result.id}
           onClick={handleResultClick(result)}
-          width="50%"
+          width="33.33%"
           style={{ overflowY: "hidden" }}
-          p={1 / 2}
         >
           <MediaEntity entity={result} width="100%" />
         </Box>

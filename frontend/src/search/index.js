@@ -1,10 +1,10 @@
-import { AppBar, makeStyles } from "@material-ui/core";
+import { AppBar, Fade, makeStyles } from "@material-ui/core";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import History from "./History";
 import Input from "./Input";
 import search from "./redux";
 import Results from "./Results";
-import History from "./History";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -12,17 +12,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default () => {
-  const classes = useStyles();
+const useInputRef = () => {
   const dispatch = useDispatch();
-  const inputRef = useRef();
-
+  const ref = useRef();
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
+    if (ref.current) {
+      ref.current.focus();
+      ref.current.value = "";
       dispatch(search.actions.setText(""));
     }
-  }, [inputRef.current]);
+  }, [ref.current]);
+
+  return ref;
+};
+
+export default () => {
+  const classes = useStyles();
+  const inputRef = useInputRef();
 
   const blur = () => {
     inputRef.current.blur();

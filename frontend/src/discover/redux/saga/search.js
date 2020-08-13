@@ -31,15 +31,13 @@ const getSearchCompany = async (config) => {
 export default function* () {
   yield takeLatest(actions.setSearchText, function* () {
     yield delay(200);
-
     const searchText = yield select(selectors.searchText);
-
-    if (searchText.length === 0) return;
-
+    if (searchText.length === 0) {
+      return;
+    }
     yield put(actions.setSearchResults([]));
 
     const cancelSource = axios.CancelToken.source();
-
     const config = {
       cancelToken: cancelSource.token,
       params: {
@@ -88,7 +86,6 @@ export default function* () {
     } catch (error) {
     } finally {
       if (yield cancelled()) {
-        console.log("cancelled()");
         yield call(() => cancelSource.cancel());
       }
     }

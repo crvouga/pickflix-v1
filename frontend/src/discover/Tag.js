@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default ({ tag, variant, active, onClick, ...restOfProps }) => {
   const classes = useStyles();
-  const tagURL = makeTMDbImageURL(3, tag);
+  const tagURL = makeTMDbImageURL(5, tag);
   const tagIcon = typeToIcon(tag.type);
   return (
     <ButtonBase className={classes.borderRadius} onClick={onClick}>

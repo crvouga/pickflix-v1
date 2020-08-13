@@ -1,25 +1,23 @@
 import { createReducer } from "@reduxjs/toolkit";
 import actions from "./actions";
 
+const setPayload = (key) => (state, action) => {
+  state[key] = action.payload;
+};
+
 export default createReducer(
   {
+    focused: true,
     text: "",
     responses: [],
     status: "loading",
     recentlySearched: [],
   },
   {
-    [actions.setText]: (state, action) => {
-      state.text = action.payload;
-    },
-    [actions.setResponses]: (state, action) => {
-      state.responses = action.payload;
-    },
-    [actions.setStatus]: (state, action) => {
-      state.status = action.payload;
-    },
-    [actions.setRecentlySearched]: (state, action) => {
-      state.recentlySearched = action.payload;
-    },
+    [actions.setFocused]: setPayload("focused"),
+    [actions.setText]: setPayload("text"),
+    [actions.setResponses]: setPayload("responses"),
+    [actions.setStatus]: setPayload("status"),
+    [actions.setRecentlySearched]: setPayload("recentlySearched"),
   }
 );

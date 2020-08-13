@@ -4,9 +4,49 @@ import momentDurationFormatSetup from "moment-duration-format";
 import numeral from "numeral";
 import React from "react";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
+import * as R from "ramda";
+import Tag from "../../discover/Tag";
+import { useDispatch } from "react-redux";
+import discover from "../../discover/redux";
+import router from "../../common/redux/router";
 momentDurationFormatSetup(moment);
 
 const commas = (_) => numeral(_).format("0,0");
+
+const TagScroll = ({ title, tags }) => {
+  const dispatch = useDispatch();
+  if (tags.length === 0) {
+    return null;
+  }
+  const onClick = (tag) => () => {
+    dispatch(discover.actions.activateTags([tag]));
+    dispatch(router.actions.push("/discover"));
+  };
+  return (
+    <>
+      <Typography
+        component={Box}
+        gutterBottom
+        style={{ fontWeight: "bold" }}
+        paddingLeft={2}
+      >
+        {title}
+      </Typography>
+      <HorizontalScroll paddingLeft={2} marginBottom={2}>
+        {tags.map((tag) => (
+          <Box
+            key={tag.id}
+            marginRight={1}
+            marginBottom={1}
+            onClick={onClick(tag)}
+          >
+            <Tag tag={tag} />
+          </Box>
+        ))}
+      </HorizontalScroll>
+    </>
+  );
+};
 
 const renderChipScroll = (title, chips) => {
   if (chips.length === 0) {
@@ -28,7 +68,7 @@ const renderChipScroll = (title, chips) => {
   );
 };
 
-export default ({ details }) => {
+export default ({ details, keywords }) => {
   const budget = details.budget ? `$${commas(details.budget)}` : "-";
   const revenue = details.revenue ? `$${commas(details.revenue)}` : "-";
   const voteAverage =
@@ -41,12 +81,20 @@ export default ({ details }) => {
     .format("h[h] m[m]");
 
   return (
-    <Box>
-      <Box p={2} paddingBottom={0}>
-        <Box paddingBottom={2}>
-          <Typography style={{ fontWeight: "bold" }}>Details</Typography>
-        </Box>
-
+    <Box paddingTop={2}>
+      <TagScroll
+        title="Genres"
+        tags={R.map(R.assoc("type", "genre"), details.genres)}
+      />
+      <TagScroll
+        title="Keywords"
+        tags={R.map(R.assoc("type", "keyword"), keywords)}
+      />
+      <TagScroll
+        title="Production Companies"
+        tags={R.map(R.assoc("type", "company"), details.productionCompanies)}
+      />
+      <Box paddingX={2}>
         <Grid container spacing={2}>
           <Grid item xs>
             <Typography>Budget</Typography>
@@ -96,8 +144,6 @@ export default ({ details }) => {
         </Grid>
       </Box>
 
-      {renderChipScroll("Genres", details.genres)}
-      {renderChipScroll("Production Companies", details.productionCompanies)}
       {renderChipScroll("Production Countries", details.productionCountries)}
       <Divider />
     </Box>
