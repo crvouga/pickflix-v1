@@ -1,4 +1,4 @@
-import { Box, makeStyles, Typography } from "@material-ui/core";
+import { Box, makeStyles } from "@material-ui/core";
 import React from "react";
 import AspectRatio from "react-aspect-ratio";
 import "react-aspect-ratio/aspect-ratio.css";
@@ -26,20 +26,18 @@ export default ({ movie, ...restOfProps }) => {
   const classes = useStyles({ backdropURL, posterURL });
 
   return (
-    <Box component={AspectRatio} ratio="16/9" {...restOfProps}>
-      {backdropURL || posterURL ? (
-        <LazyLoadImage
-          effect="opacity"
-          className={classes.image}
-          src={backdropURL || posterURL}
-        />
-      ) : (
-        <div className={classes.fallback}>
-          <Typography align="center" color="textSecondary">
-            {/* <MovieIcon className={classes.movieIcon} /> */}
-          </Typography>
-        </div>
-      )}
+    <Box {...restOfProps}>
+      <AspectRatio ratio="16/9" style={{ width: "100%", height: "100%" }}>
+        {backdropURL || posterURL ? (
+          <LazyLoadImage
+            effect="opacity"
+            className={classes.image}
+            src={backdropURL || posterURL}
+          />
+        ) : (
+          <div className={classes.fallback}></div>
+        )}
+      </AspectRatio>
     </Box>
   );
 };

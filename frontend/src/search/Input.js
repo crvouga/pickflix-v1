@@ -1,10 +1,9 @@
 import { Box, IconButton, InputBase, makeStyles } from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
-import * as R from "ramda";
-import React from "react";
+
+import React, { forwardRef } from "react";
 import { useDispatch } from "react-redux";
 import search from "./redux";
-import { useEffect } from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: theme.mixins.toolbar,
@@ -15,14 +14,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default R.compose(
-  React.memo,
-  React.forwardRef
-)((props, ref) => {
+export default forwardRef((props, ref) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
   const handleClear = () => {
+    ref.current.focus();
     ref.current.value = "";
     dispatch(search.actions.setText(""));
   };

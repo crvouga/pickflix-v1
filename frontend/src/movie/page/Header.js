@@ -1,16 +1,15 @@
 import { Box, Chip, Divider, Typography } from "@material-ui/core";
-import { push } from "connected-react-router";
 import moment from "moment";
 import momentDurationFormatSetup from "moment-duration-format";
 import * as R from "ramda";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import ExpandHeight from "../../common/components/ExpandHeight";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
 import useBoolean from "../../common/hooks/useBoolean";
+import router from "../../common/redux/router";
 import discover from "../../discover/redux";
 import ActionBar from "./ActionBar";
-import router from "../../common/redux/router";
 momentDurationFormatSetup(moment);
 
 const toCertification = R.pipe(

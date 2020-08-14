@@ -1,4 +1,4 @@
-import { AppBar, Fade, makeStyles } from "@material-ui/core";
+import { AppBar, Fade, makeStyles, Box, Typography } from "@material-ui/core";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import History from "./History";
@@ -26,6 +26,24 @@ const useInputRef = () => {
   return ref;
 };
 
+const NoResults = () => {
+  const status = useSelector(search.selectors.status);
+  const results = useSelector(search.selectors.results);
+  const text = useSelector(search.selectors.text);
+
+  if (results.length === 0 && status === "success" && text.length !== 0) {
+    return (
+      <Box p={4}>
+        <Typography align="center" color="textSecondary">
+          Couldn't find anything for "{text}"
+        </Typography>
+      </Box>
+    );
+  } else {
+    return null;
+  }
+};
+
 export default () => {
   const classes = useStyles();
   const inputRef = useInputRef();
@@ -39,6 +57,9 @@ export default () => {
       <AppBar className={classes.appBar} position="sticky" color="default">
         <Input ref={inputRef} />
       </AppBar>
+
+      <NoResults inputRef={inputRef} />
+
       <Results />
       <History />
     </div>
