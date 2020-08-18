@@ -42,26 +42,27 @@ export default () => {
           helperText={errors?.email?.message}
           autoFocus
         />
-      </form>
-      <Box textAlign="right" marginTop={2} p={2}>
-        <Box display="inline-block" marginRight={2}>
+
+        <Box textAlign="right" marginTop={2} p={2}>
+          <Box display="inline-block" marginRight={2}>
+            <Button
+              color="primary"
+              onClick={handleCancel}
+              style={{ fontWeight: "bold" }}
+            >
+              Cancel
+            </Button>
+          </Box>
           <Button
+            type="submit"
+            variant="contained"
             color="primary"
-            onClick={handleCancel}
             style={{ fontWeight: "bold" }}
           >
-            Cancel
+            Next
           </Button>
         </Box>
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          style={{ fontWeight: "bold" }}
-        >
-          Next
-        </Button>
-      </Box>
+      </form>
     </Box>
   );
 };

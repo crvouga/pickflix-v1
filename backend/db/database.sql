@@ -1,6 +1,14 @@
+CREATE DATABASE pickflix;
+
+CREATE TABLE app_user
+(
+  id BIGSERIAL PRIMARY KEY NOT NULL,
+  firebase_id VARCHAR (255) NOT NULL UNIQUE
+)
+
 CREATE TABLE todo
 (
-  todo_id SERIAL PRIMARY KEY,
-  content VARCHAR(255),
-  done VARCHAR(1)
-);
+  id BIGSERIAL PRIMARY KEY NOT NULL,
+  task VARCHAR(255) NOT NULL,
+  app_user_id BIGINT REFERENCES app_user (id)
+)

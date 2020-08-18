@@ -11,18 +11,12 @@ import {
 import AddIcon from "@material-ui/icons/Add";
 import DeleteIcon from "@material-ui/icons/Delete";
 import * as R from "ramda";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useQuery } from "react-query";
-import { v4 as uuidv4 } from "uuid";
 import backendAPI from "../../backendAPI";
 
-const makeTodo = (description) => ({
-  id: uuidv4(),
-  description,
-});
-
 export default () => {
-  const [value, setValue] = useState("");
+  const inputRef = useRef();
   const [todos, setTodos] = useState([]);
 
   const query = useQuery(
@@ -33,36 +27,43 @@ export default () => {
 
   useEffect(() => {
     if (query.status === "success") {
-      setTodos(query.data.todos);
+      setTodos(query.data.results);
     }
   }, [query.status]);
 
   const handleAdd = async () => {
-    setTodos(R.prepend(makeTodo(value)));
-    const response = await backendAPI.post("/api/todo", { description: value });
+    try {
+      const res = await backendAPI.post("/api/todo", {
+        task: inputRef.current.value,
+      });
+      setTodos(R.prepend(res.data));
+    } catch (error) {}
   };
 
-  const handleDelete = (todo) => () => {
-    setTodos(R.without([todo]));
+  const handleDelete = (todo) => async () => {
+    try {
+      await backendAPI.delete(`/api/todo/${todo.id}`);
+      setTodos(R.reject(R.whereEq({ id: todo.id })));
+    } catch (error) {}
   };
 
-  const handleChange = (e, newValue) => {
-    setValue(e.target.value);
-  };
   if (query.status === "loading")
     return (
       <Box width="100%" p={2} textAlign="center">
         <CircularProgress />
       </Box>
     );
-  if (query.status === "error") return "error";
 
+  if (query.status === "error") {
+    return "error";
+  }
+
+  console.log({ todos });
   return (
     <div>
       <Box width="100%" display="flex" paddingX={2}>
         <TextField
-          value={value}
-          onChange={handleChange}
+          inputRef={inputRef}
           placeholder="something todo"
           variant="outlined"
           style={{ flex: 1 }}
@@ -73,8 +74,8 @@ export default () => {
       </Box>
       <List>
         {todos.map((todo) => (
-          <ListItem key={todo.id}>
-            <ListItemText primary={todo.description} />
+          <ListItem key={todo.todo_id}>
+            <ListItemText primary={todo.task} />
             <ListItemSecondaryAction>
               <IconButton onClick={handleDelete(todo)}>
                 <DeleteIcon />
