@@ -18,8 +18,8 @@ const createPayload = (mediaType, data) => {
 };
 
 const actions = {
-  viewed: createAction("recentlyViewed/viewed", createPayload),
-  clear: createAction("recentlyViewed/clear"),
+  viewed: createAction("[recentlyViewed] VIEWED", createPayload),
+  clear: createAction("[recentlyViewed] CLEAR"),
 };
 
 const reducer = createReducer(

@@ -61,7 +61,8 @@ const Result = ({ result, ...restOfProps }) => {
 const TopResultMovie = ({ movie, ...restOfProps }) => {
   return (
     <Box {...restOfProps} width="100%" display="flex" flexDirection="row">
-      <Box p={2}>
+      <Poster movie={movie} width="80px" />
+      <Box p={2} display="flex" flexDirection="column" alignContent="center">
         <Typography variant="h6">{movie.title}</Typography>
         <Typography variant="subtitle1" color="textSecondary">
           {moment(movie.releaseDate).format("Y")}
@@ -77,8 +78,8 @@ const TopResultPerson = ({ person, onClick, ...restOfProps }) => {
       <ResultPerson person={person} onClick={onClick} />
       <HorizontalScroll>
         {person.knownFor.map((movie) => (
-          <Box key={movie.id} marginRight={1}>
-            <Poster width="120px" movie={movie} />
+          <Box key={movie.id} p={1 / 2} width="33.33%">
+            <Poster width="100%" movie={movie} />
           </Box>
         ))}
       </HorizontalScroll>
@@ -96,7 +97,7 @@ const TopResult = ({ result, ...restOfProps }) => {
 
 export default () => {
   const dispatch = useDispatch();
-  const results = useSelector(search.selectors.results);
+  const results = useSelector(search.selectors.sortedResults);
   const status = useSelector(search.selectors.status);
   const [triggerRef, inView] = useInView();
 
@@ -125,6 +126,7 @@ export default () => {
         paddingTop={1}
         onClick={handleClick(topResult)}
       />
+      <Divider />
       <List>
         {bottomResults.map((result) => (
           <Result

@@ -64,66 +64,68 @@ export default ({ credits, details }) => {
 
   return (
     <React.Fragment>
-      <Box
-        paddingX={2}
-        paddingTop={1}
-        component={Typography}
-        style={{ fontWeight: "bold" }}
+      <Menu
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
       >
-        Filmography
+        <MenuItem
+          selected={sortType === "MostPopular"}
+          onClick={handleSortSelect("MostPopular")}
+        >
+          Most Popular
+        </MenuItem>
+        <MenuItem
+          selected={sortType === "NewestFirst"}
+          onClick={handleSortSelect("NewestFirst")}
+        >
+          Newest First
+        </MenuItem>
+        <MenuItem
+          selected={sortType === "OldestFirst"}
+          onClick={handleSortSelect("OldestFirst")}
+        >
+          Oldest First
+        </MenuItem>
+      </Menu>
+      <Box paddingX={2} paddingTop={1} display="flex" flexDirection="row">
+        <Typography
+          style={{
+            marginTop: "auto",
+            marginBottom: "auto",
+            flex: 1,
+            fontWeight: "bold",
+          }}
+        >
+          Filmography
+        </Typography>
+        <IconButton onClick={handleClick}>
+          <TuneIcon />
+        </IconButton>
       </Box>
-      <Box
+
+      <HorizontalScroll
+        paddingLeft={2}
+        paddingY={2}
+        width="100%"
         bgcolor="background.default"
-        display="flex"
-        flexDirection="row"
         position="sticky"
         top={0}
         zIndex={1}
       >
-        <HorizontalScroll paddingX={2} paddingY={2} flex={1}>
-          {sortedKeys.map((key) => (
-            <Box key={key} marginRight={1}>
-              <Chip
-                label={key}
-                clickable
-                onClick={() => setSelectedKey(key)}
-                variant={key === selectedKey ? "default" : "outlined"}
-                classes={classesChip}
-              />
-            </Box>
-          ))}
-        </HorizontalScroll>
-
-        <IconButton onClick={handleClick}>
-          <TuneIcon />
-        </IconButton>
-
-        <Menu
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem
-            selected={sortType === "MostPopular"}
-            onClick={handleSortSelect("MostPopular")}
-          >
-            Most Popular
-          </MenuItem>
-          <MenuItem
-            selected={sortType === "NewestFirst"}
-            onClick={handleSortSelect("NewestFirst")}
-          >
-            Newest First
-          </MenuItem>
-          <MenuItem
-            selected={sortType === "OldestFirst"}
-            onClick={handleSortSelect("OldestFirst")}
-          >
-            Oldest First
-          </MenuItem>
-        </Menu>
-      </Box>
+        {sortedKeys.map((key) => (
+          <Box key={key} marginRight={1}>
+            <Chip
+              label={key}
+              clickable
+              onClick={() => setSelectedKey(key)}
+              variant={key === selectedKey ? "default" : "outlined"}
+              classes={classesChip}
+            />
+          </Box>
+        ))}
+      </HorizontalScroll>
 
       <Flipper flipKey={R.join(",", R.pluck("creditId", visibleCredits))}>
         <Box display="flex" flexDirection="row" flexWrap="wrap">

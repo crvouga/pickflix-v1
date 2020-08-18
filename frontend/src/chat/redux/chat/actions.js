@@ -6,10 +6,10 @@ const assocId = (message) => ({
 });
 
 export default {
-  sendMessage: createAction("chat/sendMessage", assocId),
-  recieveMessage: createAction("chat/recieveMessage", assocId),
-  setTags: createAction("chat/setTags"),
-  setText: createAction("chat/setText"),
-  setOptions: createAction("chat/setOptions"),
-  setStatus: createAction("chat/setStatus"),
+  sendMessage: createAction("[chat] SEND_MESSAGE", assocId),
+  recieveMessage: createAction("[chat] RECIEVE_MESSAGE", assocId),
+  setTags: createAction("[chat] SET_TAGS"),
+  setText: createAction("[chat] SET_TEXT"),
+  setOptions: createAction("[chat] SET_OPTIONS"),
+  setStatus: createAction("[chat] SET_STATUS"),
 };

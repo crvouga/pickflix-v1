@@ -27,7 +27,7 @@ export default ({ movie, ...restOfProps }) => {
 
   return (
     <Box {...restOfProps}>
-      <AspectRatio ratio="16/9" style={{ width: "100%", height: "100%" }}>
+      <AspectRatio ratio="16/9" style={{ width: "100%" }}>
         {backdropURL || posterURL ? (
           <LazyLoadImage
             effect="opacity"

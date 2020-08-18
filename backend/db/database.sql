@@ -12,3 +12,10 @@ CREATE TABLE todo
   task VARCHAR(255) NOT NULL,
   app_user_id BIGINT REFERENCES app_user (id)
 )
+
+CREATE TABLE tag
+(
+  id BIGSERIAL PRIMARY KEY NOT NULL,
+  app_user_id BIGINT REFERENCES app_user(id),
+  entity_id VARCHAR(255) NOT NULL UNIQUE
+)
