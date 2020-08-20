@@ -1,7 +1,5 @@
-const R = require("ramda");
 const config = require("../config");
 const env = process.env.NODE_ENV || "development";
-const mung = require("express-mung");
 
 const corsConfig = {
   credentials: true,
@@ -31,27 +29,4 @@ const corsConfig = {
   },
 };
 
-const omitDeep = R.curry((props, object) =>
-  R.when(R.is(Object), R.pipe(R.omit(props), R.map(omitDeep(props))), object)
-);
-
-module.exports = async ({ app }) => {
-  // middlewares
-  app.use(require("cors")(corsConfig));
-  app.use(require("body-parser").json());
-  app.use(require("cookie-parser")());
-  app.use(require("./blacklist"));
-
-  // api layer
-  app.use("/api", require("../api"));
-
-  // errors
-  app.use((err, req, res, next) => {
-    res.status(err.status || 500);
-    res.json({
-      errors: {
-        message: err.message,
-      },
-    });
-  });
-};
+module.exports = require("cors")(corsConfig);
