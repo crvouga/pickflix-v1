@@ -3,11 +3,6 @@
   "version": "1.0.0",
   "description": "An app that helps you pick flixs 🎥 to watch.🍿",
   "main": "index.js",
-  "scripts": {
-    "frontend": "cd frontend && npm start",
-    "backend": "cd backend && npm run dev",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/crvouga/Pickflix.git"
@@ -18,8 +13,5 @@
     "url": "https://github.com/crvouga/Pickflix/issues"
   },
   "homepage": "https://github.com/crvouga/Pickflix#readme",
-  "dependencies": {
-    "chromecast-api": "^0.3.4",
-    "express-session": "^1.17.1"
-  }
+  "dependencies": {}
 }

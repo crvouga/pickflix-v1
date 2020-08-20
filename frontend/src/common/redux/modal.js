@@ -1,15 +1,15 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import * as R from "ramda";
 import router from "./router";
-import { takeEvery, put } from "redux-saga/effects";
+import { takeEvery, put, select } from "redux-saga/effects";
 
 const createPayload = (name, props) => ({
   payload: { name, props },
 });
 
 const actions = {
-  open: createAction("[modal] open", createPayload),
-  close: createAction("[modal] close", createPayload),
+  open: createAction("[modal] OPEN", createPayload),
+  close: createAction("[modal] CLOSE", createPayload),
 };
 
 const initialState = {};
@@ -28,16 +28,20 @@ const selectors = {
 function* saga() {
   yield takeEvery(actions.open, function* (action) {
     const { name, props } = action.payload;
-    yield put(
-      router.actions.push({ state: { [name]: { isOpen: true, props } } })
-    );
+    const routerState = yield select(router.selectors.state);
+    const newRouterState = R.mergeDeepRight(routerState, {
+      [name]: { isOpen: true, props },
+    });
+    yield put(router.actions.push({ state: newRouterState }));
   });
 
   yield takeEvery(actions.close, function* (action) {
     const { name, props } = action.payload;
-    yield put(
-      router.actions.push({ state: { [name]: { isOpen: false, props } } })
-    );
+    const routerState = yield select(router.selectors.state);
+    const newRouterState = R.mergeDeepRight(routerState, {
+      [name]: { isOpen: false, props },
+    });
+    yield put(router.actions.push({ state: newRouterState }));
   });
 }
 

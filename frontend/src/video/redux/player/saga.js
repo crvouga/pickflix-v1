@@ -1,24 +1,34 @@
 import { put, select, takeEvery } from "redux-saga/effects";
-import modal from "../../../common/redux/modal";
-import actions from "./actions";
-import * as selectors from "./selectors";
+import { actions, selectors } from "../../../redux";
+import * as R from "ramda";
 
 export default function* () {
-  // set video when playlist changes
-  yield takeEvery(actions.setPlaylist, function* () {
-    const playlist = yield select(selectors.playlist);
-    const video = yield select(selectors.video);
-    //if current video is not in playlist
-    if (playlist.every((playlistVideo) => playlistVideo?.key !== video?.key)) {
-      yield put(actions.setVideo(playlist?.[0]));
+  yield takeEvery(actions.player.play, function* () {
+    yield put(actions.player.setIsPlaying(true));
+  });
+
+  yield takeEvery(actions.player.pause, function* () {
+    yield put(actions.player.setIsPlaying(false));
+  });
+
+  yield takeEvery(actions.player.toggle, function* () {
+    const isPlaying = yield select(selectors.isPlaying);
+    yield put(actions.player.setIsPlaying(!isPlaying));
+  });
+
+  yield takeEvery(actions.player.setPlaylist, function* () {
+    const playlist = yield select(selectors.player.playlist);
+    const video = yield select(selectors.player.video);
+
+    if (R.not(R.includes(video, playlist))) {
+      yield put(actions.player.setVideo(playlist?.[0]));
     }
   });
 
-  // ensure the player is paused when the video modal is closed
-  yield takeEvery([actions.play, actions.progress], function* () {
-    const isVideoOpen = yield select(modal.selectors.isOpen("video"));
+  yield takeEvery([actions.player.play, actions.player.progress], function* () {
+    const isVideoOpen = yield select(selectors.modal.isOpen("video"));
     if (!isVideoOpen) {
-      yield put(actions.pause());
+      yield put(actions.player.setIsPlaying(false));
     }
   });
 }

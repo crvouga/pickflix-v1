@@ -4,6 +4,8 @@ import AspectRatio from "react-aspect-ratio";
 import "react-aspect-ratio/aspect-ratio.css";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/opacity.css";
+import { useDispatch } from "react-redux";
+import { actions } from "../../redux";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 
 const useStyles = makeStyles((theme) => ({
@@ -24,9 +26,14 @@ export default ({ movie, ...restOfProps }) => {
   const backdropURL = makeTMDbImageURL(2, { backdropPath });
   const posterURL = makeTMDbImageURL(2, { posterPath });
   const classes = useStyles({ backdropURL, posterURL });
-
+  const dispatch = useDispatch();
+  const onClick = () => {
+    if (movie.id) {
+      dispatch(actions.router.push(`/movie/${movie.id}`));
+    }
+  };
   return (
-    <Box {...restOfProps}>
+    <Box onClick={onClick} {...restOfProps}>
       <AspectRatio ratio="16/9" style={{ width: "100%" }}>
         {backdropURL || posterURL ? (
           <LazyLoadImage

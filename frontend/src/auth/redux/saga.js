@@ -1,44 +1,39 @@
 import { eventChannel } from "redux-saga";
-import {
-  takeEvery,
-  fork,
-  take,
-  call,
-  put,
-  takeLeading,
-} from "redux-saga/effects";
+import { call, put, takeEvery, takeLeading } from "redux-saga/effects";
+import { actions } from "../../redux";
 import firebase from "../firebase";
-import actions from "./actions";
 
 const deleteCurrentUser = () => firebase.auth().currentUser.delete();
 const signOut = () => firebase.auth().signOut();
 
-const authStateEventChannel = eventChannel((emit) =>
+const authStateChannel = eventChannel((emit) =>
   firebase.auth().onAuthStateChanged((user) => emit(user || false))
 );
 
 export default function* () {
-  yield put(actions.setError(null));
+  yield put(actions.auth.setError(null));
 
-  yield takeEvery(authStateEventChannel, function* (user) {
-    yield put(actions.setUser(user));
+  yield takeEvery(authStateChannel, function* (user) {
+    yield put(actions.auth.setUser(user));
   });
 
-  // yield takeLeading(actions.signIn, function* (action) {});
+  yield takeEvery(actions.auth.signInSuccess, function* () {
+    yield put(actions.router.push("/signIn"));
+  });
 
-  yield takeLeading(actions.signOut, function* () {
+  yield takeLeading(actions.auth.signOut, function* () {
     yield call(signOut);
   });
 
-  yield takeLeading(actions.deleteUser, function* () {
+  yield takeLeading(actions.auth.deleteUser, function* () {
     try {
-      yield put(actions.setError(null));
-      yield put(actions.setStatus("loading"));
+      yield put(actions.auth.setError(null));
+      yield put(actions.auth.setStatus("loading"));
       yield call(deleteCurrentUser);
     } catch (error) {
-      yield put(actions.setError(error));
+      yield put(actions.auth.setError(error));
     } finally {
-      yield put(actions.setStatus(null));
+      yield put(actions.auth.setStatus(null));
     }
   });
 }

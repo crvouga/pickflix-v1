@@ -1,29 +1,37 @@
 import { Container, CssBaseline } from "@material-ui/core";
 import React, { useEffect } from "react";
-import { Route, Switch, useLocation } from "react-router";
-import UserPage from "../auth/account";
+import { useSelector } from "react-redux";
+import { Route, Switch } from "react-router";
+import ErrorDialog from "../auth/ErrorDialog";
 import SignInPage from "../auth/signInForm";
-import ChatModal from "../chat/ChatModal";
+import ChatDialog from "../chat/ChatDialog";
 import DiscoverPage from "../discover";
 import HomePage from "../home";
+
+import CreateListDialog from "../list/CreateListDialog";
 import MoviePage from "../movie";
 import PersonPage from "../person";
+import ProfilePage from "../profile";
+import { selectors } from "../redux";
 import SearchPage from "../search";
-import VideoModal from "../video/VideoModal";
+import VideoDialog from "../video/VideoDialog";
 import NavigationBarBottom from "./NavigationBarBottom";
+import AddToListDialog from "../list/AddToListDialog";
 
 export default () => {
-  const location = useLocation();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location.pathname]);
+  const isAuthenticated = useSelector(selectors.auth.isAuthenticated);
+  const pathname = useSelector(selectors.router.pathname);
+  useEffect(() => window.scrollTo(0, 0), [pathname]);
 
   return (
     <React.Fragment>
       <CssBaseline />
       <Container disableGutters maxWidth="xs">
-        <ChatModal />
-        <VideoModal />
+        <ErrorDialog />
+        <ChatDialog />
+        <VideoDialog />
+        <AddToListDialog />
+        <CreateListDialog />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/discover" component={DiscoverPage} />
@@ -31,7 +39,10 @@ export default () => {
           <Route path="/movie/:movieId" component={MoviePage} />
           <Route path="/person/:personId" component={PersonPage} />
           <Route path="/signIn" component={SignInPage} />
-          <Route path="/account" component={UserPage} />
+          <Route
+            path="/profile"
+            component={isAuthenticated ? ProfilePage : SignInPage}
+          />
         </Switch>
       </Container>
       <NavigationBarBottom />

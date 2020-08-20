@@ -1,12 +1,12 @@
 import { createAction } from "@reduxjs/toolkit";
 
 export default {
-  setFocused: createAction("[search] setFocused"),
-  setText: createAction("[search] setText"),
-  setResponses: createAction("[search] setResponses"),
-  setStatus: createAction("[search] setStatus"),
-  setRecentlySearched: createAction("[search] setRecentlySearched"),
+  setFocused: createAction("[search] SET_FOCUSED"),
+  setText: createAction("[search] SET_TEXT"),
+  setResponses: createAction("[search] SET_RESPONSES"),
+  setStatus: createAction("[search] SET_STATUS"),
+  setRecentlySearched: createAction("[search] SET_RECENTLY_SEARCHED"),
   //
-  fetch: createAction("[search] fetch"),
-  chose: createAction("[search] chose"),
+  fetch: createAction("[search] FETCH"),
+  chose: createAction("[search] CHOSE"),
 };

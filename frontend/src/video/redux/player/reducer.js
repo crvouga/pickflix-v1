@@ -1,6 +1,9 @@
 import { createReducer } from "@reduxjs/toolkit";
-import actions from "./actions";
+import * as actions from "./actions";
 
+const setPayload = (key) => (state, action) => {
+  state[key] = action.payload;
+};
 export default createReducer(
   {
     isPlaying: false,
@@ -8,20 +11,8 @@ export default createReducer(
     playlist: [],
   },
   {
-    [actions.play]: (state) => {
-      state.isPlaying = true;
-    },
-    [actions.pause]: (state) => {
-      state.isPlaying = false;
-    },
-    [actions.toggle]: (state) => {
-      state.isPlaying = !state.isPlaying;
-    },
-    [actions.setVideo]: (state, action) => {
-      state.video = action.payload;
-    },
-    [actions.setPlaylist]: (state, action) => {
-      state.playlist = action.payload;
-    },
+    [actions.setIsPlaying]: setPayload("isPlaying"),
+    [actions.setVideo]: setPayload("video"),
+    [actions.setPlaylist]: setPayload("playlist"),
   }
 );

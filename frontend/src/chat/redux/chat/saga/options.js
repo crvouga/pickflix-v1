@@ -93,7 +93,6 @@ export default function* () {
     } finally {
       if (yield cancelled()) {
         yield call(() => cancelSource.cancel());
-        console.log("cancel!");
       }
     }
   });

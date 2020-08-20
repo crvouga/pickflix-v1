@@ -7,7 +7,7 @@ import { Provider } from "react-redux";
 import { ParallaxProvider } from "react-scroll-parallax";
 import { PersistGate } from "redux-persist/integration/react";
 import attachFastClick from "./attachFastClick";
-import configureStore from "./configureStore";
+import configureStore from "../redux/configureStore";
 import configureTheme from "./configureTheme";
 import SnackbarProvider from "./SnackbarProvider";
 

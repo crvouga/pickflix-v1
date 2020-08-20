@@ -1,63 +1,84 @@
-import { IconButton, makeStyles, Box, Typography } from "@material-ui/core";
+import { Box, IconButton, makeStyles, Typography } from "@material-ui/core";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
+import ShareIcon from "@material-ui/icons/Share";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import * as R from "ramda";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { actions, selectors } from "../../redux";
 
-const useStyles = makeStyles((theme) => ({
-  iconButton: {
+const useStylesIconButton = makeStyles((theme) => ({
+  root: {
     color: theme.palette.text.secondary,
+  },
+  label: {
     display: "flex",
     flexDirection: "column",
     width: "48px",
   },
+  disabled: {
+    color: theme.palette.action.active,
+  },
 }));
 
 export default () => {
-  const classes = useStyles();
+  const classesIconButton = useStylesIconButton();
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector(selectors.auth.isAuthenticated);
+  const { movieId } = useSelector(selectors.router.query);
 
-  const actions = [
-    // {
-    //   icon: <ThumbDownIcon />,
-    //   text: "Dislike",
-    // },
+  const actionBarItems = [
     {
-      icon: true ? <VisibilityOffIcon /> : <VisibilityIcon />,
-      text: "Watched",
+      disabled: R.isNil(window?.navigator?.share),
+      icon: <ShareIcon />,
+      label: "Share",
+      onClick: async () => {
+        await window.navigator.share({
+          title: "Movie",
+          url: window.location.href,
+        });
+      },
     },
     {
       icon: true ? <BookmarkBorderIcon /> : <BookmarkIcon />,
-      text: "Watchlist",
+      label: "Watchlist",
+      onClick: () => {
+        dispatch(actions.list.addToList("watchlist", movieId));
+      },
     },
     {
       icon: true ? <ThumbUpOutlinedIcon /> : <ThumbUpIcon />,
-      text: "Like",
+      label: "Like",
+      onClick: () => {
+        dispatch(actions.list.addToList("like", movieId));
+      },
     },
-    // {
-    //   icon: true ? <FavoriteBorderIcon /> : <FavoriteIcon />,
-    //   text: "Favorite",
-    // },
     {
       icon: true ? <PlaylistAddIcon /> : <PlaylistAddCheckIcon />,
-      text: "Save",
+      label: "Save",
+      onClick: () => {
+        dispatch(actions.modal.open("AddToListDialog"));
+      },
     },
   ];
 
   return (
     <Box display="flex" justifyContent="space-around" flexWrap="nowrap">
-      {actions.map(({ icon, text, onClick }) => (
+      {actionBarItems.map(({ disabled, icon, label, onClick }) => (
         <IconButton
-          key={text}
+          disabled={disabled}
+          key={label}
           onClick={onClick}
-          classes={{ label: classes.iconButton }}
+          classes={classesIconButton}
         >
           {icon}
-          <Typography variant="subtitle2">{text}</Typography>
+          <Typography color="inherit" variant="subtitle2">
+            {label}
+          </Typography>
         </IconButton>
       ))}
     </Box>

@@ -6,7 +6,6 @@ import {
   useTheme,
 } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
-import { push } from "connected-react-router";
 import React from "react";
 import AspectRatio from "react-aspect-ratio";
 import "react-aspect-ratio/aspect-ratio.css";
@@ -18,6 +17,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import "react-lazy-load-image-component/src/effects/opacity.css";
 import { useDispatch } from "react-redux";
 import useBoolean from "../../common/hooks/useBoolean";
+import { actions } from "../../redux";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 
 const useStyles = makeStyles((theme) => ({
@@ -53,7 +53,7 @@ export default trackWindowScroll((props) => {
 
   const handleClick = () => {
     if (id) {
-      dispatch(push(`/movie/${id}`));
+      dispatch(actions.router.push(`/movie/${id}`));
     }
   };
 

@@ -1,7 +1,7 @@
 import actions from "./actions";
 import reducer from "./reducer";
 import saga from "./saga";
-import selectors from "./selectors";
+import * as selectors from "./selectors";
 
 export default {
   reducer,

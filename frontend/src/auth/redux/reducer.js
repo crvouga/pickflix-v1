@@ -1,8 +1,9 @@
 import { createReducer } from "@reduxjs/toolkit";
 import actions from "./actions";
-import * as R from "ramda";
 
-const setter = (key) => (state, action) => R.assoc(key, action.payload, state);
+const setPayload = (key) => (state, action) => {
+  state[key] = action.payload;
+};
 
 export default createReducer(
   {
@@ -11,8 +12,8 @@ export default createReducer(
     error: null,
   },
   {
-    [actions.setStatus]: setter("status"),
-    [actions.setUser]: setter("user"),
-    [actions.setError]: setter("error"),
+    [actions.setStatus]: setPayload("status"),
+    [actions.setUser]: setPayload("user"),
+    [actions.setError]: setPayload("error"),
   }
 );

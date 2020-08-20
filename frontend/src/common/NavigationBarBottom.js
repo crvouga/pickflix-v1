@@ -1,14 +1,14 @@
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import { makeStyles } from "@material-ui/core/styles";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import HomeIcon from "@material-ui/icons/Home";
-import SearchIcon from "@material-ui/icons/Search";
 import ExploreIcon from "@material-ui/icons/Explore";
-import React from "react";
-import { useHistory } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
+import HomeIcon from "@material-ui/icons/Home";
+import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
+import SearchIcon from "@material-ui/icons/Search";
 import { push } from "connected-react-router";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import PersonIcon from "@material-ui/icons/Person";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,6 +18,8 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     maxWidth: "100%",
     zIndex: theme.zIndex.appBar,
+    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(2),
   },
   toolbar: {
     ...theme.mixins.toolbar,
@@ -39,24 +41,12 @@ export default () => {
         value={pathname}
         onChange={handleChange}
         showLabels
-        className={classes.root}
+        classes={{ root: classes.root }}
       >
-        <BottomNavigationAction value="/" label="Home" icon={<HomeIcon />} />
-        <BottomNavigationAction
-          value="/discover"
-          label="Discover"
-          icon={<ExploreIcon />}
-        />
-        <BottomNavigationAction
-          value="/search"
-          label="Search"
-          icon={<SearchIcon />}
-        />
-        <BottomNavigationAction
-          value="/account"
-          label="You"
-          icon={<AccountCircleIcon />}
-        />
+        <BottomNavigationAction value="/" icon={<HomeIcon />} />
+        <BottomNavigationAction value="/discover" icon={<ExploreIcon />} />
+        <BottomNavigationAction value="/search" icon={<SearchIcon />} />
+        <BottomNavigationAction value="/profile" icon={<PersonIcon />} />
       </BottomNavigation>
       <div className={classes.toolbar} />
     </React.Fragment>

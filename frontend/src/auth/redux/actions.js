@@ -1,11 +1,13 @@
 import { createAction } from "@reduxjs/toolkit";
 
 export default {
-  setUser: createAction("[auth] setUser"),
-  setStatus: createAction("[auth] setStatus"),
-  setError: createAction("[auth] setError"),
+  setUser: createAction("[auth] SET_USER"),
+  setStatus: createAction("[auth] SET_STATUS"),
+  setError: createAction("[auth] SET_ERROR"),
   //
-  signIn: createAction("[auth] signIn"),
-  signOut: createAction("[auth] signOut"),
-  deleteUser: createAction("[auth] deleteAccount"),
+  signInSuccess: createAction("[auth] SIGN_IN_SUCCESS"),
+  signInError: createAction("[auth] SIGN_IN_ERROR"),
+  signIn: createAction("[auth] SIGN_IN"),
+  signOut: createAction("[auth] SIGN_OUT"),
+  deleteUser: createAction("[auth] DELETE_USER"),
 };

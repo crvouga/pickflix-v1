@@ -1,7 +1,5 @@
 import * as R from "ramda";
 
-const allImageTypes = ["profile", "poster", "backdrop", "still", "logo"];
-
 /** 
   INPUT:
   TMDbconfiguration =
@@ -26,25 +24,21 @@ const allImageTypes = ["profile", "poster", "backdrop", "still", "logo"];
   url = 
     secureBaseUrl + (profileSize OR posterSize OR logoSize OR ...) + (profilePath OR posterSize OR logoSize OR ...)
 */
-export default (TMDbconfiguration, sizeIndex, objectWithImagePath) => {
-  if (
-    R.isNil(TMDbconfiguration) ||
-    R.isNil(sizeIndex) ||
-    R.isNil(objectWithImagePath)
-  ) {
+
+const allImageTypes = ["profile", "poster", "backdrop", "still", "logo"];
+
+export default (TMDbconfiguration, sizeIndex, tmdbMedia) => {
+  if (R.isNil(TMDbconfiguration) || R.isNil(sizeIndex) || R.isNil(tmdbMedia)) {
     return null;
   }
 
-  const imageType = R.find(
-    (imageType) => R.has(`${imageType}Path`, objectWithImagePath),
-    allImageTypes
-  );
+  const imageType = R.find((_) => R.has(`${_}Path`, tmdbMedia), allImageTypes);
 
   if (R.isNil(imageType)) {
     return null;
   }
 
-  const path = objectWithImagePath[`${imageType}Path`];
+  const path = tmdbMedia[`${imageType}Path`];
 
   if (R.isNil(path)) {
     return null;
