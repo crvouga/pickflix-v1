@@ -1,5 +1,5 @@
-const { makeId } = require("../../src/id");
-const { makeUser } = require("../../src/user/business-entities");
+const { makeId } = require("../../id");
+const { makeUser } = require("../business-entities");
 
 const makeFakeUser = () => {
   return makeUser({

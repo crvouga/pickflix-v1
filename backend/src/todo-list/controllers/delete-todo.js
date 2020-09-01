@@ -6,9 +6,7 @@ module.exports.buildDeleteTodo = ({ removeItem }) => async (request) => {
 
     await removeItem({ id });
 
-    return {
-      statusCode: 200,
-    };
+    return {};
   } catch (error) {
     return {
       statusCode: 400,

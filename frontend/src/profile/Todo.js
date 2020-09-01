@@ -19,15 +19,19 @@ export default () => {
   const inputRef = useRef();
   const [todos, setTodos] = useState({});
 
+  const [error, setError] = useState();
   const query = useQuery(
     ["todos"],
     () => backendAPI.get("/api/todo/").then((res) => res.data),
     {}
   );
 
+  console.log({ todos });
+
   useEffect(() => {
     if (query.status === "success") {
-      setTodos(R.indexBy(R.prop("id"), query.data.todos));
+      const { results } = query.data;
+      setTodos(R.indexBy(R.prop("id"), results));
     }
   }, [query.status]);
 
@@ -36,15 +40,20 @@ export default () => {
       const res = await backendAPI.post("/api/todo", {
         text: inputRef.current.value,
       });
-      setTodos(R.assoc(res.data.id, res.data.todo));
-    } catch (error) {}
+      const { posted } = res.data;
+      setTodos(R.assoc(posted.id, posted));
+    } catch (error) {
+      setError(error.response.data.error);
+    }
   };
 
   const handleDelete = (todo) => async () => {
     try {
       await backendAPI.delete(`/api/todo/${todo.id}`);
       setTodos(R.dissoc(todo.id));
-    } catch (error) {}
+    } catch (error) {
+      setError(error.response.data.error);
+    }
   };
 
   const onBlurInput = (todo) => async (e) => {
@@ -52,8 +61,11 @@ export default () => {
       const res = await backendAPI.patch(`/api/todo/${todo.id}`, {
         text: e.target.value,
       });
-      setTodos(R.assoc(res.data.id, res.data.todo));
-    } catch (error) {}
+      const { patched } = res.data;
+      setTodos(R.assoc(patched.id, patched));
+    } catch (error) {
+      setError(error.response.data.error);
+    }
   };
 
   if (query.status === "loading")
@@ -67,6 +79,8 @@ export default () => {
     return "error";
   }
 
+  console.log({ error });
+
   return (
     <div>
       <Box width="100%" display="flex" paddingX={2}>
@@ -74,10 +88,13 @@ export default () => {
           <AddIcon />
         </IconButton>
         <TextField
+          error={Boolean(error)}
+          helperText={error}
           inputRef={inputRef}
           placeholder="something todo"
           variant="outlined"
           style={{ flex: 1 }}
+          onChange={() => setError(null)}
         />
       </Box>
       <List>

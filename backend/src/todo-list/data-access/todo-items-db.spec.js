@@ -1,6 +1,6 @@
 const { makeDb } = require("../../infrastructure/postgres/makeDb");
-const { makeFakeUser } = require("../../../__test__/fixtures/user");
-const { makeFakeTodoItem } = require("../../../__test__/fixtures/todo-item");
+const { makeFakeUser } = require("../../user/__test__/user");
+const { makeFakeTodoItem } = require("../__test__/todo-item");
 const { buildTodoItemsDb } = require("./todo-items-db");
 const { buildUserDb } = require("../../user/data-access/user-db");
 

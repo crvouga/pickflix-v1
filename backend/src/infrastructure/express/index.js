@@ -15,6 +15,7 @@ const startServer = async () => {
   app.use(cors());
 
   app.all("/api/todo", adpat(todo));
+  app.all("/api/todo/:id", adpat(todo));
   app.use("/api/tmdb", tmdbRouter);
   app.use("/api/youtube", youtubeRouter);
 

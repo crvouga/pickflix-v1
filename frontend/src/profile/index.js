@@ -28,13 +28,13 @@ export default () => {
   const status = useSelector(auth.selectors.status);
   const settingsDrawerOpen = useBoolean();
 
-  const query = useQuery(
-    ["user", "lists"],
-    () => Promise.reject(), // backendAPI.get("/api/list").then((res) => res.data),
-    {}
-  );
+  // const query = useQuery(
+  //   ["user", "lists"],
+  //   () => Promise.reject(), // backendAPI.get("/api/list").then((res) => res.data),
+  //   {}
+  // );
 
-  const lists = query.data?.results || [];
+  // const lists = query.data?.results || [];
 
   return (
     <React.Fragment>
@@ -78,7 +78,7 @@ export default () => {
           </ListItemAvatar>
           <ListItemText primary="Liked" />
         </ListItem>
-        {query.status === "loading" && (
+        {/* {query.status === "loading" && (
           <Box>
             <CircularProgress />
           </Box>
@@ -88,7 +88,7 @@ export default () => {
             <ListItem key={list.id}>
               <ListItemText primary={list.title} />
             </ListItem>
-          ))}
+          ))} */}
       </List>
 
       <Todo />

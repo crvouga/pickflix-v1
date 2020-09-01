@@ -1,27 +1,23 @@
-module.exports.buildPatchTodo = ({ editItem, authenticateRequest }) => async (
+module.exports.buildPostTodo = ({ addItem, authenticateRequest }) => async (
   request
 ) => {
   try {
     const {
-      pathParams: { id },
-      body: { completed, text },
+      body: { text },
     } = request;
 
     const user = await authenticateRequest(request);
 
     const todoInfo = {
-      id,
       userId: user.id,
-      completed,
       text,
     };
 
-    const editedTodo = await editItem(todoInfo);
+    const posted = await addItem(todoInfo);
 
     return {
-      statusCode: 200,
       body: {
-        todo: editedTodo,
+        posted,
       },
     };
   } catch (error) {

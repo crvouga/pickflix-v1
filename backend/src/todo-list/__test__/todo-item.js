@@ -1,5 +1,5 @@
-const { makeId } = require("../../src/id");
-const { makeTodoItem } = require("../../src/todo-list/business-entities");
+const { makeId } = require("../../id");
+const { makeTodoItem } = require("../business-entities");
 
 const makeFakeTodoItem = (overrides) => {
   return makeTodoItem({

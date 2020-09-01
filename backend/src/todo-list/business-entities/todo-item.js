@@ -1,3 +1,5 @@
+const MAX_LENGTH = 20;
+
 module.exports.buildMakeTodoItem = ({ makeId, isValidId }) => (todoInfo) => {
   let {
     id = makeId(),
@@ -28,8 +30,8 @@ module.exports.buildMakeTodoItem = ({ makeId, isValidId }) => (todoInfo) => {
     throw new Error("text can't be empty");
   }
 
-  if (text.length > 200) {
-    throw new Error("text is too long");
+  if (text.length > MAX_LENGTH) {
+    throw new Error(`text can't be more than ${MAX_LENGTH} characters long`);
   }
 
   return Object.freeze({

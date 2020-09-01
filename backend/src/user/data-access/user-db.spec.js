@@ -1,5 +1,5 @@
 const { makeDb } = require("../../infrastructure/postgres/makeDb");
-const { makeFakeUser } = require("../../../__test__/fixtures/user");
+const { makeFakeUser } = require("../__test__/user");
 const { buildUserDb } = require("./user-db");
 
 const userDb = buildUserDb({ makeDb });

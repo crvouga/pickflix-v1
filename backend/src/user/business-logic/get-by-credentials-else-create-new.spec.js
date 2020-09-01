@@ -1,5 +1,5 @@
-const { makeFakeUser } = require("../../../__test__/fixtures/user");
-const { buildUserDb } = require("../data-access/user-db.mock");
+const { makeFakeUser } = require("../__test__/user");
+const { buildUserDb } = require("../__test__/user-db.mock");
 const { buildCreateNew } = require("./create-new");
 const { buildGetByCredentials } = require("./get-by-credentials");
 const {

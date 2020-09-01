@@ -1,6 +1,6 @@
-const { makeFakeTodoItem } = require("../../../__test__/fixtures/todo-item");
-const { makeFakeUser } = require("../../../__test__/fixtures/user");
-const { buildTodoItemsDb } = require("../data-access/todo-items-db.mock");
+const { makeFakeTodoItem } = require("../__test__/todo-item");
+const { makeFakeUser } = require("../../user/__test__/user");
+const { buildTodoItemsDb } = require("../__test__/todo-items-db.mock");
 const { buildRemoveItem } = require("./remove-item");
 const { buildListItems } = require("./list-items");
 const { buildAddItem } = require("./add-item");

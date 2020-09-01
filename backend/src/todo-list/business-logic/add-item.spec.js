@@ -1,5 +1,5 @@
-const { makeFakeUser } = require("../../../__test__/fixtures/user");
-const { buildTodoItemsDb } = require("../data-access/todo-items-db.mock");
+const { makeFakeUser } = require("../../user/__test__/user");
+const { buildTodoItemsDb } = require("../__test__/todo-items-db.mock");
 const { buildAddItem } = require("./add-item");
 const { buildListItems } = require("./list-items");
 

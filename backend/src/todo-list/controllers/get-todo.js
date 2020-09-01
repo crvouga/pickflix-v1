@@ -8,11 +8,11 @@ module.exports.buildGetTodo = ({ listItems, authenticateRequest }) => async (
       userId: user.id,
     };
 
-    const todos = await listItems(todoInfo);
+    const results = await listItems(todoInfo);
 
     return {
       body: {
-        todos,
+        results,
       },
     };
   } catch (error) {

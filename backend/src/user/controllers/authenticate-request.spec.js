@@ -1,4 +1,4 @@
-const { makeFakeUser } = require("../../../__test__/fixtures/user");
+const { makeFakeUser } = require("../__test__/user");
 const { buildAuthenticateRequest } = require("./authenticate-request");
 
 const fakeUser = makeFakeUser();
