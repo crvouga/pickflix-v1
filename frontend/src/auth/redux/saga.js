@@ -17,9 +17,7 @@ export default function* () {
     yield put(actions.auth.setUser(user));
   });
 
-  yield takeEvery(actions.auth.signInSuccess, function* () {
-    yield put(actions.router.push("/signIn"));
-  });
+  yield takeEvery(actions.auth.signInSuccess, function* () {});
 
   yield takeLeading(actions.auth.signOut, function* () {
     yield call(signOut);

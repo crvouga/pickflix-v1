@@ -27,16 +27,16 @@ export default () => {
 
   useEffect(() => {
     if (query.status === "success") {
-      setTodos(R.indexBy(R.prop("id"), query.data.results));
+      setTodos(R.indexBy(R.prop("id"), query.data.todos));
     }
   }, [query.status]);
 
   const handleAdd = async () => {
     try {
       const res = await backendAPI.post("/api/todo", {
-        task: inputRef.current.value,
+        text: inputRef.current.value,
       });
-      setTodos(R.assoc(res.data.id, res.data));
+      setTodos(R.assoc(res.data.id, res.data.todo));
     } catch (error) {}
   };
 
@@ -49,10 +49,10 @@ export default () => {
 
   const onBlurInput = (todo) => async (e) => {
     try {
-      const res = await backendAPI.post(`/api/todo/${todo.id}`, {
-        task: e.target.value,
+      const res = await backendAPI.patch(`/api/todo/${todo.id}`, {
+        text: e.target.value,
       });
-      setTodos(R.assoc(res.data.id, res.data));
+      setTodos(R.assoc(res.data.id, res.data.todo));
     } catch (error) {}
   };
 
@@ -86,7 +86,7 @@ export default () => {
             <InputBase
               style={{ width: "100%" }}
               onBlur={onBlurInput(todo)}
-              defaultValue={todo.task}
+              defaultValue={todo.text}
             />
             <ListItemSecondaryAction>
               <IconButton onClick={handleDelete(todo)}>

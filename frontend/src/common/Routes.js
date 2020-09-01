@@ -3,11 +3,11 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Route, Switch } from "react-router";
 import ErrorDialog from "../auth/ErrorDialog";
-import SignInPage from "../auth/signInForm";
+import SignInDialog from "../auth/signInForm/SignInDialog";
 import ChatDialog from "../chat/ChatDialog";
 import DiscoverPage from "../discover";
 import HomePage from "../home";
-
+import AddToListDialog from "../list/AddToListDialog";
 import CreateListDialog from "../list/CreateListDialog";
 import MoviePage from "../movie";
 import PersonPage from "../person";
@@ -16,7 +16,6 @@ import { selectors } from "../redux";
 import SearchPage from "../search";
 import VideoDialog from "../video/VideoDialog";
 import NavigationBarBottom from "./NavigationBarBottom";
-import AddToListDialog from "../list/AddToListDialog";
 
 export default () => {
   const isAuthenticated = useSelector(selectors.auth.isAuthenticated);
@@ -32,17 +31,14 @@ export default () => {
         <VideoDialog />
         <AddToListDialog />
         <CreateListDialog />
+        <SignInDialog />
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/discover" component={DiscoverPage} />
           <Route path="/search" component={SearchPage} />
           <Route path="/movie/:movieId" component={MoviePage} />
           <Route path="/person/:personId" component={PersonPage} />
-          <Route path="/signIn" component={SignInPage} />
-          <Route
-            path="/profile"
-            component={isAuthenticated ? ProfilePage : SignInPage}
-          />
+          <Route path="/profile" component={ProfilePage} />
         </Switch>
       </Container>
       <NavigationBarBottom />

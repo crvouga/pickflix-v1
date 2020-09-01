@@ -8,7 +8,7 @@ function* addToListSaga(action) {
   const isAuthenticated = yield select(selectors.auth.isAuthenticated);
   if (!isAuthenticated) {
     const currentPathname = yield select(selectors.router.pathname);
-    yield put(actions.router.push("/signIn"));
+    yield put(actions.modal.open("SignInDialog"));
     yield take(actions.auth.signInSuccess);
     yield put(actions.router.push(currentPathname));
     return;

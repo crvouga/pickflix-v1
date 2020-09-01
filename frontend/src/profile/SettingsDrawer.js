@@ -1,9 +1,8 @@
-import { Drawer, Box, List, ListItem, ListItemText } from "@material-ui/core";
-import { push } from "connected-react-router";
+import { Box, Drawer, List, ListItem, ListItemText } from "@material-ui/core";
 import React from "react";
 import { useDispatch } from "react-redux";
-import auth from "../auth/redux";
 import useBoolean from "../common/hooks/useBoolean";
+import { actions } from "../redux";
 import DeleteDialog from "./DeleteDialog";
 
 export default ({ DrawerProps }) => {
@@ -11,16 +10,17 @@ export default ({ DrawerProps }) => {
   const deleteDialogOpen = useBoolean();
 
   const handleSignOut = () => {
-    dispatch(auth.actions.signOut());
+    dispatch(actions.auth.signOut());
     DrawerProps.onClose();
   };
 
   const handleSignIn = () => {
-    dispatch(push("/signIn"));
+    dispatch(actions.modal.open("SignInDialog"));
+    DrawerProps.onClose();
   };
 
   const handleDeleteUser = () => {
-    dispatch(auth.actions.deleteUser());
+    dispatch(actions.auth.deleteUser());
     deleteDialogOpen.setFalse();
   };
 

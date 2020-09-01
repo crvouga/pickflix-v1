@@ -13,7 +13,7 @@ import { actions, selectors } from "../../redux";
 
 const useStylesIconButton = makeStyles((theme) => ({
   root: {
-    color: theme.palette.text.secondary,
+    color: theme.palette.action.active,
   },
   label: {
     display: "flex",
@@ -21,7 +21,7 @@ const useStylesIconButton = makeStyles((theme) => ({
     width: "48px",
   },
   disabled: {
-    color: theme.palette.action.active,
+    color: theme.palette.action.disabled,
   },
 }));
 
