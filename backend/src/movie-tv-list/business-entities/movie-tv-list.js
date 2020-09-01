@@ -1,7 +1,6 @@
 module.exports = ({ Id }) => (listInfo = {}) => {
   const {
     id = Id.makeId(),
-
     userIds = [],
     itemIds = [],
     title = "",

@@ -1,7 +1,6 @@
-module.exports.buildAuthenticateRequest = ({
-  getByCredentialsElseCreateNew,
-  authenicateFirebaseIdToken,
-}) => async (request) => {
+module.exports = ({ getByForeignIds, authenicateFirebaseIdToken }) => async (
+  request
+) => {
   const {
     headers: { authorization: idToken },
   } = request;
@@ -12,9 +11,9 @@ module.exports.buildAuthenticateRequest = ({
 
   const firebaseUser = await authenicateFirebaseIdToken(idToken);
 
-  const credentials = { firebaseId: firebaseUser.uid };
+  const foreignIds = { firebaseId: firebaseUser.uid };
 
-  const user = await getByCredentialsElseCreateNew({ credentials });
+  const user = await getByForeignIds({ foreignIds });
 
   return user;
 };

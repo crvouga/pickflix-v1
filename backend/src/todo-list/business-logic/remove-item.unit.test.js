@@ -1,5 +1,5 @@
 const { makeFakeTodoItem } = require("../__test__/todo-item");
-const { makeFakeUser } = require("../../user/__test__/user");
+const makeUser = require("../../user/__test__/user");
 const { buildTodoItemsDb } = require("../__test__/todo-items-db.mock");
 const { buildRemoveItem } = require("./remove-item");
 const { buildListItems } = require("./list-items");
@@ -12,7 +12,7 @@ const removeItem = buildRemoveItem({ todoItemsDb });
 
 describe("remove item", () => {
   it("removes item", async () => {
-    const user = makeFakeUser();
+    const user = makeUser();
     const item = makeFakeTodoItem({ userId: user.id });
     await addItem(item);
     const list1 = await listItems({ userId: user.id });

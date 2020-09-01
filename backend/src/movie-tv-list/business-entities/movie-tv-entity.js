@@ -2,8 +2,9 @@ const onlyNumbersRegex = /^[0-9]*$/;
 
 module.exports = ({ Id }) => (itemInfo = {}) => {
   const id = String(itemInfo.id || Id.makeId());
-  const tmdbMediaId = String(itemInfo.tmdbMediaId || "").trim();
-  const tmdbMediaType = String(itemInfo.tmdbMediaType || "")
+  const foreignIds = itemInfo.foreignIds || {};
+  const tmdbId = String(foreignIds.tmdbId || "").trim();
+  const tmdbMediaType = String(foreignIds.tmdbMediaType || "")
     .toLowerCase()
     .trim();
 
@@ -15,12 +16,12 @@ module.exports = ({ Id }) => (itemInfo = {}) => {
     throw new Error("invalid id");
   }
 
-  if (tmdbMediaId.length === 0) {
+  if (tmdbId.length === 0) {
     throw new Error("tmdb media id is required");
   }
 
   // pretty sure this holds for all tmdb ids
-  if (!onlyNumbersRegex.test(tmdbMediaId)) {
+  if (!onlyNumbersRegex.test(tmdbId)) {
     throw new Error("invalid tmdb media id");
   }
 
@@ -34,8 +35,8 @@ module.exports = ({ Id }) => (itemInfo = {}) => {
 
   return Object.freeze({
     id,
-    foreign: {
-      tmdbMediaId,
+    foreignIds: {
+      tmdbId,
       tmdbMediaType,
     },
   });

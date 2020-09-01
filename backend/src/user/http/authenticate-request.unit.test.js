@@ -1,17 +1,18 @@
-const { makeFakeUser } = require("../__test__/user");
-const { buildAuthenticateRequest } = require("./authenticate-request");
+const makeUser = require("../__test__/user");
+const buildAuthenticateRequest = require("./authenticate-request");
 
-const fakeUser = makeFakeUser();
+const user = makeUser();
+
 const autenicateRequest = buildAuthenticateRequest({
-  getByCredentialsElseCreateNew: async () => fakeUser,
-  authenicateFirebaseIdToken: async () => fakeUser.credentials.firebaseId,
+  getByForeignIds: async () => user,
+  authenicateFirebaseIdToken: async () => user.foreignIds.firebaseId,
 });
 
 describe("authenicate request", () => {
   it("returns a user", async () => {
     const request = { headers: { authorization: "whatever" } };
     const actual = await autenicateRequest(request);
-    expect(actual).toStrictEqual(fakeUser);
+    expect(actual).toStrictEqual(user);
   });
 
   it("rejects if not authorization header", () => {
@@ -20,13 +21,12 @@ describe("authenicate request", () => {
   });
 
   it("rejects when authenicateFirebaseIdToken throws", async () => {
-    const fakeUser = makeFakeUser();
-
+    const user = makeUser();
     const autenicateRequest = buildAuthenticateRequest({
       authenicateFirebaseIdToken: () => {
         throw new Error("error!");
       },
-      getByCredentialsElseCreateNew: async () => fakeUser,
+      getByCredentialsElseCreateNew: async () => user,
     });
     const request = { headers: { authorization: "whatever" } };
 

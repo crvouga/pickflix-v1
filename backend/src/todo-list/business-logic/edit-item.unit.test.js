@@ -1,5 +1,5 @@
 const { makeFakeTodoItem } = require("../__test__/todo-item");
-const { makeFakeUser } = require("../../user/__test__/user");
+const makeUser = require("../../user/__test__/user");
 const { buildTodoItemsDb } = require("../__test__/todo-items-db.mock");
 const { buildAddItem } = require("./add-item");
 const { buildEditItem } = require("./edit-item");
@@ -10,7 +10,7 @@ const editItem = buildEditItem({ todoItemsDb });
 
 describe("edit item", () => {
   it("changes item text", async () => {
-    const user = makeFakeUser();
+    const user = makeUser();
 
     const before = await addItem(
       makeFakeTodoItem({ userId: user.id, text: "before" })
@@ -25,13 +25,13 @@ describe("edit item", () => {
   });
 
   it("requires changes", async () => {
-    const user = makeFakeUser();
+    const user = makeUser();
     const added = await addItem(makeFakeTodoItem({ userId: user.id }));
     expect(editItem({ id: added.id })).rejects.toBeTruthy();
   });
 
   it("requires item to exists", async () => {
-    const user = makeFakeUser();
+    const user = makeUser();
     const notAdded = makeFakeTodoItem({ userId: user.id });
     expect(editItem({ id: notAdded.id })).rejects.toBeTruthy();
   });

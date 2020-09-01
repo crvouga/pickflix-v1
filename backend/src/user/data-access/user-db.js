@@ -7,16 +7,19 @@ const toEntity = (row) => {
   const { id, firebase_id } = row;
   return makeUser({
     id,
-    credentials: {
+    foreignIds: {
       firebaseId: firebase_id,
     },
   });
 };
 
-const buildUserDb = ({ makeDb }) => {
+module.exports = ({ makeDb }) => {
   const insert = async (user) => {
-    const { id, credentials } = user;
-    const { firebaseId } = credentials;
+    const {
+      id,
+      foreignIds: { firebaseId },
+    } = user;
+
     const query = `
       INSERT INTO user_identity (id, firebase_id)
       VALUES ('${id}', '${firebaseId}')
@@ -40,8 +43,8 @@ const buildUserDb = ({ makeDb }) => {
     return res.rows.map(toEntity)[0];
   };
 
-  const findByCredentials = async ({ credentials }) => {
-    const { firebaseId } = credentials;
+  const findByForeignIds = async ({ foreignIds }) => {
+    const { firebaseId } = foreignIds;
     const query = `SELECT * FROM user_identity WHERE firebase_id='${firebaseId}'`;
     const db = await makeDb();
     const res = await db.query(query);
@@ -59,9 +62,7 @@ const buildUserDb = ({ makeDb }) => {
     insert,
     findAll,
     findById,
-    findByCredentials,
+    findByForeignIds,
     remove,
   };
 };
-
-module.exports = { buildUserDb };

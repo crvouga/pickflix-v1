@@ -1,15 +1,13 @@
 const { makeUser } = require("../business-entities");
 
-module.exports.buildCreateNew = ({ getByCredentials, userDb }) => async ({
-  credentials,
-}) => {
-  const exists = await getByCredentials({ credentials });
+module.exports = ({ getByForeignIds, userDb }) => async ({ foreignIds }) => {
+  const got = await getByForeignIds({ foreignIds });
 
-  if (exists) {
-    throw new Error("credentials already being used");
+  if (got) {
+    throw new Error("foreign ids already being used");
   }
 
-  const newUser = makeUser({ credentials });
+  const newUser = makeUser({ foreignIds });
 
   const inserted = await userDb.insert(newUser);
 

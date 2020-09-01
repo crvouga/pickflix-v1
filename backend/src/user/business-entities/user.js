@@ -1,18 +1,14 @@
-module.exports = ({ Id }) => (userInfo) => {
-  const { id = Id.makeId(), credentials } = userInfo || {};
-
-  if (!credentials) {
-    throw new Error("need credentials to make a user");
-  }
-
-  const { firebaseId } = credentials;
-
-  if (!firebaseId) {
-    throw new Error("need firebase id credential");
-  }
+module.exports = ({ Id }) => (userInfo = {}) => {
+  const { id = Id.makeId(), foreignIds = {} } = userInfo;
 
   if (!Id.isValidId(id)) {
     throw new Error("invalid id");
+  }
+
+  const { firebaseId } = foreignIds;
+
+  if (!firebaseId) {
+    throw new Error("foreign id 'firebaseId' is required");
   }
 
   // there is better validation for
@@ -20,12 +16,10 @@ module.exports = ({ Id }) => (userInfo) => {
     throw new Error("invalid firebase id");
   }
 
-  const user = {
+  return Object.freeze({
     id,
-    credentials: {
+    foreignIds: {
       firebaseId,
     },
-  };
-
-  return user;
+  });
 };

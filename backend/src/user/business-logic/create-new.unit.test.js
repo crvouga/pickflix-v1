@@ -1,46 +1,34 @@
-const { makeFakeUser } = require("../__test__/user");
-const { buildUserDb } = require("../__test__/user-db.mock");
-const { buildCreateNew } = require("./create-new");
-const { buildGetByCredentials } = require("./get-by-credentials");
+const makeUser = require("../__test__/user");
+const userDb = require("../__test__/user-db.mock");
+const buildCreateNew = require("./create-new");
+const buildGetByForeignIds = require("./get-by-foreign-ids");
 
-const userDb = buildUserDb();
-const getByCredentials = buildGetByCredentials({ userDb });
+const getByForeignIds = buildGetByForeignIds({ userDb });
 const createNew = buildCreateNew({
-  getByCredentials,
+  getByForeignIds,
   userDb,
 });
 
 describe("create new user", () => {
-  it("rejects when missing credentials", async () => {
-    const credentials = {};
-    expect(createNew({ credentials })).rejects.toBeTruthy();
+  it("rejects when missing ids", async () => {
+    const foreignIds = {};
+    expect(createNew({ foreignIds })).rejects.toBeTruthy();
   });
 
-  it("rejects when invalid credentials", async () => {
-    const credentials = { firebaseId: 42 };
-    expect(createNew({ credentials })).rejects.toBeTruthy();
+  it("rejects when invalid ids", async () => {
+    const foreignIds = { firebaseId: 42 };
+    expect(createNew({ foreignIds })).rejects.toBeTruthy();
   });
 
-  it("rejects when credential collision", async () => {
-    const fakeUser = makeFakeUser();
-    await userDb.insert(fakeUser);
-    expect(
-      createNew({ credentials: fakeUser.credentials })
-    ).rejects.toBeTruthy();
+  it("rejects when id collision", async () => {
+    const user = makeUser();
+    await userDb.insert(user);
+    expect(createNew({ foreignIds: user.foreignIds })).rejects.toBeTruthy();
   });
 
-  it("returns new user with passed in credentials", async () => {
-    const fakeCredentials = makeFakeUser().credentials;
-    const newUser = await createNew({ credentials: fakeCredentials });
-    expect(newUser.credentials).toStrictEqual(fakeCredentials);
-  });
-
-  it("inserts new user into db", async () => {
-    const fakeCredentials = makeFakeUser().credentials;
-    const created = await createNew({ credentials: fakeCredentials });
-    const found = await userDb.findByCredentials({
-      credentials: fakeCredentials,
-    });
-    expect(found).toStrictEqual(created);
+  it("creates user with same foreignIds", async () => {
+    const foreignIds = makeUser().foreignIds;
+    const created = await createNew({ foreignIds });
+    expect(created.foreignIds).toStrictEqual(foreignIds);
   });
 });

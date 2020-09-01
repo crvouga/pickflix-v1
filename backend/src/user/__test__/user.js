@@ -1,13 +1,12 @@
 const { makeId } = require("../../id");
 const { makeUser } = require("../business-entities");
 
-const makeFakeUser = () => {
+module.exports = (overrides) => {
   return makeUser({
     id: makeId(),
-    credentials: {
-      firebaseId: makeId(),
+    foreignIds: {
+      firebaseId: Math.random() + "",
     },
+    ...overrides,
   });
 };
-
-module.exports = { makeFakeUser };

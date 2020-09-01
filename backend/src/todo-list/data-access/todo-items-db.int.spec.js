@@ -1,13 +1,13 @@
 const { makeDb } = require("../../infrastructure/postgres/makeDb");
-const { makeFakeUser } = require("../../user/__test__/user");
+const makeUser = require("../../user/__test__/user");
 const { makeFakeTodoItem } = require("../__test__/todo-item");
 const { buildTodoItemsDb } = require("./todo-items-db");
-const { buildUserDb } = require("../../user/data-access/user-db");
+const buildUserDb = require("../../user/data-access/user-db");
 
 const userDb = buildUserDb({ makeDb });
 const todoItemsDb = buildTodoItemsDb({ makeDb });
 
-const user = makeFakeUser();
+const user = makeUser();
 
 describe("todo list db", () => {
   beforeAll(async () => {
@@ -41,7 +41,7 @@ describe("todo list db", () => {
   });
 
   it("find items by user id", async () => {
-    const user = makeFakeUser();
+    const user = makeUser();
     await userDb.insert(user);
     const item = makeFakeTodoItem({ userId: user.id });
     await todoItemsDb.insert(item);
