@@ -15,7 +15,7 @@ module.exports = ({ Id }) => (userInfo) => {
     throw new Error("invalid id");
   }
 
-  // TODO: better validation
+  // there is better validation for
   if (typeof firebaseId !== "string") {
     throw new Error("invalid firebase id");
   }

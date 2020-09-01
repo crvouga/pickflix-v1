@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "unit-test": "jest unit",
+    "integration-test": "jest int",
     "dev": "nodemon src/index"
   },
   "author": "",
