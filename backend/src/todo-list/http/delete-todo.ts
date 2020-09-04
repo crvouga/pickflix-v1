@@ -1,15 +1,13 @@
 import {AuthenticateRequest} from '../../user/http/authenticate-request';
 import {RemoveItem} from '../business-logic/remove-item';
-import {HttpController} from '../../types/http';
+import {HttpController} from '../../infrastructure/types/http';
 
-export type Dependencies = {
+export type Build = (dependencies: {
   authenticateRequest: AuthenticateRequest;
   removeItem: RemoveItem;
-};
+}) => HttpController;
 
-export type Build = (_: Dependencies) => HttpController;
-
-const buildDeleteTodo: Build = ({
+export const buildDeleteTodo: Build = ({
   authenticateRequest,
   removeItem,
 }) => async request => {
@@ -28,5 +26,3 @@ const buildDeleteTodo: Build = ({
     };
   }
 };
-
-export default buildDeleteTodo;

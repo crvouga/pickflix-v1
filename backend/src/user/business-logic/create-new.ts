@@ -4,14 +4,9 @@ import {GetByIds} from './get-by-ids';
 import {UserDb} from '../data-access/UserDb';
 
 export type CreateNew = (_: Partial<User>) => Promise<User>;
-type Dependencies = {
-  getByIds: GetByIds;
-  userDb: UserDb;
-};
-type Build = (_: Dependencies) => CreateNew;
-const build: Build = ({getByIds, userDb}) => async (
-  userInfo: Partial<User>
-): Promise<User> => {
+type Build = (dependencies: {getByIds: GetByIds; userDb: UserDb}) => CreateNew;
+
+export const buildCreateNew: Build = ({getByIds, userDb}) => async userInfo => {
   const got = await getByIds(userInfo);
 
   if (got) {
@@ -24,4 +19,3 @@ const build: Build = ({getByIds, userDb}) => async (
 
   return inserted;
 };
-export default build;

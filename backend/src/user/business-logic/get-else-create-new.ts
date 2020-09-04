@@ -3,13 +3,16 @@ import {CreateNew} from './create-new';
 import {GetByIds} from './get-by-ids';
 
 export type GetElseCreateNew = (_: Partial<User>) => Promise<User>;
-type Dependencies = {
+
+type Build = (dependencies: {
   createNew: CreateNew;
   getByIds: GetByIds;
-};
-type Build = (_: Dependencies) => GetElseCreateNew;
+}) => GetElseCreateNew;
 
-const build: Build = ({createNew, getByIds}) => async userInfo => {
+export const buildGetElseCreateNew: Build = ({
+  createNew,
+  getByIds,
+}) => async userInfo => {
   const got = await getByIds(userInfo);
 
   if (got) {
@@ -19,5 +22,3 @@ const build: Build = ({createNew, getByIds}) => async userInfo => {
     return created;
   }
 };
-
-export default build;

@@ -3,14 +3,9 @@ import {TodoItemsDb} from '../data-access/TodoItemsDb';
 import {TodoItem} from '../business-entities/todo-item';
 
 export type EditItem = (_: Partial<TodoItem>) => Promise<TodoItem>;
+type Build = (dependencies: {db: TodoItemsDb}) => EditItem;
 
-type Dependencies = {
-  db: TodoItemsDb;
-};
-
-type Build = (_: Dependencies) => EditItem;
-
-const build: Build = ({db}) => async todoItemInfo => {
+export const buildEditItem: Build = ({db}) => async todoItemInfo => {
   const {id, ...changes} = todoItemInfo;
   if (!id) {
     throw new Error('id required');
@@ -32,5 +27,3 @@ const build: Build = ({db}) => async todoItemInfo => {
 
   return edited;
 };
-
-export default build;

@@ -1,7 +1,9 @@
 import {UserDb} from './UserDb';
 import {User} from '../business-entities/user';
 
-export default (): UserDb => {
+type Build = () => UserDb;
+
+export const buildUserDb: Build = () => {
   const map = new Map<string, User>();
 
   const insert = async (user: User): Promise<User> => {

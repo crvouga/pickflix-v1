@@ -3,7 +3,7 @@ import {
   makeTestDb,
 } from '../../infrastructure/postgres/makeTestDb';
 import {makeUser} from '../business-entities';
-import buildUserDb from './user-db';
+import {buildUserDb} from './user-db';
 
 const userDb = buildUserDb({makeDb: makeTestDb});
 

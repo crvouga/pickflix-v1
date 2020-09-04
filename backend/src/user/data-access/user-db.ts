@@ -3,11 +3,7 @@ import {makeUser} from '../business-entities';
 import {User} from '../business-entities/user';
 import {Db} from '../../infrastructure/postgres/Db';
 
-type Dependencies = {
-  makeDb: () => Promise<Db>;
-};
-
-type Build = (_: Dependencies) => UserDb;
+type Build = (dependencies: {makeDb: () => Promise<Db>}) => UserDb;
 
 type Row = {
   id: string;
@@ -25,7 +21,7 @@ const rowToEntity = (row: Row): User | undefined => {
   });
 };
 
-const build: Build = ({makeDb}) => {
+export const buildUserDb: Build = ({makeDb}) => {
   const insert = async (user: User): Promise<User> => {
     const {id, firebaseId} = user;
 
@@ -81,5 +77,3 @@ const build: Build = ({makeDb}) => {
     remove,
   };
 };
-
-export default build;

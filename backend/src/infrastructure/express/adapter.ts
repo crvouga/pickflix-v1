@@ -1,5 +1,5 @@
 import express from 'express';
-import {HttpRequest, HttpController} from '../../types/http';
+import {HttpRequest, HttpController} from '../types/http';
 
 const mapExpressRequestToHttpRequest = (req: express.Request): HttpRequest => {
   return {

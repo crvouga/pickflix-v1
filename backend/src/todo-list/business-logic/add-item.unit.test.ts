@@ -1,12 +1,12 @@
 import R from 'ramda';
 import fc from 'fast-check';
 import {arbitraryTodoItemInfo} from '../business-entities/__arbitrary__/todo-item';
-import buildTodoItemsDb from '../data-access/todo-items-db.fake';
-import buildAddItem from './add-item';
-import buildListItems from './list-items';
+import {buildTodoItemDb} from '../data-access/todo-items-db.fake';
+import {buildAddItem} from './add-item';
+import {buildListItems} from './list-items';
 
 const build = () => {
-  const db = buildTodoItemsDb();
+  const db = buildTodoItemDb();
   const addItem = buildAddItem({db});
   const listItems = buildListItems({db});
   return {addItem, listItems};

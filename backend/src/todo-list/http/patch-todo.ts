@@ -1,14 +1,16 @@
 import {AuthenticateRequest} from '../../user/http/authenticate-request';
 import {EditItem} from '../business-logic/edit-item';
-import {HttpController} from '../../types/http';
+import {HttpController} from '../../infrastructure/types/http';
 
-type Dependencies = {
+type Build = (dependencies: {
   editItem: EditItem;
   authenticateRequest: AuthenticateRequest;
-};
-type Build = (_: Dependencies) => HttpController;
+}) => HttpController;
 
-const build: Build = ({editItem, authenticateRequest}) => async request => {
+export const buildPatchTodo: Build = ({
+  editItem,
+  authenticateRequest,
+}) => async request => {
   try {
     const {
       params: {id},
@@ -40,5 +42,3 @@ const build: Build = ({editItem, authenticateRequest}) => async request => {
     };
   }
 };
-
-export default build;

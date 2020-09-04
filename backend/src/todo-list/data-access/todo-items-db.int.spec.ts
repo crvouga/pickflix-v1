@@ -1,12 +1,11 @@
 import {
-  makeTestDb,
   clearTestDb,
+  makeTestDb,
 } from '../../infrastructure/postgres/makeTestDb';
-
-import buildTodoItemsDb from './todo-items-db';
 import {makeArbitraryTodoItem} from '../business-entities/__arbitrary__/todo-item';
+import {buildTodoItemDb} from './todo-items-db';
 
-const todoItemsDb = buildTodoItemsDb({makeDb: makeTestDb});
+const todoItemDb = buildTodoItemDb({makeDb: makeTestDb});
 
 describe('todo list db', () => {
   beforeAll(async () => {
@@ -19,39 +18,39 @@ describe('todo list db', () => {
 
   it('inserting item return same item', async () => {
     const item = makeArbitraryTodoItem();
-    const inserted = await todoItemsDb.insert(item);
+    const inserted = await todoItemDb.insert(item);
     expect(inserted).toStrictEqual(item);
   });
 
   it('can insert item then find same item', async () => {
     const item = makeArbitraryTodoItem();
-    const inserted = await todoItemsDb.insert(item);
-    const found = await todoItemsDb.findById(item.id);
+    const inserted = await todoItemDb.insert(item);
+    const found = await todoItemDb.findById(item.id);
     expect(found).toStrictEqual(inserted);
   });
   it('remove item', async () => {
     const item = makeArbitraryTodoItem();
-    const inserted = await todoItemsDb.insert(item);
-    const before = await todoItemsDb.findById(inserted.id);
-    await todoItemsDb.remove(inserted.id);
-    const after = await todoItemsDb.findById(inserted.id);
+    const inserted = await todoItemDb.insert(item);
+    const before = await todoItemDb.findById(inserted.id);
+    await todoItemDb.remove(inserted.id);
+    const after = await todoItemDb.findById(inserted.id);
     expect(before).toStrictEqual(inserted);
     expect(after).toBeFalsy();
   });
   it('find items by user id', async () => {
     const item = makeArbitraryTodoItem();
-    await todoItemsDb.insert(item);
-    const items = await todoItemsDb.findAllByUserId(item.userId);
+    await todoItemDb.insert(item);
+    const items = await todoItemDb.findAllByUserId(item.userId);
     expect(items).toContainEqual(item);
   });
   it('should be falsy when item does not exists', async () => {
     const item = makeArbitraryTodoItem();
-    const found = await todoItemsDb.findById(item.id);
+    const found = await todoItemDb.findById(item.id);
     expect(found).toBeFalsy();
   });
   it('update an item', async () => {
-    const inserted = await todoItemsDb.insert(makeArbitraryTodoItem());
-    const updated = await todoItemsDb.update(
+    const inserted = await todoItemDb.insert(makeArbitraryTodoItem());
+    const updated = await todoItemDb.update(
       makeArbitraryTodoItem({...inserted, text: 'CHANGED'})
     );
     const {text: insertedText, ...restOfInserted} = inserted;

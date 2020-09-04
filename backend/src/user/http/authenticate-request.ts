@@ -1,18 +1,20 @@
 import {User} from '../business-entities/user';
-import {HttpRequest} from '../../types/http';
+import {HttpRequest} from '../../infrastructure/types/http';
 import {GetElseCreateNew} from '../business-logic/get-else-create-new';
 
 export type AuthenticateRequest = (
   request: Partial<HttpRequest>
 ) => Promise<User>;
 
-type Dependencies = {
+type Build = (dependencies: {
   getElseCreateNew: GetElseCreateNew;
   authenicateFirebaseIdToken: (_: string) => Promise<{uid: string}>;
-};
-type Build = (_: Dependencies) => AuthenticateRequest;
+}) => AuthenticateRequest;
 
-const build: Build = ({getElseCreateNew, authenicateFirebaseIdToken}) => {
+export const buildAuthenticateRequest: Build = ({
+  getElseCreateNew,
+  authenicateFirebaseIdToken,
+}) => {
   const authenicateRequest: AuthenticateRequest = async request => {
     const {
       headers: {authorization: idToken},
@@ -30,5 +32,3 @@ const build: Build = ({getElseCreateNew, authenicateFirebaseIdToken}) => {
   };
   return authenicateRequest;
 };
-
-export default build;

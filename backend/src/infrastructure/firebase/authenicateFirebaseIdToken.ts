@@ -6,7 +6,7 @@ admin.initializeApp({
   databaseURL: 'https://pickflix.firebaseio.com',
 });
 
-export default async (idToken: string) => {
+export const authenicateFirebaseIdToken = async (idToken: string) => {
   const decodedToken = await admin.auth().verifyIdToken(idToken);
   const firebaseId = decodedToken.uid;
   const firebaseUser = await admin.auth().getUser(firebaseId);

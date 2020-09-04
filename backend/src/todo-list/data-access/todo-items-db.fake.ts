@@ -1,7 +1,9 @@
 import {TodoItemsDb} from './TodoItemsDb';
 import {TodoItem} from '../business-entities/todo-item';
 
-export default (): TodoItemsDb => {
+type Build = () => TodoItemsDb;
+
+export const buildTodoItemDb: Build = () => {
   const map = new Map<string, TodoItem>();
 
   const insert = async (todoItem: TodoItem): Promise<TodoItem> => {

@@ -1,7 +1,7 @@
 import fc from 'fast-check';
 import R from 'ramda';
 import {arbitraryUser} from '../business-entities/__arbitrary__/user';
-import buildAuthenticateRequest from './authenticate-request';
+import {buildAuthenticateRequest} from './authenticate-request';
 
 const arbitraryRequest = () =>
   fc.record({

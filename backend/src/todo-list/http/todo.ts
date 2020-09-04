@@ -1,15 +1,13 @@
-import {HttpController} from '../../types/http';
+import {HttpController} from '../../infrastructure/types/http';
 
-type Dependencies = {
+type Build = (dependencies: {
   getTodo: HttpController;
   deleteTodo: HttpController;
   patchTodo: HttpController;
   postTodo: HttpController;
-};
+}) => HttpController;
 
-type Build = (_: Dependencies) => HttpController;
-
-const build: Build = ({
+export const buildTodo: Build = ({
   getTodo,
   deleteTodo,
   patchTodo,
@@ -30,5 +28,3 @@ const build: Build = ({
       };
   }
 };
-
-export default build;

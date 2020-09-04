@@ -1,21 +1,22 @@
 const MAX_LENGTH = 20;
 
 export type TodoItem = {
-  readonly id: string;
-  readonly userId: string;
-  readonly text: string;
-  readonly completed: boolean;
-  readonly createdAt: Date;
-  readonly updatedAt: Date;
+  id: string;
+  userId: string;
+  text: string;
+  completed: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
-export default ({
-  makeId,
-  isValidId,
-}: {
+type MakeTodoItem = (todoInfo: Partial<TodoItem>) => TodoItem;
+
+type Build = (dependencies: {
   makeId: () => string;
   isValidId: (id: string) => boolean;
-}) => (todoInfo: Partial<TodoItem>): TodoItem => {
+}) => MakeTodoItem;
+
+export const buildMakeTodoItem: Build = ({makeId, isValidId}) => todoInfo => {
   const {
     id = makeId(),
     userId,

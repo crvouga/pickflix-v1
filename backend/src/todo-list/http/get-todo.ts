@@ -1,14 +1,16 @@
 import {ListItems} from '../business-logic/list-items';
-import {HttpController} from '../../types/http';
+import {HttpController} from '../../infrastructure/types/http';
 import {AuthenticateRequest} from '../../user/http/authenticate-request';
 
-type Dependencies = {
+type Build = (dependencies: {
   authenticateRequest: AuthenticateRequest;
   listItems: ListItems;
-};
-type Build = (_: Dependencies) => HttpController;
+}) => HttpController;
 
-const build: Build = ({authenticateRequest, listItems}) => async request => {
+export const buildGetTodo: Build = ({
+  authenticateRequest,
+  listItems,
+}) => async request => {
   try {
     const user = await authenticateRequest(request);
     const todoInfo = {
@@ -29,5 +31,3 @@ const build: Build = ({authenticateRequest, listItems}) => async request => {
     };
   }
 };
-
-export default build;

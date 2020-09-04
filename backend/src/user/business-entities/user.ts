@@ -1,16 +1,16 @@
 export type User = {
-  readonly id: string;
-  readonly firebaseId: string;
+  id: string;
+  firebaseId: string;
 };
 
-type Dependencies = {
+type Build = (dependencies: {
   makeId: () => string;
   isValidId: (id: string) => boolean;
-};
+}) => (_: Partial<User>) => User;
 
-type Build = (_: Dependencies) => (_: Partial<User>) => User;
-
-const build: Build = ({makeId, isValidId}) => (userInfo): User => {
+export const buildMakeUser: Build = ({makeId, isValidId}) => (
+  userInfo
+): User => {
   const {id = makeId(), firebaseId} = userInfo;
 
   if (!isValidId(id)) {
@@ -26,5 +26,3 @@ const build: Build = ({makeId, isValidId}) => (userInfo): User => {
     firebaseId,
   });
 };
-
-export default build;

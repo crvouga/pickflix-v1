@@ -3,6 +3,8 @@ import {makeTodoItem} from '../business-entities';
 import {TodoItem} from '../business-entities/todo-item';
 import {TodoItemsDb} from './TodoItemsDb';
 
+type Build = (dependencies: {makeDb: () => Promise<Db>}) => TodoItemsDb;
+
 type Row = {
   id: string;
   user_id: string;
@@ -11,12 +13,6 @@ type Row = {
   created_at: string;
   updated_at: string;
 };
-
-type Dependencies = {
-  makeDb: () => Promise<Db>;
-};
-
-type Build = (_: Dependencies) => TodoItemsDb;
 
 const rowToEntity = (row: Row): TodoItem | undefined => {
   if (!row) {
@@ -34,7 +30,7 @@ const rowToEntity = (row: Row): TodoItem | undefined => {
   return todoItem;
 };
 
-const build: Build = ({makeDb}) => {
+export const buildTodoItemDb: Build = ({makeDb}) => {
   const insert = async (todoItem: TodoItem): Promise<TodoItem> => {
     const {id, userId, text, completed, createdAt, updatedAt} = todoItem;
 
@@ -116,5 +112,3 @@ const build: Build = ({makeDb}) => {
     findAllByUserId,
   };
 };
-
-export default build;

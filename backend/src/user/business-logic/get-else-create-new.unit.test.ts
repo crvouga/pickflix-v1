@@ -1,8 +1,8 @@
 import fc from 'fast-check';
-import buildUserDb from '../data-access/user-db.fake';
-import buildCreateNew from './create-new';
-import buildGetByIds from './get-by-ids';
-import buildGetElseCreateNew from './get-else-create-new';
+import {buildUserDb} from '../data-access/user-db.fake';
+import {buildCreateNew} from './create-new';
+import {buildGetByIds} from './get-by-ids';
+import {buildGetElseCreateNew} from './get-else-create-new';
 
 const build = () => {
   const userDb = buildUserDb();

@@ -1,12 +1,12 @@
 import fc from 'fast-check';
 import {arbitraryTodoItemInfo} from '../business-entities/__arbitrary__/todo-item';
-import buildTodoItemsDb from '../data-access/todo-items-db.fake';
-import buildRemoveItem from './remove-item';
-import buildListItems from './list-items';
-import buildAddItem from './add-item';
+import {buildTodoItemDb} from '../data-access/todo-items-db.fake';
+import {buildRemoveItem} from './remove-item';
+import {buildListItems} from './list-items';
+import {buildAddItem} from './add-item';
 
 const build = () => {
-  const db = buildTodoItemsDb();
+  const db = buildTodoItemDb();
   const addItem = buildAddItem({db});
   const listItems = buildListItems({db});
   const removeItem = buildRemoveItem({db});

@@ -1,15 +1,16 @@
-import {HttpController} from '../../types/http';
-import {AddItem} from '../business-logic/add-item';
+import {HttpController} from '../../infrastructure/types/http';
 import {AuthenticateRequest} from '../../user/http/authenticate-request';
+import {AddItem} from '../business-logic/add-item';
 
-type Dependencies = {
+type Build = (dependencies: {
   addItem: AddItem;
   authenticateRequest: AuthenticateRequest;
-};
+}) => HttpController;
 
-type Build = (_: Dependencies) => HttpController;
-
-const build: Build = ({addItem, authenticateRequest}) => async request => {
+export const buildPostTodo: Build = ({
+  addItem,
+  authenticateRequest,
+}) => async request => {
   try {
     const {
       body: {text},
@@ -38,5 +39,3 @@ const build: Build = ({addItem, authenticateRequest}) => async request => {
     };
   }
 };
-
-export default build;

@@ -1,8 +1,8 @@
 import R from 'ramda';
 import fc from 'fast-check';
-import buildUserDb from '../data-access/user-db.fake';
-import buildCreateNew from './create-new';
-import buildGetByIds from './get-by-ids';
+import {buildUserDb} from '../data-access/user-db.fake';
+import {buildCreateNew} from './create-new';
+import {buildGetByIds} from './get-by-ids';
 
 const build = () => {
   const userDb = buildUserDb();
