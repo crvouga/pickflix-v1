@@ -1,5 +1,5 @@
-import firebase from "./auth/firebase";
 import axios from "axios";
+import firebase from "./auth/firebase";
 
 const env = process.env.NODE_ENV || "development";
 

@@ -1,3 +1,5 @@
 import {v4, validate} from 'uuid';
-export const makeId = () => v4();
-export const isValidId = (id: string) => validate(id);
+import {Id, IsValidId, MakeId} from './types';
+
+export const makeId: MakeId = () => v4() as Id;
+export const isValidId: IsValidId = id => (validate(id) ? (id as Id) : false);

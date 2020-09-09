@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Box,
   LinearProgress,
   List,
   ListItem,
@@ -8,33 +7,21 @@ import {
   ListItemIcon,
   ListItemText,
   useTheme,
-  CircularProgress,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import React from "react";
-import { useQuery } from "react-query";
 import { useSelector } from "react-redux";
 import auth from "../auth/redux";
-import backendAPI from "../backendAPI";
 import useBoolean from "../common/hooks/useBoolean";
 import SettingsDrawer from "./SettingsDrawer";
-import Todo from "./Todo";
 
 export default () => {
   const theme = useTheme();
   const user = useSelector(auth.selectors.user);
   const status = useSelector(auth.selectors.status);
   const settingsDrawerOpen = useBoolean();
-
-  // const query = useQuery(
-  //   ["user", "lists"],
-  //   () => Promise.reject(), // backendAPI.get("/api/list").then((res) => res.data),
-  //   {}
-  // );
-
-  // const lists = query.data?.results || [];
 
   return (
     <React.Fragment>
@@ -90,8 +77,6 @@ export default () => {
             </ListItem>
           ))} */}
       </List>
-
-      <Todo />
     </React.Fragment>
   );
 };
