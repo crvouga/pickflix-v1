@@ -7,13 +7,12 @@ const swaggerDocsOptions: swaggerJsdoc.Options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      version: '1',
+      version: '1.',
       title: 'Pickflix',
     },
 
     servers: [{url: 'http://localhost:' + configuration.PORT}],
   },
-  apis: [__dirname + '/routes/*.ts'],
 };
 
 const swaggerDocs = swaggerJsdoc(swaggerDocsOptions);
@@ -33,5 +32,4 @@ export const useSwaggerDocs = (app: express.Application) => {
     swaggerUi.serve,
     swaggerUi.setup(swaggerDocs, swaggerUiOptions)
   );
-  return app;
 };

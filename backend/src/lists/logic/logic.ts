@@ -14,7 +14,7 @@ export const buildListLogic: BuildListLogic = ({
     const lists = await ListStorage.findWhereEquals({id: listId});
 
     if (lists.length === 0) {
-      throw new RangeError('list does not exists');
+      throw new Error('list does not exists');
     }
 
     const list = lists[0];

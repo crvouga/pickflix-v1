@@ -1,6 +1,6 @@
 import {Handler, Request} from 'express';
-import admin from '../../users/firebase-admin';
-import {userLogic} from '../../users/logic';
+import admin from '../../../users/firebase-admin';
+import {userLogic} from '../../../users/logic';
 
 export const attachCurrentUser: Handler = async (req: Request, res, next) => {
   const idToken = req.headers.authorization;
