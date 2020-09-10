@@ -1,4 +1,4 @@
-import {Handler, Router} from 'express';
+import {Handler, Router, IRouter} from 'express';
 import {ListLogic} from '../logic/types';
 
 export interface ListHandlers {

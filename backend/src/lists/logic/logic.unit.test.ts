@@ -64,22 +64,22 @@ describe('delete a list', () => {
 
 describe('add item to list', () => {
   it('inserted item into db', async () => {
-    const {addItem, getItems} = ListLogic;
+    const {addListItem, getListItems} = ListLogic;
     const item = makeListItem({
       listId: makeId(),
       tmdbMediaType: 'movie',
       tmdbId: '43',
     });
-    const before = await getItems({listId: item.listId});
-    await addItem(item);
-    const after = await getItems({listId: item.listId});
+    const before = await getListItems({listId: item.listId});
+    await addListItem(item);
+    const after = await getListItems({listId: item.listId});
 
     expect(before).not.toContainEqual(item);
     expect(after).toContainEqual(item);
   });
 
   it('only allows DISTINCT items in same list', async () => {
-    const {addItem, getItems} = ListLogic;
+    const {addListItem, getListItems} = ListLogic;
 
     const itemInfo: Partial<ListItem> = {
       listId: makeId(),
@@ -92,34 +92,34 @@ describe('add item to list', () => {
     const item4 = makeListItem(itemInfo);
     const item5 = makeListItem(itemInfo);
 
-    await addItem(item1);
-    await addItem(item2);
-    await addItem(item3);
-    await addItem(item4);
-    await addItem(item5);
+    await addListItem(item1);
+    await addListItem(item2);
+    await addListItem(item3);
+    await addListItem(item4);
+    await addListItem(item5);
 
-    const after = await getItems({listId: item1.listId});
+    const after = await getListItems({listId: item1.listId});
     expect(after).toStrictEqual([item1]);
   });
 
   it('removes item from db', async () => {
-    const {addItem, getItems, removeItem} = ListLogic;
-    const item = makeListItem({
+    const {addListItem, getListItems, removeListItem} = ListLogic;
+    const listItem = makeListItem({
       listId: makeId(),
       tmdbId: '42',
       tmdbMediaType: 'movie',
     });
-    await addItem(item);
-    const before = await getItems({listId: item.listId});
-    await removeItem({id: item.id});
-    const after = await getItems({listId: item.listId});
+    await addListItem(listItem);
+    const before = await getListItems({listId: listItem.listId});
+    await removeListItem({listItemId: listItem.id});
+    const after = await getListItems({listId: listItem.listId});
 
-    expect(before).toContainEqual(item);
-    expect(after).not.toContainEqual(item);
+    expect(before).toContainEqual(listItem);
+    expect(after).not.toContainEqual(listItem);
   });
 
   it('gets items for a specific list', async () => {
-    const {addItem, getItems} = ListLogic;
+    const {addListItem, getListItems} = ListLogic;
     const listId1 = makeId();
     const listId2 = makeId();
 
@@ -139,12 +139,12 @@ describe('add item to list', () => {
       tmdbMediaType: 'movie',
     });
 
-    await addItem(item1);
-    await addItem(item2);
-    await addItem(item3);
+    await addListItem(item1);
+    await addListItem(item2);
+    await addListItem(item3);
 
-    const list1 = await getItems({listId: listId1});
-    const list2 = await getItems({listId: listId2});
+    const list1 = await getListItems({listId: listId1});
+    const list2 = await getListItems({listId: listId2});
 
     expect(list1).toStrictEqual([item1, item2]);
     expect(list2).toStrictEqual([item3]);

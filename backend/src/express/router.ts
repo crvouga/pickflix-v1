@@ -1,10 +1,12 @@
 import express from 'express';
-import tmdb from './tmdb';
-import youtube from './youtube';
+import {useTmdbRouter} from './tmdb';
+import {useYoutubeRouter} from './youtube';
+import {useListRouter} from '../lists/express';
 
 export default () => {
   const router = express.Router();
-  tmdb(router);
-  youtube(router);
+  useTmdbRouter(router);
+  useYoutubeRouter(router);
+  useListRouter(router);
   return router;
 };

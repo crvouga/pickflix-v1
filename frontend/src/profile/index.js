@@ -9,20 +9,21 @@ import {
   useTheme,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-import BookmarkIcon from "@material-ui/icons/Bookmark";
-import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import React from "react";
-import { useSelector } from "react-redux";
-import auth from "../auth/redux";
+import { useDispatch, useSelector } from "react-redux";
 import useBoolean from "../common/hooks/useBoolean";
+import { selectors, actions } from "../redux";
 import SettingsDrawer from "./SettingsDrawer";
 
 export default () => {
   const theme = useTheme();
-  const user = useSelector(auth.selectors.user);
-  const status = useSelector(auth.selectors.status);
+  const user = useSelector(selectors.auth.user);
+  const status = useSelector(selectors.auth.status);
   const settingsDrawerOpen = useBoolean();
-
+  const dispatch = useDispatch();
+  const onClickCreateNewList = () => {
+    dispatch(actions.modal.open("CreateListDialog"));
+  };
   return (
     <React.Fragment>
       <SettingsDrawer
@@ -45,37 +46,11 @@ export default () => {
             <AddIcon style={{ color: theme.palette.primary.main }} />
           </ListItemIcon>
           <ListItemText
+            onClick={onClickCreateNewList}
             style={{ color: theme.palette.primary.main }}
             primary="Create New List"
           />
         </ListItem>
-        <ListItem button>
-          <ListItemAvatar>
-            <Avatar>
-              <BookmarkIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Watchlist" />
-        </ListItem>
-        <ListItem button>
-          <ListItemAvatar>
-            <Avatar>
-              <ThumbUpIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Liked" />
-        </ListItem>
-        {/* {query.status === "loading" && (
-          <Box>
-            <CircularProgress />
-          </Box>
-        )}
-        {query.status === "success" &&
-          (query.data?.results || []).map((list) => (
-            <ListItem key={list.id}>
-              <ListItemText primary={list.title} />
-            </ListItem>
-          ))} */}
       </List>
     </React.Fragment>
   );

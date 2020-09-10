@@ -36,7 +36,7 @@ export const buildListLogic: BuildListLogic = ({
     return await ListStorage.findByUserId(userId);
   },
 
-  addItem: async listItemInfo => {
+  addListItem: async listItemInfo => {
     const results = await ListItemStorage.findWhereEquals({
       tmdbMediaType: listItemInfo.tmdbMediaType,
       tmdbId: listItemInfo.tmdbId,
@@ -52,11 +52,11 @@ export const buildListLogic: BuildListLogic = ({
     return inserted;
   },
 
-  removeItem: async ({id}) => {
-    return await ListItemStorage.remove(id);
+  removeListItem: async ({listItemId}) => {
+    return await ListItemStorage.remove(listItemId);
   },
 
-  getItems: async ({listId}) => {
+  getListItems: async ({listId}) => {
     return await ListItemStorage.findWhereEquals({listId});
   },
 

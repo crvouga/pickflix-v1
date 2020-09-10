@@ -11,7 +11,7 @@ const stringifyConfig: qs.IStringifyOptions = {
 
 const router = express.Router();
 
-export default (app: express.IRouter) => {
+export const useTmdbRouter = (app: express.IRouter) => {
   app.use('/tmdb', router);
 
   router.all('*', async (req, res, next) => {

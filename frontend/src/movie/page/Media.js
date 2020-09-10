@@ -7,9 +7,8 @@ import { useDispatch } from "react-redux";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
 import AbsolutePositionBox from "../../common/components/AbsolutePositionBox";
-import modal from "../../common/redux/modal";
+import { actions } from "../../redux";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
-import player from "../../video/redux/player";
 import Poster from "../components/Poster";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
@@ -84,8 +83,8 @@ export default ({ videos, images }) => {
   const isPlayIconVisible = useDelayedTrueBoolean(true);
 
   const handlePlayIconClick = (e) => {
-    dispatch(player.actions.setPlaylist(videos));
-    dispatch(modal.actions.open("video"));
+    dispatch(actions.player.setPlaylist(videos));
+    dispatch(actions.modal.open("video"));
   };
 
   const handleChangeIndex = (newIndex) => {

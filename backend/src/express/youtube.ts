@@ -13,7 +13,7 @@ const timeToLive = 1000 * 60 * 60 * 24 * 7;
 
 const router = express.Router();
 
-export default (app: express.IRouter) => {
+export const useYoutubeRouter = (app: express.IRouter) => {
   app.use('/youtube', router);
 
   router.all('*', async (req, res, next) => {

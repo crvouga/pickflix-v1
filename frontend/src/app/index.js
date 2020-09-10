@@ -1,6 +1,6 @@
 import React from "react";
 import Providers from "./Providers";
-import Routes from "../common/Routes";
+import Routes from "./Routes";
 
 export default () => {
   return (

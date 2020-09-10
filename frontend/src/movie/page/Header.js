@@ -39,6 +39,7 @@ export default ({ details, releaseDates }) => {
   const subtitle1 = toSubtitle1({ details, releaseDates });
 
   const dispatch = useDispatch();
+
   const handleGenreClick = (genre) => () => {
     dispatch(router.actions.push("/discover"));
     const newTags = R.map(R.assoc("type", "genre"), [genre]);

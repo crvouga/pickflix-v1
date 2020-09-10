@@ -1,4 +1,4 @@
-import express from 'express';
+import express, {ErrorRequestHandler} from 'express';
 import {BuildListRouter} from './types';
 
 export const buildListRouter: BuildListRouter = ({
@@ -9,12 +9,24 @@ export const buildListRouter: BuildListRouter = ({
 
   router
     .use(attachCurrentUser)
-    .get('/lists', ListHandlers.getLists)
-    .post('/lists', ListHandlers.postList)
-    .get('/lists/:listId', ListHandlers.getList)
-    .delete('/lists/:listId', ListHandlers.deleteList)
-    .post('/lists/:listId/items', ListHandlers.postListItem)
-    .delete('/lists/:listId/items/:listItemId', ListHandlers.deleteListItem);
+    .get('/', ListHandlers.getLists)
+    .post('/', ListHandlers.postList)
+    .get('/:listId', ListHandlers.getList)
+    .delete('/:listId', ListHandlers.deleteList)
+    .post('/:listId/items', ListHandlers.postListItem)
+    .delete('/:listId/items/:listItemId', ListHandlers.deleteListItem);
+
+  const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+    if (err) {
+      return res.status(400).json({
+        message: err.message,
+      });
+    } else {
+      return next();
+    }
+  };
+
+  router.use(errorHandler);
 
   return router;
 };

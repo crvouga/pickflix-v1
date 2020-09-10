@@ -8,11 +8,11 @@ export interface ListLogic {
   // leaveList: (_: {listId: Id; userId: Id}) => Promise<boolean>;
   // joinList: (_: {listId: Id; userId: Id}) => Promise<boolean>;
   getListsByUser: (_: {userId: Id}) => Promise<List[]>;
-  addItem: (
+  addListItem: (
     _: Pick<ListItem, 'tmdbId' | 'tmdbMediaType' | 'listId'>
   ) => Promise<ListItem>;
-  removeItem: (_: {id: Id}) => Promise<boolean>;
-  getItems: (_: {listId: Id}) => Promise<ListItem[]>;
+  removeListItem: (_: {listItemId: Id}) => Promise<boolean>;
+  getListItems: (_: {listId: Id}) => Promise<ListItem[]>;
   getList: (_: {listId: Id}) => Promise<List | undefined>;
 }
 
