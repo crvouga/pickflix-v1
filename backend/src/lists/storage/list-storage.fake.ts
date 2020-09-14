@@ -18,13 +18,13 @@ export const buildListStorageFake: Build = () => {
         _.userIds.includes(userId)
       );
     },
-    findByTmdbId: async tmdbId => {
+    findBytmdbMediaId: async tmdbMediaId => {
       const lists = Array.from(listMap.values());
       const listItems = Array.from(listItemMap.values());
 
       return R.innerJoin(
         (list, listItem) =>
-          list.id === listItem.listId && listItem.tmdbId === tmdbId,
+          list.id === listItem.listId && listItem.tmdbMediaId === tmdbMediaId,
         lists,
         listItems
       );
@@ -56,22 +56,22 @@ export const buildListStorageFake: Build = () => {
       return Array.from(listItemMap.values()).filter(R.whereEq(columnValues));
     },
 
-    findIntersections: async ({listIds, tmdbIds}) => {
+    findIntersections: async ({listIds, tmdbMediaIds}) => {
       const toString = (ids: string[]): string =>
         ids.map(_ => `'${_}'`).join(', ');
 
       const query = `
-        SELECT (listId, tmdbId) 
+        SELECT (listId, tmdbMediaId) 
         FROM list_items
         WHERE list_id IN (${toString(listIds)})
-        AND tmdb_id IN (${toString(tmdbIds)})`;
+        AND tmdb_id IN (${toString(tmdbMediaIds)})`;
 
       return Array.from(listItemMap.values())
-        .map(R.pick(['listId', 'tmdbId']))
+        .map(R.pick(['listId', 'tmdbMediaId']))
         .filter(
           R.where({
             listId: R.includes(R.__, listIds),
-            tmdbId: R.includes(R.__, tmdbIds),
+            tmdbMediaId: R.includes(R.__, tmdbMediaIds),
           })
         );
     },
@@ -88,7 +88,8 @@ export const buildListStorageFake: Build = () => {
         for (const itemInfo of listItemInfos) {
           const sameId = itemInfo.id === item.id;
           const sameMovie =
-            itemInfo.listId === item.listId && itemInfo.tmdbId === item.tmdbId;
+            itemInfo.listId === item.listId &&
+            itemInfo.tmdbMediaId === item.tmdbMediaId;
 
           if (sameId || sameMovie) {
             listItemMap.delete(item.id);

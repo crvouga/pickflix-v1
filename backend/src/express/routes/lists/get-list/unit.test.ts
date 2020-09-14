@@ -15,7 +15,7 @@ describe('GET', () => {
       [1, 2, 3, 4, 5].map(n => ({
         listId: list.id,
         tmdbMediaType: 'movie',
-        tmdbId: `${n}`,
+        tmdbMediaId: `${n}`,
       }))
     );
 

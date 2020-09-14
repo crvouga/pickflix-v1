@@ -44,10 +44,10 @@ export const buildListLogic: BuildListLogic = ({ListStorage, UserStorage}) => {
       return await ListStorage.remove(list.id);
     },
 
-    getListsByUser: async ({userId, tmdbIds = []}) => {
+    getListsByUser: async ({userId, tmdbMediaIds = []}) => {
       const lists = await ListStorage.findByUserId(userId);
 
-      if (tmdbIds.length === 0) {
+      if (tmdbMediaIds.length === 0) {
         return lists;
       }
 
@@ -55,18 +55,18 @@ export const buildListLogic: BuildListLogic = ({ListStorage, UserStorage}) => {
 
       const intersections = await ListStorage.findIntersections({
         listIds,
-        tmdbIds,
+        tmdbMediaIds,
       });
 
       const flaggedLists = lists.map(list => {
-        const tmdbIds = intersections
+        const tmdbMediaIds = intersections
           .filter(_ => _.listId === list.id)
-          .map(_ => _.tmdbId);
+          .map(_ => _.tmdbMediaId);
 
-        if (tmdbIds.length === 0) {
+        if (tmdbMediaIds.length === 0) {
           return list;
         } else {
-          return {...list, tmdbIds};
+          return {...list, tmdbMediaIds};
         }
       });
 
@@ -83,8 +83,8 @@ export const buildListLogic: BuildListLogic = ({ListStorage, UserStorage}) => {
       return await ListStorage.deleteListItems(listItemInfos);
     },
 
-    getListsByTmdbId: async ({tmdbId}) => {
-      const listItems = await ListStorage.findByTmdbId(tmdbId);
+    getListsBytmdbMediaId: async ({tmdbMediaId}) => {
+      const listItems = await ListStorage.findBytmdbMediaId(tmdbMediaId);
       return listItems;
     },
 

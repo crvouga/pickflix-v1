@@ -14,7 +14,7 @@ describe('/lists/{list-id}/list-items/{list-item-id}', () => {
     const [listItem] = await ListLogic.addListItems([
       {
         listId: list.id,
-        tmdbId: '42',
+        tmdbMediaId: '42',
         tmdbMediaType: 'movie',
       },
     ]);

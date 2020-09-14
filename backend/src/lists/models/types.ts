@@ -10,7 +10,7 @@ export type List = {
 export type ListItem = {
   id: Id;
   listId: Id;
-  tmdbId: string;
+  tmdbMediaId: string;
   tmdbMediaType: 'movie' | 'tv';
 };
 

@@ -17,5 +17,17 @@ export default () => {
         default: "#101010",
       },
     },
+    overrides: {
+      MuiTypography: {
+        fontWeight: "bold",
+      },
+      MuiCssBaseline: {
+        "@global": {
+          html: {
+            fontWeight: "bold",
+          },
+        },
+      },
+    },
   });
 };

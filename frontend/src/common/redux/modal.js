@@ -3,7 +3,7 @@ import * as R from "ramda";
 import router from "./router";
 import { takeEvery, put, select } from "redux-saga/effects";
 
-const createPayload = (name, props) => ({
+const createPayload = (name, props = {}) => ({
   payload: { name, props },
 });
 

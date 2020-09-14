@@ -15,12 +15,12 @@ export interface ListLogic {
   // joinList: (_: {listId: Id; userId: Id}) => Promise<boolean>;
   getListsByUser: (_: {
     userId: Id;
-    tmdbIds?: string[];
-  }) => Promise<(List & {tmdbIds?: string[]})[]>;
+    tmdbMediaIds?: string[];
+  }) => Promise<(List & {tmdbMediaIds?: string[]})[]>;
 
-  getListsByTmdbId: (_: {tmdbId: string}) => Promise<List[]>;
+  getListsBytmdbMediaId: (_: {tmdbMediaId: string}) => Promise<List[]>;
   addListItems: (
-    _: Pick<ListItem, 'tmdbId' | 'tmdbMediaType' | 'listId'>[]
+    _: Pick<ListItem, 'tmdbMediaId' | 'tmdbMediaType' | 'listId'>[]
   ) => Promise<ListItem[]>;
   removeListItems: (_: Partial<ListItem>[]) => Promise<boolean>;
   getListItems: (_: {listId: Id}) => Promise<ListItem[]>;

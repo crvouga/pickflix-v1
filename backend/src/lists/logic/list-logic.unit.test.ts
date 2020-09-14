@@ -65,7 +65,7 @@ describe('add item to list', () => {
     const listItem = makeListItem({
       listId: makeId(),
       tmdbMediaType: 'movie',
-      tmdbId: '43',
+      tmdbMediaId: '43',
     });
     const before = await ListLogic.getListItems({listId: listItem.listId});
     await ListLogic.addListItems([listItem]);
@@ -79,7 +79,7 @@ describe('add item to list', () => {
     const [listItem, ...restOfListItems] = await ListLogic.addListItems(
       [1, 2, 3, 4, 5].map(n => ({
         listId: makeId(),
-        tmdbId: '43',
+        tmdbMediaId: '43',
         tmdbMediaType: 'movie',
       }))
     );
@@ -92,7 +92,7 @@ describe('add item to list', () => {
     const [listItem] = await ListLogic.addListItems([
       {
         listId: makeId(),
-        tmdbId: '42',
+        tmdbMediaId: '42',
         tmdbMediaType: 'movie',
       },
     ]);
@@ -111,17 +111,17 @@ describe('add item to list', () => {
     const [item1, item2, item3] = await ListLogic.addListItems([
       {
         listId: listId1,
-        tmdbId: '34',
+        tmdbMediaId: '34',
         tmdbMediaType: 'movie',
       },
       {
         listId: listId1,
-        tmdbId: '35',
+        tmdbMediaId: '35',
         tmdbMediaType: 'movie',
       },
       {
         listId: listId2,
-        tmdbId: '34',
+        tmdbMediaId: '34',
         tmdbMediaType: 'movie',
       },
     ]);
@@ -173,7 +173,7 @@ describe('list logic', () => {
     after1.forEach(item => expect(item.userIds).toContainEqual(userId1));
   });
 
-  it('get all list for a specific user AND flag all with tmdbIds ', async () => {
+  it('get all list for a specific user AND flag all with tmdbMediaIds ', async () => {
     const {createList, getListsByUser} = ListLogic;
     const userId = makeId();
 
@@ -186,22 +186,22 @@ describe('list logic', () => {
       title: '2',
     });
 
-    const tmdbId = '42';
+    const tmdbMediaId = '42';
     await ListLogic.addListItems([
       {
         tmdbMediaType: 'movie',
-        tmdbId,
+        tmdbMediaId,
         listId: before1.id,
       },
     ]);
 
-    const lists = await getListsByUser({userId, tmdbIds: [tmdbId]});
+    const lists = await getListsByUser({userId, tmdbMediaIds: [tmdbMediaId]});
 
     const after1 = lists.filter(_ => _.id === before1.id)[0];
     const after2 = lists.filter(_ => _.id === before2.id)[0];
 
-    expect(after1.tmdbIds).toStrictEqual([tmdbId]);
-    expect(after2.tmdbIds).toBeFalsy();
+    expect(after1.tmdbMediaIds).toStrictEqual([tmdbMediaId]);
+    expect(after2.tmdbMediaIds).toBeFalsy();
   });
 
   describe('edit a list', () => {
@@ -236,8 +236,8 @@ describe('list logic', () => {
   });
 });
 
-describe('get lists by tmdbId', () => {
-  it('gets specific list by tmdbId', async () => {
+describe('get lists by tmdbMediaId', () => {
+  it('gets specific list by tmdbMediaId', async () => {
     const userId = makeId();
 
     const list1 = await ListLogic.createList({
@@ -253,28 +253,30 @@ describe('get lists by tmdbId', () => {
       userIds: [userId],
     });
 
-    const tmdbId1 = '1';
-    const tmdbId2 = '2';
+    const tmdbMediaId1 = '1';
+    const tmdbMediaId2 = '2';
 
     await ListLogic.addListItems([
       {
-        tmdbId: tmdbId1,
+        tmdbMediaId: tmdbMediaId1,
         listId: list1.id,
         tmdbMediaType: 'movie',
       },
       {
-        tmdbId: tmdbId1,
+        tmdbMediaId: tmdbMediaId1,
         listId: list2.id,
         tmdbMediaType: 'movie',
       },
       {
-        tmdbId: tmdbId2,
+        tmdbMediaId: tmdbMediaId2,
         listId: list3.id,
         tmdbMediaType: 'movie',
       },
     ]);
 
-    const lists = await ListLogic.getListsByTmdbId({tmdbId: tmdbId1});
+    const lists = await ListLogic.getListsBytmdbMediaId({
+      tmdbMediaId: tmdbMediaId1,
+    });
     expect(lists).toContainEqual(list1);
     expect(lists).toContainEqual(list2);
     expect(lists).not.toContainEqual(list3);

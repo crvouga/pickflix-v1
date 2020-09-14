@@ -8,14 +8,14 @@ export interface ListStorage {
   findWhereEquals: (_: Partial<List>) => Promise<List[]>;
   findById: (_: Id) => Promise<List | undefined>;
   findByUserId: (_: Id) => Promise<List[]>;
-  findByTmdbId: (_: string) => Promise<List[]>;
+  findBytmdbMediaId: (_: string) => Promise<List[]>;
   addListItem: (_: ListItem) => Promise<ListItem>;
   removeListItem: (_: Id) => Promise<boolean>;
   findItemWhereEquals: (_: Partial<ListItem>) => Promise<ListItem[]>;
   findIntersections: (_: {
     listIds: Id[];
-    tmdbIds: string[];
-  }) => Promise<{listId: Id; tmdbId: string}[]>;
+    tmdbMediaIds: string[];
+  }) => Promise<{listId: Id; tmdbMediaId: string}[]>;
   insertListItems: (_: ListItem[]) => Promise<ListItem[]>;
   deleteListItems: (_: Partial<ListItem>[]) => Promise<boolean>;
 }

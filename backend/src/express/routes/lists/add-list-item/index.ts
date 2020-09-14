@@ -5,13 +5,13 @@ import {authenticated} from '../../../middlewares/authenticated';
 export default (router: Router) =>
   router.post('/lists/:listId/list-items', authenticated, async (req, res) => {
     const {ListLogic} = req;
-    const {tmdbId, tmdbMediaType} = req.body;
+    const {tmdbMediaId, tmdbMediaType} = req.body;
     const listId = req.params.listId as Id;
 
     await ListLogic.addListItems([
       {
         listId,
-        tmdbId,
+        tmdbMediaId,
         tmdbMediaType,
       },
     ]);

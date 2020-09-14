@@ -69,7 +69,7 @@ export default () => {
       icon: true ? <PlaylistAddIcon /> : <PlaylistAddCheckIcon />,
       label: "Save",
       onClick: () => {
-        dispatch(actions.modal.open("AddToListDialog", { movieId }));
+        dispatch(actions.modal.open("EditListsDialog", { movieId }));
       },
     },
   ];

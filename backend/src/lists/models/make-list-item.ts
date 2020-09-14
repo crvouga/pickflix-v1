@@ -4,7 +4,7 @@ export const buildMakeListItem: BuildMakeListItem = ({
   makeId,
   isValidId,
 }) => ListItemInfo => {
-  const {id = makeId(), listId, tmdbId, tmdbMediaType} = ListItemInfo;
+  const {id = makeId(), listId, tmdbMediaId, tmdbMediaType} = ListItemInfo;
 
   if (!isValidId(id)) {
     throw new Error('invalid id');
@@ -18,11 +18,11 @@ export const buildMakeListItem: BuildMakeListItem = ({
     throw new Error('invalid list id');
   }
 
-  if (!tmdbId) {
+  if (!tmdbMediaId) {
     throw new Error('tmdb id required');
   }
 
-  if (tmdbId && tmdbId.length === 0) {
+  if (tmdbMediaId && tmdbMediaId.length === 0) {
     throw new Error('invalid tmdb id');
   }
 
@@ -37,7 +37,7 @@ export const buildMakeListItem: BuildMakeListItem = ({
   return {
     id,
     listId,
-    tmdbId,
+    tmdbMediaId,
     tmdbMediaType,
   };
 };

@@ -14,7 +14,7 @@ describe('add-lists-items', () => {
     supertest(app)
       .post(`/api/lists/${list.id}/list-items`)
       .send({
-        tmdbId: 42,
+        tmdbMediaId: 42,
         tmdbMediaType: 'movie',
       })
       .expect(201)
