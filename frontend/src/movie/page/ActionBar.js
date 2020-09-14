@@ -10,6 +10,7 @@ import * as R from "ramda";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../../redux";
+import { useParams } from "react-router";
 
 const useStylesIconButton = makeStyles((theme) => ({
   root: {
@@ -28,8 +29,8 @@ const useStylesIconButton = makeStyles((theme) => ({
 export default () => {
   const classesIconButton = useStylesIconButton();
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector(selectors.auth.isAuthenticated);
-  const { movieId } = useSelector(selectors.router.query);
+
+  const { movieId } = useParams();
 
   const actionBarItems = [
     {
@@ -47,21 +48,28 @@ export default () => {
       icon: true ? <BookmarkBorderIcon /> : <BookmarkIcon />,
       label: "Watchlist",
       onClick: () => {
-        dispatch(actions.list.addToList("watchlist", movieId));
+        // dispatch(
+        //   actions.lists.addToWatchList({
+        //     tmdbMediaType: "movie",
+        //     tmdbId: movieId,
+        //   })
+        // );
       },
     },
     {
       icon: true ? <ThumbUpOutlinedIcon /> : <ThumbUpIcon />,
       label: "Like",
       onClick: () => {
-        dispatch(actions.list.addToList("like", movieId));
+        // dispatch(
+        //   actions.lists.addToLiked({ tmdbMediaType: "movie", tmdbId: movieId })
+        // );
       },
     },
     {
       icon: true ? <PlaylistAddIcon /> : <PlaylistAddCheckIcon />,
       label: "Save",
       onClick: () => {
-        dispatch(actions.modal.open("AddToListDialog"));
+        dispatch(actions.modal.open("AddToListDialog", { movieId }));
       },
     },
   ];

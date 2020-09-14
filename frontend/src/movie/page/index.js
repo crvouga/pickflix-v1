@@ -13,7 +13,6 @@ import Credits from "./Credits";
 import Details from "./Details";
 import Header from "./Header";
 import Media from "./Media";
-import NavBar from "./NavBar";
 import RelatedMovies from "./RelatedMovies";
 import Reviews from "./Reviews";
 import SkeletonPage from "./SkeletonPage";

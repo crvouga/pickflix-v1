@@ -1,8 +1,9 @@
-import makeApp from './express';
+import {makeExpressApp} from './express';
 import env from './configuration';
+
 const main = async () => {
-  const app = await makeApp();
-  app.listen(env.PORT, () => {
+  const expressApp = makeExpressApp();
+  expressApp.listen(env.PORT, () => {
     console.log(`Server listening on port: ${env.PORT}\n`);
   });
 };

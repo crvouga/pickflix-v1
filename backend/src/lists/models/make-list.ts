@@ -1,35 +1,54 @@
 import R from 'ramda';
 import {BuildMakeList} from './types';
 
-export const buildMakeList: BuildMakeList = ({makeId, isValidId}) => info => {
-  const userIds = R.uniq(info?.userIds || []);
+const maxLengthTitle = 100;
+const maxLengthDescription = 500;
 
+export const buildMakeList: BuildMakeList = ({makeId, isValidId}) => info => {
   const {id = makeId(), title = '', description = ''} = info;
 
+  const userIds = R.uniq(info?.userIds || []);
+
+  const errors = [];
+
   if (!isValidId(id)) {
-    throw new Error('invalid id');
+    errors.push({for: 'listId', message: `invalid id ${id}`});
+  }
+
+  if (userIds.some(userId => !isValidId(userId))) {
+    errors.push({for: 'userIds', message: `invalid userId`});
   }
 
   if (userIds.length === 0) {
-    throw new Error('requires at least one unique user');
+    errors.push({for: 'userIds', message: `requires at least one user`});
   }
 
   if (title?.length === 0) {
-    throw new Error('title too short');
+    errors.push({for: 'title', message: 'title can NOT be empty'});
   }
 
-  if (title?.length > 100) {
-    throw new Error('title too long');
+  if (title?.length > maxLengthTitle) {
+    errors.push({
+      for: 'title',
+      message: `title can NOT be more than ${maxLengthTitle} characters long`,
+    });
   }
 
-  if (description?.length > 255) {
-    throw new Error('description too long');
+  if (description?.length > maxLengthDescription) {
+    errors.push({
+      for: 'description',
+      message: `title can NOT be more than ${maxLengthTitle} characters long`,
+    });
   }
 
-  return {
+  if (errors.length > 0) {
+    throw new Error(JSON.stringify(errors));
+  }
+
+  return Object.freeze({
     id,
     userIds,
     title,
     description,
-  };
+  });
 };

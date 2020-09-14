@@ -8,13 +8,14 @@ import modal from "../common/redux/modal";
 import recentlyViewed from "../common/redux/recentlyViewed";
 import router from "../common/redux/router";
 import discover from "../discover/redux";
-import list from "../list/redux";
+import lists from "../lists/redux";
 import search from "../search/redux";
 import cast from "../video/redux/cast";
 import player from "../video/redux/player";
+import snackbar from "../snackbar/redux";
 
 export const actions = {
-  list: list.actions,
+  lists: lists.actions,
   player: player.actions,
   discover: discover.actions,
   chat: chat.actions,
@@ -25,10 +26,12 @@ export const actions = {
   auth: auth.actions,
   signInForm: signInForm.actions,
   cast: cast.actions,
+  snackbar: snackbar.actions,
 };
 
 export const selectors = {
-  list: list.selectors,
+  snackbar: snackbar.selectors,
+  lists: lists.selectors,
   player: player.selectors,
   discover: discover.selectors,
   chat: chat.selectors,
@@ -43,7 +46,8 @@ export const selectors = {
 
 function* rootSaga() {
   yield* [
-    spawn(list.saga),
+    spawn(snackbar.saga),
+    spawn(lists.saga),
     spawn(player.saga),
     spawn(discover.saga),
     spawn(chat.saga),
@@ -58,8 +62,9 @@ function* rootSaga() {
 
 export const configureRoot = (history) => {
   const reducers = {
+    snackbar: snackbar.reducer,
     router: connectRouter(history),
-    list: list.reducer,
+    lists: lists.reducer,
     player: player.reducer,
     modal: modal.reducer,
     discover: discover.reducer,

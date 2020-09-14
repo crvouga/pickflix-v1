@@ -1,7 +1,7 @@
 import React from "react";
 import ErrorDialog from "../auth/ErrorDialog";
-import AddToListDialog from "../list/AddToListDialog";
-import CreateListDialog from "../list/CreateListDialog";
+import AddToListDialog from "../lists/AddToListDialog";
+import CreateListDialog from "../lists/CreateListDialog";
 import VideoDialog from "../video/VideoDialog";
 
 const modalNames = {

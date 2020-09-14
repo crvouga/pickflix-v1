@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import useBoolean from "../common/hooks/useBoolean";
 import { selectors, actions } from "../redux";
 import SettingsDrawer from "./SettingsDrawer";
+import Lists from "../lists/Lists";
 
 export default () => {
   const theme = useTheme();
@@ -41,17 +42,17 @@ export default () => {
           <ListItemText primary={user.displayName} secondary={user.email} />
         </ListItem>
 
-        <ListItem button divider>
+        <ListItem button divider onClick={onClickCreateNewList}>
           <ListItemIcon>
             <AddIcon style={{ color: theme.palette.primary.main }} />
           </ListItemIcon>
           <ListItemText
-            onClick={onClickCreateNewList}
             style={{ color: theme.palette.primary.main }}
             primary="Create New List"
           />
         </ListItem>
       </List>
+      <Lists />
     </React.Fragment>
   );
 };

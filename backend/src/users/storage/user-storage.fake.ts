@@ -3,7 +3,7 @@ import {UserStorage} from './types';
 
 type Build = () => UserStorage;
 
-export const buildUserStorage: Build = () => {
+export const buildUserStorageFake: Build = () => {
   const map = new Map<string, User>();
 
   return {

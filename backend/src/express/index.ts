@@ -1,17 +1,17 @@
-import bodyParser from 'body-parser';
-import express from 'express';
-import cors from './cors';
-import router from './router';
-import {useSwaggerDocs} from './swagger';
+import {ListLogic} from '../lists/logic';
+import {UserLogic} from '../users/logic';
+import {buildExpressApp} from './express-app';
+import {attachCurrentUser} from './middlewares/attach-current-user';
 
-export default async () => {
-  const app = express();
+import {firebaseAdmin} from '../users/firebase-admin';
 
-  app.use(bodyParser.json());
-  app.use(cors());
-  app.use('/api', router());
-
-  useSwaggerDocs(app);
+export const makeExpressApp = () => {
+  const {app} = buildExpressApp({
+    ListLogic,
+    UserLogic,
+    attachCurrentUser,
+    firebaseAdmin,
+  });
 
   return app;
 };

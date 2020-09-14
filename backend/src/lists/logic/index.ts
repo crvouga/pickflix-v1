@@ -1,4 +1,8 @@
-import {buildListLogic} from './logic';
-import {ListItemStorage, ListStorage} from '../storage';
+import {UserStorage} from '../../users/storage';
+import {ListStorage} from '../storage';
+import {buildListLogic} from './list-logic';
 
-export const ListLogic = buildListLogic({ListStorage, ListItemStorage});
+export const ListLogic = buildListLogic({
+  ListStorage,
+  UserStorage,
+});

@@ -1,5 +1,12 @@
 import { createAction } from "@reduxjs/toolkit";
-import { push, replace, go, goBack, goForward } from "connected-react-router";
+import {
+  push,
+  replace,
+  go,
+  goBack,
+  goForward,
+  createMatchSelector,
+} from "connected-react-router";
 
 /**
 
@@ -37,6 +44,7 @@ const selectors = {
   pathname: (state) => state.router.location.pathname,
   state: (state) => state.router.location.state,
   query: (state) => state.router.location.query,
+  match: (path) => (state) => createMatchSelector({ path }),
 };
 
 export default { selectors, actions, actionTypes };
