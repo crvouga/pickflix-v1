@@ -8,9 +8,7 @@ export const setStatus = (status) => _setState({ status });
 export const createList = createAction("[lists] CREATE");
 export const deleteList = createAction("[lists] DELETE");
 //
-export const toggleListItemChange = createAction(
-  "[lists] TOGGLE_LIST_ITEM_CHANGE"
-);
-export const submitChanges = createAction("[lists] SUBMIT_CHANGES");
+export const addListItem = createAction("[lists] ADD_LIST_ITEM");
+export const deleteListItem = createAction("[lists] DELETE_LIST_ITEM");
 //
 export const fetch = createAction("[lists] FETCH");

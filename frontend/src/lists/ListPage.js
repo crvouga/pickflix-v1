@@ -62,55 +62,52 @@ export default () => {
   };
 
   return (
-    <Paper>
-      <EditListDialog
-        list={list}
-        open={isEditListModalOpen.value}
-        onClose={isEditListModalOpen.setFalse}
-      />
-      <Box p={2} paddingTop={4} display="flex" flexDirection="row">
-        {/* <Box paddingRight={2}>
-          <Avatar variant="square" size="large">
-            <MovieOutlinedIcon />
-          </Avatar>
-        </Box> */}
-        <Box>
-          <Typography
-            gutterBottom
-            variant="h5"
-            style={{ workBreak: "break-all" }}
-          >
-            {list.title}
-          </Typography>
-          <Typography variant="body1">{list.description}</Typography>
+    <React.Fragment>
+      <Paper>
+        <EditListDialog
+          list={list}
+          open={isEditListModalOpen.value}
+          onClose={isEditListModalOpen.setFalse}
+        />
+        <Box p={2} paddingTop={4} display="flex" flexDirection="row">
+          <Box>
+            <Typography
+              gutterBottom
+              variant="h5"
+              style={{ workBreak: "break-all" }}
+            >
+              {list.title}
+            </Typography>
+            <Typography variant="body1">{list.description}</Typography>
+          </Box>
         </Box>
-      </Box>
-      <Dialog
-        classes={classesDialog}
-        open={isDeleteListModalOpen.value}
-        onClose={isDeleteListModalOpen.setFalse}
-      >
-        <DialogTitle>Delete list?</DialogTitle>
-        <DialogActions>
-          <Button color="primary" onClick={isDeleteListModalOpen.setFalse}>
-            Cancel
-          </Button>
-          <Button color="primary" onClick={onClickDeleteList}>
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Toolbar>
-        <IconButton>
-          <GroupAddOutlinedIcon />
-        </IconButton>
-        <IconButton onClick={isEditListModalOpen.setTrue}>
-          <EditIcon />
-        </IconButton>
-        <IconButton onClick={isDeleteListModalOpen.setTrue}>
-          <DeleteIcon />
-        </IconButton>
-      </Toolbar>
-    </Paper>
+        <Dialog
+          classes={classesDialog}
+          open={isDeleteListModalOpen.value}
+          onClose={isDeleteListModalOpen.setFalse}
+        >
+          <DialogTitle>Delete list?</DialogTitle>
+          <DialogActions>
+            <Button color="primary" onClick={isDeleteListModalOpen.setFalse}>
+              Cancel
+            </Button>
+            <Button color="primary" onClick={onClickDeleteList}>
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Toolbar>
+          <IconButton>
+            <GroupAddOutlinedIcon />
+          </IconButton>
+          <IconButton onClick={isEditListModalOpen.setTrue}>
+            <EditIcon />
+          </IconButton>
+          <IconButton onClick={isDeleteListModalOpen.setTrue}>
+            <DeleteIcon />
+          </IconButton>
+        </Toolbar>
+      </Paper>
+    </React.Fragment>
   );
 };

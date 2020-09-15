@@ -1,7 +1,7 @@
 import {makeList, makeListItem} from '../models';
 import {BuildListLogic} from './types';
 
-export const buildListLogic: BuildListLogic = ({ListStorage, UserStorage}) => {
+export const buildListLogic: BuildListLogic = ({ListStorage}) => {
   return {
     editList: async ({listId, ...edits}) => {
       const existing = await ListStorage.findById(listId);
@@ -89,7 +89,9 @@ export const buildListLogic: BuildListLogic = ({ListStorage, UserStorage}) => {
     },
 
     getListItems: async ({listId}) => {
-      return await ListStorage.findItemWhereEquals({listId});
+      const listItems = await ListStorage.findItemWhereEquals({listId});
+
+      return listItems;
     },
 
     getList: async ({listId}) => {

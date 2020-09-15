@@ -69,12 +69,13 @@ function* deleteListSaga(action) {
   }
 }
 
-const getLists = () => backendAPI.get(`/api/lists`);
+const getLists = ({ tmdbMediaId }) =>
+  backendAPI.get(`/api/lists`, { query: { tmdbMediaIds: [tmdbMediaId] } });
 
 function* fetchLists(action) {
   try {
     yield put(actions.lists.setStatus("loading"));
-    const response = yield call(getLists);
+    const response = yield call(getLists, action.payload);
     const lists = response.data;
     yield put(actions.lists.setLists(lists));
     yield put(actions.lists.setStatus("success"));
@@ -85,9 +86,9 @@ function* fetchLists(action) {
 }
 
 export default function* () {
+  console.log("LISTS SAGA");
   yield takeLatest(actions.lists.deleteList, deleteListSaga);
   yield takeLatest(actions.lists.createList, createListSaga);
-  yield takeLatest(actions.lists.addToList, addToListSaga);
 
   yield takeLatest(actions.lists.fetch, fetchLists);
 }

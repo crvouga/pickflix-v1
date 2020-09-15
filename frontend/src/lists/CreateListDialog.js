@@ -44,12 +44,22 @@ export default () => {
     };
     try {
       const response = await backendAPI.post("/api/lists", formData);
+      dispatch(
+        actions.snackbar.enqueueSnackbar({
+          message: response.data.message,
+          options: {
+            variant: "info",
+          },
+        })
+      );
     } catch (error) {
       const response = error.response;
       const errors = response.data.errors;
       errors.forEach((error) => {
         setErrors(R.assoc(error.for, error));
       });
+    } finally {
+      onClose();
     }
   };
 
