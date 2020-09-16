@@ -1,5 +1,6 @@
 import {Handler} from 'express';
-import {buildListLogicFake} from '../lists/logic/list-logic.fake';
+import {buildListLogicFake} from '../lists/logic/build.fake';
+import {buildTMDbLogicFake} from '../TMDb/logic/build.fake';
 import {buildFirebaseAdminFake} from '../users/firebase-admin.fake';
 import {buildUserLogicFake} from '../users/logic/user-logic.fake';
 import {makeUserFake} from '../users/models/make-user.fake';
@@ -10,6 +11,7 @@ export const buildExpressAppFake = async () => {
 
   const {UserLogic} = buildUserLogicFake();
   const {ListLogic} = buildListLogicFake();
+  const {TMDbLogic} = buildTMDbLogicFake();
 
   const {firebaseAdmin} = buildFirebaseAdminFake({
     firebaseId: currentUser.firebaseId,
@@ -23,11 +25,13 @@ export const buildExpressAppFake = async () => {
   const {app} = buildExpressApp({
     UserLogic,
     ListLogic,
-    attachCurrentUser,
+    TMDbLogic,
     firebaseAdmin,
+    attachCurrentUser,
   });
 
   return {
+    TMDbLogic,
     ListLogic,
     UserLogic,
     currentUser,

@@ -1,5 +1,5 @@
 import pg from 'pg';
-import config from '../../configuration';
+import config from '../configuration';
 
 const pgClientConfigs: Record<string, pg.ClientConfig> = {
   test: {

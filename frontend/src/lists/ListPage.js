@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   CircularProgress,
@@ -6,23 +7,27 @@ import {
   DialogActions,
   DialogTitle,
   IconButton,
-  Toolbar,
-  Typography,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
   makeStyles,
   Paper,
-  Avatar,
+  Toolbar,
+  Typography,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/DeleteForeverOutlined";
 import EditIcon from "@material-ui/icons/EditOutlined";
 import GroupAddOutlinedIcon from "@material-ui/icons/GroupAddOutlined";
-import MovieOutlinedIcon from "@material-ui/icons/MovieOutlined";
 import React from "react";
 import { useQuery } from "react-query";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import backendAPI from "../backendAPI";
 import useBoolean from "../common/hooks/useBoolean";
+import Poster from "../movie/components/Poster";
 import { actions } from "../redux";
-import { useDispatch } from "react-redux";
+import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import EditListDialog from "./EditListDialog";
 
 const useStylesDialog = makeStyles((theme) => ({
@@ -38,6 +43,10 @@ export default () => {
 
   const query = useQuery(["list", listId], () =>
     backendAPI.get(`/api/lists/${listId}`).then((res) => res.data)
+  );
+
+  const listItemsQuery = useQuery(["list", listId, "list-items"], () =>
+    backendAPI.get(`/api/lists/${listId}/list-items`).then((res) => res.data)
   );
 
   const isEditListModalOpen = useBoolean(false);
@@ -108,6 +117,22 @@ export default () => {
           </IconButton>
         </Toolbar>
       </Paper>
+      {listItemsQuery.status === "loading" && (
+        <Box textAlign="center" p={2}>
+          <CircularProgress />
+        </Box>
+      )}
+      {listItemsQuery.status === "success" && (
+        <React.Fragment>
+          <Box display="flex" flexDirection="row" flexWrap="wrap">
+            {(listItemsQuery.data || []).map((listItem) => (
+              <Box p={1 / 2} width="50%" key={listItem.id}>
+                <Poster width="100%" movie={listItem.tmdbData} />
+              </Box>
+            ))}
+          </Box>
+        </React.Fragment>
+      )}
     </React.Fragment>
   );
 };

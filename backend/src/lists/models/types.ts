@@ -12,6 +12,7 @@ export type ListItem = {
   listId: Id;
   tmdbMediaId: string;
   tmdbMediaType: 'movie' | 'tv';
+  tmdbData?: any;
 };
 
 export type MakeList = (_: Partial<List>) => Readonly<List>;

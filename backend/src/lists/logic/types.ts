@@ -27,7 +27,4 @@ export interface ListLogic {
   getList: (_: {listId: Id}) => Promise<List | undefined>;
 }
 
-export type BuildListLogic = (_: {
-  ListStorage: ListStorage;
-  UserStorage: UserStorage;
-}) => ListLogic;
+export type BuildListLogic = (_: {ListStorage: ListStorage}) => ListLogic;

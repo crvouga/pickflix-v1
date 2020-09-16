@@ -2,7 +2,7 @@ import axios from 'axios';
 import express from 'express';
 import qs from 'qs';
 import config from '../../../configuration';
-import keyv from '../../../storage/mongodb/keyv';
+import keyv from '../../../mongodb/keyv';
 
 const stringifyConfig: qs.IStringifyOptions = {
   arrayFormat: 'comma',

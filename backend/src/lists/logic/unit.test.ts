@@ -1,6 +1,6 @@
 import {makeId} from '../../id';
 import {makeListItem} from '../models';
-import {buildListLogicFake} from './list-logic.fake';
+import {buildListLogicFake} from './build.fake';
 
 const {ListLogic} = buildListLogicFake();
 
@@ -85,7 +85,9 @@ describe('add item to list', () => {
     );
 
     const after = await ListLogic.getListItems({listId: listItem.listId});
-    expect(after).toStrictEqual([listItem]);
+    expect(after).toEqual(
+      expect.arrayContaining([expect.objectContaining(listItem)])
+    );
   });
 
   it('removes item from db', async () => {

@@ -1,3 +1,4 @@
+import {TMDbLogic} from '../TMDb/logic';
 import {ListLogic} from '../lists/logic';
 import {UserLogic} from '../users/logic';
 import {buildExpressApp} from './express-app';
@@ -9,6 +10,7 @@ export const makeExpressApp = () => {
   const {app} = buildExpressApp({
     ListLogic,
     UserLogic,
+    TMDbLogic,
     attachCurrentUser,
     firebaseAdmin,
   });

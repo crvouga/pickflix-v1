@@ -1,5 +1,5 @@
 import {Id} from '../../id/types';
-import {Db} from '../../storage/postgres/Db';
+import {Db} from '../../postgres/Db';
 import {makeUser} from '../models';
 import {User} from '../models/types';
 import {UserStorage} from './types';

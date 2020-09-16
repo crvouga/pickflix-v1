@@ -1,5 +1,5 @@
 import Keyv from 'keyv';
-import config from '../../configuration';
+import config from '../configuration';
 
 const keyv = new Keyv(config.mongoDbConnectionURI);
 keyv.on('error', err => {

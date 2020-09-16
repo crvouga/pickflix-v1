@@ -1,4 +1,4 @@
-import {clearTestDb, makeTestDb} from '../../storage/postgres/makeTestDb';
+import {clearTestDb, makeTestDb} from '../../postgres/makeTestDb';
 import {makeUser} from '../models';
 import {buildUserStorage} from './user-storage';
 
