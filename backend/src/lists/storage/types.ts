@@ -18,4 +18,5 @@ export interface ListStorage {
   }) => Promise<{listId: Id; tmdbMediaId: string}[]>;
   insertListItems: (_: ListItem[]) => Promise<ListItem[]>;
   deleteListItems: (_: Partial<ListItem>[]) => Promise<boolean>;
+  countListItemsWhereEquals: (_: {listId: Id}) => Promise<number>;
 }

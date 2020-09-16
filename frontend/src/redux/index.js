@@ -13,8 +13,10 @@ import search from "../search/redux";
 import cast from "../video/redux/cast";
 import player from "../video/redux/player";
 import snackbar from "../snackbar/redux";
+import query from "./query";
 
 export const actions = {
+  [query.namespace]: query.actions,
   lists: lists.actions,
   player: player.actions,
   discover: discover.actions,
@@ -42,6 +44,7 @@ export const selectors = {
   signInForm: signInForm.selectors,
   cast: cast.selectors,
   router: router.selectors,
+  [query.namespace]: query.selectors,
 };
 
 function* rootSaga() {
@@ -74,6 +77,7 @@ export const configureRoot = (history) => {
     signInForm: signInForm.reducer,
     auth: auth.reducer,
     cast: cast.reducer,
+    [query.namespace]: query.reducer,
   };
 
   const rootReducer = combineReducers(reducers);

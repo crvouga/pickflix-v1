@@ -13,10 +13,7 @@ export default (router: Router) =>
         userIds: [currentUser.id],
       });
 
-      res.status(201).json({
-        listId: list.id,
-        message: 'Successfully created list.',
-      });
+      res.status(201).json({...list, itemCount: 0});
     } catch (error) {
       res.status(400).json({errors: JSON.parse(error.message)});
     }

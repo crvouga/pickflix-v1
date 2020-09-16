@@ -30,7 +30,7 @@ describe('GET', () => {
       .get(`/api/lists/${list.id}`)
       .expect(200)
       .then(response => {
-        expect(response.body).toMatchObject(expected);
+        expect(response.body).toEqual(expect.objectContaining(expected));
         done();
       });
   });

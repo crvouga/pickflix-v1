@@ -90,12 +90,20 @@ export const buildListLogic: BuildListLogic = ({ListStorage}) => {
 
     getListItems: async ({listId}) => {
       const listItems = await ListStorage.findItemWhereEquals({listId});
+
       return listItems;
     },
 
     getList: async ({listId}) => {
       const found = await ListStorage.findWhereEquals({id: listId});
       return found[0];
+    },
+
+    countListItems: async ({listId}) => {
+      const listItemCount = await ListStorage.countListItemsWhereEquals({
+        listId: listId,
+      });
+      return listItemCount;
     },
   };
 };

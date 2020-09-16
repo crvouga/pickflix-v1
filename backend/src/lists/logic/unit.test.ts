@@ -284,3 +284,28 @@ describe('get lists by tmdbMediaId', () => {
     expect(lists).not.toContainEqual(list3);
   });
 });
+
+describe('counting list items', () => {
+  it('count list items', async () => {
+    const {ListLogic} = buildListLogicFake();
+    const userId = makeId();
+    const list = await ListLogic.createList({
+      title: 'my list',
+      userIds: [userId],
+    });
+
+    expect(await ListLogic.countListItems({listId: list.id})).toBe(0);
+
+    for (let i = 0; i <= 10; i++) {
+      expect(await ListLogic.countListItems({listId: list.id})).toBe(i);
+
+      await ListLogic.addListItems([
+        {
+          listId: list.id,
+          tmdbMediaId: '550',
+          tmdbMediaType: 'movie',
+        },
+      ]);
+    }
+  });
+});

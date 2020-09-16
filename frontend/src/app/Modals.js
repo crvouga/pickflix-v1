@@ -1,6 +1,6 @@
 import React from "react";
 import ErrorDialog from "../auth/ErrorDialog";
-import EditListsDialog from "../lists/EditListsDialog";
+import SaveToListDialog from "../lists/SaveToListDialog";
 import CreateListDialog from "../lists/CreateListDialog";
 import VideoDialog from "../video/VideoDialog";
 
@@ -16,7 +16,7 @@ export default () => {
     <React.Fragment>
       <ErrorDialog />
       <VideoDialog />
-      <EditListsDialog />
+      <SaveToListDialog />
       <CreateListDialog />
     </React.Fragment>
   );

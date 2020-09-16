@@ -15,7 +15,7 @@ import { queryCache } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../redux";
 import backendAPI from "../backendAPI";
-
+import * as queryConfigs from "./redux/query-configs";
 const Transition = React.forwardRef((props, ref) => (
   <Slide direction="up" ref={ref} {...props} />
 ));
@@ -31,6 +31,7 @@ export default () => {
 
   const dispatch = useDispatch();
   const isOpen = useSelector(selectors.modal.isOpen("CreateListDialog"));
+  const props = useSelector(selectors.modal.props("CreateListDialog"));
   const onClose = () => {
     dispatch(actions.modal.close("CreateListDialog"));
   };
@@ -39,25 +40,22 @@ export default () => {
   const inputRefTitle = useRef();
 
   const onClickCreate = async () => {
-    const formData = {
+    const listInfo = {
       title: inputRefTitle.current.value,
     };
     try {
-      const response = await backendAPI.post("/api/lists", formData);
+      dispatch(
+        actions.query.mutateAsync(queryConfigs.createListMutation(listInfo))
+      );
       dispatch(
         actions.snackbar.enqueueSnackbar({
-          message: response.data.message,
+          message: "Successfully created list",
           options: {
             variant: "info",
           },
         })
       );
     } catch (error) {
-      const response = error.response;
-      const errors = response.data.errors;
-      errors.forEach((error) => {
-        setErrors(R.assoc(error.for, error));
-      });
     } finally {
       onClose();
     }

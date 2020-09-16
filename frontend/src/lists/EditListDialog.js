@@ -1,8 +1,17 @@
 import {
   AppBar,
+  Avatar,
   Box,
+  Checkbox,
   Dialog,
   IconButton,
+  LinearProgress,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  ListItemText,
   makeStyles,
   Slide,
   TextField,
@@ -11,8 +20,13 @@ import {
 } from "@material-ui/core";
 import CheckOutlinedIcon from "@material-ui/icons/CheckOutlined";
 import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
-import React, { useRef, useState } from "react";
-import backendAPI from "../backendAPI";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import * as R from "ramda";
+import React, { useRef, useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { actions, selectors } from "../redux";
+import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
+import * as queryConfigs from "./redux/query-configs";
 
 const Transition = React.forwardRef((props, ref) => (
   <Slide direction="up" ref={ref} {...props} />
@@ -26,30 +40,58 @@ const useStylesDialog = makeStyles((theme) => ({
 
 export default ({ list, ...DialogProps }) => {
   const classesDialog = useStylesDialog();
+  const dispatch = useDispatch();
+
+  const listItemsRequest = queryConfigs.listItemsRequest({ listId: list.id });
+
+  const listItemsQuery = useSelector(selectors.query.query(listItemsRequest));
+  const listItems = useSelector(selectors.lists.listItems(list.id));
 
   const [errors, setErrors] = useState({});
   const inputRefTitle = useRef();
   const inputRefDescription = useRef();
+  const [listItemDeletions, setListItemDeletions] = useState({});
+
+  useEffect(() => {
+    setListItemDeletions({});
+  }, [DialogProps.open]);
+
+  const toggleDeletions = (listItem) => () => {
+    setListItemDeletions(
+      R.ifElse(
+        R.has(listItem.id),
+        R.dissoc(listItem.id),
+        R.assoc(listItem.id, listItem.id)
+      )
+    );
+  };
 
   const onClickSaveChanges = async () => {
     const title = inputRefTitle.current.value;
     const description = inputRefDescription.current.value;
 
-    const formData = { title, description };
+    const listInfo = { title, description };
+
     try {
-      const response = await backendAPI.patch(
-        `/api/lists/${list.id}`,
-        formData
+      dispatch(
+        actions.query.mutateAsync(
+          queryConfigs.editListMutation({ listId: list.id, ...listInfo })
+        )
       );
-      const patchedList = response.data;
+      dispatch(
+        actions.query.mutateAsync(
+          queryConfigs.deleteListItemsMutation({
+            listId: list.id,
+            listItemIds: R.keys(listItemDeletions),
+          })
+        )
+      );
       DialogProps.onClose();
     } catch (error) {
       const errors = JSON.parse(error.response.data.errors);
       console.log({ errors });
     }
   };
-
-  console.log("RENDER");
 
   return (
     <Dialog
@@ -58,6 +100,7 @@ export default ({ list, ...DialogProps }) => {
       classes={classesDialog}
       {...DialogProps}
     >
+      {listItemsQuery.isPending && <LinearProgress />}
       <AppBar color="default" position="sticky">
         <Toolbar>
           <IconButton onClick={DialogProps.onClose}>
@@ -95,6 +138,51 @@ export default ({ list, ...DialogProps }) => {
           error={Boolean(errors?.description)}
           helperText={errors?.description?.message}
         />
+      </Box>
+      <Box
+        color={
+          Object.entries(listItemDeletions).length === 0
+            ? "text.disabled"
+            : "text.primary"
+        }
+      >
+        <List>
+          <ListItem divider>
+            <ListItemIcon style={{ color: "inherit" }}>
+              <DeleteForeverIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={`Deletions ${Object.entries(listItemDeletions).length}`}
+            />
+          </ListItem>
+          {listItems.map((listItem) => (
+            <ListItem
+              divider
+              key={listItem.id}
+              button
+              onClick={toggleDeletions(listItem)}
+            >
+              <ListItemAvatar>
+                <Avatar
+                  variant="square"
+                  src={makeTMDbImageURL(3, listItem.tmdbData)}
+                ></Avatar>
+              </ListItemAvatar>
+              <Box
+                color={
+                  listItemDeletions[listItem.id]
+                    ? "text.primary"
+                    : "text.disabled"
+                }
+              >
+                <ListItemText primary={listItem.tmdbData.title} />
+              </Box>
+              <ListItemSecondaryAction>
+                <Checkbox checked={Boolean(listItemDeletions[listItem.id])} />
+              </ListItemSecondaryAction>
+            </ListItem>
+          ))}
+        </List>
       </Box>
     </Dialog>
   );

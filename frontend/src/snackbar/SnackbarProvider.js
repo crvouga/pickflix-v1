@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
   anchorOriginBottomCenter: {
     pointerEvents: "none",
     transform: "translate(0px, -42px);", //bottom nav bar
+    zIndex: theme.zIndex.appBar - 1,
   },
 }));
 

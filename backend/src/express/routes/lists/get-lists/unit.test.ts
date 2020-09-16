@@ -20,7 +20,9 @@ describe('/lists', () => {
         .get('/api/lists')
         .expect(200)
         .then(response => {
-          expect(response.body).toStrictEqual(lists);
+          expect(response.body).toEqual(
+            expect.arrayContaining(lists.map(_ => expect.objectContaining(_)))
+          );
           done();
         });
     });

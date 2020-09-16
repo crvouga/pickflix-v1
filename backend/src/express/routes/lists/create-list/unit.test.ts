@@ -14,7 +14,9 @@ describe('create-list', () => {
       .set('Accept', 'application/json')
       .expect(201)
       .end((err, response) => {
-        expect(typeof response.body.message).toBe('string');
+        expect(response.body).toEqual(
+          expect.objectContaining({title, description})
+        );
         done();
       });
   });

@@ -19,7 +19,7 @@ const useStylesIconButton = makeStyles((theme) => ({
   label: {
     display: "flex",
     flexDirection: "column",
-    width: "48px",
+    fontSize: "0.5em",
   },
   disabled: {
     color: theme.palette.action.disabled,
@@ -34,19 +34,8 @@ export default () => {
 
   const actionBarItems = [
     {
-      disabled: R.isNil(window?.navigator?.share),
-      icon: <ShareIcon />,
-      label: "Share",
-      onClick: async () => {
-        await window.navigator.share({
-          title: "Movie",
-          url: window.location.href,
-        });
-      },
-    },
-    {
       icon: true ? <BookmarkBorderIcon /> : <BookmarkIcon />,
-      label: "Watchlist",
+      label: "Watch Next",
       onClick: () => {
         // dispatch(
         //   actions.lists.addToWatchList({
@@ -69,7 +58,7 @@ export default () => {
       icon: true ? <PlaylistAddIcon /> : <PlaylistAddCheckIcon />,
       label: "Save",
       onClick: () => {
-        dispatch(actions.modal.open("EditListsDialog", { movieId }));
+        dispatch(actions.modal.open("SaveToListDialog", { movieId }));
       },
     },
   ];
@@ -78,6 +67,7 @@ export default () => {
     <Box display="flex" justifyContent="space-around" flexWrap="nowrap">
       {actionBarItems.map(({ disabled, icon, label, onClick }) => (
         <IconButton
+          size="small"
           disabled={disabled}
           key={label}
           onClick={onClick}

@@ -12,5 +12,12 @@ export default (router: Router) =>
       return res.status(404).end();
     }
 
-    res.json(list);
+    const listItemCount = await ListLogic.countListItems({listId});
+
+    const response = {
+      ...list,
+      listItemCount: listItemCount,
+    };
+
+    res.json(response);
   });

@@ -20,7 +20,8 @@ describe('/lists/{list-id}/list-items/{list-item-id}', () => {
     ]);
 
     await supertest(app)
-      .delete(`/api/lists/${list.id}/list-items/${listItem.id}`)
+      .delete(`/api/lists/${list.id}/list-items`)
+      .send([listItem.id])
       .expect(204);
 
     const listItems = await ListLogic.getListItems({listId: list.id});

@@ -98,5 +98,10 @@ export const buildListStorageFake: Build = () => {
       }
       return true;
     },
+
+    countListItemsWhereEquals: async ({listId}) => {
+      return Array.from(listItemMap.values()).filter(R.whereEq({listId}))
+        .length;
+    },
   };
 };

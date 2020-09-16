@@ -1,3 +1,4 @@
+import * as R from "ramda";
 import { Box, Fade, IconButton, makeStyles } from "@material-ui/core";
 import PlayIcon from "@material-ui/icons/PlayArrow";
 import React, { useRef, useState } from "react";
@@ -100,7 +101,7 @@ export default ({ videos, images }) => {
   const imageComponents =
     backdrops.length === 0
       ? posters.map(renderPoster)
-      : backdrops.map(renderBackdrop);
+      : R.sort(R.descend(R.prop("popularity")), backdrops.map(renderBackdrop));
 
   return (
     <AspectRatio
@@ -109,13 +110,13 @@ export default ({ videos, images }) => {
       onTouchStart={isPlayIconVisible.setFalse}
       onTouchEnd={isPlayIconVisible.setTrue}
     >
-      <AutoPlaySwipeableViews
+      <SwipeableViews
         onChangeIndex={handleChangeIndex}
         interval={4000}
         value={index}
       >
         {imageComponents}
-      </AutoPlaySwipeableViews>
+      </SwipeableViews>
 
       {videos.length && (
         <Fade in={isPlayIconVisible.value}>

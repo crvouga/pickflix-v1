@@ -70,7 +70,7 @@ export default () => {
         classes={{ root: classes.root }}
       >
         {navigationActions.map((props) => (
-          <BottomNavigationAction {...props} />
+          <BottomNavigationAction key={props.value} {...props} />
         ))}
       </BottomNavigation>
       <div className={classes.toolbar} />

@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Box,
   Button,
   CircularProgress,
@@ -7,10 +6,7 @@ import {
   DialogActions,
   DialogTitle,
   IconButton,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
+  LinearProgress,
   makeStyles,
   Paper,
   Toolbar,
@@ -19,16 +15,14 @@ import {
 import DeleteIcon from "@material-ui/icons/DeleteForeverOutlined";
 import EditIcon from "@material-ui/icons/EditOutlined";
 import GroupAddOutlinedIcon from "@material-ui/icons/GroupAddOutlined";
-import React from "react";
-import { useQuery } from "react-query";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import backendAPI from "../backendAPI";
 import useBoolean from "../common/hooks/useBoolean";
 import Poster from "../movie/components/Poster";
-import { actions } from "../redux";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
+import { actions, selectors } from "../redux";
 import EditListDialog from "./EditListDialog";
+import * as queryConfigs from "./redux/query-configs";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
@@ -38,33 +32,22 @@ const useStylesDialog = makeStyles((theme) => ({
 
 export default () => {
   const classesDialog = useStylesDialog();
+  const isEditListModalOpen = useBoolean(false);
+  const isDeleteListModalOpen = useBoolean(false);
   const dispatch = useDispatch();
   const { listId } = useParams();
 
-  const query = useQuery(["list", listId], () =>
-    backendAPI.get(`/api/lists/${listId}`).then((res) => res.data)
-  );
+  const listRequest = queryConfigs.listRequest({ listId });
+  const listItemsRequest = queryConfigs.listItemsRequest({ listId });
+  useEffect(() => {
+    dispatch(actions.query.requestAsync(listItemsRequest));
+    dispatch(actions.query.requestAsync(listRequest));
+  }, []);
 
-  const listItemsQuery = useQuery(["list", listId, "list-items"], () =>
-    backendAPI.get(`/api/lists/${listId}/list-items`).then((res) => res.data)
-  );
-
-  const isEditListModalOpen = useBoolean(false);
-  const isDeleteListModalOpen = useBoolean(false);
-
-  if (query.status === "loading") {
-    return (
-      <Box textAlign="center" marginTop={4}>
-        <CircularProgress />
-      </Box>
-    );
-  }
-
-  if (query.status === "error") {
-    return "error";
-  }
-
-  const list = query.data || {};
+  const listQuery = useSelector(selectors.query.query(listRequest));
+  const listItemsQuery = useSelector(selectors.query.query(listItemsRequest));
+  const list = useSelector(selectors.lists.list(listId));
+  const listItems = useSelector(selectors.lists.listItems(listId));
 
   const onClickDeleteList = () => {
     dispatch(actions.lists.deleteList(listId));
@@ -72,6 +55,7 @@ export default () => {
 
   return (
     <React.Fragment>
+      {(listItemsQuery.isPending || listQuery.isPending) && <LinearProgress />}
       <Paper>
         <EditListDialog
           list={list}
@@ -117,22 +101,13 @@ export default () => {
           </IconButton>
         </Toolbar>
       </Paper>
-      {listItemsQuery.status === "loading" && (
-        <Box textAlign="center" p={2}>
-          <CircularProgress />
-        </Box>
-      )}
-      {listItemsQuery.status === "success" && (
-        <React.Fragment>
-          <Box display="flex" flexDirection="row" flexWrap="wrap">
-            {(listItemsQuery.data || []).map((listItem) => (
-              <Box p={1 / 2} width="50%" key={listItem.id}>
-                <Poster width="100%" movie={listItem.tmdbData} />
-              </Box>
-            ))}
+      <Box display="flex" flexDirection="row" flexWrap="wrap">
+        {listItems.map((listItem) => (
+          <Box p={1 / 2} width="50%" key={listItem.id}>
+            <Poster width="100%" movie={listItem.tmdbData} />
           </Box>
-        </React.Fragment>
-      )}
+        ))}
+      </Box>
     </React.Fragment>
   );
 };

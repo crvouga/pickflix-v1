@@ -25,6 +25,7 @@ export interface ListLogic {
   removeListItems: (_: Partial<ListItem>[]) => Promise<boolean>;
   getListItems: (_: {listId: Id}) => Promise<ListItem[]>;
   getList: (_: {listId: Id}) => Promise<List | undefined>;
+  countListItems: (_: {listId: Id}) => Promise<number>;
 }
 
 export type BuildListLogic = (_: {ListStorage: ListStorage}) => ListLogic;

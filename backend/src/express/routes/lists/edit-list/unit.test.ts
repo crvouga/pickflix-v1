@@ -18,10 +18,12 @@ describe('PATCH', () => {
       .send(edits)
       .expect(200)
       .then(response => {
-        expect(response.body).toStrictEqual({
-          ...created,
-          ...edits,
-        });
+        expect(response.body).toEqual(
+          expect.objectContaining({
+            ...created,
+            ...edits,
+          })
+        );
       });
     done();
   });
