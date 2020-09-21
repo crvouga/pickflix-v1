@@ -12,7 +12,7 @@ describe('getting items', () => {
       },
     ]);
 
-    const [listItem] = await ListLogic.addListItems([
+    const listItems = await ListLogic.addListItems([
       {
         tmdbMediaId: '550',
         tmdbMediaType: 'movie',
@@ -25,12 +25,14 @@ describe('getting items', () => {
       .expect(200)
       .then(response => {
         expect(response.body).toEqual(
-          expect.arrayContaining([
-            expect.objectContaining({
-              ...listItem,
-              tmdbData: expect.objectContaining({}),
-            }),
-          ])
+          expect.arrayContaining(
+            listItems.map(listItem =>
+              expect.objectContaining({
+                ...listItem,
+                tmdbData: expect.objectContaining({}),
+              })
+            )
+          )
         );
       });
 
