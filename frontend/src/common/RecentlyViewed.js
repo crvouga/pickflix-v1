@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import HorizontalScroll from "./components/HorizontalScroll";
 import MediaEntity from "./MediaEntity";
 import RecentlyViewedHeader from "./RecentlyViewedHeader";
-import recentlyViewed from "./redux/recentlyViewed";
+import recentlyViewed from "../redux/recentlyViewed";
 
 export default () => {
   const recentlyViewedEntities = useSelector(recentlyViewed.selectors.entities);

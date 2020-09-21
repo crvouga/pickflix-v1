@@ -3,7 +3,9 @@ import BookmarkIcon from "@material-ui/icons/Bookmark";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
-import ShareIcon from "@material-ui/icons/Share";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
 import * as R from "ramda";
@@ -53,6 +55,11 @@ export default () => {
         //   actions.lists.addToLiked({ tmdbMediaType: "movie", tmdbId: movieId })
         // );
       },
+    },
+    {
+      icon: true ? <FavoriteBorderIcon /> : <FavoriteIcon />,
+      label: "Favorite",
+      onClick: () => {},
     },
     {
       icon: true ? <PlaylistAddIcon /> : <PlaylistAddCheckIcon />,

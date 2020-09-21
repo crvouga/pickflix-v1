@@ -1,7 +1,7 @@
 import { Box, ButtonBase, Typography } from "@material-ui/core";
 import React from "react";
 import { useDispatch } from "react-redux";
-import router from "../common/redux/router";
+import router from "../redux/router";
 import PersonAvatar from "../person/PersonAvatar";
 import search from "./redux";
 

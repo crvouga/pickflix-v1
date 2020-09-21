@@ -1,31 +1,24 @@
-import {Id} from '../../id/types';
-import {UserStorage} from '../../users/storage/types';
-import {List, ListItem} from '../models/types';
-import {ListStorage} from '../storage/types';
+import {IUnitOfWork} from '../../unit-of-work/types';
+import {AddListItems} from './add-list-items/logic';
+import {AddLists} from './add-lists/logic';
+import {EditLists} from './edit-lists/logic';
+import {GetListItems} from './get-list-items/logic';
+import {GetLists} from './get-lists/logic';
+import {RemoveListItems} from './remove-list-items/logic';
+import {TMDbLogic} from '../../TMDb/logic/types';
+import {RemoveLists} from './remove-lists';
+
+export type Build<T> = (_: {
+  TMDbLogic: TMDbLogic;
+  unitOfWork: IUnitOfWork;
+}) => T;
 
 export interface ListLogic {
-  createList: (_: Partial<List>) => Promise<List>;
-  deleteList: (_: {userId: Id; listId: Id}) => Promise<boolean>;
-  editList: (_: {
-    listId: Id;
-    title?: string;
-    description?: string;
-  }) => Promise<List>;
-  // leaveList: (_: {listId: Id; userId: Id}) => Promise<boolean>;
-  // joinList: (_: {listId: Id; userId: Id}) => Promise<boolean>;
-  getListsByUser: (_: {
-    userId: Id;
-    tmdbMediaIds?: string[];
-  }) => Promise<(List & {tmdbMediaIds?: string[]})[]>;
-
-  getListsBytmdbMediaId: (_: {tmdbMediaId: string}) => Promise<List[]>;
-  addListItems: (
-    _: Pick<ListItem, 'tmdbMediaId' | 'tmdbMediaType' | 'listId'>[]
-  ) => Promise<ListItem[]>;
-  removeListItems: (_: Partial<ListItem>[]) => Promise<boolean>;
-  getListItems: (_: {listId: Id}) => Promise<ListItem[]>;
-  getList: (_: {listId: Id}) => Promise<List | undefined>;
-  countListItems: (_: {listId: Id}) => Promise<number>;
+  addLists: AddLists;
+  addListItems: AddListItems;
+  editLists: EditLists;
+  getListItems: GetListItems;
+  getLists: GetLists;
+  removeLists: RemoveLists;
+  removeListItems: RemoveListItems;
 }
-
-export type BuildListLogic = (_: {ListStorage: ListStorage}) => ListLogic;

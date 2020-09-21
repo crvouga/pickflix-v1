@@ -1,6 +1,6 @@
 import { fork, put, select, take } from "redux-saga/effects";
-import modal from "../../../../common/redux/modal";
-import router from "../../../../common/redux/router";
+import modal from "../../../../redux/modal";
+import router from "../../../../redux/router";
 
 export default function* () {
   /**  close chat when pathname changes */

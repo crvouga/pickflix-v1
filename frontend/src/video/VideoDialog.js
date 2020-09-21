@@ -8,7 +8,7 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import modal from "../common/redux/modal";
+import modal from "../redux/modal";
 import VideoPage from "./VideoPage";
 
 const useStyles = makeStyles((theme) => ({

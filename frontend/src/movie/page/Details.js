@@ -8,7 +8,7 @@ import * as R from "ramda";
 import Tag from "../../discover/Tag";
 import { useDispatch } from "react-redux";
 import discover from "../../discover/redux";
-import router from "../../common/redux/router";
+import router from "../../redux/router";
 momentDurationFormatSetup(moment);
 
 const commas = (_) => numeral(_).format("0,0");

@@ -1,26 +1,31 @@
-import R from 'ramda';
 import {BuildMakeList} from './types';
+import {Id} from '../../id/types';
 
 const maxLengthTitle = 100;
 const maxLengthDescription = 500;
 
-export const buildMakeList: BuildMakeList = ({makeId, isValidId}) => info => {
-  const {id = makeId(), title = '', description = ''} = info;
-
-  const userIds = R.uniq(info?.userIds || []);
+export const buildMakeList: BuildMakeList = ({
+  makeId,
+  isValidId,
+}) => listInfo => {
+  const {
+    id = makeId(),
+    ownerId = '' as Id,
+    title = '',
+    description = '',
+    createdAt = Date.now(),
+    isAutoMade = false,
+    isPrivate = false,
+  } = listInfo;
 
   const errors = [];
 
+  if (!isValidId(ownerId)) {
+    errors.push({for: 'ownerId', message: 'invalid ownerId'});
+  }
+
   if (!isValidId(id)) {
     errors.push({for: 'listId', message: `invalid id ${id}`});
-  }
-
-  if (userIds.some(userId => !isValidId(userId))) {
-    errors.push({for: 'userIds', message: `invalid userId`});
-  }
-
-  if (userIds.length === 0) {
-    errors.push({for: 'userIds', message: `requires at least one user`});
   }
 
   if (title?.length === 0) {
@@ -47,8 +52,11 @@ export const buildMakeList: BuildMakeList = ({makeId, isValidId}) => info => {
 
   return Object.freeze({
     id,
-    userIds,
+    ownerId,
     title,
     description,
+    createdAt,
+    isAutoMade,
+    isPrivate,
   });
 };

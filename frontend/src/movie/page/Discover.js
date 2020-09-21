@@ -2,7 +2,7 @@ import { Box, Chip, Divider, makeStyles } from "@material-ui/core";
 import * as R from "ramda";
 import React from "react";
 import { useDispatch } from "react-redux";
-import router from "../../common/redux/router";
+import router from "../../redux/router";
 import discover from "../../discover/redux";
 import Title from "./Title";
 import Tag from "../../discover/Tag";

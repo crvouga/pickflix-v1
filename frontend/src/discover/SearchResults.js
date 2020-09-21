@@ -3,7 +3,7 @@ import matchSorter from "match-sorter";
 import * as R from "ramda";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import modal from "../common/redux/modal";
+import modal from "../redux/modal";
 import discover from "./redux";
 import Tag from "./Tag";
 

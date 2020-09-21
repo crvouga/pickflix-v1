@@ -1,7 +1,7 @@
 import { Dialog, makeStyles } from "@material-ui/core";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import modal from "../common/redux/modal";
+import modal from "../redux/modal";
 import SearchTagsInput from "./SearchInput";
 import SearchTagsResults from "./SearchResults";
 

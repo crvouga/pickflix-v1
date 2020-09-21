@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import React from "react";
 import { useDispatch } from "react-redux";
-import modal from "../common/redux/modal";
+import modal from "../redux/modal";
 
 const useStyles = makeStyles((theme) => ({
   fab: {

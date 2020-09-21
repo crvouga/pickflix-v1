@@ -2,7 +2,7 @@ import { Box, Fab, useTheme } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import React from "react";
 import { useDispatch } from "react-redux";
-import modal from "../common/redux/modal";
+import modal from "../redux/modal";
 import DiscoverResults from "./DiscoverResults";
 import SearchModal from "./SearchModal";
 import DiscoverTags from "./DiscoverTags";

@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, ButtonBase, Typography } from "@material-ui/core";
 import { useDispatch } from "react-redux";
-import router from "../common/redux/router";
+import router from "../redux/router";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import search from "./redux";
 import Backdrop from "../movie/components/Backdrop";

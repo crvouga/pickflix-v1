@@ -1,14 +1,19 @@
-import {Application, Handler} from 'express';
+import {Application, Handler, IRouter} from 'express';
 import {ListLogic} from '../lists/logic/types';
-import {UserLogic} from '../users/logic/types';
 import {TMDbLogic} from '../TMDb/logic/types';
+import {UserLogic} from '../users/logic/types';
+import {User} from '../users/models/types';
 
-type Dependencies = {
-  UserLogic: UserLogic;
+export type Dependencies = {
   ListLogic: ListLogic;
   TMDbLogic: TMDbLogic;
-  attachCurrentUser: Handler;
-  firebaseAdmin: any;
+  UserLogic: UserLogic;
+  middlewares: {
+    attachCurrentUser: Handler;
+  };
 };
 
+export type BuildRouter = (_: Dependencies) => IRouter;
 export type BuildExpressApp = (_: Dependencies) => {app: Application};
+
+export type BuildRoute = (_: Dependencies) => (_: IRouter) => IRouter;

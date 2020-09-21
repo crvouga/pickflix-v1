@@ -1,5 +1,5 @@
 import axios from 'axios';
-import keyv from '../../mongodb/keyv';
+import keyv from '../../unit-of-work/mongodb/keyv';
 import {buildTMDbLogic} from './build';
 
 export const TMDbLogic = buildTMDbLogic({

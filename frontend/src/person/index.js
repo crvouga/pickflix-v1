@@ -9,7 +9,7 @@ import HorizontalScroll from "../common/components/HorizontalScroll";
 import ErrorPage from "../common/page/ErrorPage";
 import Footer from "../common/page/Footer";
 import Page from "../common/page/Page";
-import recentlyViewed from "../common/redux/recentlyViewed";
+import recentlyViewed from "../redux/recentlyViewed";
 import Poster from "../movie/components/Poster";
 import Biography from "./Biography";
 import Filmography from "./Filmography";

@@ -10,7 +10,7 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import discover from "./redux";
-import modal from "../common/redux/modal";
+import modal from "../redux/modal";
 
 const useStyles = makeStyles((theme) => ({
   root: {

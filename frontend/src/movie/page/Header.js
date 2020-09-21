@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import ExpandHeight from "../../common/components/ExpandHeight";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
 import useBoolean from "../../common/hooks/useBoolean";
-import router from "../../common/redux/router";
+import router from "../../redux/router";
 import discover from "../../discover/redux";
 import ActionBar from "./ActionBar";
 momentDurationFormatSetup(moment);

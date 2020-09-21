@@ -2,9 +2,13 @@ import {Id, IsValidId, MakeId} from '../../id/types';
 
 export type List = {
   id: Id;
-  userIds: Id[];
+  ownerId: Id;
   title: string;
   description: string;
+  createdAt: number;
+  isAutoMade: Boolean;
+  isPrivate: Boolean;
+  listItems?: ListItem[];
 };
 
 export type ListItem = {
@@ -13,14 +17,17 @@ export type ListItem = {
   tmdbMediaId: string;
   tmdbMediaType: 'movie' | 'tv';
   tmdbData?: any;
+  createdAt: number;
 };
-
-export type MakeList = (_: Partial<List>) => Readonly<List>;
-export type MakeListItem = (_: Partial<ListItem>) => Readonly<ListItem>;
 
 type Dependencies = {
   makeId: MakeId;
   isValidId: IsValidId;
 };
-export type BuildMakeList = (_: Dependencies) => MakeList;
-export type BuildMakeListItem = (_: Dependencies) => MakeListItem;
+export type BuildMakeList = (
+  _: Dependencies
+) => (_: Partial<List>) => Readonly<List>;
+
+export type BuildMakeListItem = (
+  _: Dependencies
+) => (_: Partial<ListItem>) => Readonly<ListItem>;

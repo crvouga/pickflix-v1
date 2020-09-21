@@ -1,27 +1,21 @@
 import supertest from 'supertest';
-import {buildExpressAppFake} from '../../../express-app.fake';
+import {makeExpressAppFake} from '../../../fake';
 
 describe('GET', () => {
   it('sends a list with items', async done => {
-    const {ListLogic, currentUser, app} = await buildExpressAppFake();
+    const {ListLogic, currentUser, app} = makeExpressAppFake();
 
-    const list = await ListLogic.createList({
-      userIds: [currentUser.id],
-      title: 'my list',
-      description: 'my description',
-    });
-
-    await ListLogic.addListItems(
-      [1, 2, 3, 4, 5].map(n => ({
-        listId: list.id,
-        tmdbMediaType: 'movie',
-        tmdbMediaId: `${n}`,
-      }))
-    );
+    const [list] = await ListLogic.addLists([
+      {
+        ownerId: currentUser.id,
+        title: 'my list',
+        description: 'my description',
+      },
+    ]);
 
     const expected = {
       id: list.id,
-      userIds: list.userIds,
+      ownerId: list.ownerId,
       title: list.title,
       description: list.description,
     };

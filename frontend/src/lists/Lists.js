@@ -1,4 +1,3 @@
-import * as R from "ramda";
 import {
   Avatar,
   Box,
@@ -9,26 +8,23 @@ import {
 } from "@material-ui/core";
 import MovieIcon from "@material-ui/icons/Movie";
 import { AvatarGroup } from "@material-ui/lab";
+import * as R from "ramda";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../redux";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import * as queryConfigs from "./redux/query-configs";
 
-const sleep = (duration) =>
-  new Promise((resolve) => setTimeout(resolve, duration));
-
 export default () => {
   const dispatch = useDispatch();
 
-  const queryConfig = queryConfigs.listsRequest();
-
-  const query = useSelector(selectors.query.query({ url: queryConfig.url }));
+  const listRequest = queryConfigs.listsRequest();
+  const query = useSelector(selectors.query.query(listRequest));
   const lists = useSelector(selectors.lists.lists);
 
   useEffect(() => {
     setTimeout(() => {
-      dispatch(actions.query.requestAsync(queryConfig));
+      dispatch(actions.query.requestAsync(listRequest));
     }, 2000);
   }, []);
 
@@ -36,14 +32,13 @@ export default () => {
     dispatch(actions.router.push(`/list/${list.id}`));
   };
 
-  console.log({ lists });
   return (
     <React.Fragment>
       <List>
         {lists.map((list) => (
           <ListItem key={list.id} button divider onClick={onClickList(list)}>
             <Box marginX={1}>
-              <AvatarGroup spacing="small">
+              <AvatarGroup>
                 {R.take(3, list.listItems || []).map((listItem) => (
                   <Avatar
                     variant="square"

@@ -3,11 +3,11 @@ import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
-import backendAPI from "../../backendAPI";
+import backendAPI, { backendURL } from "../../backendAPI";
 import ErrorPage from "../../common/page/ErrorPage";
 import Footer from "../../common/page/Footer";
 import Page from "../../common/page/Page";
-import recentlyViewed from "../../common/redux/recentlyViewed";
+import recentlyViewed from "../../redux/recentlyViewed";
 import Collection from "./Collection";
 import Credits from "./Credits";
 import Details from "./Details";
@@ -35,6 +35,24 @@ const fetchMoviePage = (movieId) =>
       },
     })
     .then((response) => response.data);
+
+const movieRequest = ({ tmdbMediaId }) => {
+  const params = {
+    appendToResponse: [
+      "credits",
+      "reviews",
+      "similar",
+      "recommendations",
+      "keywords",
+      "videos",
+      "images",
+      "release_dates",
+    ],
+  };
+  return {
+    url: `${backendURL}/api/tmdb/movie/${tmdbMediaId}`,
+  };
+};
 
 export default () => {
   const { movieId } = useParams();
@@ -71,7 +89,7 @@ export default () => {
     <Fade in>
       <Page>
         {/* <NavBar details={details} /> */}
-        <Media videos={videos.results} images={images} />
+        <Media details={details} videos={videos.results} images={images} />
         <Header
           details={details}
           releaseDates={releaseDates}

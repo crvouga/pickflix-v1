@@ -20,16 +20,14 @@ function* deleteListSaga(action) {
   yield put(actions.router.goBack());
 }
 
-function* addListItemSaga(action) {
-  const { tmdbMediaId, tmdbMediaType, listId } = action.payload;
-
+function* addListItemSaga({ payload: { tmdbMediaId, tmdbMediaType, listId } }) {
   const queryConfig = queryConfigs.addListItemMutation({
     listId,
     tmdbMediaId,
     tmdbMediaType,
   });
 
-  yield put(mutateAsync(queryConfig));
+  yield put(actions.query.mutateAsync(queryConfig));
 
   const url = queryConfig.url;
 

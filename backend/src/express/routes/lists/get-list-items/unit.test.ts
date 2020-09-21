@@ -1,14 +1,16 @@
 import supertest from 'supertest';
-import {buildExpressAppFake} from '../../../express-app.fake';
+import {makeExpressAppFake} from '../../../fake';
 
 describe('getting items', () => {
   it('gets items', async done => {
-    const {app, ListLogic, currentUser} = await buildExpressAppFake();
+    const {app, ListLogic, currentUser} = makeExpressAppFake();
 
-    const list = await ListLogic.createList({
-      userIds: [currentUser.id],
-      title: 'my list',
-    });
+    const [list] = await ListLogic.addLists([
+      {
+        ownerId: currentUser.id,
+        title: 'my list',
+      },
+    ]);
 
     const [listItem] = await ListLogic.addListItems([
       {

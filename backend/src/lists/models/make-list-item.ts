@@ -3,8 +3,14 @@ import {BuildMakeListItem} from './types';
 export const buildMakeListItem: BuildMakeListItem = ({
   makeId,
   isValidId,
-}) => ListItemInfo => {
-  const {id = makeId(), listId, tmdbMediaId, tmdbMediaType} = ListItemInfo;
+}) => listItemInfo => {
+  const {
+    id = makeId(),
+    listId,
+    tmdbMediaId,
+    tmdbMediaType,
+    createdAt = Date.now(),
+  } = listItemInfo;
 
   if (!isValidId(id)) {
     throw new Error('invalid id');
@@ -39,5 +45,6 @@ export const buildMakeListItem: BuildMakeListItem = ({
     listId,
     tmdbMediaId,
     tmdbMediaType,
+    createdAt,
   };
 };

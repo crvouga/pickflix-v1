@@ -14,8 +14,8 @@ export const buildMakeUser: BuildMakeUser = ({
     throw new Error('firebaseId is required');
   }
 
-  return {
+  return Object.freeze({
     id,
     firebaseId,
-  };
+  });
 };

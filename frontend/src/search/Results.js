@@ -12,7 +12,7 @@ import moment from "moment";
 import React, { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
-import router from "../common/redux/router";
+import router from "../redux/router";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import search from "./redux";
 

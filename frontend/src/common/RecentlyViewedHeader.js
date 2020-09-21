@@ -5,7 +5,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ClearRecentlyViewedModal from "./ClearRecentlyViewedModal";
 import useBoolean from "./hooks/useBoolean";
-import recentlyViewed from "./redux/recentlyViewed";
+import recentlyViewed from "../redux/recentlyViewed";
 
 export default () => {
   const recentlyViewedEntities = useSelector(recentlyViewed.selectors.entities);

@@ -31,11 +31,14 @@ const actions = {
   updateEntities,
 };
 
+function* saga() {}
+
 export default {
   namespace,
   selectors,
   reducer,
   actions,
+  saga,
   middleware: queryMiddleware(
     superagentInterface,
     selectors.queries,

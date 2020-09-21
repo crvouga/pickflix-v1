@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import RecentlyViewedHeader from "../common/RecentlyViewedHeader";
-import recentlyViewed from "../common/redux/recentlyViewed";
+import recentlyViewed from "../redux/recentlyViewed";
 import RecentlySearchHeader from "./RecentlySearchHeader";
 import search from "./redux";
 import ResultGrid from "./ResultGrid";

@@ -12,12 +12,16 @@ export const listsRequest = () => {
       const {
         entities: { lists },
       } = normalize(responseBody, [listSchema]);
+      console.log({ lists });
       return {
         lists,
       };
     },
     update: {
-      lists: updater,
+      lists: (prev, next) => {
+        console.log({ prev, next });
+        return next;
+      },
     },
     force: true,
   };

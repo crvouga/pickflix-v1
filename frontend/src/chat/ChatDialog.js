@@ -9,7 +9,7 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import modal from "../common/redux/modal";
+import modal from "../redux/modal";
 import Input from "./Input";
 import MessageList from "./MessageList";
 import RefsContext from "./RefsContext";

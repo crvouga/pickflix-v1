@@ -1,12 +1,18 @@
-import {buildUserStorageFake} from '../../users/storage/user-storage.fake';
-import {buildListStorageFake} from '../storage/list-storage.fake';
+import {UnitOfWorkFake} from '../../unit-of-work/unit-of-work.fake';
 import {buildListLogic} from './build';
 
 export const buildListLogicFake = () => {
-  const UserStorage = buildUserStorageFake();
-  const ListStorage = buildListStorageFake();
   const ListLogic = buildListLogic({
-    ListStorage,
+    TMDbLogic: {
+      request: async () => ({}),
+      append: async x => ({
+        ...x,
+        tmdbData: {},
+        tmdbMediaId: '550',
+        tmdbMediaType: 'movie',
+      }),
+    },
+    unitOfWork: new UnitOfWorkFake(),
   });
-  return {ListLogic, ListStorage, UserStorage};
+  return {ListLogic};
 };
