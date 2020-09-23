@@ -7,7 +7,10 @@
     "tests": "jest",
     "unit-tests": "jest unit --unhandled-rejections=strict",
     "integration-tests": "jest int",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "build": "tsc",
+    "postinstall": "npm run build",
+    "start": "node build/index.js"
   },
   "author": "",
   "license": "ISC",

@@ -76,7 +76,7 @@ export default () => {
 
   const propsByName = {
     [SnackbarNames.AddToListSuccess]: {
-      message: `Added to ${info?.list.title}`,
+      message: `Added to ${info?.list?.title}`,
       action: (
         <React.Fragment>
           <Button
@@ -84,7 +84,7 @@ export default () => {
             size="small"
             onClick={() => {
               onClose();
-              dispatch(actions.router.push(`/list/${info?.list.id}`));
+              dispatch(actions.router.push(`/list/${info?.list?.id}`));
             }}
             style={{ fontWeight: "bold" }}
           >
