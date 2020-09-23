@@ -1,9 +1,9 @@
 import supertest from 'supertest';
-import {makeExpressAppFake} from '../../../express/fake';
+import {buildExpressAppFake} from '../../../express/build.fake';
 
 describe('DELETE', () => {
   it('deletes list', async done => {
-    const {app, listLogic, currentUser} = makeExpressAppFake();
+    const {app, listLogic, currentUser} = buildExpressAppFake();
     const [list] = await listLogic.addLists([
       {
         ownerId: currentUser.id,
@@ -11,7 +11,7 @@ describe('DELETE', () => {
       },
     ]);
     await supertest(app).delete(`/api/lists/${list.id}`).expect(204);
-    const lists = await listLogic.getLists({listId: list.id});
+    const lists = await listLogic.getLists({id: list.id});
     expect(lists).toHaveLength(0);
     done();
   });

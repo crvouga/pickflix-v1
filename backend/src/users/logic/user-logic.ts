@@ -1,5 +1,5 @@
 import {EventEmitter} from 'events';
-import {EventTypes} from '../../events/events-types';
+import {EventTypes} from '../../events/types';
 import {makeUser} from '../models';
 import {User} from '../models/types';
 import {IUserRepository} from '../repositories/types';
@@ -19,16 +19,10 @@ export class UserLogic {
     this.eventEmitter = eventEmitter;
   }
 
-  async getById({id, firebaseId}: Partial<User>): Promise<User | undefined> {
-    if (id) {
-      const [user] = await this.userRepository.find({id});
-      return user;
-    }
-    if (firebaseId) {
-      const [user] = await this.userRepository.find({firebaseId});
-      return user;
-    }
-    return undefined;
+  async getById(userInfo: Partial<User>): Promise<User | undefined> {
+    const [user] = await this.userRepository.find(userInfo);
+
+    return user;
   }
 
   async createNew({firebaseId}: Partial<User>): Promise<User> {

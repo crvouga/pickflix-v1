@@ -1,7 +1,6 @@
 import {EventEmitter} from 'events';
-import {EventTypes} from '../../events/events-types';
+import {EventTypes} from '../../events/types';
 import {buildUserLogicFake} from './user-logic.fake';
-import {User} from '../models/types';
 
 const firebaseId = '1234567890';
 

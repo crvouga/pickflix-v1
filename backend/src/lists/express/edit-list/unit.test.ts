@@ -1,9 +1,9 @@
 import supertest from 'supertest';
-import {makeExpressAppFake} from '../../../express/fake';
+import {buildExpressAppFake} from '../../../express/build.fake';
 
 describe('PATCH', () => {
   it('sends back edited list', async done => {
-    const {currentUser, listLogic, app} = makeExpressAppFake();
+    const {currentUser, listLogic, app} = buildExpressAppFake();
     const [created] = await listLogic.addLists([
       {
         ownerId: currentUser.id,

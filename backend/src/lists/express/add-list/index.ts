@@ -1,11 +1,10 @@
 import express from 'express';
 import {Dependencies} from '../types';
 
-export const addList = ({listLogic, middlewares}: Dependencies) => {
-  const router = express.Router({mergeParams: true});
-
-  router.use(middlewares.attachCurrentUser);
-  router.post('/lists', async (req, res) => {
+export const addList = ({listLogic, middlewares}: Dependencies) => (
+  router: express.IRouter
+) => {
+  router.post('/lists', middlewares.attachCurrentUser, async (req, res) => {
     const currentUser = req.currentUser;
     const {title, description} = req.body;
     const [list] = await listLogic.addLists([
@@ -17,6 +16,4 @@ export const addList = ({listLogic, middlewares}: Dependencies) => {
     ]);
     res.status(201).json(list);
   });
-
-  return router;
 };

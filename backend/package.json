@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "test": "jest",
-    "unit-test": "jest unit --unhandled-rejections=strict",
-    "int-test": "jest int",
+    "tests": "jest",
+    "unit-tests": "jest unit --unhandled-rejections=strict",
+    "integration-tests": "jest int",
     "dev": "nodemon src/index.ts"
   },
   "author": "",

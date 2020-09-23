@@ -1,6 +1,6 @@
-import { put, select, takeEvery } from "redux-saga/effects";
-import { actions, selectors } from "../../../redux";
 import * as R from "ramda";
+import { put, select, spawn, takeEvery } from "redux-saga/effects";
+import { actions, selectors } from "../../../redux";
 
 export default function* () {
   yield takeEvery(actions.player.play, function* () {
@@ -25,10 +25,15 @@ export default function* () {
     }
   });
 
-  yield takeEvery([actions.player.play, actions.player.progress], function* () {
-    const isVideoOpen = yield select(selectors.modal.isOpen("video"));
-    if (!isVideoOpen) {
-      yield put(actions.player.setIsPlaying(false));
-    }
+  yield spawn(function* () {
+    yield takeEvery(
+      [actions.player.play, actions.player.progress],
+      function* () {
+        const isVideoOpen = yield select(selectors.modal.isOpen("video"));
+        if (!isVideoOpen) {
+          yield put(actions.player.setIsPlaying(false));
+        }
+      }
+    );
   });
 }

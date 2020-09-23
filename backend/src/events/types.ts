@@ -1,5 +1,3 @@
-export type BuildEventHandlerLogic = (_: {
-  ListLogic: any;
-}) => {
-  [key: string]: Function;
-};
+export enum EventTypes {
+  USER_CREATED = 'USER_CREATED',
+}

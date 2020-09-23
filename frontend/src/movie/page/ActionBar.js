@@ -4,8 +4,9 @@ import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-
+import ThumbsUpDownOutlinedIcon from "@material-ui/icons/ThumbsUpDownOutlined";
+import PeopleIcon from "@material-ui/icons/People";
+import PeopleOutlineIcon from "@material-ui/icons/PeopleOutline";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
 import * as R from "ramda";
@@ -36,6 +37,15 @@ export default () => {
 
   const actionBarItems = [
     {
+      icon: true ? <ThumbUpOutlinedIcon /> : <ThumbUpIcon />,
+      label: "Like",
+      onClick: () => {
+        // dispatch(
+        //   actions.lists.addToLiked({ tmdbMediaType: "movie", tmdbId: movieId })
+        // );
+      },
+    },
+    {
       icon: true ? <BookmarkBorderIcon /> : <BookmarkIcon />,
       label: "Watch Next",
       onClick: () => {
@@ -48,17 +58,8 @@ export default () => {
       },
     },
     {
-      icon: true ? <ThumbUpOutlinedIcon /> : <ThumbUpIcon />,
-      label: "Like",
-      onClick: () => {
-        // dispatch(
-        //   actions.lists.addToLiked({ tmdbMediaType: "movie", tmdbId: movieId })
-        // );
-      },
-    },
-    {
-      icon: true ? <FavoriteBorderIcon /> : <FavoriteIcon />,
-      label: "Favorite",
+      icon: true ? <PeopleOutlineIcon /> : <PeopleIcon />,
+      label: "Watch With",
       onClick: () => {},
     },
     {

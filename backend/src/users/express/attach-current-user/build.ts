@@ -1,14 +1,18 @@
 import {Handler} from 'express';
-import {IUserLogic} from '../../logic/types';
+import {UserLogic} from '../../logic/user-logic';
 
-type Build = (_: {userLogic: IUserLogic; firebaseAdmin: any}) => Handler;
-
-export const buildAttachCurrentUser: Build = ({
+export const buildAttachCurrentUser = ({
   firebaseAdmin,
   userLogic,
-}) => async (req, res, next) => {
+}: {
+  userLogic: UserLogic;
+  firebaseAdmin: any;
+}): Handler => async (req, res, next) => {
   try {
     const idToken = req.headers.authorization;
+    if (!idToken) {
+      throw new Error('authorization header required');
+    }
     const decodedToken = await firebaseAdmin.auth().verifyIdToken(idToken);
     const firebaseId = decodedToken.uid;
     const currentUser = await userLogic.getElseCreateNew({firebaseId});

@@ -1,9 +1,9 @@
 import supertest from 'supertest';
-import {makeExpressAppFake} from '../../../express/fake';
+import {buildExpressAppFake} from '../../../express/build.fake';
 
 describe('add list', () => {
   it('responses with created list', async done => {
-    const {app} = makeExpressAppFake();
+    const {app} = buildExpressAppFake();
 
     const title = 'my movies';
     const description = 'some cool movies';
@@ -22,7 +22,7 @@ describe('add list', () => {
   });
 
   it('responses with bad request', async done => {
-    const {currentUser, app} = makeExpressAppFake();
+    const {currentUser, app} = buildExpressAppFake();
 
     const title = 'my movies';
     const description = 'some cool movies';

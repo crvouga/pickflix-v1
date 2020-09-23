@@ -1,6 +1,6 @@
-import {buildAttachCurrentUser} from './build';
 import {userLogic} from '../../../users/logic';
-import {firebaseAdmin} from '../../../users/firebase-admin';
+import {firebaseAdmin} from '../../firebase-admin';
+import {buildAttachCurrentUser} from './build';
 
 export const attachCurrentUser = buildAttachCurrentUser({
   userLogic,

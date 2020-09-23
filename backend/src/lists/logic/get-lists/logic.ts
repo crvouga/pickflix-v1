@@ -1,42 +1,28 @@
-import {Id} from '../../../id/types';
 import {List} from '../../models/types';
 import {ListLogic} from '../build';
 
-const aggergateLists = (listLogic: ListLogic, lists: List[]) => {
-  return Promise.all(
-    lists.map(async list => {
-      const listItemCount = await listLogic.unitOfWork.ListItems.count({
-        listId: list.id,
-      });
+const aggergateList = (listLogic: ListLogic) => async (list: List) => {
+  const listItemCount = await listLogic.unitOfWork.ListItems.count({
+    listId: list.id,
+  });
 
-      const listItems = await listLogic.getListItems({listId: list.id});
+  const listItems = await listLogic.getListItems({listId: list.id});
 
-      return {
-        listItems,
-        listItemCount,
-        ...list,
-      };
-    })
-  );
+  return {
+    listItems,
+    listItemCount,
+    ...list,
+  };
 };
 
-export async function getLists(
-  this: ListLogic,
-  {listId, ownerId}: {listId?: Id; ownerId?: Id}
-) {
-  if (listId) {
-    const lists = await this.unitOfWork.Lists.find({
-      id: listId,
-    });
-    return aggergateLists(this, lists);
-  }
+export async function getLists(this: ListLogic, listInfo: Partial<List>) {
+  const {
+    unitOfWork: {Lists},
+  } = this;
 
-  if (ownerId) {
-    const lists = await this.unitOfWork.Lists.find({
-      ownerId,
-    });
-    return aggergateLists(this, lists);
-  }
+  const lists = await Lists.find(listInfo);
 
-  return [];
+  const aggergatedLists = await Promise.all(lists.map(aggergateList(this)));
+
+  return aggergatedLists;
 }

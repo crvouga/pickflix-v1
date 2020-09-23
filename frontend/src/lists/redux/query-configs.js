@@ -1,8 +1,8 @@
-import { normalize, schema } from "normalizr";
+import { normalize } from "normalizr";
 import * as R from "ramda";
 import { backendURL } from "../../backendAPI";
-
 import { listItemSchema, listSchema } from "./schemas";
+
 const updater = (previous = {}, next = {}) => R.mergeDeepRight(previous, next);
 
 export const listsRequest = () => {
@@ -12,14 +12,13 @@ export const listsRequest = () => {
       const {
         entities: { lists },
       } = normalize(responseBody, [listSchema]);
-      console.log({ lists });
+
       return {
         lists,
       };
     },
     update: {
       lists: (prev, next) => {
-        console.log({ prev, next });
         return next;
       },
     },

@@ -1,2 +1,6 @@
-import {EventEmitter} from 'events';
-export const eventEmitter = new EventEmitter();
+import {listLogic} from '../lists/logic';
+import {buildEventEmitter} from './build';
+
+export const eventEmitter = buildEventEmitter({
+  listLogic,
+});

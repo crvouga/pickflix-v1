@@ -1,5 +1,5 @@
 import {EventEmitter} from 'events';
-import {EventTypes} from '../../events/events-types';
+import {EventTypes} from '../../events/types';
 import {TmdbLogic} from '../../tmdb/logic/build';
 import {IUnitOfWork} from '../../unit-of-work/types';
 import {User} from '../../users/models/types';
@@ -12,7 +12,7 @@ import {getLists} from './get-lists/logic';
 import {removeLists} from './remove-lists';
 
 export class ListLogic {
-  static AUTO_LIST_TITLES = ['Watch Next', 'Liked', 'Favorites'];
+  static AUTO_LIST_TITLES = ['Watch Next', 'Liked'];
 
   unitOfWork: IUnitOfWork;
   tmdbLogic: TmdbLogic;

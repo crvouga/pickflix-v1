@@ -1,9 +1,9 @@
 import supertest from 'supertest';
-import {makeExpressAppFake} from '../../../express/fake';
+import {buildExpressAppFake} from '../../../express/build.fake';
 
 describe('add-lists-items', () => {
   it('adds item to list', async done => {
-    const {currentUser, app} = makeExpressAppFake();
+    const {currentUser, app} = buildExpressAppFake();
 
     const agent = supertest(app);
     const {body: list} = await agent.post('/api/lists').send({

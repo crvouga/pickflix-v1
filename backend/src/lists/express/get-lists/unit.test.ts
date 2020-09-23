@@ -1,9 +1,9 @@
 import supertest from 'supertest';
-import {makeExpressAppFake} from '../../../express/fake';
+import {buildExpressAppFake} from '../../../express/build.fake';
 
 describe('GET /lists', () => {
   it('gets lists for current user', async done => {
-    const {listLogic, currentUser, app} = makeExpressAppFake();
+    const {listLogic, currentUser, app} = buildExpressAppFake();
 
     const lists = await listLogic.addLists(
       [1, 2, 3, 4, 5].map(n => ({

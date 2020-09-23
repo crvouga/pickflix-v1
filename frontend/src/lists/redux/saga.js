@@ -1,8 +1,9 @@
 import * as R from "ramda";
-import { mutateAsync, actionTypes } from "redux-query";
-import { put, takeLatest, take, race } from "redux-saga/effects";
-import { actions } from "../../redux";
+import { actionTypes, mutateAsync } from "redux-query";
+import { put, race, select, take, takeLatest } from "redux-saga/effects";
+import { actions, selectors } from "../../redux";
 import * as queryConfigs from "./query-configs";
+import { SnackbarNames } from "../../snackbar/Snackbar";
 
 export default function* () {
   yield takeLatest(actions.lists.deleteList, deleteListSaga);
@@ -36,10 +37,13 @@ function* addListItemSaga({ payload: { tmdbMediaId, tmdbMediaType, listId } }) {
     failure: take(R.whereEq({ type: actionTypes.MUTATE_FAILURE, url })),
   });
 
+  const list = yield select(selectors.lists.list(listId));
+
   if (success) {
     yield put(
-      actions.snackbar.enqueueSnackbar({
-        message: success.responseBody.message,
+      actions.snackbar.notify({
+        name: SnackbarNames.AddToListSuccess,
+        list,
       })
     );
   }

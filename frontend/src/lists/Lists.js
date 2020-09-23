@@ -39,7 +39,7 @@ export default () => {
           <ListItem key={list.id} button divider onClick={onClickList(list)}>
             <Box marginX={1}>
               <AvatarGroup>
-                {R.take(3, list.listItems || []).map((listItem) => (
+                {R.take(1, list.listItems || []).map((listItem) => (
                   <Avatar
                     variant="square"
                     src={makeTMDbImageURL(3, listItem.tmdbData)}

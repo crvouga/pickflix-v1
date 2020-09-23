@@ -1,12 +1,7 @@
-import {makeExpressApp} from '.';
-import {makeExpressAppFake} from './fake';
+import {buildExpressAppFake} from './build.fake';
 
 describe('express app', () => {
   it('builds fake without crashing', () => {
-    expect(makeExpressAppFake).not.toThrow();
-  });
-
-  it('builds without crashing', () => {
-    expect(makeExpressApp).not.toThrow();
+    expect(buildExpressAppFake).not.toThrow();
   });
 });

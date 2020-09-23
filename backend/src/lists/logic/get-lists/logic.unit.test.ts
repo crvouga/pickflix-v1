@@ -19,7 +19,7 @@ describe('getting lists', () => {
       },
     ]);
 
-    const [aggergatedList1] = await listLogic.getLists({listId: list.id});
+    const [aggergatedList1] = await listLogic.getLists({id: list.id});
     const [aggergatedList2] = await listLogic.getLists({
       ownerId: user.id,
     });

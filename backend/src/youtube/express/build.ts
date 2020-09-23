@@ -11,9 +11,7 @@ const stringifyConfig: qs.IStringifyOptions = {
 
 const timeToLive = 1000 * 60 * 60 * 24 * 7;
 
-export const buildYoutubeRouter = () => {
-  const router = express.Router();
-
+export const buildYoutubeRouter = () => (router: express.IRouter) => {
   router.use(
     '/youtube',
     express.Router().all('*', async (req, res, next) => {
@@ -39,6 +37,4 @@ export const buildYoutubeRouter = () => {
       }
     })
   );
-
-  return router;
 };

@@ -13,7 +13,7 @@ import ProfilePage from "../profile";
 import { selectors } from "../redux";
 import SearchPage from "../search";
 import Modals from "./Modals";
-
+import Snackbar from "../snackbar/Snackbar";
 export default () => {
   const isAuthenthicated = useSelector(selectors.auth.isAuthenticated);
   const pathname = useSelector(selectors.router.pathname);
@@ -37,6 +37,7 @@ export default () => {
           <Route path="/list/:listId" component={ListPage} />
         </Switch>
       </Container>
+      <Snackbar />
       <NavigationBarBottom />
     </React.Fragment>
   );

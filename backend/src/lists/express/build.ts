@@ -9,7 +9,7 @@ import {removeList} from './remove-list';
 import {removeListItem} from './remove-list-item';
 import {Dependencies} from './types';
 
-const routersBuilders = [
+const buildRouterList = [
   addList,
   addListItem,
   editList,
@@ -20,12 +20,10 @@ const routersBuilders = [
   removeListItem,
 ];
 
-export const buildListRouter = (dependencies: Dependencies) => {
-  const router = express.Router();
-
-  for (const buildRouter of routersBuilders) {
-    router.use(buildRouter(dependencies));
+export const buildListRouter = (dependencies: Dependencies) => (
+  router: express.IRouter
+) => {
+  for (const buildRouter of buildRouterList) {
+    buildRouter(dependencies)(router);
   }
-
-  return router;
 };
