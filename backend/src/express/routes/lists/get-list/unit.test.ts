@@ -3,9 +3,9 @@ import {makeExpressAppFake} from '../../../fake';
 
 describe('GET', () => {
   it('sends a list with items', async done => {
-    const {ListLogic, currentUser, app} = makeExpressAppFake();
+    const {listLogic, currentUser, app} = makeExpressAppFake();
 
-    const [list] = await ListLogic.addLists([
+    const [list] = await listLogic.addLists([
       {
         ownerId: currentUser.id,
         title: 'my list',

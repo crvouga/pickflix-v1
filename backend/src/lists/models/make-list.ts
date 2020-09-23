@@ -14,8 +14,8 @@ export const buildMakeList: BuildMakeList = ({
     title = '',
     description = '',
     createdAt = Date.now(),
-    isAutoMade = false,
-    isPrivate = false,
+    isAutoCreated = false,
+    visibility = 'public',
   } = listInfo;
 
   const errors = [];
@@ -56,7 +56,7 @@ export const buildMakeList: BuildMakeList = ({
     title,
     description,
     createdAt,
-    isAutoMade,
-    isPrivate,
+    isAutoCreated,
+    visibility,
   });
 };

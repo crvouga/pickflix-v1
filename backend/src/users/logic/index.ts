@@ -1,5 +1,5 @@
-import {UserStorage} from '../storage';
-import {buildUserLogic} from './user-logic';
-import {eventEmitter} from '../../events/event-emitter';
+import {userRepository} from '../repositories';
+import {UserLogic} from './user-logic';
+import {eventEmitter} from '../../events';
 
-export const UserLogic = buildUserLogic({UserStorage, eventEmitter});
+export const userLogic = new UserLogic({eventEmitter, userRepository});

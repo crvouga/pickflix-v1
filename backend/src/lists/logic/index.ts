@@ -1,8 +1,8 @@
-import {TMDbLogic} from '../../TMDb/logic';
+import {tmdbLogic} from '../../tmdb/logic';
 import {unitOfWork} from '../../unit-of-work';
-import {buildListLogic} from './build';
+import {ListLogic} from './build';
 
-export const ListLogic = buildListLogic({
-  TMDbLogic,
+export const listLogic = new ListLogic({
+  tmdbLogic,
   unitOfWork,
 });

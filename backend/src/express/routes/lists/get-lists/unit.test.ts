@@ -3,9 +3,9 @@ import {makeExpressAppFake} from '../../../fake';
 
 describe('GET /lists', () => {
   it('gets lists for current user', async done => {
-    const {ListLogic, currentUser, app} = makeExpressAppFake();
+    const {listLogic, currentUser, app} = makeExpressAppFake();
 
-    const lists = await ListLogic.addLists(
+    const lists = await listLogic.addLists(
       [1, 2, 3, 4, 5].map(n => ({
         ownerId: currentUser.id,
         title: 'my movies 1',

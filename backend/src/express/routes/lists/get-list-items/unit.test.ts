@@ -3,16 +3,16 @@ import {makeExpressAppFake} from '../../../fake';
 
 describe('getting items', () => {
   it('gets items', async done => {
-    const {app, ListLogic, currentUser} = makeExpressAppFake();
+    const {app, listLogic, currentUser} = makeExpressAppFake();
 
-    const [list] = await ListLogic.addLists([
+    const [list] = await listLogic.addLists([
       {
         ownerId: currentUser.id,
         title: 'my list',
       },
     ]);
 
-    const listItems = await ListLogic.addListItems([
+    const listItems = await listLogic.addListItems([
       {
         tmdbMediaId: '550',
         tmdbMediaType: 'movie',

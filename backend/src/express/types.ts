@@ -1,13 +1,12 @@
 import {Application, Handler, IRouter} from 'express';
-import {ListLogic} from '../lists/logic/types';
-import {TMDbLogic} from '../TMDb/logic/types';
-import {UserLogic} from '../users/logic/types';
-import {User} from '../users/models/types';
+import {ListLogic} from '../lists/logic/build';
+import {TmdbLogic} from '../tmdb/logic/build';
+import {UserLogic} from '../users/logic/user-logic';
 
 export type Dependencies = {
-  ListLogic: ListLogic;
-  TMDbLogic: TMDbLogic;
-  UserLogic: UserLogic;
+  listLogic: ListLogic;
+  tmdbLogic: TmdbLogic;
+  userLogic: UserLogic;
   middlewares: {
     attachCurrentUser: Handler;
   };

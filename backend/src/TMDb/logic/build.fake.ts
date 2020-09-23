@@ -1,4 +1,4 @@
-import {buildTMDbLogic} from './build';
+import {TmdbLogic} from './build';
 import {AxiosRequestConfig} from 'axios';
 
 const buildKeyvFake = () => {
@@ -13,21 +13,19 @@ const buildKeyvFake = () => {
   };
 };
 
-export const buildTMDbLogicFake = () => {
+export const buildTmdbLogicFake = () => {
   const {keyv, keyvMap} = buildKeyvFake();
 
-  const TMDbLogic = buildTMDbLogic({
+  const tmdbLogic = new TmdbLogic({
     keyv,
     axios: async (_: AxiosRequestConfig) => ({
-      data: {
-        message: 'some data',
-      },
+      data: {},
     }),
   });
 
   return {
     keyv,
     keyvMap,
-    TMDbLogic,
+    tmdbLogic,
   };
 };

@@ -1,45 +1,52 @@
+import {EventEmitter} from 'events';
 import {EventTypes} from '../../events/events-types';
 import {buildUserLogicFake} from './user-logic.fake';
+import {User} from '../models/types';
 
 const firebaseId = '1234567890';
 
 describe('user logic', () => {
   it('get by id user else create new user', async () => {
-    const {UserLogic} = buildUserLogicFake();
+    const {userLogic} = buildUserLogicFake();
 
-    const created = await UserLogic.createNew({firebaseId});
-    const found = await UserLogic.getElseCreateNew({firebaseId});
+    const created = await userLogic.createNew({firebaseId});
+    const found = await userLogic.getElseCreateNew({firebaseId});
 
     expect(found).toStrictEqual(created);
   });
 
   it('returns falsy when no user exists', async () => {
-    const {UserLogic} = buildUserLogicFake();
+    const {userLogic} = buildUserLogicFake();
 
-    const found = await UserLogic.getById({firebaseId});
+    const found = await userLogic.getById({firebaseId});
 
     expect(found).toBeFalsy();
   });
 
   it('creates new users', async () => {
-    const {UserLogic} = buildUserLogicFake();
+    const {userLogic} = buildUserLogicFake();
 
-    const before = await UserLogic.getById({firebaseId});
-    const created = await UserLogic.getElseCreateNew({firebaseId});
-    const after = await UserLogic.getById({firebaseId});
+    const before = await userLogic.getById({firebaseId});
+    const created = await userLogic.getElseCreateNew({firebaseId});
+    const after = await userLogic.getById({firebaseId});
 
     expect(before).toBeFalsy();
     expect(created).toStrictEqual(after);
   });
 
   it('emits an event when created', async done => {
-    const {UserLogic, eventEmitter} = buildUserLogicFake();
-    const user1 = await UserLogic.getElseCreateNew({firebaseId: '1234567890'});
+    const emitMock = jest.fn();
 
-    eventEmitter.on(EventTypes.USER_CREATED, user2 => {
-      expect(user2).toStrictEqual(user1);
-      done();
+    const {userLogic} = buildUserLogicFake({
+      eventEmitter: {
+        ...new EventEmitter(),
+        emit: emitMock,
+      },
     });
-    setTimeout(done, 1000);
+
+    const user = await userLogic.getElseCreateNew({firebaseId: '1234567890'});
+    expect(emitMock.mock.calls[0][0]).toStrictEqual(EventTypes.USER_CREATED);
+    expect(emitMock.mock.calls[0][1]).toStrictEqual({user});
+    done();
   });
 });

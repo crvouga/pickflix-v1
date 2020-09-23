@@ -3,9 +3,9 @@ import {makeExpressAppFake} from '../../../fake';
 
 describe('/lists/{list-id}/list-items/{list-item-id}', () => {
   it('deletes list item', async done => {
-    const {app, ListLogic, currentUser} = makeExpressAppFake();
+    const {app, listLogic, currentUser} = makeExpressAppFake();
 
-    const [list] = await ListLogic.addLists([
+    const [list] = await listLogic.addLists([
       {
         ownerId: currentUser.id,
         title: 'my movies',
@@ -13,7 +13,7 @@ describe('/lists/{list-id}/list-items/{list-item-id}', () => {
       },
     ]);
 
-    const [listItem] = await ListLogic.addListItems([
+    const [listItem] = await listLogic.addListItems([
       {
         listId: list.id,
         tmdbMediaId: '42',
@@ -26,7 +26,7 @@ describe('/lists/{list-id}/list-items/{list-item-id}', () => {
       .send([listItem.id])
       .expect(204);
 
-    const listItems = await ListLogic.getListItems({listId: list.id});
+    const listItems = await listLogic.getListItems({listId: list.id});
     expect(listItems).not.toContainEqual(listItem);
 
     done();

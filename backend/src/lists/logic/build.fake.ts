@@ -1,18 +1,13 @@
 import {UnitOfWorkFake} from '../../unit-of-work/unit-of-work.fake';
-import {buildListLogic} from './build';
+import {ListLogic} from './build';
+import {buildTmdbLogicFake} from '../../tmdb/logic/build.fake';
+import {EventEmitter} from 'events';
 
 export const buildListLogicFake = () => {
-  const ListLogic = buildListLogic({
-    TMDbLogic: {
-      request: async () => ({}),
-      append: async x => ({
-        ...x,
-        tmdbData: {},
-        tmdbMediaId: '550',
-        tmdbMediaType: 'movie',
-      }),
-    },
+  const {tmdbLogic} = buildTmdbLogicFake();
+  const listLogic = new ListLogic({
+    tmdbLogic,
     unitOfWork: new UnitOfWorkFake(),
   });
-  return {ListLogic};
+  return {listLogic};
 };

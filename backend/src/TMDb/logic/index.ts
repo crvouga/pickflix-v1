@@ -1,8 +1,8 @@
 import axios from 'axios';
 import keyv from '../../unit-of-work/mongodb/keyv';
-import {buildTMDbLogic} from './build';
+import {TmdbLogic} from './build';
 
-export const TMDbLogic = buildTMDbLogic({
+export const tmdbLogic = new TmdbLogic({
   axios,
   keyv,
 });

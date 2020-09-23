@@ -3,8 +3,8 @@ import {makeExpressAppFake} from '../../../fake';
 
 describe('PATCH', () => {
   it('sends back edited list', async done => {
-    const {currentUser, ListLogic, app} = makeExpressAppFake();
-    const [created] = await ListLogic.addLists([
+    const {currentUser, listLogic, app} = makeExpressAppFake();
+    const [created] = await listLogic.addLists([
       {
         ownerId: currentUser.id,
         title: 'my movies',

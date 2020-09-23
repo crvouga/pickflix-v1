@@ -1,4 +1,4 @@
-import {Router} from 'express';
+import {Router, ErrorRequestHandler} from 'express';
 import glob from 'glob';
 import {BuildRouter} from '../types';
 
@@ -11,6 +11,17 @@ export const buildApiRouter: BuildRouter = dependencies => {
     (rootRouter, module) => module.build(dependencies)(rootRouter),
     Router({mergeParams: true})
   );
+
+  const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+    if (err) {
+      console.error(err.stack);
+      return res.status(400).send(err).end();
+    } else {
+      return next();
+    }
+  };
+
+  router.use(errorHandler);
 
   return router;
 };

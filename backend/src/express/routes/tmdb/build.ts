@@ -1,12 +1,13 @@
 import {Router} from 'express';
 import {BuildRoute} from '../../types';
 
-export const build: BuildRoute = ({TMDbLogic}) => (router: Router) => {
+export const build: BuildRoute = ({tmdbLogic}) => (router: Router) => {
   const tmdbRouter = Router();
 
   tmdbRouter.all('*', async (req, res) => {
-    const {path, query} = req;
-    const tmdbData = await TMDbLogic.request({path, query});
+    const path = req.path as string;
+    const query = req.query as {[key: string]: string};
+    const tmdbData = await tmdbLogic.request({path, query});
     res.json(tmdbData);
   });
 

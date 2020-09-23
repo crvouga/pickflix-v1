@@ -2,9 +2,9 @@ import {buildListLogicFake} from '../build.fake';
 import {makeId} from '../../../id';
 describe('add list items to list', () => {
   it('throws if duplicate list items', async () => {
-    const {ListLogic} = buildListLogicFake();
+    const {listLogic} = buildListLogicFake();
 
-    const [list] = await ListLogic.addLists([
+    const [list] = await listLogic.addLists([
       {
         ownerId: makeId(),
         title: 'my list',
@@ -12,7 +12,7 @@ describe('add list items to list', () => {
     ]);
 
     expect(
-      ListLogic.addListItems([
+      listLogic.addListItems([
         {
           listId: list.id,
           tmdbMediaId: '550',

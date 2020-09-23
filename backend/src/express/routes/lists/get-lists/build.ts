@@ -3,7 +3,7 @@ import {BuildRoute} from '../../../types';
 
 const ensureArray = (x: any) => (Array.isArray(x) ? x : [x]);
 
-export const build: BuildRoute = ({ListLogic, middlewares}) => (
+export const build: BuildRoute = ({listLogic, middlewares}) => (
   router: Router
 ) => {
   router.use(middlewares.attachCurrentUser);
@@ -13,7 +13,7 @@ export const build: BuildRoute = ({ListLogic, middlewares}) => (
     const listInfo = {
       ownerId: currentUser.id,
     };
-    const lists = await ListLogic.getLists(listInfo);
+    const lists = await listLogic.getLists(listInfo);
     res.json(lists).end();
   });
   return router;

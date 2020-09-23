@@ -1,23 +1,29 @@
 import {Id, IsValidId, MakeId} from '../../id/types';
 
+export enum AutoListTitle {
+  WatchNext = 'Watch Next',
+  Liked = 'Liked',
+  Favorites = 'Favorites',
+}
+
 export type List = {
   id: Id;
   ownerId: Id;
   title: string;
   description: string;
   createdAt: number;
-  isAutoMade: Boolean;
-  isPrivate: Boolean;
+  isAutoCreated: Boolean;
+  visibility: 'public' | 'private';
   listItems?: ListItem[];
 };
 
 export type ListItem = {
   id: Id;
   listId: Id;
+  createdAt: number;
   tmdbMediaId: string;
   tmdbMediaType: 'movie' | 'tv';
   tmdbData?: any;
-  createdAt: number;
 };
 
 type Dependencies = {

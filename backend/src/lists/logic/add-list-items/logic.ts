@@ -1,23 +1,20 @@
 import {makeListItem} from '../../models';
 import {ListItem} from '../../models/types';
-import {Build} from '../types';
+import {ListLogic} from '../build';
 
-export type AddListItems = (
+export async function addListItems(
+  this: ListLogic,
   listItemInfos: Partial<ListItem>[]
-) => Promise<ListItem[]>;
-
-export const buildAddListItems: Build<AddListItems> = ({
-  unitOfWork,
-}) => async listItemInfos => {
+): Promise<ListItem[]> {
   try {
-    await unitOfWork.begin();
+    await this.unitOfWork.begin();
 
     const addedListItems = [];
 
     for (const listItemInfo of listItemInfos) {
       const listItem = makeListItem(listItemInfo);
 
-      const foundLists = await unitOfWork.Lists.find({
+      const foundLists = await this.unitOfWork.Lists.find({
         id: listItem.listId,
       });
 
@@ -25,7 +22,7 @@ export const buildAddListItems: Build<AddListItems> = ({
         throw new Error('list does not exists');
       }
 
-      const foundListItems = await unitOfWork.ListItems.find({
+      const foundListItems = await this.unitOfWork.ListItems.find({
         listId: listItem.listId,
 
         tmdbMediaId: listItem.tmdbMediaId,
@@ -36,14 +33,14 @@ export const buildAddListItems: Build<AddListItems> = ({
         throw new Error('try to add duplicate list item');
       }
 
-      const [addedListItem] = await unitOfWork.ListItems.add([listItem]);
+      const [addedListItem] = await this.unitOfWork.ListItems.add([listItem]);
       addedListItems.push(addedListItem);
     }
 
-    await unitOfWork.commit();
+    await this.unitOfWork.commit();
     return addedListItems;
   } catch (error) {
-    await unitOfWork.rollback();
+    await this.unitOfWork.rollback();
     throw error;
   }
-};
+}
