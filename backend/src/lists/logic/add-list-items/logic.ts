@@ -24,7 +24,6 @@ export async function addListItems(
 
       const foundListItems = await this.unitOfWork.ListItems.find({
         listId: listItem.listId,
-
         tmdbMediaId: listItem.tmdbMediaId,
         tmdbMediaType: listItem.tmdbMediaType,
       });

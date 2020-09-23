@@ -1,6 +1,5 @@
-import {makeExpressAppFake} from './fake';
-
 import {makeExpressApp} from '.';
+import {makeExpressAppFake} from './fake';
 
 describe('express app', () => {
   it('builds fake without crashing', () => {

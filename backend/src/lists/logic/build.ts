@@ -43,16 +43,4 @@ export class ListLogic {
     const addedLists = await this.unitOfWork.Lists.add(lists);
     return addedLists;
   }
-
-  async addAutoLists(user: User) {
-    const listInfos: Partial<List>[] = ListLogic.AUTO_LIST_TITLES.map(
-      title => ({
-        title,
-        ownerId: user.id,
-        isAutoCreated: true,
-        visibility: 'private',
-      })
-    );
-    return await this.addLists(listInfos);
-  }
 }
