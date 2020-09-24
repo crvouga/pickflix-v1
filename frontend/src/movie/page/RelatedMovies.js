@@ -1,7 +1,7 @@
-import { Box, Chip, Divider, Typography } from "@material-ui/core";
+import { Box, Divider, Typography } from "@material-ui/core";
 import React from "react";
-import Poster from "../components/Poster";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
+import Poster from "../components/Poster";
 
 const Title = (props) => (
   <Typography

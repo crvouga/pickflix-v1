@@ -1,6 +1,6 @@
+import { makeStyles } from "@material-ui/core";
 import React from "react";
 import YoutubeComment from "./Comment";
-import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -10,16 +10,16 @@ const useStyles = makeStyles((theme) => ({
 
 export default ({ commentThread }) => {
   const {
-    kind,
-    etag,
-    id,
+    // kind,
+    // etag,
+    // id,
     snippet: {
-      channelId,
-      videoId,
+      // channelId,
+      // videoId,
       topLevelComment,
-      canReply,
-      totalReplyCount,
-      isPublic,
+      // canReply,
+      // totalReplyCount,
+      // isPublic,
     },
   } = commentThread;
 

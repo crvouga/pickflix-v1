@@ -5,13 +5,10 @@ import AspectRatio from "react-aspect-ratio";
 import "react-aspect-ratio/aspect-ratio.css";
 import { useDispatch } from "react-redux";
 import SwipeableViews from "react-swipeable-views";
-import { autoPlay } from "react-swipeable-views-utils";
 import AbsolutePositionBox from "../../common/components/AbsolutePositionBox";
 import { actions } from "../../redux";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 import Poster from "../components/Poster";
-
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const useStyles = makeStyles((theme) => ({
   noPointer: {
@@ -70,6 +67,7 @@ const renderPoster = (poster) => (
 
 const renderBackdrop = (backdrop) => (
   <img
+    alt="movie backdrop"
     key={backdrop.filePath}
     src={makeTMDbImageURL(2, { backdropPath: backdrop.filePath })}
     style={{ width: "100%", height: "100%" }}

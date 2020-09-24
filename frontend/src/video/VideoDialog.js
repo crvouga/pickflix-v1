@@ -1,10 +1,4 @@
-import {
-  Container,
-  ButtonBase,
-  Dialog,
-  makeStyles,
-  Slide,
-} from "@material-ui/core";
+import { ButtonBase, Container, Dialog, makeStyles } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,10 +29,6 @@ const useStyles = makeStyles((theme) => ({
     pointerEvents: "none",
   },
 }));
-
-const TransitionComponent = React.forwardRef((props, ref) => (
-  <Slide direction="up" ref={ref} {...props} />
-));
 
 export default () => {
   const classes = useStyles();

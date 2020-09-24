@@ -1,9 +1,6 @@
 import { Box, Typography } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
 import React from "react";
-import { AspectRatio } from "react-aspect-ratio";
-import HorizontalScroll from "../common/components/HorizontalScroll";
-import Poster from "../movie/components/Poster";
 
 export default () => {
   return (

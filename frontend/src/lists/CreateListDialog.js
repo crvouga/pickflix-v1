@@ -1,5 +1,3 @@
-import LockIcon from "@material-ui/icons/Lock";
-import PublicIcon from "@material-ui/icons/Public";
 import {
   Box,
   Button,
@@ -7,22 +5,19 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  ListItem,
+  ListItemIcon,
   ListItemText,
   makeStyles,
   MenuItem,
   Select,
-  Slide,
   TextField,
-  ListItemIcon,
-  ListItem,
 } from "@material-ui/core";
+import LockIcon from "@material-ui/icons/Lock";
+import PublicIcon from "@material-ui/icons/Public";
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../redux";
-import * as queryConfigs from "./redux/query-configs";
-const Transition = React.forwardRef((props, ref) => (
-  <Slide direction="up" ref={ref} {...props} />
-));
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
@@ -35,12 +30,12 @@ export default () => {
 
   const dispatch = useDispatch();
   const isOpen = useSelector(selectors.modal.isOpen("CreateListDialog"));
-  const props = useSelector(selectors.modal.props("CreateListDialog"));
+
   const onClose = () => {
     dispatch(actions.modal.close("CreateListDialog"));
   };
 
-  const [errors, setErrors] = useState({});
+  const [errors] = useState({});
   const inputRefTitle = useRef();
   const [visibility, setVisibility] = useState("public");
   const handleChange = (event) => {
@@ -50,14 +45,7 @@ export default () => {
     const listInfo = {
       title: inputRefTitle.current.value,
     };
-    try {
-      dispatch(
-        actions.query.mutateAsync(queryConfigs.createListMutation(listInfo))
-      );
-    } catch (error) {
-    } finally {
-      onClose();
-    }
+    dispatch(actions.lists.createList(listInfo));
   };
 
   return (
@@ -66,6 +54,7 @@ export default () => {
       <DialogContent>
         <Box marginBottom={2}>
           <TextField
+            autoFocus
             inputRef={inputRefTitle}
             variant="outlined"
             name="title"

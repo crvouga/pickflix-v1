@@ -1,7 +1,6 @@
+import { Box, Divider, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import YoutubeCommentThread from "./CommentThread";
-import { Divider, makeStyles, Box, Typography } from "@material-ui/core";
-import { ReactReduxContext } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -10,9 +9,9 @@ const useStyles = makeStyles((theme) => ({
 export default ({ commentThreadList }) => {
   const classes = useStyles();
   const {
-    kind,
-    etag,
-    nextPageToken,
+    // kind,
+    // etag,
+    // nextPageToken,
     // pageInfo: { totalResults, resultsPerPage },
     items = [],
   } = commentThreadList;

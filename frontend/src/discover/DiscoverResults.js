@@ -27,7 +27,7 @@ const useInifiniteScrollRef = () => {
     if (inView && canRequestMoreDiscover) {
       dispatch(discover.actions.requestDiscover());
     }
-  }, [inView]);
+  }, [inView, canRequestMoreDiscover, dispatch]);
   return ref;
 };
 

@@ -6,10 +6,8 @@ import AspectRatio from "react-aspect-ratio";
 import "react-aspect-ratio/aspect-ratio.css";
 import { useDispatch } from "react-redux";
 import SwipeableViews from "react-swipeable-views";
-import { autoPlay } from "react-swipeable-views-utils";
 import AbsolutePositionBox from "../common/components/AbsolutePositionBox";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const useStyles = makeStyles({
   box: {

@@ -1,4 +1,4 @@
-import { Box, Divider, makeStyles, Typography } from "@material-ui/core";
+import { Box, Divider } from "@material-ui/core";
 import React from "react";
 import Review from "../components/Review";
 import Title from "./Title";

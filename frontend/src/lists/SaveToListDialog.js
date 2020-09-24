@@ -8,7 +8,6 @@ import {
   List,
   ListItem,
   ListItemIcon,
-  ListItemSecondaryAction,
   ListItemText,
   Slide,
 } from "@material-ui/core";
@@ -51,7 +50,7 @@ export default () => {
     if (isOpen) {
       dispatch(actions.query.requestAsync(listsQueryConfig));
     }
-  }, [isOpen]);
+  }, [dispatch, listsQueryConfig, isOpen]);
 
   const listsQuery = useSelector(selectors.query.query(listsQueryConfig));
   const lists = useSelector(selectors.lists.lists);

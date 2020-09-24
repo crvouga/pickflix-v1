@@ -1,19 +1,16 @@
 import { Box, IconButton, makeStyles, Typography } from "@material-ui/core";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
-import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
-import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
-import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-import ThumbsUpDownOutlinedIcon from "@material-ui/icons/ThumbsUpDownOutlined";
 import PeopleIcon from "@material-ui/icons/People";
 import PeopleOutlineIcon from "@material-ui/icons/PeopleOutline";
+import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
+import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
-import * as R from "ramda";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { actions, selectors } from "../../redux";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
+import { actions } from "../../redux";
 
 const useStylesIconButton = makeStyles((theme) => ({
   root: {
@@ -75,7 +72,7 @@ export default () => {
     <Box display="flex" justifyContent="space-around" flexWrap="nowrap">
       {actionBarItems.map(({ disabled, icon, label, onClick }) => (
         <IconButton
-          size="small"
+          // size="small"
           disabled={disabled}
           key={label}
           onClick={onClick}

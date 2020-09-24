@@ -1,6 +1,5 @@
 import {
   Box,
-  ButtonBase,
   Collapse,
   IconButton,
   makeStyles,
@@ -20,13 +19,6 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
     display: "flex",
     flexDirection: "column",
-  },
-  actions: {
-    display: "flex",
-    flexDirection: "row",
-  },
-  icon: {
-    color: theme.palette.text.secondary,
   },
 
   expandIconContainer: {
@@ -76,23 +68,23 @@ export default ({ statistics, snippet }) => {
   const classes = useStyles();
 
   const {
-    categoryId,
-    channelId,
-    channelTitle,
-    defaultAudioLanguage,
+    // categoryId,
+    // channelId,
+    // channelTitle,
+    // defaultAudioLanguage,
     description,
-    liveBroadcastContent,
-    localized,
+    // liveBroadcastContent,
+    // localized,
     publishedAt,
-    tags,
-    thumbnails,
+    // tags,
+    // thumbnails,
     title,
   } = snippet;
 
   const {
-    commentCount,
+    // commentCount,
     dislikeCount,
-    favoriteCount,
+    // favoriteCount,
     likeCount,
     viewCount,
   } = statistics;

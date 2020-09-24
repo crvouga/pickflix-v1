@@ -26,7 +26,7 @@ export default () => {
     if (inView) {
       dispatch(search.actions.fetch());
     }
-  }, [inView]);
+  }, [dispatch, inView]);
 
   const handleClick = (result) => () => {
     dispatch(search.actions.chose(result));

@@ -6,7 +6,6 @@ export const embedConfig = {
     enablecastapi: 1,
   },
   playerVars: {
-    enablejsapi: 1,
     enablecastapi: 1,
     rel: 0,
     showinfo: 0,

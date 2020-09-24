@@ -1,18 +1,9 @@
-import {
-  Avatar,
-  Box,
-  ButtonBase,
-  Collapse,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
-import LaunchIcon from "@material-ui/icons/Launch";
+import { Avatar, Box, makeStyles, Typography } from "@material-ui/core";
 import * as R from "ramda";
-import React, { useRef } from "react";
-import ReactMarkdown from "react-markdown";
-import useBoolean from "../../common/hooks/useBoolean";
-import Markdown from "../../common/components/Markdown";
+import React from "react";
 import ExpandHeight from "../../common/components/ExpandHeight";
+import Markdown from "../../common/components/Markdown";
+import useBoolean from "../../common/hooks/useBoolean";
 import * as TMDb from "../../tmdb/attribution";
 
 const useStyles = makeStyles((theme) => ({
@@ -29,7 +20,12 @@ const toInitials = (fullname) =>
 export default ({ collapsible, review, ...props }) => {
   const isExpanded = useBoolean(false);
   const classes = useStyles();
-  const { id, url, content, author } = review;
+  const {
+    // id,
+    url,
+    // content,
+    author,
+  } = review;
   const initials = toInitials(author);
 
   return (

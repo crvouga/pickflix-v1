@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
-import backendAPI, { backendURL } from "../../backendAPI";
+import backendAPI from "../../backendAPI";
 import ErrorPage from "../../common/page/ErrorPage";
 import Footer from "../../common/page/Footer";
 import Page from "../../common/page/Page";
@@ -36,24 +36,6 @@ const fetchMoviePage = (movieId) =>
     })
     .then((response) => response.data);
 
-const movieRequest = ({ tmdbMediaId }) => {
-  const params = {
-    appendToResponse: [
-      "credits",
-      "reviews",
-      "similar",
-      "recommendations",
-      "keywords",
-      "videos",
-      "images",
-      "release_dates",
-    ],
-  };
-  return {
-    url: `${backendURL}/api/tmdb/movie/${tmdbMediaId}`,
-  };
-};
-
 export default () => {
   const { movieId } = useParams();
 
@@ -68,7 +50,7 @@ export default () => {
     if (status === "success") {
       dispatch(recentlyViewed.actions.viewed("movie", data));
     }
-  }, [status]);
+  }, [dispatch, data, status]);
 
   if (status === "loading") return <SkeletonPage />;
   if (status === "error") return <ErrorPage />;

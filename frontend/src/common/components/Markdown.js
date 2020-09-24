@@ -1,10 +1,9 @@
+import { makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import ReactMarkdown from "react-markdown";
-import { Typography, makeStyles, Box } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   markdown: {
-    marginTop: "-1em",
     marginBottom: "-1em",
     userSelect: "text",
     fontSize: "inherit",

@@ -17,9 +17,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     textAlign: "left",
   },
-  thumbnail: {
-    width: "50%",
-  },
+
   text: {
     flex: 1,
     overflow: "hidden",
@@ -41,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default ({ onVideoClick }) => {
+export default () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const isPlaying = useSelector(player.selectors.isPlaying);

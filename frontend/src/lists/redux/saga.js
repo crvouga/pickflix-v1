@@ -1,50 +1,129 @@
-import * as R from "ramda";
-import { actionTypes, mutateAsync } from "redux-query";
-import { put, race, select, take, takeLatest } from "redux-saga/effects";
+import { put, select, takeLatest } from "redux-saga/effects";
 import { actions, selectors } from "../../redux";
-import * as queryConfigs from "./query-configs";
+import { takeQueryResponse } from "../../redux/query";
 import { SnackbarNames } from "../../snackbar/Snackbar";
+import * as queryConfigs from "./query-configs";
+
+function* createListSaga() {
+  yield takeLatest(actions.lists.createList, function* (action) {
+    const listInfo = action.payload;
+
+    const config = queryConfigs.createListMutation(listInfo);
+
+    yield put(actions.query.mutateAsync(config));
+
+    const { success, failure } = yield takeQueryResponse(config);
+
+    if (success) {
+    }
+
+    if (failure) {
+    }
+  });
+}
+
+function* deleteListSaga() {
+  yield takeLatest(actions.lists.deleteList, function* (action) {
+    const listId = action.payload;
+
+    const config = queryConfigs.deleteListMutation({ listId });
+
+    yield put(actions.query.mutateAsync(config));
+
+    const { success, failure } = yield takeQueryResponse(config);
+
+    if (success) {
+      yield put(actions.router.goBack());
+    }
+
+    if (failure) {
+    }
+  });
+}
+
+function* addListItemSaga() {
+  yield takeLatest(actions.lists.addListItem, function* (action) {
+    const { tmdbMediaId, tmdbMediaType, listId } = action.payload;
+    const config = queryConfigs.addListItemMutation({
+      listId,
+      tmdbMediaId,
+      tmdbMediaType,
+    });
+
+    yield put(actions.query.mutateAsync(config));
+
+    const { success, failure } = yield takeQueryResponse(config);
+
+    if (success) {
+      const list = yield select(selectors.lists.list(listId));
+
+      yield put(
+        actions.snackbar.show({
+          name: SnackbarNames.AddToListSuccess,
+          list,
+        })
+      );
+    }
+
+    if (failure) {
+    }
+  });
+}
+
+function* editListSaga() {
+  yield takeLatest(actions.lists.editList, function* (action) {
+    const listInfo = action.payload;
+
+    const config = queryConfigs.editListMutation({
+      listId: listInfo.id,
+      ...listInfo,
+    });
+
+    yield put(actions.query.mutateAsync(config));
+    const { success, failure } = yield takeQueryResponse(config);
+
+    if (success) {
+      yield put(
+        actions.snackbar.show({
+          name: SnackbarNames.EditListSuccess,
+        })
+      );
+    }
+
+    if (failure) {
+    }
+  });
+}
+
+function* deleteListItemSaga() {
+  yield takeLatest(actions.lists.deleteListItem, function* (action) {
+    const { listId, listItemIds } = action.payload;
+
+    const config = queryConfigs.deleteListItemsMutation({
+      listId,
+      listItemIds,
+    });
+
+    yield put(actions.query.mutateAsync(config));
+
+    const { success, failure } = yield takeQueryResponse(config);
+
+    if (success) {
+      //
+    }
+
+    if (failure) {
+      //
+    }
+  });
+}
 
 export default function* () {
-  yield takeLatest(actions.lists.deleteList, deleteListSaga);
-  yield takeLatest(actions.lists.createList, createListSaga);
-  yield takeLatest(actions.lists.addListItem, addListItemSaga);
-}
-
-function* createListSaga(action) {
-  const listInfo = action.payload;
-}
-
-function* deleteListSaga(action) {
-  const listId = action.payload;
-  yield put(mutateAsync(queryConfigs.deleteListMutation({ listId })));
-  yield put(actions.router.goBack());
-}
-
-function* addListItemSaga({ payload: { tmdbMediaId, tmdbMediaType, listId } }) {
-  const queryConfig = queryConfigs.addListItemMutation({
-    listId,
-    tmdbMediaId,
-    tmdbMediaType,
-  });
-
-  yield put(actions.query.mutateAsync(queryConfig));
-
-  const url = queryConfig.url;
-
-  const { success, failure } = yield race({
-    success: take(R.whereEq({ type: actionTypes.MUTATE_SUCCESS, url })),
-    failure: take(R.whereEq({ type: actionTypes.MUTATE_FAILURE, url })),
-  });
-
-  const list = yield select(selectors.lists.list(listId));
-
-  if (success) {
-    yield put(
-      actions.snackbar.notify({
-        name: SnackbarNames.AddToListSuccess,
-        list,
-      })
-    );
-  }
+  yield [
+    deleteListSaga,
+    createListSaga,
+    addListItemSaga,
+    editListSaga,
+    deleteListItemSaga,
+  ];
 }

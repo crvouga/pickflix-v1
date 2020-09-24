@@ -1,4 +1,4 @@
-import { AppBar, Fade, makeStyles, Box, Typography } from "@material-ui/core";
+import { AppBar, Box, makeStyles, Typography } from "@material-ui/core";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import History from "./History";
@@ -21,7 +21,7 @@ const useInputRef = () => {
       ref.current.value = "";
       dispatch(search.actions.setText(""));
     }
-  }, [ref.current]);
+  }, [dispatch, ref]);
 
   return ref;
 };

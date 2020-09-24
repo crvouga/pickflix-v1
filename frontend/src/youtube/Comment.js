@@ -1,18 +1,12 @@
-import {
-  Avatar,
-  IconButton,
-  makeStyles,
-  Typography,
-  Divider,
-} from "@material-ui/core";
+import { Avatar, IconButton, makeStyles, Typography } from "@material-ui/core";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import moment from "moment";
 import numeral from "numeral";
 import React from "react";
-import * as youtubeAPI from "./api";
-import Markdown from "../common/components/Markdown";
 import ExpandHeight from "../common/components/ExpandHeight";
+import Markdown from "../common/components/Markdown";
 import useBoolean from "../common/hooks/useBoolean";
+import * as youtubeAPI from "./api";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,23 +40,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default ({ comment }) => {
-  const { kind, etag, id, snippet } = comment;
+  const {
+    // kind,
+    // etag,
+    // id,
+    snippet,
+  } = comment;
   const {
     authorDisplayName,
     authorProfileImageUrl,
-    authorChannelUrl,
-    authorChannelId,
-    channelId,
-    videoId,
+    // authorChannelUrl,
+    // authorChannelId,
+    // channelId,
+    // videoId,
     textDisplay,
-    textOriginal,
-    parentId,
-    canRate,
-    viewerRating,
+    // textOriginal,
+    // parentId,
+    // canRate,
+    // viewerRating,
     likeCount,
-    moderationStatus,
+    // moderationStatus,
     publishedAt,
-    updatedAt,
+    // updatedAt,
   } = snippet;
 
   const classes = useStyles();
@@ -71,7 +70,7 @@ export default ({ comment }) => {
   const formattedPublishedAt = moment(publishedAt, "YYYYMMDD")
     .fromNow()
     .replace("a ", "1 ");
-  const isEdited = updatedAt !== publishedAt;
+
   const subtitle1 = `${authorDisplayName} • ${formattedPublishedAt}`;
 
   const handleAvatarClick = () => {};

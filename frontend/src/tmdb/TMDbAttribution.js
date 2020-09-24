@@ -9,7 +9,11 @@ export default () => {
         Powered by
       </Typography>
       <a href="https://www.themoviedb.org/">
-        <img style={{ width: "80%", maxWidth: "200px" }} src={blueLong2URL} />
+        <img
+          style={{ width: "80%", maxWidth: "200px" }}
+          src={blueLong2URL}
+          alt="tmdb"
+        />
       </a>
     </Box>
   );

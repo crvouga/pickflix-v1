@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../redux";
 
 const TransitionUp = React.forwardRef((props, ref) => (
-  <Slide {...props} direction="up" ref={ref} />
+  <Slide {...props} direction="up" timeout={1000 / 5} ref={ref} />
 ));
 
 const useStylesSnackbar = makeStyles((theme) => ({
@@ -37,6 +37,39 @@ const useStylesSnackbarContent = makeStyles((theme) => ({
 
 export const SnackbarNames = {
   AddToListSuccess: "AddToListSuccess",
+  EditListSuccess: "EditListSuccess",
+};
+
+const ViewListButton = ({ list }) => {
+  const dispatch = useDispatch();
+
+  return (
+    <Button
+      color="primary"
+      size="small"
+      onClick={() => {
+        dispatch(actions.snackbar.setIsOpen(false));
+        dispatch(actions.router.push(`/list/${list?.id}`));
+      }}
+      style={{ fontWeight: "bold" }}
+    >
+      View
+    </Button>
+  );
+};
+
+const CloseButton = () => {
+  const dispatch = useDispatch();
+
+  return (
+    <IconButton
+      onClick={() => {
+        dispatch(actions.snackbar.setIsOpen(false));
+      }}
+    >
+      <CloseIcon />
+    </IconButton>
+  );
 };
 
 export default () => {
@@ -46,26 +79,29 @@ export default () => {
   const isOpen = useSelector(selectors.snackbar.isOpen);
   const info = useSelector(selectors.snackbar.info);
 
-  const dispatch = useDispatch();
-
-  const onClose = (e) => {
-    console.log({ e });
-    dispatch(actions.snackbar.setIsOpen(false));
+  const SnacknarPropsByName = {
+    [SnackbarNames.AddToListSuccess]: {
+      message: `Added to ${info?.list?.title}`,
+      action: (
+        <React.Fragment>
+          <ViewListButton />
+          <CloseButton />
+        </React.Fragment>
+      ),
+    },
+    [SnackbarNames.EditListSuccess]: {
+      message: `Saved changes`,
+      action: <CloseButton />,
+    },
   };
 
-  const CloseButton = () => (
-    <IconButton onClick={onClose}>
-      <CloseIcon />
-    </IconButton>
-  );
-
-  const baseProps = {
+  const SnackbarProps = {
     TransitionComponent: TransitionUp,
     classes: classesSnackbar,
     ContentProps: {
-      elevation: 0,
-      variant: "outlined",
       classes: classesSnackbarContent,
+      // FYI: <Paper /> props works here
+      elevation: 0,
     },
     open: isOpen,
     anchorOrigin: {
@@ -74,31 +110,9 @@ export default () => {
     },
   };
 
-  const propsByName = {
-    [SnackbarNames.AddToListSuccess]: {
-      message: `Added to ${info?.list?.title}`,
-      action: (
-        <React.Fragment>
-          <Button
-            color="primary"
-            size="small"
-            onClick={() => {
-              onClose();
-              dispatch(actions.router.push(`/list/${info?.list?.id}`));
-            }}
-            style={{ fontWeight: "bold" }}
-          >
-            View
-          </Button>
-          <CloseButton />
-        </React.Fragment>
-      ),
-    },
-  };
-
   const props = R.mergeDeepRight(
-    baseProps,
-    R.pathOr({}, [info?.name], propsByName)
+    SnackbarProps,
+    R.propOr({}, R.propOr({}, "name", info), SnacknarPropsByName)
   );
 
   return <Snackbar {...props} />;

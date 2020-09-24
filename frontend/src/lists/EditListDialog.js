@@ -22,7 +22,7 @@ import CheckOutlinedIcon from "@material-ui/icons/CheckOutlined";
 import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import * as R from "ramda";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../redux";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
@@ -47,7 +47,7 @@ export default ({ list, ...DialogProps }) => {
   const listItemsQuery = useSelector(selectors.query.query(listItemsRequest));
   const listItems = useSelector(selectors.lists.listItems(list.id));
 
-  const [errors, setErrors] = useState({});
+  const [errors] = useState({});
   const inputRefTitle = useRef();
   const inputRefDescription = useRef();
   const [listItemDeletions, setListItemDeletions] = useState({});
@@ -67,30 +67,22 @@ export default ({ list, ...DialogProps }) => {
   };
 
   const onClickSaveChanges = async () => {
-    const title = inputRefTitle.current.value;
-    const description = inputRefDescription.current.value;
+    dispatch(
+      actions.lists.editList({
+        listId: list.id,
+        title: inputRefTitle.current.value,
+        description: inputRefDescription.current.value,
+      })
+    );
 
-    const listInfo = { title, description };
+    dispatch(
+      actions.lists.deleteListItem({
+        listId: list.id,
+        listItemIds: R.values(listItemDeletions),
+      })
+    );
 
-    try {
-      dispatch(
-        actions.query.mutateAsync(
-          queryConfigs.editListMutation({ listId: list.id, ...listInfo })
-        )
-      );
-      dispatch(
-        actions.query.mutateAsync(
-          queryConfigs.deleteListItemsMutation({
-            listId: list.id,
-            listItemIds: R.keys(listItemDeletions),
-          })
-        )
-      );
-      DialogProps.onClose();
-    } catch (error) {
-      const errors = JSON.parse(error.response.data.errors);
-      console.log({ errors });
-    }
+    DialogProps.onClose();
   };
 
   return (

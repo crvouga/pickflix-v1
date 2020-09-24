@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  CircularProgress,
   Dialog,
   DialogActions,
   DialogTitle,
@@ -42,7 +41,7 @@ export default () => {
   useEffect(() => {
     dispatch(actions.query.requestAsync(listItemsRequest));
     dispatch(actions.query.requestAsync(listRequest));
-  }, []);
+  }, [listRequest, listItemsRequest, dispatch]);
 
   const listQuery = useSelector(selectors.query.query(listRequest));
   const listItemsQuery = useSelector(selectors.query.query(listItemsRequest));

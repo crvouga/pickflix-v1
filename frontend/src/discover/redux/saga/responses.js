@@ -1,5 +1,4 @@
 import * as R from "ramda";
-import { queryCache } from "react-query";
 import { call, put, select, takeEvery, takeLeading } from "redux-saga/effects";
 import backendAPI from "../../../backendAPI";
 import * as actions from "../actions";

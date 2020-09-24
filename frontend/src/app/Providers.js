@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { Provider as ReduxQueryProvider } from "redux-query-react";
 import configureStore from "../redux/configureStore";
-import SnackbarProvider from "../snackbar/Snackbar";
 import attachFastClick from "./attachFastClick";
 import configureTheme from "./configureTheme";
 

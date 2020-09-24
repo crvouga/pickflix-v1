@@ -23,10 +23,8 @@ export default () => {
   const lists = useSelector(selectors.lists.lists);
 
   useEffect(() => {
-    setTimeout(() => {
-      dispatch(actions.query.requestAsync(listRequest));
-    }, 2000);
-  }, []);
+    dispatch(actions.query.requestAsync(listRequest));
+  }, [listRequest, dispatch]);
 
   const onClickList = (list) => (e) => {
     dispatch(actions.router.push(`/list/${list.id}`));

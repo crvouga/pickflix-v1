@@ -1,4 +1,3 @@
-import { createSelector } from "@reduxjs/toolkit";
 import { namespace } from "./constants";
 
 export default {

@@ -13,6 +13,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../redux";
 
 const useStyles = makeStyles((theme) => ({
+  toolbar: {
+    ...theme.mixins.toolbar,
+    bottom: 0,
+  },
+}));
+
+const useStylesBottomNavigation = makeStyles((theme) => ({
   root: {
     position: "fixed",
     left: 0,
@@ -21,16 +28,13 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "100%",
     zIndex: theme.zIndex.appBar,
     marginRight: theme.spacing(2),
-    marginRight: theme.spacing(2),
-  },
-  toolbar: {
-    ...theme.mixins.toolbar,
-    bottom: 0,
+    color: theme.palette.text.primary,
   },
 }));
 
 export default () => {
   const classes = useStyles();
+  const classesBottomNavigation = useStylesBottomNavigation();
   const dispatch = useDispatch();
   const pathname = useSelector(selectors.router.pathname);
 
@@ -67,7 +71,7 @@ export default () => {
       <BottomNavigation
         value={pathname}
         showLabels
-        classes={{ root: classes.root }}
+        classes={classesBottomNavigation}
       >
         {navigationActions.map((props) => (
           <BottomNavigationAction key={props.value} {...props} />

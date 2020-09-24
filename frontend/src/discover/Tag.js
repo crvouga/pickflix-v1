@@ -1,15 +1,7 @@
-import {
-  Box,
-  Chip,
-  makeStyles,
-  Avatar,
-  Typography,
-  ButtonBase,
-} from "@material-ui/core";
+import { Avatar, ButtonBase, makeStyles, Typography } from "@material-ui/core";
 import clsx from "clsx";
 import React from "react";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-import typeToIcon from "./typeToIcon";
 
 const useStyles = makeStyles((theme) => ({
   borderRadius: {
@@ -55,10 +47,10 @@ const useStyles = makeStyles((theme) => ({
     display: "hidden",
   },
 }));
-export default ({ tag, variant, active, onClick, ...restOfProps }) => {
+export default ({ tag, variant, active, onClick }) => {
   const classes = useStyles();
   const tagURL = makeTMDbImageURL(5, tag);
-  const tagIcon = typeToIcon(tag.type);
+
   return (
     <ButtonBase className={classes.borderRadius} onClick={onClick}>
       <div

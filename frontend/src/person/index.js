@@ -1,16 +1,12 @@
-import { Typography, Box } from "@material-ui/core";
-import * as R from "ramda";
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import backendAPI from "../backendAPI";
-import HorizontalScroll from "../common/components/HorizontalScroll";
 import ErrorPage from "../common/page/ErrorPage";
 import Footer from "../common/page/Footer";
 import Page from "../common/page/Page";
 import recentlyViewed from "../redux/recentlyViewed";
-import Poster from "../movie/components/Poster";
 import Biography from "./Biography";
 import Filmography from "./Filmography";
 import Header from "./Header";
@@ -30,16 +26,6 @@ const fetchPersonPage = (personId) =>
     })
     .then((res) => res.data);
 
-const toCreditsByKey = (credits) => {
-  const { cast, crew } = credits;
-  const creditsByKey = R.groupBy(R.prop("department"), crew);
-  if (cast.length > 0) creditsByKey["Acting"] = cast;
-  if (R.keys(creditsByKey) > 1) creditsByKey["All"] = R.concat(cast, crew);
-  return creditsByKey;
-};
-
-const descendPopularity = R.sort(R.descend(R.prop("popularity")));
-
 export default () => {
   const { personId } = useParams();
 
@@ -53,14 +39,12 @@ export default () => {
     if (query.status === "success") {
       dispatch(recentlyViewed.actions.viewed("person", query.data));
     }
-  }, [query.status]);
+  }, [query, dispatch]);
 
   if (query.status === "loading") return <SkeletonPage />;
   if (query.status === "error") return <ErrorPage />;
 
   const { credits, images, taggedImages, ...details } = query.data;
-
-  const creditsByKey = R.map(descendPopularity, toCreditsByKey(credits));
 
   return (
     <Page>

@@ -1,5 +1,4 @@
-import { Box, makeStyles, Paper, LinearProgress } from "@material-ui/core";
-import * as R from "ramda";
+import { Box } from "@material-ui/core";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import HorizontalScroll from "../common/components/HorizontalScroll";

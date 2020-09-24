@@ -1,7 +1,7 @@
 import { call, put, select, takeLatest } from "redux-saga/effects";
+import { actions, selectors } from "../../../../redux";
 import firebase from "../../../firebase";
 import { SignInMethod, Step } from "../constants";
-import { actions, selectors } from "../../../../redux";
 
 const getSignInMethodsForEmail = (email) =>
   firebase.auth().fetchSignInMethodsForEmail(email);
@@ -25,6 +25,8 @@ function* nextStepSaga(action) {
   switch (yield select(selectors.signInForm.step)) {
     case Step.email:
       yield* emailStepToNextStepSaga(action);
+      break;
+    default:
       break;
   }
 }

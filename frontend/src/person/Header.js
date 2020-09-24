@@ -1,23 +1,13 @@
-import { Box, makeStyles, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import moment from "moment";
 import * as R from "ramda";
 import React from "react";
-import AspectRatio from "react-aspect-ratio";
 import "react-aspect-ratio/aspect-ratio.css";
-import AbsolutePositionBox from "../common/components/AbsolutePositionBox";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import PersonAvatar from "./PersonAvatar";
 
 const toYear = (_) => moment(_).format("YYYY");
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-  },
-}));
-
-export default ({ images, taggedImages, details, credits }) => {
-  const classes = useStyles();
+export default ({ details, credits }) => {
   const allCredits = R.concat(credits.crew, credits.cast);
 
   const allMovies = R.uniqBy(R.prop("id"), allCredits);

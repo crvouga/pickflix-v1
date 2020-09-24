@@ -1,13 +1,8 @@
 import * as R from "ramda";
-import { takeEvery, select, call, fork, put } from "redux-saga/effects";
-import backendAPI from "../../../backendAPI";
+import { put, select, takeEvery } from "redux-saga/effects";
+
 import * as actions from "../actions";
 import * as selectors from "../selectors";
-
-const getGenres = async () => {
-  const response = await backendAPI.get("/api/tmdb/genre/movie/list");
-  return response.data.genres;
-};
 
 const rangeStep = (start, step, end) =>
   R.unfold((n) => (n > end ? false : [n, n + step]), start);
