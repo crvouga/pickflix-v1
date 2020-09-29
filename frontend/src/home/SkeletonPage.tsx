@@ -36,7 +36,7 @@ export default () => {
               <Poster
                 skeleton
                 key={index}
-                movie={{ id: index, title: "", posterPath: "" }}
+                movie={{ id: String(index), title: "", posterPath: "" }}
                 marginRight={2}
               />
             ))}

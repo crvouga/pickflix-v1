@@ -3,6 +3,7 @@ import clsx from "clsx";
 import React from "react";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { Tag } from "./redux/types";
+import { ImagePaths } from "../tmdb/types";
 
 const useStyles = makeStyles((theme) => ({
   borderRadius: {
@@ -50,7 +51,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface Props {
-  tag: Tag;
+  tag: ImagePaths & {
+    type: string;
+    name: string;
+  };
   active?: boolean;
   onClick?: Function;
   variant?: "outlined";

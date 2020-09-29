@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
     borderRadius: theme.spacing(2),
-    width: "180px",
   },
   fallback: {
     display: "flex",
@@ -39,7 +38,11 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props extends BoxProps {
   skeleton?: boolean;
-  movie: { posterPath: string | null } & Partial<Movie>;
+  movie: {
+    id?: string;
+    posterPath?: string | null;
+    title?: string;
+  };
   sizeIndex?: number;
 }
 
@@ -60,7 +63,12 @@ export default (props: Props) => {
   };
 
   return (
-    <Box className={classes.root} onClick={handleClick} {...restOfProps}>
+    <Box
+      className={classes.root}
+      onClick={handleClick}
+      width="180px"
+      {...restOfProps}
+    >
       <AspectRatio
         ratio={[18, 24]}
         style={{ position: "relative", width: "100%" }}

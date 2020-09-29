@@ -22,3 +22,7 @@ export const addListItemAutoList = createAction(
 export const deleteListItemAutoList = createAction(
   "[lists] ADD_LIST_ITEM_AUTO_LIST"
 );
+
+export const getLists = createAction<{ attempts: number; timeout: number }>(
+  "[lists] GET_LISTS"
+);

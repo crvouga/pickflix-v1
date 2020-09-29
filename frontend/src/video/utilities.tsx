@@ -13,16 +13,16 @@ const renderNameNumberPair = ([name, number]: [string, number]) => (
 );
 
 export const renderText = (videos: MovieVideo[]) => {
-  return videos.length === 0
-    ? "No Videos"
-    : R.pipe(
-        R.countBy((video: MovieVideo) => video.type),
-        R.toPairs,
-        (_) => _.map(renderNameNumberPair),
-        //intersperse " • "
-        (_) =>
-          _.flatMap((element, index, elementArray) =>
-            index === elementArray.length - 1 ? [element] : [element, " • "]
-          )
-      )(videos);
+  if (videos.length === 0) {
+    return "No Videos";
+  }
+
+  const countByVideo = R.countBy((video) => video.type, videos);
+
+  return Object.entries(countByVideo)
+    .map(renderNameNumberPair)
+    .flatMap(
+      (element: JSX.Element, index: number, elementArray: JSX.Element[]) =>
+        index === elementArray.length - 1 ? [element] : [element, " • "]
+    );
 };

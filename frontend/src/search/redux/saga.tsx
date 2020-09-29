@@ -36,7 +36,7 @@ function* fetchSaga(config: AxiosRequestConfig = {}) {
   });
   yield put(actions.setStatus("success"));
   const responses = yield select(selectors.responses);
-  yield put(actions.setResponses(R.append(response, responses)));
+  yield put(actions.setResponses([...responses, response]));
 }
 
 export default function* () {

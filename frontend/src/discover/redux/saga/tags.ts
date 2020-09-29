@@ -12,10 +12,9 @@ const decades = rangeStep(1940, 10, new Date().getFullYear());
 
 const dateRangeTags: Tag[] = decades.map((year) => ({
   type: "dateRange",
-  year,
   range: [year, year + 9],
   name: `${year}s`,
-  id: year,
+  id: String(year),
 }));
 
 export default function* () {

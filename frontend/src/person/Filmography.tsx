@@ -18,14 +18,8 @@ import {
   PersonDetails,
   PersonMovieCredits,
   Movie,
+  ImagePaths,
 } from "../tmdb/types";
-
-const toCreditsByKey = (credits: PersonMovieCredits) => {
-  const { cast, crew } = credits;
-  const creditsByKey = R.groupBy((credit) => credit.department || "", crew);
-
-  return creditsByKey;
-};
 
 const descendPopularity = R.sort(R.descend(R.prop("popularity")));
 
@@ -36,8 +30,17 @@ const useStylesChip = makeStyles((theme) => ({
   },
 }));
 
+type Credit = ImagePaths & {
+  id: string;
+  title: string;
+};
+type Cast = Credit & { character: string };
+type Crew = Credit & { job: string; department: string };
 interface Props {
-  credits: PersonMovieCredits;
+  credits: {
+    cast: Cast[];
+    crew: Crew[];
+  };
   details: PersonDetails;
 }
 
@@ -77,7 +80,10 @@ export default ({ credits, details }: Props) => {
     setAnchorEl(null);
   };
 
-  const creditsByKey = toCreditsByKey(credits);
+  const creditsByKey = R.groupBy(
+    (credit) => credit.department || "",
+    credits.crew
+  );
 
   const visibleCredits = sortCredits(
     sortType,

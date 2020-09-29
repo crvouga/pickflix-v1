@@ -35,19 +35,20 @@ export default () => {
   const isDeleteListModalOpen = useBoolean(false);
   const dispatch = useDispatch();
 
-  const { listId }: { listId: string } = useParams();
+  const { listId } = useParams<{ listId: string }>();
 
   const listRequest = queryConfigs.listRequest({ listId });
   const listItemsRequest = queryConfigs.listItemsRequest({ listId });
   useEffect(() => {
     dispatch(actions.query.requestAsync(listItemsRequest));
     dispatch(actions.query.requestAsync(listRequest));
-  }, [listRequest, listItemsRequest, dispatch]);
+  }, [listItemsRequest.url, listRequest.url]);
 
   const listQuery = useSelector(selectors.query.queryState(listRequest));
   const listItemsQuery = useSelector(
     selectors.query.queryState(listItemsRequest)
   );
+
   const list = useSelector(selectors.lists.list(listId));
   const listItems = useSelector(selectors.lists.listItems(listId));
 

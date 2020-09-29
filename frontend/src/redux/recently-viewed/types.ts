@@ -1,22 +1,16 @@
-export enum MediaType {
-  movie = "movie",
-  tv = "tv",
-  person = "person",
-}
-export type Entity = {
-  id: string;
-} & (
+export type Entity =
   | {
-      mediaType: MediaType.movie;
+      id: string;
+      mediaType: "movie";
       posterPath: string;
       title: string;
     }
   | {
-      mediaType: MediaType.person;
+      id: string;
+      mediaType: "person";
       profilePath: string;
       name: string;
-    }
-);
+    };
 
 export interface RecentlyViewedState {
   entities: Entity[];

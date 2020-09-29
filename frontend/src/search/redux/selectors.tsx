@@ -38,3 +38,8 @@ export const totalPages = createSelector(
   (responses) => responses[0]?.totalPages || 0
 );
 export const isTextEmpty = createSelector([text], R.isEmpty);
+
+export const canFetchMore = createSelector(
+  [results, totalResults],
+  (results, totalResults) => results.length < totalResults
+);

@@ -1,44 +1,40 @@
-export enum TmdbImagePath {
-  profilePath = "profilePath",
-  posterPath = "posterPath",
-  backdropPath = "backdropPath",
-  stillPath = "stillPath",
-  logoPath = "logoPath",
-}
+export type SizesKey =
+  | "profileSizes"
+  | "posterSizes"
+  | "backdropSizes"
+  | "stillSizes"
+  | "logoSizes";
 
-export enum TmdbImageSize {
-  profileSizes = "profileSizes",
-  posterSizes = "posterSizes",
-  backdropSizes = "backdropSizes",
-  stillSizes = "stillSizes",
-  logoSizes = "logoSizes",
-}
+export type PathKey =
+  | "profilePath"
+  | "posterPath"
+  | "logoPath"
+  | "backdropPath"
+  | "stillPath";
 
-export const imagePathToImageSize = {
-  [TmdbImagePath.backdropPath]: TmdbImageSize.backdropSizes,
-  [TmdbImagePath.logoPath]: TmdbImageSize.logoSizes,
-  [TmdbImagePath.posterPath]: TmdbImageSize.posterSizes,
-  [TmdbImagePath.profilePath]: TmdbImageSize.profileSizes,
-  [TmdbImagePath.stillPath]: TmdbImageSize.stillSizes,
+export const pathKeyToSizesKey: { [key in PathKey]: SizesKey } = {
+  backdropPath: "backdropSizes",
+  logoPath: "logoSizes",
+  posterPath: "posterSizes",
+  profilePath: "profileSizes",
+  stillPath: "stillSizes",
 };
 
-export interface TmdbConfiguration {
-  images: {
-    [key in TmdbImageSize]: string[];
-  } & {
-    secureBaseUrl: string;
-  };
-}
+export type ImagePaths = {
+  [key in PathKey]?: null | string;
+};
 
-export type TmdbMedia = Partial<
-  {
-    [key in TmdbImagePath]: string;
-  }
->;
+export type TmdbConfiguration = {
+  images: {
+    secureBaseUrl: string;
+  } & {
+    [key in SizesKey]: string[];
+  };
+};
 
 export interface Movie {
   mediaType?: "movie";
-  id: number;
+  id: string;
   posterPath: string;
   title: string;
   backdropPath?: string;
@@ -48,13 +44,13 @@ export interface Movie {
 
 export interface Person {
   mediaType?: "person";
-  id: number;
+  id: string;
   profilePath: string;
   name: string;
 }
 
 export interface MovieReview {
-  id: number;
+  id: string;
   url: string;
   content: string;
   author: string;
@@ -65,13 +61,13 @@ export interface MovieReviews {
 }
 
 export interface MovieGenre {
-  id: number;
+  id: string;
   name: string;
 }
 
 export interface ProductionCompany {
   name: string;
-  id: number;
+  id: string;
   logoPath: string | null;
   originCountry: string;
 }
@@ -102,7 +98,7 @@ export interface MovieDetails {
   budget: number;
   genres: MovieGenre[];
   homepage: string | null;
-  id: number;
+  id: string;
   imdbId: string | null;
   originalLanguage: string;
   originalTitle: string;
@@ -131,7 +127,7 @@ export interface CollectionPart {
   adult: boolean;
   backdropPath: string;
   genreIds: string[];
-  id: number;
+  id: string;
   originalLanguage: string;
   originalTitle: string;
   overview: string;
@@ -152,7 +148,7 @@ export interface Collection {
 
 //https://developers.themoviedb.org/3/movies/get-movie-credits
 export interface MovieCreditCast {
-  id: number;
+  id: string;
   name: string;
   profilePath: string;
   creditId: string;
@@ -163,7 +159,7 @@ export interface MovieCreditCast {
 }
 
 export interface MovieCreditCrew {
-  id: number;
+  id: string;
   name: string;
   profilePath: string;
   creditId: string;
@@ -175,18 +171,18 @@ export interface MovieCreditCrew {
 export type MovieCredit = MovieCreditCast & MovieCreditCrew;
 
 export interface MovieCredits {
-  id: number;
+  id: string;
   cast: MovieCreditCast[];
   crew: MovieCreditCrew[];
 }
 
 export interface Keyword {
-  id: number;
+  id: string;
   name: string;
 }
 
 export interface MovieKeywords {
-  id: number;
+  id: string;
   keywords: Keyword[];
 }
 
@@ -199,7 +195,7 @@ export interface ReleaseDate {
 }
 
 export interface MovieReleaseDates {
-  id: number;
+  id: string;
   results: {
     iso31661: string;
     releaseDates: ReleaseDate[];
@@ -218,7 +214,7 @@ export type MovieVideoType =
 export type MovieVideoSize = 360 | 480 | 720 | 1080;
 
 export interface MovieVideo {
-  id: number;
+  id: string;
   iso6391: string;
   iso31661: string;
   key: string;
@@ -229,7 +225,7 @@ export interface MovieVideo {
 }
 
 export interface MovieVideos {
-  id: number;
+  id: string;
   results: MovieVideo[];
 }
 
@@ -255,7 +251,7 @@ export interface MovieImagePoster {
 }
 
 export interface MovieImages {
-  id: number;
+  id: string;
   backdrops: MovieImageBackdrop[];
   posters: MovieImagePoster[];
 }
@@ -273,7 +269,7 @@ export interface PersonDetails {
   birthday: string | null;
   knownForDepartment: string;
   deathday: null | string;
-  id: number;
+  id: string;
   name: string;
   alsoKnownAs: string[];
   gender: 0 | 1 | 2;
@@ -300,14 +296,14 @@ interface PersonCreditCast {
   originalLanguage: string;
   originalTitle: string;
   popularity: number;
-  id: number;
+  id: string;
   backdropPath: string | null;
   overview: string;
   posterPath: string | null;
 }
 
 interface PersonCreditCrew {
-  id: number;
+  id: string;
   department: string;
   originalLanguage: string;
   originalTitle: string;

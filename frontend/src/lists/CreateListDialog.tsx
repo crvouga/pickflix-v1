@@ -36,6 +36,7 @@ export default () => {
       title: inputRefTitle.current?.value,
     };
     dispatch(actions.lists.createList(listInfo));
+    dispatch(actions.router.close({ name: ModalName.CreateList }));
   };
 
   return (

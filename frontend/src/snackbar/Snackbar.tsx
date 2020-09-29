@@ -4,12 +4,18 @@ import {
   makeStyles,
   Snackbar,
   Theme,
+  Slide,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IList } from "../lists/redux/entities";
 import { actions, selectors } from "../redux";
+import { TransitionProps } from "@material-ui/core/transitions";
+
+const Transition = (props: TransitionProps) => (
+  <Slide direction="up" {...props} />
+);
 
 const useStylesSnackbar = makeStyles((theme: Theme) => ({
   root: {
@@ -77,6 +83,7 @@ export default () => {
     <Snackbar
       open={isOpen}
       classes={classesSnackbar}
+      TransitionComponent={Transition}
       ContentProps={{
         classes: classesSnackbarContent,
         elevation: 0,

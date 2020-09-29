@@ -49,6 +49,7 @@ function* rootSaga() {
     spawn(recentlyViewed.saga),
     spawn(auth.saga),
     spawn(signInForm.saga),
+    spawn(router.saga),
   ];
 }
 

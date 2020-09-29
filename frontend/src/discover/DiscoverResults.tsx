@@ -64,7 +64,7 @@ export default () => {
     <div ref={scrollRef} className={classes.container}>
       {results.map((result) => (
         <Box p={1 / 2} width="50%" key={result.id}>
-          <Poster movie={result as Movie} width="100%" />
+          <Poster movie={result} width="100%" />
         </Box>
       ))}
       <div ref={triggerRef} />

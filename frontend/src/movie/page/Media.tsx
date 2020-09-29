@@ -64,14 +64,16 @@ const renderPoster = (poster: { filePath: string }) => (
   </Box>
 );
 
-const renderBackdrop = (backdrop: { filePath: string }) => (
-  <img
-    alt="movie backdrop"
-    key={backdrop.filePath}
-    src={makeTMDbImageURL(2, { backdropPath: backdrop.filePath })}
-    style={{ width: "100%", height: "100%" }}
-  />
-);
+const renderBackdrop = (backdrop: { filePath: string }) => {
+  return (
+    <img
+      alt="movie backdrop"
+      key={backdrop.filePath}
+      src={makeTMDbImageURL(2, { backdropPath: backdrop.filePath })}
+      style={{ width: "100%", height: "100%" }}
+    />
+  );
+};
 
 interface Props {
   videos: MovieVideos;

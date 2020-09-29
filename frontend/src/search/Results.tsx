@@ -15,18 +15,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../redux";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { Result } from "./redux/types";
+import ListItemSkeleton from "../common/components/ListItemSkeleton";
 
 export default () => {
   const dispatch = useDispatch();
   const results = useSelector(selectors.search.sortedResults);
   const status = useSelector(selectors.search.status);
+  const canFetchMore = useSelector(selectors.search.canFetchMore);
   const [triggerRef, inView] = useInView();
 
   useEffect(() => {
-    if (inView) {
+    if (inView && canFetchMore) {
       dispatch(actions.search.fetch());
     }
-  }, [dispatch, inView]);
+  }, [inView]);
 
   const handleClick = (result: Result) => () => {
     dispatch(actions.search.chose(result));
@@ -66,12 +68,12 @@ export default () => {
             </ListItem>
           )
         )}
+        {status === "loading" &&
+          [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+            <ListItemSkeleton key={n} />
+          ))}
       </List>
-      {status === "loading" && (
-        <Box p={2} textAlign="center">
-          <CircularProgress />
-        </Box>
-      )}
+
       <div ref={triggerRef} />
     </div>
   );

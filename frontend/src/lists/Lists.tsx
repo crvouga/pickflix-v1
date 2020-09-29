@@ -15,8 +15,7 @@ import { actions, selectors } from "../redux";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { IList } from "./redux/entities";
 import * as queryConfigs from "./redux/query-configs";
-
-const listRequest = queryConfigs.listsRequest();
+import ListItemSkeleton from "../common/components/ListItemSkeleton";
 
 export default () => {
   const dispatch = useDispatch();
@@ -25,7 +24,7 @@ export default () => {
   const lists = useSelector(selectors.lists.lists);
 
   useEffect(() => {
-    dispatch(actions.query.requestAsync(listRequest));
+    dispatch(actions.lists.getLists({ attempts: 5, timeout: 1.5 * 1000 }));
   }, [listRequest, dispatch]);
 
   const onClickList = (list: IList) => () => {
@@ -35,6 +34,7 @@ export default () => {
   return (
     <React.Fragment>
       <List>
+        {query.isPending && [1, 2, 3, 4, 5].map((n) => <ListItemSkeleton />)}
         {lists.map((list) => (
           <ListItem key={list.id} button divider onClick={onClickList(list)}>
             <Box marginX={1}>
@@ -57,12 +57,6 @@ export default () => {
           </ListItem>
         ))}
       </List>
-
-      {query.isPending && (
-        <Box textAlign="center">
-          <CircularProgress />
-        </Box>
-      )}
     </React.Fragment>
   );
 };

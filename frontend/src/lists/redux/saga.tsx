@@ -1,5 +1,5 @@
 import React from "react";
-import { put, select, spawn, takeLatest } from "redux-saga/effects";
+import { put, select, spawn, takeLatest, delay } from "redux-saga/effects";
 import { actions, selectors } from "../../redux";
 import { takeQueryResponse } from "../../redux/query";
 import { ViewListButton, CloseSnackbarButton } from "../../snackbar/Snackbar";
@@ -129,8 +129,27 @@ function* deleteListItemSaga() {
   });
 }
 
+function* getListsSaga() {
+  yield takeLatest(actions.lists.getLists, function* (action) {
+    yield delay(1000);
+    const { attempts, timeout } = action.payload;
+    for (let i = 0; i < attempts; i++) {
+      const listRequest = queryConfigs.listsRequest();
+      yield put(actions.query.requestAsync(listRequest));
+      const { success, failure } = yield takeQueryResponse(listRequest);
+      if (success) {
+        break;
+      }
+      if (failure) {
+      }
+      yield delay(timeout);
+    }
+  });
+}
+
 export default function* () {
   yield* [
+    spawn(getListsSaga),
     spawn(deleteListSaga),
     spawn(createListSaga),
     spawn(addListItemSaga),

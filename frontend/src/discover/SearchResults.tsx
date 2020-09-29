@@ -14,14 +14,10 @@ export default () => {
   const searchResults = useSelector(selectors.discover.searchResults);
   const searchText = useSelector(selectors.discover.searchText);
 
-  const sortedTags = matchSorter(
-    [...tags, ...(searchResults as ITag[])],
-    searchText,
-    {
-      keys: ["name"],
-      threshold: matchSorter.rankings.NO_MATCH,
-    }
-  );
+  const sortedTags = matchSorter(tags, searchText, {
+    keys: ["name"],
+    threshold: matchSorter.rankings.NO_MATCH,
+  });
 
   const handleClickTag = (tag: ITag) => () => {
     dispatch(actions.discover.activateTags([tag]));

@@ -1,16 +1,11 @@
 import { Box, BoxProps, makeStyles } from "@material-ui/core";
 import React from "react";
+import AbsolutePositionBox from "./AbsolutePositionBox";
 
 const useStyles = makeStyles({
-  root: {},
   svg: {
     width: "100%",
-    position: "absolute",
-  },
-  childrenWrapper: {
-    position: "absolute",
-    top: 0,
-    left: 0,
+    height: "100%",
   },
 });
 
@@ -21,9 +16,9 @@ interface Props extends BoxProps {
 export default ({ ratio, children, ...restOfProps }: Props) => {
   const classes = useStyles();
   return (
-    <Box className={classes.root} {...restOfProps}>
+    <Box position="relative" {...restOfProps}>
       <svg className={classes.svg} viewBox={[0, 0, ...ratio].join(", ")} />
-      <div className={classes.childrenWrapper}>{children}</div>
+      <AbsolutePositionBox>{children}</AbsolutePositionBox>
     </Box>
   );
 };

@@ -1,6 +1,7 @@
-import { createReducer } from "@reduxjs/toolkit";
+import { take, uniqBy } from "ramda";
+import { createReducer, PayloadAction } from "@reduxjs/toolkit";
 import * as actions from "./actions";
-import { RecentlyViewedState } from "./types";
+import { RecentlyViewedState, Entity } from "./types";
 
 const maxCapcity = 100;
 
@@ -13,8 +14,11 @@ export default createReducer(initialState, {
     state.entities = [];
   },
 
-  [actions.viewed.toString()]: (state, action) => {
+  [actions.viewed.toString()]: (state, action: PayloadAction<Entity>) => {
     const entity = action.payload;
-    state.entities = [entity, ...state.entities].slice(0, maxCapcity);
+    state.entities = uniqBy(
+      (entity) => entity.id,
+      take(maxCapcity, [entity, ...state.entities])
+    );
   },
 });

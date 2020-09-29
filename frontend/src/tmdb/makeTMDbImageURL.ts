@@ -1,43 +1,45 @@
 import { AxiosResponse } from "axios";
 import backendAPI from "../backendAPI";
 import {
-  imagePathToImageSize,
+  PathKey,
+  SizesKey,
+  pathKeyToSizesKey,
   TmdbConfiguration,
-  TmdbImagePath,
-  TmdbMedia,
+  ImagePaths,
 } from "./types";
 
 const clamp = (min: number, max: number, n: number) =>
   Math.max(min, Math.min(max, n));
 
-const clampIndexGet = (array: Array<any>, index: number): any =>
+const clampIndexGet = <T>(array: Array<T>, index: number): T =>
   array[clamp(0, array.length - 1, index)];
 
-const makeImageUrl = (tmdbConfiguration: TmdbConfiguration | undefined) => (
+const makeImageUrl = (
+  tmdbConfiguration: TmdbConfiguration | undefined,
   sizeIndex: number,
-  tmdbMedia: { [key: string]: any }
+  hasPathKey: ImagePaths
 ): string => {
-  if (!tmdbConfiguration || !tmdbMedia) {
+  if (!tmdbConfiguration || !hasPathKey) {
     return "";
   }
 
-  const imagePathKey = Object.keys(TmdbImagePath).find(
-    (imagePathKey) => imagePathKey in tmdbMedia
-  ) as TmdbImagePath | undefined;
+  const found = Object.entries(pathKeyToSizesKey).find(
+    ([pathKey, sizesKey]) => pathKey in hasPathKey
+  );
 
-  if (!imagePathKey) {
+  if (!found) {
     return "";
   }
 
-  const sizesKey = imagePathToImageSize[imagePathKey];
+  const [pathKey, sizesKey] = found as [PathKey, SizesKey];
 
-  const sizes = tmdbConfiguration.images[sizesKey];
-
-  const path = tmdbMedia[imagePathKey];
+  const path = hasPathKey[pathKey];
 
   if (!path) {
     return "";
   }
+
+  const sizes = tmdbConfiguration.images[sizesKey];
 
   const size = clampIndexGet(sizes, sizeIndex);
 
@@ -53,7 +55,10 @@ let tmdbConfiguration: TmdbConfiguration | undefined = undefined;
 backendAPI
   .get("/api/tmdb/configuration")
   .then((res: AxiosResponse<TmdbConfiguration>) => {
+    console.log({ tmdbConfiguration });
     tmdbConfiguration = res.data;
+    console.log({ tmdbConfiguration });
   });
 
-export default makeImageUrl(tmdbConfiguration);
+export default (sizeIndex: number, hasPathKey: ImagePaths) =>
+  makeImageUrl(tmdbConfiguration, sizeIndex, hasPathKey);
