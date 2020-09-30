@@ -13,10 +13,13 @@ const authStateChannel = eventChannel<User | false>((emit) =>
 );
 
 export default function* () {
+  yield put(actions.auth.setAuthStatus("loading"));
+
   yield put(actions.auth.setError(undefined));
 
   yield takeEvery(authStateChannel, function* (user) {
     yield put(actions.auth.setUser(user));
+    yield put(actions.auth.setAuthStatus(user ? "signedIn" : "signedOut"));
   });
 
   yield takeEvery(actions.auth.signInSuccess, function* () {});

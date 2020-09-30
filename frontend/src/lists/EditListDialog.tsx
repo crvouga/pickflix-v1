@@ -73,7 +73,7 @@ export default ({ list, ...DialogProps }: IProps) => {
   const onClickSaveChanges = async () => {
     dispatch(
       actions.lists.editList({
-        listId: list.id,
+        id: list.id,
         title: inputRefTitle.current?.value || "",
         description: inputRefDescription.current?.value || "",
       })
@@ -152,8 +152,8 @@ export default ({ list, ...DialogProps }: IProps) => {
               <ListItemAvatar>
                 <Avatar
                   variant="square"
-                  src={makeTMDbImageURL(3, listItem.tmdbData)}
-                ></Avatar>
+                  src={makeTMDbImageURL(3, listItem?.tmdbData)}
+                />
               </ListItemAvatar>
               <Box
                 color={
@@ -162,7 +162,7 @@ export default ({ list, ...DialogProps }: IProps) => {
                     : "text.disabled"
                 }
               >
-                <ListItemText primary={listItem.tmdbData.title} />
+                <ListItemText primary={listItem?.tmdbData?.title} />
               </Box>
               <ListItemSecondaryAction>
                 <Checkbox checked={Boolean(listItemDeletions[listItem.id])} />

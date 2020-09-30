@@ -1,15 +1,32 @@
 import { createAction } from "@reduxjs/toolkit";
 import { IList, IListItem } from "./entities";
 
-export const createList = createAction<Partial<IList>>("[lists] CREATE_LIST");
+type TmdbInfo = {
+  tmdbMediaId: string;
+  tmdbMediaType: "movie";
+};
+
+export const toggleLiked = createAction<TmdbInfo>("[lists] TOGGLE_LIKED");
+
+export const toggleWatchNext = createAction<TmdbInfo>(
+  "[lists] TOGGLE_WATCH_NEXT"
+);
+
+export const createList = createAction<
+  Partial<IList> & { listItemInfos?: Partial<IListItem>[] }
+>("[lists] CREATE_LIST");
 
 export const deleteList = createAction<string>("[lists] DELETE_LIST");
 
-export const editList = createAction<Partial<IList>>("[lists] EDIT_LIST");
-
-export const addListItem = createAction<Partial<IListItem>>(
-  "[lists] ADD_LIST_ITEM"
+export const editList = createAction<Pick<IList, "id"> & Partial<IList>>(
+  "[lists] EDIT_LIST"
 );
+
+export const addListItem = createAction<
+  TmdbInfo & {
+    listId: string;
+  }
+>("[lists] ADD_LIST_ITEM");
 
 export const deleteListItem = createAction<{
   listId: string;

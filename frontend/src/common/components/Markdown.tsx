@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface Props extends TypographyProps {
+interface Props extends TypographyProps<"div"> {
   source?: string;
 }
 
@@ -27,7 +27,7 @@ export default ({ source, children, ...props }: Props) => {
   const classes = useStyles();
   return (
     <Typography
-      // component="div"
+      component="div"
       color="textSecondary"
       variant="body2"
       {...props}

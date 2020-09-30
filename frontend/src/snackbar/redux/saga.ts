@@ -7,7 +7,7 @@ export default function* saga() {
     const snackbarProps = action.payload;
     if (yield select(selectors.open)) {
       yield put(actions.setOpen(false));
-      yield delay(500);
+      yield delay(200);
     }
     yield put(actions.setSnackbarProps(snackbarProps));
     yield put(actions.setOpen(true));

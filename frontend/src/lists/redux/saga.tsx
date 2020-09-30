@@ -1,21 +1,38 @@
 import React from "react";
-import { put, select, spawn, takeLatest, delay } from "redux-saga/effects";
+import { MutateSuccessAction, RequestFailureAction } from "redux-query";
+import { delay, put, select, spawn, takeLatest } from "redux-saga/effects";
 import { actions, selectors } from "../../redux";
-import { takeQueryResponse } from "../../redux/query";
-import { ViewListButton, CloseSnackbarButton } from "../../snackbar/Snackbar";
+import { takeQueryResponse } from "../../redux/query/saga";
+import { CloseSnackbarButton, ViewListButton } from "../../snackbar/Snackbar";
 import * as queryConfigs from "./query-configs";
 
 function* createListSaga() {
   yield takeLatest(actions.lists.createList, function* (action) {
-    const listInfo = action.payload;
-
-    const config = queryConfigs.createListMutation(listInfo);
+    const config = queryConfigs.createListMutation(action.payload);
 
     yield put(actions.query.mutateAsync(config));
 
-    const { success, failure } = yield takeQueryResponse(config);
+    const {
+      success,
+      failure,
+    }: {
+      success: MutateSuccessAction;
+      failure: RequestFailureAction;
+    } = yield takeQueryResponse(config);
 
     if (success) {
+      const list = success.responseBody;
+      yield put(
+        actions.snackbar.display({
+          message: `Created "${list.title}"`,
+          action: (
+            <React.Fragment>
+              <ViewListButton list={list} />
+              <CloseSnackbarButton />
+            </React.Fragment>
+          ),
+        })
+      );
     }
 
     if (failure) {
@@ -30,11 +47,10 @@ function* deleteListSaga() {
     const config = queryConfigs.deleteListMutation({ listId });
 
     yield put(actions.query.mutateAsync(config));
-
+    yield put(actions.router.goBack());
     const { success, failure } = yield takeQueryResponse(config);
 
     if (success) {
-      yield put(actions.router.goBack());
     }
 
     if (failure) {
@@ -60,7 +76,7 @@ function* addListItemSaga() {
 
       yield put(
         actions.snackbar.display({
-          message: `Added to ${list.title}`,
+          message: `Added to "${list.title}"`,
           action: (
             <React.Fragment>
               <ViewListButton list={list} />
@@ -80,23 +96,14 @@ function* editListSaga() {
   yield takeLatest(actions.lists.editList, function* (action) {
     const listInfo = action.payload;
 
-    const config = queryConfigs.editListMutation({
-      listId: listInfo.id,
-      ...listInfo,
-    });
-
+    const config = queryConfigs.editListMutation(listInfo);
     yield put(actions.query.mutateAsync(config));
     const { success, failure } = yield takeQueryResponse(config);
 
     if (success) {
       yield put(
         actions.snackbar.display({
-          message: "Saved changed",
-          action: (
-            <React.Fragment>
-              <CloseSnackbarButton />
-            </React.Fragment>
-          ),
+          message: "Saved changes",
         })
       );
     }

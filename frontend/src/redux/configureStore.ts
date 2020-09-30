@@ -6,7 +6,6 @@ import storage from "redux-persist/lib/storage";
 import createSagaMiddleware from "redux-saga";
 import { configureRoot } from "./index";
 import query from "./query";
-import { authorizationHeaderMiddlware } from "./authorization-header-middleware";
 
 const history = createBrowserHistory();
 
@@ -16,6 +15,7 @@ const persistedReducer = persistReducer(
   {
     key: "root",
     storage,
+    blacklist: ["auth"],
   },
   root.reducer
 );
@@ -23,10 +23,9 @@ const persistedReducer = persistReducer(
 const sagaMiddleware = createSagaMiddleware();
 
 const middleware = [
-  sagaMiddleware,
   routerMiddleware(history),
-  authorizationHeaderMiddlware,
-  query.middleware,
+  sagaMiddleware,
+  ...query.middlewares,
 ];
 
 export default () => {

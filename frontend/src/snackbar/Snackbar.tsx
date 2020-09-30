@@ -34,6 +34,8 @@ const useStylesSnackbarContent = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     color: theme.palette.text.primary,
     fontWeight: "bold",
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
   },
 }));
 

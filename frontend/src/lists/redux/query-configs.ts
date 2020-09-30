@@ -9,10 +9,12 @@ import {
   listItemSchema,
   listSchema,
 } from "./entities";
-import { IById, normalizeData } from "./normalize";
+import { normalizeData } from "../../redux/query/normalize";
 
 const mergeDeepRight = (previous = {}, next = {}) =>
   R.mergeDeepRight(previous, next);
+
+const right = <T>(previous: T, next: T) => next;
 
 export const listsRequest = (): QueryConfig => {
   return {
@@ -27,7 +29,8 @@ export const listsRequest = (): QueryConfig => {
     },
 
     update: {
-      [EntityKeys.lists]: (prev: IById<IList>, next: IById<IList>) => next,
+      [EntityKeys.lists]: right,
+      [EntityKeys.listItems]: right,
     },
 
     force: true,
@@ -59,10 +62,10 @@ export const listItemsRequest = ({
 }): QueryConfig => {
   return {
     url: `${backendURL}/api/lists/${listId}/list-items`,
-    transform: (data: IListItem) => {
-      const normalized = normalizeData<EntityKeys, IListItem>(
+    transform: (data: IListItem[]) => {
+      const normalized = normalizeData<EntityKeys, IListItem[]>(
         data,
-        listItemSchema
+        new schema.Array(listItemSchema)
       );
       return normalized.entities;
     },
@@ -118,7 +121,8 @@ export const deleteListMutation = ({
     },
     url: `${backendURL}/api/lists/${listId}`,
     update: {
-      [EntityKeys.lists]: (prev: IById<IList>) => R.dissoc(listId, prev),
+      [EntityKeys.lists]: (prev: { [id: string]: IList }) =>
+        R.dissoc(listId, prev),
     },
   };
 };
@@ -135,14 +139,17 @@ export const deleteListItemsMutation = ({
       method: "DELETE",
     },
     url: `${backendURL}/api/lists/${listId}/list-items`,
-    body: [...listItemIds],
+    body: listItemIds,
     update: {
-      listItems: (prev: IById<IListItem>) => R.omit(listItemIds, prev),
+      [EntityKeys.listItems]: (prev: { [id: string]: IListItem }) =>
+        R.omit(listItemIds, prev),
     },
   };
 };
 
-export const editListMutation = (listInfo: Partial<IList>): QueryConfig => {
+export const editListMutation = (
+  listInfo: Pick<IList, "id"> & Partial<IList>
+): QueryConfig => {
   return {
     options: {
       method: "PATCH",
@@ -156,7 +163,7 @@ export const editListMutation = (listInfo: Partial<IList>): QueryConfig => {
       return normalized.entities;
     },
     update: {
-      lists: mergeDeepRight,
+      [EntityKeys.lists]: mergeDeepRight,
     },
   };
 };

@@ -8,6 +8,7 @@ import discover from "../discover/redux";
 import lists from "../lists/redux";
 import search from "../search/redux";
 import snackbar from "../snackbar/redux";
+import tmdb from "../tmdb/redux";
 import video from "../video/redux";
 import query from "./query";
 import recentlyViewed from "./recently-viewed";
@@ -24,6 +25,7 @@ export const actions = Object.freeze({
   signInForm: signInForm.actions,
   snackbar: snackbar.actions,
   query: query.actions,
+  tmdb: tmdb.actions,
 });
 
 export const selectors = Object.freeze({
@@ -37,10 +39,12 @@ export const selectors = Object.freeze({
   signInForm: signInForm.selectors,
   router: router.selectors,
   query: query.selectors,
+  tmdb: tmdb.selectors,
 });
 
 function* rootSaga() {
   yield* [
+    spawn(tmdb.saga),
     spawn(snackbar.saga),
     spawn(lists.saga),
     spawn(video.saga),
@@ -65,6 +69,7 @@ export const configureRoot = (history: History) => {
     signInForm: signInForm.reducer,
     auth: auth.reducer,
     query: query.reducer,
+    tmdb: tmdb.reducer,
   });
 
   return {

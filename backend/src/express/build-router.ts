@@ -1,10 +1,9 @@
 import express from 'express';
 import {Dependencies} from './types';
 import {buildListRouter} from '../lists/express/build';
-import {buildTmdbRouter} from '../tmdb/express/build';
-import {buildYoutubeRouter} from '../youtube/express/build';
+import {buildMediaRouter} from '../media/express/build';
 
-const buildRouterList = [buildListRouter, buildTmdbRouter, buildYoutubeRouter];
+const buildRouterList = [buildListRouter, buildMediaRouter];
 
 const errorHandler: express.ErrorRequestHandler = (err, req, res, next) => {
   if (err) {

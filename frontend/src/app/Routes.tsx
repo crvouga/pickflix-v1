@@ -16,7 +16,7 @@ import Modals from "./Modals";
 import Snackbar from "../snackbar/Snackbar";
 
 export default () => {
-  const isAuthenthicated = useSelector(selectors.auth.isAuthenticated);
+  const authStatus = useSelector(selectors.auth.authStatus);
   const {
     location: { pathname },
   } = useSelector(selectors.router.router);
@@ -35,7 +35,7 @@ export default () => {
           <Route path="/person/:personId" component={PersonPage} />
           <Route
             path="/profile"
-            component={isAuthenthicated ? ProfilePage : SignInPage}
+            component={authStatus === "signedOut" ? SignInPage : ProfilePage}
           />
           <Route path="/list/:listId" component={ListPage} />
         </Switch>

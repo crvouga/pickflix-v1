@@ -1,15 +1,13 @@
 import { denormalize, normalize, NormalizedSchema, schema } from "normalizr";
 
-export interface IById<T> {
-  [id: string]: T;
-}
+export { schema };
 
 export const normalizeData = <E extends string, T>(
-  data: T[] | T,
+  data: T | T[],
   schema: schema.Array<schema.Entity<T>> | schema.Entity<T>
 ): NormalizedSchema<
   {
-    [k in E]: IById<T>;
+    [k in E]: { [id: string]: T };
   },
   number[]
 > => {
@@ -17,7 +15,7 @@ export const normalizeData = <E extends string, T>(
 };
 
 export const denormalizeData = <Entities, T>(
-  normalizedData: IById<T>,
+  normalizedData: T | { [id: string]: T },
   normalizedDataSchema: schema.Entity<T>,
   enitites: Entities
 ): T => {

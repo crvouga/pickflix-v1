@@ -1,4 +1,4 @@
-import express, {IRouter} from 'express';
+import {IRouter} from 'express';
 import {Id} from '../../../id/types';
 import {Dependencies} from '../types';
 

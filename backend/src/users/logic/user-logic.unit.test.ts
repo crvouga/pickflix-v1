@@ -1,6 +1,8 @@
 import {EventEmitter} from 'events';
 import {EventTypes} from '../../events/types';
 import {buildUserLogicFake} from './user-logic.fake';
+import {buildEventEmitter} from '../../events/build';
+import {buildListLogicFake} from '../../lists/logic/build.fake';
 
 const firebaseId = '1234567890';
 

@@ -1,33 +1,31 @@
-import {EventEmitter} from 'events';
-import {EventTypes} from '../../events/types';
-import {TmdbLogic} from '../../tmdb/logic/build';
+import {MediaLogic} from '../../media/logic/build';
 import {IUnitOfWork} from '../../unit-of-work/types';
-import {User} from '../../users/models/types';
-import {makeList} from '../models';
-import {List, ListItem} from '../models/types';
+import {ListItem, List} from '../models/types';
 import {addListItems} from './add-list-items/logic';
+import {addLists} from './add-lists';
 import {editLists} from './edit-lists/logic';
 import {getListItems} from './get-list-items/logic';
 import {getLists} from './get-lists/logic';
 import {removeLists} from './remove-lists';
+import {addAutoLists} from './add-auto-lists';
 
 export class ListLogic {
-  static AUTO_LIST_TITLES = ['Watch Next', 'Liked'];
-
   unitOfWork: IUnitOfWork;
-  tmdbLogic: TmdbLogic;
+  mediaLogic: MediaLogic;
 
   constructor({
     unitOfWork,
-    tmdbLogic,
+    mediaLogic,
   }: {
     unitOfWork: IUnitOfWork;
-    tmdbLogic: TmdbLogic;
+    mediaLogic: MediaLogic;
   }) {
     this.unitOfWork = unitOfWork;
-    this.tmdbLogic = tmdbLogic;
+    this.mediaLogic = mediaLogic;
   }
 
+  addAutoLists = addAutoLists;
+  addLists = addLists;
   getLists = getLists;
   addListItems = addListItems;
   getListItems = getListItems;
@@ -36,11 +34,5 @@ export class ListLogic {
 
   async removeListItems(listItemInfos: Pick<ListItem, 'id'>[]) {
     await this.unitOfWork.ListItems.remove(listItemInfos);
-  }
-
-  async addLists(listInfos: Partial<List>[]) {
-    const lists = listInfos.map(makeList);
-    const addedLists = await this.unitOfWork.Lists.add(lists);
-    return addedLists;
   }
 }

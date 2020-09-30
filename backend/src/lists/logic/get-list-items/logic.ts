@@ -13,7 +13,7 @@ export async function getListItems(
   const listItems = await this.unitOfWork.ListItems.find({listId});
   const aggergatedListItems = await Promise.all(
     listItems.map(async listItem => {
-      const tmdbData = await this.tmdbLogic.request({
+      const tmdbData = await this.mediaLogic.requestTmdbData({
         path: `/${listItem.tmdbMediaType}/${listItem.tmdbMediaId}`,
       });
       return {

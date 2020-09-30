@@ -13,6 +13,7 @@ import { VideoState } from "../video/redux/types";
 import { QueryState } from "./query/types";
 import { RecentlyViewedState } from "./recently-viewed/types";
 import { RouterState } from "./router/types";
+import { TmdbState } from "../tmdb/redux/types";
 
 export interface AppState {
   lists: ListsState;
@@ -25,6 +26,7 @@ export interface AppState {
   auth: AuthState;
   signInForm: SignInFormState;
   snackbar: SnackbarState;
+  tmdb: TmdbState;
 }
 
 export const useSelector: TypedUseSelectorHook<AppState> = useReduxSelector;

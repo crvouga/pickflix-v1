@@ -1,3 +1,11 @@
+export type TmdbMediaType = "movie" | "person" | "tv";
+
+export type TmdbMedia = {
+  tmdbMediaType: TmdbMediaType;
+  tmdbMediaId: string;
+  tmdbData?: any;
+};
+
 export type SizesKey =
   | "profileSizes"
   | "posterSizes"

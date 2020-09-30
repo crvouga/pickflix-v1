@@ -1,10 +1,7 @@
 import {Id, IsValidId, MakeId} from '../../id/types';
+import {TmdbMedia} from '../../media/models/types';
 
-export enum AutoListTitle {
-  WatchNext = 'Watch Next',
-  Liked = 'Liked',
-  Favorites = 'Favorites',
-}
+export type Visibility = 'public' | 'private';
 
 export type List = {
   id: Id;
@@ -13,7 +10,7 @@ export type List = {
   description: string;
   createdAt: number;
   isAutoCreated: Boolean;
-  visibility: 'public' | 'private';
+  visibility: Visibility;
   listItems?: ListItem[];
 };
 
@@ -21,10 +18,7 @@ export type ListItem = {
   id: Id;
   listId: Id;
   createdAt: number;
-  tmdbMediaId: string;
-  tmdbMediaType: 'movie' | 'tv';
-  tmdbData?: any;
-};
+} & TmdbMedia;
 
 type Dependencies = {
   makeId: MakeId;

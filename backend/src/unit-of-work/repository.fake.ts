@@ -3,10 +3,10 @@ import {Id} from '../id/types';
 import {Identifiable, IRepository} from './types';
 
 export class RepositoryFake<T extends Identifiable> implements IRepository<T> {
-  map: Map<Id, T>;
+  map: Map<string, T>;
 
   constructor() {
-    this.map = new Map<Id, T>();
+    this.map = new Map<string, T>();
   }
 
   async find(entityInfo: Partial<T>): Promise<T[]> {

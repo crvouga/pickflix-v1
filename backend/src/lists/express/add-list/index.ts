@@ -6,14 +6,18 @@ export const addList = ({listLogic, middlewares}: Dependencies) => (
 ) => {
   router.post('/lists', middlewares.attachCurrentUser, async (req, res) => {
     const currentUser = req.currentUser;
-    const {title, description} = req.body;
+
+    const {title, description, listItemInfos} = req.body;
+
     const [list] = await listLogic.addLists([
       {
         ownerId: currentUser.id,
         title,
         description,
+        listItemInfos,
       },
     ]);
+
     res.status(201).json(list);
   });
 };

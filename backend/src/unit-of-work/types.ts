@@ -1,8 +1,9 @@
-import {Id} from '../id/types';
 import {
-  IListRepository,
   IListItemRepository,
+  IListRepository,
 } from '../lists/repositories/types';
+import {ILikesRepository} from '../media/repositories/types';
+import {IUserRepository} from '../users/repositories/types';
 
 export interface IUnitOfWork {
   begin(): Promise<void>;
@@ -11,10 +12,12 @@ export interface IUnitOfWork {
 
   Lists: IListRepository;
   ListItems: IListItemRepository;
+  Users: IUserRepository;
+  Likes: ILikesRepository;
 }
 
 export interface Identifiable {
-  id: Id;
+  id: string;
 }
 
 export interface IRepository<T extends Identifiable> {

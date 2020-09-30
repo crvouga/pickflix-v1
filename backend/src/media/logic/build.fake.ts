@@ -1,5 +1,6 @@
-import {TmdbLogic} from './build';
+import {MediaLogic} from './build';
 import {AxiosRequestConfig} from 'axios';
+import {UnitOfWorkFake} from '../../unit-of-work/unit-of-work.fake';
 
 const buildKeyvFake = () => {
   const keyvMap = new Map<any, any>();
@@ -13,19 +14,20 @@ const buildKeyvFake = () => {
   };
 };
 
-export const buildTmdbLogicFake = () => {
+export const buildMediaLogicFake = () => {
   const {keyv, keyvMap} = buildKeyvFake();
 
-  const tmdbLogic = new TmdbLogic({
+  const mediaLogic = new MediaLogic({
     keyv,
     axios: async (_: AxiosRequestConfig) => ({
       data: {},
     }),
+    unitOfWork: new UnitOfWorkFake(),
   });
 
   return {
     keyv,
     keyvMap,
-    tmdbLogic,
+    mediaLogic,
   };
 };

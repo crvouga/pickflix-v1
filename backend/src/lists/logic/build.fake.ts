@@ -1,12 +1,12 @@
 import {UnitOfWorkFake} from '../../unit-of-work/unit-of-work.fake';
 import {ListLogic} from './build';
-import {buildTmdbLogicFake} from '../../tmdb/logic/build.fake';
+import {buildMediaLogicFake} from '../../media/logic/build.fake';
 import {EventEmitter} from 'events';
 
 export const buildListLogicFake = () => {
-  const {tmdbLogic} = buildTmdbLogicFake();
+  const {mediaLogic} = buildMediaLogicFake();
   const listLogic = new ListLogic({
-    tmdbLogic,
+    mediaLogic,
     unitOfWork: new UnitOfWorkFake(),
   });
   return {listLogic};

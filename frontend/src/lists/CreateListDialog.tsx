@@ -12,6 +12,7 @@ import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../redux";
 import { ModalName } from "../redux/router/types";
+import { IList } from "./redux/entities";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
@@ -24,6 +25,7 @@ export default () => {
 
   const dispatch = useDispatch();
   const isOpen = useSelector(selectors.router.isOpen(ModalName.CreateList));
+  const props = useSelector(selectors.router.props(ModalName.CreateList));
 
   const onClose = () => {
     dispatch(actions.router.close({ name: ModalName.CreateList }));
@@ -34,6 +36,7 @@ export default () => {
   const onClickCreate = async () => {
     const listInfo = {
       title: inputRefTitle.current?.value,
+      listItemInfos: props.listItemInfos,
     };
     dispatch(actions.lists.createList(listInfo));
     dispatch(actions.router.close({ name: ModalName.CreateList }));

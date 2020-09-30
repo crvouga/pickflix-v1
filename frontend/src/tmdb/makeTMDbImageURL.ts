@@ -55,9 +55,7 @@ let tmdbConfiguration: TmdbConfiguration | undefined = undefined;
 backendAPI
   .get("/api/tmdb/configuration")
   .then((res: AxiosResponse<TmdbConfiguration>) => {
-    console.log({ tmdbConfiguration });
     tmdbConfiguration = res.data;
-    console.log({ tmdbConfiguration });
   });
 
 export default (sizeIndex: number, hasPathKey: ImagePaths) =>

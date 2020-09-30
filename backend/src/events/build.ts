@@ -1,31 +1,14 @@
 import {EventEmitter} from 'events';
 import {ListLogic} from '../lists/logic/build';
-import {List} from '../lists/models/types';
-import {User} from '../users/models/types';
 import {EventTypes} from './types';
+import {User} from '../users/models/types';
 
-type Dependencies = {listLogic: ListLogic};
-
-export const buildCreateAutoLists = ({listLogic}: Dependencies) => async ({
-  user,
-}: {
-  user: User;
-}) => {
-  const autoListInfos: Partial<List>[] = ListLogic.AUTO_LIST_TITLES.map(
-    title => ({
-      title,
-      ownerId: user.id,
-      isAutoCreated: true,
-      visibility: 'private',
-    })
-  );
-  await listLogic.addLists(autoListInfos);
-};
-
-export const buildEventEmitter = (dependencies: Dependencies) => {
+export const buildEventEmitter = ({listLogic}: {listLogic: ListLogic}) => {
   const eventEmitter = new EventEmitter();
 
-  eventEmitter.on(EventTypes.USER_CREATED, buildCreateAutoLists(dependencies));
+  eventEmitter.on(EventTypes.USER_CREATED, async ({user}: {user: User}) => {
+    const addedLists = await listLogic.addAutoLists({user});
+  });
 
   return eventEmitter;
 };

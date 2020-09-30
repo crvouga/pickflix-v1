@@ -20,7 +20,7 @@ import SettingsDrawer from "./SettingsDrawer";
 export default () => {
   const theme = useTheme();
   const user = useSelector(selectors.auth.user);
-  const status = useSelector(selectors.auth.status);
+  const authStatus = useSelector(selectors.auth.authStatus);
   const settingsDrawerOpen = useBoolean();
   const dispatch = useDispatch();
   const onClickCreateNewList = () => {
@@ -34,7 +34,7 @@ export default () => {
           onClose: settingsDrawerOpen.setFalse,
         }}
       />
-      {status === "loading" && <LinearProgress />}
+      {authStatus === "loading" && <LinearProgress />}
       {user && (
         <List>
           <ListItem divider button onClick={settingsDrawerOpen.setTrue}>

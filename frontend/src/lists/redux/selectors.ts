@@ -1,7 +1,7 @@
 import * as R from "ramda";
 import { AppState } from "../../redux/types";
 import { Entities, EntityKeys, IList, IListItem, listSchema } from "./entities";
-import { denormalizeData, IById } from "./normalize";
+import { denormalizeData } from "../../redux/query/normalize";
 
 export const entities = (state: AppState): Entities => ({
   [EntityKeys.listItems]: {},
@@ -9,10 +9,10 @@ export const entities = (state: AppState): Entities => ({
   ...state.query.entities,
 });
 
-export const listsById = (state: AppState): IById<IList> =>
+export const listsById = (state: AppState): { [id: string]: IList } =>
   entities(state)?.[EntityKeys.lists] || {};
 
-export const listItemsById = (state: AppState): IById<IListItem> =>
+export const listItemsById = (state: AppState): { [id: string]: IListItem } =>
   entities(state)?.[EntityKeys.listItems] || {};
 
 export const listItems = (listId: string) => (state: AppState) =>
@@ -22,7 +22,7 @@ export const listItems = (listId: string) => (state: AppState) =>
 
 export const list = (listId: string) => (state: AppState) => {
   return denormalizeData<Entities, IList>(
-    listsById(state)[listId] || {},
+    listsById(state)[listId],
     listSchema,
     entities(state)
   );

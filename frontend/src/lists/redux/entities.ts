@@ -1,23 +1,36 @@
-import { schema } from "normalizr";
-import { IById } from "./normalize";
+import { schema } from "../../redux/query/normalize";
 
 export enum EntityKeys {
   lists = "lists",
   listItems = "listItems",
 }
 
-export interface IListItem {
-  [key: string]: any;
-}
+export type IListItem = {
+  id: string;
+  tmdbMediaId: string;
+  tmdbMediaType: "movie" | "person";
+  listId: string;
+  tmdbData: {
+    id: string;
+    posterPath: string;
+    title: string;
+  };
+};
 
-export interface IList {
-  [key: string]: any;
+export type IList = {
+  id: string;
+  title: string;
+  description: string;
+  listItemCount: number;
   listItems: IListItem[];
-}
+  isAutoCreated: boolean;
+  createdAt: string;
+  visibility: "public" | "private";
+};
 
 export type Entities = {
-  [EntityKeys.lists]: IById<IList>;
-  [EntityKeys.listItems]: IById<IListItem>;
+  [EntityKeys.lists]: { [id: string]: IList };
+  [EntityKeys.listItems]: { [id: string]: IListItem };
 };
 
 export const listItemSchema: schema.Entity<IListItem> = new schema.Entity(

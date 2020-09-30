@@ -7,11 +7,13 @@ import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
-import { actions } from "../../redux";
+import { actions, selectors } from "../../redux";
 import { ModalName } from "../../redux/router/types";
+import * as queryConfigs from "../../tmdb/redux/query-configs";
+import { TmdbMedia } from "../../tmdb/types";
 
 const useStylesIconButton = makeStyles((theme) => ({
   root: {
@@ -33,26 +35,40 @@ export default () => {
 
   const { movieId } = useParams<{ movieId: string }>();
 
+  const tmdbMedia: TmdbMedia = {
+    tmdbMediaId: movieId,
+    tmdbMediaType: "movie",
+  };
+
+  const authStatus = useSelector(selectors.auth.authStatus);
+  const isLikedConfig = queryConfigs.isLikedRequest(tmdbMedia);
+
+  useEffect(() => {
+    if (authStatus === "signedIn") {
+      dispatch(actions.query.requestAsync(isLikedConfig));
+    }
+  }, [dispatch, authStatus, movieId]);
+
+  const isLiked = useSelector(selectors.tmdb.isLiked(tmdbMedia));
+
   const actionBarItems = [
     {
-      icon: true ? <ThumbUpOutlinedIcon /> : <ThumbUpIcon />,
+      icon: isLiked ? <ThumbUpIcon /> : <ThumbUpOutlinedIcon />,
       label: "Like",
       onClick: () => {
-        // dispatch(
-        //   actions.lists.addToLiked({ tmdbMediaType: "movie", tmdbId: movieId })
-        // );
+        dispatch(actions.tmdb.toggleLike(tmdbMedia));
       },
     },
     {
       icon: true ? <BookmarkBorderIcon /> : <BookmarkIcon />,
       label: "Watch Next",
       onClick: () => {
-        // dispatch(
-        //   actions.lists.addToWatchList({
-        //     tmdbMediaType: "movie",
-        //     tmdbId: movieId,
-        //   })
-        // );
+        dispatch(
+          actions.lists.toggleWatchNext({
+            tmdbMediaType: "movie",
+            tmdbMediaId: movieId,
+          })
+        );
       },
     },
     {

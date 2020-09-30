@@ -41,7 +41,7 @@ interface Props extends BoxProps {
   movie: {
     id?: string;
     posterPath?: string | null;
-    title?: string;
+    title?: string | null;
   };
   sizeIndex?: number;
 }
