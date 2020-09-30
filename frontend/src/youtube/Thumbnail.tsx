@@ -22,10 +22,13 @@ export default ({ video, ...props }: Props) => {
   const src = youtubeAPI.videoKeyToThumbnailURL(video.key);
   const classes = useStyles();
   return (
-    <Box {...props}>
-      <AspectRatio ratio={[16, 9]}>
-        <LazyLoadImage effect="opacity" className={classes.image} src={src} />
-      </AspectRatio>
-    </Box>
+    <AspectRatio ratio={[16, 9]} width="100%" height="100%" {...props}>
+      <LazyLoadImage
+        effect="opacity"
+        style={{ width: "100%", height: "100%" }}
+        wrapperClassName={classes.image}
+        src={src}
+      />
+    </AspectRatio>
   );
 };

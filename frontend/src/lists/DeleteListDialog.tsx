@@ -5,10 +5,14 @@ import {
   DialogProps,
   DialogTitle,
   makeStyles,
+  Grow,
 } from "@material-ui/core";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { actions } from "../redux";
+import { TransitionProps } from "@material-ui/core/transitions";
+
+const TransitionComponent = (props: TransitionProps) => <Grow {...props} />;
 
 const useStylesDialog = makeStyles({
   paper: {
@@ -28,11 +32,17 @@ export default (props: Props) => {
   const { list } = props;
   const classesDialog = useStylesDialog();
   const dispatch = useDispatch();
+
   const onDelete = () => {
     dispatch(actions.lists.deleteList(list.id));
   };
+
   return (
-    <Dialog classes={classesDialog} {...props}>
+    <Dialog
+      TransitionComponent={TransitionComponent}
+      classes={classesDialog}
+      {...props}
+    >
       <DialogTitle>Delete list?</DialogTitle>
       <DialogActions>
         <Button color="primary" onClick={close(props)}>
