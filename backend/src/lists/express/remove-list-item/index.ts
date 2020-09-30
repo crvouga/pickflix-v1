@@ -8,16 +8,20 @@ export const removeListItem = ({listLogic, middlewares}: Dependencies) => (
   router.delete(
     '/lists/:listId/list-items',
     middlewares.attachCurrentUser,
-    async (req, res) => {
-      const listItemIds = req.body as Id[];
+    async (req, res, next) => {
+      try {
+        const listItemIds = req.body as Id[];
 
-      const listId = req.params.listId as Id;
+        const listId = req.params.listId as Id;
 
-      await listLogic.removeListItems(
-        listItemIds.map(listItemId => ({listId: listId, id: listItemId}))
-      );
+        await listLogic.removeListItems(
+          listItemIds.map(listItemId => ({listId: listId, id: listItemId}))
+        );
 
-      res.status(204).end();
+        res.status(204).end();
+      } catch (error) {
+        next(error);
+      }
     }
   );
 };

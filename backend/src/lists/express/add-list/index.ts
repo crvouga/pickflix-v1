@@ -4,20 +4,28 @@ import {Dependencies} from '../types';
 export const addList = ({listLogic, middlewares}: Dependencies) => (
   router: express.IRouter
 ) => {
-  router.post('/lists', middlewares.attachCurrentUser, async (req, res) => {
-    const currentUser = req.currentUser;
+  router.post(
+    '/lists',
+    middlewares.attachCurrentUser,
+    async (req, res, next) => {
+      try {
+        const currentUser = req.currentUser;
 
-    const {title, description, listItemInfos} = req.body;
+        const {title, description, listItemInfos} = req.body;
 
-    const [list] = await listLogic.addLists([
-      {
-        ownerId: currentUser.id,
-        title,
-        description,
-        listItemInfos,
-      },
-    ]);
+        const [list] = await listLogic.addLists([
+          {
+            ownerId: currentUser.id,
+            title,
+            description,
+            listItemInfos,
+          },
+        ]);
 
-    res.status(201).json(list);
-  });
+        res.status(201).json(list);
+      } catch (error) {
+        next(error);
+      }
+    }
+  );
 };

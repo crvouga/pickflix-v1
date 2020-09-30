@@ -8,11 +8,11 @@ export const addListItem = ({listLogic, middlewares}: Dependencies) => (
   router.post(
     '/lists/:listId/list-items',
     middlewares.attachCurrentUser,
-    async (req, res) => {
-      const {tmdbMediaId, tmdbMediaType} = req.body;
-      const listId = req.params.listId as Id;
-
+    async (req, res, next) => {
       try {
+        const {tmdbMediaId, tmdbMediaType} = req.body;
+        const listId = req.params.listId as Id;
+
         const [listItem] = await listLogic.addListItems([
           {
             listId,

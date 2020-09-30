@@ -7,11 +7,15 @@ export const tmdb = ({mediaLogic}: Dependencies) => (router: IRouter) => {
     express
       .Router()
 
-      .all('*', async (req, res) => {
-        const path = req.path as string;
-        const query = req.query as {[key: string]: string};
-        const data = await mediaLogic.requestTmdbData({path, query});
-        res.json(data);
+      .all('*', async (req, res, next) => {
+        try {
+          const path = req.path as string;
+          const query = req.query as {[key: string]: string};
+          const data = await mediaLogic.requestTmdbData({path, query});
+          res.json(data);
+        } catch (error) {
+          next(error);
+        }
       })
   );
 };

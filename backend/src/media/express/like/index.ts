@@ -7,14 +7,25 @@ export const like = ({mediaLogic, middlewares}: Dependencies) => (
 ) => {
   router.use(middlewares.attachCurrentUser);
 
-  router.get('/like', async (req, res) => {
-    const tmdbMediaId = req.query.tmdbMediaId;
-    const tmdbMediaType = req.query.tmdbMediaType;
+  router.get('/like', async (req, res, next) => {
+    try {
+      const tmdbMediaId = req.query.tmdbMediaId;
+      const tmdbMediaType = req.query.tmdbMediaType;
 
-    if (
-      typeof tmdbMediaId === 'string' &&
-      (tmdbMediaType === 'movie' || tmdbMediaType === 'person')
-    ) {
+      if (typeof tmdbMediaId !== 'string') {
+        throw new Error('tmdb media id must be a string');
+      }
+
+      if (
+        !(
+          tmdbMediaType === 'movie' ||
+          tmdbMediaType === 'person' ||
+          tmdbMediaType === 'tv'
+        )
+      ) {
+        throw new Error("tmdb media type must be 'movie' or 'person' or 'tv'");
+      }
+
       const tmdbMedia: TmdbMedia = {
         tmdbMediaId,
         tmdbMediaType,
@@ -22,8 +33,8 @@ export const like = ({mediaLogic, middlewares}: Dependencies) => (
 
       const isLiked = await mediaLogic.isLiked(tmdbMedia);
       res.json({isLiked}).end();
-    } else {
-      res.status(400).end();
+    } catch (error) {
+      next(error);
     }
   });
 

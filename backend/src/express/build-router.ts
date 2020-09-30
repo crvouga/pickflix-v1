@@ -8,7 +8,7 @@ const buildRouterList = [buildListRouter, buildMediaRouter];
 const errorHandler: express.ErrorRequestHandler = (err, req, res, next) => {
   if (err) {
     res
-      .status(500)
+      .status(400)
       .json({
         message: JSON.stringify(err),
       })
@@ -28,7 +28,6 @@ export const buildRouter = (dependencies: Dependencies) => (
   }
 
   app.use('/api', router);
-
   app.use(errorHandler);
 
   return {app, router};

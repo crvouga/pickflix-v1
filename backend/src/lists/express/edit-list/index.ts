@@ -9,14 +9,20 @@ export const editList = ({listLogic, middlewares}: Dependencies) => (
   router.patch(
     '/lists/:listId',
     middlewares.attachCurrentUser,
-    async (req, res) => {
-      const listId = req.params.listId as Id;
+    async (req, res, next) => {
+      try {
+        const listId = req.params.listId as Id;
 
-      const edits = R.pick(['title', 'description'], req.body);
+        const edits = R.pick(['title', 'description'], req.body);
 
-      const [editedList] = await listLogic.editLists([{id: listId, ...edits}]);
+        const [editedList] = await listLogic.editLists([
+          {id: listId, ...edits},
+        ]);
 
-      res.json(editedList).end();
+        res.json(editedList).end();
+      } catch (error) {
+        next(error);
+      }
     }
   );
 };

@@ -8,15 +8,15 @@ export const removeList = ({listLogic, middlewares}: Dependencies) => (
   router.delete(
     '/lists/:listId',
     middlewares.attachCurrentUser,
-    async (req, res) => {
-      const listId = req.params.listId as Id;
-
+    async (req, res, next) => {
       try {
+        const listId = req.params.listId as Id;
+
         await listLogic.removeLists({listIds: [listId]});
 
         res.status(204).end();
       } catch (error) {
-        res.status(400);
+        next(error);
       }
     }
   );
