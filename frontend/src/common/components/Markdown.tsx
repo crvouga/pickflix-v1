@@ -29,7 +29,7 @@ export default ({ source, children, ...props }: Props) => {
     <Typography
       component="div"
       color="textSecondary"
-      variant="body2"
+      variant="body1"
       {...props}
     >
       <ReactMarkdown

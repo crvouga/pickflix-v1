@@ -102,7 +102,7 @@ type MovieStatus =
 export interface MovieDetails {
   adult: boolean;
   backdropPath: string | null;
-  belongsToCollection: { [key: string]: any } | null;
+  belongsToCollection: ({ [key: string]: any } & { id: string }) | null;
   budget: number;
   genres: MovieGenre[];
   homepage: string | null;
@@ -148,9 +148,12 @@ export interface CollectionPart {
   voteCount: number;
 }
 
+//https://developers.themoviedb.org/3/collections/get-collection-details
 export interface Collection {
   name: string;
   overview: string;
+  backdropPath: string;
+  posterPath?: string;
   parts: CollectionPart[];
 }
 

@@ -8,7 +8,7 @@ export default () => {
   return (
     <React.Fragment>
       <ErrorDialog />
-      <VideoDialog />
+      {/* <VideoDialog /> */}
       <SaveToListDialog />
       <CreateListDialog />
     </React.Fragment>

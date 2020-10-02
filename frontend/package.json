@@ -47,6 +47,8 @@
     "react-social-login-buttons": "^3.1.0",
     "react-swipeable-views": "^0.13.9",
     "react-swipeable-views-utils": "^0.13.9",
+    "react-textfit": "^1.1.0",
+    "react-ticker": "^1.2.2",
     "reduce-reducers": "^1.0.4",
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",

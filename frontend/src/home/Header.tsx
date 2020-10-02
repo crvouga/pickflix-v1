@@ -33,7 +33,7 @@ const HeaderItem = ({ movie }: { movie: Movie }) => {
   });
 
   return (
-    <AspectRatio ratio={[16, 9]} onClick={handleClick}>
+    <AspectRatio ratio={[16, 9]} ContainerProps={{ onClick: handleClick }}>
       <div className={classes.box} />
       <AbsolutePositionBox
         paddingX={2}

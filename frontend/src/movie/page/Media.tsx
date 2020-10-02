@@ -109,9 +109,11 @@ export default ({ videos, images }: Props) => {
   return (
     <AspectRatio
       ratio={[16, 9]}
-      className={classes.root}
-      onTouchStart={isPlayIconVisible.setFalse}
-      onTouchEnd={isPlayIconVisible.setTrue}
+      ContainerProps={{
+        className: classes.root,
+        onTouchStart: isPlayIconVisible.setFalse,
+        onTouchEnd: isPlayIconVisible.setTrue,
+      }}
     >
       <SwipeableViews onChangeIndex={handleChangeIndex} value={index}>
         {imageComponents}

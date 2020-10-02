@@ -26,14 +26,14 @@ export default function* () {
     }
   });
 
-  yield spawn(function* () {
-    yield takeEvery([actions.video.play, actions.video.progress], function* () {
-      const isVideoOpen: boolean = yield select(
-        selectors.router.isOpen(ModalName.VideoPlayer)
-      );
-      if (!isVideoOpen) {
-        yield put(actions.video.setIsPlaying(false));
-      }
-    });
-  });
+  // yield spawn(function* () {
+  //   yield takeEvery([actions.video.play, actions.video.progress], function* () {
+  //     const isVideoOpen: boolean = yield select(
+  //       selectors.router.isOpen(ModalName.VideoPlayer)
+  //     );
+  //     if (!isVideoOpen) {
+  //       yield put(actions.video.setIsPlaying(false));
+  //     }
+  //   });
+  // });
 }

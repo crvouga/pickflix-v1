@@ -1,27 +1,54 @@
-import { Box, Divider } from "@material-ui/core";
+import {
+  Divider,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+} from "@material-ui/core";
 import React from "react";
-import Review from "../components/Review";
-import Title from "./Title";
-import { MovieReviews } from "../../tmdb/types";
+import CurrentUserAvatar from "../../auth/CurrentUserAvatar";
+import Review from "../review/Review";
+
+type Review = {
+  id: string;
+  url: string;
+  content: string;
+  author: string;
+};
 
 interface Props {
-  reviews: MovieReviews;
+  reviews: {
+    results: Review[];
+  };
 }
 
 export default ({ reviews }: Props) => {
-  if (reviews.results.length === 0) {
-    return null;
-  }
-
   return (
     <React.Fragment>
-      <Title p={2} paddingBottom={0}>
-        {`Reviews `}
-        <Box component="span" color="text.secondary">
-          {reviews.results.length}
-        </Box>
-      </Title>
+      <List>
+        <ListItem>
+          <ListItemText
+            primaryTypographyProps={{
+              variant: "h6",
+              style: { fontWeight: "bold" },
+            }}
+            primary="Reviews"
+          />
+        </ListItem>
 
+        <ListItem divider button>
+          <ListItemAvatar>
+            <CurrentUserAvatar backgroundColor="none" />
+          </ListItemAvatar>
+          <ListItemText
+            primaryTypographyProps={{ color: "textSecondary" }}
+            primary="Add a public review..."
+          />
+          {/* <ListItemSecondaryAction>
+            <RateReviewOutlinedIcon />
+          </ListItemSecondaryAction> */}
+        </ListItem>
+      </List>
       {reviews.results.map((review, index) => (
         <React.Fragment key={review.id}>
           <Review
@@ -31,10 +58,9 @@ export default ({ reviews }: Props) => {
             p={2}
             marginY={2}
           />
-          {index !== reviews.results.length - 1 && <Divider />}
+          <Divider />
         </React.Fragment>
       ))}
-      <Divider />
     </React.Fragment>
   );
 };

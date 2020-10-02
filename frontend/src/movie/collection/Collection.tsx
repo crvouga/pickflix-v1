@@ -22,10 +22,9 @@ export default ({ details }: Props) => {
   const isOverviewExpanded = useBoolean(false);
 
   const { id: collectionId } = belongsToCollection;
-  const query = useQuery(
-    ["collection", collectionId],
+  const query = useQuery<Collection, string>(
+    ["collection", collectionId].join(" "),
     () =>
-      collectionId &&
       backendAPI
         .get(`/api/tmdb/collection/${collectionId}`)
         .then((res) => res.data),
@@ -40,7 +39,7 @@ export default ({ details }: Props) => {
     return null;
   }
 
-  const { name, overview, parts } = query.data as Collection;
+  const { name, overview, parts } = query.data;
 
   return (
     <React.Fragment>

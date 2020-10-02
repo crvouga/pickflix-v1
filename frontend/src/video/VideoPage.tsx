@@ -47,7 +47,10 @@ export default () => {
 
   return (
     <div>
-      <AspectRatio ratio={[16, 9]} className={classes.playerContainer}>
+      <AspectRatio
+        ratio={[16, 9]}
+        ContainerProps={{ className: classes.playerContainer }}
+      >
         <ReactPlayer
           width="100%"
           height="100%"

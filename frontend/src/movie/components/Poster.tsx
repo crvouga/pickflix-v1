@@ -71,7 +71,9 @@ export default (props: Props) => {
     >
       <AspectRatio
         ratio={[18, 24]}
-        style={{ position: "relative", width: "100%" }}
+        ContainerProps={{
+          style: { position: "relative", width: "100%" },
+        }}
       >
         {!skeleton && !posterPath && (
           <Typography className={classes.fallback}>{title}</Typography>

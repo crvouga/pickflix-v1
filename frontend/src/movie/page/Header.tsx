@@ -72,7 +72,7 @@ export default ({ details, releaseDates }: Props) => {
         <ActionBar />
       </Box>
 
-      <Box p={2} paddingTop={0} flexDirection="column" display="flex">
+      {/* <Box p={2} paddingTop={0} flexDirection="column" display="flex">
         {details.tagline !== details.overview && (
           <Typography align="center" style={{ fontWeight: "bold" }}>
             {details.tagline}
@@ -89,7 +89,7 @@ export default ({ details, releaseDates }: Props) => {
             </Typography>
           </ExpandHeight>
         )}
-      </Box>
+      </Box> */}
       <Divider />
     </React.Fragment>
   );

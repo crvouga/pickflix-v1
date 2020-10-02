@@ -38,7 +38,10 @@ export default ({ movie, ...restOfProps }: Props) => {
   };
   return (
     <Box onClick={onClick} {...restOfProps}>
-      <AspectRatio ratio={[16, 9]} style={{ width: "100%" }}>
+      <AspectRatio
+        ratio={[16, 9]}
+        ContainerProps={{ style: { width: "100%" } }}
+      >
         {backdropURL || posterURL ? (
           <LazyLoadImage
             effect="opacity"

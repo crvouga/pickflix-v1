@@ -2,23 +2,20 @@ import {
   Avatar,
   Box,
   Button,
-  ButtonBase,
   Dialog,
   List,
   ListItem,
-  ListItemIcon,
   ListItemText,
   makeStyles,
-  Paper,
   Slide,
 } from "@material-ui/core";
 import { TransitionProps } from "@material-ui/core/transitions";
-import CheckIcon from "@material-ui/icons/Check";
 import MovieIcon from "@material-ui/icons/Movie";
 import { AvatarGroup } from "@material-ui/lab";
 import * as R from "ramda";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import BottomButton from "../common/components/BottomButton";
 import CircularProgressBox from "../common/components/CircularProgressBox";
 import { actions, selectors } from "../redux";
 import { ModalName } from "../redux/router/types";
@@ -26,10 +23,6 @@ import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import * as queryConfigs from "./redux/query-configs";
 
 const listsQueryConfig = queryConfigs.listsRequest();
-
-const Transition = (props: TransitionProps) => (
-  <Slide direction="up" {...props} />
-);
 
 const useStyles = makeStyles((theme) => ({
   doneButton: {
@@ -154,14 +147,7 @@ export default () => {
 
       {listsQuery.isPending && <CircularProgressBox />}
 
-      <ButtonBase onClick={handleDone} className={classes.doneButton}>
-        <ListItem>
-          <ListItemIcon>
-            <CheckIcon />
-          </ListItemIcon>
-          <ListItemText primary="Done" />
-        </ListItem>
-      </ButtonBase>
+      <BottomButton onClick={handleDone} />
     </Dialog>
   );
 };

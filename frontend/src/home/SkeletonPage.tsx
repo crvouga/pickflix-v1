@@ -8,7 +8,10 @@ import Poster from "../movie/components/Poster";
 export default () => {
   return (
     <div style={{ overflowY: "hidden", overflow: "hidden" }}>
-      <AspectRatio ratio={[16, 9]} style={{ width: "100%" }}>
+      <AspectRatio
+        ratio={[16, 9]}
+        ContainerProps={{ style: { width: "100%" } }}
+      >
         <Box
           display="flex"
           flexDirection="column-reverse"
