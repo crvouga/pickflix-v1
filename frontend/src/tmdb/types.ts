@@ -90,7 +90,7 @@ export interface SpokenLanguage {
   name: string;
 }
 
-type MovieStatus =
+export type MovieStatus =
   | "Rumored"
   | "Planned"
   | "In Production"
@@ -276,7 +276,7 @@ export interface MovieRecommendations {
 }
 
 //https://developers.themoviedb.org/3/people/get-person-details
-export interface PersonDetails {
+export interface PersonDetailsResponse {
   birthday: string | null;
   knownForDepartment: string;
   deathday: null | string;
@@ -287,14 +287,14 @@ export interface PersonDetails {
   biography: string;
   popularity: number;
   placeOfBirth: string | null;
-  profilePath: string | null;
+  profilePath: string;
   adult: boolean;
   imdbId: string;
   homepage: null | string;
 }
 
 //
-interface PersonCreditCast {
+export type PersonMovieCreditCast = {
   character: string;
   creditId: string;
   releaseDate: string;
@@ -308,12 +308,12 @@ interface PersonCreditCast {
   originalTitle: string;
   popularity: number;
   id: string;
-  backdropPath: string | null;
+  backdropPath: string;
   overview: string;
-  posterPath: string | null;
-}
+  posterPath: string;
+};
 
-interface PersonCreditCrew {
+export type PersonMovieCreditCrew = {
   id: string;
   department: string;
   originalLanguage: string;
@@ -322,8 +322,8 @@ interface PersonCreditCrew {
   overview: string;
   voteCount: number;
   video: boolean;
-  posterPath: string | null;
-  backdropPath: string | null;
+  posterPath: string;
+  backdropPath: string;
   title: string;
   popularity: number;
   genreIds: number[];
@@ -331,11 +331,24 @@ interface PersonCreditCrew {
   adult: boolean;
   releaseDate: string;
   creditId: string;
-}
+};
 
-export type PersonCredit = PersonCreditCast & PersonCreditCrew;
+export type PersonMovieCredit = PersonMovieCreditCast | PersonMovieCreditCrew;
 
-export interface PersonMovieCredits {
-  cast: PersonCreditCast[];
-  crew: PersonCreditCrew[];
-}
+export type PersonMovieCreditsResponse = {
+  cast: PersonMovieCreditCast[];
+  crew: PersonMovieCreditCrew[];
+};
+
+export type PersonProfileImage = {
+  aspectRatio: number;
+  filePath: string;
+  height: number;
+  voteAverage: number;
+  voteCount: number;
+  width: number;
+};
+
+export type PersonImagesResponse = {
+  profiles: PersonProfileImage[];
+};

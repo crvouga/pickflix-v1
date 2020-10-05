@@ -7,7 +7,7 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import CurrentUserAvatar from "../../auth/CurrentUserAvatar";
-import Review from "../review/Review";
+import Review from "./Review";
 
 type Review = {
   id: string;
@@ -51,13 +51,7 @@ export default ({ reviews }: Props) => {
       </List>
       {reviews.results.map((review, index) => (
         <React.Fragment key={review.id}>
-          <Review
-            key={review.id}
-            review={review}
-            collapsible
-            p={2}
-            marginY={2}
-          />
+          <Review key={review.id} review={review} p={2} marginY={2} />
           <Divider />
         </React.Fragment>
       ))}

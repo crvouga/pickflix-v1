@@ -1,6 +1,8 @@
 import { SvgIconProps } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+// import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+
 import clsx from "clsx";
 import React from "react";
 
@@ -16,14 +18,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface Props extends SvgIconProps {
+type Props = SvgIconProps & {
   expanded: boolean;
-}
+};
 
 export default ({ expanded, ...props }: Props) => {
   const classes = useStyles();
   const className = clsx(classes.expand, {
     [classes.expandOpen]: expanded,
   });
-  return <ArrowDropDownIcon className={className} {...props} />;
+  return <ExpandMoreIcon className={className} {...props} />;
 };

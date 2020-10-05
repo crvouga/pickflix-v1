@@ -11,6 +11,7 @@ import Markdown from "../../common/components/Markdown";
 import useBoolean from "../../common/hooks/useBoolean";
 import * as TMDb from "../../tmdb/attribution";
 import { MovieReview } from "../../tmdb/types";
+import MarkdownTypography from "../../common/components/MarkdownTypography";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -58,7 +59,7 @@ export default ({ collapsible, review, ...props }: Props) => {
           collapsedHeight="12em"
           onClick={() => isExpanded.toggle()}
         >
-          <Markdown color="textPrimary">{review.content}</Markdown>
+          <MarkdownTypography color="textPrimary" source={review.content} />
         </ExpandHeight>
       </Box>
     </Box>

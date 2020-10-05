@@ -1,33 +1,69 @@
-import { Card, CardActionArea } from "@material-ui/core";
+import {
+  Card,
+  CardActionArea,
+  CardHeader,
+  CardMedia,
+  CardContent,
+  Typography,
+  CardHeaderProps,
+} from "@material-ui/core";
+import moment from "moment";
 import React from "react";
-import { useDispatch } from "react-redux";
-import AspectRatio from "../../common/components/AspectRatio";
-import { actions } from "../../redux";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
+import ReadMore from "../../common/components/ReadMoreTypography";
+import { useDispatch } from "react-redux";
+import { actions } from "../../redux";
 
-export type MovieCardProps = {
+type Movie = {
   id: string;
-  posterPath?: string;
+  title: string;
   backdropPath?: string;
+  posterPath?: string;
+  releaseDate: string;
+  overview: string;
 };
 
-export default ({ posterPath, id, backdropPath }: MovieCardProps) => {
+type Props = {
+  movie: Movie;
+  CardHeaderProps?: CardHeaderProps;
+};
+
+export default ({ movie, CardHeaderProps }: Props) => {
   const dispatch = useDispatch();
+
   const handleClick = () => {
-    dispatch(actions.router.push({ pathname: `/movie/${id}` }));
+    dispatch(actions.router.push({ pathname: `/movie/${movie.id}` }));
   };
 
+  const subheader = moment(movie.releaseDate).isValid()
+    ? moment(movie.releaseDate).format("YYYY")
+    : undefined;
+
+  const image = makeTMDbImageURL(
+    3,
+    movie.backdropPath
+      ? { backdropPath: movie.backdropPath }
+      : { posterPath: movie.posterPath }
+  );
+
   return (
-    <Card onClick={handleClick}>
-      <CardActionArea>
-        <AspectRatio ratio={[18, 24]}>
-          <img
-            src={makeTMDbImageURL(3, { posterPath })}
-            width="100%"
-            height="100%"
-          />
-        </AspectRatio>
+    <Card>
+      <CardActionArea onClick={handleClick}>
+        <CardHeader
+          title={movie.title}
+          titleTypographyProps={{
+            style: { fontWeight: "bold" },
+            variant: "body1",
+          }}
+          subheader={subheader}
+          {...CardHeaderProps}
+        />
+        <CardMedia style={{ height: 0, paddingTop: "56.25%" }} image={image} />
       </CardActionArea>
+      <CardContent>
+        <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
+        <ReadMore color="textSecondary" text={movie.overview} />
+      </CardContent>
     </Card>
   );
 };

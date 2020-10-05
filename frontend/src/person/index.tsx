@@ -4,14 +4,19 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import backendAPI from "../backendAPI";
 import ErrorPage from "../common/page/ErrorPage";
-import Footer from "../common/page/Footer";
-import Page from "../common/page/Page";
 import { actions } from "../redux";
-import { PersonDetails, PersonMovieCredits } from "../tmdb/types";
-import Biography from "./Biography";
-import Filmography from "./Filmography";
-import Header from "./Header";
+import {
+  PersonDetailsResponse,
+  PersonMovieCreditsResponse,
+  PersonImagesResponse,
+} from "../tmdb/types";
+import Details from "./Details";
+import MovieCreditsSection from "./MovieCreditsSection";
+import PosterHeader from "./PosterHeader";
 import SkeletonPage from "./SkeletonPage";
+import { Box, makeStyles } from "@material-ui/core";
+import classes from "*.module.css";
+import { makeFadeToBackgroundCss } from "../utils";
 
 const fetchPersonPage = (personId: string) =>
   backendAPI
@@ -27,12 +32,23 @@ const fetchPersonPage = (personId: string) =>
     })
     .then((res) => res.data);
 
+const useStyles = makeStyles((theme) => ({
+  fadeToBackground: {
+    background: makeFadeToBackgroundCss(theme, [0, 0, 0.5, 0.9, 1]),
+  },
+}));
+
 export default () => {
+  const classes = useStyles();
   const { personId } = useParams<{ personId: string }>();
 
-  const query = useQuery(`/person/${personId}`, () =>
-    fetchPersonPage(personId)
-  );
+  const query = useQuery<
+    {
+      credits: PersonMovieCreditsResponse;
+      images: PersonImagesResponse;
+    } & PersonDetailsResponse,
+    string
+  >(`/person/${personId}`, () => fetchPersonPage(personId));
 
   const dispatch = useDispatch();
 
@@ -42,37 +58,33 @@ export default () => {
         actions.recentlyViewed.viewed({ mediaType: "person", ...query.data })
       );
     }
-  }, [query, dispatch]);
+  }, [query]);
 
-  if (query.status === "loading") return <SkeletonPage />;
-  if (query.status === "error") return <ErrorPage />;
+  if (query.status === "loading") {
+    return <SkeletonPage />;
+  }
 
-  const {
-    credits,
-    ...details
-  }: {
-    credits: PersonMovieCredits;
-  } & PersonDetails = query.data;
+  if (query.status === "error") {
+    return <ErrorPage />;
+  }
+
+  const { credits, images, ...details } = query.data;
 
   return (
-    <Page>
-      <Header details={details} credits={credits} />
-      {/* <Box paddingLeft={2} paddingBottom={1}>
-        <Typography style={{ fontWeight: "bold" }}>
-          Known For {details.knownForDepartment}
-        </Typography>
+    <div>
+      <Box
+        position="sticky"
+        top={0}
+        zIndex={-1}
+        className={classes.fadeToBackground}
+      >
+        <PosterHeader details={details} credits={credits} />
       </Box>
-      <HorizontalScroll paddingLeft={2}>
-        {R.propOr([], details.knownForDepartment, creditsByKey).map(
-          (movie, index) => (
-            <Poster key={index} movie={movie} marginRight={2} />
-          )
-        )}
-      </HorizontalScroll> */}
 
-      <Biography details={details} />
-      <Filmography credits={credits} details={details} />
-      <Footer />
-    </Page>
+      <Box width="100%" bgcolor="background.default">
+        <Details images={images} details={details} credits={credits} />
+        <MovieCreditsSection details={details} credits={credits} />
+      </Box>
+    </div>
   );
 };

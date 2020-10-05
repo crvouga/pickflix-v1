@@ -4,7 +4,7 @@ import moment from "moment";
 import numeral from "numeral";
 import React from "react";
 import ExpandHeight from "../common/components/ExpandHeight";
-import Markdown from "../common/components/Markdown";
+import MarkdownTypography from "../common/components/MarkdownTypography";
 import useBoolean from "../common/hooks/useBoolean";
 import * as youtubeAPI from "./api";
 import { YoutubeComment } from "./types";
@@ -102,7 +102,7 @@ export default ({ comment }: Props) => {
           in={isExpanded.value}
           onClick={isExpanded.toggle}
         >
-          <Markdown source={source} color="textPrimary" />
+          <Typography color="textPrimary">{source}</Typography>
         </ExpandHeight>
         <div className={classes.actions}>
           <IconButton className={classes.iconButton} color="inherit">

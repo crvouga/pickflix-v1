@@ -31,6 +31,12 @@ export const runtime = ({ details }: DetailsProp) =>
     ? moment.duration(details.runtime, "minutes").format("h[h] m[m]")
     : EMPTY;
 
+export const toReleaseYear = ({
+  releaseDate,
+}: {
+  releaseDate: string;
+}): string => moment(releaseDate).format("YYYY");
+
 export const releaseYear = ({ details }: DetailsProp) =>
   details.releaseDate ? moment(details.releaseDate).format("YYYY") : EMPTY;
 

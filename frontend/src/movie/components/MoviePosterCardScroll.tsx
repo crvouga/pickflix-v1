@@ -1,11 +1,11 @@
 import { Box, ListItem, ListItemText } from "@material-ui/core";
 import React from "react";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
-import MovieCard, { MovieCardProps } from "./MovieCard";
+import MovieCard, { MoviePosterCardProps } from "./MoviePosterCard";
 
 interface Props {
   title: string;
-  movies: MovieCardProps[];
+  movies: MoviePosterCardProps[];
 }
 
 export default ({ title, movies }: Props) => {

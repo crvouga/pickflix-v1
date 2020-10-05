@@ -14,11 +14,9 @@ interface Props {
 }
 
 export default ({ details, keywords }: Props) => {
-  const keywordTags: ITag[] = keywords.keywords.map(makeTag("keyword"));
-  const genreTags: ITag[] = details.genres.map(makeTag("genre"));
-  const companyTags: ITag[] = details.productionCompanies.map(
-    makeTag("company")
-  );
+  const keywordTags = keywords.keywords.map(makeTag("keyword"));
+  const genreTags = details.genres.map(makeTag("genre"));
+  const companyTags = details.productionCompanies.map(makeTag("company"));
   const tags = [...genreTags, ...keywordTags, ...companyTags];
 
   const dispatch = useDispatch();

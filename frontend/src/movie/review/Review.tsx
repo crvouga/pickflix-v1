@@ -14,6 +14,9 @@ import useBoolean from "../../common/hooks/useBoolean";
 import * as TMDb from "../../tmdb/attribution";
 import { MovieReview } from "../../tmdb/types";
 import CollapsableWrapTypography from "../../common/components/CollapsableWrapTypography";
+import ReadMore from "../../common/components/ReadMoreTypography";
+import MarkdownTypography from "../../common/components/MarkdownTypography";
+import ReadMoreMarkdownTyporgraph from "../../common/components/ReadMoreMarkdownTyporgraph";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -31,18 +34,16 @@ const toInitials = (fullname: string) =>
     .toUpperCase()
     .substr(0, 2);
 
-interface Props extends BoxProps {
-  collapsible: boolean;
+type Props = BoxProps & {
   review: MovieReview;
-}
+};
 
-export default ({ collapsible, review, ...props }: Props) => {
-  const isExpanded = useBoolean(false);
+export default ({ review, ...props }: Props) => {
   const classes = useStyles();
   const {
     // id,
     url,
-    // content,
+    content,
     author,
   } = review;
   const initials = toInitials(author);
@@ -61,7 +62,9 @@ export default ({ collapsible, review, ...props }: Props) => {
         primary={`${author} · TMDb`}
         secondary={
           <React.Fragment>
-            <Markdown color="textPrimary">{review.content}</Markdown>
+            <MarkdownTypography color="textPrimary">
+              {content}
+            </MarkdownTypography>
           </React.Fragment>
         }
       ></ListItemText>

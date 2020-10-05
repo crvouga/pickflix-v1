@@ -4,13 +4,16 @@ import ReactMarkdown from "react-markdown";
 
 const useStyles = makeStyles((theme) => ({
   markdown: {
-    marginBottom: "-1em",
+    "&:first-child": {
+      marginTop: 0,
+    },
+    // marginBottom: "-1em",
+    // marginTop: -theme.spacing(1.5),
     userSelect: "text",
     fontSize: "inherit",
     font: "inherit",
     wordBreak: "break-word",
     maxWidth: "100%",
-    marginTop: -theme.spacing(1.5),
     "& a": {
       color: theme.palette.info.main,
       textDecoration: "none",
@@ -19,27 +22,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface Props extends TypographyProps<"div"> {
+export type MarkdownProps = React.PropsWithChildren<{
   source?: string;
-}
+}>;
 
-export default ({ source, children, ...props }: Props) => {
+export default ({ source, children }: MarkdownProps) => {
   const classes = useStyles();
   return (
-    <Typography
-      component="div"
-      color="textSecondary"
-      variant="body1"
-      {...props}
+    <ReactMarkdown
+      // extremely nested <blockquote>...</blockquote> was rendering in youtube comments making it too wide
+      disallowedTypes={["blockquote"]}
+      className={classes.markdown}
+      source={source}
     >
-      <ReactMarkdown
-        // extremely nested <blockquote>...</blockquote> was rendering in youtube comments making it too wide
-        disallowedTypes={["blockquote"]}
-        className={classes.markdown}
-        source={source}
-      >
-        {children}
-      </ReactMarkdown>
-    </Typography>
+      {children}
+    </ReactMarkdown>
   );
 };

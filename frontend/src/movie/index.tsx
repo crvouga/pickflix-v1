@@ -1,15 +1,9 @@
-import {
-  Chip,
-  Box,
-  Button,
-  ListItemText,
-  List,
-  ListItem,
-} from "@material-ui/core";
+import { Box, Button, List } from "@material-ui/core";
+import PlayArrowOutlinedIcon from "@material-ui/icons/PlayArrowOutlined";
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
-import { useParams, useRouteMatch } from "react-router";
+import { useParams } from "react-router";
 import backendAPI from "../backendAPI";
 import ErrorPage from "../common/page/ErrorPage";
 import { actions } from "../redux";
@@ -24,15 +18,16 @@ import {
   MovieSimilar,
   MovieVideos,
 } from "../tmdb/types";
-import CollectionCard from "./collection/CollectionCard.Container";
+import ActionBar from "./action-bar/ActionBar";
+import CollectionSection from "./collection/CollectionSection";
+import MoviePosterCardScroll from "./components/MoviePosterCardScroll";
 import CreditsSection from "./credits/CreditsSection";
-import PlayArrowOutlinedIcon from "@material-ui/icons/PlayArrowOutlined";
-import Head from "./Head";
-import Reviews from "./page/Reviews";
-import SkeletonPage from "./page/SkeletonPage";
-import ActionBar from "./page/ActionBar";
 import DetailsSection from "./details/DetailsSection";
-import MovieCardHorizontalScroll from "./components/MovieCardHorizontalScroll";
+import Header from "./Header";
+import SkeletonPage from "./page/SkeletonPage";
+import DiscoverSection from "./discover/DiscoverSection";
+import Review from "./review/Review";
+import Reviews from "./review/Reviews";
 
 const fetchMoviePage = (movieId: string) =>
   backendAPI
@@ -106,7 +101,7 @@ export default () => {
 
   return (
     <React.Fragment>
-      <Head details={details} releaseDates={releaseDates} />
+      <Header details={details} releaseDates={releaseDates} />
 
       <Box width="100%" bgcolor="background.default">
         <ActionBar />
@@ -133,43 +128,16 @@ export default () => {
           <CreditsSection credits={credits} />
         </List>
 
-        {details.belongsToCollection ? (
-          <CollectionCard collection={details.belongsToCollection} />
-        ) : null}
+        {details.belongsToCollection && (
+          <CollectionSection collection={details.belongsToCollection} />
+        )}
 
-        <MovieCardHorizontalScroll
+        <MoviePosterCardScroll
           title="People also like"
           movies={[...similar.results, ...recommendations.results]}
         />
 
-        <List>
-          <ListItem>
-            <ListItemText
-              primaryTypographyProps={{
-                variant: "h6",
-                style: { fontWeight: "bold" },
-              }}
-              primary="Explore"
-            />
-          </ListItem>
-          <ListItem>
-            <ListItemText
-              primary=""
-              secondary={
-                <React.Fragment>
-                  {[...details.genres, ...details.productionCompanies].map(
-                    ({ id, name }: { id: string; name: string }) => (
-                      <Box component="span" key={id} p={1 / 2}>
-                        <Chip variant="outlined" clickable label={name} />
-                      </Box>
-                    )
-                  )}
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-        </List>
-
+        <DiscoverSection details={details} keywords={keywords} />
         <Reviews reviews={reviews} />
       </Box>
     </React.Fragment>

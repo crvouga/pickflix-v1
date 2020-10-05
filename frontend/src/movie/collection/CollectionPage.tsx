@@ -1,16 +1,15 @@
-import { Box, CardMedia, Typography, List } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import React from "react";
-import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
-import { Collection } from "../../tmdb/types";
-import Poster from "../components/Poster";
-import { useParams } from "react-router";
 import { useQuery } from "react-query";
-import backendAPI from "../../backendAPI";
-import BackdropHeader from "../components/BackdropHeader";
-import BackdropCard from "../components/BackdropCard";
 import { useDispatch } from "react-redux";
+import { useParams } from "react-router";
+import backendAPI from "../../backendAPI";
 import { actions } from "../../redux";
+import { Collection } from "../../tmdb/types";
+import BackdropHeader from "./BackdropHeader";
+import MovieCard from "../components/MovieCard";
 import { collectionToBackdropPath } from "./utils";
+import ReadMore from "../../common/components/ReadMoreTypography";
 
 export default () => {
   const dispatch = useDispatch();
@@ -49,31 +48,16 @@ export default () => {
           <Typography variant="h5" gutterBottom>
             {name}
           </Typography>
-          <Typography color="textSecondary" variant="body1">
-            {overview}
-          </Typography>
+          <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
+          <ReadMore text={overview} color="textSecondary" variant="body1" />
         </Box>
         <Box p={2}>
           {parts.map((part) => (
             <Box key={part.id} marginBottom={2}>
-              <BackdropCard onClick={handleClick(part)} movie={part} />
+              <MovieCard movie={part} />
             </Box>
           ))}
         </Box>
-        {/* <Box
-          width="100%"
-          display="flex"
-          flexDirection="row"
-          flexWrap="wrap"
-          paddingX={1}
-          paddingTop={2}
-        >
-          {parts.map((part) => (
-            <Box key={part.id} width="50%" p={1 / 2}>
-              <Poster width="100%" movie={part} />
-            </Box>
-          ))}
-        </Box> */}
       </Box>
     </div>
   );

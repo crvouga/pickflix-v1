@@ -1,4 +1,4 @@
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
@@ -40,7 +40,7 @@ export default ({ collection: { id: collectionId } }: Props) => {
   const collection = query.data;
 
   return (
-    <Box marginX={2}>
+    <Box marginX={2} marginTop={2}>
       <CollectionCard collection={collection} onClick={handleClick} />
     </Box>
   );
