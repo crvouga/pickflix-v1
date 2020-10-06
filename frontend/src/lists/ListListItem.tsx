@@ -5,6 +5,8 @@ import {
   ListItemProps,
   ListItemText,
   ListItemIcon,
+  ListItemSecondaryAction,
+  ListItemAvatar,
 } from "@material-ui/core";
 import MovieIcon from "@material-ui/icons/Movie";
 import { AvatarGroup } from "@material-ui/lab";
@@ -20,38 +22,38 @@ interface Props extends ListItemProps {
 }
 
 export default ({ list, onClick }: Props) => {
+  const listItem = list?.listItems?.[0];
   return (
-    <ListItem button divider onClick={onClick}>
-      <Box marginX={1}>
-        <AvatarGroup>
-          {list?.listItems?.slice(0, 1).map((listItem: IListItem) => (
-            <Avatar
-              key={listItem?.id}
-              variant="square"
-              src={makeTMDbImageURL(3, {
-                posterPath: listItem?.tmdbData.posterPath,
-              })}
-            >
-              <MovieIcon />
-            </Avatar>
-          ))}
-        </AvatarGroup>
-      </Box>
+    <ListItem button onClick={onClick}>
+      <ListItemAvatar>
+        <Avatar
+          key={listItem?.id}
+          variant="square"
+          src={makeTMDbImageURL(3, {
+            posterPath: listItem?.tmdbData.posterPath,
+          })}
+        >
+          <MovieIcon />
+        </Avatar>
+      </ListItemAvatar>
+
       <ListItemText
         primary={list?.title}
         secondary={`${list?.listItemCount || 0} items`}
       />
 
-      {list.visibility === "public" && (
-        <ListItemIcon>
-          <PublicOutlinedIcon />
-        </ListItemIcon>
-      )}
-      {list.visibility === "private" && (
-        <ListItemIcon>
-          <LockOutlinedIcon />
-        </ListItemIcon>
-      )}
+      <ListItemSecondaryAction>
+        {list.visibility === "public" && (
+          <ListItemIcon>
+            <PublicOutlinedIcon />
+          </ListItemIcon>
+        )}
+        {list.visibility === "private" && (
+          <ListItemIcon>
+            <LockOutlinedIcon />
+          </ListItemIcon>
+        )}
+      </ListItemSecondaryAction>
     </ListItem>
   );
 };

@@ -1,4 +1,4 @@
-import { Box, Typography, ListItemText } from "@material-ui/core";
+import { Box, Typography, ListItemText, List } from "@material-ui/core";
 import React from "react";
 import {
   MovieDetails,
@@ -17,7 +17,7 @@ type Props = {
 
 export default (props: Props) => {
   return (
-    <React.Fragment>
+    <List>
       <Box paddingX={2} paddingTop={2}>
         <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
         <ReadMore color="textSecondary" text={props.details.overview} />
@@ -57,6 +57,6 @@ export default (props: Props) => {
           }}
         />
       </Box>
-    </React.Fragment>
+    </List>
   );
 };

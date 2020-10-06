@@ -7,6 +7,9 @@ import {
   ListItemIcon,
   ListItemText,
   useTheme,
+  Divider,
+  Box,
+  Typography,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import React from "react";
@@ -16,6 +19,9 @@ import Lists from "../lists/Lists";
 import { actions, selectors } from "../redux";
 import { ModalName } from "../redux/router/types";
 import SettingsDrawer from "./SettingsDrawer";
+import NavigationBar from "../common/NavigationBar";
+import NavigationBarTopLevel from "../common/NavigationBarTopLevel";
+import RecentlyViewed from "./RecentlyViewed";
 
 export default () => {
   const theme = useTheme();
@@ -28,37 +34,32 @@ export default () => {
   };
   return (
     <React.Fragment>
-      <SettingsDrawer
-        DrawerProps={{
-          open: settingsDrawerOpen.value,
-          onClose: settingsDrawerOpen.setFalse,
-        }}
-      />
-      {authStatus === "loading" && <LinearProgress />}
-      {user && (
-        <List>
-          <ListItem divider button onClick={settingsDrawerOpen.setTrue}>
-            <ListItemAvatar>
-              <Avatar
-                style={{ backgroundColor: "white" }}
-                src={user.photoURL || undefined}
-              />
-            </ListItemAvatar>
-            <ListItemText primary={user.displayName} secondary={user.email} />
-          </ListItem>
+      <NavigationBarTopLevel />
+      <Box paddingY={2}>
+        <RecentlyViewed />
+      </Box>
+      <Divider />
 
-          <ListItem button divider onClick={onClickCreateNewList}>
-            <ListItemIcon>
+      <List>
+        <ListItem>
+          <ListItemText
+            primaryTypographyProps={{ variant: "h6" }}
+            primary="Lists"
+          />
+        </ListItem>
+        <ListItem button onClick={onClickCreateNewList}>
+          <ListItemAvatar>
+            <Avatar style={{ backgroundColor: "transparent" }}>
               <AddIcon style={{ color: theme.palette.primary.main }} />
-            </ListItemIcon>
-            <ListItemText
-              style={{ color: theme.palette.primary.main }}
-              primary="Create New List"
-            />
-          </ListItem>
-        </List>
-      )}
-      <Lists />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText
+            style={{ color: theme.palette.primary.main }}
+            primary="Create New List"
+          />
+        </ListItem>
+        <Lists />
+      </List>
     </React.Fragment>
   );
 };

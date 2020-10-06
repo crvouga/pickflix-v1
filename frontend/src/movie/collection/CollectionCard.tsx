@@ -54,10 +54,12 @@ export default ({ collection, onClick }: Props) => {
           })}
         />
       </CardActionArea>
-      <CardContent>
-        <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
-        <ReadMore text={overview} color="textSecondary" variant="body1" />
-      </CardContent>
+      {overview.length > 0 && (
+        <CardContent>
+          <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
+          <ReadMore text={overview} color="textSecondary" variant="body1" />
+        </CardContent>
+      )}
     </Card>
   );
 };

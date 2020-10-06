@@ -26,11 +26,10 @@ export default () => {
 
   return (
     <React.Fragment>
-      <List>
-        {lists.map((list) => (
-          <ListListItem key={list.id} onClick={onClickList(list)} list={list} />
-        ))}
-      </List>
+      {lists.map((list) => (
+        <ListListItem key={list.id} onClick={onClickList(list)} list={list} />
+      ))}
+
       {queryState.isPending && (
         <Box color="text.secondary" textAlign="center">
           <CircularProgress size="small" />

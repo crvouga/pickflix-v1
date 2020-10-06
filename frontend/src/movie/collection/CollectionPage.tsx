@@ -10,6 +10,7 @@ import BackdropHeader from "./BackdropHeader";
 import MovieCard from "../components/MovieCard";
 import { collectionToBackdropPath } from "./utils";
 import ReadMore from "../../common/components/ReadMoreTypography";
+import NavigationBar from "../../common/NavigationBar";
 
 export default () => {
   const dispatch = useDispatch();
@@ -40,7 +41,9 @@ export default () => {
   };
 
   return (
-    <div>
+    <React.Fragment>
+      <NavigationBar title={name} />
+
       <BackdropHeader backdropPath={collectionToBackdropPath(collection)} />
 
       <Box bgcolor="background.default">
@@ -48,8 +51,12 @@ export default () => {
           <Typography variant="h5" gutterBottom>
             {name}
           </Typography>
-          <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
-          <ReadMore text={overview} color="textSecondary" variant="body1" />
+          {overview.length > 0 && (
+            <React.Fragment>
+              <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
+              <ReadMore text={overview} color="textSecondary" variant="body1" />
+            </React.Fragment>
+          )}
         </Box>
         <Box p={2}>
           {parts.map((part) => (
@@ -59,6 +66,6 @@ export default () => {
           ))}
         </Box>
       </Box>
-    </div>
+    </React.Fragment>
   );
 };

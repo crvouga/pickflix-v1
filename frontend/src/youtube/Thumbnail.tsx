@@ -8,7 +8,6 @@ import * as youtubeAPI from "./api";
 
 const useStyles = makeStyles((theme) => ({
   image: {
-    borderRadius: theme.spacing(1),
     width: "100%",
     height: "100%",
   },
@@ -23,12 +22,7 @@ export default ({ video, ...props }: Props) => {
   const classes = useStyles();
   return (
     <AspectRatio ratio={[16, 9]} width="100%" height="100%" {...props}>
-      <LazyLoadImage
-        effect="opacity"
-        style={{ width: "100%", height: "100%" }}
-        wrapperClassName={classes.image}
-        src={src}
-      />
+      <img className={classes.image} src={src} />
     </AspectRatio>
   );
 };

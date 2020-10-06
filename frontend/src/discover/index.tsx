@@ -7,6 +7,7 @@ import DiscoverResults from "./DiscoverResults";
 import SearchModal from "./SearchModal";
 import DiscoverTags from "./DiscoverTags";
 import { ModalName } from "../redux/router/types";
+import NavigationBarTopLevel from "../common/NavigationBarTopLevel";
 
 export default () => {
   const theme = useTheme();
@@ -17,8 +18,9 @@ export default () => {
   };
 
   return (
-    <div>
-      <Box position="sticky" top={0} zIndex={theme.zIndex.appBar}>
+    <React.Fragment>
+      <NavigationBarTopLevel />
+      <Box position="sticky" top={56} zIndex={theme.zIndex.appBar}>
         <DiscoverTags />
       </Box>
       <DiscoverResults />
@@ -28,6 +30,6 @@ export default () => {
           <SearchIcon color="action" />
         </Fab>
       </Box>
-    </div>
+    </React.Fragment>
   );
 };

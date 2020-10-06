@@ -1,29 +1,37 @@
-import { Avatar } from "@material-ui/core";
+import { Avatar, AvatarProps } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import { selectors } from "../redux";
 import { Skeleton } from "@material-ui/lab";
 
-export default ({ backgroundColor }: { backgroundColor: string }) => {
+type Props = AvatarProps & {
+  backgroundColor?: string;
+};
+
+export default (props: Props) => {
+  const { backgroundColor = "white", ...AvatarProps } = props;
+
   const user = useSelector(selectors.auth.user);
   const authStatus = useSelector(selectors.auth.authStatus);
 
-  if (!user) {
-    return <Avatar />;
-  }
-
-  const avatarComponent = (
-    <Avatar style={{ backgroundColor }} src={user.photoURL || ""} />
-  );
-
   switch (authStatus) {
     case "loading":
-      return <Skeleton>{avatarComponent}</Skeleton>;
+      return (
+        <Skeleton>
+          <Avatar {...AvatarProps} />
+        </Skeleton>
+      );
 
     case "signedIn":
-      return avatarComponent;
+      return (
+        <Avatar
+          style={{ backgroundColor }}
+          src={user?.photoURL || ""}
+          {...AvatarProps}
+        />
+      );
 
     case "signedOut":
-      return <Avatar />;
+      return <Avatar {...AvatarProps} />;
   }
 };

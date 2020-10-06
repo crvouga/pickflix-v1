@@ -4,6 +4,7 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
+  List,
 } from "@material-ui/core";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { partition, take, whereEq } from "ramda";
@@ -32,7 +33,7 @@ export default ({ credits }: Props) => {
   };
 
   return (
-    <React.Fragment>
+    <List>
       <ListItem button onClick={handleClick}>
         <ListItemText
           primaryTypographyProps={{
@@ -61,6 +62,6 @@ export default ({ credits }: Props) => {
         </Button>
         <Box height="100%" width="auto" marginRight={2} />
       </HorizontalScroll>
-    </React.Fragment>
+    </List>
   );
 };

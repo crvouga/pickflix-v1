@@ -28,7 +28,9 @@ export default ({ entity, skeleton = false, ...restOfProps }: Props) => {
             skeleton={Boolean(skeleton)}
             person={entity as Person}
           />
-          <Typography align="center">{entity.name}</Typography>
+          <Typography noWrap align="center" variant="subtitle2">
+            {entity.name}
+          </Typography>
         </Box>
       ) : entity.mediaType === "movie" ? (
         <Poster movie={entity as Movie} width="100%" />

@@ -4,7 +4,7 @@ import HistoryIcon from "@material-ui/icons/History";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ClearRecentlyViewedModal from "./ClearRecentlyViewedModal";
-import useBoolean from "./hooks/useBoolean";
+import useBoolean from "../common/hooks/useBoolean";
 import { selectors, actions } from "../redux";
 
 export default () => {

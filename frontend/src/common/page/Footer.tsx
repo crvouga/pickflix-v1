@@ -1,6 +1,6 @@
 import React from "react";
 // import TMDbAttribution from "../../tmdb/TMDbAttribution";
-import RecentlyViewed from "../RecentlyViewed";
+import RecentlyViewed from "../../profile/RecentlyViewed";
 
 export default () => {
   return (

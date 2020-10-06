@@ -58,7 +58,12 @@ export default ({ movie, CardHeaderProps }: Props) => {
           subheader={subheader}
           {...CardHeaderProps}
         />
-        <CardMedia style={{ height: 0, paddingTop: "56.25%" }} image={image} />
+        {image && (
+          <CardMedia
+            style={{ height: 0, paddingTop: "56.25%" }}
+            image={image}
+          />
+        )}
       </CardActionArea>
       <CardContent>
         <Typography style={{ fontWeight: "bold" }}>Overview</Typography>

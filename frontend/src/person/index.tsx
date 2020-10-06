@@ -17,6 +17,8 @@ import SkeletonPage from "./SkeletonPage";
 import { Box, makeStyles } from "@material-ui/core";
 import classes from "*.module.css";
 import { makeFadeToBackgroundCss } from "../utils";
+import NavigationBar from "../common/NavigationBar";
+import LoadingPage from "../common/page/LoadingPage";
 
 const fetchPersonPage = (personId: string) =>
   backendAPI
@@ -61,7 +63,12 @@ export default () => {
   }, [query]);
 
   if (query.status === "loading") {
-    return <SkeletonPage />;
+    return (
+      <React.Fragment>
+        <NavigationBar />
+        <LoadingPage />
+      </React.Fragment>
+    );
   }
 
   if (query.status === "error") {
@@ -71,7 +78,9 @@ export default () => {
   const { credits, images, ...details } = query.data;
 
   return (
-    <div>
+    <React.Fragment>
+      <NavigationBar title={details.name} />
+
       <Box
         position="sticky"
         top={0}
@@ -85,6 +94,6 @@ export default () => {
         <Details images={images} details={details} credits={credits} />
         <MovieCreditsSection details={details} credits={credits} />
       </Box>
-    </div>
+    </React.Fragment>
   );
 };

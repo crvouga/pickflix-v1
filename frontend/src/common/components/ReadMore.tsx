@@ -1,4 +1,4 @@
-import { Box, Collapse } from "@material-ui/core";
+import { Box, Collapse, Typography, TypographyProps } from "@material-ui/core";
 import { dropLast } from "ramda";
 import React from "react";
 import trimText from "read-more-react/dist/utils/trimText";
@@ -13,7 +13,9 @@ export type ReadMoreProps = {
   readLessText?: string;
 };
 
-export default (props: ReadMoreProps) => {
+type Props = ReadMoreProps & TypographyProps;
+
+export default (props: Props) => {
   const {
     min,
     ideal,
@@ -21,6 +23,7 @@ export default (props: ReadMoreProps) => {
     text,
     readMoreText = "Read More",
     readLessText = "Read Less",
+    ...TypographyProps
   } = props;
 
   const isIn = useBoolean(false);
@@ -34,11 +37,14 @@ export default (props: ReadMoreProps) => {
   const headTextWithTrail = `${dropLast(1, headText)}... `;
 
   return (
-    <div onClick={isIn.toggle}>
+    <Typography
+      style={{ wordBreak: "break-word" }}
+      onClick={isIn.toggle}
+      {...TypographyProps}
+    >
       {!isIn.value && (
         <React.Fragment>
           {headTextWithTrail}
-
           <Box component="span" fontWeight="bold" color="text.secondary">
             {readMoreText}
           </Box>
@@ -46,6 +52,6 @@ export default (props: ReadMoreProps) => {
       )}
       {isIn.value && headText}
       <Collapse in={isIn.value}>{tailText}</Collapse>
-    </div>
+    </Typography>
   );
 };

@@ -23,11 +23,13 @@ import CollectionSection from "./collection/CollectionSection";
 import MoviePosterCardScroll from "./components/MoviePosterCardScroll";
 import CreditsSection from "./credits/CreditsSection";
 import DetailsSection from "./details/DetailsSection";
-import Header from "./Header";
-import SkeletonPage from "./page/SkeletonPage";
 import DiscoverSection from "./discover/DiscoverSection";
-import Review from "./review/Review";
+import HeaderSection from "./header/HeaderSection";
 import Reviews from "./review/Reviews";
+
+import VideosSection from "./video/VideosSection";
+import LoadingPage from "../common/page/LoadingPage";
+import NavigationBar from "../common/NavigationBar";
 
 const fetchMoviePage = (movieId: string) =>
   backendAPI
@@ -74,12 +76,17 @@ export default () => {
     }
   }, [dispatch, query.data, query.status]);
 
-  if (query.status === "loading") {
-    return <SkeletonPage />;
-  }
-
   if (query.status === "error") {
     return <ErrorPage />;
+  }
+
+  if (query.status === "loading") {
+    return (
+      <React.Fragment>
+        <NavigationBar />
+        <LoadingPage />
+      </React.Fragment>
+    );
   }
 
   const {
@@ -94,39 +101,24 @@ export default () => {
     ...details
   } = query.data;
 
-  const handleClickWatchTailer = () => {
-    dispatch(actions.video.setPlaylist(videos.results));
-    dispatch(actions.router.push({ pathname: "/video" }));
-  };
-
   return (
     <React.Fragment>
-      <Header details={details} releaseDates={releaseDates} />
+      <NavigationBar title={details.title} />
+
+      <HeaderSection details={details} releaseDates={releaseDates} />
 
       <Box width="100%" bgcolor="background.default">
         <ActionBar />
 
-        <Box paddingX={2}>
-          <Button
-            fullWidth
-            variant="outlined"
-            startIcon={<PlayArrowOutlinedIcon />}
-            size="large"
-            onClick={handleClickWatchTailer}
-            disabled={videos.results.length === 0}
-          >
-            {videos.results.length === 0 ? "No Trailers" : "Watch Trailer"}
-          </Button>
-        </Box>
+        <VideosSection videos={videos} />
 
-        <List>
-          <DetailsSection
-            details={details}
-            releaseDates={releaseDates}
-            keywords={keywords}
-          />
-          <CreditsSection credits={credits} />
-        </List>
+        <DetailsSection
+          details={details}
+          releaseDates={releaseDates}
+          keywords={keywords}
+        />
+
+        <CreditsSection credits={credits} />
 
         {details.belongsToCollection && (
           <CollectionSection collection={details.belongsToCollection} />
@@ -138,6 +130,7 @@ export default () => {
         />
 
         <DiscoverSection details={details} keywords={keywords} />
+
         <Reviews reviews={reviews} />
       </Box>
     </React.Fragment>

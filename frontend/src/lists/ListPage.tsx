@@ -20,6 +20,7 @@ import DeleteListDialog from "./DeleteListDialog";
 import EditListDialog from "./EditListDialog";
 import * as queryConfigs from "./redux/query-configs";
 import CircularProgressBox from "../common/components/CircularProgressBox";
+import NavigationBar from "../common/NavigationBar";
 
 export default () => {
   const isEditListModalOpen = useBoolean(false);
@@ -46,6 +47,7 @@ export default () => {
 
   return (
     <React.Fragment>
+      <NavigationBar title={list?.title} AppBarProps={{ position: "sticky" }} />
       <DeleteListDialog
         list={list}
         open={isDeleteListModalOpen.value}

@@ -1,7 +1,7 @@
 import * as R from "ramda";
 import React from "react";
 import { useSelector } from "react-redux";
-import RecentlyViewedHeader from "../common/RecentlyViewedHeader";
+import RecentlyViewedHeader from "../profile/RecentlyViewedHeader";
 import { selectors } from "../redux";
 import RecentlySearchHeader from "./RecentlySearchHeader";
 import ResultGrid from "./ResultGrid";

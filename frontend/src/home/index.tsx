@@ -4,14 +4,13 @@ import React from "react";
 import { useQuery } from "react-query";
 import backendAPI from "../backendAPI";
 import HorizontalScroll from "../common/components/HorizontalScroll";
+import NavigationBarTopLevel from "../common/NavigationBarTopLevel";
 import ErrorPage from "../common/page/ErrorPage";
-import Footer from "../common/page/Footer";
-import Page from "../common/page/Page";
+import LoadingPage from "../common/page/LoadingPage";
 import Poster from "../movie/components/Poster";
 import PersonAvatar from "../person/PersonAvatar";
 import { Movie, Person } from "../tmdb/types";
 import Header from "./Header";
-import SkeletonPage from "./SkeletonPage";
 
 interface TitleProps extends BoxProps {
   text: string;
@@ -77,21 +76,30 @@ const fetchHomePage = async () => {
 export default () => {
   const query = useQuery(["home"], () => fetchHomePage(), {});
 
-  if (query.status === "loading") return <SkeletonPage />;
-  if (query.status === "error") return <ErrorPage />;
+  if (query.status === "loading") {
+    return (
+      <React.Fragment>
+        <NavigationBarTopLevel />
+        <LoadingPage />
+      </React.Fragment>
+    );
+  }
+  if (query.status === "error") {
+    return <ErrorPage />;
+  }
 
   const {
     data: { personPopular, popular, topRated, upcoming, nowPlaying },
   } = query;
 
   return (
-    <Page>
+    <React.Fragment>
+      <NavigationBarTopLevel />
       <Header movies={popular.results} />
       {renderMovieScroll("Top Rated", topRated.results)}
       {renderMovieScroll("Trending", upcoming.results)}
       {renderMovieScroll("Now Playing", nowPlaying.results)}
       {renderAvatarScroll("Popular People", personPopular.results)}
-      <Footer />
-    </Page>
+    </React.Fragment>
   );
 };

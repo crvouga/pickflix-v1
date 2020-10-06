@@ -13,6 +13,6 @@ export type AuthError =
 export interface AuthState {
   status: Status;
   authStatus: AuthStatus;
-  user: User | false;
+  user: User | undefined;
   error: AuthError;
 }

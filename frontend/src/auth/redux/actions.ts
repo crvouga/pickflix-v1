@@ -1,7 +1,8 @@
 import { createAction } from "@reduxjs/toolkit";
 import { User } from "firebase";
 import { Status, AuthError, AuthStatus } from "./types";
-export const setUser = createAction<User | false>("[auth] SET_USER");
+
+export const setUser = createAction<User | undefined>("[auth] SET_USER");
 export const setStatus = createAction<Status>("[auth] SET_STATUS");
 export const setError = createAction<AuthError | undefined>("[auth] SET_ERROR");
 export const setAuthStatus = createAction<AuthStatus>("[auth] SET_AUTH_STATUS");

@@ -1,9 +1,16 @@
-import { Box, IconButton, InputBase, makeStyles } from "@material-ui/core";
+import {
+  Box,
+  IconButton,
+  InputBase,
+  makeStyles,
+  AppBar,
+  Toolbar,
+} from "@material-ui/core";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ClearIcon from "@material-ui/icons/Clear";
-
-import React, { forwardRef } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
-import search from "./redux";
+import { actions } from "../redux";
 
 const useStyles = makeStyles((theme) => ({
   root: theme.mixins.toolbar,
@@ -23,35 +30,39 @@ export default ({ ref }: Props) => {
   const dispatch = useDispatch();
 
   const handleClear = () => {
-    if (ref.current) {
+    if (ref?.current) {
       ref.current.focus();
       ref.current.value = "";
     }
 
-    dispatch(search.actions.setText(""));
+    dispatch(actions.search.setText(""));
+  };
+
+  const onBack = () => {
+    dispatch(actions.router.goBack());
   };
 
   const handleChange = (e: React.ChangeEvent<{ value: string }>) => {
-    dispatch(search.actions.setText(e.target.value));
+    dispatch(actions.search.setText(e.target.value));
   };
 
   return (
-    <Box
-      paddingX={2}
-      paddingY={1}
-      display="flex"
-      alignItems="center"
-      width="100%"
-    >
-      <InputBase
-        inputRef={ref}
-        className={classes.input}
-        placeholder="Search Movie or Person"
-        onChange={handleChange}
-      />
-      <IconButton onClick={handleClear}>
-        <ClearIcon />
-      </IconButton>
-    </Box>
+    <AppBar color="default" position="sticky">
+      <Toolbar>
+        <IconButton edge="start" onClick={onBack}>
+          <ArrowBackIosIcon />
+        </IconButton>
+        <InputBase
+          autoFocus
+          inputRef={ref}
+          className={classes.input}
+          placeholder="Search Movie or Person"
+          onChange={handleChange}
+        />
+        <IconButton edge="end" onClick={handleClear}>
+          <ClearIcon />
+        </IconButton>
+      </Toolbar>
+    </AppBar>
   );
 };

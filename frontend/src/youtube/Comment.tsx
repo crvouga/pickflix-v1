@@ -1,11 +1,17 @@
-import { Avatar, IconButton, makeStyles, Typography } from "@material-ui/core";
+import {
+  Avatar,
+  IconButton,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import moment from "moment";
 import numeral from "numeral";
 import React from "react";
-import ExpandHeight from "../common/components/ExpandHeight";
-import MarkdownTypography from "../common/components/MarkdownTypography";
-import useBoolean from "../common/hooks/useBoolean";
+import ReadMore from "../common/components/ReadMore";
 import * as youtubeAPI from "./api";
 import { YoutubeComment } from "./types";
 
@@ -80,43 +86,47 @@ export default ({ comment }: Props) => {
 
   const handleAvatarClick = () => {};
 
-  const source = youtubeAPI.youtbeCommentTextToMarkdown(textDisplay);
-
-  const isExpanded = useBoolean(false);
+  const textDisplayMarkdown = youtubeAPI.youtbeCommentTextToMarkdown(
+    textDisplay
+  );
 
   return (
-    <div className={classes.root}>
-      <div className={classes.avatar}>
+    <ListItem alignItems="flex-start">
+      <ListItemAvatar>
         <Avatar src={authorProfileImageUrl} onClick={handleAvatarClick} />
-      </div>
-      <div>
-        <Typography
-          className={classes.subtitle1}
-          variant="subtitle2"
-          color="textSecondary"
-        >
-          {subtitle1}
-        </Typography>
-        <ExpandHeight
-          collapsedHeight="10em"
-          in={isExpanded.value}
-          onClick={isExpanded.toggle}
-        >
-          <Typography color="textPrimary">{source}</Typography>
-        </ExpandHeight>
-        <div className={classes.actions}>
-          <IconButton className={classes.iconButton} color="inherit">
-            <ThumbUpIcon className={classes.icon} />
-          </IconButton>
-          <Typography
-            variant="subtitle2"
-            className={classes.likeCount}
-            color="inherit"
-          >
-            {formattedLikes}
-          </Typography>
-        </div>
-      </div>
-    </div>
+      </ListItemAvatar>
+      <ListItemText
+        primaryTypographyProps={{
+          variant: "subtitle2",
+          color: "textSecondary",
+        }}
+        primary={subtitle1}
+        secondaryTypographyProps={{
+          variant: "body1",
+          color: "textPrimary",
+        }}
+        secondary={
+          <React.Fragment>
+            <ReadMore text={textDisplayMarkdown} />
+            <div className={classes.actions}>
+              {likeCount > 0 && (
+                <React.Fragment>
+                  <IconButton className={classes.iconButton} color="inherit">
+                    <ThumbUpIcon className={classes.icon} />
+                  </IconButton>
+                  <Typography
+                    variant="subtitle2"
+                    className={classes.likeCount}
+                    color="inherit"
+                  >
+                    {formattedLikes}
+                  </Typography>
+                </React.Fragment>
+              )}
+            </div>
+          </React.Fragment>
+        }
+      />
+    </ListItem>
   );
 };

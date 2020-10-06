@@ -21,7 +21,7 @@ import { Movie } from "../../tmdb/types";
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    borderRadius: theme.spacing(2),
+    borderRadius: theme.spacing(1 / 2),
   },
   fallback: {
     display: "flex",
@@ -81,7 +81,7 @@ export default (props: Props) => {
 
         {!skeleton && posterPath && (
           <LazyLoadImage
-            style={{ borderRadius: theme.spacing(2) }}
+            style={{ borderRadius: theme.spacing(1 / 2) }}
             beforeLoad={isLoading.setTrue}
             afterLoad={isLoading.setFalse}
             effect="opacity"

@@ -55,14 +55,14 @@ export default () => {
         pathname === "/discover" ? <ExploreIcon /> : <ExploreOutlinedIcon />,
       onClick: () => dispatch(actions.router.push({ pathname: "/discover" })),
     },
-    {
-      value: "/search",
-      label: "Search",
-      icon: <SearchIcon />,
-      onClick: () => {
-        dispatch(actions.router.push({ pathname: "/search" }));
-      },
-    },
+    // {
+    //   value: "/search",
+    //   label: "Search",
+    //   icon: <SearchIcon />,
+    //   onClick: () => {
+    //     dispatch(actions.router.push({ pathname: "/search" }));
+    //   },
+    // },
     {
       value: "/profile",
       label: "Profile",

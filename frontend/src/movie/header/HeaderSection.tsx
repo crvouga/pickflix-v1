@@ -6,11 +6,11 @@ import {
 } from "@material-ui/core";
 import "moment-duration-format";
 import React from "react";
-import AspectRatio from "../common/components/AspectRatio";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-import { MovieDetails, MovieReleaseDates } from "../tmdb/types";
-import { makeFadeToBackgroundCss } from "../utils";
-import * as utils from "./utils";
+import AspectRatio from "../../common/components/AspectRatio";
+import { MovieDetails, MovieReleaseDates } from "../../tmdb/types";
+import { makeFadeToBackgroundCss } from "../../utils";
+import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
+import * as utils from "../utils";
 
 type Props = {
   details: MovieDetails;
@@ -45,7 +45,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ratio: [number, number] = [4, 3];
+export const HEADER_ASPECT_RATIO: [number, number] = [4, 3];
+
+const toSubtitle1 = (props: Props) =>
+  [utils.rated(props), utils.releaseYear(props), utils.runtime(props)].join(
+    ` ${utils.SMALL_DOT} `
+  );
 
 export default (props: Props) => {
   const { details } = props;
@@ -55,12 +60,12 @@ export default (props: Props) => {
   return (
     <React.Fragment>
       <AspectRatio
-        ratio={ratio}
+        ratio={HEADER_ASPECT_RATIO}
         ContainerProps={{ className: classes.backgroundPicture }}
       />
 
       <AspectRatio
-        ratio={ratio}
+        ratio={HEADER_ASPECT_RATIO}
         ContentProps={{
           className: classes.backgroundGradient,
           display: "flex",
@@ -81,11 +86,7 @@ export default (props: Props) => {
             variant="subtitle1"
             color="textSecondary"
           >
-            {[
-              utils.rated(props),
-              utils.releaseYear(props),
-              utils.runtime(props),
-            ].join(` ${utils.SMALL_DOT} `)}
+            {toSubtitle1(props)}
           </Typography>
         </Box>
       </AspectRatio>

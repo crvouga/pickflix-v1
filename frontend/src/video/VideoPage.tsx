@@ -1,20 +1,13 @@
-import {
-  Box,
-  Collapse,
-  makeStyles,
-  Paper,
-  Typography,
-} from "@material-ui/core";
+import { makeStyles, Paper } from "@material-ui/core";
 import React from "react";
 import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
 import AspectRatio from "../common/components/AspectRatio";
-import ExpandIcon from "../common/components/ExpandIcon";
 import useBoolean from "../common/hooks/useBoolean";
 import { actions, selectors } from "../redux";
 import * as youtubeAPI from "../youtube/api";
 import YoutubeSection from "../youtube/Section";
-import Playlist from "./Playlist";
+import PlaylistSection from "./PlaylistSection";
 import { VideoProgress } from "./redux/types";
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const isPlaylistOpen = useBoolean(false);
+  const isPlaylistOpen = useBoolean(true);
   const isPlaying = useSelector(selectors.video.isPlaying);
   const video = useSelector(selectors.video.video);
   const dispatch = useDispatch();
@@ -67,19 +60,7 @@ export default () => {
       </AspectRatio>
 
       <Paper>
-        <Box
-          p={2}
-          width="100%"
-          display="flex"
-          flexDirection="row"
-          onClick={isPlaylistOpen.toggle}
-        >
-          <Typography style={{ flex: 1 }}>Playlist</Typography>
-          <ExpandIcon expanded={isPlaylistOpen.value} />
-        </Box>
-        <Collapse in={isPlaylistOpen.value}>
-          <Playlist />
-        </Collapse>
+        <PlaylistSection />
       </Paper>
 
       {video?.key && <YoutubeSection videoId={video.key} />}

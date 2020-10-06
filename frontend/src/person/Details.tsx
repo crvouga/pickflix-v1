@@ -29,7 +29,9 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     boxSizing: "content-box",
-    border: `solid ${theme.spacing(1)}px ${theme.palette.background.default}`,
+    border: `solid ${theme.spacing(1 / 2)}px ${
+      theme.palette.background.default
+    }`,
     width: AVATAR_SIZE,
     height: AVATAR_SIZE,
     marginTop: -AVATAR_SIZE / 2,

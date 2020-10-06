@@ -5,7 +5,7 @@ import { AuthState } from "./types";
 const initialState: AuthState = {
   status: "loading",
   authStatus: "loading",
-  user: false,
+  user: undefined,
   error: undefined,
 };
 
