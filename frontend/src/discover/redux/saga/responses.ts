@@ -4,7 +4,7 @@ import { call, put, select, takeEvery, takeLeading } from "redux-saga/effects";
 import backendAPI from "../../../backendAPI";
 import * as actions from "../actions";
 import * as selectors from "../selectors";
-import { EntityTagType, Tag } from "../types";
+import { Tag } from "../types";
 
 type ParamKey = "withPeople" | "withKeywords" | "withGenres" | "withCompanies";
 

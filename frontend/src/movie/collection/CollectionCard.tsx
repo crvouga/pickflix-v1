@@ -1,21 +1,18 @@
 import {
-  Box,
   Card,
   CardActionArea,
   CardContent,
   CardHeader,
   CardMedia,
   Typography,
-  CardActions,
-  Button,
 } from "@material-ui/core";
+import * as R from "ramda";
 import React from "react";
+import ReadMore from "../../common/components/ReadMore";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 import { Collection, CollectionPart } from "../../tmdb/types";
+import { toReleaseYear } from "../utils";
 import { collectionToBackdropPath } from "./utils";
-import ReadMore from "../../common/components/ReadMoreTypography";
-import { releaseYear, toReleaseYear } from "../utils";
-import * as R from "ramda";
 
 interface Props {
   collection: Collection;
@@ -34,7 +31,7 @@ const releaseYearRange = (parts: CollectionPart[]) => {
 };
 
 export default ({ collection, onClick }: Props) => {
-  const { name, overview, parts, backdropPath } = collection;
+  const { name, overview, parts } = collection;
 
   return (
     <Card>
@@ -57,7 +54,10 @@ export default ({ collection, onClick }: Props) => {
       {overview.length > 0 && (
         <CardContent>
           <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
-          <ReadMore text={overview} color="textSecondary" variant="body1" />
+          <ReadMore
+            text={overview}
+            TypographyProps={{ color: "textSecondary", variant: "body1" }}
+          />
         </CardContent>
       )}
     </Card>

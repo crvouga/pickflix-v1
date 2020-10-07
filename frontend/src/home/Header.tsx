@@ -58,12 +58,14 @@ interface Props {
 
 export default ({ movies }: Props) => {
   const [index, setIndex] = useState(0);
-
+  const handleChangeIndex = (newIndex: number) => {
+    setIndex(newIndex);
+  };
   return (
     <SwipeableViews
       // interval={5000}
       value={index}
-      // onChange={(newIndex) => setIndex(newIndex)}
+      onChangeIndex={handleChangeIndex}
     >
       {movies.map((movie) => (
         <HeaderItem key={movie.id} movie={movie} />

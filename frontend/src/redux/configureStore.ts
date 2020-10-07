@@ -2,7 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import { routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
 import { persistReducer, persistStore } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import localforage from "localforage";
+
 import createSagaMiddleware from "redux-saga";
 import { configureRoot } from "./index";
 import query from "./query";
@@ -11,13 +12,12 @@ const history = createBrowserHistory();
 
 const root = configureRoot(history);
 
-const persistedReducer = persistReducer(
-  {
-    key: "root",
-    storage,
-  },
-  root.reducer
-);
+const persistConfig = {
+  key: "root",
+  storage: localforage,
+};
+
+const persistedReducer = persistReducer(persistConfig, root.reducer);
 
 const sagaMiddleware = createSagaMiddleware();
 

@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default (props: Props) => {
-  const { title, subtitle, AppBarProps } = props;
+  const { title, AppBarProps } = props;
   const classes = useStyles();
   const dispatch = useDispatch();
 

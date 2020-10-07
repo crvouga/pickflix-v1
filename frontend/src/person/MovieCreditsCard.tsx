@@ -20,7 +20,7 @@ import * as movieUtils from "../movie/utils";
 import { actions } from "../redux";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { ImagePaths, PersonMovieCredit } from "../tmdb/types";
-import ReadMore from "../common/components/ReadMoreTypography";
+import ReadMore from "../common/components/ReadMore";
 import MovieIcon from "@material-ui/icons/Movie";
 import { mergeAll } from "ramda";
 import ExpandIcon from "../common/components/ExpandIcon";
@@ -64,8 +64,10 @@ export default ({ credits }: Props) => {
         <CardContent>
           <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
           <ReadMore
-            color="textSecondary"
-            variant="body1"
+            TypographyProps={{
+              color: "textSecondary",
+              variant: "body1",
+            }}
             text={mergedCredit.overview}
           />
         </CardContent>

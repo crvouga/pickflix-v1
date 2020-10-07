@@ -5,6 +5,11 @@ import "fontsource-roboto";
 
 export default () => {
   return createMuiTheme({
+    props: {
+      MuiTypography: {
+        style: { fontWeight: "bold" },
+      },
+    },
     palette: {
       type: "dark",
       primary: {
@@ -20,6 +25,7 @@ export default () => {
       },
     },
     overrides: {
+      MuiTypography: {},
       MuiCssBaseline: {
         "@global": {
           html: {

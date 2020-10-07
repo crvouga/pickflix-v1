@@ -3,7 +3,7 @@ import { MutateSuccessAction, RequestFailureAction } from "redux-query";
 import { delay, put, select, spawn, takeLatest } from "redux-saga/effects";
 import { actions, selectors } from "../../redux";
 import { takeQueryResponse } from "../../redux/query/saga";
-import { CloseSnackbarButton, ViewListButton } from "../../snackbar/Snackbar";
+import { ViewListButton } from "../../snackbar/Snackbar";
 import * as queryConfigs from "./query-configs";
 
 function* createListSaga() {
@@ -25,11 +25,7 @@ function* createListSaga() {
       yield put(
         actions.snackbar.display({
           message: `Created "${list.title}"`,
-          action: (
-            <React.Fragment>
-              <ViewListButton list={list} />
-            </React.Fragment>
-          ),
+          action: <ViewListButton list={list} />,
         })
       );
     }
@@ -76,11 +72,7 @@ function* addListItemSaga() {
       yield put(
         actions.snackbar.display({
           message: `Added to "${list.title}"`,
-          action: (
-            <React.Fragment>
-              <ViewListButton list={list} />
-            </React.Fragment>
-          ),
+          action: <ViewListButton list={list} />,
         })
       );
     }

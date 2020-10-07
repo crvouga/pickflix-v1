@@ -10,7 +10,6 @@ import HomeIcon from "@material-ui/icons/Home";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import PersonIcon from "@material-ui/icons/Person";
 import PersonOutlinedIcon from "@material-ui/icons/PersonOutlined";
-import SearchIcon from "@material-ui/icons/Search";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../redux";

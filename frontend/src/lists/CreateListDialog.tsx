@@ -12,7 +12,6 @@ import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../redux";
 import { ModalName } from "../redux/router/types";
-import { IList } from "./redux/entities";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {

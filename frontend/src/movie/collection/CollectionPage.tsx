@@ -1,21 +1,18 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
-import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import backendAPI from "../../backendAPI";
-import { actions } from "../../redux";
-import { Collection } from "../../tmdb/types";
-import BackdropHeader from "./BackdropHeader";
-import MovieCard from "../components/MovieCard";
-import { collectionToBackdropPath } from "./utils";
-import ReadMore from "../../common/components/ReadMoreTypography";
-import NavigationBar from "../../common/NavigationBar";
+import ReadMore from "../../common/components/ReadMore";
 import NavigationBarFadeIn from "../../common/NavigationBarFadeIn";
+import ErrorPage from "../../common/page/ErrorPage";
 import LoadingPage from "../../common/page/LoadingPage";
+import { Collection } from "../../tmdb/types";
+import MovieCard from "../components/MovieCard";
+import BackdropHeader from "./BackdropHeader";
+import { collectionToBackdropPath } from "./utils";
 
 export default () => {
-  const dispatch = useDispatch();
   const { collectionId } = useParams<{ collectionId: string }>();
 
   const query = useQuery<Collection, string>(
@@ -28,7 +25,7 @@ export default () => {
   );
 
   if (query.status === "error") {
-    return null;
+    return <ErrorPage />;
   }
 
   if (query.status === "loading") {
@@ -41,11 +38,7 @@ export default () => {
   }
 
   const collection = query.data;
-  const { name, overview, parts, backdropPath } = collection;
-
-  const handleClick = (part: { id: string }) => () => {
-    dispatch(actions.router.push({ pathname: `/movie/${part.id}` }));
-  };
+  const { name, overview, parts } = collection;
 
   return (
     <React.Fragment>
@@ -61,7 +54,10 @@ export default () => {
           {overview.length > 0 && (
             <React.Fragment>
               <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
-              <ReadMore text={overview} color="textSecondary" variant="body1" />
+              <ReadMore
+                text={overview}
+                TypographyProps={{ color: "textSecondary", variant: "body1" }}
+              />
             </React.Fragment>
           )}
         </Box>

@@ -19,6 +19,8 @@ export default (props: Props) => {
       <SwipeableViews>
         {images.profiles.map((profile) => (
           <img
+            key={profile.filePath}
+            alt=""
             width="100%"
             src={makeTMDbImageURL(Infinity, { profilePath: profile.filePath })}
           />

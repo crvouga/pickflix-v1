@@ -5,9 +5,8 @@ import {
   TypographyVariant,
 } from "@material-ui/core";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import MovieIcon from "@material-ui/icons/Movie";
-import React from "react";
 import clsx from "clsx";
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   pick: {

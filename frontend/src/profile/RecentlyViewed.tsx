@@ -1,11 +1,4 @@
-import {
-  Typography,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Box,
-} from "@material-ui/core";
-import HistoryIcon from "@material-ui/icons/History";
+import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import HorizontalScroll from "../common/components/HorizontalScroll";

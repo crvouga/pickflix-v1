@@ -1,4 +1,4 @@
-import { Box, CircularProgress, List } from "@material-ui/core";
+import { Box, CircularProgress } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../redux";
@@ -18,7 +18,7 @@ export default () => {
     if (authStatus === "signedIn") {
       dispatch(actions.query.requestAsync(listRequest));
     }
-  }, [authStatus]);
+  }, [dispatch, authStatus]);
 
   const onClickList = (list: { id: string }) => () => {
     dispatch(actions.router.push({ pathname: `/list/${list.id}` }));

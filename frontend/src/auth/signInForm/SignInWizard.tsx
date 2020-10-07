@@ -1,13 +1,13 @@
-import { Box, LinearProgress, Paper, BoxProps } from "@material-ui/core";
+import { Box, BoxProps, LinearProgress } from "@material-ui/core";
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import form from "./redux";
+import { useDispatch, useSelector } from "react-redux";
+import ChooseMethod from "./ChooseMethod";
 import Email from "./Email";
 import EmailPassword from "./EmailPassword";
 import EmailRegister from "./EmailRegister";
 import EmailTaken from "./EmailTaken";
-import ChooseMethod from "./ChooseMethod";
 import ErrorMessage from "./ErrorMessage";
+import form from "./redux";
 import { Step } from "./redux/types";
 
 type Props = BoxProps;
@@ -18,7 +18,7 @@ export default (props: Props) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(form.actions.reset());
-  }, []);
+  }, [dispatch]);
 
   return (
     <Box width="100%" {...props}>

@@ -16,6 +16,8 @@ export default (props: Props) => {
 
   const handleClickWatchTailer = () => {
     dispatch(actions.video.setPlaylist(videos.results));
+    const trailer = videos.results.find((video) => video.type === "Trailer");
+    dispatch(actions.video.setVideo(trailer || videos.results[0]));
     dispatch(actions.router.push({ pathname: "/video" }));
   };
 

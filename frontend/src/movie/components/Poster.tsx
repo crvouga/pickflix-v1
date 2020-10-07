@@ -1,9 +1,8 @@
 import {
   Box,
-  makeStyles,
-  Paper,
-  Typography,
   BoxProps,
+  makeStyles,
+  Typography,
   useTheme,
 } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
@@ -16,7 +15,6 @@ import AspectRatio from "../../common/components/AspectRatio";
 import useBoolean from "../../common/hooks/useBoolean";
 import { actions } from "../../redux";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
-import { Movie } from "../../tmdb/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {

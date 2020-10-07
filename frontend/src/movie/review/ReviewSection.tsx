@@ -9,16 +9,14 @@ import React from "react";
 import CurrentUserAvatar from "../../auth/CurrentUserAvatar";
 import Review from "./Review";
 
-type Review = {
-  id: string;
-  url: string;
-  content: string;
-  author: string;
-};
-
 interface Props {
   reviews: {
-    results: Review[];
+    results: {
+      id: string;
+      url: string;
+      content: string;
+      author: string;
+    }[];
   };
 }
 

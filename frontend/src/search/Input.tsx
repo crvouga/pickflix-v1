@@ -1,9 +1,8 @@
 import {
-  Box,
+  AppBar,
   IconButton,
   InputBase,
   makeStyles,
-  AppBar,
   Toolbar,
 } from "@material-ui/core";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";

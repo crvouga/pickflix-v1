@@ -1,15 +1,14 @@
-import { makeStyles, Paper } from "@material-ui/core";
+import { makeStyles, Paper, List } from "@material-ui/core";
 import React from "react";
 import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
 import AspectRatio from "../common/components/AspectRatio";
-import useBoolean from "../common/hooks/useBoolean";
 import { actions, selectors } from "../redux";
 import * as youtubeAPI from "../youtube/api";
 import YoutubeSection from "../youtube/Section";
 import PlaylistSection from "./PlaylistSection";
 import { VideoProgress } from "./redux/types";
-
+import MovieListItem from "../movie/components/MovieListItem";
 const useStyles = makeStyles((theme) => ({
   playerContainer: {
     position: "sticky",
@@ -21,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const isPlaylistOpen = useBoolean(true);
   const isPlaying = useSelector(selectors.video.isPlaying);
   const video = useSelector(selectors.video.video);
   const dispatch = useDispatch();
@@ -62,6 +60,12 @@ export default () => {
       <Paper>
         <PlaylistSection />
       </Paper>
+
+      {video?.tmdbMedia && (
+        <List>
+          <MovieListItem movie={video?.tmdbMedia?.tmdbData} />
+        </List>
+      )}
 
       {video?.key && <YoutubeSection videoId={video.key} />}
     </div>

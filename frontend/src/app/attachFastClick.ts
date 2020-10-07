@@ -1,4 +1,4 @@
-import * as fastclick from "fastclick";
+// import * as fastclick from "fastclick";
 
 export default () => {
   // if ("addEventListener" in document) {

@@ -1,28 +1,27 @@
-import {
-  Avatar,
-  BoxProps,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
+import { Avatar, BoxProps, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
-import ExpandHeight from "../../common/components/ExpandHeight";
-import Markdown from "../../common/components/Markdown";
-import useBoolean from "../../common/hooks/useBoolean";
+import ReadMore from "../../common/components/ReadMore";
 import * as TMDb from "../../tmdb/attribution";
 import { MovieReview } from "../../tmdb/types";
-import CollapsableWrapTypography from "../../common/components/CollapsableWrapTypography";
-import ReadMore from "../../common/components/ReadMoreTypography";
-import MarkdownTypography from "../../common/components/MarkdownTypography";
-import ReadMoreMarkdownTyporgraph from "../../common/components/ReadMoreMarkdownTyporgraph";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "start",
+    padding: theme.spacing(2),
+  },
+  avatarContainer: {
+    marginRight: theme.spacing(2),
+  },
   avatar: {
     textDecoration: "none",
     color: TMDb.palette.primary,
     background: `linear-gradient(${TMDb.palette.tertiary}, ${TMDb.palette.secondary})`,
+  },
+  body: {
+    display: "flex",
+    flexDirection: "column",
   },
 }));
 
@@ -49,23 +48,16 @@ export default ({ review, ...props }: Props) => {
   const initials = toInitials(author);
 
   return (
-    <ListItem alignItems="flex-start">
-      <ListItemAvatar>
+    <div className={classes.root}>
+      <div className={classes.avatarContainer}>
         <Avatar className={classes.avatar} component="a" href={url}>
           {initials}
         </Avatar>
-      </ListItemAvatar>
-      <ListItemText
-        primaryTypographyProps={{
-          color: "textSecondary",
-        }}
-        primary={`${author} · TMDb`}
-        secondary={
-          <React.Fragment>
-            <ReadMore text={content} color="textPrimary" />
-          </React.Fragment>
-        }
-      ></ListItemText>
-    </ListItem>
+      </div>
+      <div className={classes.body}>
+        <Typography color="textSecondary">{author}</Typography>
+        <ReadMore TypographyProps={{ color: "textPrimary" }} text={content} />
+      </div>
+    </div>
   );
 };

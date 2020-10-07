@@ -1,6 +1,6 @@
-import React from "react";
-import { MovieVideoType, MovieVideos } from "../../tmdb/types";
 import { Box } from "@material-ui/core";
+import React from "react";
+import { MovieVideos } from "../../tmdb/types";
 import WatchVideosButton from "./WatchVideosButton";
 
 type Props = {

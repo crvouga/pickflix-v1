@@ -2,6 +2,10 @@ import {
   Box,
   Collapse,
   IconButton,
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
   makeStyles,
   Typography,
 } from "@material-ui/core";
@@ -118,53 +122,50 @@ export default ({ statistics, snippet }: Props) => {
 
   return (
     <React.Fragment>
-      <Box
-        onClick={isDetailsOpen.toggle}
-        p={2}
-        paddingBottom={0}
-        display="flex"
-        flexDirection="row"
-        justifyContent="space-between"
-      >
-        <Box>
-          <Typography variant="h6">{title}</Typography>
+      <List>
+        <ListItem button onClick={isDetailsOpen.toggle} alignItems="flex-start">
+          <ListItemText
+            primaryTypographyProps={{
+              variant: "h6",
+              style: { fontWeight: "bold" },
+            }}
+            primary={title}
+            secondaryTypographyProps={{ variant: "subtitle1" }}
+            secondary={subtitle1}
+          />
+          <ListItemSecondaryAction>
+            <ExpandIcon expanded={isDetailsOpen.value} />
+          </ListItemSecondaryAction>
+        </ListItem>
 
-          <Typography color="textSecondary" variant="subtitle1">
-            {subtitle1}
-          </Typography>
-        </Box>
-
-        <ExpandIcon expanded={isDetailsOpen.value} />
-      </Box>
-
-      <Box
-        paddingX={2}
-        color="text.secondary"
-        display="flex"
-        flexDirection="row"
-      >
         <Box
-          component="span"
+          paddingX={1}
+          color="text.secondary"
           display="flex"
           flexDirection="row"
-          marginRight={2}
         >
-          <IconButton color="inherit">
-            <ThumbUpIcon className={classes.icon} />
+          <Box
+            component="span"
+            display="flex"
+            flexDirection="row"
+            marginRight={2}
+          >
+            <IconButton color="inherit">
+              <ThumbUpIcon className={classes.icon} />
+            </IconButton>
+            <Typography className={classes.iconLabel} color="inherit">
+              {formatNumberShort(likeCount)}
+            </Typography>
+          </Box>
+
+          <IconButton className={classes.iconButton} color="inherit">
+            <ThumbDownIcon className={classes.icon} />
           </IconButton>
           <Typography className={classes.iconLabel} color="inherit">
-            {formatNumberShort(likeCount)}
+            {formatNumberShort(dislikeCount)}
           </Typography>
         </Box>
-
-        <IconButton className={classes.iconButton} color="inherit">
-          <ThumbDownIcon className={classes.icon} />
-        </IconButton>
-        <Typography className={classes.iconLabel} color="inherit">
-          {formatNumberShort(dislikeCount)}
-        </Typography>
-      </Box>
-
+      </List>
       <Collapse in={isDetailsOpen.value}>
         <Box p={2}>
           <Box marginBottom={3}>

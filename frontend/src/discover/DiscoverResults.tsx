@@ -3,7 +3,6 @@ import React, { useEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
 import Poster from "../movie/components/Poster";
-import { Movie } from "../tmdb/types";
 import discover from "./redux";
 
 const useStyles = makeStyles((theme) => ({

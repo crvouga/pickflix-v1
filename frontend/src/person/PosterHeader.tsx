@@ -62,6 +62,7 @@ export default (props: Props) => {
         <Box key={id} width={width}>
           <AspectRatio ratio={POSTER_ASPECT_RATIO}>
             <img
+              alt=""
               src={makeTMDbImageURL(sizeIndex, { posterPath })}
               width="100%"
               height="100%"

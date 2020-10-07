@@ -2,16 +2,16 @@ import {
   Button,
   IconButton,
   makeStyles,
+  Slide,
   Snackbar,
   Theme,
-  Slide,
 } from "@material-ui/core";
+import { TransitionProps } from "@material-ui/core/transitions";
 import CloseIcon from "@material-ui/icons/Close";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IList } from "../lists/redux/entities";
 import { actions, selectors } from "../redux";
-import { TransitionProps } from "@material-ui/core/transitions";
 
 const Transition = (props: TransitionProps) => (
   <Slide direction="up" {...props} />
@@ -40,10 +40,11 @@ const useStylesSnackbarContent = makeStyles((theme) => ({
   },
 }));
 
-interface IViewListButtonProps {
+type IViewListButtonProps = {
   list: Partial<IList>;
-}
-export const ViewListButton: React.FC<IViewListButtonProps> = ({ list }) => {
+};
+
+export const ViewListButton = ({ list }: IViewListButtonProps) => {
   const dispatch = useDispatch();
 
   return (
@@ -64,12 +65,12 @@ export const ViewListButton: React.FC<IViewListButtonProps> = ({ list }) => {
 export const CloseSnackbarButton = () => {
   const dispatch = useDispatch();
 
+  const handleClick = () => {
+    dispatch(actions.snackbar.setOpen(false));
+  };
+
   return (
-    <IconButton
-      onClick={() => {
-        dispatch(actions.snackbar.setOpen(false));
-      }}
-    >
+    <IconButton onClick={handleClick}>
       <CloseIcon />
     </IconButton>
   );
@@ -79,11 +80,18 @@ export default () => {
   const classesSnackbar = useStylesSnackbar();
   const classesSnackbarContent = useStylesSnackbarContent();
 
+  const dispatch = useDispatch();
+
   const isOpen = useSelector(selectors.snackbar.open);
   const snackbarProps = useSelector(selectors.snackbar.snackbarProps);
 
+  const handleClick = () => {
+    dispatch(actions.snackbar.setOpen(false));
+  };
+
   return (
     <Snackbar
+      onClick={handleClick}
       open={isOpen}
       classes={classesSnackbar}
       TransitionComponent={Transition}
@@ -96,6 +104,11 @@ export default () => {
         horizontal: "center",
       }}
       {...snackbarProps}
+      action={
+        React.isValidElement(snackbarProps.action)
+          ? snackbarProps.action
+          : undefined
+      }
     />
   );
 };

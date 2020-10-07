@@ -10,7 +10,7 @@ import {
 import moment from "moment";
 import React from "react";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
-import ReadMore from "../../common/components/ReadMoreTypography";
+import ReadMore from "../../common/components/ReadMore";
 import { useDispatch } from "react-redux";
 import { actions } from "../../redux";
 
@@ -68,7 +68,10 @@ export default ({ movie, CardHeaderProps }: Props) => {
       {movie.overview && (
         <CardContent>
           <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
-          <ReadMore color="textSecondary" text={movie.overview} />
+          <ReadMore
+            TypographyProps={{ color: "textSecondary" }}
+            text={movie.overview}
+          />
         </CardContent>
       )}
     </Card>

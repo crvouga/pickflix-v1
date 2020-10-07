@@ -224,7 +224,7 @@ export type MovieVideoType =
 
 export type MovieVideoSize = 360 | 480 | 720 | 1080;
 
-export interface MovieVideo {
+export type MovieVideo = {
   id: string;
   iso6391: string;
   iso31661: string;
@@ -233,12 +233,13 @@ export interface MovieVideo {
   site: string;
   size: MovieVideoSize;
   type: MovieVideoType;
-}
+  tmdbMedia?: TmdbMedia;
+};
 
-export interface MovieVideos {
+export type MovieVideos = {
   id: string;
   results: MovieVideo[];
-}
+};
 
 //https://developers.themoviedb.org/3/movies/get-movie-images
 export interface MovieImageBackdrop {

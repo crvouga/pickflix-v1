@@ -25,6 +25,7 @@ export default ({ posterPath, id, backdropPath }: MoviePosterCardProps) => {
       <CardActionArea>
         <AspectRatio ratio={POSTER_ASPECT_RATIO}>
           <img
+            alt=""
             src={makeTMDbImageURL(3, { posterPath })}
             width="100%"
             height="100%"

@@ -1,20 +1,18 @@
 import {
   Avatar,
-  Box,
   ListItem,
-  ListItemProps,
-  ListItemText,
-  ListItemIcon,
-  ListItemSecondaryAction,
   ListItemAvatar,
+  ListItemIcon,
+  ListItemProps,
+  ListItemSecondaryAction,
+  ListItemText,
 } from "@material-ui/core";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import MovieIcon from "@material-ui/icons/Movie";
-import { AvatarGroup } from "@material-ui/lab";
+import PublicOutlinedIcon from "@material-ui/icons/PublicOutlined";
 import React from "react";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-import { IList, IListItem } from "./redux/entities";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import PublicOutlinedIcon from "@material-ui/icons/PublicOutlined";
+import { IList } from "./redux/entities";
 
 interface Props extends ListItemProps {
   list: IList;

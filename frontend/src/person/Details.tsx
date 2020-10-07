@@ -1,14 +1,13 @@
-import { Box, Avatar, makeStyles, Typography } from "@material-ui/core";
+import { Avatar, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
+import useBoolean from "../common/hooks/useBoolean";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import {
   PersonDetailsResponse,
   PersonImagesResponse,
   PersonMovieCreditsResponse,
 } from "../tmdb/types";
-import useBoolean from "../common/hooks/useBoolean";
 import PersonImageGalleryDialog from "./PersonImageGalleryDialog";
-import ReadMore from "../common/components/ReadMoreTypography";
 
 interface Props {
   details: PersonDetailsResponse;
@@ -39,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default (props: Props) => {
-  const { details, credits, images } = props;
+  const { details, images } = props;
   const classes = useStyles();
 
   const isImageGalleryDialogOpen = useBoolean(false);

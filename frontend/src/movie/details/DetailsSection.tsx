@@ -1,5 +1,6 @@
-import { Box, Typography, ListItemText, List } from "@material-ui/core";
+import { Box, List, Typography } from "@material-ui/core";
 import React from "react";
+import ReadMore from "../../common/components/ReadMore";
 import {
   MovieDetails,
   MovieKeywords,
@@ -7,7 +8,6 @@ import {
 } from "../../tmdb/types";
 import * as utils from "../utils";
 import DetailListItem from "./DetailListItem";
-import ReadMore from "../../common/components/ReadMoreTypography";
 
 type Props = {
   details: MovieDetails;
@@ -20,7 +20,10 @@ export default (props: Props) => {
     <List>
       <Box paddingX={2} paddingTop={2}>
         <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
-        <ReadMore color="textSecondary" text={props.details.overview} />
+        <ReadMore
+          TypographyProps={{ color: "textSecondary" }}
+          text={props.details.overview}
+        />
       </Box>
       {/* <Box display="flex" flexDirection="row">
         <DetailListItem

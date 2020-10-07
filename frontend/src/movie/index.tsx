@@ -1,4 +1,5 @@
-import { Box } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+import { uniqBy } from "ramda";
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
@@ -18,6 +19,7 @@ import {
   MovieReviews,
   MovieSimilar,
   MovieVideos,
+  TmdbMedia,
 } from "../tmdb/types";
 import ActionBar from "./action-bar/ActionBar";
 import CollectionSection from "./collection/CollectionSection";
@@ -48,7 +50,14 @@ const fetchMoviePage = (movieId: string) =>
     })
     .then((response) => response.data);
 
+const useStyles = makeStyles((theme) => ({
+  body: {
+    backgroundColor: theme.palette.background.default,
+  },
+}));
+
 export default () => {
+  const classes = useStyles();
   const { movieId } = useParams<{ movieId: string }>();
 
   const query = useQuery<
@@ -100,6 +109,20 @@ export default () => {
     ...details
   } = query.data;
 
+  const tmdbMedia: TmdbMedia = {
+    tmdbMediaType: "movie",
+    tmdbMediaId: movieId,
+    tmdbData: details,
+  };
+
+  const videosWithMovieData = {
+    ...videos,
+    results: videos.results.map((video) => ({
+      ...video,
+      tmdbMedia,
+    })),
+  };
+
   return (
     <React.Fragment>
       <NavigationBarFadeIn
@@ -109,10 +132,10 @@ export default () => {
 
       <HeaderSection details={details} releaseDates={releaseDates} />
 
-      <Box width="100%" bgcolor="background.default">
+      <div className={classes.body}>
         <ActionBar />
 
-        <VideosSection videos={videos} />
+        <VideosSection videos={videosWithMovieData} />
 
         <DetailsSection
           details={details}
@@ -128,13 +151,16 @@ export default () => {
 
         <MoviePosterCardScroll
           title="People also like"
-          movies={[...similar.results, ...recommendations.results]}
+          movies={uniqBy((movie) => movie.id, [
+            ...similar.results,
+            ...recommendations.results,
+          ])}
         />
 
         <DiscoverSection details={details} keywords={keywords} />
 
         <ReviewSection reviews={reviews} />
-      </Box>
+      </div>
     </React.Fragment>
   );
 };

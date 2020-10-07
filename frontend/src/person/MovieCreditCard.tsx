@@ -5,17 +5,15 @@ import {
   CardHeader,
   CardMedia,
   Typography,
-  Avatar,
-  List,
 } from "@material-ui/core";
 import React from "react";
 import { useDispatch } from "react-redux";
+import ReadMore from "../common/components/ReadMore";
 import * as movieUtils from "../movie/utils";
 import { actions } from "../redux";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { ImagePaths } from "../tmdb/types";
-import ReadMore from "../common/components/ReadMoreTypography";
-import MovieIcon from "@material-ui/icons/Movie";
+
 type Credit = ImagePaths & {
   id: string;
   title: string;
@@ -56,8 +54,10 @@ export default ({ credit }: { credit: Cast | Credit }) => {
         <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
         <ReadMore
           text={credit.overview}
-          variant="body1"
-          color="textSecondary"
+          TypographyProps={{
+            variant: "body1",
+            color: "textSecondary",
+          }}
         />
       </CardContent>
     </Card>

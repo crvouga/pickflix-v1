@@ -47,7 +47,7 @@ export default () => {
     if (authStatus === "signedIn") {
       dispatch(actions.query.requestAsync(isLikedConfig));
     }
-  }, [dispatch, authStatus, movieId]);
+  }, [dispatch, authStatus, movieId, isLikedConfig]);
 
   const isLiked = useSelector(selectors.tmdb.isLiked(tmdbMedia));
 

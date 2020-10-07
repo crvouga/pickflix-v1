@@ -27,10 +27,6 @@ import {
 } from "../../tmdb/types";
 import CreditsListItem from "./CreditsListItem";
 
-interface Props {
-  credits: MovieCredits;
-}
-
 type CreditsListProps = {
   creditsByDepartment: {
     [key: string]: (MovieCreditCast | MovieCreditCrew)[];

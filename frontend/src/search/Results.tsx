@@ -1,7 +1,5 @@
 import {
   Avatar,
-  Box,
-  CircularProgress,
   List,
   ListItem,
   ListItemAvatar,
@@ -12,10 +10,10 @@ import moment from "moment";
 import React, { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
+import ListItemSkeleton from "../common/components/ListItemSkeleton";
 import { actions, selectors } from "../redux";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { Result } from "./redux/types";
-import ListItemSkeleton from "../common/components/ListItemSkeleton";
 
 export default () => {
   const dispatch = useDispatch();
@@ -29,7 +27,7 @@ export default () => {
     if (inView && canFetchMore) {
       dispatch(actions.search.fetch());
     }
-  }, [inView]);
+  }, [inView, dispatch, canFetchMore]);
 
   const handleClick = (result: Result) => () => {
     dispatch(actions.search.chose(result));

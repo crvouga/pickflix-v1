@@ -1,17 +1,16 @@
 import { Box } from "@material-ui/core";
 import matchSorter from "match-sorter";
-import * as R from "ramda";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../redux";
-import Tag from "./Tag";
 import { ModalName } from "../redux/router/types";
-import { Tag as ITag, Result } from "./redux/types";
+import { Tag as ITag } from "./redux/types";
+import Tag from "./Tag";
 
 export default () => {
   const dispatch = useDispatch();
+
   const tags = useSelector(selectors.discover.tags);
-  const searchResults = useSelector(selectors.discover.searchResults);
   const searchText = useSelector(selectors.discover.searchText);
 
   const sortedTags = matchSorter(tags, searchText, {

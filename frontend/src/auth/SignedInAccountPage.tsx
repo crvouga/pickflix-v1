@@ -1,35 +1,31 @@
 import {
-  ListItemText,
   AppBar,
+  Avatar,
   Box,
   Button,
-  makeStyles,
-  Toolbar,
-  Typography,
+  Dialog,
+  DialogActions,
+  DialogTitle,
   List,
   ListItem,
   ListItemAvatar,
-  Avatar,
   ListItemIcon,
-  Divider,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
+  ListItemText,
+  makeStyles,
   TextField,
+  Toolbar,
+  Typography,
 } from "@material-ui/core";
-import React, { useState } from "react";
-import BackButton from "../common/BackButton";
-import LoadingPage from "../common/page/LoadingPage";
-import { actions, selectors } from "../redux";
-import { useDispatch, useSelector } from "../redux/types";
 import AccountBoxOutlinedIcon from "@material-ui/icons/AccountBoxOutlined";
 import DeleteForeverOutlinedIcon from "@material-ui/icons/DeleteForeverOutlined";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import useBoolean from "../common/hooks/useBoolean";
-import { Alert, AlertTitle } from "@material-ui/lab";
 import WarningIcon from "@material-ui/icons/Warning";
+import React, { useState } from "react";
+import BackButton from "../common/BackButton";
+import useBoolean from "../common/hooks/useBoolean";
+import { actions, selectors } from "../redux";
+import { useDispatch, useSelector } from "../redux/types";
+
 const useStyles = makeStyles((theme) => ({
   bold: {
     fontWeight: "bold",

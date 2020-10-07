@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  Box,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from "@material-ui/core";
+import { List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import EmailIcon from "@material-ui/icons/Email";
 import React from "react";
 import { useDispatch } from "react-redux";

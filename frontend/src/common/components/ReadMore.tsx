@@ -13,7 +13,9 @@ export type ReadMoreProps = {
   readLessText?: string;
 };
 
-type Props = ReadMoreProps & TypographyProps;
+type Props = ReadMoreProps & {
+  TypographyProps?: TypographyProps<"div">;
+};
 
 export default (props: Props) => {
   const {
@@ -22,8 +24,7 @@ export default (props: Props) => {
     max,
     text,
     readMoreText = "Read More",
-    readLessText = "Read Less",
-    ...TypographyProps
+    TypographyProps,
   } = props;
 
   const isIn = useBoolean(false);
@@ -31,13 +32,18 @@ export default (props: Props) => {
   const [headText, tailText] = trimText(text, min, ideal, max);
 
   if (tailText.length === 0) {
-    return <div>{headText}</div>;
+    return (
+      <Typography component="div" {...TypographyProps}>
+        {headText}
+      </Typography>
+    );
   }
 
   const headTextWithTrail = `${dropLast(1, headText)}... `;
 
   return (
     <Typography
+      component="div"
       style={{ wordBreak: "break-word" }}
       onClick={isIn.toggle}
       {...TypographyProps}
@@ -45,11 +51,12 @@ export default (props: Props) => {
       {!isIn.value && (
         <React.Fragment>
           {headTextWithTrail}
-          <Box component="span" fontWeight="bold" color="text.secondary">
+          <Box display="inline" fontWeight="bold" color="text.secondary">
             {readMoreText}
           </Box>
         </React.Fragment>
       )}
+
       {isIn.value && headText}
       <Collapse in={isIn.value}>{tailText}</Collapse>
     </Typography>

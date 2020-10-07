@@ -1,7 +1,6 @@
 import { AppBar, Box, makeStyles, Typography } from "@material-ui/core";
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import History from "./History";
 import Input from "./Input";
 import search from "./redux";
 import Results from "./Results";

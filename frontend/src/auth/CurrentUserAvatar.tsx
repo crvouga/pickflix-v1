@@ -1,8 +1,8 @@
-import { Avatar, AvatarProps, CircularProgress } from "@material-ui/core";
+import { Avatar, AvatarProps } from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
 import React from "react";
 import { useSelector } from "react-redux";
 import { selectors } from "../redux";
-import { Skeleton } from "@material-ui/lab";
 
 type Props = AvatarProps & {
   backgroundColor?: string;

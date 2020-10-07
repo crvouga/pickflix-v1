@@ -1,10 +1,10 @@
 import moment from "moment";
 import "moment-duration-format";
 import numeral from "numeral";
-import { MovieDetails, MovieKeywords, MovieReleaseDates } from "../tmdb/types";
+import { MovieDetails, MovieReleaseDates } from "../tmdb/types";
 
 type DetailsProp = { details: MovieDetails };
-type KeywordsProp = { keywords: MovieKeywords };
+// type KeywordsProp = { keywords: MovieKeywords };
 type ReleaseDateProp = { releaseDates: MovieReleaseDates };
 
 export const commas = (_: any) => numeral(_).format("0,0");

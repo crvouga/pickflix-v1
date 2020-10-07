@@ -1,9 +1,9 @@
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
-import { actions } from "../../redux";
 import backendAPI from "../../backendAPI";
+import { actions } from "../../redux";
 import { Collection } from "../../tmdb/types";
 import CollectionCard from "./CollectionCard";
 

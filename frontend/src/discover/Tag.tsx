@@ -2,7 +2,6 @@ import { Avatar, ButtonBase, makeStyles, Typography } from "@material-ui/core";
 import clsx from "clsx";
 import React from "react";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-import { Tag } from "./redux/types";
 import { ImagePaths } from "../tmdb/types";
 
 const useStyles = makeStyles((theme) => ({

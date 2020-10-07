@@ -1,7 +1,5 @@
 import {
-  Box,
   AppBar,
-  ListItemText,
   IconButton,
   makeStyles,
   Toolbar,
@@ -40,11 +38,14 @@ const useStyles = makeStyles((theme) => ({
 
 const useOpacity = (scrollHeightUntilFullOpacity: number) => {
   const [opacity, setOpacity] = useState(0);
+
   const { scrollY } = useViewportScroll();
+
   scrollY.onChange((scrollY) => {
     const opacity = Math.min(scrollY / scrollHeightUntilFullOpacity, 1);
     setOpacity(opacity);
   });
+
   return opacity;
 };
 
@@ -63,7 +64,7 @@ const useNavBarActions = () => {
 };
 
 export default (props: Props) => {
-  const { title, subtitle, scrollHeightUntilFullOpacity = 200 } = props;
+  const { title, scrollHeightUntilFullOpacity = 200 } = props;
   const opacity = useOpacity(scrollHeightUntilFullOpacity);
   const classes = useStyles({ opacity });
   const { onSearch, onBack } = useNavBarActions();

@@ -106,7 +106,7 @@ export default ({ comment }: Props) => {
           color: "textPrimary",
         }}
         secondary={
-          <React.Fragment>
+          <div>
             <ReadMore text={textDisplayMarkdown} />
             <div className={classes.actions}>
               {likeCount > 0 && (
@@ -124,7 +124,7 @@ export default ({ comment }: Props) => {
                 </React.Fragment>
               )}
             </div>
-          </React.Fragment>
+          </div>
         }
       />
     </ListItem>

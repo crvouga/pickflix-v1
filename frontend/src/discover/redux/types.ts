@@ -1,4 +1,4 @@
-import { PathKey, ImagePaths } from "../../tmdb/types";
+import { ImagePaths, PathKey } from "../../tmdb/types";
 
 export type Status = "loading" | "success" | "error";
 

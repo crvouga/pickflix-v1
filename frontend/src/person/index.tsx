@@ -1,25 +1,22 @@
+import { Box, makeStyles } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import backendAPI from "../backendAPI";
+import NavigationBarFadeIn from "../common/NavigationBarFadeIn";
 import ErrorPage from "../common/page/ErrorPage";
+import LoadingPage from "../common/page/LoadingPage";
 import { actions } from "../redux";
 import {
   PersonDetailsResponse,
-  PersonMovieCreditsResponse,
   PersonImagesResponse,
+  PersonMovieCreditsResponse,
 } from "../tmdb/types";
+import { makeFadeToBackgroundCss } from "../utils";
 import Details from "./Details";
 import MovieCreditsSection from "./MovieCreditsSection";
 import PosterHeader from "./PosterHeader";
-import SkeletonPage from "./SkeletonPage";
-import { Box, makeStyles } from "@material-ui/core";
-import classes from "*.module.css";
-import { makeFadeToBackgroundCss } from "../utils";
-import NavigationBar from "../common/NavigationBar";
-import LoadingPage from "../common/page/LoadingPage";
-import NavigationBarFadeIn from "../common/NavigationBarFadeIn";
 
 const fetchPersonPage = (personId: string) =>
   backendAPI
@@ -61,7 +58,7 @@ export default () => {
         actions.recentlyViewed.viewed({ mediaType: "person", ...query.data })
       );
     }
-  }, [query]);
+  }, [query, dispatch]);
 
   if (query.status === "loading") {
     return (

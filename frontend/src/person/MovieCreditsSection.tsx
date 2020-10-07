@@ -1,13 +1,12 @@
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { groupBy, mergeAll } from "ramda";
 import React from "react";
+import MovieCard from "../movie/components/MovieCard";
 import {
   PersonDetailsResponse,
-  PersonMovieCreditsResponse,
   PersonMovieCredit,
+  PersonMovieCreditsResponse,
 } from "../tmdb/types";
-import MovieCreditsCard from "./MovieCreditsCard";
-import MovieCard from "../movie/components/MovieCard";
 
 type Props = {
   credits: PersonMovieCreditsResponse;
@@ -20,7 +19,7 @@ const toSubheader = (movieCredits: PersonMovieCredit[]) =>
     .filter((_) => _ && _.length > 0)
     .join(", ");
 
-export default ({ credits, details }: Props) => {
+export default ({ credits }: Props) => {
   const creditsByMovieId = groupBy((credit) => credit.id, [
     ...credits.cast,
     ...credits.crew,

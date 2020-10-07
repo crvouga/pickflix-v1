@@ -1,26 +1,18 @@
-import {
-  Box,
-  IconButton,
-  LinearProgress,
-  makeStyles,
-  Paper,
-  Toolbar,
-  Typography,
-} from "@material-ui/core";
+import { Box, IconButton, Paper, Toolbar, Typography } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/DeleteForeverOutlined";
 import EditIcon from "@material-ui/icons/EditOutlined";
 import GroupAddOutlinedIcon from "@material-ui/icons/GroupAddOutlined";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
+import CircularProgressBox from "../common/components/CircularProgressBox";
 import useBoolean from "../common/hooks/useBoolean";
+import NavigationBar from "../common/NavigationBar";
 import Poster from "../movie/components/Poster";
 import { actions, selectors } from "../redux";
 import DeleteListDialog from "./DeleteListDialog";
 import EditListDialog from "./EditListDialog";
 import * as queryConfigs from "./redux/query-configs";
-import CircularProgressBox from "../common/components/CircularProgressBox";
-import NavigationBar from "../common/NavigationBar";
 
 export default () => {
   const isEditListModalOpen = useBoolean(false);
@@ -35,7 +27,7 @@ export default () => {
   useEffect(() => {
     dispatch(actions.query.requestAsync(listItemsRequest));
     dispatch(actions.query.requestAsync(listRequest));
-  }, [listItemsRequest.url, listRequest.url]);
+  }, []);
 
   const listQuery = useSelector(selectors.query.queryState(listRequest));
   const listItemsQuery = useSelector(

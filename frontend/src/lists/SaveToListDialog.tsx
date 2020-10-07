@@ -6,10 +6,7 @@ import {
   List,
   ListItem,
   ListItemText,
-  makeStyles,
-  Slide,
 } from "@material-ui/core";
-import { TransitionProps } from "@material-ui/core/transitions";
 import MovieIcon from "@material-ui/icons/Movie";
 import { AvatarGroup } from "@material-ui/lab";
 import * as R from "ramda";
@@ -24,23 +21,7 @@ import * as queryConfigs from "./redux/query-configs";
 
 const listsQueryConfig = queryConfigs.listsRequest();
 
-const useStyles = makeStyles((theme) => ({
-  doneButton: {
-    position: "fixed",
-    top: "auto",
-    bottom: "0",
-    left: "0",
-    width: "100%",
-    zIndex: 2,
-    textAlign: "left",
-    padding: theme.spacing(2),
-    borderTop: `solid 1px ${theme.palette.divider}`,
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
-
 export default () => {
-  const classes = useStyles();
   const dispatch = useDispatch();
 
   const isOpen = useSelector(selectors.router.isOpen(ModalName.SaveToList));
@@ -95,7 +76,7 @@ export default () => {
     if (isOpen) {
       dispatch(actions.query.requestAsync(listsQueryConfig));
     }
-  }, [isOpen]);
+  }, [isOpen, dispatch]);
 
   return (
     <Dialog
