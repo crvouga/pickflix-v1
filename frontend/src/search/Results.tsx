@@ -20,6 +20,7 @@ import ListItemSkeleton from "../common/components/ListItemSkeleton";
 export default () => {
   const dispatch = useDispatch();
   const results = useSelector(selectors.search.sortedResults);
+  const text = useSelector(selectors.search.text);
   const status = useSelector(selectors.search.status);
   const canFetchMore = useSelector(selectors.search.canFetchMore);
   const [triggerRef, inView] = useInView();
@@ -69,6 +70,7 @@ export default () => {
           )
         )}
         {status === "loading" &&
+          text.length > 0 &&
           [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
             <ListItemSkeleton key={n} />
           ))}

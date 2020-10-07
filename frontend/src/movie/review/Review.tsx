@@ -62,9 +62,7 @@ export default ({ review, ...props }: Props) => {
         primary={`${author} · TMDb`}
         secondary={
           <React.Fragment>
-            <MarkdownTypography color="textPrimary">
-              {content}
-            </MarkdownTypography>
+            <ReadMore text={content} color="textPrimary" />
           </React.Fragment>
         }
       ></ListItemText>

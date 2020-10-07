@@ -61,9 +61,7 @@ export default () => {
       </AppBar>
 
       <NoResults />
-
       <Results />
-      <History />
     </div>
   );
 };

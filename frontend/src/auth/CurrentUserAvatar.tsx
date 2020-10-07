@@ -1,4 +1,4 @@
-import { Avatar, AvatarProps } from "@material-ui/core";
+import { Avatar, AvatarProps, CircularProgress } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import { selectors } from "../redux";
@@ -9,7 +9,7 @@ type Props = AvatarProps & {
 };
 
 export default (props: Props) => {
-  const { backgroundColor = "white", ...AvatarProps } = props;
+  const { backgroundColor = "white", className, ...AvatarProps } = props;
 
   const user = useSelector(selectors.auth.user);
   const authStatus = useSelector(selectors.auth.authStatus);
@@ -17,14 +17,15 @@ export default (props: Props) => {
   switch (authStatus) {
     case "loading":
       return (
-        <Skeleton>
-          <Avatar {...AvatarProps} />
+        <Skeleton variant="circle" className={className}>
+          <Avatar className={className} {...AvatarProps} />
         </Skeleton>
       );
 
     case "signedIn":
       return (
         <Avatar
+          className={className}
           style={{ backgroundColor }}
           src={user?.photoURL || ""}
           {...AvatarProps}
@@ -32,6 +33,6 @@ export default (props: Props) => {
       );
 
     case "signedOut":
-      return <Avatar {...AvatarProps} />;
+      return <Avatar className={className} {...AvatarProps} />;
   }
 };

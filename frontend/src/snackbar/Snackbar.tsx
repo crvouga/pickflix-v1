@@ -25,6 +25,7 @@ const useStylesSnackbar = makeStyles((theme: Theme) => ({
     left: 0,
     zIndex: theme.zIndex.appBar - 1,
     bottom: theme.mixins.toolbar.minHeight, //bottom nav bar
+    minHeight: theme.spacing(6),
   },
 }));
 
@@ -94,7 +95,6 @@ export default () => {
         vertical: "bottom",
         horizontal: "center",
       }}
-      action={<CloseSnackbarButton />}
       {...snackbarProps}
     />
   );

@@ -56,36 +56,55 @@ export default () => {
       icon: isLiked ? <ThumbUpIcon /> : <ThumbUpOutlinedIcon />,
       label: "Like",
       onClick: () => {
-        dispatch(actions.tmdb.toggleLike(tmdbMedia));
+        if (authStatus === "signedOut") {
+          dispatch(actions.router.push({ pathname: "/signIn" }));
+        }
+        if (authStatus === "signedIn") {
+          dispatch(actions.tmdb.toggleLike(tmdbMedia));
+        }
       },
     },
     {
       icon: true ? <BookmarkBorderIcon /> : <BookmarkIcon />,
       label: "Watch Next",
       onClick: () => {
-        dispatch(
-          actions.lists.toggleWatchNext({
-            tmdbMediaType: "movie",
-            tmdbMediaId: movieId,
-          })
-        );
+        if (authStatus === "signedOut") {
+          dispatch(actions.router.push({ pathname: "/signIn" }));
+        }
+        if (authStatus === "signedIn") {
+          dispatch(
+            actions.lists.toggleWatchNext({
+              tmdbMediaType: "movie",
+              tmdbMediaId: movieId,
+            })
+          );
+        }
       },
     },
     {
       icon: true ? <PeopleOutlineIcon /> : <PeopleIcon />,
       label: "Watch With",
-      onClick: () => {},
+      onClick: () => {
+        if (authStatus === "signedOut") {
+          dispatch(actions.router.push({ pathname: "/signIn" }));
+        }
+      },
     },
     {
       icon: true ? <PlaylistAddIcon /> : <PlaylistAddCheckIcon />,
       label: "Save",
       onClick: () => {
-        dispatch(
-          actions.router.open({
-            name: ModalName.SaveToList,
-            props: { movieId },
-          })
-        );
+        if (authStatus === "signedOut") {
+          dispatch(actions.router.push({ pathname: "/signIn" }));
+        }
+        if (authStatus === "signedIn") {
+          dispatch(
+            actions.router.open({
+              name: ModalName.SaveToList,
+              props: { movieId },
+            })
+          );
+        }
       },
     },
   ];

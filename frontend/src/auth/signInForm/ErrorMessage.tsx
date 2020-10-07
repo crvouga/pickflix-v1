@@ -12,7 +12,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const codeToTitle = (code: string) =>
-  code.split("/")[code.length - 1].split("-").map(capitalize).join(" ");
+  code.split("/")?.[code.length - 1]?.split("-")?.map(capitalize)?.join(" ") ||
+  "";
 
 export default () => {
   const classes = useStyles();

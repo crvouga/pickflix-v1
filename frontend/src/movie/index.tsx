@@ -1,11 +1,12 @@
-import { Box, Button, List } from "@material-ui/core";
-import PlayArrowOutlinedIcon from "@material-ui/icons/PlayArrowOutlined";
+import { Box } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import backendAPI from "../backendAPI";
+import NavigationBarFadeIn from "../common/NavigationBarFadeIn";
 import ErrorPage from "../common/page/ErrorPage";
+import LoadingPage from "../common/page/LoadingPage";
 import { actions } from "../redux";
 import {
   MovieCredits,
@@ -25,11 +26,9 @@ import CreditsSection from "./credits/CreditsSection";
 import DetailsSection from "./details/DetailsSection";
 import DiscoverSection from "./discover/DiscoverSection";
 import HeaderSection from "./header/HeaderSection";
-import Reviews from "./review/Reviews";
-
+import ReviewSection from "./review/ReviewSection";
+import { toReleaseYear } from "./utils";
 import VideosSection from "./video/VideosSection";
-import LoadingPage from "../common/page/LoadingPage";
-import NavigationBar from "../common/NavigationBar";
 
 const fetchMoviePage = (movieId: string) =>
   backendAPI
@@ -83,7 +82,7 @@ export default () => {
   if (query.status === "loading") {
     return (
       <React.Fragment>
-        <NavigationBar />
+        <NavigationBarFadeIn />
         <LoadingPage />
       </React.Fragment>
     );
@@ -103,7 +102,10 @@ export default () => {
 
   return (
     <React.Fragment>
-      <NavigationBar title={details.title} />
+      <NavigationBarFadeIn
+        title={details.title}
+        subtitle={toReleaseYear(details)}
+      />
 
       <HeaderSection details={details} releaseDates={releaseDates} />
 
@@ -131,7 +133,7 @@ export default () => {
 
         <DiscoverSection details={details} keywords={keywords} />
 
-        <Reviews reviews={reviews} />
+        <ReviewSection reviews={reviews} />
       </Box>
     </React.Fragment>
   );

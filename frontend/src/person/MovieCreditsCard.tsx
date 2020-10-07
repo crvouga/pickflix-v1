@@ -60,14 +60,16 @@ export default ({ credits }: Props) => {
           <CardMedia style={{ height: 0, paddingTop: "52%" }} image={image} />
         )}
       </CardActionArea>
-      <CardContent>
-        <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
-        <ReadMore
-          color="textSecondary"
-          variant="body1"
-          text={mergedCredit.overview}
-        />
-      </CardContent>
+      {mergedCredit.overview && mergedCredit.overview.length > 0 && (
+        <CardContent>
+          <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
+          <ReadMore
+            color="textSecondary"
+            variant="body1"
+            text={mergedCredit.overview}
+          />
+        </CardContent>
+      )}
     </Card>
   );
 };

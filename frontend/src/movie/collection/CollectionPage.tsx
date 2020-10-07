@@ -11,6 +11,8 @@ import MovieCard from "../components/MovieCard";
 import { collectionToBackdropPath } from "./utils";
 import ReadMore from "../../common/components/ReadMoreTypography";
 import NavigationBar from "../../common/NavigationBar";
+import NavigationBarFadeIn from "../../common/NavigationBarFadeIn";
+import LoadingPage from "../../common/page/LoadingPage";
 
 export default () => {
   const dispatch = useDispatch();
@@ -30,7 +32,12 @@ export default () => {
   }
 
   if (query.status === "loading") {
-    return null;
+    return (
+      <React.Fragment>
+        <NavigationBarFadeIn />
+        <LoadingPage />
+      </React.Fragment>
+    );
   }
 
   const collection = query.data;
@@ -42,7 +49,7 @@ export default () => {
 
   return (
     <React.Fragment>
-      <NavigationBar title={name} />
+      <NavigationBarFadeIn title={name} />
 
       <BackdropHeader backdropPath={collectionToBackdropPath(collection)} />
 

@@ -62,8 +62,9 @@ export default () => {
       <Paper>
         <Box p={2} paddingTop={4} display="flex" flexDirection="row">
           <Box>
-            <Typography gutterBottom variant="h5">
-              {list?.title}
+            <Typography variant="h5">{list?.title}</Typography>
+            <Typography color="textSecondary" variant="subtitle1">
+              {list?.isAutoCreated ? "Auto list" : ""}
             </Typography>
             <Typography variant="body1">{list?.description}</Typography>
           </Box>
@@ -73,11 +74,11 @@ export default () => {
           <IconButton>
             <GroupAddOutlinedIcon />
           </IconButton>
-          {!list?.isAutoCreated && (
-            <IconButton onClick={isEditListModalOpen.setTrue}>
-              <EditIcon />
-            </IconButton>
-          )}
+
+          <IconButton onClick={isEditListModalOpen.setTrue}>
+            <EditIcon />
+          </IconButton>
+
           {!list?.isAutoCreated && (
             <IconButton onClick={isDeleteListModalOpen.setTrue}>
               <DeleteIcon />

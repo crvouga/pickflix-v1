@@ -65,10 +65,12 @@ export default ({ movie, CardHeaderProps }: Props) => {
           />
         )}
       </CardActionArea>
-      <CardContent>
-        <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
-        <ReadMore color="textSecondary" text={movie.overview} />
-      </CardContent>
+      {movie.overview && (
+        <CardContent>
+          <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
+          <ReadMore color="textSecondary" text={movie.overview} />
+        </CardContent>
+      )}
     </Card>
   );
 };

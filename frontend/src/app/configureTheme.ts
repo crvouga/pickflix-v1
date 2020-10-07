@@ -1,6 +1,8 @@
 import { createMuiTheme } from "@material-ui/core";
 import { palette } from "../tmdb/attribution";
 
+import "fontsource-roboto";
+
 export default () => {
   return createMuiTheme({
     palette: {

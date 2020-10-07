@@ -27,6 +27,7 @@ export default (props: Props) => {
       size="large"
       onClick={handleClickWatchTailer}
       disabled={videos.results.length === 0}
+      style={{ fontWeight: "bold" }}
     >
       {videos.results.length === 0 ? "No Trailers" : "Watch Trailer"}
     </Button>

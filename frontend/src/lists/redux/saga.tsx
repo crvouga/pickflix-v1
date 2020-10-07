@@ -28,7 +28,6 @@ function* createListSaga() {
           action: (
             <React.Fragment>
               <ViewListButton list={list} />
-              <CloseSnackbarButton />
             </React.Fragment>
           ),
         })
@@ -80,7 +79,6 @@ function* addListItemSaga() {
           action: (
             <React.Fragment>
               <ViewListButton list={list} />
-              <CloseSnackbarButton />
             </React.Fragment>
           ),
         })

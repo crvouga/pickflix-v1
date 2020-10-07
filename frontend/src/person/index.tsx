@@ -19,6 +19,7 @@ import classes from "*.module.css";
 import { makeFadeToBackgroundCss } from "../utils";
 import NavigationBar from "../common/NavigationBar";
 import LoadingPage from "../common/page/LoadingPage";
+import NavigationBarFadeIn from "../common/NavigationBarFadeIn";
 
 const fetchPersonPage = (personId: string) =>
   backendAPI
@@ -65,7 +66,7 @@ export default () => {
   if (query.status === "loading") {
     return (
       <React.Fragment>
-        <NavigationBar />
+        <NavigationBarFadeIn />
         <LoadingPage />
       </React.Fragment>
     );
@@ -79,7 +80,7 @@ export default () => {
 
   return (
     <React.Fragment>
-      <NavigationBar title={details.name} />
+      <NavigationBarFadeIn title={details.name} />
 
       <Box
         position="sticky"
