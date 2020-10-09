@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { actions, selectors } from "../../redux";
 import { ModalName } from "../../redux/router/types";
-import * as queryConfigs from "../../tmdb/redux/query-configs";
+
 import { TmdbMedia } from "../../tmdb/types";
 
 const useStylesIconButton = makeStyles((theme) => ({
@@ -41,54 +41,24 @@ export default () => {
   };
 
   const authStatus = useSelector(selectors.auth.authStatus);
-  const isLikedConfig = queryConfigs.isLikedRequest(tmdbMedia);
 
-  useEffect(() => {
-    if (authStatus === "signedIn") {
-      dispatch(actions.query.requestAsync(isLikedConfig));
-    }
-  }, [dispatch, authStatus, movieId, isLikedConfig]);
-
-  const isLiked = useSelector(selectors.tmdb.isLiked(tmdbMedia));
+  const isLiked = false;
 
   const actionBarItems = [
     {
       icon: isLiked ? <ThumbUpIcon /> : <ThumbUpOutlinedIcon />,
       label: "Like",
-      onClick: () => {
-        if (authStatus === "signedOut") {
-          dispatch(actions.router.push({ pathname: "/signIn" }));
-        }
-        if (authStatus === "signedIn") {
-          dispatch(actions.tmdb.toggleLike(tmdbMedia));
-        }
-      },
+      onClick: () => {},
     },
     {
       icon: true ? <BookmarkBorderIcon /> : <BookmarkIcon />,
       label: "Watch Next",
-      onClick: () => {
-        if (authStatus === "signedOut") {
-          dispatch(actions.router.push({ pathname: "/signIn" }));
-        }
-        if (authStatus === "signedIn") {
-          dispatch(
-            actions.lists.toggleWatchNext({
-              tmdbMediaType: "movie",
-              tmdbMediaId: movieId,
-            })
-          );
-        }
-      },
+      onClick: () => {},
     },
     {
       icon: true ? <PeopleOutlineIcon /> : <PeopleIcon />,
       label: "Watch With",
-      onClick: () => {
-        if (authStatus === "signedOut") {
-          dispatch(actions.router.push({ pathname: "/signIn" }));
-        }
-      },
+      onClick: () => {},
     },
     {
       icon: true ? <PlaylistAddIcon /> : <PlaylistAddCheckIcon />,

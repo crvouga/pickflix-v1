@@ -10,7 +10,7 @@ import { TransitionProps } from "@material-ui/core/transitions";
 import CloseIcon from "@material-ui/icons/Close";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { IList } from "../lists/redux/entities";
+import { List } from "../lists/data";
 import { actions, selectors } from "../redux";
 
 const Transition = (props: TransitionProps) => (
@@ -40,11 +40,11 @@ const useStylesSnackbarContent = makeStyles((theme) => ({
   },
 }));
 
-type IViewListButtonProps = {
-  list: Partial<IList>;
+type ViewListButtonProps = {
+  list: Partial<List>;
 };
 
-export const ViewListButton = ({ list }: IViewListButtonProps) => {
+export const ViewListButton = ({ list }: ViewListButtonProps) => {
   const dispatch = useDispatch();
 
   return (

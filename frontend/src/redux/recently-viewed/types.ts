@@ -15,3 +15,7 @@ export type Entity =
 export interface RecentlyViewedState {
   entities: Entity[];
 }
+
+export const initialState: RecentlyViewedState = {
+  entities: [],
+};

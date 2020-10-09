@@ -16,3 +16,10 @@ export interface AuthState {
   user: User | undefined;
   error: AuthError;
 }
+
+export const initialState: AuthState = {
+  status: "loading",
+  authStatus: "loading",
+  user: undefined,
+  error: undefined,
+};

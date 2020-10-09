@@ -1,8 +1,13 @@
 import { createReducer } from "@reduxjs/toolkit";
 import * as actions from "./actions";
-import { SnackbarState } from "./types";
+import { SnackbarProps } from "@material-ui/core";
 
-const initialState: SnackbarState = {
+export type SnackbarState = {
+  snackbarProps: Partial<SnackbarProps>;
+  open: boolean;
+};
+
+export const initialState: SnackbarState = {
   snackbarProps: {},
   open: false,
 };

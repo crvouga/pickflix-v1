@@ -44,8 +44,18 @@ export interface DiscoverState {
   tags: Tag[];
   activeTags: Tag[];
   responses: Response[];
-  status: Status;
+  status: Status | null;
   searchText: string;
   searchResults: Result[];
-  searchStatus: Status;
+  searchStatus: Status | null;
 }
+
+export const initialState: DiscoverState = {
+  tags: [],
+  activeTags: [],
+  responses: [],
+  status: null,
+  searchText: "",
+  searchResults: [],
+  searchStatus: null,
+};

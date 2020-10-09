@@ -18,9 +18,31 @@ export interface ModalState {
   props: ModalProps;
 }
 
+const initialModalState: ModalState = {
+  isOpen: false,
+  props: {},
+};
+
 export type RouterLocationState = {
   [key in ModalName]: ModalState;
 };
 
+const initialRouterLocationState: RouterLocationState = {
+  SignIn: initialModalState,
+  SaveToList: initialModalState,
+  CreateList: initialModalState,
+  VideoPlayer: initialModalState,
+  DiscoverSearch: initialModalState,
+};
 export interface RouterState
   extends ConnectReactRouterState<RouterLocationState> {}
+
+export const initialState: RouterState = {
+  action: "PUSH",
+  location: {
+    pathname: "/",
+    search: "",
+    state: initialRouterLocationState,
+    hash: "",
+  },
+};

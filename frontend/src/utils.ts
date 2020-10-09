@@ -14,3 +14,7 @@ export const makeFadeToBackgroundCss = (
 ) => `linear-gradient(
     ${gradientStep(theme.palette.background.default, steps)}
   )`;
+
+export type DeepPartial<T> = {
+  [P in keyof T]?: DeepPartial<T[P]>;
+};

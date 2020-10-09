@@ -34,10 +34,10 @@ export default () => {
 
   const onClickCreate = async () => {
     const listInfo = {
-      title: inputRefTitle.current?.value,
+      title: inputRefTitle.current?.value || "",
       listItemInfos: props.listItemInfos,
     };
-    dispatch(actions.lists.createList(listInfo));
+    dispatch(actions.lists.addList(listInfo));
     dispatch(actions.router.close({ name: ModalName.CreateList }));
   };
 

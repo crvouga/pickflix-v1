@@ -1,4 +1,4 @@
-import { combineReducers } from "@reduxjs/toolkit";
+import { combineReducers, createAction } from "@reduxjs/toolkit";
 import { connectRouter } from "connected-react-router";
 import { History } from "history";
 import { spawn } from "redux-saga/effects";
@@ -9,14 +9,16 @@ import lists from "../lists/redux";
 import personPage from "../person/redux";
 import search from "../search/redux";
 import snackbar from "../snackbar/redux";
-import tmdb from "../tmdb/redux";
+import { DeepPartial } from "../utils";
 import video from "../video/redux";
-import boolean from "./boolean";
-import query from "./query";
 import recentlyViewed from "./recently-viewed";
 import router from "./router";
+import { AppState } from "./types";
+
+const setState = createAction<DeepPartial<AppState>>("SET_STATE");
 
 export const actions = Object.freeze({
+  setState,
   lists: lists.actions,
   video: video.actions,
   discover: discover.actions,
@@ -26,9 +28,6 @@ export const actions = Object.freeze({
   auth: auth.actions,
   signInForm: signInForm.actions,
   snackbar: snackbar.actions,
-  query: query.actions,
-  tmdb: tmdb.actions,
-  boolean: boolean.actions,
   personPage: personPage.actions,
 });
 
@@ -42,15 +41,11 @@ export const selectors = Object.freeze({
   auth: auth.selectors,
   signInForm: signInForm.selectors,
   router: router.selectors,
-  query: query.selectors,
-  tmdb: tmdb.selectors,
-  boolean: boolean.selectors,
   personPage: personPage.selectors,
 });
 
 function* rootSaga() {
   yield* [
-    spawn(tmdb.saga),
     spawn(snackbar.saga),
     spawn(lists.saga),
     spawn(video.saga),
@@ -74,9 +69,6 @@ export const configureRoot = (history: History) => {
     recentlyViewed: recentlyViewed.reducer,
     signInForm: signInForm.reducer,
     auth: auth.reducer,
-    query: query.reducer,
-    tmdb: tmdb.reducer,
-    boolean: boolean.reducer,
     personPage: personPage.reducer,
   });
 

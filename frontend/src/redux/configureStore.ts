@@ -3,10 +3,8 @@ import { routerMiddleware } from "connected-react-router";
 import { createBrowserHistory } from "history";
 import { persistReducer, persistStore } from "redux-persist";
 import localforage from "localforage";
-
 import createSagaMiddleware from "redux-saga";
 import { configureRoot } from "./index";
-import query from "./query";
 
 const history = createBrowserHistory();
 
@@ -21,11 +19,7 @@ const persistedReducer = persistReducer(persistConfig, root.reducer);
 
 const sagaMiddleware = createSagaMiddleware();
 
-const middleware = [
-  routerMiddleware(history),
-  sagaMiddleware,
-  ...query.middlewares,
-];
+const middleware = [routerMiddleware(history), sagaMiddleware];
 
 export default () => {
   const store = configureStore({

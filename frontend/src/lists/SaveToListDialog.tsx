@@ -10,46 +10,80 @@ import {
 import MovieIcon from "@material-ui/icons/Movie";
 import { AvatarGroup } from "@material-ui/lab";
 import * as R from "ramda";
-import React, { useEffect } from "react";
+import React from "react";
+import { useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import BottomButton from "../common/components/BottomButton";
 import CircularProgressBox from "../common/components/CircularProgressBox";
+import ErrorBox from "../common/components/ErrorBox";
 import { actions, selectors } from "../redux";
 import { ModalName } from "../redux/router/types";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-import * as queryConfigs from "./redux/query-configs";
-import { useQuery } from "react-query";
-import { queryKeys, fetchLists, postListItem } from "./data";
-import { useMutation } from "react-query";
+import { fetchLists, queryKeys } from "./data";
 
-const listsQueryConfig = queryConfigs.listsRequest();
+const Lists = ({ tmdbMediaId }: { tmdbMediaId?: string }) => {
+  const query = useQuery(queryKeys.lists(), () => fetchLists());
 
-const useAddToListLogic = () => {
-  const queryLists = useQuery(queryKeys.lists(), () => fetchLists());
+  const dispatch = useDispatch();
 
-  const [mutateAddToList, queryAddToList] = useMutation(postListItem, {});
-
-  const onAddToList = ({
-    listId,
-    tmdbMediaId,
-    tmdbMediaType,
-  }: {
-    listId: string;
-    tmdbMediaId: string;
-    tmdbMediaType: "movie" | "tv" | "person";
-  }) => async () => {
-    mutateAddToList({
-      listId,
-      tmdbMediaId,
-      tmdbMediaType,
-    });
+  const handleSaveToList = (listId: string) => async () => {
+    if (tmdbMediaId) {
+      dispatch(
+        actions.lists.addListItem({
+          listId,
+          tmdbMediaType: "movie",
+          tmdbMediaId,
+        })
+      );
+      dispatch(actions.router.close({ name: ModalName.SaveToList }));
+    }
   };
 
-  return {
-    onAddToList,
-    queryLists,
-    queryAddToList,
-  };
+  if (query.error) {
+    return <ErrorBox />;
+  }
+
+  if (!query.data) {
+    return <CircularProgressBox />;
+  }
+
+  const lists = query.data;
+
+  return (
+    <List>
+      {lists.map((list, index) => (
+        <ListItem
+          key={list?.id || index}
+          divider
+          button
+          onClick={handleSaveToList(list?.id)}
+        >
+          <Box marginX={1}>
+            <AvatarGroup spacing="small">
+              {R.take(1, list.listItems || []).map((listItem, index) => (
+                <Avatar
+                  key={listItem?.id || index}
+                  variant="square"
+                  src={makeTMDbImageURL(3, {
+                    posterPath: listItem?.tmdbData.posterPath,
+                  })}
+                >
+                  <MovieIcon />
+                </Avatar>
+              ))}
+            </AvatarGroup>
+          </Box>
+          {/* <ListItemIcon>
+                  <Checkbox checked={isChecked(list.id)} />
+                </ListItemIcon> */}
+          <ListItemText
+            primary={list.title}
+            secondary={`${list?.listItemCount || 0} items`}
+          />
+        </ListItem>
+      ))}
+    </List>
+  );
 };
 
 export default () => {
@@ -58,8 +92,7 @@ export default () => {
   const isOpen = useSelector(selectors.router.isOpen(ModalName.SaveToList));
   const modalProps = useSelector(selectors.router.props(ModalName.SaveToList));
 
-  const listsQuery = useSelector(selectors.query.queryState(listsQueryConfig));
-  const lists = useSelector(selectors.lists.lists);
+  const { movieId: tmdbMediaId } = modalProps;
 
   const onClose = () => {
     dispatch(actions.router.close({ name: ModalName.SaveToList }));
@@ -84,38 +117,12 @@ export default () => {
     }
   };
 
-  const tmdbMediaId = modalProps.movieId;
-
-  const handleSaveToList = (listId: string) => async () => {
-    if (tmdbMediaId) {
-      dispatch(
-        actions.lists.addListItem({
-          listId,
-          tmdbMediaType: "movie",
-          tmdbMediaId,
-        })
-      );
-      dispatch(actions.router.close({ name: ModalName.SaveToList }));
-    }
-  };
-
   const handleDone = () => {
     dispatch(actions.router.close({ name: ModalName.SaveToList }));
   };
 
-  useEffect(() => {
-    if (isOpen) {
-      dispatch(actions.query.requestAsync(listsQueryConfig));
-    }
-  }, [isOpen, dispatch]);
-
   return (
-    <Dialog
-      // TransitionComponent={Transition}
-      fullScreen
-      open={isOpen}
-      onClose={onClose}
-    >
+    <Dialog fullScreen open={isOpen} onClose={onClose}>
       <ListItem divider>
         <ListItemText primary="Save to..." />
         <Button onClick={onClickCreateList} color="primary">
@@ -123,41 +130,7 @@ export default () => {
         </Button>
       </ListItem>
 
-      <List>
-        {lists.map((list, index) => (
-          <ListItem
-            key={list?.id || index}
-            divider
-            button
-            onClick={handleSaveToList(list?.id)}
-          >
-            <Box marginX={1}>
-              <AvatarGroup spacing="small">
-                {R.take(1, list.listItems || []).map((listItem, index) => (
-                  <Avatar
-                    key={listItem?.id || index}
-                    variant="square"
-                    src={makeTMDbImageURL(3, {
-                      posterPath: listItem?.tmdbData.posterPath,
-                    })}
-                  >
-                    <MovieIcon />
-                  </Avatar>
-                ))}
-              </AvatarGroup>
-            </Box>
-            {/* <ListItemIcon>
-                  <Checkbox checked={isChecked(list.id)} />
-                </ListItemIcon> */}
-            <ListItemText
-              primary={list.title}
-              secondary={`${list?.listItemCount || 0} items`}
-            />
-          </ListItem>
-        ))}
-      </List>
-
-      {listsQuery.isPending && <CircularProgressBox />}
+      <Lists tmdbMediaId={tmdbMediaId} />
 
       <BottomButton onClick={handleDone} />
     </Dialog>

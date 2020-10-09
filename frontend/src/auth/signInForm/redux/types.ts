@@ -26,3 +26,9 @@ export interface SignInFormState {
   error: FirebaseError | undefined;
   values: FormValues;
 }
+export const initialState = {
+  status: null,
+  step: Step.signIn,
+  error: null,
+  values: {},
+};

@@ -1,13 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import * as actions from "./actions";
-import { AuthState } from "./types";
-
-const initialState: AuthState = {
-  status: "loading",
-  authStatus: "loading",
-  user: undefined,
-  error: undefined,
-};
+import { initialState } from "./types";
 
 export default createReducer(initialState, {
   [actions.setAuthStatus.toString()]: (state, action) => {

@@ -1,13 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import * as actions from "./actions";
-import { Step } from "./types";
-
-const initialState = {
-  status: null,
-  step: Step.signIn,
-  error: null,
-  values: {},
-};
+import { Step, initialState } from "./types";
 
 export default createReducer(initialState, {
   [actions.setStatus.toString()]: (state, action) => {

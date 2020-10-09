@@ -1,26 +1,32 @@
+import { AuthState, initialState as auth } from "../auth/redux/types";
 import {
-  TypedUseSelectorHook,
-  useDispatch as useReduxDispatch,
-  useSelector as useReduxSelector,
-} from "react-redux";
-import { AuthState } from "../auth/redux/types";
-import { SignInFormState } from "../auth/signInForm/redux/types";
-import { DiscoverState } from "../discover/redux/types";
-import { ListsState } from "../lists/redux/types";
-import { SearchState } from "../search/redux/types";
-import { SnackbarState } from "../snackbar/redux/types";
-import { VideoState } from "../video/redux/types";
-import { QueryState } from "./query/types";
-import { RecentlyViewedState } from "./recently-viewed/types";
-import { RouterState } from "./router/types";
-import { TmdbState } from "../tmdb/redux/types";
-import { BooleanState } from "./boolean/types";
-import { PersonPageState } from "../person/redux/types";
+  SignInFormState,
+  initialState as signInForm,
+} from "../auth/signInForm/redux/types";
+import {
+  DiscoverState,
+  initialState as discover,
+} from "../discover/redux/types";
+import { ListsState, initialState as lists } from "../lists/redux/types";
+import { SearchState, initialState as search } from "../search/redux/types";
+import {
+  SnackbarState,
+  initialState as snackbar,
+} from "../snackbar/redux/reducer";
+import { VideoState, initialState as video } from "../video/redux/types";
+import {
+  RecentlyViewedState,
+  initialState as recentlyViewed,
+} from "./recently-viewed/types";
+import { RouterState, initialState as router } from "./router/types";
+import {
+  PersonPageState,
+  initialState as personPage,
+} from "../person/redux/types";
 
-export interface AppState {
+export type AppState = {
   lists: ListsState;
   router: RouterState;
-  query: QueryState;
   video: VideoState;
   discover: DiscoverState;
   search: SearchState;
@@ -28,7 +34,18 @@ export interface AppState {
   auth: AuthState;
   signInForm: SignInFormState;
   snackbar: SnackbarState;
-  tmdb: TmdbState;
-  boolean: BooleanState;
   personPage: PersonPageState;
-}
+};
+
+export const initialState = {
+  lists,
+  router,
+  video,
+  discover,
+  search,
+  recentlyViewed,
+  auth,
+  signInForm,
+  snackbar,
+  personPage,
+};

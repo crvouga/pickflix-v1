@@ -12,10 +12,10 @@ import MovieIcon from "@material-ui/icons/Movie";
 import PublicOutlinedIcon from "@material-ui/icons/PublicOutlined";
 import React from "react";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-import { IList } from "./redux/entities";
+import { List } from "./data";
 
 type Props = ListItemProps & {
-  list: IList;
+  list: List;
   onClick: () => void;
 };
 

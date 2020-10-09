@@ -12,3 +12,9 @@ export interface VideoState {
   video: MovieVideo | undefined;
   playlist: MovieVideo[];
 }
+
+export const initialState: VideoState = {
+  isPlaying: false,
+  video: undefined,
+  playlist: [],
+};
