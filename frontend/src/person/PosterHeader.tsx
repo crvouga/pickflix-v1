@@ -2,7 +2,7 @@ import { Box, makeStyles } from "@material-ui/core";
 import * as R from "ramda";
 import React from "react";
 import AspectRatio from "../common/components/AspectRatio";
-import { POSTER_ASPECT_RATIO } from "../movie/components/MoviePosterCard";
+import { MOVIE_POSTER_ASPECT_RATIO } from "../movie/components/MoviePosterCard";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import {
   PersonDetailsResponse,
@@ -45,8 +45,8 @@ export default (props: Props) => {
   const sizeIndex = countToSizeIndex[count] || Infinity;
 
   const ratio: [number, number] = [
-    POSTER_ASPECT_RATIO[0] * 3,
-    POSTER_ASPECT_RATIO[1],
+    MOVIE_POSTER_ASPECT_RATIO[0] * 3,
+    MOVIE_POSTER_ASPECT_RATIO[1],
   ];
   return (
     <AspectRatio
@@ -60,7 +60,7 @@ export default (props: Props) => {
     >
       {posters.slice(0, count).map(({ id, posterPath }) => (
         <Box key={id} width={width}>
-          <AspectRatio ratio={POSTER_ASPECT_RATIO}>
+          <AspectRatio ratio={MOVIE_POSTER_ASPECT_RATIO}>
             <img
               alt=""
               src={makeTMDbImageURL(sizeIndex, { posterPath })}

@@ -20,7 +20,12 @@ import PosterHeader from "./PosterHeader";
 
 const fetchPersonPage = (personId: string) =>
   backendAPI
-    .get(`/api/tmdb/person/${personId}`, {
+    .get<
+      {
+        credits: PersonMovieCreditsResponse;
+        images: PersonImagesResponse;
+      } & PersonDetailsResponse
+    >(`/api/tmdb/person/${personId}`, {
       params: {
         appendToResponse: [
           "credits",
@@ -42,35 +47,30 @@ export default () => {
   const classes = useStyles();
   const { personId } = useParams<{ personId: string }>();
 
-  const query = useQuery<
-    {
-      credits: PersonMovieCreditsResponse;
-      images: PersonImagesResponse;
-    } & PersonDetailsResponse,
-    string
-  >(`/person/${personId}`, () => fetchPersonPage(personId));
+  const query = useQuery(`/person/${personId}`, () =>
+    fetchPersonPage(personId)
+  );
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (query.status === "success") {
+    if (query.data) {
       dispatch(
         actions.recentlyViewed.viewed({ mediaType: "person", ...query.data })
       );
     }
   }, [query, dispatch]);
 
-  if (query.status === "loading") {
-    return (
-      <React.Fragment>
-        <NavigationBarFadeIn />
-        <LoadingPage />
-      </React.Fragment>
-    );
+  if (query.isLoading) {
+    return <LoadingPage />;
   }
 
-  if (query.status === "error") {
+  if (query.error) {
     return <ErrorPage />;
+  }
+
+  if (!query.data) {
+    return null;
   }
 
   const { credits, images, ...details } = query.data;

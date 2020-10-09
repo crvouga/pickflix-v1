@@ -4,13 +4,17 @@ import {
   DialogActions,
   DialogProps,
   DialogTitle,
-  makeStyles,
   Grow,
+  makeStyles,
+  LinearProgress,
 } from "@material-ui/core";
-import React from "react";
-import { useDispatch } from "react-redux";
-import { actions } from "../redux";
 import { TransitionProps } from "@material-ui/core/transitions";
+import React from "react";
+import { queryCache, useMutation } from "react-query";
+
+import { deleteList, queryKeys } from "./data";
+import { useDispatch, useSelector } from "react-redux";
+import { actions, selectors } from "../redux";
 
 const TransitionComponent = (props: TransitionProps) => <Grow {...props} />;
 
@@ -31,10 +35,27 @@ const close = (props: DialogProps) => () => {
 export default (props: Props) => {
   const { list } = props;
   const classesDialog = useStylesDialog();
+
   const dispatch = useDispatch();
+  const currentUser = useSelector(selectors.auth.user);
+
+  const [mutateDeleteList, queryDeleteList] = useMutation(deleteList, {
+    onSuccess: () => {
+      dispatch(actions.router.goBack());
+      dispatch(
+        actions.snackbar.display({
+          message: "Deleted List",
+        })
+      );
+    },
+    onSettled: () => {
+      queryCache.invalidateQueries(queryKeys.lists());
+      queryCache.invalidateQueries(queryKeys.list(list.id));
+    },
+  });
 
   const onDelete = () => {
-    dispatch(actions.lists.deleteList(list.id));
+    mutateDeleteList({ listId: list.id });
   };
 
   return (
@@ -43,6 +64,7 @@ export default (props: Props) => {
       classes={classesDialog}
       {...props}
     >
+      {queryDeleteList.isLoading && <LinearProgress />}
       <DialogTitle>Delete list?</DialogTitle>
       <DialogActions>
         <Button color="primary" onClick={close(props)}>

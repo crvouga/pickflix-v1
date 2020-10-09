@@ -18,8 +18,39 @@ import { actions, selectors } from "../redux";
 import { ModalName } from "../redux/router/types";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import * as queryConfigs from "./redux/query-configs";
+import { useQuery } from "react-query";
+import { queryKeys, fetchLists, postListItem } from "./data";
+import { useMutation } from "react-query";
 
 const listsQueryConfig = queryConfigs.listsRequest();
+
+const useAddToListLogic = () => {
+  const queryLists = useQuery(queryKeys.lists(), () => fetchLists());
+
+  const [mutateAddToList, queryAddToList] = useMutation(postListItem, {});
+
+  const onAddToList = ({
+    listId,
+    tmdbMediaId,
+    tmdbMediaType,
+  }: {
+    listId: string;
+    tmdbMediaId: string;
+    tmdbMediaType: "movie" | "tv" | "person";
+  }) => async () => {
+    mutateAddToList({
+      listId,
+      tmdbMediaId,
+      tmdbMediaType,
+    });
+  };
+
+  return {
+    onAddToList,
+    queryLists,
+    queryAddToList,
+  };
+};
 
 export default () => {
   const dispatch = useDispatch();

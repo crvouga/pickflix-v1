@@ -6,7 +6,6 @@ import {
   Dialog,
   DialogProps,
   IconButton,
-  LinearProgress,
   List,
   ListItem,
   ListItemAvatar,
@@ -21,18 +20,11 @@ import {
 import CheckOutlinedIcon from "@material-ui/icons/CheckOutlined";
 import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import * as R from "ramda";
-import React, { useEffect, useRef, useState } from "react";
-import { actions, selectors } from "../redux";
-import { useDispatch, useSelector } from "../redux/types";
+import React from "react";
+import CircularProgressBox from "../common/components/CircularProgressBox";
+import ErrorBox from "../common/components/ErrorBox";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-import { IList, IListItem } from "./redux/entities";
-import * as queryConfigs from "./redux/query-configs";
-
-interface IProps extends DialogProps {
-  list: IList;
-  onClose: (event?: {}, reason?: "backdropClick" | "escapeKeyDown") => void;
-}
+import useEditListLogic from "./useEditListLogic";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
@@ -40,65 +32,51 @@ const useStylesDialog = makeStyles((theme) => ({
   },
 }));
 
-export default ({ list, ...DialogProps }: IProps) => {
+type Props = DialogProps & {
+  listId: string;
+  onClose: (event?: {}, reason?: "backdropClick" | "escapeKeyDown") => void;
+};
+
+export default ({ listId, ...DialogProps }: Props) => {
   const classesDialog = useStylesDialog();
-  const dispatch = useDispatch();
 
-  const listItemsRequest = queryConfigs.listItemsRequest({ listId: list.id });
-  const listItemsQuery = useSelector(
-    selectors.query.queryState(listItemsRequest)
-  );
-  const listItems = useSelector(selectors.lists.listItems(list.id));
+  const {
+    inputRefTitle,
+    inputRefDescription,
+    listItemDeletions,
+    //
+    toggleListItemDeletions,
+    onSaveChanges,
+    //
+    queryList,
+    queryListItems,
+  } = useEditListLogic(listId);
 
-  const inputRefTitle = useRef<HTMLInputElement>();
-  const inputRefDescription = useRef<HTMLInputElement>();
-  const [listItemDeletions, setListItemDeletions] = useState<{
-    [id: string]: string;
-  }>({});
-
-  useEffect(() => {
-    setListItemDeletions({});
-  }, [DialogProps.open]);
-
-  const toggleDeletions = (listItem: IListItem) => () => {
-    setListItemDeletions(
-      R.ifElse(
-        R.has(listItem.id),
-        R.dissoc(listItem.id),
-        R.assoc(listItem.id, listItem.id)
-      )
-    );
-  };
-
-  const onClickSaveChanges = async () => {
-    dispatch(
-      actions.lists.editList({
-        id: list.id,
-        title: inputRefTitle.current?.value || "",
-        description: inputRefDescription.current?.value || "",
-      })
-    );
-
-    dispatch(
-      actions.lists.deleteListItem({
-        listId: list.id,
-        listItemIds: R.values(listItemDeletions),
-      })
-    );
-
+  const handleSaveChanges = () => {
+    onSaveChanges();
     DialogProps.onClose();
   };
 
+  if (queryList.error || queryListItems.error) {
+    return <ErrorBox />;
+  }
+
+  if (!queryList.data || !queryListItems.data) {
+    return <CircularProgressBox />;
+  }
+
+  const list = queryList.data;
+  const listItems = queryListItems.data;
+
   return (
     <Dialog fullScreen classes={classesDialog} {...DialogProps}>
-      {listItemsQuery.isPending && <LinearProgress />}
       <AppBar color="default" position="sticky">
         <Toolbar>
           <IconButton onClick={DialogProps.onClose}>
             <CloseOutlinedIcon />
           </IconButton>
           <Typography style={{ flex: 1 }}>Edit List</Typography>
-          <IconButton onClick={onClickSaveChanges}>
+          <IconButton onClick={handleSaveChanges}>
             <CheckOutlinedIcon />
           </IconButton>
         </Toolbar>
@@ -147,7 +125,7 @@ export default ({ list, ...DialogProps }: IProps) => {
               divider
               key={listItem.id}
               button
-              onClick={toggleDeletions(listItem)}
+              onClick={toggleListItemDeletions(listItem)}
             >
               <ListItemAvatar>
                 <Avatar

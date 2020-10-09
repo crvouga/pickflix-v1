@@ -1,28 +1,21 @@
 import { Box, List, Typography } from "@material-ui/core";
 import React from "react";
 import ReadMore from "../../common/components/ReadMore";
-import {
-  MovieDetails,
-  MovieKeywords,
-  MovieReleaseDates,
-} from "../../tmdb/types";
+import { useMoviePageQuery } from "../data";
 import * as utils from "../utils";
 import DetailListItem from "./DetailListItem";
 
-type Props = {
-  details: MovieDetails;
-  keywords: MovieKeywords;
-  releaseDates: MovieReleaseDates;
-};
+export default () => {
+  const query = useMoviePageQuery();
+  if (!query.data) return null;
 
-export default (props: Props) => {
   return (
     <List>
       <Box paddingX={2} paddingTop={2}>
         <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
         <ReadMore
           TypographyProps={{ color: "textSecondary" }}
-          text={props.details.overview}
+          text={query.data.overview}
         />
       </Box>
       {/* <Box display="flex" flexDirection="row">
@@ -50,13 +43,13 @@ export default (props: Props) => {
         <DetailListItem
           ListItemTextProps={{
             primary: "Budget",
-            secondary: utils.budget(props),
+            secondary: utils.budget(query.data),
           }}
         />
         <DetailListItem
           ListItemTextProps={{
             primary: "Revenue",
-            secondary: utils.revenue(props),
+            secondary: utils.revenue(query.data),
           }}
         />
       </Box>

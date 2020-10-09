@@ -15,14 +15,16 @@ import HorizontalScroll from "../../common/components/HorizontalScroll";
 import { actions } from "../../redux";
 import { MovieCredits } from "../../tmdb/types";
 import CreditsListCard from "./CreditsListCard";
+import { useMoviePageQuery } from "../data";
 
-type Props = {
-  credits: MovieCredits;
-};
-
-export default ({ credits }: Props) => {
+export default () => {
   const dispatch = useDispatch();
   const { movieId } = useParams<{ movieId: string }>();
+
+  const query = useMoviePageQuery();
+  if (!query.data) return null;
+
+  const { credits } = query.data;
 
   const { cast, crew } = credits;
   const [directors, restOfCrew] = partition(whereEq({ job: "Director" }), crew);

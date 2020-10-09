@@ -6,10 +6,12 @@ import auth from "../auth/redux";
 import signInForm from "../auth/signInForm/redux";
 import discover from "../discover/redux";
 import lists from "../lists/redux";
+import personPage from "../person/redux";
 import search from "../search/redux";
 import snackbar from "../snackbar/redux";
 import tmdb from "../tmdb/redux";
 import video from "../video/redux";
+import boolean from "./boolean";
 import query from "./query";
 import recentlyViewed from "./recently-viewed";
 import router from "./router";
@@ -26,6 +28,8 @@ export const actions = Object.freeze({
   snackbar: snackbar.actions,
   query: query.actions,
   tmdb: tmdb.actions,
+  boolean: boolean.actions,
+  personPage: personPage.actions,
 });
 
 export const selectors = Object.freeze({
@@ -40,6 +44,8 @@ export const selectors = Object.freeze({
   router: router.selectors,
   query: query.selectors,
   tmdb: tmdb.selectors,
+  boolean: boolean.selectors,
+  personPage: personPage.selectors,
 });
 
 function* rootSaga() {
@@ -70,6 +76,8 @@ export const configureRoot = (history: History) => {
     auth: auth.reducer,
     query: query.reducer,
     tmdb: tmdb.reducer,
+    boolean: boolean.reducer,
+    personPage: personPage.reducer,
   });
 
   return {

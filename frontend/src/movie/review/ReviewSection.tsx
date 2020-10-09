@@ -7,20 +7,15 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import CurrentUserAvatar from "../../auth/CurrentUserAvatar";
+import { useMoviePageQuery } from "../data";
 import Review from "./Review";
 
-interface Props {
-  reviews: {
-    results: {
-      id: string;
-      url: string;
-      content: string;
-      author: string;
-    }[];
-  };
-}
+export default () => {
+  const query = useMoviePageQuery();
+  if (!query.data) return null;
 
-export default ({ reviews }: Props) => {
+  const { reviews } = query.data;
+
   return (
     <React.Fragment>
       <List>

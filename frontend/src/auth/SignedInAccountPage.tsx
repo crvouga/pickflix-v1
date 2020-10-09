@@ -24,7 +24,7 @@ import React, { useState } from "react";
 import BackButton from "../common/BackButton";
 import useBoolean from "../common/hooks/useBoolean";
 import { actions, selectors } from "../redux";
-import { useDispatch, useSelector } from "../redux/types";
+import { useDispatch, useSelector } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   bold: {

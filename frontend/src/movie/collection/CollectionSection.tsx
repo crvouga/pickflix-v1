@@ -6,30 +6,31 @@ import backendAPI from "../../backendAPI";
 import { actions } from "../../redux";
 import { Collection } from "../../tmdb/types";
 import CollectionCard from "./CollectionCard";
+import { useMoviePageQuery } from "../data";
 
-interface Props {
+const fetchCollection = async (collectionId: string) => {
+  const { data } = await backendAPI.get<Collection>(
+    `/api/tmdb/collection/${collectionId}`
+  );
+  return data;
+};
+
+type CollectionSectionProps = {
   collection: {
     id: string;
   };
-}
+};
 
-export default ({ collection: { id: collectionId } }: Props) => {
+const CollectionSection = ({
+  collection: { id: collectionId },
+}: CollectionSectionProps) => {
   const dispatch = useDispatch();
 
-  const query = useQuery<Collection, string>(
-    ["collection", collectionId].join(""),
-    () =>
-      backendAPI
-        .get(`/api/tmdb/collection/${collectionId}`)
-        .then((res) => res.data),
-    {}
+  const query = useQuery(`/collection/${collectionId}`, () =>
+    fetchCollection(collectionId)
   );
 
-  if (query.status === "error") {
-    return null;
-  }
-
-  if (query.status === "loading") {
+  if (query.error || !query.data) {
     return null;
   }
 
@@ -40,8 +41,23 @@ export default ({ collection: { id: collectionId } }: Props) => {
   const collection = query.data;
 
   return (
-    <Box marginX={2} marginTop={2}>
+    <Box m={2}>
       <CollectionCard collection={collection} onClick={handleClick} />
     </Box>
   );
+};
+
+export default () => {
+  const query = useMoviePageQuery();
+  if (!query.data) {
+    return null;
+  }
+
+  const { belongsToCollection } = query.data;
+
+  if (belongsToCollection) {
+    return <CollectionSection collection={belongsToCollection} />;
+  }
+
+  return null;
 };

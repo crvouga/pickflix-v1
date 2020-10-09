@@ -14,10 +14,10 @@ import React from "react";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { IList } from "./redux/entities";
 
-interface Props extends ListItemProps {
+type Props = ListItemProps & {
   list: IList;
   onClick: () => void;
-}
+};
 
 export default ({ list, onClick }: Props) => {
   const listItem = list?.listItems?.[0];

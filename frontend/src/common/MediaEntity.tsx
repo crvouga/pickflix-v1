@@ -1,6 +1,6 @@
 import { Box, BoxProps, Typography } from "@material-ui/core";
 import React from "react";
-import Poster from "../movie/components/Poster";
+import Poster from "../movie/components/MoviePosterCard";
 import PersonAvatar from "../person/PersonAvatar";
 import { Movie, Person } from "../tmdb/types";
 
@@ -33,7 +33,7 @@ export default ({ entity, skeleton = false, ...restOfProps }: Props) => {
           </Typography>
         </Box>
       ) : entity.mediaType === "movie" ? (
-        <Poster movie={entity as Movie} width="100%" />
+        <Poster movie={entity as Movie} />
       ) : (
         <div>unknown entity</div>
       )}

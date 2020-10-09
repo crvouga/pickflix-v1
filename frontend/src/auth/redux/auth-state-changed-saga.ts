@@ -5,47 +5,53 @@ import { actions, selectors } from "../../redux";
 import firebase from "../firebase";
 import { AuthStatus } from "./types";
 
-// false for no user because redux saga doesn't like null values
 const authStateChannel = eventChannel<User | false>((emit) => {
   return firebase.auth().onAuthStateChanged((user) => {
     emit(user || false);
   });
 });
 
-function* authStateChanged(newCurrentUser: User | false) {
+function* authStateChangedSaga(newCurrentUser: User | false) {
   const previousAuthStatus: AuthStatus = yield select(
     selectors.auth.authStatus
   );
-
-  yield put(actions.auth.setUser(newCurrentUser || undefined));
-  yield put(
-    actions.auth.setAuthStatus(newCurrentUser ? "signedIn" : "signedOut")
+  const perviousCurrentUser: User | undefined = yield select(
+    selectors.auth.user
   );
+
+  if (newCurrentUser) {
+    yield put(actions.auth.setUser(newCurrentUser));
+    yield put(actions.auth.setAuthStatus("signedIn"));
+  } else {
+    yield put(actions.auth.setUser(undefined));
+    yield put(actions.auth.setAuthStatus("signedOut"));
+  }
 
   const currentAuthStatus: AuthStatus = yield select(selectors.auth.authStatus);
   const currentUser: User | undefined = yield select(selectors.auth.user);
 
-  if (
+  const didSignedIn =
     previousAuthStatus !== "signedIn" &&
     currentAuthStatus === "signedIn" &&
-    currentUser
-  ) {
-    yield put(
-      actions.snackbar.display({
-        message: `Signed as ${currentUser.displayName} (${currentUser.email})`,
-      })
-    );
+    currentUser;
+
+  const didSwapSignIn =
+    perviousCurrentUser &&
+    currentUser &&
+    perviousCurrentUser.uid !== currentUser.uid;
+
+  if (didSignedIn || didSwapSignIn) {
+    yield put(actions.auth.signedIn());
   }
 
-  if (previousAuthStatus === "signedIn" && currentAuthStatus === "signedOut") {
-    yield put(
-      actions.snackbar.display({
-        message: `You are now signed out`,
-      })
-    );
+  const didSignOut =
+    previousAuthStatus === "signedIn" && currentAuthStatus === "signedOut";
+
+  if (didSignOut) {
+    yield put(actions.auth.signedOut());
   }
 }
 
 export default function* () {
-  yield takeEvery(authStateChannel, authStateChanged);
+  yield takeEvery(authStateChannel, authStateChangedSaga);
 }

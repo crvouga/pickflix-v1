@@ -20,16 +20,14 @@ export const voteCount = ({ details }: DetailsProp) =>
 export const releaseDate = ({ details }: DetailsProp) =>
   moment(details.releaseDate).format("MMMM Do YYYY");
 
-export const budget = ({ details }: DetailsProp) =>
-  details.budget ? `$${commas(details.budget)}` : EMPTY;
+export const budget = ({ budget }: MovieDetails) =>
+  budget ? `$${commas(budget)}` : EMPTY;
 
-export const revenue = ({ details }: DetailsProp) =>
-  details.revenue ? `$${commas(details.revenue)}` : EMPTY;
+export const revenue = ({ revenue }: MovieDetails) =>
+  revenue ? `$${commas(revenue)}` : EMPTY;
 
-export const runtime = ({ details }: DetailsProp) =>
-  details.runtime
-    ? moment.duration(details.runtime, "minutes").format("h[h] m[m]")
-    : EMPTY;
+export const runtime = ({ runtime }: MovieDetails) =>
+  runtime ? moment.duration(runtime, "minutes").format("h[h] m[m]") : EMPTY;
 
 export const toReleaseYear = ({
   releaseDate,
@@ -37,8 +35,8 @@ export const toReleaseYear = ({
   releaseDate: string;
 }): string => moment(releaseDate).format("YYYY");
 
-export const releaseYear = ({ details }: DetailsProp) =>
-  details.releaseDate ? moment(details.releaseDate).format("YYYY") : EMPTY;
+export const releaseYear = ({ releaseDate }: MovieDetails) =>
+  releaseDate ? moment(releaseDate).format("YYYY") : EMPTY;
 
 export const certification = ({ releaseDates }: ReleaseDateProp) =>
   releaseDates.results

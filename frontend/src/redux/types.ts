@@ -14,6 +14,8 @@ import { QueryState } from "./query/types";
 import { RecentlyViewedState } from "./recently-viewed/types";
 import { RouterState } from "./router/types";
 import { TmdbState } from "../tmdb/redux/types";
+import { BooleanState } from "./boolean/types";
+import { PersonPageState } from "../person/redux/types";
 
 export interface AppState {
   lists: ListsState;
@@ -27,7 +29,6 @@ export interface AppState {
   signInForm: SignInFormState;
   snackbar: SnackbarState;
   tmdb: TmdbState;
+  boolean: BooleanState;
+  personPage: PersonPageState;
 }
-
-export const useSelector: TypedUseSelectorHook<AppState> = useReduxSelector;
-export const useDispatch = useReduxDispatch;

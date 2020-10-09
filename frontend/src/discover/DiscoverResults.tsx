@@ -2,7 +2,7 @@ import { Box, makeStyles, Typography } from "@material-ui/core";
 import React, { useEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
-import Poster from "../movie/components/Poster";
+import Poster from "../movie/components/MoviePosterCard";
 import discover from "./redux";
 
 const useStyles = makeStyles((theme) => ({
@@ -63,7 +63,7 @@ export default () => {
     <div ref={scrollRef} className={classes.container}>
       {results.map((result) => (
         <Box p={1 / 2} width="50%" key={result.id}>
-          <Poster movie={result} width="100%" />
+          <Poster movie={result} />
         </Box>
       ))}
       <div ref={triggerRef} />

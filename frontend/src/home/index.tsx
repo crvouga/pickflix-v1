@@ -6,25 +6,18 @@ import backendAPI from "../backendAPI";
 import HorizontalScroll from "../common/components/HorizontalScroll";
 import NavigationBarTopLevel from "../common/NavigationBarTopLevel";
 import ErrorPage from "../common/page/ErrorPage";
-import LoadingPage from "../common/page/LoadingPage";
-import Poster from "../movie/components/Poster";
+import LoadingPageTopLevel from "../common/page/LoadingPageTopLevel";
+import Poster from "../movie/components/MoviePosterCard";
 import PersonAvatar from "../person/PersonAvatar";
 import { Movie, Person } from "../tmdb/types";
 import Header from "./Header";
+import MoviePosterCardScroll from "../movie/components/MoviePosterCardScroll";
 
-interface TitleProps extends BoxProps {
-  text: string;
-}
-
-const Title = ({ text, ...props }: TitleProps) => (
-  <Box
-    component={Typography}
-    paddingLeft={2}
-    paddingBottom={1}
-    style={{ fontWeight: "bold" }}
-    {...props}
-  >
-    {text}
+const Title = ({ children, ...props }: BoxProps) => (
+  <Box component={Typography} paddingLeft={2} paddingBottom={1} {...props}>
+    <Typography gutterBottom variant="h6">
+      {children}
+    </Typography>
   </Box>
 );
 
@@ -32,14 +25,14 @@ const renderProfile = (person: Person) => (
   <Box key={person.id} width="120px" marginRight={1}>
     <PersonAvatar person={person} />
     <Box p={1}>
-      <Typography style={{ wordBreak: "break-word" }}>{person.name}</Typography>
+      <Typography noWrap>{person.name}</Typography>
     </Box>
   </Box>
 );
 
 const renderAvatarScroll = (title: string, persons: Person[]) => (
   <React.Fragment>
-    <Title text={title} />
+    <Title>{title}</Title>
     <HorizontalScroll paddingLeft={2}>
       {persons.map(renderProfile)}
     </HorizontalScroll>
@@ -48,12 +41,8 @@ const renderAvatarScroll = (title: string, persons: Person[]) => (
 
 const renderMovieScroll = (title: string, movies: Movie[]) => (
   <React.Fragment>
-    <Title text={title} />
-    <HorizontalScroll paddingLeft={2} marginBottom={2}>
-      {movies.map((movie, i) => (
-        <Poster key={i} movie={movie} marginRight={2} />
-      ))}
-    </HorizontalScroll>
+    <Title>{title}</Title>
+    <MoviePosterCardScroll movies={movies} />
   </React.Fragment>
 );
 
@@ -76,16 +65,12 @@ const fetchHomePage = async () => {
 export default () => {
   const query = useQuery(["home"], () => fetchHomePage(), {});
 
-  if (query.status === "loading") {
-    return (
-      <React.Fragment>
-        <NavigationBarTopLevel />
-        <LoadingPage />
-      </React.Fragment>
-    );
-  }
-  if (query.status === "error") {
+  if (query.error) {
     return <ErrorPage />;
+  }
+
+  if (!query.data) {
+    return <LoadingPageTopLevel />;
   }
 
   const {
@@ -96,6 +81,7 @@ export default () => {
     <React.Fragment>
       <NavigationBarTopLevel />
       <Header movies={popular.results} />
+
       {renderMovieScroll("Top Rated", topRated.results)}
       {renderMovieScroll("Trending", upcoming.results)}
       {renderMovieScroll("Now Playing", nowPlaying.results)}

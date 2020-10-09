@@ -4,13 +4,8 @@ import { useDispatch } from "react-redux";
 import discover from "../../discover/redux";
 import { makeTag, Tag as ITag } from "../../discover/redux/types";
 import router from "../../redux/router";
-import { MovieDetails, MovieKeywords } from "../../tmdb/types";
+import { MoviePageData, useMoviePageQuery } from "../data";
 import TagScroll from "./TagScroll";
-
-type Props = {
-  details: MovieDetails;
-  keywords: MovieKeywords;
-};
 
 const useStyles = makeStyles((theme) => ({
   paddingLeft: {
@@ -18,7 +13,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default ({ details, keywords }: Props) => {
+export default () => {
+  const query = useMoviePageQuery();
+  if (!query.data) return null;
+
+  const { keywords, ...details } = query.data;
+
   const classes = useStyles();
 
   const keywordTags = keywords.keywords.map(makeTag("keyword"));

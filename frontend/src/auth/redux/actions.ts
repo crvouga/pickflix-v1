@@ -12,3 +12,6 @@ export const signInError = createAction("[auth] SIGN_IN_ERROR");
 export const signIn = createAction("[auth] SIGN_IN");
 export const signOut = createAction("[auth] SIGN_OUT");
 export const deleteUser = createAction("[auth] DELETE_USER");
+
+export const signedIn = createAction("[auth] SIGNED_IN");
+export const signedOut = createAction("[auth] SIGNED_OUT");

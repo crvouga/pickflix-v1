@@ -30,13 +30,25 @@ const useStylesBottomNavigation = makeStyles((theme) => ({
     maxWidth: "100%",
     zIndex: theme.zIndex.appBar,
     marginRight: theme.spacing(2),
-    color: theme.palette.text.primary,
+  },
+}));
+
+const useStylesBottomNavigationAction = makeStyles((theme) => ({
+  root: {
+    color: theme.palette.action.active,
+  },
+  wrapper: {
+    color: theme.palette.action.active,
+  },
+  selected: {
+    color: theme.palette.action.active,
   },
 }));
 
 export default () => {
   const classes = useStyles();
   const classesBottomNavigation = useStylesBottomNavigation();
+  const classesBottomNavigationAction = useStylesBottomNavigationAction();
   const dispatch = useDispatch();
   const pathname = useSelector(selectors.router.pathname);
 
@@ -79,6 +91,7 @@ export default () => {
       >
         {navigationActions.map(({ value, label, icon, onClick }) => (
           <BottomNavigationAction
+            classes={classesBottomNavigationAction}
             key={value}
             value={value}
             label={label}

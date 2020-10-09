@@ -1,24 +1,26 @@
-import { Box, CircularProgress } from "@material-ui/core";
 import React, { useEffect } from "react";
+import { useQuery, queryCache } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
+import CircularProgressBox from "../common/components/CircularProgressBox";
+import ErrorBox from "../common/components/ErrorBox";
 import { actions, selectors } from "../redux";
+import { fetchLists, queryKeys } from "./data";
 import ListListItem from "./ListListItem";
-import * as queryConfigs from "./redux/query-configs";
-
-const listRequest = queryConfigs.listsRequest();
 
 export default () => {
   const dispatch = useDispatch();
 
-  const authStatus = useSelector(selectors.auth.authStatus);
-  const queryState = useSelector(selectors.query.queryState(listRequest));
-  const lists = useSelector(selectors.lists.lists);
+  const query = useQuery(queryKeys.lists(), () => fetchLists());
 
-  useEffect(() => {
-    if (authStatus === "signedIn") {
-      dispatch(actions.query.requestAsync(listRequest));
-    }
-  }, [dispatch, authStatus]);
+  if (query.error) {
+    return <ErrorBox />;
+  }
+
+  if (!query.data) {
+    return <CircularProgressBox />;
+  }
+
+  const lists = query.data;
 
   const onClickList = (list: { id: string }) => () => {
     dispatch(actions.router.push({ pathname: `/list/${list.id}` }));
@@ -29,12 +31,6 @@ export default () => {
       {lists.map((list) => (
         <ListListItem key={list.id} onClick={onClickList(list)} list={list} />
       ))}
-
-      {queryState.isPending && (
-        <Box color="text.secondary" textAlign="center">
-          <CircularProgress size="small" />
-        </Box>
-      )}
     </React.Fragment>
   );
 };

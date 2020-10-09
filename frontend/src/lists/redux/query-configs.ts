@@ -147,17 +147,13 @@ export const deleteListItemsMutation = ({
   };
 };
 
-export const editListMutation = (
-  listInfo: Pick<IList, "id"> & Partial<IList>
-): QueryConfig => {
+export const editListMutation = (): QueryConfig => {
   return {
     options: {
       method: "PATCH",
     },
-    url: `${backendURL}/api/lists/${listInfo.id}`,
-    body: {
-      ...listInfo,
-    },
+    url: `${backendURL}/api/lists/`,
+    body: {},
     transform: (data: IList) => {
       const normalized = normalizeData<EntityKeys, IList>(data, listSchema);
       return normalized.entities;

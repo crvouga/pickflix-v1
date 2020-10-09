@@ -49,15 +49,6 @@ export default ({ movie, CardHeaderProps }: Props) => {
   return (
     <Card>
       <CardActionArea onClick={handleClick}>
-        <CardHeader
-          title={movie.title}
-          titleTypographyProps={{
-            style: { fontWeight: "bold" },
-            variant: "body1",
-          }}
-          subheader={subheader}
-          {...CardHeaderProps}
-        />
         {image && (
           <CardMedia
             style={{ height: 0, paddingTop: "56.25%" }}
@@ -65,15 +56,23 @@ export default ({ movie, CardHeaderProps }: Props) => {
           />
         )}
       </CardActionArea>
-      {movie.overview && (
-        <CardContent>
-          <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
-          <ReadMore
-            TypographyProps={{ color: "textSecondary" }}
-            text={movie.overview}
-          />
-        </CardContent>
-      )}
+
+      <CardContent>
+        <Typography variant="h6">{movie.title}</Typography>
+        <Typography gutterBottom variant="subtitle1" color="textSecondary">
+          {CardHeaderProps?.subheader || subheader}
+        </Typography>
+
+        {movie.overview && (
+          <React.Fragment>
+            <Typography style={{ fontWeight: "bold" }}>Overview</Typography>
+            <ReadMore
+              TypographyProps={{ color: "textSecondary" }}
+              text={movie.overview}
+            />
+          </React.Fragment>
+        )}
+      </CardContent>
     </Card>
   );
 };

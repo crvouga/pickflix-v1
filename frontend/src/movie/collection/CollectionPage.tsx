@@ -24,17 +24,12 @@ export default () => {
     {}
   );
 
-  if (query.status === "error") {
+  if (query.error) {
     return <ErrorPage />;
   }
 
-  if (query.status === "loading") {
-    return (
-      <React.Fragment>
-        <NavigationBarFadeIn />
-        <LoadingPage />
-      </React.Fragment>
-    );
+  if (!query.data) {
+    return <LoadingPage />;
   }
 
   const collection = query.data;

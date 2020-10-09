@@ -5,6 +5,7 @@ import { actions, selectors } from "../../redux";
 import { takeQueryResponse } from "../../redux/query/saga";
 import { ViewListButton } from "../../snackbar/Snackbar";
 import * as queryConfigs from "./query-configs";
+import querySaga from "./query-saga";
 
 function* createListSaga() {
   yield takeLatest(actions.lists.createList, function* (action) {
@@ -82,26 +83,7 @@ function* addListItemSaga() {
   });
 }
 
-function* editListSaga() {
-  yield takeLatest(actions.lists.editList, function* (action) {
-    const listInfo = action.payload;
-
-    const config = queryConfigs.editListMutation(listInfo);
-    yield put(actions.query.mutateAsync(config));
-    const { success, failure } = yield takeQueryResponse(config);
-
-    if (success) {
-      yield put(
-        actions.snackbar.display({
-          message: "Saved changes",
-        })
-      );
-    }
-
-    if (failure) {
-    }
-  });
-}
+function* editListSaga() {}
 
 function* deleteListItemSaga() {
   yield takeLatest(actions.lists.deleteListItem, function* (action) {
@@ -146,6 +128,7 @@ function* getListsSaga() {
 
 export default function* () {
   yield* [
+    spawn(querySaga),
     spawn(getListsSaga),
     spawn(deleteListSaga),
     spawn(createListSaga),

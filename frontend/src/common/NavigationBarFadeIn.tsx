@@ -49,7 +49,10 @@ const useOpacity = (scrollHeightUntilFullOpacity: number) => {
   return opacity;
 };
 
-const useNavBarActions = () => {
+export default (props: Props) => {
+  const { title, scrollHeightUntilFullOpacity = 200 } = props;
+  const opacity = useOpacity(scrollHeightUntilFullOpacity);
+  const classes = useStyles({ opacity });
   const dispatch = useDispatch();
 
   const onBack = () => {
@@ -59,15 +62,6 @@ const useNavBarActions = () => {
   const onSearch = () => {
     dispatch(actions.router.push({ pathname: "/search" }));
   };
-
-  return { onSearch, onBack };
-};
-
-export default (props: Props) => {
-  const { title, scrollHeightUntilFullOpacity = 200 } = props;
-  const opacity = useOpacity(scrollHeightUntilFullOpacity);
-  const classes = useStyles({ opacity });
-  const { onSearch, onBack } = useNavBarActions();
 
   return (
     <AppBar elevation={Math.floor(opacity)} className={classes.appBar}>

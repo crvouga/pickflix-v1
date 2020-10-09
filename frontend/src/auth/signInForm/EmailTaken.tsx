@@ -15,6 +15,8 @@ import firebase from "../firebase";
 import form from "./redux";
 import { SignInMethod } from "./redux/types";
 import { GoogleIcon } from "./socialLoginIcons";
+import CircularProgressBox from "../../common/components/CircularProgressBox";
+import ErrorBox from "../../common/components/ErrorBox";
 
 const methodToProps = {
   [SignInMethod.Google]: {
@@ -26,7 +28,7 @@ const methodToProps = {
 const SignInMethods = () => {
   const { email } = useSelector(form.selectors.values);
   const query = useQuery(
-    ["signInMethods", email],
+    `/sign-in-methods/${email}`,
     () => firebase.auth().fetchSignInMethodsForEmail(email),
     {}
   );
@@ -42,16 +44,12 @@ const SignInMethods = () => {
     );
   };
 
-  if (query.status === "loading") {
-    return (
-      <Box textAlign="center">
-        <CircularProgress disableShrink />
-      </Box>
-    );
+  if (query.error) {
+    return <ErrorBox />;
   }
 
-  if (query.status === "error") {
-    return null;
+  if (!query.data) {
+    return <CircularProgressBox />;
   }
 
   const signInMethods = query.data;

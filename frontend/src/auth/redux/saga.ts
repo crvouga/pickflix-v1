@@ -1,5 +1,12 @@
-import { call, fork, put, takeEvery, takeLeading } from "redux-saga/effects";
-import { actions } from "../../redux";
+import {
+  select,
+  call,
+  fork,
+  put,
+  takeEvery,
+  takeLeading,
+} from "redux-saga/effects";
+import { actions, selectors } from "../../redux";
 import firebase from "../firebase";
 import authStateChangedSaga from "./auth-state-changed-saga";
 
@@ -36,6 +43,24 @@ function* signOutSaga() {
 export default function* () {
   yield put(actions.auth.setAuthStatus("loading"));
   yield put(actions.auth.setError(undefined));
+
+  yield takeEvery(actions.auth.signedIn, function* () {
+    const currentUser = yield select(selectors.auth.user);
+    yield put(
+      actions.snackbar.display({
+        message: `Signed as ${currentUser.displayName} (${currentUser.email})`,
+      })
+    );
+  });
+
+  yield takeEvery(actions.auth.signedOut, function* () {
+    yield put(
+      actions.snackbar.display({
+        message: `You are now signed out`,
+      })
+    );
+  });
+
   yield* [
     fork(authStateChangedSaga),
     fork(deleteUserSaga),

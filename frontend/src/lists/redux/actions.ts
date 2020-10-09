@@ -16,11 +16,20 @@ export const createList = createAction<
   Partial<IList> & { listItemInfos?: Partial<IListItem>[] }
 >("[lists] CREATE_LIST");
 
+export const addList = createAction<{
+  listId: string;
+  title: string;
+  description: string;
+}>("[lists] ADD_LIST");
+
 export const deleteList = createAction<string>("[lists] DELETE_LIST");
 
-export const editList = createAction<Pick<IList, "id"> & Partial<IList>>(
-  "[lists] EDIT_LIST"
-);
+export const editList = createAction<{
+  title: string;
+  description: string;
+  listId: string;
+  listItemIds: string[];
+}>("[lists] EDIT_LIST");
 
 export const addListItem = createAction<
   TmdbInfo & {

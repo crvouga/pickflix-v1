@@ -10,7 +10,7 @@ import React from "react";
 import BackButton from "../common/BackButton";
 import LoadingPage from "../common/page/LoadingPage";
 import { actions, selectors } from "../redux";
-import { useDispatch, useSelector } from "../redux/types";
+import { useDispatch, useSelector } from "react-redux";
 import SignedInAccountPage from "./SignedInAccountPage";
 
 const useStyles = makeStyles((theme) => ({
@@ -89,15 +89,9 @@ export default () => {
 
   switch (authStatus) {
     case "loading":
-      return (
-        <React.Fragment>
-          <NavigationBar />
-          <LoadingPage />
-        </React.Fragment>
-      );
+      return <LoadingPage />;
     case "signedIn":
       return <SignedInAccountPage />;
-
     case "signedOut":
       return <SignedOut />;
   }

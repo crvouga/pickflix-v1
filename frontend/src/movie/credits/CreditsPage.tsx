@@ -26,6 +26,7 @@ import {
   MovieCredits,
 } from "../../tmdb/types";
 import CreditsListItem from "./CreditsListItem";
+import ErrorPage from "../../common/page/ErrorPage";
 
 type CreditsListProps = {
   creditsByDepartment: {
@@ -112,6 +113,11 @@ const SkeletonPage = () => {
   );
 };
 
+const fetchMovieCredits = (movieId: string) =>
+  backendAPI
+    .get<MovieCredits>(`/api/tmdb/movie/${movieId}/credits`)
+    .then((res) => res.data);
+
 export default () => {
   const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -119,19 +125,15 @@ export default () => {
 
   const { movieId } = useParams<{ movieId: string }>();
 
-  const query = useQuery<MovieCredits, string>(
-    `/movie/${movieId}/credits`,
-    () =>
-      backendAPI
-        .get(`/api/tmdb/movie/${movieId}/credits`)
-        .then((res) => res.data),
-    {}
+  const query = useQuery(`/movie/${movieId}/credits`, () =>
+    fetchMovieCredits(movieId)
   );
 
-  if (query.status === "error") {
-    return null;
+  if (query.isError) {
+    return <ErrorPage />;
   }
-  if (query.status === "loading") {
+
+  if (!query.data) {
     return <SkeletonPage />;
   }
 

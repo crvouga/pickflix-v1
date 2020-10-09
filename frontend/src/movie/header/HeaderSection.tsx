@@ -7,20 +7,20 @@ import {
 import "moment-duration-format";
 import React from "react";
 import AspectRatio from "../../common/components/AspectRatio";
-import { MovieDetails, MovieReleaseDates } from "../../tmdb/types";
-import { makeFadeToBackgroundCss } from "../../utils";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
+import { makeFadeToBackgroundCss } from "../../utils";
+import { MoviePageData, useMoviePageQuery } from "../data";
 import * as utils from "../utils";
-
-type Props = {
-  details: MovieDetails;
-  releaseDates: MovieReleaseDates;
-};
 
 const titleToVariant = (title: string): TypographyVariant => {
   if (title.length < 24) return "h4";
   if (title.length < 36) return "h5";
   return "h6";
+};
+
+type StyleProps = {
+  backdropPath?: string;
+  posterPath?: string;
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -33,12 +33,10 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
     left: 0,
     width: "100%",
-    backgroundImage: ({ details }: Props) =>
+    backgroundImage: ({ backdropPath, posterPath }: StyleProps) =>
       `url(${makeTMDbImageURL(
         4,
-        details.backdropPath
-          ? { backdropPath: details.backdropPath }
-          : { posterPath: details.posterPath }
+        backdropPath ? { backdropPath } : { posterPath }
       )})`,
     backgroundSize: "cover",
     backgroundPosition: "center center",
@@ -47,15 +45,18 @@ const useStyles = makeStyles((theme) => ({
 
 export const HEADER_ASPECT_RATIO: [number, number] = [4, 3];
 
-const toSubtitle1 = (props: Props) =>
-  [utils.rated(props), utils.releaseYear(props), utils.runtime(props)].join(
+const toSubtitle1 = (data: MoviePageData) =>
+  [utils.rated(data), utils.releaseYear(data), utils.runtime(data)].join(
     ` ${utils.SMALL_DOT} `
   );
 
-export default (props: Props) => {
-  const { details } = props;
+export default () => {
+  const { data } = useMoviePageQuery();
+  const classes = useStyles(data);
 
-  const classes = useStyles(props);
+  if (!data) {
+    return null;
+  }
 
   return (
     <React.Fragment>
@@ -76,9 +77,9 @@ export default (props: Props) => {
         <Box textAlign="center" paddingX={2}>
           <Typography
             style={{ fontWeight: "bold" }}
-            variant={titleToVariant(details.title)}
+            variant={titleToVariant(data.title)}
           >
-            {details.title}
+            {data.title}
           </Typography>
           <Typography
             gutterBottom
@@ -86,7 +87,7 @@ export default (props: Props) => {
             variant="subtitle1"
             color="textSecondary"
           >
-            {toSubtitle1(props)}
+            {toSubtitle1(data)}
           </Typography>
         </Box>
       </AspectRatio>

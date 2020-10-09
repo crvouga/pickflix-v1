@@ -2,51 +2,93 @@ import { Box, IconButton, Paper, Toolbar, Typography } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/DeleteForeverOutlined";
 import EditIcon from "@material-ui/icons/EditOutlined";
 import GroupAddOutlinedIcon from "@material-ui/icons/GroupAddOutlined";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useQuery } from "react-query";
 import { useParams } from "react-router";
-import CircularProgressBox from "../common/components/CircularProgressBox";
 import useBoolean from "../common/hooks/useBoolean";
 import NavigationBar from "../common/NavigationBar";
-import Poster from "../movie/components/Poster";
-import { actions, selectors } from "../redux";
+import ErrorPage from "../common/page/ErrorPage";
+import LoadingPage from "../common/page/LoadingPage";
+import Poster from "../movie/components/MoviePosterCard";
+import { fetchList, fetchListItems, queryKeys } from "./data";
 import DeleteListDialog from "./DeleteListDialog";
 import EditListDialog from "./EditListDialog";
-import * as queryConfigs from "./redux/query-configs";
+import CircularProgressBox from "../common/components/CircularProgressBox";
+import ErrorBox from "../common/components/ErrorBox";
 
-export default () => {
-  const isEditListModalOpen = useBoolean(false);
-  const isDeleteListModalOpen = useBoolean(false);
-  const dispatch = useDispatch();
+type ListItemsProps = {
+  listId: string;
+};
 
-  const { listId } = useParams<{ listId: string }>();
-
-  const listRequest = queryConfigs.listRequest({ listId });
-  const listItemsRequest = queryConfigs.listItemsRequest({ listId });
-
-  useEffect(() => {
-    dispatch(actions.query.requestAsync(listItemsRequest));
-    dispatch(actions.query.requestAsync(listRequest));
-  }, []);
-
-  const listQuery = useSelector(selectors.query.queryState(listRequest));
-  const listItemsQuery = useSelector(
-    selectors.query.queryState(listItemsRequest)
+export const ListItems = (props: ListItemsProps) => {
+  const { listId } = props;
+  const query = useQuery(queryKeys.listItems(listId), () =>
+    fetchListItems(listId)
   );
 
-  const list = useSelector(selectors.lists.list(listId));
-  const listItems = useSelector(selectors.lists.listItems(listId));
+  if (query.error) {
+    return <ErrorBox />;
+  }
+
+  if (!query.data) {
+    return <CircularProgressBox />;
+  }
+
+  const listItems = query.data;
+
+  if (listItems.length === 0) {
+    return (
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        height="200px"
+      >
+        <Typography align="center" color="textSecondary" variant="h6">
+          There's nothing here
+        </Typography>
+      </Box>
+    );
+  }
+
+  return (
+    <Box display="flex" flexDirection="row" flexWrap="wrap">
+      {listItems.map((listItem) => (
+        <Box p={1 / 2} width="50%" key={listItem.id}>
+          <Poster movie={listItem?.tmdbData} />
+        </Box>
+      ))}
+    </Box>
+  );
+};
+
+export default () => {
+  const { listId } = useParams<{ listId: string }>();
+  const query = useQuery(queryKeys.list(listId), () => fetchList(listId));
+
+  const isEditListModalOpen = useBoolean(false);
+  const isDeleteListModalOpen = useBoolean(false);
+
+  if (query.error) {
+    return <ErrorPage />;
+  }
+
+  if (!query.data) {
+    return <LoadingPage />;
+  }
+
+  const list = query.data;
 
   return (
     <React.Fragment>
-      <NavigationBar title={list?.title} AppBarProps={{ position: "sticky" }} />
+      <NavigationBar title={list.title} AppBarProps={{ position: "sticky" }} />
       <DeleteListDialog
         list={list}
         open={isDeleteListModalOpen.value}
         onClose={isDeleteListModalOpen.setFalse}
       />
       <EditListDialog
-        list={list}
+        listId={list.id}
         open={isEditListModalOpen.value}
         onClose={isEditListModalOpen.setFalse}
       />
@@ -79,30 +121,7 @@ export default () => {
         </Toolbar>
       </Paper>
 
-      {listItems.length === 0 && (
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          height="200px"
-        >
-          <Typography align="center" color="textSecondary" variant="h6">
-            There's nothing here
-          </Typography>
-        </Box>
-      )}
-
-      <Box display="flex" flexDirection="row" flexWrap="wrap">
-        {listItems.map((listItem) => (
-          <Box p={1 / 2} width="50%" key={listItem.id}>
-            <Poster width="100%" movie={listItem?.tmdbData} />
-          </Box>
-        ))}
-      </Box>
-
-      {(listItemsQuery.isPending || listQuery.isPending) && (
-        <CircularProgressBox />
-      )}
+      <ListItems listId={listId} />
     </React.Fragment>
   );
 };
