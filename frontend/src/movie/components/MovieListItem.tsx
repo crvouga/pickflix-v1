@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { toYear } from "../../person/utils";
 import { actions } from "../../redux";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
+import { useHistory } from "react-router";
 type Props = {
   movie: {
     id: string;
@@ -30,9 +31,9 @@ export default (props: Props) => {
     posterPath ? { posterPath } : { backdropPath }
   );
 
-  const dispatch = useDispatch();
+  const history = useHistory();
   const handleClick = () => {
-    dispatch(actions.router.push({ pathname: `/movie/${id}` }));
+    history.push(`/movie/${id}`);
   };
 
   return (

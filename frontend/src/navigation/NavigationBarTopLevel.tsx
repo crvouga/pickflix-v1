@@ -4,7 +4,8 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import CurrentUserAvatar from "../auth/CurrentUserAvatar";
 import { actions } from "../redux";
-import PickflixLogo from "./PickflixLogo";
+import PickflixLogo from "../common/PickflixLogo";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   small: {
@@ -16,13 +17,14 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const onSearch = () => {
-    dispatch(actions.router.push({ pathname: "/search" }));
+    history.push("/search");
   };
 
   const onAccount = () => {
-    dispatch(actions.router.push({ pathname: "/account" }));
+    history.push("/account");
   };
 
   return (

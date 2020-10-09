@@ -1,5 +1,5 @@
 import { makeStyles, Typography } from "@material-ui/core";
-import { push } from "connected-react-router";
+
 import moment from "moment";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -8,6 +8,7 @@ import AbsolutePositionBox from "../common/components/AbsolutePositionBox";
 import AspectRatio from "../common/components/AspectRatio";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { Movie } from "../tmdb/types";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles({
   box: {
@@ -21,9 +22,9 @@ const useStyles = makeStyles({
 });
 
 const HeaderItem = ({ movie }: { movie: Movie }) => {
-  const dispatch = useDispatch();
+  const history = useHistory();
   const handleClick = () => {
-    dispatch(push(`/movie/${movie.id}`));
+    history.push(`/movie/${movie.id}`);
   };
   const movieBackdropURL = makeTMDbImageURL(2, {
     backdropPath: movie.backdropPath,

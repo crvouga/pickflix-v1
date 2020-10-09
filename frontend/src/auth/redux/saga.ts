@@ -9,6 +9,7 @@ import {
 import { actions, selectors } from "../../redux";
 import firebase from "../firebase";
 import authStateChangedSaga from "./auth-state-changed-saga";
+import { history } from "../../navigation/history";
 
 const deleteCurrentUser = () => firebase.auth().currentUser?.delete();
 
@@ -28,7 +29,7 @@ function* deleteUserSaga() {
 
 function* signInSuccessSaga() {
   yield takeEvery(actions.auth.signInSuccess, function* () {
-    yield put(actions.router.push({ pathname: "/" }));
+    yield call(() => history.push("/"));
   });
 }
 

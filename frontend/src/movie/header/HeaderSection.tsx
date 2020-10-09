@@ -12,9 +12,19 @@ import { makeFadeToBackgroundCss } from "../../utils";
 import { MoviePageData, useMoviePageQuery } from "../data";
 import * as utils from "../utils";
 
+// TODO: make better
 const titleToVariant = (title: string): TypographyVariant => {
-  if (title.length < 24) return "h4";
-  if (title.length < 36) return "h5";
+  const wordCount = title.split(" ").length;
+  const maxWordLength = title
+    .split(" ")
+    .map((_) => _.length)
+    .reduce(
+      (maxWordLength, wordLength) => Math.max(maxWordLength, wordLength),
+      0
+    );
+
+  if (maxWordLength < 18) return "h4";
+  if (maxWordLength < 36) return "h5";
   return "h6";
 };
 
@@ -74,19 +84,14 @@ export default () => {
         }}
       >
         <Box flex={1}></Box>
-        <Box textAlign="center" paddingX={2}>
+        <Box textAlign="center" paddingX={2} maxWidth="100vw">
           <Typography
-            style={{ fontWeight: "bold" }}
+            style={{ wordBreak: "break-all" }}
             variant={titleToVariant(data.title)}
           >
             {data.title}
           </Typography>
-          <Typography
-            gutterBottom
-            style={{ fontWeight: "bold" }}
-            variant="subtitle1"
-            color="textSecondary"
-          >
+          <Typography gutterBottom variant="subtitle1" color="textSecondary">
             {toSubtitle1(data)}
           </Typography>
         </Box>

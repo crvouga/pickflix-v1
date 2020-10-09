@@ -2,6 +2,7 @@ import { Button } from "@material-ui/core";
 import PlayArrowOutlinedIcon from "@material-ui/icons/PlayArrowOutlined";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 import { actions } from "../../redux";
 import { MovieVideos } from "../../tmdb/types";
 
@@ -11,14 +12,14 @@ type Props = {
 
 export default (props: Props) => {
   const { videos } = props;
-
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const handleClickWatchTailer = () => {
     dispatch(actions.video.setPlaylist(videos.results));
     const trailer = videos.results.find((video) => video.type === "Trailer");
     dispatch(actions.video.setVideo(trailer || videos.results[0]));
-    dispatch(actions.router.push({ pathname: "/video" }));
+    history.push("/video");
   };
 
   return (

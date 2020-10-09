@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import backendAPI from "../backendAPI";
-import NavigationBarFadeIn from "../common/NavigationBarFadeIn";
+import NavigationBarFadeIn from "../navigation/NavigationBarFadeIn";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
 import { actions } from "../redux";

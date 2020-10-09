@@ -7,11 +7,12 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
-import BackButton from "../common/BackButton";
+import BackButton from "../navigation/BackButton";
 import LoadingPage from "../common/page/LoadingPage";
 import { actions, selectors } from "../redux";
 import { useDispatch, useSelector } from "react-redux";
 import SignedInAccountPage from "./SignedInAccountPage";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   bold: {
@@ -49,10 +50,10 @@ export const NavigationBar = () => {
 
 const SignedOut = () => {
   const classes = useStyles();
-  const dispatch = useDispatch();
+  const history = useHistory();
 
   const onSignIn = () => {
-    dispatch(actions.router.push({ pathname: "/signIn" }));
+    history.push("/signIn");
   };
 
   return (

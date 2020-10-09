@@ -1,8 +1,7 @@
 import { Avatar, Box, BoxProps, makeStyles } from "@material-ui/core";
 import Skeleton from "@material-ui/lab/Skeleton";
-import { push } from "connected-react-router";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 import AspectRatio from "../common/components/AspectRatio";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { Person } from "../tmdb/types";
@@ -24,9 +23,9 @@ export default ({ person, skeleton, ...restOfProps }: Props) => {
   const { profilePath } = person;
   const classes = useStyles();
   const profileURL = makeTMDbImageURL(2, { profilePath });
-  const dispatch = useDispatch();
+  const history = useHistory();
   const handleClick = () => {
-    dispatch(push(`/person/${person.id}`));
+    history.push(`/person/${person.id}`);
   };
 
   return (

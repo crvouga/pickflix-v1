@@ -23,26 +23,21 @@ export default () => {
   const classesDialog = useStylesDialog();
 
   const dispatch = useDispatch();
-  const isOpen = useSelector(selectors.router.isOpen(ModalName.CreateList));
-  const props = useSelector(selectors.router.props(ModalName.CreateList));
 
-  const onClose = () => {
-    dispatch(actions.router.close({ name: ModalName.CreateList }));
-  };
+  const onClose = () => {};
 
   const inputRefTitle = useRef<HTMLInputElement>();
 
   const onClickCreate = async () => {
     const listInfo = {
       title: inputRefTitle.current?.value || "",
-      listItemInfos: props.listItemInfos,
+      listItemInfos: [],
     };
     dispatch(actions.lists.addList(listInfo));
-    dispatch(actions.router.close({ name: ModalName.CreateList }));
   };
 
   return (
-    <Dialog classes={classesDialog} open={isOpen} onClose={onClose}>
+    <Dialog classes={classesDialog} open={false} onClose={onClose}>
       <DialogTitle>Create List</DialogTitle>
       <DialogContent>
         <Box marginBottom={2}>

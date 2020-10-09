@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import NavigationBarFadeIn from "../common/NavigationBarFadeIn";
+import NavigationBarFadeIn from "../navigation/NavigationBarFadeIn";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
 import { actions } from "../redux";

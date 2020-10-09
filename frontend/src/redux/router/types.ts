@@ -1,5 +1,3 @@
-import { RouterState as ConnectReactRouterState } from "connected-react-router";
-
 export enum ModalName {
   SignIn = "SignIn",
   SaveToList = "SaveToList",
@@ -34,8 +32,7 @@ const initialRouterLocationState: RouterLocationState = {
   VideoPlayer: initialModalState,
   DiscoverSearch: initialModalState,
 };
-export interface RouterState
-  extends ConnectReactRouterState<RouterLocationState> {}
+export type RouterState = {};
 
 export const initialState: RouterState = {
   action: "PUSH",

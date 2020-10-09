@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import AspectRatio from "../../common/components/AspectRatio";
 import { actions } from "../../redux";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   fallback: {
@@ -52,10 +53,10 @@ export default (props: Props) => {
   const classes = useStyles();
   const posterURL = makeTMDbImageURL(sizeIndex, { posterPath });
 
-  const dispatch = useDispatch();
+  const history = useHistory();
   const handleClick = () => {
     if (id) {
-      dispatch(actions.router.push({ pathname: `/movie/${id}` }));
+      history.push(`/movie/${id}`);
     }
   };
 

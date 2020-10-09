@@ -2,11 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "module": "esnext",
-    "lib": [
-      "es2017",
-      "dom",
-      "esnext.array"
-    ],
+    "lib": ["es2017", "dom", "esnext.array"],
     "jsx": "preserve",
     "outDir": "./build",
     "strict": true,
@@ -27,7 +23,5 @@
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src", "history.ts"]
 }

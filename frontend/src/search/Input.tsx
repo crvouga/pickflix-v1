@@ -10,6 +10,7 @@ import ClearIcon from "@material-ui/icons/Clear";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { actions } from "../redux";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   root: theme.mixins.toolbar,
@@ -27,6 +28,7 @@ interface Props {
 export default ({ ref }: Props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleClear = () => {
     if (ref?.current) {
@@ -38,7 +40,7 @@ export default ({ ref }: Props) => {
   };
 
   const onBack = () => {
-    dispatch(actions.router.goBack());
+    history.goBack();
   };
 
   const handleChange = (e: React.ChangeEvent<{ value: string }>) => {

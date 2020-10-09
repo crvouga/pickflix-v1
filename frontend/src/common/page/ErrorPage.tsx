@@ -1,7 +1,7 @@
 import { Button, makeStyles, Typography } from "@material-ui/core";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import React from "react";
-import NavigationBar from "../NavigationBar";
+import NavigationBar from "../../navigation/NavigationBar";
 
 const useStyles = makeStyles((theme) => ({
   root: {

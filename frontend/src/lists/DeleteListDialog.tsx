@@ -37,26 +37,8 @@ export default (props: Props) => {
   const classesDialog = useStylesDialog();
 
   const dispatch = useDispatch();
-  const currentUser = useSelector(selectors.auth.user);
 
-  const [mutateDeleteList, queryDeleteList] = useMutation(deleteList, {
-    onSuccess: () => {
-      dispatch(actions.router.goBack());
-      dispatch(
-        actions.snackbar.display({
-          message: "Deleted List",
-        })
-      );
-    },
-    onSettled: () => {
-      queryCache.invalidateQueries(queryKeys.lists());
-      queryCache.invalidateQueries(queryKeys.list(list.id));
-    },
-  });
-
-  const onDelete = () => {
-    mutateDeleteList({ listId: list.id });
-  };
+  const onDelete = () => {};
 
   return (
     <Dialog
@@ -64,7 +46,6 @@ export default (props: Props) => {
       classes={classesDialog}
       {...props}
     >
-      {queryDeleteList.isLoading && <LinearProgress />}
       <DialogTitle>Delete list?</DialogTitle>
       <DialogActions>
         <Button color="primary" onClick={close(props)}>

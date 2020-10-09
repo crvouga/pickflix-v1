@@ -5,17 +5,17 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import React from "react";
+import { useHistory } from "react-router";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 import { MovieCreditCast, MovieCreditCrew } from "../../tmdb/types";
-import { useDispatch } from "react-redux";
-import { actions } from "../../redux";
 
 type Props = { credit: MovieCreditCast | MovieCreditCrew };
 
 export default ({ credit }: Props) => {
-  const dispatch = useDispatch();
+  const history = useHistory();
+
   const handleClick = () => {
-    dispatch(actions.router.push({ pathname: `/person/${credit.id}` }));
+    history.push(`/person/${credit.id}`);
   };
 
   return (

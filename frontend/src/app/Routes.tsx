@@ -2,7 +2,7 @@ import { Container, CssBaseline } from "@material-ui/core";
 import React from "react";
 import { Route, Switch } from "react-router";
 import AccountPage from "../auth/AccountPage";
-import NavigationBarBottom from "../common/NavigationBarBottom";
+import NavigationBarBottom from "../navigation/NavigationBarBottom";
 import DiscoverPage from "../discover";
 import HomePage from "../home";
 import ListPage from "../lists/ListPage";

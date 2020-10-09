@@ -6,7 +6,7 @@ import React from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router";
 import useBoolean from "../common/hooks/useBoolean";
-import NavigationBar from "../common/NavigationBar";
+import NavigationBar from "../navigation/NavigationBar";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
 import Poster from "../movie/components/MoviePosterCard";

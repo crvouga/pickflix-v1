@@ -1,5 +1,4 @@
-import { combineReducers, createAction } from "@reduxjs/toolkit";
-import { connectRouter } from "connected-react-router";
+import { combineReducers } from "@reduxjs/toolkit";
 import { History } from "history";
 import { spawn } from "redux-saga/effects";
 import auth from "../auth/redux";
@@ -9,21 +8,14 @@ import lists from "../lists/redux";
 import personPage from "../person/redux";
 import search from "../search/redux";
 import snackbar from "../snackbar/redux";
-import { DeepPartial } from "../utils";
 import video from "../video/redux";
 import recentlyViewed from "./recently-viewed";
-import router from "./router";
-import { AppState } from "./types";
-
-const setState = createAction<DeepPartial<AppState>>("SET_STATE");
 
 export const actions = Object.freeze({
-  setState,
   lists: lists.actions,
   video: video.actions,
   discover: discover.actions,
   search: search.actions,
-  router: router.actions,
   recentlyViewed: recentlyViewed.actions,
   auth: auth.actions,
   signInForm: signInForm.actions,
@@ -40,7 +32,6 @@ export const selectors = Object.freeze({
   recentlyViewed: recentlyViewed.selectors,
   auth: auth.selectors,
   signInForm: signInForm.selectors,
-  router: router.selectors,
   personPage: personPage.selectors,
 });
 
@@ -54,24 +45,22 @@ function* rootSaga() {
     spawn(recentlyViewed.saga),
     spawn(auth.saga),
     spawn(signInForm.saga),
-    spawn(router.saga),
   ];
 }
 
-export const configureRoot = (history: History) => {
-  const rootReducer = combineReducers({
-    router: connectRouter(history),
-    snackbar: snackbar.reducer,
-    lists: lists.reducer,
-    video: video.reducer,
-    discover: discover.reducer,
-    search: search.reducer,
-    recentlyViewed: recentlyViewed.reducer,
-    signInForm: signInForm.reducer,
-    auth: auth.reducer,
-    personPage: personPage.reducer,
-  });
+const rootReducer = combineReducers({
+  snackbar: snackbar.reducer,
+  lists: lists.reducer,
+  video: video.reducer,
+  discover: discover.reducer,
+  search: search.reducer,
+  recentlyViewed: recentlyViewed.reducer,
+  signInForm: signInForm.reducer,
+  auth: auth.reducer,
+  personPage: personPage.reducer,
+});
 
+export const configureRoot = () => {
   return {
     reducer: rootReducer,
     saga: rootSaga,

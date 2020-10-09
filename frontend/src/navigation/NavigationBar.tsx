@@ -11,6 +11,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { actions } from "../redux";
+import { useHistory } from "react-router";
 
 type Props = {
   title?: string;
@@ -32,14 +33,15 @@ const useStyles = makeStyles((theme) => ({
 export default (props: Props) => {
   const { title, AppBarProps } = props;
   const classes = useStyles();
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const onBack = () => {
-    dispatch(actions.router.goBack());
+    history.goBack();
   };
 
   const onSearch = () => {
-    dispatch(actions.router.push({ pathname: "/search" }));
+    history.push("/search");
   };
 
   return (

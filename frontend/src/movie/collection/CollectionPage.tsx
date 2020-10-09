@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router";
 import backendAPI from "../../backendAPI";
 import ReadMore from "../../common/components/ReadMore";
-import NavigationBarFadeIn from "../../common/NavigationBarFadeIn";
+import NavigationBarFadeIn from "../../navigation/NavigationBarFadeIn";
 import ErrorPage from "../../common/page/ErrorPage";
 import LoadingPage from "../../common/page/LoadingPage";
 import { Collection } from "../../tmdb/types";

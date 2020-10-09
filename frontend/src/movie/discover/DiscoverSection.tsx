@@ -1,10 +1,10 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 import discover from "../../discover/redux";
 import { makeTag, Tag as ITag } from "../../discover/redux/types";
-import router from "../../redux/router";
-import { MoviePageData, useMoviePageQuery } from "../data";
+import { useMoviePageQuery } from "../data";
 import TagScroll from "./TagScroll";
 
 const useStyles = makeStyles((theme) => ({
@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default () => {
+  const history = useHistory();
   const query = useMoviePageQuery();
   if (!query.data) return null;
 
@@ -29,7 +30,7 @@ export default () => {
 
   const handleTagClick = (tag: ITag) => {
     dispatch(discover.actions.setActiveTags([tag]));
-    dispatch(router.actions.push({ pathname: "/discover" }));
+    history.push("/discover");
   };
 
   return (

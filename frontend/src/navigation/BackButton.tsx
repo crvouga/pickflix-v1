@@ -1,14 +1,13 @@
 import { IconButton } from "@material-ui/core";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { actions } from "../redux";
+import { useHistory } from "react-router";
 
 export default () => {
-  const dispatch = useDispatch();
+  const history = useHistory();
 
   const onBack = () => {
-    dispatch(actions.router.goBack());
+    history.push("/");
   };
 
   return (

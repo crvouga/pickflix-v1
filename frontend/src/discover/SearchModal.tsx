@@ -5,6 +5,7 @@ import { selectors, actions } from "../redux";
 import SearchTagsInput from "./SearchInput";
 import SearchTagsResults from "./SearchResults";
 import { ModalName } from "../redux/router/types";
+import { useHistory } from "react-router";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
@@ -14,11 +15,11 @@ const useStylesDialog = makeStyles((theme) => ({
 
 export default () => {
   const classesDialog = useStylesDialog();
-  const open = useSelector(selectors.router.isOpen(ModalName.DiscoverSearch));
+  const history = useHistory();
+  const open = false;
+
   const dispatch = useDispatch();
-  const handleClose = () => {
-    dispatch(actions.router.close({ name: ModalName.DiscoverSearch }));
-  };
+  const handleClose = () => {};
   return (
     <Dialog
       classes={classesDialog}

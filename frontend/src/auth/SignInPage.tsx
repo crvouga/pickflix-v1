@@ -1,6 +1,6 @@
 import { AppBar, makeStyles, Toolbar, Typography } from "@material-ui/core";
 import React from "react";
-import BackButton from "../common/BackButton";
+import BackButton from "../navigation/BackButton";
 import SignInWizard from "./signInForm/SignInWizard";
 const useStyles = makeStyles((theme) => ({
   bold: {

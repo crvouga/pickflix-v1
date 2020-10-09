@@ -7,6 +7,7 @@ import AspectRatio from "../../common/components/AspectRatio";
 import { actions } from "../../redux";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 import { Movie } from "../../tmdb/types";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   image: {
@@ -30,10 +31,10 @@ export default ({ movie, ...restOfProps }: Props) => {
   const backdropURL = makeTMDbImageURL(2, { backdropPath });
   const posterURL = makeTMDbImageURL(2, { posterPath });
   const classes = useStyles({ backdropURL, posterURL });
-  const dispatch = useDispatch();
+  const history = useHistory();
   const onClick = () => {
     if (movie.id) {
-      dispatch(actions.router.push({ pathname: `/movie/${movie.id}` }));
+      history.push(`/movie/${movie.id}`);
     }
   };
   return (

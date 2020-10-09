@@ -12,6 +12,7 @@ import { useViewportScroll } from "framer-motion";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { actions } from "../redux";
+import { useHistory } from "react-router";
 
 type Props = {
   title?: string;
@@ -54,13 +55,14 @@ export default (props: Props) => {
   const opacity = useOpacity(scrollHeightUntilFullOpacity);
   const classes = useStyles({ opacity });
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const onBack = () => {
-    dispatch(actions.router.goBack());
+    history.goBack();
   };
 
   const onSearch = () => {
-    dispatch(actions.router.push({ pathname: "/search" }));
+    history.push("/search");
   };
 
   return (

@@ -20,7 +20,6 @@ export default () => {
 
   const handleClickTag = (tag: ITag) => () => {
     dispatch(actions.discover.activateTags([tag]));
-    dispatch(actions.router.close({ name: ModalName.DiscoverSearch }));
   };
 
   return (

@@ -11,18 +11,24 @@ import {
 import AddIcon from "@material-ui/icons/Add";
 import React from "react";
 import { useDispatch } from "react-redux";
-import NavigationBarTopLevel from "../common/NavigationBarTopLevel";
+import { useHistory } from "react-router";
+import NavigationBarTopLevel from "../navigation/NavigationBarTopLevel";
 import Lists from "../lists/Lists";
-import { actions } from "../redux";
 import { ModalName } from "../redux/router/types";
 import RecentlyViewed from "./RecentlyViewed";
 
 export default () => {
   const theme = useTheme();
   const dispatch = useDispatch();
-
+  const history = useHistory();
   const onClickCreateNewList = () => {
-    dispatch(actions.router.open({ name: ModalName.CreateList }));
+    history.push({
+      state: {
+        [ModalName.CreateList]: {
+          isOpen: true,
+        },
+      },
+    });
   };
 
   return (

@@ -1,6 +1,6 @@
 import { CircularProgress, makeStyles } from "@material-ui/core";
 import React from "react";
-import NavigationBar from "../NavigationBar";
+import NavigationBar from "../../navigation/NavigationBar";
 
 const useStyles = makeStyles((theme) => ({
   root: {

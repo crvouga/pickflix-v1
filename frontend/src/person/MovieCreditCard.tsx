@@ -13,6 +13,7 @@ import * as movieUtils from "../movie/utils";
 import { actions } from "../redux";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { ImagePaths } from "../tmdb/types";
+import { useHistory } from "react-router";
 
 type Credit = ImagePaths & {
   id: string;
@@ -26,14 +27,15 @@ type Cast = Credit & { character: string };
 type Crew = Credit & { job: string; department: string };
 
 export default ({ credit }: { credit: Cast | Credit }) => {
-  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const handleClick = () => {
+    history.push(`/movie/${credit.id}`);
+  };
+
   const sutitle1 = [movieUtils.toReleaseYear(credit)].join(
     movieUtils.SMALL_DOT
   );
-
-  const handleClick = () => {
-    dispatch(actions.router.push({ pathname: `/movie/${credit.id}` }));
-  };
 
   const image = makeTMDbImageURL(
     3,

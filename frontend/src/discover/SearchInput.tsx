@@ -35,13 +35,12 @@ const useStylesInputBase = makeStyles((theme) => ({
 
 export default React.forwardRef((props, ref) => {
   const classes = useStyles();
-
   const classesInputBase = useStylesInputBase();
+
   const status = useSelector(selectors.discover.searchStatus);
+
   const dispatch = useDispatch();
-  const handleClose = () => {
-    dispatch(actions.router.close({ name: ModalName.DiscoverSearch }));
-  };
+  const handleClose = () => {};
   const handleChangeInputBase = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(actions.discover.setSearchText(e.target.value));
   };

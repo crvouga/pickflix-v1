@@ -1,21 +1,15 @@
 import { Box, Fab, useTheme } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { actions } from "../redux";
+import NavigationBarTopLevel from "../navigation/NavigationBarTopLevel";
 import DiscoverResults from "./DiscoverResults";
-import SearchModal from "./SearchModal";
 import DiscoverTags from "./DiscoverTags";
-import { ModalName } from "../redux/router/types";
-import NavigationBarTopLevel from "../common/NavigationBarTopLevel";
+import SearchModal from "./SearchModal";
 
 export default () => {
   const theme = useTheme();
-  const dispatch = useDispatch();
 
-  const handleClickOpen = () => {
-    dispatch(actions.router.open({ name: ModalName.DiscoverSearch }));
-  };
+  const handleClickOpen = () => {};
 
   return (
     <React.Fragment>

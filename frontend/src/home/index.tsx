@@ -4,7 +4,7 @@ import React from "react";
 import { useQuery } from "react-query";
 import backendAPI from "../backendAPI";
 import HorizontalScroll from "../common/components/HorizontalScroll";
-import NavigationBarTopLevel from "../common/NavigationBarTopLevel";
+import NavigationBarTopLevel from "../navigation/NavigationBarTopLevel";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPageTopLevel from "../common/page/LoadingPageTopLevel";
 import Poster from "../movie/components/MoviePosterCard";

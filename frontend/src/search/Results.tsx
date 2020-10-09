@@ -14,8 +14,10 @@ import ListItemSkeleton from "../common/components/ListItemSkeleton";
 import { actions, selectors } from "../redux";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { Result } from "./redux/types";
+import { useHistory } from "react-router";
 
 export default () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const results = useSelector(selectors.search.sortedResults);
   const text = useSelector(selectors.search.text);
@@ -32,10 +34,10 @@ export default () => {
   const handleClick = (result: Result) => () => {
     dispatch(actions.search.chose(result));
     if (result.mediaType === "movie") {
-      dispatch(actions.router.push({ pathname: `/movie/${result.id}` }));
+      history.push(`/movie/${result.id}`);
     }
     if (result.mediaType === "person") {
-      dispatch(actions.router.push({ pathname: `/person/${result.id}` }));
+      history.push(`/person/${result.id}`);
     }
   };
 

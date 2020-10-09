@@ -7,6 +7,7 @@ import { actions } from "../../redux";
 import { Collection } from "../../tmdb/types";
 import CollectionCard from "./CollectionCard";
 import { useMoviePageQuery } from "../data";
+import { useHistory } from "react-router";
 
 const fetchCollection = async (collectionId: string) => {
   const { data } = await backendAPI.get<Collection>(
@@ -25,6 +26,7 @@ const CollectionSection = ({
   collection: { id: collectionId },
 }: CollectionSectionProps) => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const query = useQuery(`/collection/${collectionId}`, () =>
     fetchCollection(collectionId)
@@ -35,7 +37,7 @@ const CollectionSection = ({
   }
 
   const handleClick = () => {
-    dispatch(actions.router.push({ pathname: `/collection/${collectionId}` }));
+    history.push(`/collection/${collectionId}`);
   };
 
   const collection = query.data;

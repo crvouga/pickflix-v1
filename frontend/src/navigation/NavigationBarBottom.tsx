@@ -13,6 +13,7 @@ import PersonOutlinedIcon from "@material-ui/icons/PersonOutlined";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { actions, selectors } from "../redux";
+import { useHistory, useLocation } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -30,6 +31,7 @@ const useStylesBottomNavigation = makeStyles((theme) => ({
     maxWidth: "100%",
     zIndex: theme.zIndex.appBar,
     marginRight: theme.spacing(2),
+    color: theme.palette.action.active,
   },
 }));
 
@@ -49,43 +51,52 @@ export default () => {
   const classes = useStyles();
   const classesBottomNavigation = useStylesBottomNavigation();
   const classesBottomNavigationAction = useStylesBottomNavigationAction();
-  const dispatch = useDispatch();
-  const pathname = useSelector(selectors.router.pathname);
+
+  const history = useHistory();
+  const location = useLocation();
 
   const navigationActions: BottomNavigationActionProps[] = [
     {
       value: "/",
-      icon: pathname === "/" ? <HomeIcon /> : <HomeOutlinedIcon />,
+      icon: location.pathname === "/" ? <HomeIcon /> : <HomeOutlinedIcon />,
       label: "Home",
-      onClick: () => dispatch(actions.router.push({ pathname: "/" })),
+      onClick: () => {
+        history.push("/");
+      },
     },
     {
       value: "/discover",
       label: "Explore",
       icon:
-        pathname === "/discover" ? <ExploreIcon /> : <ExploreOutlinedIcon />,
-      onClick: () => dispatch(actions.router.push({ pathname: "/discover" })),
+        location.pathname === "/discover" ? (
+          <ExploreIcon />
+        ) : (
+          <ExploreOutlinedIcon />
+        ),
+      onClick: () => {
+        history.push("/discover");
+      },
     },
-    // {
-    //   value: "/search",
-    //   label: "Search",
-    //   icon: <SearchIcon />,
-    //   onClick: () => {
-    //     dispatch(actions.router.push({ pathname: "/search" }));
-    //   },
-    // },
+
     {
       value: "/profile",
       label: "Profile",
-      icon: pathname === "/profile" ? <PersonIcon /> : <PersonOutlinedIcon />,
-      onClick: () => dispatch(actions.router.push({ pathname: "/profile" })),
+      icon:
+        location.pathname === "/profile" ? (
+          <PersonIcon />
+        ) : (
+          <PersonOutlinedIcon />
+        ),
+      onClick: () => {
+        history.push("/profile");
+      },
     },
   ];
 
   return (
     <React.Fragment>
       <BottomNavigation
-        value={pathname}
+        value={location.pathname}
         showLabels
         classes={classesBottomNavigation}
       >

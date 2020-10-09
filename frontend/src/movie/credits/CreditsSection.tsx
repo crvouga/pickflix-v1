@@ -1,24 +1,21 @@
 import {
   Box,
   Button,
+  List,
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  List,
 } from "@material-ui/core";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { partition, take, whereEq } from "ramda";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
-import { actions } from "../../redux";
-import { MovieCredits } from "../../tmdb/types";
-import CreditsListCard from "./CreditsListCard";
 import { useMoviePageQuery } from "../data";
+import CreditsListCard from "./CreditsListCard";
 
 export default () => {
-  const dispatch = useDispatch();
+  const history = useHistory();
   const { movieId } = useParams<{ movieId: string }>();
 
   const query = useMoviePageQuery();
@@ -31,7 +28,7 @@ export default () => {
   const topCredits = take(10, [...directors, ...cast, ...restOfCrew]);
 
   const handleClick = () => {
-    dispatch(actions.router.push({ pathname: `/movie/${movieId}/credits` }));
+    history.push(`/movie/${movieId}/credits`);
   };
 
   return (

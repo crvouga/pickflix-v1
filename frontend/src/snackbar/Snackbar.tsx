@@ -12,6 +12,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { List } from "../lists/data";
 import { actions, selectors } from "../redux";
+import { useHistory } from "react-router";
 
 const Transition = (props: TransitionProps) => (
   <Slide direction="up" {...props} />
@@ -46,14 +47,14 @@ type ViewListButtonProps = {
 
 export const ViewListButton = ({ list }: ViewListButtonProps) => {
   const dispatch = useDispatch();
-
+  const history = useHistory();
   return (
     <Button
       color="primary"
       size="small"
       onClick={() => {
         dispatch(actions.snackbar.setOpen(false));
-        dispatch(actions.router.push({ pathname: `/list/${list.id}` }));
+        history.push(`/list/${list.id}`);
       }}
       style={{ fontWeight: "bold" }}
     >

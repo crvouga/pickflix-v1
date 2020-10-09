@@ -16,7 +16,7 @@ import { groupBy } from "ramda";
 import React, { useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router";
+import { useParams, useHistory } from "react-router";
 import backendAPI from "../../backendAPI";
 import ListItemSkeleton from "../../common/components/ListItemSkeleton";
 import { actions } from "../../redux";
@@ -119,8 +119,10 @@ const fetchMovieCredits = (movieId: string) =>
     .then((res) => res.data);
 
 export default () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
+
   const [searchText, setSearchText] = useState("");
 
   const { movieId } = useParams<{ movieId: string }>();
@@ -152,7 +154,7 @@ export default () => {
   };
 
   const handleBack = () => {
-    dispatch(actions.router.goBack());
+    history.goBack();
   };
 
   const { cast, crew } = credits;

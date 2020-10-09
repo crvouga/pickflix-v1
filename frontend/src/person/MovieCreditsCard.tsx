@@ -25,15 +25,14 @@ import MovieIcon from "@material-ui/icons/Movie";
 import { mergeAll } from "ramda";
 import ExpandIcon from "../common/components/ExpandIcon";
 import useBoolean from "../common/hooks/useBoolean";
+import { useHistory } from "react-router";
 
 type Props = {
   credits: PersonMovieCredit[];
 };
 
 export default ({ credits }: Props) => {
-  const expanded = useBoolean(false);
-  const dispatch = useDispatch();
-
+  const history = useHistory();
   const mergedCredit = mergeAll(credits);
 
   const sutitle1 = credits
@@ -42,7 +41,7 @@ export default ({ credits }: Props) => {
     .join(", ");
 
   const handleClick = () => {
-    dispatch(actions.router.push({ pathname: `/movie/${mergedCredit.id}` }));
+    history.push(`/movie/${mergedCredit.id}`);
   };
 
   const image = makeTMDbImageURL(

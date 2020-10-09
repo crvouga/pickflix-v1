@@ -11,7 +11,7 @@ export default function* () {
     const snackbarProps = action.payload;
 
     if (yield select(selectors.snackbar.open)) {
-      yield put(actions.setState({ snackbar: { open: false } }));
+      yield put(actions.snackbar.setOpen(false));
       yield delay(200);
     }
 

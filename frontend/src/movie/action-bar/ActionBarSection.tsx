@@ -9,7 +9,7 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useParams, useHistory } from "react-router";
 import { actions, selectors } from "../../redux";
 import { ModalName } from "../../redux/router/types";
 
@@ -32,7 +32,7 @@ const useStylesIconButton = makeStyles((theme) => ({
 export default () => {
   const classesIconButton = useStylesIconButton();
   const dispatch = useDispatch();
-
+  const history = useHistory();
   const { movieId } = useParams<{ movieId: string }>();
 
   const tmdbMedia: TmdbMedia = {
@@ -63,19 +63,7 @@ export default () => {
     {
       icon: true ? <PlaylistAddIcon /> : <PlaylistAddCheckIcon />,
       label: "Save",
-      onClick: () => {
-        if (authStatus === "signedOut") {
-          dispatch(actions.router.push({ pathname: "/signIn" }));
-        }
-        if (authStatus === "signedIn") {
-          dispatch(
-            actions.router.open({
-              name: ModalName.SaveToList,
-              props: { movieId },
-            })
-          );
-        }
-      },
+      onClick: () => {},
     },
   ];
 

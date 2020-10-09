@@ -35,7 +35,6 @@ const Lists = ({ tmdbMediaId }: { tmdbMediaId?: string }) => {
           tmdbMediaId,
         })
       );
-      dispatch(actions.router.close({ name: ModalName.SaveToList }));
     }
   };
 
@@ -89,37 +88,19 @@ const Lists = ({ tmdbMediaId }: { tmdbMediaId?: string }) => {
 export default () => {
   const dispatch = useDispatch();
 
-  const isOpen = useSelector(selectors.router.isOpen(ModalName.SaveToList));
-  const modalProps = useSelector(selectors.router.props(ModalName.SaveToList));
+  const isOpen = false;
+  const modalProps = { movieId: "43" };
 
   const { movieId: tmdbMediaId } = modalProps;
 
-  const onClose = () => {
-    dispatch(actions.router.close({ name: ModalName.SaveToList }));
-  };
+  const onClose = () => {};
 
   const onClickCreateList = () => {
     if (tmdbMediaId) {
-      dispatch(actions.router.close({ name: ModalName.SaveToList }));
-      dispatch(
-        actions.router.open({
-          name: ModalName.CreateList,
-          props: {
-            listItemInfos: [
-              {
-                tmdbMediaType: "movie",
-                tmdbMediaId,
-              },
-            ],
-          },
-        })
-      );
     }
   };
 
-  const handleDone = () => {
-    dispatch(actions.router.close({ name: ModalName.SaveToList }));
-  };
+  const handleDone = () => {};
 
   return (
     <Dialog fullScreen open={isOpen} onClose={onClose}>

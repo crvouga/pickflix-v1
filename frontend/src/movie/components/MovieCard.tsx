@@ -13,6 +13,7 @@ import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 import ReadMore from "../../common/components/ReadMore";
 import { useDispatch } from "react-redux";
 import { actions } from "../../redux";
+import { useHistory } from "react-router";
 
 type Movie = {
   id: string;
@@ -29,10 +30,10 @@ type Props = {
 };
 
 export default ({ movie, CardHeaderProps }: Props) => {
-  const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleClick = () => {
-    dispatch(actions.router.push({ pathname: `/movie/${movie.id}` }));
+    history.push(`/movie/${movie.id}`);
   };
 
   const subheader = moment(movie.releaseDate).isValid()
