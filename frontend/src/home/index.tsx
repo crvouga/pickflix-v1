@@ -4,14 +4,13 @@ import React from "react";
 import { useQuery } from "react-query";
 import backendAPI from "../backendAPI";
 import HorizontalScroll from "../common/components/HorizontalScroll";
-import NavigationBarTopLevel from "../navigation/NavigationBarTopLevel";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPageTopLevel from "../common/page/LoadingPageTopLevel";
-import Poster from "../movie/components/MoviePosterCard";
+import MoviePosterCardScroll from "../movie/components/MoviePosterCardScroll";
+import NavigationBarTopLevel from "../navigation/NavigationBarTopLevel";
 import PersonAvatar from "../person/PersonAvatar";
 import { Movie, Person } from "../tmdb/types";
 import Header from "./Header";
-import MoviePosterCardScroll from "../movie/components/MoviePosterCardScroll";
 
 const Title = ({ children, ...props }: BoxProps) => (
   <Box component={Typography} paddingLeft={2} paddingBottom={1} {...props}>

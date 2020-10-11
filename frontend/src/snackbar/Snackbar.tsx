@@ -10,9 +10,10 @@ import { TransitionProps } from "@material-ui/core/transitions";
 import CloseIcon from "@material-ui/icons/Close";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { List } from "../lists/data";
+import { List } from "../lists/types";
 import { actions, selectors } from "../redux";
 import { useHistory } from "react-router";
+import { snackbar } from "./redux/snackbar";
 
 const Transition = (props: TransitionProps) => (
   <Slide direction="up" {...props} />
@@ -42,23 +43,26 @@ const useStylesSnackbarContent = makeStyles((theme) => ({
 }));
 
 type ViewListButtonProps = {
-  list: Partial<List>;
+  listId: string;
 };
 
-export const ViewListButton = ({ list }: ViewListButtonProps) => {
+export const ViewListButton = ({ listId }: ViewListButtonProps) => {
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const handleClick = () => {
+    dispatch(snackbar.actions.setOpen(false));
+    history.push(`/list/${listId}`);
+  };
+
   return (
     <Button
       color="primary"
       size="small"
-      onClick={() => {
-        dispatch(actions.snackbar.setOpen(false));
-        history.push(`/list/${list.id}`);
-      }}
+      onClick={handleClick}
       style={{ fontWeight: "bold" }}
     >
-      View
+      See List
     </Button>
   );
 };
@@ -67,7 +71,7 @@ export const CloseSnackbarButton = () => {
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    dispatch(actions.snackbar.setOpen(false));
+    dispatch(snackbar.actions.setOpen(false));
   };
 
   return (
@@ -83,11 +87,11 @@ export default () => {
 
   const dispatch = useDispatch();
 
-  const isOpen = useSelector(selectors.snackbar.open);
-  const snackbarProps = useSelector(selectors.snackbar.snackbarProps);
+  const isOpen = useSelector(snackbar.selectors.open);
+  const snackbarProps = useSelector(snackbar.selectors.props);
 
   const handleClick = () => {
-    dispatch(actions.snackbar.setOpen(false));
+    dispatch(snackbar.actions.setOpen(false));
   };
 
   return (

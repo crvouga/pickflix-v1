@@ -1,18 +1,13 @@
 import { ThemeProvider } from "@material-ui/core";
 import React from "react";
+import { ReactQueryCacheProvider } from "react-query";
 import { Provider } from "react-redux";
 import { Router } from "react-router";
 import { PersistGate } from "redux-persist/integration/react";
 import { history } from "../navigation/history";
-import configureStore from "../redux/configureStore";
-import attachFastClick from "./attachFastClick";
-import configureTheme from "./configureTheme";
-
-attachFastClick();
-
-const theme = configureTheme();
-
-const { store, persistor } = configureStore();
+import { queryCache } from "../query/query-cache";
+import { store, persistor } from "../redux/store";
+import { theme } from "./theme";
 
 type Props = React.PropsWithChildren<{}>;
 
@@ -21,7 +16,9 @@ export default ({ children }: Props) => {
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <Router history={history}>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <ReactQueryCacheProvider queryCache={queryCache}>
+            <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          </ReactQueryCacheProvider>
         </Router>
       </PersistGate>
     </Provider>

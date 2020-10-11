@@ -11,32 +11,30 @@ import MovieIcon from "@material-ui/icons/Movie";
 import { AvatarGroup } from "@material-ui/lab";
 import * as R from "ramda";
 import React from "react";
-import { useQuery } from "react-query";
-import { useDispatch, useSelector } from "react-redux";
+import { useQuery, useQueryCache } from "react-query";
+
 import BottomButton from "../common/components/BottomButton";
 import CircularProgressBox from "../common/components/CircularProgressBox";
 import ErrorBox from "../common/components/ErrorBox";
-import { actions, selectors } from "../redux";
-import { ModalName } from "../redux/router/types";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-import { fetchLists, queryKeys } from "./data";
+import {
+  getLists,
+  queryKeys,
+  addListItemMutation,
+  addListMutation,
+} from "./query";
+import useModal from "../navigation/modals/useModal";
+import { useSelector, useDispatch } from "../redux/react-redux";
+import { addListItemsForm } from "./redux/add-list-items-form";
+import { snackbar } from "../snackbar/redux/snackbar";
+import { ViewListButton } from "../snackbar/Snackbar";
+import { useMutation } from "react-query";
+import { List as IList } from "./types";
 
-const Lists = ({ tmdbMediaId }: { tmdbMediaId?: string }) => {
-  const query = useQuery(queryKeys.lists(), () => fetchLists());
+const Lists = ({ onClick }: { onClick: (listId: string) => void }) => {
+  const query = useQuery(queryKeys.lists(), getLists);
 
-  const dispatch = useDispatch();
-
-  const handleSaveToList = (listId: string) => async () => {
-    if (tmdbMediaId) {
-      dispatch(
-        actions.lists.addListItem({
-          listId,
-          tmdbMediaType: "movie",
-          tmdbMediaId,
-        })
-      );
-    }
-  };
+  const handleClick = (listId: string) => () => onClick(listId);
 
   if (query.error) {
     return <ErrorBox />;
@@ -55,7 +53,7 @@ const Lists = ({ tmdbMediaId }: { tmdbMediaId?: string }) => {
           key={list?.id || index}
           divider
           button
-          onClick={handleSaveToList(list?.id)}
+          onClick={handleClick(list?.id)}
         >
           <Box marginX={1}>
             <AvatarGroup spacing="small">
@@ -86,24 +84,52 @@ const Lists = ({ tmdbMediaId }: { tmdbMediaId?: string }) => {
 };
 
 export default () => {
+  const addListItemModal = useModal("AddListItem");
+  const addListModal = useModal("AddList");
+  const queryCache = useQueryCache();
   const dispatch = useDispatch();
 
-  const isOpen = false;
-  const modalProps = { movieId: "43" };
+  const listItemInfos = useSelector(
+    (state) => state.addListItemsForm.listItemInfos
+  );
 
-  const { movieId: tmdbMediaId } = modalProps;
+  const handleClickList = async (listId: string) => {
+    const listItemInfo = listItemInfos[0];
+    const lists = queryCache.getQueryData<IList[]>(queryKeys.lists());
+    const list = lists?.find((list) => list.id === listId);
+    try {
+      await addListItemMutation({
+        ...listItemInfo,
+        listId,
+      });
 
-  const onClose = () => {};
-
-  const onClickCreateList = () => {
-    if (tmdbMediaId) {
+      dispatch(
+        snackbar.actions.display({
+          message: list ? `Added to "${list.title}"` : "Added to list",
+          action: <ViewListButton listId={listId} />,
+        })
+      );
+    } catch (error) {
+    } finally {
+      addListItemModal.close();
     }
   };
 
-  const handleDone = () => {};
+  const onClose = () => {
+    addListItemModal.close();
+  };
+
+  const onClickCreateList = () => {
+    addListItemModal.close();
+    addListModal.open();
+  };
+
+  const handleDone = () => {
+    addListItemModal.close();
+  };
 
   return (
-    <Dialog fullScreen open={isOpen} onClose={onClose}>
+    <Dialog fullScreen open={addListItemModal.isOpen} onClose={onClose}>
       <ListItem divider>
         <ListItemText primary="Save to..." />
         <Button onClick={onClickCreateList} color="primary">
@@ -111,7 +137,7 @@ export default () => {
         </Button>
       </ListItem>
 
-      <Lists tmdbMediaId={tmdbMediaId} />
+      <Lists onClick={handleClickList} />
 
       <BottomButton onClick={handleDone} />
     </Dialog>

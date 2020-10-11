@@ -1,23 +1,14 @@
 import * as R from "ramda";
-import { useRef, useState, useEffect } from "react";
-import { useMutation, useQuery, queryCache } from "react-query";
-import {
-  ListItem,
-  deleteListItems,
-  fetchList,
-  fetchListItems,
-  patchList,
-  queryKeys,
-} from "./data";
-import { useDispatch } from "react-redux";
-import { actions } from "../redux";
+import { useRef, useState } from "react";
+import { useQuery } from "react-query";
+import { getList, getListItems, queryKeys } from "./query";
+import { ListItem } from "./types";
 
 export default (listId: string) => {
-  const dispatch = useDispatch();
   //
-  const queryList = useQuery(queryKeys.list(listId), () => fetchList(listId));
+  const queryList = useQuery(queryKeys.list(listId), () => getList({ listId }));
   const queryListItems = useQuery(queryKeys.listItems(listId), () =>
-    fetchListItems(listId)
+    getListItems({ listId })
   );
 
   //
@@ -38,15 +29,10 @@ export default (listId: string) => {
     setListItemDeletions(toggle);
   };
 
-  const onSaveChanges = () => {
-    dispatch(
-      actions.lists.editList({
-        listId,
-        title: inputRefTitle.current?.value || "",
-        description: inputRefDescription.current?.value || "",
-        listItemIds: R.values(listItemDeletions),
-      })
-    );
+  const onSaveChanges = async () => {
+    const title = inputRefTitle.current?.value || "";
+    const description = inputRefDescription.current?.value || "";
+    const listItemIds = Object.values(listItemDeletions);
   };
 
   return {

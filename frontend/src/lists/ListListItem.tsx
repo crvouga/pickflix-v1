@@ -12,7 +12,7 @@ import MovieIcon from "@material-ui/icons/Movie";
 import PublicOutlinedIcon from "@material-ui/icons/PublicOutlined";
 import React from "react";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-import { List } from "./data";
+import { List } from "./types";
 
 type Props = ListItemProps & {
   list: List;

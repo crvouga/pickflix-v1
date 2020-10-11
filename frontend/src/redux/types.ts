@@ -1,31 +1,21 @@
-import { AuthState, initialState as auth } from "../auth/redux/types";
+import { AuthState } from "../auth/redux/types";
+import { SignInFormState } from "../auth/signInForm/redux/types";
+import { DiscoverState } from "../discover/redux/types";
+import { AddListItemsFormState } from "../lists/redux/add-list-items-form";
+import { PersonPageState } from "../person/redux/types";
+import { SearchState } from "../search/redux/types";
+import { SnackbarState } from "../snackbar/redux/snackbar";
+import { VideoState } from "../video/redux/types";
+import { RecentlyViewedState } from "./recently-viewed/types";
+import { RouterState } from "./router/types";
 import {
-  SignInFormState,
-  initialState as signInForm,
-} from "../auth/signInForm/redux/types";
-import {
-  DiscoverState,
-  initialState as discover,
-} from "../discover/redux/types";
-import { ListsState, initialState as lists } from "../lists/redux/types";
-import { SearchState, initialState as search } from "../search/redux/types";
-import {
-  SnackbarState,
-  initialState as snackbar,
-} from "../snackbar/redux/reducer";
-import { VideoState, initialState as video } from "../video/redux/types";
-import {
-  RecentlyViewedState,
-  initialState as recentlyViewed,
-} from "./recently-viewed/types";
-import { RouterState, initialState as router } from "./router/types";
-import {
-  PersonPageState,
-  initialState as personPage,
-} from "../person/redux/types";
+  TypedUseSelectorHook,
+  useSelector as useSelectorRedux,
+  useDispatch as useDispatchRedux,
+} from "react-redux";
 
 export type AppState = {
-  lists: ListsState;
+  addListItemsForm: AddListItemsFormState;
   router: RouterState;
   video: VideoState;
   discover: DiscoverState;
@@ -37,15 +27,5 @@ export type AppState = {
   personPage: PersonPageState;
 };
 
-export const initialState = {
-  lists,
-  router,
-  video,
-  discover,
-  search,
-  recentlyViewed,
-  auth,
-  signInForm,
-  snackbar,
-  personPage,
-};
+export const useSelector: TypedUseSelectorHook<AppState> = useSelectorRedux;
+export const useDispatch = useDispatchRedux;

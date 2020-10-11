@@ -8,11 +8,10 @@ import {
 import LaunchIcon from "@material-ui/icons/Launch";
 import MovieIcon from "@material-ui/icons/Movie";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { toYear } from "../../person/utils";
-import { actions } from "../../redux";
-import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 import { useHistory } from "react-router";
+import { toYear } from "../../person/utils";
+import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
+
 type Props = {
   movie: {
     id: string;

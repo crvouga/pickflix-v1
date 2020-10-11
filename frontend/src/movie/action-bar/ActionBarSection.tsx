@@ -7,13 +7,11 @@ import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams, useHistory } from "react-router";
-import { actions, selectors } from "../../redux";
-import { ModalName } from "../../redux/router/types";
-
-import { TmdbMedia } from "../../tmdb/types";
+import React from "react";
+import { useParams } from "react-router";
+import useModal from "../../navigation/modals/useModal";
+import { useDispatch } from "react-redux";
+import { addListItemsForm } from "../../lists/redux/add-list-items-form";
 
 const useStylesIconButton = makeStyles((theme) => ({
   root: {
@@ -31,22 +29,14 @@ const useStylesIconButton = makeStyles((theme) => ({
 
 export default () => {
   const classesIconButton = useStylesIconButton();
+
   const dispatch = useDispatch();
-  const history = useHistory();
   const { movieId } = useParams<{ movieId: string }>();
-
-  const tmdbMedia: TmdbMedia = {
-    tmdbMediaId: movieId,
-    tmdbMediaType: "movie",
-  };
-
-  const authStatus = useSelector(selectors.auth.authStatus);
-
-  const isLiked = false;
+  const addListItemModal = useModal("AddListItem");
 
   const actionBarItems = [
     {
-      icon: isLiked ? <ThumbUpIcon /> : <ThumbUpOutlinedIcon />,
+      icon: false ? <ThumbUpIcon /> : <ThumbUpOutlinedIcon />,
       label: "Like",
       onClick: () => {},
     },
@@ -63,7 +53,17 @@ export default () => {
     {
       icon: true ? <PlaylistAddIcon /> : <PlaylistAddCheckIcon />,
       label: "Save",
-      onClick: () => {},
+      onClick: () => {
+        dispatch(
+          addListItemsForm.actions.setListItemInfos([
+            {
+              tmdbMediaType: "movie",
+              tmdbMediaId: movieId,
+            },
+          ])
+        );
+        addListItemModal.open();
+      },
     },
   ];
 

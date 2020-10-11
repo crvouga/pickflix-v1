@@ -7,12 +7,12 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
-import BackButton from "../navigation/BackButton";
-import LoadingPage from "../common/page/LoadingPage";
-import { actions, selectors } from "../redux";
-import { useDispatch, useSelector } from "react-redux";
-import SignedInAccountPage from "./SignedInAccountPage";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
+import LoadingPage from "../common/page/LoadingPage";
+import BackButton from "../navigation/BackButton";
+import { selectors } from "../redux";
+import SignedInAccountPage from "./SignedInAccountPage";
 
 const useStyles = makeStyles((theme) => ({
   bold: {

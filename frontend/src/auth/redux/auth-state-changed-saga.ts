@@ -1,15 +1,8 @@
 import { User } from "firebase";
-import { eventChannel } from "redux-saga";
 import { put, select, takeEvery } from "redux-saga/effects";
 import { actions, selectors } from "../../redux";
-import firebase from "../firebase";
+import authStateChannel from "./auth-state-channel";
 import { AuthStatus } from "./types";
-
-const authStateChannel = eventChannel<User | false>((emit) => {
-  return firebase.auth().onAuthStateChanged((user) => {
-    emit(user || false);
-  });
-});
 
 function* authStateChangedSaga(newCurrentUser: User | false) {
   const previousAuthStatus: AuthStatus = yield select(

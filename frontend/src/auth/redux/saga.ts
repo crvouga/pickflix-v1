@@ -10,6 +10,7 @@ import { actions, selectors } from "../../redux";
 import firebase from "../firebase";
 import authStateChangedSaga from "./auth-state-changed-saga";
 import { history } from "../../navigation/history";
+import { snackbar } from "../../snackbar/redux/snackbar";
 
 const deleteCurrentUser = () => firebase.auth().currentUser?.delete();
 
@@ -48,7 +49,7 @@ export default function* () {
   yield takeEvery(actions.auth.signedIn, function* () {
     const currentUser = yield select(selectors.auth.user);
     yield put(
-      actions.snackbar.display({
+      snackbar.actions.display({
         message: `Signed as ${currentUser.displayName} (${currentUser.email})`,
       })
     );
@@ -56,7 +57,7 @@ export default function* () {
 
   yield takeEvery(actions.auth.signedOut, function* () {
     yield put(
-      actions.snackbar.display({
+      snackbar.actions.display({
         message: `You are now signed out`,
       })
     );

@@ -4,17 +4,19 @@ import EditIcon from "@material-ui/icons/EditOutlined";
 import GroupAddOutlinedIcon from "@material-ui/icons/GroupAddOutlined";
 import React from "react";
 import { useQuery } from "react-query";
-import { useParams } from "react-router";
+import { useDispatch } from "react-redux";
+import { useParams, useHistory } from "react-router";
+import CircularProgressBox from "../common/components/CircularProgressBox";
+import ErrorBox from "../common/components/ErrorBox";
 import useBoolean from "../common/hooks/useBoolean";
-import NavigationBar from "../navigation/NavigationBar";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
 import Poster from "../movie/components/MoviePosterCard";
-import { fetchList, fetchListItems, queryKeys } from "./data";
+import NavigationBar from "../navigation/NavigationBar";
+import { actions } from "../redux";
+import { getList, getListItems, queryKeys } from "./query";
 import DeleteListDialog from "./DeleteListDialog";
 import EditListDialog from "./EditListDialog";
-import CircularProgressBox from "../common/components/CircularProgressBox";
-import ErrorBox from "../common/components/ErrorBox";
 
 type ListItemsProps = {
   listId: string;
@@ -23,7 +25,7 @@ type ListItemsProps = {
 export const ListItems = (props: ListItemsProps) => {
   const { listId } = props;
   const query = useQuery(queryKeys.listItems(listId), () =>
-    fetchListItems(listId)
+    getListItems({ listId })
   );
 
   if (query.error) {
@@ -64,7 +66,9 @@ export const ListItems = (props: ListItemsProps) => {
 
 export default () => {
   const { listId } = useParams<{ listId: string }>();
-  const query = useQuery(queryKeys.list(listId), () => fetchList(listId));
+  const query = useQuery(queryKeys.list(listId), () => getList({ listId }));
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const isEditListModalOpen = useBoolean(false);
   const isDeleteListModalOpen = useBoolean(false);
@@ -79,13 +83,19 @@ export default () => {
 
   const list = query.data;
 
+  const handleEdit = () => {};
+
+  const handleDelete = () => {
+    history.push("/profile");
+  };
+
   return (
     <React.Fragment>
       <NavigationBar title={list.title} AppBarProps={{ position: "sticky" }} />
       <DeleteListDialog
-        list={list}
         open={isDeleteListModalOpen.value}
         onClose={isDeleteListModalOpen.setFalse}
+        onDelete={handleDelete}
       />
       <EditListDialog
         listId={list.id}

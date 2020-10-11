@@ -1,17 +1,18 @@
-import React, { useEffect } from "react";
-import { useQuery, queryCache } from "react-query";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useQuery } from "react-query";
+import { useHistory } from "react-router";
 import CircularProgressBox from "../common/components/CircularProgressBox";
 import ErrorBox from "../common/components/ErrorBox";
-import { actions, selectors } from "../redux";
-import { fetchLists, queryKeys } from "./data";
+import { getLists, queryKeys } from "./query";
 import ListListItem from "./ListListItem";
-import { useHistory } from "react-router";
 
 export default () => {
-  const dispatch = useDispatch();
   const history = useHistory();
-  const query = useQuery(queryKeys.lists(), () => fetchLists());
+  const onClickList = (list: { id: string }) => () => {
+    history.push(`/list/${list.id}`);
+  };
+
+  const query = useQuery(queryKeys.lists(), getLists);
 
   if (query.error) {
     return <ErrorBox />;
@@ -22,10 +23,6 @@ export default () => {
   }
 
   const lists = query.data;
-
-  const onClickList = (list: { id: string }) => () => {
-    history.push(`/list/${list.id}`);
-  };
 
   return (
     <React.Fragment>
