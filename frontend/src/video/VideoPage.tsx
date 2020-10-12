@@ -9,10 +9,12 @@ import YoutubeSection from "../youtube/Section";
 import PlaylistSection from "./PlaylistSection";
 import { VideoProgress } from "./redux/types";
 import MovieListItem from "../movie/components/MovieListItem";
+import NavigationBarTopLevel from "../navigation/NavigationBarTopLevel";
+
 const useStyles = makeStyles((theme) => ({
   playerContainer: {
     position: "sticky",
-    top: 0,
+    top: 56,
     width: "100%",
     zIndex: theme.zIndex.appBar,
   },
@@ -37,7 +39,8 @@ export default () => {
   };
 
   return (
-    <div>
+    <React.Fragment>
+      <NavigationBarTopLevel />
       <AspectRatio
         ratio={[16, 9]}
         ContainerProps={{ className: classes.playerContainer }}
@@ -68,6 +71,6 @@ export default () => {
       )}
 
       {video?.key && <YoutubeSection videoId={video.key} />}
-    </div>
+    </React.Fragment>
   );
 };

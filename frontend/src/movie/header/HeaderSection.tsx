@@ -85,10 +85,7 @@ export default () => {
       >
         <Box flex={1}></Box>
         <Box textAlign="center" paddingX={2} maxWidth="100vw">
-          <Typography
-            style={{ wordBreak: "break-all" }}
-            variant={titleToVariant(data.title)}
-          >
+          <Typography variant={titleToVariant(data.title)}>
             {data.title}
           </Typography>
           <Typography gutterBottom variant="subtitle1" color="textSecondary">

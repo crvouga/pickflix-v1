@@ -37,9 +37,13 @@ type Props = DialogProps & {
   onClose: (event?: {}, reason?: "backdropClick" | "escapeKeyDown") => void;
 };
 
-export default ({ listId, ...DialogProps }: Props) => {
-  const classesDialog = useStylesDialog();
-
+const DialogBody = ({
+  listId,
+  onClose,
+}: {
+  listId: string;
+  onClose: () => void;
+}) => {
   const {
     inputRefTitle,
     inputRefDescription,
@@ -54,7 +58,7 @@ export default ({ listId, ...DialogProps }: Props) => {
 
   const handleSaveChanges = () => {
     onSaveChanges();
-    DialogProps.onClose();
+    onClose();
   };
 
   if (queryList.error || queryListItems.error) {
@@ -69,10 +73,10 @@ export default ({ listId, ...DialogProps }: Props) => {
   const listItems = queryListItems.data;
 
   return (
-    <Dialog fullScreen classes={classesDialog} {...DialogProps}>
+    <React.Fragment>
       <AppBar color="default" position="sticky">
         <Toolbar>
-          <IconButton onClick={DialogProps.onClose}>
+          <IconButton onClick={onClose}>
             <CloseOutlinedIcon />
           </IconButton>
           <Typography style={{ flex: 1 }}>Edit List</Typography>
@@ -149,6 +153,18 @@ export default ({ listId, ...DialogProps }: Props) => {
           ))}
         </List>
       </Box>
+    </React.Fragment>
+  );
+};
+
+export default ({ listId, ...DialogProps }: Props) => {
+  const classesDialog = useStylesDialog();
+  const handleClose = () => {
+    DialogProps.onClose();
+  };
+  return (
+    <Dialog fullScreen classes={classesDialog} {...DialogProps}>
+      <DialogBody listId={listId} onClose={handleClose} />
     </Dialog>
   );
 };

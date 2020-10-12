@@ -7,7 +7,7 @@ export default () => {
   const history = useHistory();
 
   const onBack = () => {
-    history.push("/");
+    history.goBack();
   };
 
   return (
