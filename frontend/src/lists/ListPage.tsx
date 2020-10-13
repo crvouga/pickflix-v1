@@ -6,7 +6,7 @@ import React from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router";
-import CircularProgressBox from "../common/components/CircularProgressBox";
+import LoadingBox from "../common/components/LoadingBox";
 import ErrorBox from "../common/components/ErrorBox";
 import useBoolean from "../common/hooks/useBoolean";
 import ErrorPage from "../common/page/ErrorPage";
@@ -14,9 +14,10 @@ import LoadingPage from "../common/page/LoadingPage";
 import Poster from "../movie/components/MoviePosterCard";
 import NavigationBar from "../navigation/NavigationBar";
 import { actions } from "../redux";
-import { getList, getListItems, queryKeys } from "./query";
+import { getList, getListItems, queryKeys, deleteListMutation } from "./query";
 import DeleteListDialog from "./DeleteListDialog";
 import EditListDialog from "./EditListDialog";
+import { snackbar } from "../snackbar/redux/snackbar";
 
 type ListItemsProps = {
   listId: string;
@@ -33,7 +34,7 @@ export const ListItems = (props: ListItemsProps) => {
   }
 
   if (!query.data) {
-    return <CircularProgressBox />;
+    return <LoadingBox />;
   }
 
   const listItems = query.data;
@@ -83,10 +84,23 @@ export default () => {
 
   const list = query.data;
 
-  const handleEdit = () => {};
-
-  const handleDelete = () => {
-    history.push("/profile");
+  const handleDelete = async () => {
+    try {
+      await deleteListMutation({ listId: list.id });
+      dispatch(
+        snackbar.actions.display({
+          message: "Deleted list",
+        })
+      );
+    } catch (error) {
+      dispatch(
+        snackbar.actions.display({
+          message: "Failed to delete list",
+        })
+      );
+    } finally {
+      history.push("/profile");
+    }
   };
 
   return (

@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "react-query";
 import { useHistory } from "react-router";
-import CircularProgressBox from "../common/components/CircularProgressBox";
+import LoadingBox from "../common/components/LoadingBox";
 import ErrorBox from "../common/components/ErrorBox";
 import { getLists, queryKeys } from "./query";
 import ListListItem from "./ListListItem";
@@ -19,7 +19,7 @@ export default () => {
   }
 
   if (!query.data) {
-    return <CircularProgressBox />;
+    return <LoadingBox />;
   }
 
   const lists = query.data;

@@ -14,7 +14,7 @@ import React from "react";
 import { useQuery, useQueryCache } from "react-query";
 
 import BottomButton from "../common/components/BottomButton";
-import CircularProgressBox from "../common/components/CircularProgressBox";
+import LoadingBox from "../common/components/LoadingBox";
 import ErrorBox from "../common/components/ErrorBox";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import {
@@ -41,7 +41,7 @@ const Lists = ({ onClick }: { onClick: (listId: string) => void }) => {
   }
 
   if (!query.data) {
-    return <CircularProgressBox />;
+    return <LoadingBox />;
   }
 
   const lists = query.data;
@@ -88,10 +88,7 @@ export default () => {
   const addListModal = useModal("AddList");
   const queryCache = useQueryCache();
   const dispatch = useDispatch();
-
-  const listItemInfos = useSelector(
-    (state) => state.addListItemsForm.listItemInfos
-  );
+  const listItemInfos = useSelector(addListItemsForm.selectors.listItemInfos);
 
   const handleClickList = async (listId: string) => {
     const listItemInfo = listItemInfos[0];
@@ -110,22 +107,25 @@ export default () => {
         })
       );
     } catch (error) {
+      dispatch(
+        snackbar.actions.display({
+          message: `Failed to add to list`,
+        })
+      );
     } finally {
+      dispatch(addListItemsForm.actions.reset());
       addListItemModal.close();
     }
   };
 
   const onClose = () => {
+    dispatch(addListItemsForm.actions.reset());
     addListItemModal.close();
   };
 
   const onClickCreateList = () => {
     addListItemModal.close();
     addListModal.open();
-  };
-
-  const handleDone = () => {
-    addListItemModal.close();
   };
 
   return (
@@ -136,10 +136,8 @@ export default () => {
           Create New
         </Button>
       </ListItem>
-
       <Lists onClick={handleClickList} />
-
-      <BottomButton onClick={handleDone} />
+      <BottomButton onClick={onClose} />
     </Dialog>
   );
 };

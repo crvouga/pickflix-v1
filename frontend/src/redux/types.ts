@@ -1,6 +1,6 @@
 import { AuthState } from "../auth/redux/types";
 import { SignInFormState } from "../auth/signInForm/redux/types";
-import { DiscoverState } from "../discover/redux/types";
+import { DiscoverMovieState } from "../discover/redux/discover-movie";
 import { AddListItemsFormState } from "../lists/redux/add-list-items-form";
 import { PersonPageState } from "../person/redux/types";
 import { SearchState } from "../search/redux/types";
@@ -18,7 +18,7 @@ export type AppState = {
   addListItemsForm: AddListItemsFormState;
   router: RouterState;
   video: VideoState;
-  discover: DiscoverState;
+  discoverMovie: DiscoverMovieState;
   search: SearchState;
   recentlyViewed: RecentlyViewedState;
   auth: AuthState;

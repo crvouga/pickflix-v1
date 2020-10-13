@@ -1,72 +1,37 @@
-import { Box, makeStyles, Typography } from "@material-ui/core";
-import React, { useEffect, useRef } from "react";
-import { useInView } from "react-intersection-observer";
-import { useDispatch, useSelector } from "react-redux";
+import { Box } from "@material-ui/core";
+import React from "react";
+import ErrorBox from "../common/components/ErrorBox";
+import LoadingBox from "../common/components/LoadingBox";
 import Poster from "../movie/components/MoviePosterCard";
-import discover from "./redux";
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    alignContent: "center",
-  },
-}));
-
-const useInifiniteScrollRef = () => {
-  const canRequestMoreDiscover = useSelector(
-    discover.selectors.canRequestMoreDiscover
-  );
-  const dispatch = useDispatch();
-  const [ref, inView] = useInView();
-
-  useEffect(() => {
-    if (inView && canRequestMoreDiscover) {
-      dispatch(discover.actions.requestDiscover());
-    }
-  }, [inView, canRequestMoreDiscover, dispatch]);
-  return ref;
-};
+import useDiscoverMovieQuery from "./useDiscoverMovieQuery";
 
 export default () => {
-  const classes = useStyles();
-  const triggerRef = useInifiniteScrollRef();
+  const discoverMovieParams = {};
+  const { fetchMoreRef, data, error, canFetchMore } = useDiscoverMovieQuery(
+    discoverMovieParams
+  );
 
-  const activeTags = useSelector(discover.selectors.activeTags);
-  const scrollRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = 0;
-    }
-  }, [activeTags]);
+  if (error) {
+    return <ErrorBox />;
+  }
 
-  const results = useSelector(discover.selectors.results);
-  const status = useSelector(discover.selectors.status);
-
-  if (results.length === 0 && status === "success") {
-    return (
-      <Box p={8}>
-        <Typography
-          align="center"
-          color="textSecondary"
-          variant="h6"
-          style={{ fontWeight: "bold" }}
-        >
-          No results
-        </Typography>
-      </Box>
-    );
+  if (!data) {
+    return <LoadingBox />;
   }
 
   return (
-    <div ref={scrollRef} className={classes.container}>
-      {results.map((result) => (
-        <Box p={1 / 2} width="50%" key={result.id}>
-          <Poster movie={result} />
-        </Box>
-      ))}
-      <div ref={triggerRef} />
-    </div>
+    <React.Fragment>
+      <Box display="flex" flexDirection="row" flexWrap="wrap">
+        {data.map((response) =>
+          response.results.map((result) => (
+            <Box p={1 / 2} width="50%" key={result.id}>
+              <Poster movie={result} />
+            </Box>
+          ))
+        )}
+        <div ref={fetchMoreRef} />
+      </Box>
+      {canFetchMore && <LoadingBox m={4} />}
+    </React.Fragment>
   );
 };

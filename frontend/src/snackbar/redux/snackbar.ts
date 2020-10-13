@@ -70,7 +70,6 @@ const SNACKBAR_TIMEOUT = 4000;
 export function* saga() {
   yield put(actions.setOpen(false));
   yield takeLatest(actions.display, function* (action) {
-    console.log("HELLO");
     const props = action.payload;
     if (yield select(selectors.open)) {
       yield put(actions.setOpen(false));

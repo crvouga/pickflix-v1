@@ -21,7 +21,7 @@ import CheckOutlinedIcon from "@material-ui/icons/CheckOutlined";
 import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import React from "react";
-import CircularProgressBox from "../common/components/CircularProgressBox";
+import LoadingBox from "../common/components/LoadingBox";
 import ErrorBox from "../common/components/ErrorBox";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import useEditListLogic from "./useEditListLogic";
@@ -66,7 +66,7 @@ const DialogBody = ({
   }
 
   if (!queryList.data || !queryListItems.data) {
-    return <CircularProgressBox />;
+    return <LoadingBox />;
   }
 
   const list = queryList.data;

@@ -1,15 +1,15 @@
 import { Box, Chip, BoxProps } from "@material-ui/core";
 import React from "react";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
-import { Tag as ITag } from "../../discover/redux/types";
+import { DiscoverMovieTag } from "../../discover/redux/discover-movie";
 
 type Props = Omit<BoxProps, "onClick"> & {
-  tags: ITag[];
-  onClick: (tag: ITag) => void;
+  tags: DiscoverMovieTag[];
+  onClick: (tag: DiscoverMovieTag) => void;
 };
 
 export default ({ tags, onClick, ...props }: Props) => {
-  const handleClick = (tag: ITag) => () => onClick(tag);
+  const handleClick = (tag: DiscoverMovieTag) => () => onClick(tag);
 
   return (
     <HorizontalScroll paddingLeft={2} paddingBottom={1} {...props}>
@@ -18,7 +18,7 @@ export default ({ tags, onClick, ...props }: Props) => {
           <Chip
             variant="outlined"
             clickable
-            label={tag.name}
+            // label={tag?.name || ""}
             onClick={handleClick(tag)}
           />
         </Box>

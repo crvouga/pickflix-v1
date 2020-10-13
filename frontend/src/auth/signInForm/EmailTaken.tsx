@@ -15,7 +15,7 @@ import firebase from "../firebase";
 import form from "./redux";
 import { SignInMethod } from "./redux/types";
 import { GoogleIcon } from "./socialLoginIcons";
-import CircularProgressBox from "../../common/components/CircularProgressBox";
+import LoadingBox from "../../common/components/LoadingBox";
 import ErrorBox from "../../common/components/ErrorBox";
 
 const methodToProps = {
@@ -49,7 +49,7 @@ const SignInMethods = () => {
   }
 
   if (!query.data) {
-    return <CircularProgressBox />;
+    return <LoadingBox />;
   }
 
   const signInMethods = query.data;

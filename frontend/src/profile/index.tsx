@@ -10,25 +10,17 @@ import {
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
-import NavigationBarTopLevel from "../navigation/NavigationBarTopLevel";
 import Lists from "../lists/Lists";
-import { ModalName } from "../redux/router/types";
+import useModal from "../navigation/modals/useModal";
+import NavigationBarTopLevel from "../navigation/NavigationBarTopLevel";
 import RecentlyViewed from "./RecentlyViewed";
 
 export default () => {
   const theme = useTheme();
-  const dispatch = useDispatch();
-  const history = useHistory();
+  const addListModal = useModal("AddList");
+
   const onClickCreateNewList = () => {
-    history.push({
-      state: {
-        [ModalName.CreateList]: {
-          isOpen: true,
-        },
-      },
-    });
+    addListModal.open();
   };
 
   return (

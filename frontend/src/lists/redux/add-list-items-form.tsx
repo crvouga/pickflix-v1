@@ -1,7 +1,7 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { TmdbMediaType } from "../../tmdb/types";
 
-const name = "addListForm";
+const name = "addListItemsForm";
 
 /* 
 
@@ -28,7 +28,17 @@ export const initialState: AddListItemsFormState = {
 
 */
 
+export const selectors = {
+  listItemInfos: (state: { [name]: AddListItemsFormState }) =>
+    state[name].listItemInfos,
+};
+
+/* 
+
+*/
+
 const actions = {
+  reset: createAction(`${name}/RESET`),
   setListItemInfos: createAction<ListItemInfo[]>(`${name}/SET_LIST_ITEM_INFOS`),
 };
 
@@ -37,6 +47,9 @@ const actions = {
 */
 
 const reducer = createReducer(initialState, {
+  [actions.reset.toString()]: (state, action) => {
+    return initialState;
+  },
   [actions.setListItemInfos.toString()]: (state, action) => {
     state.listItemInfos = action.payload;
   },
@@ -49,4 +62,5 @@ const reducer = createReducer(initialState, {
 export const addListItemsForm = {
   actions,
   reducer,
+  selectors,
 };

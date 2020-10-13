@@ -8,13 +8,14 @@ import {
   makeStyles,
   TextField,
 } from "@material-ui/core";
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import useModal from "../navigation/modals/useModal";
 import { addListMutation } from "./query";
 import { snackbar } from "../snackbar/redux/snackbar";
 import { ViewListButton } from "../snackbar/Snackbar";
 import { useSelector } from "../redux/react-redux";
+import { addListItemsForm } from "./redux/add-list-items-form";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
@@ -28,14 +29,13 @@ export default () => {
   const dispatch = useDispatch();
 
   const onClose = () => {
+    dispatch(addListItemsForm.actions.reset());
     addListModal.close();
   };
 
   const inputRefTitle = useRef<HTMLInputElement>();
+  const listItemInfos = useSelector(addListItemsForm.selectors.listItemInfos);
 
-  const listItemInfos = useSelector(
-    (state) => state.addListItemsForm.listItemInfos
-  );
   const onSubmit = async () => {
     try {
       const list = await addListMutation({
@@ -43,7 +43,6 @@ export default () => {
         description: "",
         listItemInfos,
       });
-
       dispatch(
         snackbar.actions.display({
           message: `Created "${list.title}"`,
@@ -51,10 +50,29 @@ export default () => {
         })
       );
     } catch (error) {
+      dispatch(
+        snackbar.actions.display({
+          message: `Failed to create list`,
+        })
+      );
     } finally {
+      dispatch(addListItemsForm.actions.reset());
       addListModal.close();
     }
   };
+
+  const focus = () => {
+    if (inputRefTitle.current) {
+      inputRefTitle.current.focus();
+    }
+  };
+
+  useEffect(() => {
+    const timeout = setTimeout(focus, 200);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
 
   return (
     <Dialog
@@ -66,7 +84,6 @@ export default () => {
       <DialogContent>
         <Box marginBottom={2}>
           <TextField
-            autoFocus
             inputRef={inputRefTitle}
             variant="outlined"
             name="title"

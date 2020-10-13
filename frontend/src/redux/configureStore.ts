@@ -9,6 +9,7 @@ const { reducer, saga } = configureRoot();
 const persistConfig = {
   key: "root",
   storage: localforage,
+  blacklist: ["snackbar"],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);
