@@ -4,9 +4,14 @@ import ErrorBox from "../common/components/ErrorBox";
 import LoadingBox from "../common/components/LoadingBox";
 import Poster from "../movie/components/MoviePosterCard";
 import useDiscoverMovieQuery from "./useDiscoverMovieQuery";
+import { useSelector } from "../redux/react-redux";
+import { discoverMovie } from "./redux/discover-movie";
 
 export default () => {
-  const discoverMovieParams = {};
+  const discoverMovieParams = useSelector(
+    discoverMovie.selectors.discoverMovieParams
+  );
+
   const { fetchMoreRef, data, error, canFetchMore } = useDiscoverMovieQuery(
     discoverMovieParams
   );

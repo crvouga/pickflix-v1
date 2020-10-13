@@ -2,10 +2,8 @@ import { makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import {
-  discoverMovie,
-  DiscoverMovieTag,
-} from "../../discover/redux/discover-movie";
+import { discoverMovie } from "../../discover/redux/discover-movie";
+import { DiscoverMovieTag } from "../../discover/discover-movie-tags";
 
 import { useMoviePageQuery } from "../data";
 import TagScroll from "./TagScroll";
@@ -25,9 +23,22 @@ export default () => {
 
   const classes = useStyles();
 
-  const keywordTags: DiscoverMovieTag[] = []; // keywords.keywords.map(makeTag("keyword"));
-  const genreTags: DiscoverMovieTag[] = []; //details.genres.map(makeTag("genre"));
-  const companyTags: DiscoverMovieTag[] = []; //details.productionCompanies.map(makeTag("company"));
+  const keywordTags: DiscoverMovieTag[] = keywords.keywords.map((keyword) => ({
+    type: "withKeywords",
+    ...keyword,
+  }));
+
+  const genreTags: DiscoverMovieTag[] = details.genres.map((genre) => ({
+    type: "withGenres",
+    ...genre,
+  }));
+
+  const companyTags: DiscoverMovieTag[] = details.productionCompanies.map(
+    (company) => ({
+      type: "withCompanies",
+      ...company,
+    })
+  );
 
   const dispatch = useDispatch();
 

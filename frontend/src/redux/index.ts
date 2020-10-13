@@ -10,6 +10,7 @@ import search from "../search/redux";
 import { snackbar } from "../snackbar/redux/snackbar";
 import video from "../video/redux";
 import recentlyViewed from "./recently-viewed";
+import { discoverMovieSaga } from "../discover/redux/discover-movie-saga";
 
 export const actions = Object.freeze({
   video: video.actions,
@@ -38,6 +39,7 @@ function* rootSaga() {
     spawn(auth.saga),
     spawn(signInForm.saga),
     spawn(querySaga),
+    spawn(discoverMovieSaga),
   ];
 }
 

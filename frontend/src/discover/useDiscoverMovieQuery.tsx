@@ -3,12 +3,15 @@ import { useInView } from "react-intersection-observer";
 import { useInfiniteQuery } from "react-query";
 import { getDiscoverMovie, queryKeys } from "./query";
 import { DiscoverMovieParams } from "./query/types";
+import { last } from "ramda";
 
 export default (discoverMovieParams: DiscoverMovieParams) => {
+  const queryKey = queryKeys.discoverMovie(discoverMovieParams);
+
   const query = useInfiniteQuery(
-    queryKeys.discoverMovie(discoverMovieParams),
-    (queryKey: string, getFetchMoreReturnValue: number) => {
-      const page = getFetchMoreReturnValue;
+    queryKey,
+    (...args) => {
+      const page = (last(args) || 1) as number;
       return getDiscoverMovie({ ...discoverMovieParams, page });
     },
     {

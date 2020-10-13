@@ -12,23 +12,16 @@ import { AvatarGroup } from "@material-ui/lab";
 import * as R from "ramda";
 import React from "react";
 import { useQuery, useQueryCache } from "react-query";
-
 import BottomButton from "../common/components/BottomButton";
-import LoadingBox from "../common/components/LoadingBox";
 import ErrorBox from "../common/components/ErrorBox";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-import {
-  getLists,
-  queryKeys,
-  addListItemMutation,
-  addListMutation,
-} from "./query";
+import LoadingBox from "../common/components/LoadingBox";
 import useModal from "../navigation/modals/useModal";
-import { useSelector, useDispatch } from "../redux/react-redux";
-import { addListItemsForm } from "./redux/add-list-items-form";
+import { useDispatch, useSelector } from "../redux/react-redux";
 import { snackbar } from "../snackbar/redux/snackbar";
 import { ViewListButton } from "../snackbar/Snackbar";
-import { useMutation } from "react-query";
+import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
+import { addListItemMutation, getLists, queryKeys } from "./query";
+import { addListItemsForm } from "./redux/add-list-items-form";
 import { List as IList } from "./types";
 
 const Lists = ({ onClick }: { onClick: (listId: string) => void }) => {

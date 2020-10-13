@@ -28,7 +28,7 @@ export default React.forwardRef<Element, Props>(
       <Box
         /* 
           https://github.com/mui-org/material-ui/issues/17010 
-          ref={ref} does not work in typescript >:(
+          ref={ref} does not work in typescript >:|
         */
         {...{ ref }}
         className={clsx(classes.root, className)}
