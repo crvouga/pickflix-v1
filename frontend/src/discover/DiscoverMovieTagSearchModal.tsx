@@ -6,19 +6,17 @@ import {
   List,
   ListItem,
   ListItemAvatar,
+  ListItemProps,
   ListItemText,
   makeStyles,
   Toolbar,
-  Typography,
 } from "@material-ui/core";
 import axios from "axios";
-import { useDebounce } from "use-debounce";
-
 import matchSorter from "match-sorter";
-import { union, uniqBy } from "ramda";
 import React, { ChangeEvent, useState } from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
+import { useDebounce } from "use-debounce";
 import ListItemSkeleton from "../common/components/ListItemSkeleton";
 import BackButton from "../navigation/BackButton";
 import useModal from "../navigation/modals/useModal";
@@ -37,54 +35,8 @@ import {
   queryKeys,
 } from "./query";
 import { discoverMovie } from "./redux/discover-movie";
-
-const Result = ({ tag }: { tag: DiscoverMovieTag }) => {
-  switch (tag.type) {
-    case "withPeople":
-      return (
-        <ListItem button>
-          <ListItemAvatar>
-            <Avatar
-              src={makeTMDbImageURL(1, {
-                profilePath: tag.profilePath,
-              })}
-            />
-          </ListItemAvatar>
-          <ListItemText primary={tag.name} secondary="Person" />
-        </ListItem>
-      );
-    case "withCompanies":
-      return (
-        <ListItem button>
-          <ListItemAvatar>
-            <Avatar src={makeTMDbImageURL(1, { logoPath: tag.logoPath })} />
-          </ListItemAvatar>
-          <ListItemText primary={tag.name} secondary="Company" />
-        </ListItem>
-      );
-
-    case "withKeywords":
-      return (
-        <ListItem button>
-          <ListItemText primary={tag.name} secondary="Keyword" />
-        </ListItem>
-      );
-
-    case "withGenres":
-      return (
-        <ListItem button>
-          <ListItemText primary={tag.name} secondary="Genre" />
-        </ListItem>
-      );
-
-    default:
-      return (
-        <ListItem button>
-          <ListItemText primary={tag.name} />
-        </ListItem>
-      );
-  }
-};
+import DiscoverMovieTagListItem from "./DiscoverMovieTagListItem";
+import { uniqBy } from "ramda";
 
 const SearchResults = ({
   searchQuery,
@@ -96,6 +48,9 @@ const SearchResults = ({
   const handleClick = (tag: DiscoverMovieTag) => () => onClick(tag);
 
   const tags = useSelector(discoverMovie.selectors.tags);
+  const sortedTags: DiscoverMovieTag[] = matchSorter(tags, searchQuery, {
+    keys: ["name"],
+  });
 
   const [debounced] = useDebounce(encodeURI(searchQuery.trim()), 500);
 
@@ -142,6 +97,13 @@ const SearchResults = ({
   ) {
     return (
       <List>
+        {sortedTags.map((tag) => (
+          <DiscoverMovieTagListItem
+            key={tag.id}
+            onClick={handleClick(tag)}
+            tag={tag}
+          />
+        ))}
         <ListItemSkeleton />
         <ListItemSkeleton />
         <ListItemSkeleton />
@@ -171,23 +133,31 @@ const SearchResults = ({
     })
   );
 
-  const allTags = uniqBy((tag) => tag.id, [
-    ...tags,
+  const newTags = [
+    ...sortedTags,
     ...withPeopleTags,
     ...withKeywordsTags,
     ...withCompaniesTags,
-  ]);
-
-  const sortedTags: DiscoverMovieTag[] = matchSorter(allTags, searchQuery, {
-    keys: ["name"],
-  });
+  ].filter(
+    (newTag) => !Boolean(sortedTags.find((oldTag) => newTag.id === oldTag.id))
+  );
 
   return (
     <List>
       {sortedTags.map((tag) => (
-        <div key={tag.id} onClick={handleClick(tag)}>
-          <Result tag={tag} />
-        </div>
+        <DiscoverMovieTagListItem
+          key={tag.id}
+          onClick={handleClick(tag)}
+          tag={tag}
+        />
+      ))}
+
+      {newTags.map((tag) => (
+        <DiscoverMovieTagListItem
+          key={tag.id}
+          onClick={handleClick(tag)}
+          tag={tag}
+        />
       ))}
     </List>
   );
@@ -195,7 +165,7 @@ const SearchResults = ({
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
   },
 }));
 
@@ -222,7 +192,6 @@ const SearchBar = ({ onChange }: { onChange: (query: string) => void }) => {
 
 export default () => {
   const dispatch = useDispatch();
-  const activeTags = useSelector(discoverMovie.selectors.activeTags);
   const classesDialog = useStylesDialog();
   const discoverMovieTagSearchModal = useModal("DiscoverMovieTagSearch");
   const [searchQuery, setSearchQuery] = useState("");

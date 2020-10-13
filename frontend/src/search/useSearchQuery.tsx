@@ -1,16 +1,25 @@
+import axios from "axios";
+import { last } from "ramda";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useInfiniteQuery } from "react-query";
-import { getDiscoverMovie, queryKeys } from "./query";
-import { DiscoverMovieParams } from "./query/types";
-import { last } from "ramda";
+import { useDebounce } from "use-debounce/lib";
+import { getSearchMulti, queryKeys } from "./query";
 
-export default (discoverMovieParams: DiscoverMovieParams) => {
+export default (searchQuery: string) => {
+  const [debounced] = useDebounce(encodeURI(searchQuery.trim()), 500);
+
   const query = useInfiniteQuery(
-    queryKeys.discoverMovie(discoverMovieParams),
+    queryKeys.searchMulti(debounced),
     (...args) => {
       const page = (last(args) || 1) as number;
-      return getDiscoverMovie({ ...discoverMovieParams, page });
+      const source = axios.CancelToken.source();
+      const promise = getSearchMulti({ page, query: debounced });
+      //@ts-ignore
+      promise.cancel = () => {
+        source.cancel("Query was cancelled by React Query");
+      };
+      return promise;
     },
     {
       getFetchMore: (lastPage, allPages) => {

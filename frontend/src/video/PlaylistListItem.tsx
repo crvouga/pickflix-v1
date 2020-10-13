@@ -25,8 +25,10 @@ export default (props: Props) => {
   const isPlaying = useSelector(selectors.video.isPlaying);
   const currentVideo = useSelector(selectors.video.video);
 
+  const selected = video.key === currentVideo?.key;
+
   const handleClick = () => {
-    if (video.key === currentVideo?.key) {
+    if (selected) {
       dispatch(actions.video.toggle());
     } else {
       dispatch(actions.video.setVideo(video));
@@ -37,7 +39,7 @@ export default (props: Props) => {
   const image = youtubeAPI.videoKeyToThumbnailURL(video.key);
 
   return (
-    <ListItem button onClick={handleClick}>
+    <ListItem selected={selected} button onClick={handleClick}>
       <ListItemAvatar>
         <Avatar variant="square" src={image} />
       </ListItemAvatar>

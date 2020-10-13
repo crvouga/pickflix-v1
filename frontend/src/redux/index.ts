@@ -3,18 +3,17 @@ import { spawn } from "redux-saga/effects";
 import auth from "../auth/redux";
 import signInForm from "../auth/signInForm/redux";
 import { discoverMovie } from "../discover/redux/discover-movie";
+import { discoverMovieSaga } from "../discover/redux/discover-movie-saga";
 import { addListItemsForm } from "../lists/redux/add-list-items-form";
 import personPage from "../person/redux";
 import querySaga from "../query/query-saga";
-import search from "../search/redux";
+import { search } from "../search/redux/search";
 import { snackbar } from "../snackbar/redux/snackbar";
 import video from "../video/redux";
 import recentlyViewed from "./recently-viewed";
-import { discoverMovieSaga } from "../discover/redux/discover-movie-saga";
 
 export const actions = Object.freeze({
   video: video.actions,
-  search: search.actions,
   recentlyViewed: recentlyViewed.actions,
   auth: auth.actions,
   signInForm: signInForm.actions,
@@ -23,7 +22,6 @@ export const actions = Object.freeze({
 
 export const selectors = Object.freeze({
   video: video.selectors,
-  search: search.selectors,
   recentlyViewed: recentlyViewed.selectors,
   auth: auth.selectors,
   signInForm: signInForm.selectors,
@@ -34,7 +32,6 @@ function* rootSaga() {
   yield* [
     spawn(snackbar.saga),
     spawn(video.saga),
-    spawn(search.saga),
     spawn(recentlyViewed.saga),
     spawn(auth.saga),
     spawn(signInForm.saga),
@@ -47,12 +44,12 @@ const rootReducer = combineReducers({
   snackbar: snackbar.reducer,
   video: video.reducer,
   discoverMovie: discoverMovie.reducer,
-  search: search.reducer,
   recentlyViewed: recentlyViewed.reducer,
   signInForm: signInForm.reducer,
   auth: auth.reducer,
   personPage: personPage.reducer,
   addListItemsForm: addListItemsForm.reducer,
+  search: search.reducer,
 });
 
 export const configureRoot = () => {

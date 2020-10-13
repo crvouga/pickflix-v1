@@ -37,10 +37,20 @@ type PersonResult = {
   profilePath?: string | null;
 };
 
+const emptyResponse = {
+  page: 1,
+  totalPages: 1,
+  totalResults: 0,
+  results: [],
+};
+
 export const getSearchPerson = async (
   params: SearchParams,
   config?: AxiosRequestConfig
 ) => {
+  if (params.query.length === 0) {
+    return emptyResponse;
+  }
   const { data } = await backendAPI.get<Paginated<PersonResult>>(
     "/api/tmdb/search/person",
     {
@@ -60,6 +70,9 @@ export const getSearchKeyword = async (
   params: SearchParams,
   config?: AxiosRequestConfig
 ) => {
+  if (params.query.length === 0) {
+    return emptyResponse;
+  }
   const { data } = await backendAPI.get<Paginated<KeywordResult>>(
     "/api/tmdb/search/keyword",
     {
@@ -80,6 +93,9 @@ export const getSearchCompany = async (
   params: SearchParams,
   config?: AxiosRequestConfig
 ) => {
+  if (params.query.length === 0) {
+    return emptyResponse;
+  }
   const { data } = await backendAPI.get<Paginated<CompanyResult>>(
     "/api/tmdb/search/company",
     {

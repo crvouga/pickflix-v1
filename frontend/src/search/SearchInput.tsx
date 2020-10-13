@@ -5,12 +5,9 @@ import {
   makeStyles,
   Toolbar,
 } from "@material-ui/core";
-import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ClearIcon from "@material-ui/icons/Clear";
-import React from "react";
-import { useDispatch } from "react-redux";
-import { actions } from "../redux";
-import { useHistory } from "react-router";
+import React, { useRef } from "react";
+import BackButton from "../navigation/BackButton";
 
 const useStyles = makeStyles((theme) => ({
   root: theme.mixins.toolbar,
@@ -21,41 +18,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface Props {
-  ref: React.MutableRefObject<HTMLInputElement | undefined>;
-}
+type Props = {
+  onChange: (searchQuery: string) => void;
+};
 
-export default ({ ref }: Props) => {
+export default ({ onChange }: Props) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const history = useHistory();
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleClear = () => {
-    if (ref?.current) {
-      ref.current.focus();
-      ref.current.value = "";
+    if (inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.value = "";
     }
-
-    dispatch(actions.search.setText(""));
-  };
-
-  const onBack = () => {
-    history.goBack();
+    onChange("");
   };
 
   const handleChange = (e: React.ChangeEvent<{ value: string }>) => {
-    dispatch(actions.search.setText(e.target.value));
+    onChange(e.target.value);
   };
 
   return (
     <AppBar color="default" position="sticky">
       <Toolbar>
-        <IconButton edge="start" onClick={onBack}>
-          <ArrowBackIosIcon />
-        </IconButton>
+        <BackButton />
         <InputBase
           autoFocus
-          inputRef={ref}
+          inputRef={inputRef}
           className={classes.input}
           placeholder="Search Movie or Person"
           onChange={handleChange}

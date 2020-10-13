@@ -6,9 +6,10 @@ import { DiscoverMovieTag as IDiscoverMovieTag } from "./discover-movie-tags";
 import DiscoverMovieSortByTag from "./DiscoverMovieSortByTag";
 import DiscoverMovieTag from "./DiscoverMovieTag";
 import { discoverMovie } from "./redux/discover-movie";
-import SearchIcon from "@material-ui/icons/Search";
+import TuneIcon from "@material-ui/icons/Tune";
 import AddCircleOutlineOutlinedIcon from "@material-ui/icons/AddCircleOutlineOutlined";
 import useModal from "../navigation/modals/useModal";
+
 const useStyles = makeStyles((theme) => ({
   chipContainer: {
     display: "flex",
@@ -57,9 +58,15 @@ export default () => {
           <AddCircleOutlineOutlinedIcon />
         </IconButton>
       </Box>
+
       <Box marginRight={1}>
-        <DiscoverMovieSortByTag />
+        <IconButton size="small" onClick={discoverMovieTagSearchModal.open}>
+          <TuneIcon />
+        </IconButton>
       </Box>
+      {/* <Box marginRight={1}>
+        <DiscoverMovieSortByTag />
+      </Box> */}
       {activeTags.map((tag) => (
         <Box key={tag.id} marginRight={1}>
           <DiscoverMovieTag

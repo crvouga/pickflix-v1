@@ -11,7 +11,7 @@ import CollectionPage from "../movie/collection/CollectionPage";
 import CreditsPage from "../movie/credits/CreditsPage";
 import PersonPage from "../person";
 import ProfilePage from "../profile";
-import SearchPage from "../search";
+import SearchPage from "../search/SearchPage";
 import Snackbar from "../snackbar/Snackbar";
 import VideoPage from "../video/VideoPage";
 import Modals from "./modals/Modals";

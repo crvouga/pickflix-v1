@@ -1,11 +1,11 @@
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import ErrorBox from "../common/components/ErrorBox";
 import LoadingBox from "../common/components/LoadingBox";
 import Poster from "../movie/components/MoviePosterCard";
-import useDiscoverMovieQuery from "./useDiscoverMovieQuery";
 import { useSelector } from "../redux/react-redux";
 import { discoverMovie } from "./redux/discover-movie";
+import useDiscoverMovieQuery from "./useDiscoverMovieQuery";
 
 export default () => {
   const discoverMovieParams = useSelector(
