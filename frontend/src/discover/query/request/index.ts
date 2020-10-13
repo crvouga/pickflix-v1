@@ -37,10 +37,16 @@ type PersonResult = {
   profilePath?: string | null;
 };
 
-export const getSearchPerson = async (params: SearchParams) => {
+export const getSearchPerson = async (
+  params: SearchParams,
+  config?: AxiosRequestConfig
+) => {
   const { data } = await backendAPI.get<Paginated<PersonResult>>(
     "/api/tmdb/search/person",
-    { params }
+    {
+      ...config,
+      params,
+    }
   );
   return data;
 };
@@ -50,10 +56,16 @@ type KeywordResult = {
   name: string;
 };
 
-export const getSearchKeyword = async (params: SearchParams) => {
+export const getSearchKeyword = async (
+  params: SearchParams,
+  config?: AxiosRequestConfig
+) => {
   const { data } = await backendAPI.get<Paginated<KeywordResult>>(
     "/api/tmdb/search/keyword",
-    { params }
+    {
+      ...config,
+      params,
+    }
   );
   return data;
 };
@@ -64,10 +76,16 @@ type CompanyResult = {
   logoPath?: string | null;
 };
 
-export const getSearchCompany = async (params: SearchParams) => {
+export const getSearchCompany = async (
+  params: SearchParams,
+  config?: AxiosRequestConfig
+) => {
   const { data } = await backendAPI.get<Paginated<CompanyResult>>(
     "/api/tmdb/search/company",
-    { params }
+    {
+      ...config,
+      params,
+    }
   );
   return data;
 };

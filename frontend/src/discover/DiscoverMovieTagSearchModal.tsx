@@ -1,37 +1,89 @@
-import React, { useRef, ChangeEvent, useState } from "react";
 import {
   AppBar,
+  Avatar,
   Dialog,
-  Toolbar,
-  IconButton,
   InputBase,
+  List,
   ListItem,
+  ListItemAvatar,
   ListItemText,
   makeStyles,
-  ListItemAvatar,
-  Avatar,
+  Toolbar,
+  Typography,
 } from "@material-ui/core";
+import axios from "axios";
+
+import matchSorter from "match-sorter";
+import { union, uniqBy } from "ramda";
+import React, { ChangeEvent, useState } from "react";
+import { useQuery } from "react-query";
+import { useDispatch } from "react-redux";
+import ListItemSkeleton from "../common/components/ListItemSkeleton";
 import BackButton from "../navigation/BackButton";
 import useModal from "../navigation/modals/useModal";
-import { useQuery } from "react-query";
-import {
-  queryKeys,
-  getSearchPerson,
-  getSearchKeyword,
-  getSearchCompany,
-} from "./query";
-import ErrorBox from "../common/components/ErrorBox";
-import LoadingBox from "../common/components/LoadingBox";
-
+import { useSelector } from "../redux/react-redux";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import {
   DiscoverMovieTag,
-  WithPeopleTag,
   WithCompaniesTag,
   WithKeywordsTag,
+  WithPeopleTag,
 } from "./discover-movie-tags";
-import { useDispatch } from "react-redux";
+import {
+  getSearchCompany,
+  getSearchKeyword,
+  getSearchPerson,
+  queryKeys,
+} from "./query";
 import { discoverMovie } from "./redux/discover-movie";
+
+const Result = ({ tag }: { tag: DiscoverMovieTag }) => {
+  switch (tag.type) {
+    case "withPeople":
+      return (
+        <ListItem button>
+          <ListItemAvatar>
+            <Avatar
+              src={makeTMDbImageURL(1, {
+                profilePath: tag.profilePath,
+              })}
+            />
+          </ListItemAvatar>
+          <ListItemText primary={tag.name} secondary="Person" />
+        </ListItem>
+      );
+    case "withCompanies":
+      return (
+        <ListItem button>
+          <ListItemAvatar>
+            <Avatar src={makeTMDbImageURL(1, { logoPath: tag.logoPath })} />
+          </ListItemAvatar>
+          <ListItemText primary={tag.name} secondary="Company" />
+        </ListItem>
+      );
+
+    case "withKeywords":
+      return (
+        <ListItem button>
+          <ListItemText primary={tag.name} secondary="Keyword" />
+        </ListItem>
+      );
+
+    case "withGenres":
+      return (
+        <ListItem button>
+          <ListItemText primary={tag.name} secondary="Genre" />
+        </ListItem>
+      );
+
+    default:
+      return (
+        <ListItem button>
+          <ListItemText primary={tag.name} />
+        </ListItem>
+      );
+  }
+};
 
 const SearchResults = ({
   searchQuery,
@@ -40,34 +92,64 @@ const SearchResults = ({
   searchQuery: string;
   onClick: (tag: DiscoverMovieTag) => void;
 }) => {
-  const personSearchQuery = useQuery(queryKeys.personSearch(searchQuery), () =>
-    getSearchPerson({ query: searchQuery })
+  const handleClick = (tag: DiscoverMovieTag) => () => onClick(tag);
+
+  const tags = useSelector(discoverMovie.selectors.tags);
+
+  const encodedSearchQuery = encodeURI(searchQuery.trim());
+
+  const personSearchQuery = useQuery(
+    queryKeys.personSearch(encodedSearchQuery),
+    () => {
+      const source = axios.CancelToken.source();
+      const promise = getSearchPerson({ query: encodedSearchQuery });
+      //@ts-ignore
+      promise.cancel = () => {
+        source.cancel("Query was cancelled by React Query");
+      };
+      return promise;
+    }
   );
 
   const keywordSearchQuery = useQuery(
-    queryKeys.keywordSearch(searchQuery),
-    () => getSearchKeyword({ query: searchQuery })
+    queryKeys.keywordSearch(encodedSearchQuery),
+    () => {
+      const source = axios.CancelToken.source();
+      const promise = getSearchKeyword({ query: encodedSearchQuery });
+      //@ts-ignore
+      promise.cancel = () => {
+        source.cancel("Query was cancelled by React Query");
+      };
+      return promise;
+    }
   );
 
   const companySearchQuery = useQuery(
-    queryKeys.companySearch(searchQuery),
-    () => getSearchCompany({ query: searchQuery })
+    queryKeys.companySearch(encodedSearchQuery),
+    () => {
+      const source = axios.CancelToken.source();
+      const promise = getSearchCompany({ query: encodedSearchQuery });
+      //@ts-ignore
+      promise.cancel = () => {
+        source.cancel("Query was cancelled by React Query");
+      };
+      return promise;
+    }
   );
-
-  if (
-    personSearchQuery.error ||
-    keywordSearchQuery.error ||
-    companySearchQuery.error
-  ) {
-    return <ErrorBox />;
-  }
 
   if (
     !personSearchQuery.data ||
     !keywordSearchQuery.data ||
     !companySearchQuery.data
   ) {
-    return <LoadingBox m={4} />;
+    return (
+      <List>
+        <ListItemSkeleton />
+        <ListItemSkeleton />
+        <ListItemSkeleton />
+        <ListItemSkeleton />
+      </List>
+    );
   }
 
   const withPeopleTags: WithPeopleTag[] = personSearchQuery.data.results.map(
@@ -91,36 +173,25 @@ const SearchResults = ({
     })
   );
 
-  const handleClick = (tag: DiscoverMovieTag) => () => onClick(tag);
+  const allTags = uniqBy((tag) => tag.id, [
+    ...tags,
+    ...withPeopleTags,
+    ...withKeywordsTags,
+    ...withCompaniesTags,
+  ]);
+
+  const sortedTags: DiscoverMovieTag[] = matchSorter(allTags, searchQuery, {
+    keys: ["name"],
+  });
 
   return (
-    <React.Fragment>
-      {withPeopleTags.map((tag) => (
-        <ListItem button key={tag.id} onClick={handleClick(tag)}>
-          <ListItemAvatar>
-            <Avatar
-              src={makeTMDbImageURL(1, {
-                profilePath: tag.profilePath,
-              })}
-            />
-          </ListItemAvatar>
-          <ListItemText primary={tag.name} secondary="Person" />
-        </ListItem>
+    <List>
+      {sortedTags.map((tag) => (
+        <div key={tag.id} onClick={handleClick(tag)}>
+          <Result tag={tag} />
+        </div>
       ))}
-      {withKeywordsTags.map((tag) => (
-        <ListItem button key={tag.id} onClick={handleClick(tag)}>
-          <ListItemText primary={tag.name} secondary="Keyword" />
-        </ListItem>
-      ))}
-      {withCompaniesTags.map((tag) => (
-        <ListItem button key={tag.id} onClick={handleClick(tag)}>
-          <ListItemAvatar>
-            <Avatar src={makeTMDbImageURL(1, { logoPath: tag.logoPath })} />
-          </ListItemAvatar>
-          <ListItemText primary={tag.name} secondary="Company" />
-        </ListItem>
-      ))}
-    </React.Fragment>
+    </List>
   );
 };
 
@@ -153,13 +224,10 @@ const SearchBar = ({ onChange }: { onChange: (query: string) => void }) => {
 
 export default () => {
   const dispatch = useDispatch();
+  const activeTags = useSelector(discoverMovie.selectors.activeTags);
   const classesDialog = useStylesDialog();
   const discoverMovieTagSearchModal = useModal("DiscoverMovieTagSearch");
   const [searchQuery, setSearchQuery] = useState("");
-
-  const handleChange = (searchQuery: string) => {
-    setSearchQuery(encodeURI(searchQuery));
-  };
 
   const handleClick = (tag: DiscoverMovieTag) => {
     discoverMovieTagSearchModal.close();
@@ -172,10 +240,9 @@ export default () => {
       classes={classesDialog}
       open={discoverMovieTagSearchModal.isOpen}
     >
-      <SearchBar onChange={handleChange} />
-      {searchQuery.length > 0 && (
-        <SearchResults onClick={handleClick} searchQuery={searchQuery} />
-      )}
+      <SearchBar onChange={setSearchQuery} />
+
+      <SearchResults onClick={handleClick} searchQuery={searchQuery} />
     </Dialog>
   );
 };
