@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import axios from "axios";
+import { useDebounce } from "use-debounce";
 
 import matchSorter from "match-sorter";
 import { union, uniqBy } from "ramda";
@@ -96,26 +97,23 @@ const SearchResults = ({
 
   const tags = useSelector(discoverMovie.selectors.tags);
 
-  const encodedSearchQuery = encodeURI(searchQuery.trim());
+  const [debounced] = useDebounce(encodeURI(searchQuery.trim()), 500);
 
-  const personSearchQuery = useQuery(
-    queryKeys.personSearch(encodedSearchQuery),
-    () => {
-      const source = axios.CancelToken.source();
-      const promise = getSearchPerson({ query: encodedSearchQuery });
-      //@ts-ignore
-      promise.cancel = () => {
-        source.cancel("Query was cancelled by React Query");
-      };
-      return promise;
-    }
-  );
+  const personSearchQuery = useQuery(queryKeys.personSearch(debounced), () => {
+    const source = axios.CancelToken.source();
+    const promise = getSearchPerson({ query: debounced });
+    //@ts-ignore
+    promise.cancel = () => {
+      source.cancel("Query was cancelled by React Query");
+    };
+    return promise;
+  });
 
   const keywordSearchQuery = useQuery(
-    queryKeys.keywordSearch(encodedSearchQuery),
+    queryKeys.keywordSearch(debounced),
     () => {
       const source = axios.CancelToken.source();
-      const promise = getSearchKeyword({ query: encodedSearchQuery });
+      const promise = getSearchKeyword({ query: debounced });
       //@ts-ignore
       promise.cancel = () => {
         source.cancel("Query was cancelled by React Query");
@@ -125,10 +123,10 @@ const SearchResults = ({
   );
 
   const companySearchQuery = useQuery(
-    queryKeys.companySearch(encodedSearchQuery),
+    queryKeys.companySearch(debounced),
     () => {
       const source = axios.CancelToken.source();
-      const promise = getSearchCompany({ query: encodedSearchQuery });
+      const promise = getSearchCompany({ query: debounced });
       //@ts-ignore
       promise.cancel = () => {
         source.cancel("Query was cancelled by React Query");
