@@ -24,11 +24,11 @@ export const theme = createMuiTheme({
     },
   },
   overrides: {
-    MuiTypography: {},
     MuiCssBaseline: {
       "@global": {
         html: {
-          fontWeight: "bold",
+          //prevent double-tap zoom
+          touchAction: "manipulation",
         },
       },
     },

@@ -11,9 +11,9 @@ import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import PersonIcon from "@material-ui/icons/Person";
 import PersonOutlinedIcon from "@material-ui/icons/PersonOutlined";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { actions, selectors } from "../redux";
 import { useHistory, useLocation } from "react-router";
+
+export const BOTTOM_NAVIGATION_BAR_HEIGHT = 56;
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {

@@ -1,13 +1,12 @@
 import {
   Box,
-  Paper,
   Chip,
   Dialog,
   List,
   ListItem,
   ListItemText,
+  Paper,
   Typography,
-  CardActionArea,
 } from "@material-ui/core";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import React from "react";
@@ -20,7 +19,6 @@ import {
   sortByValueToName,
 } from "./query/types";
 import { discoverMovie } from "./redux/discover-movie";
-import BottomButton from "../common/components/BottomButton";
 
 export default () => {
   const sortBy = useSelector(discoverMovie.selectors.sortBy);

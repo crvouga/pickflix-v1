@@ -1,9 +1,9 @@
-import { IconButton } from "@material-ui/core";
+import { IconButton, IconButtonProps } from "@material-ui/core";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import React from "react";
 import { useHistory } from "react-router";
 
-export default () => {
+export default (props: IconButtonProps) => {
   const history = useHistory();
 
   const onBack = () => {
@@ -11,7 +11,7 @@ export default () => {
   };
 
   return (
-    <IconButton edge="start" onClick={onBack}>
+    <IconButton onClick={onBack} edge="start" {...props}>
       <ArrowBackIosIcon />
     </IconButton>
   );

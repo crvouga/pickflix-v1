@@ -1,24 +1,40 @@
-import React from "react";
-import { Chip, ChipProps, Avatar } from "@material-ui/core";
-import { DiscoverMovieTag, dateRangeTagToName } from "./discover-movie-tags";
+import { Avatar, Chip, ChipProps, makeStyles } from "@material-ui/core";
 import BusinessIcon from "@material-ui/icons/Business";
+import React from "react";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-import { sortByValueToName } from "./query/types";
+import { dateRangeTagToName, DiscoverMovieTag } from "./discover-movie-tags";
+import { capitalizeWords } from "../utils";
 
 type Props = ChipProps & {
   tag: DiscoverMovieTag;
 };
 
+const useStylesChip = makeStyles((theme) => ({
+  root: {
+    fontSize: "1.25em",
+    fontWeight: "bold",
+  },
+}));
+
 export default (props: Props) => {
+  const classesChip = useStylesChip();
+
   const { tag, ...chipProps } = props;
 
   switch (tag.type) {
     case "dateRange":
-      return <Chip label={dateRangeTagToName(tag)} {...chipProps} />;
+      return (
+        <Chip
+          classes={classesChip}
+          label={dateRangeTagToName(tag)}
+          {...chipProps}
+        />
+      );
 
     case "withPeople":
       return (
         <Chip
+          classes={classesChip}
           label={tag.name}
           avatar={<Avatar src={makeTMDbImageURL(1, tag)} />}
           {...chipProps}
@@ -28,6 +44,7 @@ export default (props: Props) => {
     case "withCompanies":
       return (
         <Chip
+          classes={classesChip}
           label={tag.name}
           avatar={
             <Avatar variant="square" src={makeTMDbImageURL(1, tag)}>
@@ -39,6 +56,12 @@ export default (props: Props) => {
       );
 
     default:
-      return <Chip label={tag.name} {...chipProps} />;
+      return (
+        <Chip
+          classes={classesChip}
+          label={capitalizeWords(tag.name)}
+          {...chipProps}
+        />
+      );
   }
 };

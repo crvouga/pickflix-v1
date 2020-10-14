@@ -3,7 +3,7 @@ import React from "react";
 import { Route, Switch } from "react-router";
 import AccountPage from "../auth/AccountPage";
 import NavigationBarBottom from "./NavigationBarBottom";
-import DiscoverPage from "../discover";
+import DiscoverPage from "../discover/DiscoverMoviePage";
 import HomePage from "../home";
 import ListPage from "../lists/ListPage";
 import MoviePage from "../movie";

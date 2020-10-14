@@ -4,6 +4,7 @@ import auth from "../auth/redux";
 import signInForm from "../auth/signInForm/redux";
 import { discoverMovie } from "../discover/redux/discover-movie";
 import { discoverMovieSaga } from "../discover/redux/discover-movie-saga";
+import { discoverMovieUi } from "../discover/redux/discover-movie-ui";
 import { addListItemsForm } from "../lists/redux/add-list-items-form";
 import personPage from "../person/redux";
 import querySaga from "../query/query-saga";
@@ -50,6 +51,7 @@ const rootReducer = combineReducers({
   personPage: personPage.reducer,
   addListItemsForm: addListItemsForm.reducer,
   search: search.reducer,
+  discoverMovieUi: discoverMovieUi.reducer,
 });
 
 export const configureRoot = () => {

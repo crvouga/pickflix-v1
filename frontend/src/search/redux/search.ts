@@ -1,6 +1,7 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { SearchResult } from "../query";
 import { AppState } from "../../redux/types";
+import { take } from "ramda";
 
 const name = "search";
 
@@ -38,7 +39,10 @@ const actions = {
 
 const reducer = createReducer(initialState, {
   [actions.setHistory.toString()]: (state, action) => {
-    state.history = action.payload;
+    return {
+      ...state,
+      history: take(100, action.payload),
+    };
   },
 });
 

@@ -1,7 +1,13 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import { union, sortBy } from "ramda";
+import { union } from "ramda";
 import { DiscoverMovieTag, tagsToParams } from "../discover-movie-tags";
 import { DiscoverMovieSortBy } from "../query/types";
+import undoable, {
+  StateWithHistory,
+  ActionCreators,
+  includeAction,
+} from "redux-undo";
+import { AppState } from "../../redux/types";
 
 const name = "discoverMovie";
 
@@ -9,13 +15,15 @@ const name = "discoverMovie";
 
 */
 
-export type DiscoverMovieState = {
+export type PresentState = {
   sortBy: DiscoverMovieSortBy;
   tags: DiscoverMovieTag[];
   activeTags: DiscoverMovieTag[];
 };
 
-export const initialState: DiscoverMovieState = {
+export type DiscoverMovieState = StateWithHistory<PresentState>;
+
+export const initialState: PresentState = {
   sortBy: "popularity.desc",
   tags: [],
   activeTags: [],
@@ -25,19 +33,21 @@ export const initialState: DiscoverMovieState = {
 
 */
 
-type AppState = {
-  [name]: DiscoverMovieState;
-};
+const present = (state: AppState) => state.discoverMovie.present;
 
 const selectors = {
-  sortBy: (state: AppState) => state[name].sortBy,
-  tags: (state: AppState) => state[name].tags,
-  activeTags: (state: AppState) => state[name].activeTags,
+  canUndo: (state: AppState) => state.discoverMovie.past.length > 0,
+  canRedo: (state: AppState) => state.discoverMovie.future.length > 0,
+
+  sortBy: (state: AppState) => present(state).sortBy,
+  tags: (state: AppState) => present(state).tags,
+  activeTags: (state: AppState) => present(state).activeTags,
+
   discoverMovieParams: (state: AppState) => {
-    const params = tagsToParams(state[name].activeTags);
+    const params = tagsToParams(present(state).activeTags);
     return {
       ...params,
-      sortBy: state[name].sortBy,
+      sortBy: state[name].present.sortBy,
     };
   },
 };
@@ -50,13 +60,15 @@ const actions = {
   setSortBy: createAction<DiscoverMovieSortBy>(name + "/SET_SORT_BY"),
   setTags: createAction<DiscoverMovieTag[]>(name + "/SET_TAGS"),
   setActiveTags: createAction<DiscoverMovieTag[]>(name + "/SET_ACTIVE_TAGS"),
+  undo: ActionCreators.undo,
+  redo: ActionCreators.redo,
 };
 
 /* 
 
 */
 
-export const reducer = createReducer(initialState, {
+const reducer = createReducer(initialState, {
   [actions.setSortBy.toString()]: (state, action) => {
     state.sortBy = action.payload;
   },
@@ -70,6 +82,15 @@ export const reducer = createReducer(initialState, {
   },
 });
 
+//SOURCE: https://github.com/omnidan/redux-undo
+const undoableReducer = undoable(reducer, {
+  filter: includeAction([
+    actions.setActiveTags.toString(),
+    actions.setSortBy.toString(),
+  ]),
+  ignoreInitialState: true,
+});
+
 /* 
 
 */
@@ -77,5 +98,5 @@ export const reducer = createReducer(initialState, {
 export const discoverMovie = {
   selectors,
   actions,
-  reducer,
+  reducer: undoableReducer,
 };

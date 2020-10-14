@@ -6,8 +6,9 @@ import { DiscoverMovieParams } from "./query/types";
 import { last } from "ramda";
 
 export default (discoverMovieParams: DiscoverMovieParams) => {
+  const queryKey = queryKeys.discoverMovie(discoverMovieParams);
   const query = useInfiniteQuery(
-    queryKeys.discoverMovie(discoverMovieParams),
+    queryKey,
     (...args) => {
       const page = (last(args) || 1) as number;
       return getDiscoverMovie({ ...discoverMovieParams, page });
@@ -37,6 +38,7 @@ export default (discoverMovieParams: DiscoverMovieParams) => {
 
   return {
     ...query,
+    queryKey,
     fetchMoreRef,
   };
 };

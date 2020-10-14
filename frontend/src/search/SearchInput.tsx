@@ -48,6 +48,11 @@ export default ({ onChange }: Props) => {
           className={classes.input}
           placeholder="Search Movie or Person"
           onChange={handleChange}
+          //
+          autoCapitalize="off"
+          autoComplete="off"
+          spellCheck="false"
+          autoCorrect="off"
         />
         <IconButton edge="end" onClick={handleClear}>
           <ClearIcon />

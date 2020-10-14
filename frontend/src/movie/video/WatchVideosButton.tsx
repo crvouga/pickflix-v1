@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { actions } from "../../redux";
 import { MovieVideos } from "../../tmdb/types";
-
+import YouTubeIcon from "@material-ui/icons/YouTube";
 type Props = {
   videos: MovieVideos;
 };
@@ -26,7 +26,7 @@ export default (props: Props) => {
     <Button
       fullWidth
       variant="outlined"
-      startIcon={<PlayArrowOutlinedIcon />}
+      startIcon={<YouTubeIcon />}
       size="large"
       onClick={handleClickWatchTailer}
       disabled={videos.results.length === 0}

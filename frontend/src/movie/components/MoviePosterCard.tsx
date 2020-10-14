@@ -41,14 +41,13 @@ export type Movie = {
 
 type Props = {
   movie: Movie;
-  skeleton?: boolean;
   sizeIndex?: number;
 };
 
 export const MOVIE_POSTER_ASPECT_RATIO: [number, number] = [18, 24];
 
 export default (props: Props) => {
-  const { movie, skeleton = false, sizeIndex = 3 } = props;
+  const { movie, sizeIndex = 4 } = props;
   const { id, posterPath, title } = movie;
   const classes = useStyles();
   const posterURL = makeTMDbImageURL(sizeIndex, { posterPath });
@@ -69,27 +68,17 @@ export default (props: Props) => {
             style: { position: "relative", width: "100%" },
           }}
         >
-          {!skeleton && !posterPath && (
+          {!posterPath && (
             <Typography className={classes.fallback}>{title}</Typography>
           )}
 
-          {!skeleton && posterPath && (
+          {posterPath && (
             <LazyLoadImage
               className={classes.borderRadius}
               effect="opacity"
               src={posterURL}
               width="100%"
               height="100%"
-            />
-          )}
-
-          {skeleton && (
-            <Skeleton
-              animation="wave"
-              variant="rect"
-              width="100%"
-              height="100%"
-              className={classes.borderRadius}
             />
           )}
         </AspectRatio>

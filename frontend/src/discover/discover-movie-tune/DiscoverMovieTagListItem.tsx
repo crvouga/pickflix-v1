@@ -1,13 +1,15 @@
-import React from "react";
 import {
+  Avatar,
+  ListItem,
+  ListItemAvatar,
   ListItemProps,
   ListItemText,
-  ListItemAvatar,
-  ListItem,
-  Avatar,
 } from "@material-ui/core";
-import { DiscoverMovieTag } from "./discover-movie-tags";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
+import React from "react";
+import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
+import { DiscoverMovieTag } from "../discover-movie-tags";
+import BusinessIcon from "@material-ui/icons/Business";
+import { capitalizeWords } from "../../utils";
 
 type Props = Omit<ListItemProps, "button"> & {
   tag: DiscoverMovieTag;
@@ -22,7 +24,7 @@ export default (props: Props) => {
         <ListItem {...listItemProps}>
           <ListItemAvatar>
             <Avatar
-              src={makeTMDbImageURL(1, {
+              src={makeTMDbImageURL(3, {
                 profilePath: tag.profilePath,
               })}
             />
@@ -35,7 +37,15 @@ export default (props: Props) => {
       return (
         <ListItem {...listItemProps}>
           <ListItemAvatar>
-            <Avatar src={makeTMDbImageURL(2, { logoPath: tag.logoPath })} />
+            <Avatar
+              variant="square"
+              style={{
+                ...(tag.logoPath ? { backgroundColor: "white" } : {}),
+              }}
+              src={makeTMDbImageURL(3, { logoPath: tag.logoPath })}
+            >
+              <BusinessIcon />
+            </Avatar>
           </ListItemAvatar>
           <ListItemText primary={tag.name} secondary="Company" />
         </ListItem>
@@ -44,7 +54,10 @@ export default (props: Props) => {
     case "withKeywords":
       return (
         <ListItem {...listItemProps}>
-          <ListItemText primary={tag.name} secondary="Keyword" />
+          <ListItemText
+            primary={capitalizeWords(tag.name)}
+            secondary="Keyword"
+          />
         </ListItem>
       );
 
