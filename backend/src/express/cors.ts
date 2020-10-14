@@ -1,6 +1,7 @@
 import configuration from '../configuration';
 import cors from 'cors';
 import url from 'url';
+
 const env = process.env.NODE_ENV || 'development';
 
 export default () =>

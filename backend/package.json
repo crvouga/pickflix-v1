@@ -4,15 +4,15 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "tests": "jest",
-    "unit-tests": "jest unit --unhandled-rejections=strict",
-    "integration-tests": "jest int",
-    "dev": "nodemon src/index.ts",
-    "build": "tsc",
-    "postinstall": "npm run build",
-    "start": "node build/index.js"
+    "start": "node dist/index.js",
+    "postinstall": "tsc",
+    "watch-node": "nodemon dist/index.js",
+    "watch-ts": "tsc -w",
+    "deploy": "git add . && git commit -m Heroku && git push heroku master"
   },
-  "author": "",
+  "engines": {
+    "node": "12.18.2"
+  },
   "license": "ISC",
   "dependencies": {
     "@keyv/mongo": "^1.1.0",
