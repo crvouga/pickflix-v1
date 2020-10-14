@@ -3,18 +3,14 @@ import {
   CardActionArea,
   makeStyles,
   Typography,
-  useTheme,
 } from "@material-ui/core";
-import Skeleton from "@material-ui/lab/Skeleton";
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import "react-lazy-load-image-component/src/effects/opacity.css";
-import { useDispatch } from "react-redux";
-import AspectRatio from "../../common/components/AspectRatio";
-import { actions } from "../../redux";
-import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 import { useHistory } from "react-router";
+import AspectRatio from "../../common/components/AspectRatio";
+import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 
 const useStyles = makeStyles((theme) => ({
   fallback: {

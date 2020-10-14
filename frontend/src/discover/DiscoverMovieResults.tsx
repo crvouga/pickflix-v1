@@ -2,10 +2,15 @@ import { Box, makeStyles } from "@material-ui/core";
 import React, { useRef, useEffect } from "react";
 import ErrorBox from "../common/components/ErrorBox";
 import LoadingBox from "../common/components/LoadingBox";
-import Poster from "../movie/components/MoviePosterCard";
+import Poster, {
+  MOVIE_POSTER_ASPECT_RATIO,
+} from "../movie/components/MoviePosterCard";
 import { useSelector } from "../redux/react-redux";
 import { discoverMovie } from "./redux/discover-movie";
 import useDiscoverMovieQuery from "./useDiscoverMovieQuery";
+import { Skeleton } from "@material-ui/lab";
+import AspectRatio from "../common/components/AspectRatio";
+import MoviePosterCardSkeleton from "../movie/components/MoviePosterCardSkeleton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,7 +35,17 @@ export default () => {
   }
 
   if (!data) {
-    return <LoadingBox />;
+    return (
+      <React.Fragment>
+        <div className={classes.root}>
+          {[1, 2, 3, 4].map((n) => (
+            <Box p={1 / 2} width="50%" key={n}>
+              <MoviePosterCardSkeleton />
+            </Box>
+          ))}
+        </div>
+      </React.Fragment>
+    );
   }
 
   return (

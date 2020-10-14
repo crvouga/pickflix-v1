@@ -1,14 +1,9 @@
 import { makeStyles } from "@material-ui/core";
-import React, { useRef, useEffect } from "react";
-import NavigationBarTopLevel, {
-  APP_BAR_HEIGHT,
-} from "../navigation/NavigationBarTopLevel";
-import DiscoverMovieTuneModal from "./discover-movie-tune/SearchModal";
+import React from "react";
+import SearchModal from "./discover-movie-tune/SearchModal";
 import DiscoverMovieResults from "./DiscoverMovieResults";
-import DiscoverMovieSpeedDial from "./DiscoverMovieSpeedDial";
 import DiscoverMovieTags from "./DiscoverMovieTags";
-import { useSelector } from "../redux/react-redux";
-import { discoverMovie } from "./redux/discover-movie";
+import NavigationBar, { APP_BAR_HEIGHT } from "./NavigationBar";
 
 const useStyles = makeStyles((theme) => ({
   tagBar: {
@@ -18,29 +13,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const useScrollToTopRef = () => {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const activeTags = useSelector(discoverMovie.selectors.activeTags);
-  useEffect(() => {
-    if (ref.current) {
-      ref.current.scrollTop = 0;
-    }
-  }, [activeTags.length]);
-  return ref;
-};
-
 export default () => {
   const classes = useStyles();
 
   return (
     <div>
-      <NavigationBarTopLevel />
+      <NavigationBar />
       <div className={classes.tagBar}>
         <DiscoverMovieTags />
       </div>
       <DiscoverMovieResults />
-      <DiscoverMovieTuneModal />
-      <DiscoverMovieSpeedDial />
+      <SearchModal />
     </div>
   );
 };

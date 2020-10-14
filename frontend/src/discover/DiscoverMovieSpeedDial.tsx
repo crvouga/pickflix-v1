@@ -1,4 +1,5 @@
-import { Backdrop, ClickAwayListener, makeStyles } from "@material-ui/core";
+import { Backdrop, makeStyles } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
 import RedoIcon from "@material-ui/icons/Redo";
 import SearchIcon from "@material-ui/icons/Search";
 import UndoIcon from "@material-ui/icons/Undo";
@@ -6,11 +7,8 @@ import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@material-ui/lab";
 import React, { useState } from "react";
 import useModal from "../navigation/modals/useModal";
 import { BOTTOM_NAVIGATION_BAR_HEIGHT } from "../navigation/NavigationBarBottom";
-import { useDispatch, useSelector } from "../redux/react-redux";
+import { useDispatch } from "../redux/react-redux";
 import { discoverMovie } from "./redux/discover-movie";
-import { discoverMovieUi } from "./redux/discover-movie-ui";
-import EditIcon from "@material-ui/icons/Edit";
-import { preventZoom } from "../utils";
 
 const useStyles = makeStyles((theme) => ({
   speedDial: {
@@ -70,20 +68,6 @@ export default () => {
     //     handleClose();
     //   },
     // },
-    {
-      icon: <UndoIcon />,
-      name: "Back",
-      onClick: () => {
-        dispatch(discoverMovie.actions.undo());
-      },
-    },
-    {
-      icon: <RedoIcon />,
-      name: "Forward",
-      onClick: () => {
-        dispatch(discoverMovie.actions.redo());
-      },
-    },
   ];
 
   const handleClickAway = () => {

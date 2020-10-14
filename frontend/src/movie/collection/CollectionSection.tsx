@@ -2,12 +2,11 @@ import { Box } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
-import backendAPI from "../../backendAPI";
-import { actions } from "../../redux";
-import { Collection } from "../../tmdb/types";
-import CollectionCard from "./CollectionCard";
-import { useMoviePageQuery } from "../data";
 import { useHistory } from "react-router";
+import backendAPI from "../../backendAPI";
+import { Collection } from "../../tmdb/types";
+import { useMoviePageQuery } from "../data";
+import CollectionCard from "./CollectionCard";
 
 const fetchCollection = async (collectionId: string) => {
   const { data } = await backendAPI.get<Collection>(
