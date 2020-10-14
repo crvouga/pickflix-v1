@@ -3,7 +3,7 @@ import {buildExpressAppFake} from '../../../express/build.fake';
 
 describe('/lists/{list-id}/list-items/{list-item-id}', () => {
   it('deletes list item', async done => {
-    const {app, listLogic, currentUser} = buildExpressAppFake();
+    const {app, listLogic, currentUser} = await buildExpressAppFake();
 
     const [list] = await listLogic.addLists([
       {

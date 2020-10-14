@@ -11,6 +11,10 @@ import { useDispatch } from "react-redux";
 import { addListItemsForm } from "../../lists/redux/add-list-items-form";
 import useModal from "../../navigation/modals/useModal";
 import { TmdbMediaType } from "../../tmdb/types";
+import { addWatchNextMutation } from "../../lists/query/mutation/add-watch-next";
+import { snackbar } from "../../snackbar/redux/snackbar";
+import { Button } from "@material-ui/core";
+import { useHistory } from "react-router";
 
 type Props = {
   tmdbMediaType: TmdbMediaType;
@@ -19,6 +23,7 @@ type Props = {
 
 export default ({ tmdbMediaType, tmdbMediaId }: Props) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const addListItemModal = useModal("AddListItem");
 
   return {
@@ -30,7 +35,31 @@ export default ({ tmdbMediaType, tmdbMediaId }: Props) => {
     watchNext: {
       icon: true ? <BookmarkBorderIcon /> : <BookmarkIcon />,
       label: "Watch Next",
-      onClick: () => {},
+      onClick: async () => {
+        try {
+          await addWatchNextMutation({
+            tmdbMediaId,
+            tmdbMediaType,
+          });
+          dispatch(
+            snackbar.actions.display({
+              message: "Added to Watch Next",
+              action: (
+                <Button
+                  color="primary"
+                  onClick={() => history.push("/watch-next")}
+                >
+                  See List
+                </Button>
+              ),
+            })
+          );
+        } catch (error) {
+          dispatch(
+            snackbar.actions.display({ message: "Failed to add to watch next" })
+          );
+        }
+      },
     },
     addListItem: {
       icon: true ? <PlaylistAddIcon /> : <PlaylistAddCheckIcon />,

@@ -31,5 +31,4 @@ describe('add list items to list', () => {
       ])
     ).rejects.toBeTruthy();
   });
-  it('throws if trying to add dupicate item', () => {});
 });

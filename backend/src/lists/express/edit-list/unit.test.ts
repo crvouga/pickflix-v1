@@ -3,7 +3,7 @@ import {buildExpressAppFake} from '../../../express/build.fake';
 
 describe('PATCH', () => {
   it('sends back edited list', async done => {
-    const {currentUser, listLogic, app} = buildExpressAppFake();
+    const {currentUser, listLogic, app} = await buildExpressAppFake();
     const [created] = await listLogic.addLists([
       {
         ownerId: currentUser.id,

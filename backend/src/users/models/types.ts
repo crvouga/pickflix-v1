@@ -1,11 +1,12 @@
 import {Id, MakeId, IsValidId} from '../../id/types';
 
-export interface User {
+export type User = {
+  type: 'user';
   id: Id;
   firebaseId: string;
-}
+};
 
-export type BuildMakeUser = (_: {
+export type Dependencies = {
   makeId: MakeId;
   isValidId: IsValidId;
-}) => (_: Partial<User>) => User;
+};

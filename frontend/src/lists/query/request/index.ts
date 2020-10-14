@@ -1,5 +1,5 @@
 import backendAPI from "../../../backendAPI";
-import { List, ListItem } from "../../types";
+import { AutoList, List, ListItem } from "../../types";
 
 export const getLists = async () => {
   const { data } = await backendAPI.get<List[]>("/api/lists");
@@ -15,5 +15,10 @@ export const getListItems = async ({ listId }: { listId: string }) => {
   const { data } = await backendAPI.get<ListItem[]>(
     `/api/lists/${listId}/list-items`
   );
+  return data;
+};
+
+export const getWatchNextList = async () => {
+  const { data } = await backendAPI.get<AutoList>(`/api/auto-lists/watch-next`);
   return data;
 };

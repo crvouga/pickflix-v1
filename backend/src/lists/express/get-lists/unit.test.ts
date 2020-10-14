@@ -3,7 +3,7 @@ import {buildExpressAppFake} from '../../../express/build.fake';
 
 describe('GET /lists', () => {
   it('gets lists for current user', async done => {
-    const {listLogic, currentUser, app} = buildExpressAppFake();
+    const {listLogic, currentUser, app} = await buildExpressAppFake();
 
     const lists = await listLogic.addLists(
       [1, 2, 3, 4, 5].map(n => ({

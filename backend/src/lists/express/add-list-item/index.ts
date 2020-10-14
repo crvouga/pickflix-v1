@@ -1,6 +1,6 @@
 import {IRouter} from 'express';
-import {Id} from '../../../id/types';
 import {Dependencies} from '../../../express/types';
+import {Id} from '../../../id/types';
 
 export const addListItem = ({listLogic, middlewares}: Dependencies) => (
   router: IRouter

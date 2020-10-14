@@ -1,6 +1,7 @@
 import express from 'express';
 import {addList} from './add-list';
 import {addListItem} from './add-list-item';
+import {autoLists} from './auto-lists';
 import {editList} from './edit-list';
 import {getList} from './get-list';
 import {getListItems} from './get-list-items';
@@ -18,6 +19,7 @@ const buildRouterList = [
   getListItems,
   removeList,
   removeListItem,
+  autoLists,
 ];
 
 export const buildListRouter = (dependencies: Dependencies) => (

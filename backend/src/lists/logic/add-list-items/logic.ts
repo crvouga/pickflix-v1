@@ -7,7 +7,7 @@ export async function addListItems(
   listItemInfos: Partial<ListItem>[]
 ): Promise<ListItem[]> {
   const {
-    unitOfWork: {ListItems, Lists},
+    unitOfWork: {ListItems, Lists, AutoLists},
   } = this;
 
   const addedListItems = [];
@@ -15,19 +15,23 @@ export async function addListItems(
   for (const listItemInfo of listItemInfos) {
     const listItem = makeListItem(listItemInfo);
 
-    const foundLists = await Lists.find({
-      id: listItem.listId,
-    });
+    const [foundLists, foundAutoLists, foundListItems] = await Promise.all([
+      Lists.find({
+        id: listItem.listId,
+      }),
+      AutoLists.find({
+        id: listItem.listId,
+      }),
+      ListItems.find({
+        listId: listItem.listId,
+        tmdbMediaId: listItem.tmdbMediaId,
+        tmdbMediaType: listItem.tmdbMediaType,
+      }),
+    ]);
 
-    if (foundLists.length === 0) {
+    if (foundLists.length === 0 && foundAutoLists.length === 0) {
       throw new Error('list does not exists');
     }
-
-    const foundListItems = await ListItems.find({
-      listId: listItem.listId,
-      tmdbMediaId: listItem.tmdbMediaId,
-      tmdbMediaType: listItem.tmdbMediaType,
-    });
 
     if (foundListItems.length > 0) {
       throw new Error('try to add duplicate list item');

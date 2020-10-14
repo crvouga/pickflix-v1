@@ -12,10 +12,13 @@ export const getLists = ({listLogic, middlewares}: Dependencies) => (
     async (req, res, next) => {
       try {
         const currentUser = req.currentUser;
+
         const listInfo = {
           ownerId: currentUser?.id,
         };
+
         const lists = await listLogic.getLists(listInfo);
+
         res.json(lists).end();
       } catch (error) {
         next(error);

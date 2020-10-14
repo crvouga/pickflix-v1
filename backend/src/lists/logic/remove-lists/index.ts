@@ -9,13 +9,7 @@ export async function removeLists(
   try {
     await this.unitOfWork.begin();
 
-    for (const listId of listIds) {
-      const [list] = await Lists.find({id: listId});
-      if (list.isAutoCreated) {
-        throw new Error('can not delete automatically created list');
-      }
-      await Lists.remove([{id: listId}]);
-    }
+    await Lists.remove(listIds.map(listId => ({id: listId})));
 
     await this.unitOfWork.commit();
   } catch (error) {

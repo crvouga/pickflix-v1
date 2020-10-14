@@ -1,9 +1,8 @@
-import {BuildMakeUser} from './types';
+import {Dependencies, User} from './types';
 
-export const buildMakeUser: BuildMakeUser = ({
-  makeId,
-  isValidId,
-}) => userInfo => {
+export const buildMakeUser = ({makeId, isValidId}: Dependencies) => (
+  userInfo: Partial<User>
+): User => {
   const {id = makeId(), firebaseId} = userInfo;
 
   if (!isValidId(id)) {
@@ -15,6 +14,7 @@ export const buildMakeUser: BuildMakeUser = ({
   }
 
   return Object.freeze({
+    type: 'user',
     id,
     firebaseId,
   });

@@ -14,9 +14,27 @@ export type List = {
   id: string;
   title: string;
   description: string;
-  listItemCount: number;
-  listItems: ListItem[];
   isAutoCreated: boolean;
   createdAt: string;
   visibility: "public" | "private";
+  //
+  listItemCount: number;
+  listItems: ListItem[];
+};
+
+export type AutoListTitle = "Watch Next";
+
+export enum AutoListTitleEnum {
+  WatchNext = "Watch Next",
+}
+
+export type AutoList = {
+  type: "autoList";
+  id: string;
+  ownerId: string;
+  title: AutoListTitle;
+  createdAt: number;
+  //
+  listItems: ListItem[];
+  listItemCount: number;
 };

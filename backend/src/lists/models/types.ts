@@ -1,33 +1,55 @@
-import {Id, IsValidId, MakeId} from '../../id/types';
+import {Id, MakeId} from '../../id/types';
 import {TmdbMedia} from '../../media/models/types';
+
+export type Dependencies = {
+  makeId: MakeId;
+  isValidId: (id: string) => false | Id;
+};
 
 export type Visibility = 'public' | 'private';
 
 export type List = {
+  type: 'list';
   id: Id;
   ownerId: Id;
   title: string;
   description: string;
   createdAt: number;
-  isAutoCreated: Boolean;
   visibility: Visibility;
   listItems?: ListItem[];
 };
 
 export type ListItem = {
+  type: 'listItem';
   id: Id;
   listId: Id;
   createdAt: number;
 } & TmdbMedia;
 
-type Dependencies = {
-  makeId: MakeId;
-  isValidId: IsValidId;
-};
-export type BuildMakeList = (
-  _: Dependencies
-) => (_: Partial<List>) => Readonly<List>;
+export type AutoListTitle = 'Watch Next';
+export enum AutoListTitleEnum {
+  WatchNext = 'Watch Next',
+}
 
-export type BuildMakeListItem = (
-  _: Dependencies
-) => (_: Partial<ListItem>) => Readonly<ListItem>;
+export type AutoList = {
+  type: 'autoList';
+  id: Id;
+  ownerId: Id;
+  title: AutoListTitle;
+  createdAt: number;
+};
+
+type TmdbData = any;
+
+export type ListItemAggregate = {
+  type: 'listItemAggregate';
+  listItem: ListItem;
+  data: TmdbData;
+};
+
+export type ListAggregate = {
+  type: 'listAggregate';
+  list: List | AutoList;
+  listItems: ListItemAggregate[];
+  listItemCount: number;
+};

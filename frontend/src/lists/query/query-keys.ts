@@ -8,3 +8,5 @@ export const listItems = (listId: string) => [
   listId,
   "list-items",
 ];
+
+export const watchNextList = () => ["user", "watch-next"];

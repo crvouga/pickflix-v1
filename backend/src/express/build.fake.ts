@@ -5,24 +5,26 @@ import {buildAttachCurrentUserFake} from '../users/express/attach-current-user/b
 import {buildUserLogicFake} from '../users/logic/user-logic.fake';
 import {buildExpressApp} from './build';
 
-const {userLogic} = buildUserLogicFake();
-const {listLogic} = buildListLogicFake();
-const {mediaLogic} = buildMediaLogicFake();
-const {attachCurrentUser, currentUser} = buildAttachCurrentUserFake();
+export const buildExpressAppFake = async () => {
+  const {userLogic} = buildUserLogicFake();
+  const {listLogic} = buildListLogicFake();
+  const {mediaLogic} = buildMediaLogicFake();
+  const {attachCurrentUser, currentUser} = buildAttachCurrentUserFake();
 
-export const dependenciesFake = {
-  currentUser,
-  listLogic,
-  userLogic,
-  mediaLogic,
-  middlewares: {
-    attachCurrentUser,
-  },
-};
+  const dependenciesFake = {
+    currentUser,
+    listLogic,
+    userLogic,
+    mediaLogic,
+    middlewares: {
+      attachCurrentUser,
+    },
+  };
 
-export const buildExpressAppFake = () => {
   const app = express();
+
   buildExpressApp(dependenciesFake)(app);
+
   return {
     ...dependenciesFake,
     app,

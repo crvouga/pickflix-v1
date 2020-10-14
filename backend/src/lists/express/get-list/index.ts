@@ -1,4 +1,4 @@
-import express, {IRouter} from 'express';
+import {IRouter} from 'express';
 import {Id} from '../../../id/types';
 import {Dependencies} from '../types';
 
@@ -9,11 +9,21 @@ export const getList = ({listLogic}: Dependencies) => (router: IRouter) => {
 
       const lists = await listLogic.getLists({id: listId});
 
-      if (lists.length === 0) {
-        return res.status(404).end();
+      if (lists.length > 0) {
+        const [list] = lists;
+
+        return res.json(list);
       }
-      const [list] = lists;
-      res.json(list);
+
+      const autoLists = await listLogic.getAutoLists({id: listId});
+
+      if (autoLists.length > 0) {
+        const [autoList] = autoLists;
+
+        return res.json(autoList);
+      }
+
+      res.status(404).end();
     } catch (error) {
       next(error);
     }

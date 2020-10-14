@@ -3,7 +3,7 @@ import {buildExpressAppFake} from '../../../express/build.fake';
 
 describe('add list', () => {
   it('responses with created list', async done => {
-    const {app} = buildExpressAppFake();
+    const {app} = await buildExpressAppFake();
 
     const title = 'my movies';
     const description = 'some cool movies';
@@ -22,7 +22,7 @@ describe('add list', () => {
   });
 
   it('responses with bad request', async done => {
-    const {currentUser, app} = buildExpressAppFake();
+    const {currentUser, app} = await buildExpressAppFake();
 
     const title = 'my movies';
     const description = 'some cool movies';

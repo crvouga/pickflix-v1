@@ -1,13 +1,13 @@
 import {isValidId, makeId} from '../../id';
 import {buildMakeList} from './make-list';
 import {buildMakeListItem} from './make-list-item';
+import {buildMakeAutoList} from './make-auto-list';
 
-export const makeListItem = buildMakeListItem({
+const dependencies = {
   makeId,
   isValidId,
-});
+};
 
-export const makeList = buildMakeList({
-  isValidId,
-  makeId,
-});
+export const makeListItem = buildMakeListItem(dependencies);
+export const makeList = buildMakeList(dependencies);
+export const makeAutoList = buildMakeAutoList(dependencies);

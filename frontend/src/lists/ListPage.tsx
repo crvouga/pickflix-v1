@@ -5,65 +5,16 @@ import GroupAddOutlinedIcon from "@material-ui/icons/GroupAddOutlined";
 import React from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
-import { useParams, useHistory } from "react-router";
-import LoadingBox from "../common/components/LoadingBox";
-import ErrorBox from "../common/components/ErrorBox";
+import { useHistory, useParams } from "react-router";
 import useBoolean from "../common/hooks/useBoolean";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
-import Poster from "../movie/components/MoviePosterCard";
 import NavigationBar from "../navigation/NavigationBar";
-import { actions } from "../redux";
-import { getList, getListItems, queryKeys, deleteListMutation } from "./query";
+import { snackbar } from "../snackbar/redux/snackbar";
 import DeleteListDialog from "./DeleteListDialog";
 import EditListDialog from "./EditListDialog";
-import { snackbar } from "../snackbar/redux/snackbar";
-
-type ListItemsProps = {
-  listId: string;
-};
-
-export const ListItems = (props: ListItemsProps) => {
-  const { listId } = props;
-  const query = useQuery(queryKeys.listItems(listId), () =>
-    getListItems({ listId })
-  );
-
-  if (query.error) {
-    return <ErrorBox />;
-  }
-
-  if (!query.data) {
-    return <LoadingBox />;
-  }
-
-  const listItems = query.data;
-
-  if (listItems.length === 0) {
-    return (
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        height="200px"
-      >
-        <Typography align="center" color="textSecondary" variant="h6">
-          There's nothing here
-        </Typography>
-      </Box>
-    );
-  }
-
-  return (
-    <Box display="flex" flexDirection="row" flexWrap="wrap">
-      {listItems.map((listItem) => (
-        <Box p={1 / 2} width="50%" key={listItem.id}>
-          <Poster movie={listItem?.tmdbData} />
-        </Box>
-      ))}
-    </Box>
-  );
-};
+import ListItemsSection from "./ListItemsSection";
+import { deleteListMutation, getList, queryKeys } from "./query";
 
 export default () => {
   const { listId } = useParams<{ listId: string }>();
@@ -120,11 +71,8 @@ export default () => {
       <Paper>
         <Box p={2} paddingTop={4} display="flex" flexDirection="row">
           <Box>
-            <Typography variant="h5">{list?.title}</Typography>
-            <Typography color="textSecondary" variant="subtitle1">
-              {list?.isAutoCreated ? "Auto list" : ""}
-            </Typography>
-            <Typography variant="body1">{list?.description}</Typography>
+            <Typography variant="h5">{list.title}</Typography>
+            <Typography variant="body1">{list.description}</Typography>
           </Box>
         </Box>
 
@@ -137,15 +85,13 @@ export default () => {
             <EditIcon />
           </IconButton>
 
-          {!list?.isAutoCreated && (
-            <IconButton onClick={isDeleteListModalOpen.setTrue}>
-              <DeleteIcon />
-            </IconButton>
-          )}
+          <IconButton onClick={isDeleteListModalOpen.setTrue}>
+            <DeleteIcon />
+          </IconButton>
         </Toolbar>
       </Paper>
 
-      <ListItems listId={listId} />
+      <ListItemsSection listId={list.id} />
     </React.Fragment>
   );
 };

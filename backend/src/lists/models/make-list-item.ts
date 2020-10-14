@@ -1,9 +1,8 @@
-import {BuildMakeListItem} from './types';
+import {Dependencies, ListItem} from './types';
 
-export const buildMakeListItem: BuildMakeListItem = ({
-  makeId,
-  isValidId,
-}) => listItemInfo => {
+export const buildMakeListItem = ({makeId, isValidId}: Dependencies) => (
+  listItemInfo: Partial<ListItem>
+): ListItem => {
   const {
     id = makeId(),
     listId,
@@ -41,6 +40,7 @@ export const buildMakeListItem: BuildMakeListItem = ({
   }
 
   return {
+    type: 'listItem',
     id,
     listId,
     tmdbMediaId,
