@@ -1,9 +1,9 @@
+import {ILikeRepository} from '../likes/repositories/types';
 import {
+  IAutoListRepository,
   IListItemRepository,
   IListRepository,
-  IAutoListRepository,
 } from '../lists/repositories/types';
-import {ILikesRepository} from '../media/repositories/types';
 import {IUserRepository} from '../users/repositories/types';
 
 export interface IUnitOfWork {
@@ -14,7 +14,7 @@ export interface IUnitOfWork {
   Lists: IListRepository;
   ListItems: IListItemRepository;
   Users: IUserRepository;
-  Likes: ILikesRepository;
+  Likes: ILikeRepository;
   AutoLists: IAutoListRepository;
 }
 
