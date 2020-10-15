@@ -7,12 +7,12 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import MovieCard from "../movie/components/MovieCard";
 import Poster from "../movie/components/MoviePosterCard";
-import { actions, selectors } from "../redux";
 import {
   PersonDetailsResponse,
   PersonMovieCredit,
   PersonMovieCreditsResponse,
 } from "../tmdb/types";
+import { personPageUi } from "./redux/person-page-ui";
 
 type Props = {
   credits: PersonMovieCreditsResponse;
@@ -26,10 +26,11 @@ const toSubheader = (movieCredits: PersonMovieCredit[]) =>
     .join(", ");
 
 export default ({ credits }: Props) => {
-  const isGridOn = useSelector(selectors.personPage.isGridOn);
+  const isGridOn = useSelector(personPageUi.selectors.isGridOn);
+
   const dispatch = useDispatch();
   const handleToggle = () => {
-    dispatch(actions.personPage.toggleGrid());
+    dispatch(personPageUi.actions.toggleGrid());
   };
 
   const creditsByMovieId = groupBy((credit) => credit.id, [

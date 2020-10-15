@@ -26,15 +26,9 @@ export default () => {
       <NavigationBar title={list.title} AppBarProps={{ position: "sticky" }} />
       <Paper>
         <Box p={2} paddingY={4} display="flex" flexDirection="row">
-          <Box>
-            <Typography variant="h5">{list.title}</Typography>
-            <Typography variant="subtitle1" color="textSecondary">
-              A list of movies you want to watch next.
-            </Typography>
-          </Box>
+          <Typography variant="h5">{list.title}</Typography>
         </Box>
       </Paper>
-
       <ListItemsSection listId={list.id} />
     </React.Fragment>
   );

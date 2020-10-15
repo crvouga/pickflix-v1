@@ -6,7 +6,7 @@ import { discoverMovie } from "../discover/redux/discover-movie";
 import { discoverMovieSaga } from "../discover/redux/discover-movie-saga";
 import { discoverMovieUi } from "../discover/redux/discover-movie-ui";
 import { addListItemsForm } from "../lists/redux/add-list-items-form";
-import personPage from "../person/redux";
+import { personPageUi } from "../person/redux/person-page-ui";
 import querySaga from "../query/query-saga";
 import { search } from "../search/redux/search";
 import { snackbar } from "../snackbar/redux/snackbar";
@@ -18,7 +18,6 @@ export const actions = Object.freeze({
   recentlyViewed: recentlyViewed.actions,
   auth: auth.actions,
   signInForm: signInForm.actions,
-  personPage: personPage.actions,
 });
 
 export const selectors = Object.freeze({
@@ -26,7 +25,6 @@ export const selectors = Object.freeze({
   recentlyViewed: recentlyViewed.selectors,
   auth: auth.selectors,
   signInForm: signInForm.selectors,
-  personPage: personPage.selectors,
 });
 
 function* rootSaga() {
@@ -48,7 +46,7 @@ const rootReducer = combineReducers({
   recentlyViewed: recentlyViewed.reducer,
   signInForm: signInForm.reducer,
   auth: auth.reducer,
-  personPage: personPage.reducer,
+  personPageUi: personPageUi.reducer,
   addListItemsForm: addListItemsForm.reducer,
   search: search.reducer,
   discoverMovieUi: discoverMovieUi.reducer,

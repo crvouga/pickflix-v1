@@ -8,7 +8,7 @@ import { SignInFormState } from "../auth/signInForm/redux/types";
 import { DiscoverMovieState } from "../discover/redux/discover-movie";
 import { DiscoverMovieUiState } from "../discover/redux/discover-movie-ui";
 import { AddListItemsFormState } from "../lists/redux/add-list-items-form";
-import { PersonPageState } from "../person/redux/types";
+import { PersonPageUiState } from "../person/redux/person-page-ui";
 import { SearchState } from "../search/redux/search";
 import { SnackbarState } from "../snackbar/redux/snackbar";
 import { VideoState } from "../video/redux/types";
@@ -23,10 +23,10 @@ export type AppState = {
   auth: AuthState;
   signInForm: SignInFormState;
   snackbar: SnackbarState;
-  personPage: PersonPageState;
   search: SearchState;
   discoverMovie: DiscoverMovieState;
   discoverMovieUi: DiscoverMovieUiState;
+  personPageUi: PersonPageUiState;
 };
 
 export const useSelector: TypedUseSelectorHook<AppState> = useSelectorRedux;
