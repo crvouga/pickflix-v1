@@ -1,4 +1,5 @@
-import { createAction, createReducer } from "@reduxjs/toolkit";
+import { createAction, createReducer, createSelector } from "@reduxjs/toolkit";
+import { AppState } from "../../redux/types";
 import { TmdbMediaType } from "../../tmdb/types";
 
 const name = "addListItemsForm";
@@ -20,7 +21,7 @@ export type AddListItemsFormState = {
 
 */
 
-export const initialState: AddListItemsFormState = {
+const initialState: AddListItemsFormState = {
   listItemInfos: [],
 };
 
@@ -28,9 +29,10 @@ export const initialState: AddListItemsFormState = {
 
 */
 
-export const selectors = {
-  listItemInfos: (state: { [name]: AddListItemsFormState }) =>
-    state[name].listItemInfos,
+const slice = (state: AppState) => state.addListItemsForm;
+const listItemInfos = createSelector([slice], (slice) => slice.listItemInfos);
+const selectors = {
+  listItemInfos,
 };
 
 /* 

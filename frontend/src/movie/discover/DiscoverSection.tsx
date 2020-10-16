@@ -2,9 +2,8 @@ import { makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import { discoverMovie } from "../../discover/redux/discover-movie";
 import { DiscoverMovieTag } from "../../discover/discover-movie-tags";
-
+import { discoverParams } from "../../discover/redux/discover-params";
 import { useMoviePageQuery } from "../data";
 import TagScroll from "./TagScroll";
 
@@ -43,7 +42,7 @@ export default () => {
   const dispatch = useDispatch();
 
   const handleTagClick = (tag: DiscoverMovieTag) => {
-    dispatch(discoverMovie.actions.setActiveTags([tag]));
+    dispatch(discoverParams.actions.setActiveTags([tag]));
     history.push("/discover");
   };
 

@@ -1,6 +1,6 @@
-import { DiscoverMovieParams } from "./types";
+import { DiscoverMovieQueryParams } from "./types";
 
-export const discoverMovie = (params: DiscoverMovieParams) => [
+export const discoverMovie = (params: DiscoverMovieQueryParams) => [
   "discover",
   "movie",
   params,

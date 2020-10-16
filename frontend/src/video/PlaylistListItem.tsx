@@ -29,10 +29,10 @@ export default (props: Props) => {
 
   const handleClick = () => {
     if (selected) {
-      dispatch(video.actions.toggle());
+      dispatch(video.actions.setIsPlaying(!isPlaying));
     } else {
       dispatch(video.actions.setCurrentVideo(playlistVideo));
-      dispatch(video.actions.play());
+      dispatch(video.actions.setIsPlaying(true));
     }
   };
 

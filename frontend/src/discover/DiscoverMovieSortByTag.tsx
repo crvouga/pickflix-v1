@@ -17,16 +17,16 @@ import {
   DiscoverMovieSortByEnum,
   sortByValueToName,
 } from "./query/types";
-import { discoverMovie } from "./redux/discover-movie";
+import { discoverParams } from "./redux/discover-params";
 
 export default () => {
-  const sortBy = useSelector(discoverMovie.selectors.sortBy);
+  const sortBy = useSelector(discoverParams.selectors.sortBy);
   const isOpen = useBoolean();
   const dispatch = useDispatch();
 
   const handleClick = (sortBy: DiscoverMovieSortBy) => () => {
     isOpen.setFalse();
-    dispatch(discoverMovie.actions.setSortBy(sortBy));
+    dispatch(discoverParams.actions.setSortBy(sortBy));
   };
 
   return (

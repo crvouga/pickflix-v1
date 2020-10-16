@@ -22,7 +22,6 @@ import AutoListPage from "../lists/auto-list/AutoListPage";
 export default () => {
   return (
     <React.Fragment>
-      <CssBaseline />
       <Modals />
       <Container disableGutters maxWidth="xs">
         <Switch>
@@ -40,9 +39,9 @@ export default () => {
           <Route path="/signIn" component={SignInPage} />
           <Route path="/auto-list/:autoListKey" component={AutoListPage} />
         </Switch>
+        <Snackbar />
+        <NavigationBarBottom />
       </Container>
-      <Snackbar />
-      <NavigationBarBottom />
     </React.Fragment>
   );
 };

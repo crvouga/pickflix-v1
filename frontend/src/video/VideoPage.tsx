@@ -27,15 +27,21 @@ export default () => {
   const dispatch = useDispatch();
 
   const handlePlay = () => {
-    dispatch(video.actions.play());
+    dispatch(video.actions.setIsPlaying(true));
   };
 
   const handlePause = () => {
-    dispatch(video.actions.pause());
+    dispatch(video.actions.setIsPlaying(false));
   };
 
   const handleProgress = (progress: VideoProgress) => {
     dispatch(video.actions.progress(progress));
+  };
+
+  const handleReady = () => {
+    setTimeout(() => {
+      dispatch(video.actions.setIsPlaying(true));
+    }, 200);
   };
 
   return (
@@ -51,7 +57,7 @@ export default () => {
           controls
           onPlay={handlePlay}
           onPause={handlePause}
-          onProgress={handleProgress}
+          onReady={handleReady}
           playing={isPlaying}
           url={youtubeAPI.videoKeyToEmbedURL(currentVideo?.key)}
           config={{

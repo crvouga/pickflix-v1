@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
     left: 0,
     width: "100%",
+
     backgroundImage: ({ backdropPath, posterPath }: StyleProps) =>
       `url(${makeTMDbImageURL(
         4,

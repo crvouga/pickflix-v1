@@ -50,7 +50,7 @@ export enum DiscoverMovieSortByEnum {
   "vote_count.desc" = "Vote Count (high to low)",
 }
 
-export type DiscoverMovieParams = {
+export type DiscoverMovieQueryParams = {
   language?: string;
   region?: string;
   sortBy?: DiscoverMovieSortBy;
@@ -87,7 +87,7 @@ export type DiscoverMovieParams = {
 
 export type DiscoverMovieParamTag = {
   id: string;
-  key: keyof DiscoverMovieParams;
+  key: keyof DiscoverMovieQueryParams;
   data: any;
 };
 

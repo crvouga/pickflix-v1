@@ -5,7 +5,7 @@ import ErrorBox from "../common/components/ErrorBox";
 import LoadingBox from "../common/components/LoadingBox";
 import Poster from "../movie/components/MoviePosterCard";
 import MoviePosterCardSkeleton from "../movie/components/MoviePosterCardSkeleton";
-import { discoverMovie } from "./redux/discover-movie";
+import { discoverParams } from "./redux/discover-params";
 import useDiscoverMovieQuery from "./useDiscoverMovieQuery";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,12 +18,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const discoverMovieParams = useSelector(
-    discoverMovie.selectors.discoverMovieParams
+  const discoverQueryParams = useSelector(
+    discoverParams.selectors.discoverQueryParams
   );
 
   const { fetchMoreRef, data, error, canFetchMore } = useDiscoverMovieQuery(
-    discoverMovieParams
+    discoverQueryParams
   );
 
   if (error) {

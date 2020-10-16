@@ -7,6 +7,7 @@ import {
   TmdbConfiguration,
   ImagePaths,
 } from "./types";
+import { useQuery } from "react-query";
 
 const clamp = (min: number, max: number, n: number) =>
   Math.max(min, Math.min(max, n));
@@ -50,13 +51,32 @@ const makeImageUrl = (
   return imageUrl;
 };
 
-let tmdbConfiguration: TmdbConfiguration | undefined = undefined;
+const getTmdbConfig = async () => {
+  const { data } = await backendAPI.get<TmdbConfiguration>(
+    "/api/tmdb/configuration"
+  );
+  return data;
+};
 
-backendAPI
-  .get("/api/tmdb/configuration")
-  .then((res: AxiosResponse<TmdbConfiguration>) => {
-    tmdbConfiguration = res.data;
-  });
+let tmdbConfiguration: TmdbConfiguration | undefined = undefined;
+getTmdbConfig().then((data) => {
+  tmdbConfiguration = data;
+});
 
 export default (sizeIndex: number, hasPathKey: ImagePaths) =>
   makeImageUrl(tmdbConfiguration, sizeIndex, hasPathKey);
+
+export const useMakeImageUrl = () => {
+  const query = useQuery(["tmdb", "config"], () => getTmdbConfig(), {
+    staleTime: Infinity,
+  });
+
+  if (query.error || !query.data) {
+    return (sizeIndex: number, hasPathKey: ImagePaths) => undefined;
+  }
+
+  const tmdbConfiguration = query.data;
+
+  return (sizeIndex: number, hasPathKey: ImagePaths) =>
+    makeImageUrl(tmdbConfiguration, sizeIndex, hasPathKey);
+};

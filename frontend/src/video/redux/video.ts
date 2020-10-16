@@ -1,4 +1,4 @@
-import { createAction, createReducer } from "@reduxjs/toolkit";
+import { createAction, createReducer, createSelector } from "@reduxjs/toolkit";
 import { AppState } from "../../redux/types";
 import { MovieVideo } from "../../tmdb/types";
 
@@ -39,10 +39,7 @@ const actions = {
   setPlaylist: createAction<MovieVideo[]>(name + "/SET_PLAYLIST"),
   setIsPlaying: createAction<boolean>(name + "/SET_IS_PLAYING"),
   //
-  play: createAction(name + "/PLAY"),
-  pause: createAction(name + "/PAUSE"),
   progress: createAction<VideoProgress>(name + "/PROGRESS"),
-  toggle: createAction(name + "/TOGGLE"),
 };
 
 /* 
@@ -50,10 +47,14 @@ const actions = {
 
 */
 
+const slice = (state: AppState) => state.video;
+const isPlaying = createSelector([slice], (slice) => slice.isPlaying);
+const currentVideo = createSelector([slice], (slice) => slice.currentVideo);
+const playlist = createSelector([slice], (slice) => slice.playlist);
 const selectors = {
-  isPlaying: (state: AppState) => state.video.isPlaying,
-  currentVideo: (state: AppState) => state.video.currentVideo,
-  playlist: (state: AppState) => state.video.playlist,
+  isPlaying,
+  currentVideo,
+  playlist,
 };
 
 /* 

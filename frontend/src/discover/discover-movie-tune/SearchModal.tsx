@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import useModal from "../../navigation/modals/useModal";
 import { DiscoverMovieTag } from "../discover-movie-tags";
-import { discoverMovie } from "../redux/discover-movie";
+import { discoverParams } from "../redux/discover-params";
 import SearchBar from "./SearchBar";
 import SearchResults from "./SearchResults";
 
@@ -21,7 +21,7 @@ export default () => {
 
   const handleClick = (tag: DiscoverMovieTag) => {
     discoverMovieTagSearchModal.close();
-    dispatch(discoverMovie.actions.setActiveTags([tag]));
+    dispatch(discoverParams.actions.setActiveTags([tag]));
   };
 
   return (

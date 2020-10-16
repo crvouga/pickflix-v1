@@ -1,4 +1,4 @@
-import { DiscoverMovieParams, DiscoverMovieSortBy } from "./query/types";
+import { DiscoverMovieQueryParams, DiscoverMovieSortBy } from "./query/types";
 
 /*
 
@@ -49,7 +49,7 @@ export type DiscoverMovieTag =
 */
 
 const tagToParamReducer = (
-  params: DiscoverMovieParams,
+  params: DiscoverMovieQueryParams,
   tag: DiscoverMovieTag
 ) => {
   switch (tag.type) {

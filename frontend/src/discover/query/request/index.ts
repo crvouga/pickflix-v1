@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from "axios";
 import backendAPI from "../../../backendAPI";
-import { DiscoverMovieParams, DiscoverMovieResponse } from "../types";
+import { DiscoverMovieQueryParams, DiscoverMovieResponse } from "../types";
 
 export const getMovieGenres = async (config?: AxiosRequestConfig) => {
   const { data } = await backendAPI.get<{
@@ -9,7 +9,7 @@ export const getMovieGenres = async (config?: AxiosRequestConfig) => {
   return data;
 };
 
-export const getDiscoverMovie = async (params: DiscoverMovieParams) => {
+export const getDiscoverMovie = async (params: DiscoverMovieQueryParams) => {
   const { data } = await backendAPI.get<DiscoverMovieResponse>(
     "/api/tmdb/discover/movie",
     {

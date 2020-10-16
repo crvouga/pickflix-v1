@@ -14,16 +14,16 @@ import { useDispatch, useSelector } from "react-redux";
 import AccountButton from "../navigation/AccountButton";
 import SearchButton from "../navigation/SearchButton";
 import AddIcon from "@material-ui/icons/Add";
-import { discoverMovie } from "./redux/discover-movie";
+import { discoverParams } from "./redux/discover-params";
 import useModal from "../navigation/modals/useModal";
 
 export const APP_BAR_HEIGHT = "56px";
 
 const UndoButton = (props: IconButtonProps) => {
-  const canUndo = useSelector(discoverMovie.selectors.canUndo);
+  const canUndo = useSelector(discoverParams.selectors.canUndo);
   const dispatch = useDispatch();
   const handleClick = () => {
-    dispatch(discoverMovie.actions.undo());
+    dispatch(discoverParams.actions.undo());
   };
   return (
     <IconButton disabled={!canUndo} onClick={handleClick} {...props}>
@@ -33,10 +33,10 @@ const UndoButton = (props: IconButtonProps) => {
 };
 
 const RedoButton = (props: IconButtonProps) => {
-  const canRedo = useSelector(discoverMovie.selectors.canRedo);
+  const canRedo = useSelector(discoverParams.selectors.canRedo);
   const dispatch = useDispatch();
   const handleClick = () => {
-    dispatch(discoverMovie.actions.redo());
+    dispatch(discoverParams.actions.redo());
   };
   return (
     <IconButton disabled={!canRedo} onClick={handleClick} {...props}>
@@ -46,11 +46,11 @@ const RedoButton = (props: IconButtonProps) => {
 };
 
 const ClearButton = (props: IconButtonProps) => {
-  const activeTags = useSelector(discoverMovie.selectors.activeTags);
+  const activeTags = useSelector(discoverParams.selectors.activeTags);
   const canClear = activeTags.length > 0;
   const dispatch = useDispatch();
   const handleClick = () => {
-    dispatch(discoverMovie.actions.setActiveTags([]));
+    dispatch(discoverParams.actions.setActiveTags([]));
   };
   return (
     <IconButton disabled={!canClear} onClick={handleClick} {...props}>

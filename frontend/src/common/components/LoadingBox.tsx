@@ -1,12 +1,17 @@
 import React from "react";
-import { Box, BoxProps, CircularProgress } from "@material-ui/core";
+import {
+  Box,
+  BoxProps,
+  CircularProgress,
+  CircularProgressProps,
+} from "@material-ui/core";
 
-type Props = BoxProps & { size?: string | number };
+type Props = BoxProps & { CircularProgressProps?: CircularProgressProps };
 
-export default ({ size = "2em", ...props }: Props) => {
+export default ({ CircularProgressProps, ...props }: Props) => {
   return (
     <Box textAlign="center" color="text.secondary" {...props}>
-      <CircularProgress color="inherit" size={size} />
+      <CircularProgress color="inherit" {...CircularProgressProps} />
     </Box>
   );
 };

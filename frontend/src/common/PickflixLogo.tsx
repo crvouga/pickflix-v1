@@ -3,10 +3,16 @@ import {
   makeStyles,
   Typography,
   TypographyVariant,
+  BoxProps,
+  Box,
 } from "@material-ui/core";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import clsx from "clsx";
 import React from "react";
+
+type StyleProps = {
+  scale: number;
+};
 
 const useStyles = makeStyles((theme) => ({
   pick: {
@@ -31,18 +37,22 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
+    transform: ({ scale }: StyleProps) => `scale(${scale})`,
     // justifyContent: "center",
-    flex: 1,
   },
 }));
 
 const variant: TypographyVariant = "h5";
 
-export default () => {
-  const classes = useStyles();
+type Props = BoxProps & {
+  scale?: number;
+};
+
+export default ({ scale = 1, ...props }: Props) => {
+  const classes = useStyles({ scale });
 
   return (
-    <div className={classes.root}>
+    <Box className={classes.root} {...props}>
       <Typography
         variant={variant}
         className={clsx(classes.typography, classes.pick)}
@@ -55,6 +65,6 @@ export default () => {
       <Typography variant={variant} className={classes.typography}>
         flix
       </Typography>
-    </div>
+    </Box>
   );
 };

@@ -1,9 +1,10 @@
 import { union } from "ramda";
-import { call, fork, put, select } from "redux-saga/effects";
+
+import { call, fork, put, select, take } from "redux-saga/effects";
 import { DiscoverMovieTag } from "../discover-movie-tags";
 import { getMovieGenres } from "../query";
-import { discoverMovie } from "./discover-movie";
-
+import { discoverParams } from "./discover-params";
+import { discoverTags } from "./discover-tags";
 const getMovieGenreTags = async () => {
   const genresResponse = await getMovieGenres();
   const movieGenreTags: DiscoverMovieTag[] = genresResponse.genres.map(
@@ -17,15 +18,15 @@ const getMovieGenreTags = async () => {
 
 function* addMovieGenreTagsSaga() {
   const movieGenreTags: DiscoverMovieTag[] = yield call(getMovieGenreTags);
-  const tags: DiscoverMovieTag[] = yield select(discoverMovie.selectors.tags);
-  yield put(discoverMovie.actions.setTags(union(tags, movieGenreTags)));
+  const tags: DiscoverMovieTag[] = yield select(discoverTags.selectors.tags);
+  yield put(discoverTags.actions.setTags(union(tags, movieGenreTags)));
 }
 
 const decadeTags: DiscoverMovieTag[] = [];
 
 function* addDecadeTagsSaga() {
-  const tags: DiscoverMovieTag[] = yield select(discoverMovie.selectors.tags);
-  yield put(discoverMovie.actions.setTags(union(tags, decadeTags)));
+  const tags: DiscoverMovieTag[] = yield select(discoverTags.selectors.tags);
+  yield put(discoverTags.actions.setTags(union(tags, decadeTags)));
 }
 
 export function* discoverMovieSaga() {

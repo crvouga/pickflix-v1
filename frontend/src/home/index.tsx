@@ -13,7 +13,7 @@ import { Movie, Person } from "../tmdb/types";
 import Header from "./Header";
 
 const Title = ({ children, ...props }: BoxProps) => (
-  <Box component={Typography} paddingLeft={2} paddingBottom={1} {...props}>
+  <Box paddingLeft={2} paddingBottom={1} {...props}>
     <Typography gutterBottom variant="h6">
       {children}
     </Typography>

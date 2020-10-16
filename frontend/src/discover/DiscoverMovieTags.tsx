@@ -4,7 +4,8 @@ import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DiscoverMovieTag as IDiscoverMovieTag } from "./discover-movie-tags";
 import DiscoverMovieTag from "./DiscoverMovieTag";
-import { discoverMovie } from "./redux/discover-movie";
+import { discoverParams } from "./redux/discover-params";
+import { discoverTags } from "./redux/discover-tags";
 
 const useStyles = makeStyles((theme) => ({
   chipContainer: {
@@ -22,21 +23,21 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const classes = useStyles();
 
-  const tags = useSelector(discoverMovie.selectors.tags);
-  const activeTags = useSelector(discoverMovie.selectors.activeTags);
+  const tags = useSelector(discoverTags.selectors.tags);
+  const activeTags = useSelector(discoverParams.selectors.activeTags);
   const nonActiveTags = difference(tags, activeTags);
 
   const dispatch = useDispatch();
 
   const handleClickActiveTag = (activeTag: IDiscoverMovieTag) => () => {
     dispatch(
-      discoverMovie.actions.setActiveTags(without([activeTag], activeTags))
+      discoverParams.actions.setActiveTags(without([activeTag], activeTags))
     );
   };
 
   const handleClickNonActiveTag = (nonActiveTag: IDiscoverMovieTag) => () => {
     dispatch(
-      discoverMovie.actions.setActiveTags(union([nonActiveTag], activeTags))
+      discoverParams.actions.setActiveTags(union([nonActiveTag], activeTags))
     );
   };
 

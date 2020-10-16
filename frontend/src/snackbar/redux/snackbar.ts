@@ -33,9 +33,9 @@ const initialState: SnackbarState = {
 */
 
 const actions = {
-  setOpen: createAction<boolean>("[snackbar] SET_OPEN"),
-  setProps: createAction<SnackbarProps>("[snackbar] SET_PROPS"),
-  display: createAction<SnackbarProps>("[snackbar] DISPLAY"),
+  setOpen: createAction<boolean>(name + "/SET_OPEN"),
+  setProps: createAction<SnackbarProps>(name + "/SET_PROPS"),
+  display: createAction<SnackbarProps>(name + "/DISPLAY"),
 };
 
 /*

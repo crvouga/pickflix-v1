@@ -1,12 +1,13 @@
+import { createSelector } from "@reduxjs/toolkit";
 import { AppState } from "../../redux/types";
 
-export const user = (state: AppState) => state.auth?.user;
+const slice = (state: AppState) => state.auth;
 
-export const status = (state: AppState) => state.auth?.status;
-
-export const error = (state: AppState) => state.auth?.error;
-
-export const authStatus = (state: AppState) => state.auth.authStatus;
-
-export const isAuthenticated = (state: AppState) =>
-  authStatus(state) === "signedIn";
+export const user = createSelector([slice], (slice) => slice.user);
+export const status = createSelector([slice], (slice) => slice.status);
+export const error = createSelector([slice], (slice) => slice.error);
+export const authStatus = createSelector([slice], (slice) => slice.authStatus);
+export const isAuthenticated = createSelector(
+  [authStatus],
+  (authStatus) => authStatus === "signedIn"
+);

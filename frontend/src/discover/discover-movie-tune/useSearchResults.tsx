@@ -2,7 +2,7 @@ import matchSorter from "match-sorter";
 import { uniqBy } from "ramda";
 import { useSelector } from "react-redux";
 import { DiscoverMovieTag } from "../discover-movie-tags";
-import { discoverMovie } from "../redux/discover-movie";
+import { discoverTags } from "../redux/discover-tags";
 import useSearchQuery from "./useSearchQuery";
 
 type Props = {
@@ -16,7 +16,7 @@ const filter = (searchQuery: string, tags: DiscoverMovieTag[]) => {
 };
 
 export default ({ searchQuery }: Props) => {
-  const tags = useSelector(discoverMovie.selectors.tags);
+  const tags = useSelector(discoverTags.selectors.tags);
   const filteredTags = filter(searchQuery, tags);
 
   const {

@@ -1,6 +1,5 @@
 import { CircularProgress, makeStyles } from "@material-ui/core";
 import React from "react";
-import NavigationBar from "../../navigation/NavigationBar";
 import NavigationBarTopLevel from "../../navigation/NavigationBarTopLevel";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,7 +17,7 @@ export default () => {
   const classes = useStyles();
   return (
     <React.Fragment>
-      <NavigationBarTopLevel />
+      <NavigationBarTopLevel position="fixed" />
       <div className={classes.root}>
         <CircularProgress color="inherit" disableShrink size="2em" />
       </div>

@@ -1,11 +1,11 @@
+import { last } from "ramda";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { useInfiniteQuery } from "react-query";
 import { getDiscoverMovie, queryKeys } from "./query";
-import { DiscoverMovieParams } from "./query/types";
-import { last } from "ramda";
+import { DiscoverMovieQueryParams } from "./query/types";
 
-export default (discoverMovieParams: DiscoverMovieParams) => {
+export default (discoverMovieParams: DiscoverMovieQueryParams) => {
   const queryKey = queryKeys.discoverMovie(discoverMovieParams);
   const query = useInfiniteQuery(
     queryKey,
