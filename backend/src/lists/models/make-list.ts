@@ -1,5 +1,5 @@
-import {Dependencies, List} from './types';
-import {Id} from '../../id/types';
+import {UserId} from '../../users/models/types';
+import {Dependencies, List, ListId} from './types';
 
 const MAX_LENGTH_TITLE = 100;
 const MAX_LENGTH_DESCRIPTION = 500;
@@ -8,8 +8,8 @@ export const buildMakeList = ({makeId, isValidId}: Dependencies) => (
   listInfo: Partial<List>
 ): List => {
   const {
-    id = makeId(),
-    ownerId = '' as Id,
+    id = makeId() as ListId,
+    ownerId = '' as UserId,
     title = '',
     description = '',
     createdAt = Date.now(),

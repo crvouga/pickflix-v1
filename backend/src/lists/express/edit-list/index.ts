@@ -1,6 +1,6 @@
 import {IRouter} from 'express';
 import R from 'ramda';
-import {Id} from '../../../id/types';
+import {ListId} from '../../../lists/models/types';
 import {Dependencies} from '../types';
 
 export const editList = ({listLogic, middlewares}: Dependencies) => (
@@ -11,7 +11,7 @@ export const editList = ({listLogic, middlewares}: Dependencies) => (
     middlewares.attachCurrentUser,
     async (req, res, next) => {
       try {
-        const listId = req.params.listId as Id;
+        const listId = req.params.listId as ListId;
 
         const edits = R.pick(['title', 'description'], req.body);
 

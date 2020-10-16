@@ -1,9 +1,14 @@
-import {Dependencies, User} from './types';
+import {Dependencies, FirebaseId, UserId, User} from './types';
+
+export type PartialUser = {
+  id?: UserId;
+  firebaseId: FirebaseId;
+};
 
 export const buildMakeUser = ({makeId, isValidId}: Dependencies) => (
-  userInfo: Partial<User>
+  userInfo: PartialUser
 ): User => {
-  const {id = makeId(), firebaseId} = userInfo;
+  const {id = makeId() as UserId, firebaseId} = userInfo;
 
   if (!isValidId(id)) {
     throw new Error('invalid id: ' + id);

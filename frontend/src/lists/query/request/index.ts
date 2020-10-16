@@ -1,5 +1,6 @@
 import backendAPI from "../../../backendAPI";
-import { AutoList, List, ListItem } from "../../types";
+import { AutoList, List, ListItem, AutoListKey } from "../../types";
+import { TmdbMediaType } from "../../../tmdb/types";
 
 export const getLists = async () => {
   const { data } = await backendAPI.get<List[]>("/api/lists");
@@ -18,7 +19,28 @@ export const getListItems = async ({ listId }: { listId: string }) => {
   return data;
 };
 
-export const getWatchNextList = async () => {
-  const { data } = await backendAPI.get<AutoList>(`/api/auto-lists/watch-next`);
+export const getAutoList = async (autoListKey: AutoListKey) => {
+  const { data } = await backendAPI.get<AutoList>(
+    `/api/auto-lists/${autoListKey}`
+  );
+  return data;
+};
+
+export const getListsFromListItem = async ({
+  tmdbMediaId,
+  tmdbMediaType,
+}: {
+  tmdbMediaId: string;
+  tmdbMediaType: TmdbMediaType;
+}) => {
+  const { data } = await backendAPI.get<(List | AutoList)[]>(
+    `/api/list-items/lists`,
+    {
+      params: {
+        tmdbMediaId,
+        tmdbMediaType,
+      },
+    }
+  );
   return data;
 };

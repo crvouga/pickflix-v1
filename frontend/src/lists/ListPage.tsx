@@ -12,7 +12,7 @@ import LoadingPage from "../common/page/LoadingPage";
 import NavigationBar from "../navigation/NavigationBar";
 import { snackbar } from "../snackbar/redux/snackbar";
 import DeleteListDialog from "./DeleteListDialog";
-import EditListDialog from "./EditListDialog";
+import EditListDialog from "./edit-list/EditListDialog";
 import ListItemsSection from "./ListItemsSection";
 import { deleteListMutation, getList, queryKeys } from "./query";
 

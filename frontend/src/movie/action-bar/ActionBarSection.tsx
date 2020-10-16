@@ -2,6 +2,8 @@ import { Box, IconButton, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import { useParams } from "react-router";
 import useActions from "./useActions";
+import useAutoListLogic from "../../lists/auto-list/useAutoListLogic";
+import AutoListToggleButton from "../../lists/auto-list/AutoListToggleButton";
 
 const useStylesIconButton = makeStyles((theme) => ({
   root: {
@@ -26,15 +28,20 @@ export default () => {
     tmdbMediaType: "movie",
   });
 
-  const actionBarItems = [
-    movieActions.like,
-    movieActions.watchNext,
-    movieActions.watchWith,
-    movieActions.addListItem,
-  ];
+  const actionBarItems = [movieActions.addListItem, movieActions.watchWith];
 
   return (
     <Box display="flex" justifyContent="space-around" flexWrap="nowrap">
+      <AutoListToggleButton
+        autoListKey="liked"
+        tmdbMediaId={movieId}
+        tmdbMediaType="movie"
+      />
+      <AutoListToggleButton
+        autoListKey="watch-next"
+        tmdbMediaId={movieId}
+        tmdbMediaType="movie"
+      />
       {actionBarItems.map(({ icon, label, onClick }) => (
         <IconButton key={label} onClick={onClick} classes={classesIconButton}>
           {icon}

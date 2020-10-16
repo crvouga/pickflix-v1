@@ -10,8 +10,6 @@ import { TransitionProps } from "@material-ui/core/transitions";
 import CloseIcon from "@material-ui/icons/Close";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { List } from "../lists/types";
-import { actions, selectors } from "../redux";
 import { useHistory } from "react-router";
 import { snackbar } from "./redux/snackbar";
 

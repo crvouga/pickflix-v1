@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import LoadingPage from "../common/page/LoadingPage";
 import BackButton from "../navigation/BackButton";
-import { selectors } from "../redux";
+import { auth } from "./redux/auth";
 import SignedInAccountPage from "./SignedInAccountPage";
 
 const useStyles = makeStyles((theme) => ({
@@ -86,7 +86,7 @@ const SignedOut = () => {
 };
 
 export default () => {
-  const authStatus = useSelector(selectors.auth.authStatus);
+  const authStatus = useSelector(auth.selectors.authStatus);
 
   switch (authStatus) {
     case "loading":

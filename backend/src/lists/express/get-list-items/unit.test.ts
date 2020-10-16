@@ -14,6 +14,7 @@ describe('getting items', () => {
 
     const listItems = await listLogic.addListItems([
       {
+        userId: currentUser.id,
         tmdbMediaId: '550',
         tmdbMediaType: 'movie',
         listId: list.id,

@@ -1,10 +1,11 @@
 import {makeListItem} from '../../models';
 import {ListItem} from '../../models/types';
 import {ListLogic} from '../build';
+import {PartialListItem} from '../../models/make-list-item';
 
 export async function addListItems(
   this: ListLogic,
-  listItemInfos: Partial<ListItem>[]
+  listItemInfos: PartialListItem[]
 ): Promise<ListItem[]> {
   const {
     unitOfWork: {ListItems, Lists, AutoLists},

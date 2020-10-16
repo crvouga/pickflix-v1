@@ -1,16 +1,12 @@
 import { Box, makeStyles } from "@material-ui/core";
-import React, { useRef, useEffect } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import ErrorBox from "../common/components/ErrorBox";
 import LoadingBox from "../common/components/LoadingBox";
-import Poster, {
-  MOVIE_POSTER_ASPECT_RATIO,
-} from "../movie/components/MoviePosterCard";
-import { useSelector } from "../redux/react-redux";
+import Poster from "../movie/components/MoviePosterCard";
+import MoviePosterCardSkeleton from "../movie/components/MoviePosterCardSkeleton";
 import { discoverMovie } from "./redux/discover-movie";
 import useDiscoverMovieQuery from "./useDiscoverMovieQuery";
-import { Skeleton } from "@material-ui/lab";
-import AspectRatio from "../common/components/AspectRatio";
-import MoviePosterCardSkeleton from "../movie/components/MoviePosterCardSkeleton";
 
 const useStyles = makeStyles((theme) => ({
   root: {

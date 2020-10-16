@@ -11,7 +11,6 @@ import SearchIcon from "@material-ui/icons/Search";
 import { useViewportScroll } from "framer-motion";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { actions } from "../redux";
 import { useHistory } from "react-router";
 
 type Props = {

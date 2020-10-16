@@ -6,8 +6,10 @@ import { Router } from "react-router";
 import { PersistGate } from "redux-persist/integration/react";
 import { history } from "../navigation/history";
 import { queryCache } from "../query/query-cache";
-import { store, persistor } from "../redux/store";
+import { configureReduxStore } from "../redux/configure-redux-store";
 import { theme } from "./theme";
+
+const { store, persistor } = configureReduxStore();
 
 type Props = React.PropsWithChildren<{}>;
 

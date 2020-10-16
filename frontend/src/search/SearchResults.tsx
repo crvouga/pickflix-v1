@@ -1,10 +1,10 @@
 import { List } from "@material-ui/core";
 import matchSorter from "match-sorter";
 import React from "react";
+import { useSelector } from "react-redux";
 import ErrorBox from "../common/components/ErrorBox";
 import ListItemSkeleton from "../common/components/ListItemSkeleton";
 import LoadingBox from "../common/components/LoadingBox";
-import { useSelector } from "../redux/react-redux";
 import { search } from "./redux/search";
 import SearchResultListItem from "./SearchResultListItem";
 import useSearchQuery from "./useSearchQuery";

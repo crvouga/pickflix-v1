@@ -8,13 +8,12 @@ import {
   makeStyles,
   TextField,
 } from "@material-ui/core";
-import React, { useRef, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import useModal from "../navigation/modals/useModal";
-import { addListMutation } from "./query";
 import { snackbar } from "../snackbar/redux/snackbar";
 import { ViewListButton } from "../snackbar/Snackbar";
-import { useSelector } from "../redux/react-redux";
+import { addListItemMutation, addListMutation } from "./query";
 import { addListItemsForm } from "./redux/add-list-items-form";
 
 const useStylesDialog = makeStyles((theme) => ({
@@ -41,18 +40,25 @@ export default () => {
       const list = await addListMutation({
         title: inputRefTitle.current?.value || "",
         description: "",
-        listItemInfos,
       });
+
       dispatch(
         snackbar.actions.display({
           message: `Created "${list.title}"`,
           action: <ViewListButton listId={list.id} />,
         })
       );
+
+      if (listItemInfos.length > 0) {
+        const listItem = await addListItemMutation({
+          ...listItemInfos[0],
+          listId: list.id,
+        });
+      }
     } catch (error) {
       dispatch(
         snackbar.actions.display({
-          message: `Failed to create list`,
+          message: `something went wrong`,
         })
       );
     } finally {

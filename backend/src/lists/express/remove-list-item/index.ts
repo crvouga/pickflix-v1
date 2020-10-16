@@ -1,6 +1,7 @@
 import express from 'express';
 import {Id} from '../../../id/types';
 import {Dependencies} from '../types';
+import {ListId, ListItemId} from '../../models/types';
 
 export const removeListItem = ({listLogic, middlewares}: Dependencies) => (
   router: express.IRouter
@@ -10,9 +11,9 @@ export const removeListItem = ({listLogic, middlewares}: Dependencies) => (
     middlewares.attachCurrentUser,
     async (req, res, next) => {
       try {
-        const listItemIds = req.body as Id[];
+        const listItemIds = req.body as ListItemId[];
 
-        const listId = req.params.listId as Id;
+        const listId = req.params.listId as ListId;
 
         await listLogic.removeListItems(
           listItemIds.map(listItemId => ({listId: listId, id: listItemId}))

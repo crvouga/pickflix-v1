@@ -1,11 +1,11 @@
 import {IRouter} from 'express';
-import {Id} from '../../../id/types';
+import {ListId} from '../../models/types';
 import {Dependencies} from '../types';
 
 export const getList = ({listLogic}: Dependencies) => (router: IRouter) => {
   router.get('/lists/:listId', async (req, res, next) => {
     try {
-      const listId = req.params.listId as Id;
+      const listId = req.params.listId as ListId;
 
       const lists = await listLogic.getLists({id: listId});
 

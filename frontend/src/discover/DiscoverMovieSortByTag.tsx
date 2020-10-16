@@ -10,9 +10,8 @@ import {
 } from "@material-ui/core";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useBoolean from "../common/hooks/useBoolean";
-import { useSelector } from "../redux/react-redux";
 import {
   DiscoverMovieSortBy,
   DiscoverMovieSortByEnum,

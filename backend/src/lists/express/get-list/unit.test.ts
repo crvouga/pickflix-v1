@@ -4,12 +4,12 @@ import {buildExpressAppFake} from '../../../express/build.fake';
 describe('GET', () => {
   it('gets auto lists', async done => {
     const {listLogic, currentUser, app} = await buildExpressAppFake();
-    const [added] = await listLogic.addInitialAutoLists({user: currentUser});
+    const [added] = await listLogic.initializeAutoLists({user: currentUser});
 
     const expected = {
       id: added.id,
       ownerId: added.ownerId,
-      title: added.title,
+      key: added.key,
     };
 
     supertest(app)

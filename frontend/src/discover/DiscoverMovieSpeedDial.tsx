@@ -1,14 +1,11 @@
 import { Backdrop, makeStyles } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
-import RedoIcon from "@material-ui/icons/Redo";
 import SearchIcon from "@material-ui/icons/Search";
-import UndoIcon from "@material-ui/icons/Undo";
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@material-ui/lab";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import useModal from "../navigation/modals/useModal";
 import { BOTTOM_NAVIGATION_BAR_HEIGHT } from "../navigation/NavigationBarBottom";
-import { useDispatch } from "../redux/react-redux";
-import { discoverMovie } from "./redux/discover-movie";
 
 const useStyles = makeStyles((theme) => ({
   speedDial: {

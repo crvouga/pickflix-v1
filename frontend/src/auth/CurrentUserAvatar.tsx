@@ -2,7 +2,7 @@ import { Avatar, AvatarProps } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectors } from "../redux";
+import { auth } from "./redux/auth";
 
 type Props = AvatarProps & {
   backgroundColor?: string;
@@ -11,8 +11,8 @@ type Props = AvatarProps & {
 export default (props: Props) => {
   const { backgroundColor = "white", className, ...AvatarProps } = props;
 
-  const user = useSelector(selectors.auth.user);
-  const authStatus = useSelector(selectors.auth.authStatus);
+  const user = useSelector(auth.selectors.user);
+  const authStatus = useSelector(auth.selectors.authStatus);
 
   switch (authStatus) {
     case "loading":

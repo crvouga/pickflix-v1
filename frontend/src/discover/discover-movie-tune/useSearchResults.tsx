@@ -1,9 +1,9 @@
 import matchSorter from "match-sorter";
-import { useSelector } from "../../redux/react-redux";
+import { uniqBy } from "ramda";
+import { useSelector } from "react-redux";
 import { DiscoverMovieTag } from "../discover-movie-tags";
 import { discoverMovie } from "../redux/discover-movie";
 import useSearchQuery from "./useSearchQuery";
-import { uniqBy } from "ramda";
 
 type Props = {
   searchQuery: string;

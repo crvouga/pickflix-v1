@@ -1,14 +1,27 @@
-import {Dependencies, ListItem} from './types';
+import {Dependencies, ListItem, ListId, ListItemId} from './types';
+import {Id} from '../../id/types';
+import {TmdbMediaType} from '../../media/models/types';
+import {UserId} from '../../users/models/types';
+
+export type PartialListItem = {
+  id?: ListItemId;
+  userId: UserId;
+  listId: ListId;
+  tmdbMediaId: string;
+  tmdbMediaType: TmdbMediaType;
+  createdAt?: number;
+};
 
 export const buildMakeListItem = ({makeId, isValidId}: Dependencies) => (
-  listItemInfo: Partial<ListItem>
+  listItemInfo: PartialListItem
 ): ListItem => {
   const {
-    id = makeId(),
+    id = makeId() as ListItemId,
+    createdAt = Date.now(),
+    userId,
     listId,
     tmdbMediaId,
     tmdbMediaType,
-    createdAt = Date.now(),
   } = listItemInfo;
 
   if (!isValidId(id)) {
@@ -21,6 +34,14 @@ export const buildMakeListItem = ({makeId, isValidId}: Dependencies) => (
 
   if (!isValidId(listId)) {
     throw new Error('invalid list id');
+  }
+
+  if (!userId) {
+    throw new Error('user id required');
+  }
+
+  if (!isValidId(userId)) {
+    throw new Error('invalid user id');
   }
 
   if (!tmdbMediaId) {
@@ -39,12 +60,13 @@ export const buildMakeListItem = ({makeId, isValidId}: Dependencies) => (
     throw new Error('invalid tmdb media type');
   }
 
-  return {
+  return Object.freeze({
     type: 'listItem',
     id,
+    userId,
     listId,
     tmdbMediaId,
     tmdbMediaType,
     createdAt,
-  };
+  });
 };

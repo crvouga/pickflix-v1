@@ -1,15 +1,20 @@
-import {Dependencies, AutoList, AutoListTitle} from './types';
-import {Id} from '../../id/types';
+import {UserId} from '../../users/models/types';
+import {AutoList, AutoListKeys, Dependencies, ListId} from './types';
 
-export const buildMakeAutoList = ({makeId, isValidId}: Dependencies) => (
-  listInfo: Partial<AutoList> & {title: AutoListTitle; ownerId: Id}
-): AutoList => {
-  const {
-    id = makeId(),
-    ownerId = '' as Id,
-    title,
-    createdAt = Date.now(),
-  } = listInfo;
+const autoListKeyToTitle: {[key in AutoListKeys]: string} = {
+  'watch-next': 'Watch Next',
+  liked: 'Liked',
+};
+
+export const buildMakeAutoList = ({
+  makeId,
+  isValidId,
+}: Dependencies) => (listInfo: {
+  id?: ListId;
+  key: AutoListKeys;
+  ownerId: UserId;
+}): AutoList => {
+  const {id = makeId() as ListId, ownerId, key} = listInfo;
 
   if (!isValidId(ownerId)) {
     throw new Error('invalid owner id');
@@ -19,15 +24,11 @@ export const buildMakeAutoList = ({makeId, isValidId}: Dependencies) => (
     throw new Error('invalid list id');
   }
 
-  if (!title || title?.length === 0) {
-    throw new Error('invalid title');
-  }
-
   return Object.freeze({
     type: 'autoList',
     id,
+    title: autoListKeyToTitle[key],
     ownerId,
-    title,
-    createdAt,
+    key,
   });
 };

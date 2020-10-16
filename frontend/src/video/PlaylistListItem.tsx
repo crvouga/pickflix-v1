@@ -9,43 +9,46 @@ import PauseIcon from "@material-ui/icons/Pause";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { actions, selectors } from "../redux";
 import { MovieVideo } from "../tmdb/types";
 import * as youtubeAPI from "../youtube/api";
+import { video } from "./redux/video";
 
 type Props = {
-  video: MovieVideo;
+  playlistVideo: MovieVideo;
 };
 
 export default (props: Props) => {
-  const { video } = props;
+  const { playlistVideo } = props;
 
   const dispatch = useDispatch();
 
-  const isPlaying = useSelector(selectors.video.isPlaying);
-  const currentVideo = useSelector(selectors.video.video);
+  const isPlaying = useSelector(video.selectors.isPlaying);
+  const currentVideo = useSelector(video.selectors.currentVideo);
 
-  const selected = video.key === currentVideo?.key;
+  const selected = playlistVideo.key === currentVideo?.key;
 
   const handleClick = () => {
     if (selected) {
-      dispatch(actions.video.toggle());
+      dispatch(video.actions.toggle());
     } else {
-      dispatch(actions.video.setVideo(video));
-      dispatch(actions.video.play());
+      dispatch(video.actions.setCurrentVideo(playlistVideo));
+      dispatch(video.actions.play());
     }
   };
 
-  const image = youtubeAPI.videoKeyToThumbnailURL(video.key);
+  const image = youtubeAPI.videoKeyToThumbnailURL(playlistVideo.key);
 
   return (
     <ListItem selected={selected} button onClick={handleClick}>
       <ListItemAvatar>
         <Avatar variant="square" src={image} />
       </ListItemAvatar>
-      <ListItemText primary={video.name} secondary={video.type} />
+      <ListItemText
+        primary={playlistVideo.name}
+        secondary={playlistVideo.type}
+      />
       <ListItemSecondaryAction>
-        {isPlaying && currentVideo?.key === video.key ? (
+        {isPlaying && currentVideo?.key === playlistVideo.key ? (
           <PauseIcon />
         ) : (
           <PlayArrowIcon />

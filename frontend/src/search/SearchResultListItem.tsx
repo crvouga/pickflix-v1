@@ -5,15 +5,15 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import MovieIcon from "@material-ui/icons/Movie";
+import { ListItemProps } from "material-ui";
 import moment from "moment";
+import { uniqBy } from "ramda";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { SearchResult } from "./query";
-import { ListItemProps } from "material-ui";
-import { useHistory } from "react-router";
-import { useDispatch, useSelector } from "../redux/react-redux";
 import { search } from "./redux/search";
-import { uniqBy } from "ramda";
 
 type Props = ListItemProps & {
   result: SearchResult;

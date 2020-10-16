@@ -11,15 +11,16 @@ import {
 import AddIcon from "@material-ui/icons/Add";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import React from "react";
-import { useQuery } from "react-query";
 import { useHistory } from "react-router";
 import ErrorBox from "../common/components/ErrorBox";
 import ListItemSkeleton from "../common/components/ListItemSkeleton";
+import useAutoList from "../lists/auto-list/useAutoListLogic";
 import Lists from "../lists/Lists";
-import { getWatchNextList, queryKeys } from "../lists/query";
 import useModal from "../navigation/modals/useModal";
 import NavigationBarTopLevel from "../navigation/NavigationBarTopLevel";
 import RecentlyViewed from "./RecentlyViewed";
+import AutoListListItem from "../lists/auto-list/AutoListListItem";
+
 const CreateNewListListItem = () => {
   const theme = useTheme();
   const addListModal = useModal("AddList");
@@ -42,41 +43,6 @@ const CreateNewListListItem = () => {
   );
 };
 
-const WatchNextListListItem = () => {
-  const history = useHistory();
-  const theme = useTheme();
-  const query = useQuery(queryKeys.watchNextList(), () => getWatchNextList());
-
-  if (query.error) {
-    return <ErrorBox />;
-  }
-
-  if (!query.data) {
-    return <ListItemSkeleton />;
-  }
-
-  const watchNextList = query.data;
-
-  const handleClick = () => {
-    history.push(`/watch-next`);
-  };
-
-  return (
-    <ListItem button onClick={handleClick}>
-      <ListItemAvatar>
-        <Avatar style={{ backgroundColor: "transparent" }}>
-          <BookmarkIcon style={{ color: theme.palette.text.primary }} />
-        </Avatar>
-      </ListItemAvatar>
-
-      <ListItemText
-        primary={watchNextList.title}
-        secondary={`${watchNextList.listItemCount} items`}
-      />
-    </ListItem>
-  );
-};
-
 export default () => {
   return (
     <React.Fragment>
@@ -90,7 +56,8 @@ export default () => {
           />
         </ListItem>
         <CreateNewListListItem />
-        <WatchNextListListItem />
+        <AutoListListItem autoListKey="watch-next" />
+        <AutoListListItem autoListKey="liked" />
         <Lists />
       </List>
 

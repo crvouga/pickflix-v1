@@ -21,11 +21,11 @@ import DeleteForeverOutlinedIcon from "@material-ui/icons/DeleteForeverOutlined"
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import WarningIcon from "@material-ui/icons/Warning";
 import React, { useState } from "react";
-import BackButton from "../navigation/BackButton";
-import useBoolean from "../common/hooks/useBoolean";
-import { actions, selectors } from "../redux";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
+import useBoolean from "../common/hooks/useBoolean";
+import BackButton from "../navigation/BackButton";
+import { auth } from "./redux/auth";
 
 const useStyles = makeStyles((theme) => ({
   bold: {
@@ -124,7 +124,7 @@ const ConfirmDeleteAccountDialog = (props: {
 };
 
 export default () => {
-  const currentUser = useSelector(selectors.auth.user);
+  const currentUser = useSelector(auth.selectors.user);
   const classes = useStyles();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -135,13 +135,13 @@ export default () => {
 
   const isSignOutDialogOpen = useBoolean(false);
   const onSignOut = () => {
-    dispatch(actions.auth.signOut());
+    dispatch(auth.actions.signOut());
     history.push("/");
   };
 
   const isDeleteAccountDialogOpen = useBoolean(false);
   const onDeleteAccount = () => {
-    dispatch(actions.auth.deleteUser());
+    dispatch(auth.actions.deleteUser());
     history.push("/");
   };
 

@@ -11,14 +11,13 @@ export const addList = ({listLogic, middlewares}: Dependencies) => (
       try {
         const currentUser = req.currentUser;
 
-        const {title, description, listItemInfos} = req.body;
+        const {title, description} = req.body;
 
         const [list] = await listLogic.addLists([
           {
             ownerId: currentUser.id,
             title,
             description,
-            listItemInfos,
           },
         ]);
 

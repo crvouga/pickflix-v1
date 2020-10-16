@@ -7,7 +7,7 @@ export const buildEventEmitter = ({listLogic}: {listLogic: ListLogic}) => {
   const eventEmitter = new EventEmitter();
 
   eventEmitter.on(EventTypes.USER_CREATED, async ({user}: {user: User}) => {
-    await listLogic.addInitialAutoLists({user});
+    await listLogic.initializeAutoLists({user});
   });
 
   return eventEmitter;

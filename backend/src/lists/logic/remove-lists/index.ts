@@ -1,9 +1,10 @@
 import {Id} from '../../../id/types';
 import {ListLogic} from '../build';
+import {ListId} from '../../models/types';
 
 export async function removeLists(
   this: ListLogic,
-  {listIds}: {listIds: Id[]}
+  {listIds}: {listIds: ListId[]}
 ): Promise<void> {
   const {Lists} = this.unitOfWork;
   try {

@@ -22,18 +22,14 @@ export type List = {
   listItems: ListItem[];
 };
 
-export type AutoListTitle = "Watch Next";
-
-export enum AutoListTitleEnum {
-  WatchNext = "Watch Next",
-}
+export type AutoListKey = "watch-next" | "liked";
 
 export type AutoList = {
   type: "autoList";
   id: string;
   ownerId: string;
-  title: AutoListTitle;
-  createdAt: number;
+  key: AutoListKey;
+  title: string;
   //
   listItems: ListItem[];
   listItemCount: number;

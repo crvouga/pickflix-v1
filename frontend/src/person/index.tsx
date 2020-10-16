@@ -4,10 +4,10 @@ import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
 import backendAPI from "../backendAPI";
-import NavigationBarFadeIn from "../navigation/NavigationBarFadeIn";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
-import { actions } from "../redux";
+import NavigationBarFadeIn from "../navigation/NavigationBarFadeIn";
+import { history } from "../navigation/history/history";
 import {
   PersonDetailsResponse,
   PersonImagesResponse,
@@ -55,9 +55,7 @@ export default () => {
 
   useEffect(() => {
     if (query.data) {
-      dispatch(
-        actions.recentlyViewed.viewed({ mediaType: "person", ...query.data })
-      );
+      dispatch(history.actions.push({ mediaType: "person", ...query.data }));
     }
   }, [query, dispatch]);
 

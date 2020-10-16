@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import auth from "./redux";
+import { auth } from "./redux/auth";
 import { AuthError } from "./redux/types";
 import { capitalize } from "../utils";
 

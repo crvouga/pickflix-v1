@@ -1,7 +1,7 @@
 import { Box, makeStyles } from "@material-ui/core";
 import { difference, union, without } from "ramda";
 import React, { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "../redux/react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { DiscoverMovieTag as IDiscoverMovieTag } from "./discover-movie-tags";
 import DiscoverMovieTag from "./DiscoverMovieTag";
 import { discoverMovie } from "./redux/discover-movie";

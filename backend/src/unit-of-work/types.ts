@@ -24,6 +24,7 @@ export interface Identifiable {
 
 export interface IRepository<T extends Identifiable> {
   find: (_: Partial<T>) => Promise<T[]>;
+  get: (_: string[]) => Promise<T[]>;
   add: (_: T[]) => Promise<T[]>;
   remove: (_: Array<Partial<T> & Pick<T, 'id'>>) => Promise<boolean>;
   update: (_: Array<Partial<T> & Pick<T, 'id'>>) => Promise<T[]>;

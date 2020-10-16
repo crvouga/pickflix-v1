@@ -1,7 +1,7 @@
 import {EventEmitter} from 'events';
 import {EventTypes} from '../../events/types';
 import {makeUser} from '../models';
-import {User} from '../models/types';
+import {User, FirebaseId, UserId} from '../models/types';
 import {IUserRepository} from '../repositories/types';
 
 export class UserLogic {
@@ -25,7 +25,7 @@ export class UserLogic {
     return user;
   }
 
-  async createNew({firebaseId}: Partial<User>): Promise<User> {
+  async createNew({firebaseId}: {firebaseId: FirebaseId}): Promise<User> {
     const user = makeUser({firebaseId});
 
     await this.userRepository.add([user]);
@@ -35,7 +35,10 @@ export class UserLogic {
     return user;
   }
 
-  async getElseCreateNew(userInfo: Partial<User>): Promise<User> {
+  async getElseCreateNew(userInfo: {
+    id?: UserId;
+    firebaseId: FirebaseId;
+  }): Promise<User> {
     const got = await this.getById(userInfo);
     if (got) {
       return got;

@@ -3,10 +3,10 @@ import React from "react";
 import { useSelector } from "react-redux";
 import HorizontalScroll from "../common/components/HorizontalScroll";
 import MediaEntity from "../common/MediaEntity";
-import { selectors } from "../redux";
+import { history } from "../navigation/history/history";
 
 export default () => {
-  const recentlyViewedEntities = useSelector(selectors.recentlyViewed.entities);
+  const entities = useSelector(history.selectors.entities);
 
   return (
     <React.Fragment>
@@ -14,7 +14,7 @@ export default () => {
         <Typography variant="h6">Recent</Typography>
       </Box>
       <HorizontalScroll paddingLeft={2}>
-        {recentlyViewedEntities.map((entity) => (
+        {entities.map((entity) => (
           <MediaEntity
             width="100px"
             key={entity.id}

@@ -2,12 +2,10 @@ import { Box, BoxProps, makeStyles } from "@material-ui/core";
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/opacity.css";
-import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 import AspectRatio from "../../common/components/AspectRatio";
-import { actions } from "../../redux";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 import { Movie } from "../../tmdb/types";
-import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   image: {

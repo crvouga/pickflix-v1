@@ -1,33 +1,36 @@
 import {
   Collapse,
-  ListItemSecondaryAction,
   List,
   ListItem,
+  ListItemSecondaryAction,
   ListItemText,
 } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
-import { selectors } from "../redux";
-import PlaylistListItem from "./PlaylistListItem";
 import ExpandIcon from "../common/components/ExpandIcon";
 import useBoolean from "../common/hooks/useBoolean";
+import PlaylistListItem from "./PlaylistListItem";
+import { video } from "./redux/video";
 import { renderText } from "./utils";
 
 export default () => {
-  const videos = useSelector(selectors.video.playlist);
+  const playlist = useSelector(video.selectors.playlist);
   const expanded = useBoolean(false);
 
   return (
     <List>
       <ListItem button onClick={expanded.toggle}>
-        <ListItemText primary={renderText(videos)} />
+        <ListItemText primary={renderText(playlist)} />
         <ListItemSecondaryAction>
           <ExpandIcon expanded={expanded.value} />
         </ListItemSecondaryAction>
       </ListItem>
       <Collapse in={expanded.value}>
-        {videos.map((video) => (
-          <PlaylistListItem key={video.key} video={video} />
+        {playlist.map((playlistVideo) => (
+          <PlaylistListItem
+            key={playlistVideo.key}
+            playlistVideo={playlistVideo}
+          />
         ))}
       </Collapse>
     </List>

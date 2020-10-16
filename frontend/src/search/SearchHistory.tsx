@@ -1,8 +1,9 @@
 import React from "react";
-import { useSelector } from "../redux/types";
+
 import { search } from "./redux/search";
 import { List } from "@material-ui/core";
 import SearchResultListItem from "./SearchResultListItem";
+import { useSelector } from "react-redux";
 
 export default () => {
   const searchHistory = useSelector(search.selectors.history);

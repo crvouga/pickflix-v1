@@ -16,17 +16,16 @@ import { groupBy } from "ramda";
 import React, { useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
-import { useParams, useHistory } from "react-router";
+import { useHistory, useParams } from "react-router";
 import backendAPI from "../../backendAPI";
 import ListItemSkeleton from "../../common/components/ListItemSkeleton";
-import { actions } from "../../redux";
+import ErrorPage from "../../common/page/ErrorPage";
 import {
   MovieCreditCast,
   MovieCreditCrew,
   MovieCredits,
 } from "../../tmdb/types";
 import CreditsListItem from "./CreditsListItem";
-import ErrorPage from "../../common/page/ErrorPage";
 
 type CreditsListProps = {
   creditsByDepartment: {

@@ -1,63 +1,68 @@
-import BookmarkIcon from "@material-ui/icons/Bookmark";
-import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import PeopleIcon from "@material-ui/icons/People";
 import PeopleOutlineIcon from "@material-ui/icons/PeopleOutline";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
-import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
 import React from "react";
+import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
+import AutoListIcon from "../../lists/auto-list/AutoListIcon";
+import useAutoListLogic from "../../lists/auto-list/useAutoListLogic";
+import { getListsFromListItem, queryKeys } from "../../lists/query";
 import { addListItemsForm } from "../../lists/redux/add-list-items-form";
 import useModal from "../../navigation/modals/useModal";
 import { TmdbMediaType } from "../../tmdb/types";
-import { addWatchNextMutation } from "../../lists/query/mutation/add-watch-next";
-import { snackbar } from "../../snackbar/redux/snackbar";
-import { Button } from "@material-ui/core";
-import { useHistory } from "react-router";
 
 type Props = {
   tmdbMediaType: TmdbMediaType;
   tmdbMediaId: string;
 };
 
+const useCheckIsInList = ({
+  tmdbMediaType,
+  tmdbMediaId,
+}: {
+  tmdbMediaType: TmdbMediaType;
+  tmdbMediaId: string;
+}) => {
+  const query = useQuery(
+    queryKeys.listsFromListItemMedia({ tmdbMediaType, tmdbMediaId }),
+    () => getListsFromListItem({ tmdbMediaType, tmdbMediaId })
+  );
+
+  if (query.error || !query.data) {
+    return (listId: string) => false;
+  }
+
+  const lists = query.data;
+
+  return (listId: string) => {
+    return Boolean(lists.find((list) => listId === listId));
+  };
+};
+
 export default ({ tmdbMediaType, tmdbMediaId }: Props) => {
   const dispatch = useDispatch();
-  const history = useHistory();
+
   const addListItemModal = useModal("AddListItem");
+  const watchNextList = useAutoListLogic("watch-next");
+  const likedList = useAutoListLogic("liked");
 
   return {
     like: {
-      icon: false ? <ThumbUpIcon /> : <ThumbUpOutlinedIcon />,
+      icon: <AutoListIcon autoListKey="liked" />,
       label: "Like",
-      onClick: () => {},
+      onClick: async () => {
+        if (likedList.status === "success") {
+          await likedList.add({ tmdbMediaType, tmdbMediaId });
+        }
+      },
     },
     watchNext: {
-      icon: true ? <BookmarkBorderIcon /> : <BookmarkIcon />,
+      icon: <AutoListIcon autoListKey="watch-next" />,
       label: "Watch Next",
       onClick: async () => {
-        try {
-          await addWatchNextMutation({
-            tmdbMediaId,
-            tmdbMediaType,
-          });
-          dispatch(
-            snackbar.actions.display({
-              message: "Added to Watch Next",
-              action: (
-                <Button
-                  color="primary"
-                  onClick={() => history.push("/watch-next")}
-                >
-                  See List
-                </Button>
-              ),
-            })
-          );
-        } catch (error) {
-          dispatch(
-            snackbar.actions.display({ message: "Failed to add to watch next" })
-          );
+        if (watchNextList.status === "success") {
+          await watchNextList.add({ tmdbMediaType, tmdbMediaId });
         }
       },
     },

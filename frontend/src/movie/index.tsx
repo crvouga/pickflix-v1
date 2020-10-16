@@ -1,10 +1,10 @@
 import { makeStyles } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import NavigationBarFadeIn from "../navigation/NavigationBarFadeIn";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
-import { actions } from "../redux";
+import NavigationBarFadeIn from "../navigation/NavigationBarFadeIn";
+import { history } from "../navigation/history/history";
 import ActionBarSection from "./action-bar/ActionBarSection";
 import CollectionSection from "./collection/CollectionSection";
 import CreditsSection from "./credits/CreditsSection";
@@ -28,9 +28,7 @@ export default () => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (query.data) {
-      dispatch(
-        actions.recentlyViewed.viewed({ mediaType: "movie", ...query.data })
-      );
+      dispatch(history.actions.push({ mediaType: "movie", ...query.data }));
     }
   }, [dispatch, query.data, query.status]);
 

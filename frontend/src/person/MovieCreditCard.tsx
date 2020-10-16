@@ -7,13 +7,11 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 import ReadMore from "../common/components/ReadMore";
 import * as movieUtils from "../movie/utils";
-import { actions } from "../redux";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { ImagePaths } from "../tmdb/types";
-import { useHistory } from "react-router";
 
 type Credit = ImagePaths & {
   id: string;

@@ -26,15 +26,18 @@ export const postListItem = async ({
 };
 
 export const addListItemMutation = async (params: Params) => {
-  const { listId } = params;
-  const key = queryKeys.listItems(listId);
-
   try {
     const listItem = await postListItem(params);
     return listItem;
   } catch (error) {
     throw error;
   } finally {
-    queryCache.invalidateQueries(key);
+    queryCache.invalidateQueries(queryKeys.listItems(params.listId));
+    queryCache.invalidateQueries(
+      queryKeys.listsFromListItemMedia({
+        tmdbMediaId: params.tmdbMediaId,
+        tmdbMediaType: params.tmdbMediaType,
+      })
+    );
   }
 };

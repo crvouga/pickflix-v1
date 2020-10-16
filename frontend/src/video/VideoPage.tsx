@@ -1,15 +1,15 @@
-import { makeStyles, Paper, List } from "@material-ui/core";
+import { List, makeStyles, Paper } from "@material-ui/core";
 import React from "react";
 import ReactPlayer from "react-player";
 import { useDispatch, useSelector } from "react-redux";
 import AspectRatio from "../common/components/AspectRatio";
-import { actions, selectors } from "../redux";
+import MovieListItem from "../movie/components/MovieListItem";
+import NavigationBarTopLevel from "../navigation/NavigationBarTopLevel";
 import * as youtubeAPI from "../youtube/api";
 import YoutubeSection from "../youtube/Section";
 import PlaylistSection from "./PlaylistSection";
-import { VideoProgress } from "./redux/types";
-import MovieListItem from "../movie/components/MovieListItem";
-import NavigationBarTopLevel from "../navigation/NavigationBarTopLevel";
+import { VideoProgress } from "./redux/video";
+import { video } from "./redux/video";
 
 const useStyles = makeStyles((theme) => ({
   playerContainer: {
@@ -22,20 +22,20 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const isPlaying = useSelector(selectors.video.isPlaying);
-  const video = useSelector(selectors.video.video);
+  const isPlaying = useSelector(video.selectors.isPlaying);
+  const currentVideo = useSelector(video.selectors.currentVideo);
   const dispatch = useDispatch();
 
   const handlePlay = () => {
-    dispatch(actions.video.play());
+    dispatch(video.actions.play());
   };
 
   const handlePause = () => {
-    dispatch(actions.video.pause());
+    dispatch(video.actions.pause());
   };
 
   const handleProgress = (progress: VideoProgress) => {
-    dispatch(actions.video.progress(progress));
+    dispatch(video.actions.progress(progress));
   };
 
   return (
@@ -53,7 +53,7 @@ export default () => {
           onPause={handlePause}
           onProgress={handleProgress}
           playing={isPlaying}
-          url={youtubeAPI.videoKeyToEmbedURL(video?.key)}
+          url={youtubeAPI.videoKeyToEmbedURL(currentVideo?.key)}
           config={{
             youtube: youtubeAPI.embedConfig,
           }}
@@ -64,13 +64,13 @@ export default () => {
         <PlaylistSection />
       </Paper>
 
-      {video?.tmdbMedia && (
+      {currentVideo?.tmdbMedia && (
         <List>
-          <MovieListItem movie={video?.tmdbMedia?.tmdbData} />
+          <MovieListItem movie={currentVideo.tmdbMedia?.tmdbData} />
         </List>
       )}
 
-      {video?.key && <YoutubeSection videoId={video.key} />}
+      {currentVideo?.key && <YoutubeSection videoId={currentVideo.key} />}
     </React.Fragment>
   );
 };

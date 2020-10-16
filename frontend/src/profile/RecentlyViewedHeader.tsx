@@ -3,17 +3,17 @@ import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import HistoryIcon from "@material-ui/icons/History";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ClearRecentlyViewedModal from "./ClearRecentlyViewedModal";
 import useBoolean from "../common/hooks/useBoolean";
-import { selectors, actions } from "../redux";
+import { history } from "../navigation/history/history";
+import ClearRecentlyViewedModal from "./ClearRecentlyViewedModal";
 
 export default () => {
-  const recentlyViewedEntities = useSelector(selectors.recentlyViewed.entities);
+  const entities = useSelector(history.selectors.entities);
   const dispatch = useDispatch();
   const open = useBoolean();
 
   const handleClear = () => {
-    dispatch(actions.recentlyViewed.clear());
+    dispatch(history.actions.clear());
     open.setFalse();
   };
 
@@ -27,7 +27,7 @@ export default () => {
       <IconButton
         color="inherit"
         onClick={open.setTrue}
-        disabled={recentlyViewedEntities.length === 0}
+        disabled={entities.length === 0}
       >
         <DeleteForeverIcon color="inherit" />
       </IconButton>

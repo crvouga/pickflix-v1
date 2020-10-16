@@ -1,17 +1,21 @@
 import {Id, MakeId} from '../../id/types';
 import {TmdbMedia} from '../../media/models/types';
+import {UserId} from '../../users/models/types';
 
 export type Dependencies = {
   makeId: MakeId;
   isValidId: (id: string) => false | Id;
 };
 
+export type ListId = string & {isUUID: true; isListId: true};
+export type ListItemId = string & {isUUID: true; isListItemId: true};
+
 export type Visibility = 'public' | 'private';
 
 export type List = {
   type: 'list';
-  id: Id;
-  ownerId: Id;
+  id: ListId;
+  ownerId: UserId;
   title: string;
   description: string;
   createdAt: number;
@@ -21,22 +25,23 @@ export type List = {
 
 export type ListItem = {
   type: 'listItem';
-  id: Id;
-  listId: Id;
+  id: ListItemId;
+  userId: UserId;
+  listId: ListId;
   createdAt: number;
 } & TmdbMedia;
 
-export type AutoListTitle = 'Watch Next';
-export enum AutoListTitleEnum {
-  WatchNext = 'Watch Next',
+export enum AutoListKeys {
+  WatchNext = 'watch-next',
+  Liked = 'liked',
 }
 
 export type AutoList = {
   type: 'autoList';
-  id: Id;
-  ownerId: Id;
-  title: AutoListTitle;
-  createdAt: number;
+  id: ListId;
+  ownerId: UserId;
+  title: string;
+  key: AutoListKeys;
 };
 
 type TmdbData = any;

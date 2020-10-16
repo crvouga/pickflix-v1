@@ -1,30 +1,44 @@
-import {IRouter} from 'express';
+import {Handler, IRouter} from 'express';
+import {param, validationResult} from 'express-validator';
 import {User} from '../../../users/models/types';
-import {AutoListTitleEnum} from '../../models/types';
+import {AutoListKeys} from '../../models/types';
 import {Dependencies} from '../types';
+
+const handleValidationResult: Handler = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({errors: errors.array()});
+  }
+  next();
+};
 
 export const autoLists = ({listLogic, middlewares}: Dependencies) => (
   router: IRouter
 ) => {
-  router.get(
-    '/auto-lists/watch-next',
+  const autoListMiddlewares = [
     middlewares.attachCurrentUser,
+    param('autoListKey').isIn(Object.values(AutoListKeys)),
+    handleValidationResult,
+  ];
+
+  router.get(
+    '/auto-lists/:autoListKey',
+    ...autoListMiddlewares,
     async (req, res, next) => {
       try {
+        const autoListKey = req.params.autoListKey as AutoListKeys;
         const currentUser = req.currentUser as User;
 
         const autoLists = await listLogic.getAutoLists({
-          title: AutoListTitleEnum.WatchNext,
+          key: autoListKey,
           ownerId: currentUser.id,
         });
 
-        if (autoLists.length > 0) {
-          const [list] = autoLists;
-
-          return res.json(list);
+        if (autoLists.length === 0) {
+          return res.status(404).end();
         }
 
-        res.status(404).end();
+        res.json(autoLists[0]).end();
       } catch (error) {
         next(error);
       }
@@ -32,34 +46,35 @@ export const autoLists = ({listLogic, middlewares}: Dependencies) => (
   );
 
   router.post(
-    '/auto-lists/watch-next/list-items',
-    middlewares.attachCurrentUser,
+    '/auto-lists/:autoListKey/list-items',
+    ...autoListMiddlewares,
     async (req, res, next) => {
       try {
-        const {tmdbMediaId, tmdbMediaType} = req.body;
         const currentUser = req.currentUser as User;
+        const autoListKey = req.params.autoListKey as AutoListKeys;
+        const {tmdbMediaId, tmdbMediaType} = req.body;
 
         const autoLists = await listLogic.getAutoLists({
-          title: AutoListTitleEnum.WatchNext,
+          key: autoListKey,
           ownerId: currentUser.id,
         });
 
-        if (autoLists.length > 0) {
-          const [list] = autoLists;
-
-          const [listItem] = await listLogic.addListItems([
-            {
-              listId: list.id,
-              tmdbMediaId,
-              tmdbMediaType,
-            },
-          ]);
-
-          return res.status(201).json(listItem);
+        if (autoLists.length === 0) {
+          return res.status(404).end();
         }
-        res.status(404).end();
+
+        await listLogic.addListItems([
+          {
+            userId: currentUser.id,
+            listId: autoLists[0].id,
+            tmdbMediaId,
+            tmdbMediaType,
+          },
+        ]);
+
+        res.status(201).end();
       } catch (err) {
-        res.status(400).json({message: 'failed to add item to list'});
+        res.status(400).json({message: 'failed to add item to list'}).end();
       }
     }
   );

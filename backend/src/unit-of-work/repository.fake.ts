@@ -1,5 +1,4 @@
-import R from 'ramda';
-import {Id} from '../id/types';
+import {whereEq, innerJoin} from 'ramda';
 import {Identifiable, IRepository} from './types';
 
 export class RepositoryFake<T extends Identifiable> implements IRepository<T> {
@@ -10,7 +9,15 @@ export class RepositoryFake<T extends Identifiable> implements IRepository<T> {
   }
 
   async find(entityInfo: Partial<T>): Promise<T[]> {
-    return Array.from(this.map.values()).filter(R.whereEq(entityInfo));
+    return Array.from(this.map.values()).filter(whereEq(entityInfo));
+  }
+
+  async get(entityIds: string[]): Promise<T[]> {
+    return innerJoin(
+      (value, entityId) => value.id === entityId,
+      Array.from(this.map.values()),
+      entityIds
+    );
   }
 
   async count(entityInfo: Partial<T>): Promise<number> {

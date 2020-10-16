@@ -1,11 +1,11 @@
 import { Button } from "@material-ui/core";
-import PlayArrowOutlinedIcon from "@material-ui/icons/PlayArrowOutlined";
+import YouTubeIcon from "@material-ui/icons/YouTube";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import { actions } from "../../redux";
+import { video } from "../../video/redux/video";
+
 import { MovieVideos } from "../../tmdb/types";
-import YouTubeIcon from "@material-ui/icons/YouTube";
 type Props = {
   videos: MovieVideos;
 };
@@ -16,9 +16,9 @@ export default (props: Props) => {
   const dispatch = useDispatch();
 
   const handleClickWatchTailer = () => {
-    dispatch(actions.video.setPlaylist(videos.results));
+    dispatch(video.actions.setPlaylist(videos.results));
     const trailer = videos.results.find((video) => video.type === "Trailer");
-    dispatch(actions.video.setVideo(trailer || videos.results[0]));
+    dispatch(video.actions.setCurrentVideo(trailer || videos.results[0]));
     history.push("/video");
   };
 

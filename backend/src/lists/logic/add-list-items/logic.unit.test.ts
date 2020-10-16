@@ -1,12 +1,14 @@
+import {makeUserFake} from '../../../users/models/make-user.fake';
 import {buildListLogicFake} from '../build.fake';
-import {makeId} from '../../../id';
 describe('add list items to list', () => {
   it('throws if duplicate list items', async () => {
     const {listLogic} = buildListLogicFake();
 
+    const currentUser = makeUserFake();
+
     const [list] = await listLogic.addLists([
       {
-        ownerId: makeId(),
+        ownerId: currentUser.id,
         title: 'my list',
       },
     ]);
@@ -14,16 +16,19 @@ describe('add list items to list', () => {
     expect(
       listLogic.addListItems([
         {
+          userId: currentUser.id,
           listId: list.id,
           tmdbMediaId: '550',
           tmdbMediaType: 'movie',
         },
         {
+          userId: currentUser.id,
           tmdbMediaId: '550',
           listId: list.id,
           tmdbMediaType: 'movie',
         },
         {
+          userId: currentUser.id,
           tmdbMediaId: '550',
           tmdbMediaType: 'movie',
           listId: list.id,

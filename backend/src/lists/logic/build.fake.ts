@@ -8,5 +8,6 @@ export const buildListLogicFake = () => {
     mediaLogic,
     unitOfWork: new UnitOfWorkFake(),
   });
+
   return {listLogic};
 };

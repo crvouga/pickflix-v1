@@ -1,10 +1,9 @@
 import {EventEmitter} from 'events';
 import {EventTypes} from '../../events/types';
 import {buildUserLogicFake} from './user-logic.fake';
-import {buildEventEmitter} from '../../events/build';
-import {buildListLogicFake} from '../../lists/logic/build.fake';
+import {makeUserFake} from '../models/make-user.fake';
 
-const firebaseId = '1234567890';
+const {firebaseId} = makeUserFake();
 
 describe('user logic', () => {
   it('get by id user else create new user', async () => {
@@ -45,7 +44,7 @@ describe('user logic', () => {
       },
     });
 
-    const user = await userLogic.getElseCreateNew({firebaseId: '1234567890'});
+    const user = await userLogic.getElseCreateNew({firebaseId});
     expect(emitMock.mock.calls[0][0]).toStrictEqual(EventTypes.USER_CREATED);
     expect(emitMock.mock.calls[0][1]).toStrictEqual({user});
     done();

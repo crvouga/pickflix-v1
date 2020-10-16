@@ -1,27 +1,27 @@
 import { User } from "firebase";
 import { put, select, takeEvery } from "redux-saga/effects";
-import { actions, selectors } from "../../redux";
+import { auth } from "./auth";
 import authStateChannel from "./auth-state-channel";
 import { AuthStatus } from "./types";
 
 function* authStateChangedSaga(newCurrentUser: User | false) {
   const previousAuthStatus: AuthStatus = yield select(
-    selectors.auth.authStatus
+    auth.selectors.authStatus
   );
   const perviousCurrentUser: User | undefined = yield select(
-    selectors.auth.user
+    auth.selectors.user
   );
 
   if (newCurrentUser) {
-    yield put(actions.auth.setUser(newCurrentUser));
-    yield put(actions.auth.setAuthStatus("signedIn"));
+    yield put(auth.actions.setUser(newCurrentUser));
+    yield put(auth.actions.setAuthStatus("signedIn"));
   } else {
-    yield put(actions.auth.setUser(undefined));
-    yield put(actions.auth.setAuthStatus("signedOut"));
+    yield put(auth.actions.setUser(undefined));
+    yield put(auth.actions.setAuthStatus("signedOut"));
   }
 
-  const currentAuthStatus: AuthStatus = yield select(selectors.auth.authStatus);
-  const currentUser: User | undefined = yield select(selectors.auth.user);
+  const currentAuthStatus: AuthStatus = yield select(auth.selectors.authStatus);
+  const currentUser: User | undefined = yield select(auth.selectors.user);
 
   const didSignedIn =
     previousAuthStatus !== "signedIn" &&
@@ -34,14 +34,14 @@ function* authStateChangedSaga(newCurrentUser: User | false) {
     perviousCurrentUser.uid !== currentUser.uid;
 
   if (didSignedIn || didSwapSignIn) {
-    yield put(actions.auth.signedIn());
+    yield put(auth.actions.signedIn());
   }
 
   const didSignOut =
     previousAuthStatus === "signedIn" && currentAuthStatus === "signedOut";
 
   if (didSignOut) {
-    yield put(actions.auth.signedOut());
+    yield put(auth.actions.signedOut());
   }
 }
 

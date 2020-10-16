@@ -9,6 +9,7 @@ import {getLists} from './get-lists';
 import {removeList} from './remove-list';
 import {removeListItem} from './remove-list-item';
 import {Dependencies} from './types';
+import {getListsFromListItem} from './get-lists-from-list-item';
 
 const buildRouterList = [
   addList,
@@ -20,6 +21,7 @@ const buildRouterList = [
   removeList,
   removeListItem,
   autoLists,
+  getListsFromListItem,
 ];
 
 export const buildListRouter = (dependencies: Dependencies) => (

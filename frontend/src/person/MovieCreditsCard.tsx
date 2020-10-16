@@ -1,31 +1,17 @@
 import {
-  Box,
-  ListItemText,
   Card,
   CardActionArea,
   CardContent,
   CardHeader,
   CardMedia,
   Typography,
-  Avatar,
-  List,
-  ListItem,
-  CardActions,
-  IconButton,
-  Collapse,
 } from "@material-ui/core";
-import React from "react";
-import { useDispatch } from "react-redux";
-import * as movieUtils from "../movie/utils";
-import { actions } from "../redux";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-import { ImagePaths, PersonMovieCredit } from "../tmdb/types";
-import ReadMore from "../common/components/ReadMore";
-import MovieIcon from "@material-ui/icons/Movie";
 import { mergeAll } from "ramda";
-import ExpandIcon from "../common/components/ExpandIcon";
-import useBoolean from "../common/hooks/useBoolean";
+import React from "react";
 import { useHistory } from "react-router";
+import ReadMore from "../common/components/ReadMore";
+import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
+import { PersonMovieCredit } from "../tmdb/types";
 
 type Props = {
   credits: PersonMovieCredit[];
