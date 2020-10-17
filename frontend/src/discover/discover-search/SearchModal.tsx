@@ -1,4 +1,4 @@
-import { Dialog, makeStyles } from "@material-ui/core";
+import { Dialog, makeStyles, fade } from "@material-ui/core";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import useModal from "../../navigation/modals/useModal";
@@ -9,7 +9,7 @@ import SearchResults from "./SearchResults";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
-    backgroundColor: "rgba(0, 0, 0, 0.8)",
+    backgroundColor: fade(theme.palette.background.default, 0.9),
   },
 }));
 

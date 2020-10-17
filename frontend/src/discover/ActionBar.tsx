@@ -16,6 +16,7 @@ import SearchButton from "../navigation/SearchButton";
 import AddIcon from "@material-ui/icons/Add";
 import { discoverParams } from "./redux/discover-params";
 import useModal from "../navigation/modals/useModal";
+import { useHistory } from "react-router";
 
 export const APP_BAR_HEIGHT = "56px";
 
@@ -73,16 +74,11 @@ const AddButton = (props: IconButtonProps) => {
 
 export default () => {
   return (
-    <AppBar color="default" position="sticky">
-      <Toolbar>
-        <AddButton edge="start" />
-        <UndoButton />
-        <RedoButton />
-        {/* <ClearButton /> */}
-        <Box flex={1} />
-        <SearchButton />
-        <AccountButton edge="end" />
-      </Toolbar>
-    </AppBar>
+    <Toolbar variant="dense">
+      <AddButton edge="start" />
+      <UndoButton />
+      <RedoButton />
+      <ClearButton />
+    </Toolbar>
   );
 };

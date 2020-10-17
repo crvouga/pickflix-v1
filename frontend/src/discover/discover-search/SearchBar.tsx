@@ -21,6 +21,11 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   toolbar: theme.mixins.toolbar,
+  input: {
+    flex: 1,
+    fontWeight: "bold",
+    fontSize: "1.25em",
+  },
 }));
 
 export default ({ onChange }: Props) => {
@@ -47,9 +52,9 @@ export default ({ onChange }: Props) => {
           <InputBase
             autoFocus
             inputRef={inputRef}
-            placeholder="Search Person, Keyword, Company"
+            placeholder="Person, Keyword, Company"
             onChange={handleChange}
-            style={{ flex: 1 }}
+            className={classes.input}
             //
             autoCapitalize="off"
             autoComplete="off"

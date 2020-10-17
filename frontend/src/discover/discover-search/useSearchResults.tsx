@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { DiscoverMovieTag } from "../discover-movie-tags";
 import { discoverTags } from "../redux/discover-tags";
 import useSearchQuery from "./useSearchQuery";
-
+import { useDebounce } from "use-debounce";
 type Props = {
   searchQuery: string;
 };
@@ -19,16 +19,19 @@ export default ({ searchQuery }: Props) => {
   const tags = useSelector(discoverTags.selectors.tags);
   const filteredTags = filter(searchQuery, tags);
 
+  const [debounced] = useDebounce(searchQuery, 500);
+
   const {
     personSearchQuery,
     keywordSearchQuery,
     companySearchQuery,
-  } = useSearchQuery({ searchQuery });
+  } = useSearchQuery({ searchQuery: debounced });
 
   if (
     !personSearchQuery.data ||
     !keywordSearchQuery.data ||
-    !companySearchQuery.data
+    !companySearchQuery.data ||
+    debounced !== searchQuery
   ) {
     return {
       isLoading: true,

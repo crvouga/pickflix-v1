@@ -1,29 +1,44 @@
-import { makeStyles } from "@material-ui/core";
+import { Box, makeStyles, Paper, Toolbar, AppBar } from "@material-ui/core";
 import React from "react";
-import SearchModal from "./discover-movie-tune/SearchModal";
+import PickflixLogo from "../common/PickflixLogo";
+import AccountButton from "../navigation/AccountButton";
+import SearchButton from "../navigation/SearchButton";
+import ActionBar from "./ActionBar";
+import SearchModal from "./discover-search/SearchModal";
 import DiscoverMovieResults from "./DiscoverMovieResults";
-import DiscoverMovieTags from "./DiscoverMovieTags";
-import NavigationBar, { APP_BAR_HEIGHT } from "./NavigationBar";
+import DiscoverMovieTags from "./TagScroll";
 
 const useStyles = makeStyles((theme) => ({
-  tagBar: {
-    position: "sticky",
-    top: APP_BAR_HEIGHT,
-    zIndex: theme.zIndex.appBar,
+  navBar: {
+    marginBottom: -theme.spacing(2),
   },
 }));
 
-export default () => {
+const NavigationBar = () => {
   const classes = useStyles();
 
   return (
-    <div>
-      <NavigationBar />
-      <div className={classes.tagBar}>
+    <AppBar color="default" position="sticky">
+      <Toolbar className={classes.navBar}>
+        <PickflixLogo flex={1} />
+        <SearchButton />
+        <AccountButton />
+      </Toolbar>
+
+      <ActionBar />
+      <Box paddingBottom={2}>
         <DiscoverMovieTags />
-      </div>
+      </Box>
+    </AppBar>
+  );
+};
+
+export default () => {
+  return (
+    <React.Fragment>
+      <NavigationBar />
       <DiscoverMovieResults />
       <SearchModal />
-    </div>
+    </React.Fragment>
   );
 };

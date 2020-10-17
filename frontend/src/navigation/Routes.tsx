@@ -18,6 +18,7 @@ import VideoPage from "../video/VideoPage";
 import Modals from "./modals/Modals";
 import NavigationBarBottom from "./NavigationBarBottom";
 import AutoListPage from "../lists/auto-list/AutoListPage";
+import DiscoverSearchPage from "../discover/discover-search/DiscoverSearchPage";
 
 export default () => {
   return (
@@ -26,6 +27,7 @@ export default () => {
       <Container disableGutters maxWidth="xs">
         <Switch>
           <Route exact path="/" component={HomePage} />
+          <Route path="/discover/search" component={DiscoverSearchPage} />
           <Route path="/discover" component={DiscoverPage} />
           <Route path="/search" component={SearchPage} />
           <Route path="/video" component={VideoPage} />

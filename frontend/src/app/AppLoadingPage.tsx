@@ -13,8 +13,8 @@ export default () => {
       justifyContent="center"
       flexDirection="column"
     >
-      {/* <PickflixLogo marginBottom={4} scale={1.5} /> */}
-      <LoadingBox CircularProgressProps={{ disableShrink: true }} />
+      <PickflixLogo marginBottom={4} scale={1.5} />
+      {/* <LoadingBox CircularProgressProps={{ disableShrink: true }} /> */}
     </Box>
   );
 };

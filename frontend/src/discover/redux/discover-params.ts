@@ -1,11 +1,16 @@
 import { createAction, createReducer, createSelector } from "@reduxjs/toolkit";
 import localforage from "localforage";
-import { persistReducer } from "redux-persist";
+import { persistReducer, PersistConfig } from "redux-persist";
 import hardSet from "redux-persist/lib/stateReconciler/hardSet";
-import undoable, { includeAction, StateWithHistory } from "redux-undo";
+import undoable, {
+  includeAction,
+  StateWithHistory,
+  UndoableOptions,
+} from "redux-undo";
 import { AppState } from "../../redux/types";
 import { DiscoverMovieTag, tagsToParams } from "../discover-movie-tags";
 import { DiscoverMovieQueryParams, DiscoverMovieSortBy } from "../query/types";
+import { equals } from "ramda";
 
 const name = "discoverMovie";
 
@@ -80,11 +85,19 @@ const reducer = createReducer(initialPresentState, {
 */
 
 //DOCS: https://github.com/omnidan/redux-undo
-const undoConfig = {
-  filter: includeAction([
-    actions.setActiveTags.toString(),
-    actions.setSortBy.toString(),
-  ]),
+const whitelist = [
+  actions.setActiveTags.toString(),
+  actions.setSortBy.toString(),
+];
+const undoableOptions: UndoableOptions<PresentState> = {
+  filter: (action, currentState, previousHistory) => {
+    const isWhitelisted = includeAction(whitelist)(
+      action,
+      currentState,
+      previousHistory
+    );
+    return isWhitelisted && !equals(currentState, previousHistory.present);
+  },
 
   undoType: actions.undo.toString(),
   redoType: actions.redo.toString(),
@@ -102,7 +115,7 @@ const persistConfig = {
 const enhancedReducer = persistReducer(
   persistConfig,
   //@ts-ignore
-  undoable(reducer, undoConfig)
+  undoable(reducer, undoableOptions)
 );
 
 /* 

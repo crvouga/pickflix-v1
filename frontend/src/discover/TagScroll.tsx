@@ -14,9 +14,7 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "nowrap",
     overflowX: "scroll",
     //
-    backgroundColor: theme.palette.background.default,
-    //
-    padding: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
   },
 }));
 
