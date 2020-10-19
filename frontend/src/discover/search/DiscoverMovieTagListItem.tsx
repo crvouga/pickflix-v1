@@ -37,7 +37,7 @@ export default (props: Props) => {
         <ListItem {...listItemProps}>
           <ListItemText
             primary={sortByKeyToName(tag.sortBy)}
-            secondary="Year"
+            secondary="Sort By"
           />
         </ListItem>
       );
