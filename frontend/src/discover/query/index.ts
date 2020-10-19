@@ -1,3 +1,3 @@
-import * as _queryKeys from "./query-keys";
-export const queryKeys = _queryKeys;
+import * as _ from "./query-keys";
+export const queryKeys = _;
 export * from "./request";

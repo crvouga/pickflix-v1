@@ -4,10 +4,7 @@ import PickflixLogo from "../common/PickflixLogo";
 import AccountButton from "../navigation/AccountButton";
 import SearchButton from "../navigation/SearchButton";
 import { AddButton, RedoButton, TuneButton, UndoButton } from "./Actions";
-import DiscoverMovieResults from "./DiscoverMovieResults";
-import SearchModal from "./search/SearchModal";
 import DiscoverMovieTags from "./TagScroll";
-import TuneModal from "./TuneModal";
 
 const useStyles = makeStyles((theme) => ({
   navBar: {
@@ -15,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const NavigationBar = () => {
+export default () => {
   const classes = useStyles();
 
   return (
@@ -37,16 +34,5 @@ const NavigationBar = () => {
         <DiscoverMovieTags />
       </Box>
     </AppBar>
-  );
-};
-
-export default () => {
-  return (
-    <React.Fragment>
-      <NavigationBar />
-      <DiscoverMovieResults />
-      <SearchModal />
-      <TuneModal />
-    </React.Fragment>
   );
 };

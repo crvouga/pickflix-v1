@@ -40,7 +40,7 @@ export const releaseYear = ({ releaseDate }: MovieDetails) =>
 
 export const certification = ({ releaseDates }: ReleaseDateProp) =>
   releaseDates.results
-    .find((_) => _.iso31661 === "US")
+    .find((_) => _.iso_3166_1 === "US")
     ?.releaseDates.map((_) => _.certification)
     .find((_) => _.length !== 0) || "-";
 

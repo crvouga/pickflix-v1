@@ -7,6 +7,7 @@ import { DiscoverMovieQueryParams } from "./query/types";
 
 export default (discoverMovieParams: DiscoverMovieQueryParams) => {
   const queryKey = queryKeys.discoverMovie(discoverMovieParams);
+
   const query = useInfiniteQuery(
     queryKey,
     (...args) => {

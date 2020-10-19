@@ -73,7 +73,7 @@ describe('get lists from list item', () => {
     ]);
 
     const lists = await listLogic.getListsFromListItem(listItemInfo);
-    expect(lists).not.toHaveLength(0);
+
     expect(lists).toContainEqual(list1);
     expect(lists).not.toContainEqual(list2);
     expect(lists).toContainEqual(list3);

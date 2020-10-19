@@ -1,7 +1,7 @@
 import { Box, BoxProps } from "@material-ui/core";
 import React from "react";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
-import { DiscoverMovieTag as IDiscoverMovieTag } from "../../discover/discover-movie-tags";
+import { DiscoverMovieTag as IDiscoverMovieTag } from "../../discover/query/types";
 import DiscoverMovieTag from "../../discover/DiscoverMovieTag";
 
 type Props = Omit<BoxProps, "onClick"> & {

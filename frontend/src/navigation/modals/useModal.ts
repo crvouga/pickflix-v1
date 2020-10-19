@@ -1,6 +1,11 @@
 import { useHistory, useLocation } from "react-router";
 
-export type ModalName = "AddListItem" | "AddList" | "DiscoverMovieTune";
+export type ModalName =
+  | "AddListItem"
+  | "AddList"
+  | "DiscoverSort"
+  | "DiscoverSearch"
+  | "DiscoverTune";
 
 export default (modalName: ModalName) => {
   const history = useHistory();

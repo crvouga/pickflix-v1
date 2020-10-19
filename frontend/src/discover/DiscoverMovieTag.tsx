@@ -1,53 +1,49 @@
-import { Avatar, Chip, ChipProps, makeStyles } from "@material-ui/core";
+import { Avatar, ChipProps } from "@material-ui/core";
 import BusinessIcon from "@material-ui/icons/Business";
 import React from "react";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
-import { dateRangeTagToName, DiscoverMovieTag } from "./discover-movie-tags";
+import makeTMDbImageURL, { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
 import { capitalizeWords } from "../utils";
+import Tag from "./BaseTag";
+import {
+  DiscoverMovieTag,
+  yearRangeToName,
+  sortByKeyToName,
+  TagType,
+} from "./query/types";
 
 type Props = ChipProps & {
   tag: DiscoverMovieTag;
 };
 
-const useStylesChip = makeStyles((theme) => ({
-  root: {
-    fontSize: "1.25em",
-    fontWeight: "bold",
-  },
-}));
-
 export default (props: Props) => {
-  const classesChip = useStylesChip();
-
+  const makeImageUrl = useMakeImageUrl();
   const { tag, ...chipProps } = props;
 
   switch (tag.type) {
-    case "dateRange":
-      return (
-        <Chip
-          classes={classesChip}
-          label={dateRangeTagToName(tag)}
-          {...chipProps}
-        />
-      );
+    case TagType.certification:
+      return <Tag label={tag.certification} {...chipProps} />;
 
-    case "withPeople":
+    case TagType.sortBy:
+      return <Tag label={sortByKeyToName(tag.sortBy)} {...chipProps} />;
+
+    case TagType.releaseYearRange:
+      return <Tag label={yearRangeToName(tag.range)} {...chipProps} />;
+
+    case TagType.withPeople:
       return (
-        <Chip
-          classes={classesChip}
+        <Tag
           label={tag.name}
-          avatar={<Avatar src={makeTMDbImageURL(1, tag)} />}
+          avatar={<Avatar src={makeImageUrl(1, tag)} />}
           {...chipProps}
         />
       );
 
-    case "withCompanies":
+    case TagType.withCompanies:
       return (
-        <Chip
-          classes={classesChip}
+        <Tag
           label={tag.name}
           avatar={
-            <Avatar variant="square" src={makeTMDbImageURL(1, tag)}>
+            <Avatar variant="square" src={makeImageUrl(1, tag)}>
               <BusinessIcon />
             </Avatar>
           }
@@ -56,12 +52,6 @@ export default (props: Props) => {
       );
 
     default:
-      return (
-        <Chip
-          classes={classesChip}
-          label={capitalizeWords(tag.name)}
-          {...chipProps}
-        />
-      );
+      return <Tag label={capitalizeWords(tag?.name || "")} {...chipProps} />;
   }
 };

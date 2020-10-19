@@ -1,11 +1,8 @@
 import { Box, makeStyles } from "@material-ui/core";
-import { difference, union, without } from "ramda";
+import { thunkify } from "ramda";
 import React, { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { DiscoverMovieTag as IDiscoverMovieTag } from "./discover-movie-tags";
 import DiscoverMovieTag from "./DiscoverMovieTag";
-import { discoverParams } from "./redux/discover-params";
-import { discoverTags } from "./redux/discover-tags";
+import useDiscoverLogic from "./useDiscoverLogic";
 
 const useStyles = makeStyles((theme) => ({
   chipContainer: {
@@ -21,23 +18,12 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const classes = useStyles();
 
-  const tags = useSelector(discoverTags.selectors.tags);
-  const activeTags = useSelector(discoverParams.selectors.activeTags);
-  const nonActiveTags = difference(tags, activeTags);
-
-  const dispatch = useDispatch();
-
-  const handleClickActiveTag = (activeTag: IDiscoverMovieTag) => () => {
-    dispatch(
-      discoverParams.actions.setActiveTags(without([activeTag], activeTags))
-    );
-  };
-
-  const handleClickNonActiveTag = (nonActiveTag: IDiscoverMovieTag) => () => {
-    dispatch(
-      discoverParams.actions.setActiveTags(union([nonActiveTag], activeTags))
-    );
-  };
+  const {
+    activeTags,
+    nonActiveTags,
+    deactivateTag,
+    activateTag,
+  } = useDiscoverLogic();
 
   const chipContainerRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -54,7 +40,7 @@ export default () => {
             variant="default"
             tag={tag}
             clickable
-            onClick={handleClickActiveTag(tag)}
+            onClick={thunkify(deactivateTag)(tag)}
           />
         </Box>
       ))}
@@ -64,7 +50,7 @@ export default () => {
             variant="outlined"
             tag={tag}
             clickable
-            onClick={handleClickNonActiveTag(tag)}
+            onClick={thunkify(activateTag)(tag)}
           />
         </Box>
       ))}

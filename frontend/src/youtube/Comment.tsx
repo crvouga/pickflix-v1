@@ -17,12 +17,16 @@ import { YoutubeComment } from "./types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    padding: `${theme.spacing(2)}px ${theme.spacing(1)}px`,
+    padding: theme.spacing(2),
     display: "flex",
     flexDirection: "row",
     maxWidth: "100%",
   },
-  avatar: {
+  body: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  avatarContainer: {
     paddingRight: theme.spacing(1),
   },
   actions: {
@@ -91,42 +95,35 @@ export default ({ comment }: Props) => {
   );
 
   return (
-    <ListItem alignItems="flex-start">
-      <ListItemAvatar>
+    <div className={classes.root}>
+      <div className={classes.avatarContainer}>
         <Avatar src={authorProfileImageUrl} onClick={handleAvatarClick} />
-      </ListItemAvatar>
-      <ListItemText
-        primaryTypographyProps={{
-          variant: "subtitle2",
-          color: "textSecondary",
-        }}
-        primary={subtitle1}
-        secondaryTypographyProps={{
-          variant: "body1",
-          color: "textPrimary",
-        }}
-        secondary={
-          <div>
-            <ReadMore text={textDisplayMarkdown} />
-            <div className={classes.actions}>
-              {likeCount > 0 && (
-                <React.Fragment>
-                  <IconButton className={classes.iconButton} color="inherit">
-                    <ThumbUpIcon className={classes.icon} />
-                  </IconButton>
-                  <Typography
-                    variant="subtitle2"
-                    className={classes.likeCount}
-                    color="inherit"
-                  >
-                    {formattedLikes}
-                  </Typography>
-                </React.Fragment>
-              )}
-            </div>
-          </div>
-        }
-      />
-    </ListItem>
+      </div>
+      <div className={classes.body}>
+        <Typography variant="subtitle2" color="textSecondary">
+          {subtitle1}
+        </Typography>
+        <ReadMore
+          text={textDisplayMarkdown}
+          TypographyProps={{ variant: "body1" }}
+        />
+        <div className={classes.actions}>
+          {likeCount > 0 && (
+            <React.Fragment>
+              <IconButton className={classes.iconButton} color="inherit">
+                <ThumbUpIcon className={classes.icon} />
+              </IconButton>
+              <Typography
+                variant="subtitle2"
+                className={classes.likeCount}
+                color="inherit"
+              >
+                {formattedLikes}
+              </Typography>
+            </React.Fragment>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };

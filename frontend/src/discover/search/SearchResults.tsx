@@ -1,7 +1,7 @@
 import { List } from "@material-ui/core";
 import React from "react";
 import ListItemSkeleton from "../../common/components/ListItemSkeleton";
-import { DiscoverMovieTag } from "../discover-movie-tags";
+import { DiscoverMovieTag } from "../query/types";
 import DiscoverMovieTagListItem from "./DiscoverMovieTagListItem";
 import useSearchResults from "./useSearchResults";
 

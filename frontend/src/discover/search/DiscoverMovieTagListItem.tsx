@@ -5,26 +5,56 @@ import {
   ListItemProps,
   ListItemText,
 } from "@material-ui/core";
-import React from "react";
-import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
-import { DiscoverMovieTag } from "../discover-movie-tags";
 import BusinessIcon from "@material-ui/icons/Business";
+import React from "react";
+import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
 import { capitalizeWords } from "../../utils";
+import {
+  DiscoverMovieTag,
+  sortByKeyToName,
+  yearRangeToName,
+  TagType,
+} from "../query/types";
 
 type Props = Omit<ListItemProps, "button"> & {
   tag: DiscoverMovieTag;
 };
 
 export default (props: Props) => {
+  const makeImageUrl = useMakeImageUrl();
   const { tag, ...listItemProps } = props;
 
   switch (tag.type) {
-    case "withPeople":
+    case TagType.certification:
+      return (
+        <ListItem {...listItemProps}>
+          <ListItemText primary={tag.certification} secondary="Rating" />
+        </ListItem>
+      );
+
+    case TagType.sortBy:
+      return (
+        <ListItem {...listItemProps}>
+          <ListItemText
+            primary={sortByKeyToName(tag.sortBy)}
+            secondary="Year"
+          />
+        </ListItem>
+      );
+
+    case TagType.releaseYearRange:
+      return (
+        <ListItem {...listItemProps}>
+          <ListItemText primary={yearRangeToName(tag.range)} secondary="Year" />
+        </ListItem>
+      );
+
+    case TagType.withPeople:
       return (
         <ListItem {...listItemProps}>
           <ListItemAvatar>
             <Avatar
-              src={makeTMDbImageURL(3, {
+              src={makeImageUrl(3, {
                 profilePath: tag.profilePath,
               })}
             />
@@ -33,7 +63,7 @@ export default (props: Props) => {
         </ListItem>
       );
 
-    case "withCompanies":
+    case TagType.withCompanies:
       return (
         <ListItem {...listItemProps}>
           <ListItemAvatar>
@@ -42,7 +72,7 @@ export default (props: Props) => {
               style={{
                 ...(tag.logoPath ? { backgroundColor: "white" } : {}),
               }}
-              src={makeTMDbImageURL(3, { logoPath: tag.logoPath })}
+              src={makeImageUrl(3, { logoPath: tag.logoPath })}
             >
               <BusinessIcon />
             </Avatar>
@@ -51,7 +81,7 @@ export default (props: Props) => {
         </ListItem>
       );
 
-    case "withKeywords":
+    case TagType.withKeywords:
       return (
         <ListItem {...listItemProps}>
           <ListItemText
@@ -61,17 +91,10 @@ export default (props: Props) => {
         </ListItem>
       );
 
-    case "withGenres":
+    case TagType.withGenres:
       return (
         <ListItem {...listItemProps}>
           <ListItemText primary={tag.name} secondary="Genre" />
-        </ListItem>
-      );
-
-    default:
-      return (
-        <ListItem {...listItemProps}>
-          <ListItemText primary={tag.name} />
         </ListItem>
       );
   }

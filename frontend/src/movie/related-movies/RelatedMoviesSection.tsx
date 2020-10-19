@@ -15,6 +15,8 @@ export default () => {
     ...recommendations.results,
   ]);
 
+  if (movies.length === 0) return null;
+
   return (
     <React.Fragment>
       <Box marginLeft={2}>

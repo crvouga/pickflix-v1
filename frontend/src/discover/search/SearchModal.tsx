@@ -1,9 +1,9 @@
-import { Dialog, makeStyles, fade } from "@material-ui/core";
+import { Dialog, fade, makeStyles } from "@material-ui/core";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import useModal from "../../navigation/modals/useModal";
-import { DiscoverMovieTag } from "../discover-movie-tags";
-import { discoverParams } from "../redux/discover-params";
+import { DiscoverMovieTag } from "../query/types";
+import { discoverActiveTags } from "../redux/discover-active-tags";
 import SearchBar from "./SearchBar";
 import SearchResults from "./SearchResults";
 
@@ -16,12 +16,12 @@ const useStylesDialog = makeStyles((theme) => ({
 export default () => {
   const dispatch = useDispatch();
   const classesDialog = useStylesDialog();
-  const discoverMovieTagSearchModal = useModal("DiscoverMovieTune");
+  const discoverMovieTagSearchModal = useModal("DiscoverSearch");
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleClick = (tag: DiscoverMovieTag) => {
     discoverMovieTagSearchModal.close();
-    dispatch(discoverParams.actions.setActiveTags([tag]));
+    dispatch(discoverActiveTags.actions.setActiveTags([tag]));
   };
 
   return (
@@ -29,6 +29,7 @@ export default () => {
       fullScreen
       classes={classesDialog}
       open={discoverMovieTagSearchModal.isOpen}
+      scroll="body"
     >
       <SearchBar onChange={setSearchQuery} />
       <SearchResults onClick={handleClick} searchQuery={searchQuery} />

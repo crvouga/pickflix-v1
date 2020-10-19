@@ -1,7 +1,6 @@
 import { AuthFormState } from "../auth/auth-form/redux/types";
 import { AuthState } from "../auth/redux/types";
-import { DiscoverMovieUiState } from "../discover/redux/discover-movie-ui";
-import { DiscoverParamsState } from "../discover/redux/discover-params";
+import { DiscoverActiveTags } from "../discover/redux/discover-active-tags";
 import { DiscoverTagsState } from "../discover/redux/discover-tags";
 import { AddListItemsFormState } from "../lists/redux/add-list-items-form";
 import { HistoryState } from "../navigation/history/history";
@@ -18,8 +17,8 @@ export type AppState = {
   authForm: AuthFormState;
   snackbar: SnackbarState;
   search: SearchState;
-  discoverParams: DiscoverParamsState;
-  discoverTags: DiscoverTagsState;
-  discoverMovieUi: DiscoverMovieUiState;
   personPageUi: PersonPageUiState;
+
+  discoverActiveTags: DiscoverActiveTags;
+  discoverTags: DiscoverTagsState;
 };

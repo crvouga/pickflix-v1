@@ -18,7 +18,7 @@ import VideoPage from "../video/VideoPage";
 import Modals from "./modals/Modals";
 import NavigationBarBottom from "./NavigationBarBottom";
 import AutoListPage from "../lists/auto-list/AutoListPage";
-import DiscoverSearchPage from "../discover/discover-search/DiscoverSearchPage";
+import DiscoverSearchPage from "../discover/search/DiscoverSearchPage";
 
 export default () => {
   return (

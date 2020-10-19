@@ -13,15 +13,18 @@ export const getListsFromListItem = ({
     async (req, res, next) => {
       try {
         const currentUser = req.currentUser as User;
-        const listItemInfo = req.query as {
+
+        const tmdbMediaInfo = req.query as {
           tmdbMediaId: string;
           tmdbMediaType: TmdbMediaType;
         };
 
-        const lists = await listLogic.getListsFromListItem({
-          ...listItemInfo,
+        const listItemInfo = {
+          ...tmdbMediaInfo,
           userId: currentUser.id,
-        });
+        };
+
+        const lists = await listLogic.getListsFromListItem(listItemInfo);
 
         res.status(200).json(lists).end();
       } catch (error) {

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import { DiscoverMovieTag } from "../discover-movie-tags";
-import { discoverParams } from "../redux/discover-params";
+import { DiscoverMovieTag } from "../query/types";
+import { discoverActiveTags } from "../redux/discover-active-tags";
 import SearchBar from "./SearchBar";
 import SearchResults from "./SearchResults";
 
@@ -13,7 +13,7 @@ export default () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const handleClick = (tag: DiscoverMovieTag) => {
-    dispatch(discoverParams.actions.setActiveTags([tag]));
+    dispatch(discoverActiveTags.actions.setActiveTags([tag]));
     history.push("/discover");
   };
 

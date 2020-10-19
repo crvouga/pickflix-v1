@@ -1,12 +1,14 @@
-import { Box, makeStyles } from "@material-ui/core";
+import { Box, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import ErrorBox from "../common/components/ErrorBox";
 import LoadingBox from "../common/components/LoadingBox";
 import Poster from "../movie/components/MoviePosterCard";
 import MoviePosterCardSkeleton from "../movie/components/MoviePosterCardSkeleton";
-import { discoverParams } from "./redux/discover-params";
-import useDiscoverMovieQuery from "./useDiscoverMovieQuery";
+import { tagsToParams } from "./query/types";
+import { discoverActiveTags } from "./redux/discover-active-tags";
+import useDiscoverMovieQuery from "./useDiscoverQuery";
+import { useDebounce } from "use-debounce/lib";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,9 +20,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const discoverQueryParams = useSelector(
-    discoverParams.selectors.discoverQueryParams
-  );
+
+  const activeTags = useSelector(discoverActiveTags.selectors.activeTags);
+
+  const [discoverQueryParams] = useDebounce(tagsToParams(activeTags), 100);
 
   const { fetchMoreRef, data, error, canFetchMore } = useDiscoverMovieQuery(
     discoverQueryParams
@@ -41,6 +44,16 @@ export default () => {
           ))}
         </div>
       </React.Fragment>
+    );
+  }
+
+  if (data[0] && data[0].results.length === 0) {
+    return (
+      <Box p={4}>
+        <Typography variant="h6" align="center" color="textSecondary">
+          Couldn't find anything
+        </Typography>
+      </Box>
     );
   }
 

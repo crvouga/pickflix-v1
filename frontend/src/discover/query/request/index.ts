@@ -2,6 +2,24 @@ import { AxiosRequestConfig } from "axios";
 import backendAPI from "../../../backendAPI";
 import { DiscoverMovieQueryParams, DiscoverMovieResponse } from "../types";
 
+type Certification = {
+  certification: string;
+  meaning: string;
+  order: number;
+};
+type CountryCode = "US";
+type MovieCertificationResponse = {
+  certifications: { [key in CountryCode]: Certification[] };
+};
+
+export const getMovieCertifications = async (config?: AxiosRequestConfig) => {
+  const { data } = await backendAPI.get<MovieCertificationResponse>(
+    "/api/tmdb/certification/movie/list",
+    config
+  );
+  return data;
+};
+
 export const getMovieGenres = async (config?: AxiosRequestConfig) => {
   const { data } = await backendAPI.get<{
     genres: { id: string; name: string }[];

@@ -31,20 +31,15 @@ export async function requestTmdbData(
     }),
   ].join('');
 
-  const cahced = await this.keyv.get(url);
-
-  if (cahced) {
-    return cahced;
-  }
-
   const tmdbResponse = await this.axios({
     method: 'get',
     url: 'https://api.themoviedb.org/3' + url,
   });
 
-  const data = camelizeKeys(tmdbResponse.data);
-
-  await this.keyv.set(url, data, timeToLive);
+  const data = camelizeKeys(tmdbResponse.data, (key, convert) => {
+    // prevent conversion of keys containing only uppercase letters or numbers:
+    return /[A-Z0-9]/.test(key) ? key : convert(key);
+  });
 
   return data;
 }

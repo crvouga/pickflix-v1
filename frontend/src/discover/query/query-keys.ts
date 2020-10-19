@@ -13,3 +13,5 @@ export const personSearch = (text: string) => ["person", text];
 export const keywordSearch = (text: string) => ["keyword", text];
 
 export const companySearch = (text: string) => ["company", text];
+
+export const certifications = () => ["certification", "movie", "list"];

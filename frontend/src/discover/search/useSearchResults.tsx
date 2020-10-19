@@ -1,7 +1,7 @@
 import matchSorter from "match-sorter";
 import { uniqBy } from "ramda";
 import { useSelector } from "react-redux";
-import { DiscoverMovieTag } from "../discover-movie-tags";
+import { DiscoverMovieTag, TagType } from "../query/types";
 import { discoverTags } from "../redux/discover-tags";
 import useSearchQuery from "./useSearchQuery";
 import { useDebounce } from "use-debounce";
@@ -17,6 +17,7 @@ const filter = (searchQuery: string, tags: DiscoverMovieTag[]) => {
 
 export default ({ searchQuery }: Props) => {
   const tags = useSelector(discoverTags.selectors.tags);
+
   const filteredTags = filter(searchQuery, tags);
 
   const [debounced] = useDebounce(searchQuery, 500);
@@ -41,21 +42,21 @@ export default ({ searchQuery }: Props) => {
 
   const withPeopleTags: DiscoverMovieTag[] = personSearchQuery.data.results.map(
     (result) => ({
-      type: "withPeople",
+      type: TagType.withPeople,
       ...result,
     })
   );
 
   const withKeywordsTags: DiscoverMovieTag[] = keywordSearchQuery.data.results.map(
     (result) => ({
-      type: "withKeywords",
+      type: TagType.withKeywords,
       ...result,
     })
   );
 
   const withCompaniesTags: DiscoverMovieTag[] = companySearchQuery.data.results.map(
     (result) => ({
-      type: "withCompanies",
+      type: TagType.withCompanies,
       ...result,
     })
   );

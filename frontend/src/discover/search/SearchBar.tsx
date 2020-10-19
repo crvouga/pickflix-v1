@@ -46,7 +46,7 @@ export default ({ onChange }: Props) => {
 
   return (
     <React.Fragment>
-      <AppBar color="default" className={classes.appBar}>
+      <AppBar color="default" position="sticky">
         <Toolbar>
           <BackButton />
           <InputBase
@@ -66,7 +66,7 @@ export default ({ onChange }: Props) => {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <div className={classes.toolbar} />
+      {/* <div className={classes.toolbar} /> */}
     </React.Fragment>
   );
 };

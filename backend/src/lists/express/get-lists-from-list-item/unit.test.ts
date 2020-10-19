@@ -14,13 +14,12 @@ describe('GET /list-items/lists', () => {
       listInfo,
     ]);
 
-    const listItemMediaInfo = {
+    const tmdbMediaInfo = {
       tmdbMediaId: '550',
       tmdbMediaType: 'movie' as TmdbMediaType,
     };
-
     const listItemInfo = {
-      ...listItemMediaInfo,
+      ...tmdbMediaInfo,
       userId: currentUser.id,
     };
 
@@ -31,7 +30,7 @@ describe('GET /list-items/lists', () => {
 
     const response = await supertest(app)
       .get('/api/list-items/lists')
-      .send(listItemMediaInfo)
+      .query(tmdbMediaInfo)
       .expect(200);
 
     expect(response.body).toContainEqual(list1);

@@ -208,7 +208,7 @@ export interface ReleaseDate {
 export interface MovieReleaseDates {
   id: string;
   results: {
-    iso31661: string;
+    iso_3166_1: string;
     releaseDates: ReleaseDate[];
   }[];
 }
