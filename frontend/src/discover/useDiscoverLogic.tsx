@@ -1,8 +1,8 @@
+import { difference } from "ramda";
 import { useDispatch, useSelector } from "react-redux";
+import { DiscoverMovieTag } from "./query/types";
 import { discoverActiveTags } from "./redux/discover-active-tags";
 import { discoverTags } from "./redux/discover-tags";
-import { difference, union } from "ramda";
-import { DiscoverMovieTag, uniqueTagTypes } from "./query/types";
 
 export default () => {
   const dispatch = useDispatch();
@@ -11,31 +11,22 @@ export default () => {
   const tags = useSelector(discoverTags.selectors.tags);
   const nonActiveTags = difference(tags, activeTags);
 
-  const activateTag = (newTag: DiscoverMovieTag) => {
-    const isUniqueTag = uniqueTagTypes.includes(newTag.type);
-    if (isUniqueTag) {
-      const newActiveTags = union(
-        activeTags.filter((tag) => tag.type !== newTag.type),
-        [newTag]
-      );
-      dispatch(discoverActiveTags.actions.setActiveTags(newActiveTags));
-    } else {
-      const newActiveTags = union(activeTags, [newTag]);
-      dispatch(discoverActiveTags.actions.setActiveTags(newActiveTags));
-    }
-  };
-
-  const deactivateTag = (tag: DiscoverMovieTag) => {
-    const newActiveTags = difference(activeTags, [tag]);
-    dispatch(discoverActiveTags.actions.setActiveTags(newActiveTags));
-  };
+  const activateTag = (tag: DiscoverMovieTag) =>
+    dispatch(discoverActiveTags.actions.activate(tag));
+  const deactivateTag = (tag: DiscoverMovieTag) =>
+    dispatch(discoverActiveTags.actions.deactivate(tag));
+  const undo = () => dispatch(discoverActiveTags.actions.undo());
+  const redo = () => dispatch(discoverActiveTags.actions.redo());
+  const clear = () => dispatch(discoverActiveTags.actions.setActiveTags([]));
 
   return {
-    activateTag,
-    deactivateTag,
-
     activeTags,
     nonActiveTags,
     tags,
+    activateTag,
+    deactivateTag,
+    clear,
+    undo,
+    redo,
   };
 };

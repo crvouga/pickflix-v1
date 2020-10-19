@@ -39,9 +39,12 @@ const initialPresentState: PresentState = {
 
 const actions = {
   setActiveTags: createAction<DiscoverMovieTag[]>(name + "/SET_ACTIVE_TAGS"),
-  add: createAction<DiscoverMovieTag[]>(name + "/ADD"),
+  //
   undo: createAction(name + "/UNDO"),
   redo: createAction(name + "/REDO"),
+  //
+  activate: createAction<DiscoverMovieTag>(name + "/ACTIVATE"),
+  deactivate: createAction<DiscoverMovieTag>(name + "/DEACTIVATE"),
 };
 
 /* 

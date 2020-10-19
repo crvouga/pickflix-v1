@@ -74,10 +74,7 @@ export default () => {
   };
 
   useEffect(() => {
-    const timeout = setTimeout(focus, 200);
-    return () => {
-      clearTimeout(timeout);
-    };
+    dispatch(addListItemsForm.actions.reset());
   }, []);
 
   return (

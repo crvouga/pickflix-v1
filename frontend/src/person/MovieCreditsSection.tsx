@@ -1,10 +1,11 @@
-import { Box, IconButton, Toolbar } from "@material-ui/core";
+import { Box, Chip, IconButton, Toolbar } from "@material-ui/core";
 import GridOffIcon from "@material-ui/icons/GridOff";
 import GridOnIcon from "@material-ui/icons/GridOn";
 import SortIcon from "@material-ui/icons/Sort";
-import { groupBy, mergeAll } from "ramda";
-import React from "react";
+import { groupBy, mergeAll, thunkify, uniq } from "ramda";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import HorizontalScroll from "../common/components/HorizontalScroll";
 import MovieCard from "../movie/components/MovieCard";
 import Poster from "../movie/components/MoviePosterCard";
 import {
@@ -13,6 +14,9 @@ import {
   PersonMovieCreditsResponse,
 } from "../tmdb/types";
 import { personPageUi } from "./redux/person-page-ui";
+import matchSorter from "match-sorter";
+import OpenDiscoverButton from "../discover/OpenDiscoverButton";
+import { TagType } from "../discover/query/types";
 
 type Props = {
   credits: PersonMovieCreditsResponse;
@@ -25,7 +29,22 @@ const toSubheader = (movieCredits: PersonMovieCredit[]) =>
     .filter((_) => _ && _.length > 0)
     .join(", ");
 
-export default ({ credits }: Props) => {
+const toCreditsById = (credits: PersonMovieCreditsResponse) =>
+  groupBy((credit) => credit.id, [
+    ...credits.cast.map((credit) => ({ ...credit, department: "Acting" })),
+    ...credits.crew.map((credit) => ({
+      ...credit,
+      department: credit.department || "Crew",
+    })),
+  ]);
+
+const toDepartments = (credits: PersonMovieCreditsResponse) =>
+  uniq([
+    ...credits.cast.map(() => "Acting"),
+    ...credits.crew.map((credit) => credit.department || "Crew"),
+  ]);
+
+export default ({ details, credits }: Props) => {
   const isGridOn = useSelector(personPageUi.selectors.isGridOn);
 
   const dispatch = useDispatch();
@@ -33,14 +52,31 @@ export default ({ credits }: Props) => {
     dispatch(personPageUi.actions.toggleGrid());
   };
 
-  const creditsByMovieId = groupBy((credit) => credit.id, [
-    ...credits.cast,
-    ...credits.crew,
-  ]);
+  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const handleClickDepartment = (department: string) => {
+    setSelectedDepartment(selectedDepartment === department ? "" : department);
+  };
+
+  const creditsByMovieIdEntries = Object.entries(toCreditsById(credits));
+
+  const filtered = creditsByMovieIdEntries.filter(([id, credits]) =>
+    credits.find((credit) => credit.department === selectedDepartment)
+  );
+
+  const filteredEntries =
+    filtered.length === 0 ? creditsByMovieIdEntries : filtered;
 
   return (
     <div>
       <Toolbar>
+        <OpenDiscoverButton
+          tag={{
+            type: TagType.withPeople,
+            id: details.id,
+            name: details.name,
+            profilePath: details.profilePath,
+          }}
+        />
         <IconButton onClick={handleToggle}>
           {isGridOn ? <GridOffIcon /> : <GridOnIcon />}
         </IconButton>
@@ -48,6 +84,21 @@ export default ({ credits }: Props) => {
           <SortIcon />
         </IconButton>
       </Toolbar>
+      <HorizontalScroll paddingBottom={2} paddingX={2}>
+        {toDepartments(credits).map((department) => (
+          <Box key={department} marginRight={1}>
+            <Chip
+              clickable
+              onClick={thunkify(handleClickDepartment)(department)}
+              style={{ fontWeight: "bold" }}
+              label={department}
+              variant={
+                selectedDepartment === department ? "default" : "outlined"
+              }
+            />
+          </Box>
+        ))}
+      </HorizontalScroll>
       {isGridOn && (
         <Box
           display="flex"
@@ -55,7 +106,7 @@ export default ({ credits }: Props) => {
           flexWrap="wrap"
           paddingX={1 / 2}
         >
-          {Object.entries(creditsByMovieId).map(([movieId, movieCredits]) => (
+          {filteredEntries.map(([movieId, movieCredits]) => (
             <Box key={movieId} width="50%" p={1 / 2}>
               <Poster movie={mergeAll(movieCredits)} />
             </Box>
@@ -64,7 +115,7 @@ export default ({ credits }: Props) => {
       )}
       {!isGridOn && (
         <Box paddingX={2}>
-          {Object.entries(creditsByMovieId).map(([movieId, movieCredits]) => (
+          {filteredEntries.map(([movieId, movieCredits]) => (
             <Box key={movieId} marginBottom={2}>
               <MovieCard
                 movie={mergeAll(movieCredits)}

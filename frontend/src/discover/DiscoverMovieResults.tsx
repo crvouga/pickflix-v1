@@ -9,6 +9,7 @@ import { tagsToParams } from "./query/types";
 import { discoverActiveTags } from "./redux/discover-active-tags";
 import useDiscoverMovieQuery from "./useDiscoverQuery";
 import { useDebounce } from "use-debounce/lib";
+import useDiscoverLogic from "./useDiscoverLogic";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,11 +21,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-
-  const activeTags = useSelector(discoverActiveTags.selectors.activeTags);
-
+  const { activeTags } = useDiscoverLogic();
   const [discoverQueryParams] = useDebounce(tagsToParams(activeTags), 100);
-
   const { fetchMoreRef, data, error, canFetchMore } = useDiscoverMovieQuery(
     discoverQueryParams
   );

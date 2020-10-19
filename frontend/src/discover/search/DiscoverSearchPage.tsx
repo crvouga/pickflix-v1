@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { DiscoverMovieTag } from "../query/types";
-import { discoverActiveTags } from "../redux/discover-active-tags";
+import useDiscoverLogic from "../useDiscoverLogic";
 import SearchBar from "./SearchBar";
 import SearchResults from "./SearchResults";
 
@@ -11,9 +11,10 @@ export default () => {
 
   const history = useHistory();
   const [searchQuery, setSearchQuery] = useState("");
+  const discoverLogic = useDiscoverLogic();
 
   const handleClick = (tag: DiscoverMovieTag) => {
-    dispatch(discoverActiveTags.actions.setActiveTags([tag]));
+    discoverLogic.activateTag(tag);
     history.push("/discover");
   };
 

@@ -5,6 +5,7 @@ import { DiscoverMovieTag, TagType } from "../query/types";
 import { discoverTags } from "../redux/discover-tags";
 import useSearchQuery from "./useSearchQuery";
 import { useDebounce } from "use-debounce";
+import useDiscoverLogic from "../useDiscoverLogic";
 type Props = {
   searchQuery: string;
 };
@@ -16,7 +17,7 @@ const filter = (searchQuery: string, tags: DiscoverMovieTag[]) => {
 };
 
 export default ({ searchQuery }: Props) => {
-  const tags = useSelector(discoverTags.selectors.tags);
+  const { tags } = useDiscoverLogic();
 
   const filteredTags = filter(searchQuery, tags);
 
