@@ -1,9 +1,8 @@
 import { Box, IconButton, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import { useParams } from "react-router";
-import useActions from "./useActions";
-import useAutoListLogic from "../../lists/auto-list/useAutoListLogic";
 import AutoListToggleButton from "../../lists/auto-list/AutoListToggleButton";
+import useActions from "./useActions";
 
 const useStylesIconButton = makeStyles((theme) => ({
   root: {

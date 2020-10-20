@@ -3,16 +3,15 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  ListItemIcon,
   makeStyles,
 } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router";
 import ErrorBox from "../../common/components/ErrorBox";
 import ListItemSkeleton from "../../common/components/ListItemSkeleton";
-import useAutoList from "./useAutoListLogic";
-import AutoListIcon from "./AutoListIcon";
 import { AutoListKey } from "../types";
+import AutoListIcon from "./AutoListIcon";
+import useAutoList from "./useAutoListLogic";
 
 const useStyles = makeStyles((theme) => ({
   icon: {

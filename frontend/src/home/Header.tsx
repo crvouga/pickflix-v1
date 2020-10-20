@@ -1,14 +1,12 @@
 import { makeStyles, Typography } from "@material-ui/core";
-
 import moment from "moment";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 import SwipeableViews from "react-swipeable-views";
 import AbsolutePositionBox from "../common/components/AbsolutePositionBox";
 import AspectRatio from "../common/components/AspectRatio";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { Movie } from "../tmdb/types";
-import { useHistory } from "react-router";
 
 const useStyles = makeStyles({
   box: {

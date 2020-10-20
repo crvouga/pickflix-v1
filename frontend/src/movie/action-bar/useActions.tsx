@@ -3,11 +3,9 @@ import PeopleOutlineIcon from "@material-ui/icons/PeopleOutline";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
 import React from "react";
-import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import AutoListIcon from "../../lists/auto-list/AutoListIcon";
 import useAutoListLogic from "../../lists/auto-list/useAutoListLogic";
-import { getListsFromListItem, queryKeys } from "../../lists/query";
 import { addListItemsForm } from "../../lists/redux/add-list-items-form";
 import useModal from "../../navigation/modals/useModal";
 import { TmdbMediaType } from "../../tmdb/types";
@@ -15,29 +13,6 @@ import { TmdbMediaType } from "../../tmdb/types";
 type Props = {
   tmdbMediaType: TmdbMediaType;
   tmdbMediaId: string;
-};
-
-const useCheckIsInList = ({
-  tmdbMediaType,
-  tmdbMediaId,
-}: {
-  tmdbMediaType: TmdbMediaType;
-  tmdbMediaId: string;
-}) => {
-  const query = useQuery(
-    queryKeys.listsFromListItemMedia({ tmdbMediaType, tmdbMediaId }),
-    () => getListsFromListItem({ tmdbMediaType, tmdbMediaId })
-  );
-
-  if (query.error || !query.data) {
-    return (listId: string) => false;
-  }
-
-  const lists = query.data;
-
-  return (listId: string) => {
-    return Boolean(lists.find((list) => listId === listId));
-  };
 };
 
 export default ({ tmdbMediaType, tmdbMediaId }: Props) => {

@@ -15,7 +15,6 @@ import undoable, {
 } from "redux-undo";
 import { AppState } from "../../redux/types";
 import { DiscoverMovieTag } from "../query/types";
-import { union, unionWith } from "ramda";
 
 const name = "discoverActiveTags";
 

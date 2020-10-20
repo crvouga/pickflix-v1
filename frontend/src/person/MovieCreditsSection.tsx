@@ -6,6 +6,8 @@ import { groupBy, mergeAll, thunkify, uniq } from "ramda";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import HorizontalScroll from "../common/components/HorizontalScroll";
+import OpenDiscoverButton from "../discover/OpenDiscoverButton";
+import { TagType } from "../discover/query/types";
 import MovieCard from "../movie/components/MovieCard";
 import Poster from "../movie/components/MoviePosterCard";
 import {
@@ -14,9 +16,6 @@ import {
   PersonMovieCreditsResponse,
 } from "../tmdb/types";
 import { personPageUi } from "./redux/person-page-ui";
-import matchSorter from "match-sorter";
-import OpenDiscoverButton from "../discover/OpenDiscoverButton";
-import { TagType } from "../discover/query/types";
 
 type Props = {
   credits: PersonMovieCreditsResponse;

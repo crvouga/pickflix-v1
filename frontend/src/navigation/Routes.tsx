@@ -1,12 +1,13 @@
-import { Container, CssBaseline } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import React from "react";
 import { Route, Switch } from "react-router";
 import AccountPage from "../auth/AccountPage";
 import SignInPage from "../auth/SignInPage";
 import DiscoverPage from "../discover/DiscoverMoviePage";
+import DiscoverSearchPage from "../discover/search/DiscoverSearchPage";
 import HomePage from "../home";
+import AutoListPage from "../lists/auto-list/AutoListPage";
 import ListPage from "../lists/ListPage";
-import WatchNextPage from "../lists/auto-list/AutoListPage";
 import MoviePage from "../movie";
 import CollectionPage from "../movie/collection/CollectionPage";
 import CreditsPage from "../movie/credits/CreditsPage";
@@ -17,8 +18,6 @@ import Snackbar from "../snackbar/Snackbar";
 import VideoPage from "../video/VideoPage";
 import Modals from "./modals/Modals";
 import NavigationBarBottom from "./NavigationBarBottom";
-import AutoListPage from "../lists/auto-list/AutoListPage";
-import DiscoverSearchPage from "../discover/search/DiscoverSearchPage";
 
 export default () => {
   return (

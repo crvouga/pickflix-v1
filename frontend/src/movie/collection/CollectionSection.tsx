@@ -1,7 +1,6 @@
 import { Box } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
-import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import backendAPI from "../../backendAPI";
 import { Collection } from "../../tmdb/types";
@@ -24,7 +23,6 @@ type CollectionSectionProps = {
 const CollectionSection = ({
   collection: { id: collectionId },
 }: CollectionSectionProps) => {
-  const dispatch = useDispatch();
   const history = useHistory();
 
   const query = useQuery(`/collection/${collectionId}`, () =>

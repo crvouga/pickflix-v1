@@ -1,15 +1,13 @@
 import { Box, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDebounce } from "use-debounce/lib";
 import ErrorBox from "../common/components/ErrorBox";
 import LoadingBox from "../common/components/LoadingBox";
 import Poster from "../movie/components/MoviePosterCard";
 import MoviePosterCardSkeleton from "../movie/components/MoviePosterCardSkeleton";
 import { tagsToParams } from "./query/types";
-import { discoverActiveTags } from "./redux/discover-active-tags";
-import useDiscoverMovieQuery from "./useDiscoverQuery";
-import { useDebounce } from "use-debounce/lib";
 import useDiscoverLogic from "./useDiscoverLogic";
+import useDiscoverMovieQuery from "./useDiscoverQuery";
 
 const useStyles = makeStyles((theme) => ({
   root: {

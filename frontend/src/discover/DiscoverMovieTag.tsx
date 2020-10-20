@@ -1,14 +1,14 @@
 import { Avatar, ChipProps } from "@material-ui/core";
 import BusinessIcon from "@material-ui/icons/Business";
 import React from "react";
-import makeTMDbImageURL, { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
+import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
 import { capitalizeWords } from "../utils";
 import Tag from "./BaseTag";
 import {
   DiscoverMovieTag,
-  yearRangeToName,
   sortByKeyToName,
   TagType,
+  yearRangeToName,
 } from "./query/types";
 
 type Props = ChipProps & {

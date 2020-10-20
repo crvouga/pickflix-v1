@@ -1,18 +1,19 @@
-import { takeEvery } from "redux-saga/effects";
+import { call, takeEvery } from "redux-saga/effects";
 import { auth } from "../auth/redux/auth";
 import { queryCache } from "./query-cache";
 
-/* 
-
-refetch all data associated when user signs in or out
-
-*/
-
 export function* querySaga() {
+  /* 
+    refetch all data associated when user signs in or out
+  */
   yield takeEvery(
     [auth.actions.signedOut, auth.actions.signedOut],
     function* () {
-      queryCache.invalidateQueries((query) => query.queryKey.includes("user"));
+      yield call(() => {
+        queryCache.invalidateQueries((query) => {
+          return query.queryKey.includes("user");
+        });
+      });
     }
   );
 }

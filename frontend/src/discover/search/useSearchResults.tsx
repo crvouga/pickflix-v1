@@ -1,11 +1,10 @@
 import matchSorter from "match-sorter";
 import { uniqBy } from "ramda";
-import { useSelector } from "react-redux";
-import { DiscoverMovieTag, TagType } from "../query/types";
-import { discoverTags } from "../redux/discover-tags";
-import useSearchQuery from "./useSearchQuery";
 import { useDebounce } from "use-debounce";
+import { DiscoverMovieTag, TagType } from "../query/types";
 import useDiscoverLogic from "../useDiscoverLogic";
+import useSearchQuery from "./useSearchQuery";
+
 type Props = {
   searchQuery: string;
 };

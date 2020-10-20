@@ -9,17 +9,12 @@ import {
   useTheme,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-import BookmarkIcon from "@material-ui/icons/Bookmark";
 import React from "react";
-import { useHistory } from "react-router";
-import ErrorBox from "../common/components/ErrorBox";
-import ListItemSkeleton from "../common/components/ListItemSkeleton";
-import useAutoList from "../lists/auto-list/useAutoListLogic";
+import AutoListListItem from "../lists/auto-list/AutoListListItem";
 import Lists from "../lists/Lists";
 import useModal from "../navigation/modals/useModal";
 import NavigationBarTopLevel from "../navigation/NavigationBarTopLevel";
 import RecentlyViewed from "./RecentlyViewed";
-import AutoListListItem from "../lists/auto-list/AutoListListItem";
 
 const CreateNewListListItem = () => {
   const theme = useTheme();

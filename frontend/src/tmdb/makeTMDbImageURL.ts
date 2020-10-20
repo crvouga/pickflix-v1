@@ -1,13 +1,12 @@
-import { AxiosResponse } from "axios";
+import { useQuery } from "react-query";
 import backendAPI from "../backendAPI";
 import {
-  PathKey,
-  SizesKey,
-  pathKeyToSizesKey,
-  TmdbConfiguration,
   ImagePaths,
+  PathKey,
+  pathKeyToSizesKey,
+  SizesKey,
+  TmdbConfiguration,
 } from "./types";
-import { useQuery } from "react-query";
 
 const clamp = (min: number, max: number, n: number) =>
   Math.max(min, Math.min(max, n));

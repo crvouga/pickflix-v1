@@ -35,7 +35,7 @@ export default (discoverMovieParams: DiscoverMovieQueryParams) => {
       query.fetchMore();
     }
     return () => {};
-  }, [inView]);
+  }, [query, inView]);
 
   return {
     ...query,

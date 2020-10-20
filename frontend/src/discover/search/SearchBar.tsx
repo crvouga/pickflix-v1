@@ -2,11 +2,11 @@ import {
   AppBar,
   IconButton,
   InputBase,
-  Toolbar,
   makeStyles,
+  Toolbar,
 } from "@material-ui/core";
 import ClearIcon from "@material-ui/icons/Clear";
-import React, { ChangeEvent, useRef, useEffect } from "react";
+import React, { ChangeEvent, useRef } from "react";
 import BackButton from "../../navigation/BackButton";
 
 type Props = {

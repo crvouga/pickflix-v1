@@ -3,8 +3,6 @@ import qs from 'qs';
 import config from '../../../configuration';
 import {MediaLogic} from '../build';
 
-const timeToLive = 1000 * 60 * 60 * 24 * 1;
-
 export async function requestTmdbData(
   this: MediaLogic,
   {

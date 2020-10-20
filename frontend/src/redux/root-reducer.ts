@@ -2,13 +2,13 @@ import { combineReducers, Reducer } from "@reduxjs/toolkit";
 import { authForm } from "../auth/auth-form/redux/auth-form";
 import { auth } from "../auth/redux/auth";
 import { discoverActiveTags } from "../discover/redux/discover-active-tags";
+import { discoverTags } from "../discover/redux/discover-tags";
 import { addListItemsForm } from "../lists/redux/add-list-items-form";
 import { history } from "../navigation/history/history";
 import { personPageUi } from "../person/redux/person-page-ui";
 import { search } from "../search/redux/search";
 import { snackbar } from "../snackbar/redux/snackbar";
 import { video } from "../video/redux/video";
-import { discoverTags } from "../discover/redux/discover-tags";
 import { AppState } from "./types";
 
 const reducers: { [key in keyof AppState]: Reducer } = {

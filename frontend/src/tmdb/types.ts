@@ -20,7 +20,7 @@ export type PathKey =
   | "backdropPath"
   | "stillPath";
 
-export const pathKeyToSizesKey: { [key in PathKey]: SizesKey } = {
+export const pathKeyToSizesKey = {
   backdropPath: "backdropSizes",
   logoPath: "logoSizes",
   posterPath: "posterSizes",

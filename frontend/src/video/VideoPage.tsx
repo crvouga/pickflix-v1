@@ -8,7 +8,6 @@ import NavigationBarTopLevel from "../navigation/NavigationBarTopLevel";
 import * as youtubeAPI from "../youtube/api";
 import YoutubeSection from "../youtube/Section";
 import PlaylistSection from "./PlaylistSection";
-import { VideoProgress } from "./redux/video";
 import { video } from "./redux/video";
 
 const useStyles = makeStyles((theme) => ({
@@ -32,10 +31,6 @@ export default () => {
 
   const handlePause = () => {
     dispatch(video.actions.setIsPlaying(false));
-  };
-
-  const handleProgress = (progress: VideoProgress) => {
-    dispatch(video.actions.progress(progress));
   };
 
   const handleReady = () => {

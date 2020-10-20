@@ -14,7 +14,7 @@ import * as utils from "../utils";
 
 // TODO: make better
 const titleToVariant = (title: string): TypographyVariant => {
-  const wordCount = title.split(" ").length;
+  // const wordCount = title.split(" ").length;
   const maxWordLength = title
     .split(" ")
     .map((_) => _.length)

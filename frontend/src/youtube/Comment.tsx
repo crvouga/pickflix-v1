@@ -1,12 +1,4 @@
-import {
-  Avatar,
-  IconButton,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
+import { Avatar, IconButton, makeStyles, Typography } from "@material-ui/core";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import moment from "moment";
 import numeral from "numeral";

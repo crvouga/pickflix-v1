@@ -15,7 +15,6 @@ import matchSorter from "match-sorter";
 import { groupBy } from "ramda";
 import React, { useRef, useState } from "react";
 import { useQuery } from "react-query";
-import { useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router";
 import backendAPI from "../../backendAPI";
 import ListItemSkeleton from "../../common/components/ListItemSkeleton";
@@ -119,7 +118,6 @@ const fetchMovieCredits = (movieId: string) =>
 
 export default () => {
   const history = useHistory();
-  const dispatch = useDispatch();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [searchText, setSearchText] = useState("");

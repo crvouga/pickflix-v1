@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import localforage from "localforage";
-import { persistReducer, persistStore, PersistConfig } from "redux-persist";
+import { persistReducer, persistStore } from "redux-persist";
 import createSagaMiddleware from "redux-saga";
 import { rootReducer } from "./root-reducer";
 import { rootSaga } from "./root-saga";

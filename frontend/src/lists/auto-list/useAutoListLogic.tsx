@@ -1,17 +1,12 @@
 import { Button } from "@material-ui/core";
-import BookmarkIcon from "@material-ui/icons/Bookmark";
-import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import React from "react";
-import { useQuery, useQueryCache } from "react-query";
+import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { snackbar } from "../../snackbar/redux/snackbar";
 import { TmdbMediaType } from "../../tmdb/types";
-import { getAutoList, queryKeys, deleteListItemsMutation } from "../query";
-import {
-  postListItem,
-  addListItemMutation,
-} from "../query/mutation/add-list-item";
+import { getAutoList, queryKeys } from "../query";
+import { addListItemMutation } from "../query/mutation/add-list-item";
 import { AutoListKey } from "../types";
 
 const SeeListButton = ({ autoListKey }: { autoListKey: AutoListKey }) => {

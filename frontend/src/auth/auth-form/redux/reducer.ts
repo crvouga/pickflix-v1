@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 import * as actions from "./actions";
-import { Step, initialState } from "./types";
+import { initialState } from "./types";
 
 export default createReducer(initialState, {
   [actions.setStatus.toString()]: (state, action) => {

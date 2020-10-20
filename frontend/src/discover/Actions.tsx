@@ -8,7 +8,6 @@ import TuneIcon from "@material-ui/icons/Tune";
 import UndoIcon from "@material-ui/icons/Undo";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router";
 import useModal from "../navigation/modals/useModal";
 import { discoverActiveTags } from "./redux/discover-active-tags";
 
@@ -53,10 +52,8 @@ export const ClearButton = (props: IconButtonProps) => {
 };
 
 export const AddButton = (props: IconButtonProps) => {
-  const history = useHistory();
   const discoverSearchModal = useModal("DiscoverSearch");
   const handleClick = () => {
-    // history.push("/discover/search");
     discoverSearchModal.open();
   };
   return (

@@ -50,7 +50,7 @@ export default () => {
       );
 
       if (listItemInfos.length > 0) {
-        const listItem = await addListItemMutation({
+        await addListItemMutation({
           ...listItemInfos[0],
           listId: list.id,
         });
@@ -67,15 +67,10 @@ export default () => {
     }
   };
 
-  const focus = () => {
-    if (inputRefTitle.current) {
-      inputRefTitle.current.focus();
-    }
-  };
-
   useEffect(() => {
     dispatch(addListItemsForm.actions.reset());
-  }, []);
+    return () => {};
+  }, [dispatch]);
 
   return (
     <Dialog

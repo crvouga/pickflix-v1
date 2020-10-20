@@ -1,6 +1,5 @@
-import { Box, Grow, Zoom } from "@material-ui/core";
+import { Box, Zoom } from "@material-ui/core";
 import React from "react";
-import LoadingBox from "../common/components/LoadingBox";
 import PickflixLogo from "../common/PickflixLogo";
 
 export default () => {
@@ -18,7 +17,6 @@ export default () => {
           <PickflixLogo marginBottom={4} scale={1.5} />
         </div>
       </Zoom>
-      {/* <LoadingBox CircularProgressProps={{ disableShrink: true }} /> */}
     </Box>
   );
 };

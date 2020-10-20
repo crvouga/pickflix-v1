@@ -10,7 +10,6 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import SearchIcon from "@material-ui/icons/Search";
 import { useViewportScroll } from "framer-motion";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
 type Props = {
@@ -53,7 +52,7 @@ export default (props: Props) => {
   const { title, scrollHeightUntilFullOpacity = 200 } = props;
   const opacity = useOpacity(scrollHeightUntilFullOpacity);
   const classes = useStyles({ opacity });
-  const dispatch = useDispatch();
+
   const history = useHistory();
 
   const onBack = () => {

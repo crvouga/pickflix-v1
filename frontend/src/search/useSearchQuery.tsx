@@ -42,7 +42,7 @@ export default (searchQuery: string) => {
       query.fetchMore();
     }
     return () => {};
-  }, [inView]);
+  }, [query, inView]);
 
   return {
     ...query,
