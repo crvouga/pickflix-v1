@@ -6,9 +6,9 @@ const name = "snackbar";
 
 */
 
-type SnackbarProps = {
+export type SnackbarProps = {
   message: string;
-  action?: React.ReactNode;
+  action?: React.ReactNode | JSX.Element;
 };
 
 export type SnackbarState = {

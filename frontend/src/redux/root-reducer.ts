@@ -3,7 +3,9 @@ import { authForm } from "../auth/auth-form/redux/auth-form";
 import { auth } from "../auth/redux/auth";
 import { discoverActiveTags } from "../discover/redux/discover-active-tags";
 import { discoverTags } from "../discover/redux/discover-tags";
-import { addListItemsForm } from "../lists/redux/add-list-items-form";
+import { addListForm } from "../lists/redux/add-list-form";
+import { addListItemForm } from "../lists/redux/add-list-item-form";
+import { editListForm } from "../lists/redux/edit-list-form";
 import { history } from "../navigation/history/history";
 import { personPageUi } from "../person/redux/person-page-ui";
 import { search } from "../search/redux/search";
@@ -12,7 +14,9 @@ import { video } from "../video/redux/video";
 import { AppState } from "./types";
 
 const reducers: { [key in keyof AppState]: Reducer } = {
-  addListItemsForm: addListItemsForm.reducer,
+  editListForm: editListForm.reducer,
+  addListForm: addListForm.reducer,
+  addListItemForm: addListItemForm.reducer,
   auth: auth.reducer,
   authForm: authForm.reducer,
   discoverTags: discoverTags.reducer,

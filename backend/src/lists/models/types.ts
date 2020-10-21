@@ -7,8 +7,8 @@ export type Dependencies = {
   isValidId: (id: string) => false | Id;
 };
 
-export type ListId = string & {isUUID: true; isListId: true};
-export type ListItemId = string & {isUUID: true; isListItemId: true};
+export type ListId = Id & {ListId: true};
+export type ListItemId = Id & {ListItemId: true};
 
 export type Visibility = 'public' | 'private';
 
@@ -35,6 +35,16 @@ export enum AutoListKeys {
   WatchNext = 'watch-next',
   Liked = 'liked',
 }
+
+type AutoListRecordId = Id & {AutoListRecordId: true};
+
+export type AutoListRecord = {
+  type: 'AutoListRecord';
+  id: AutoListRecordId;
+  listId: ListId;
+  userId: UserId;
+  key: AutoListKeys;
+};
 
 export type AutoList = {
   type: 'autoList';

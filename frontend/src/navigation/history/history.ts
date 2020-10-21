@@ -4,7 +4,7 @@ import {
   createSelector,
   PayloadAction,
 } from "@reduxjs/toolkit";
-import { dropRepeatsWith } from "ramda";
+import { uniqWith } from "ramda";
 import { AppState } from "../../redux/types";
 
 const name = "history";
@@ -64,7 +64,7 @@ const selectors = {
 const reducer = createReducer(initialState, {
   [actions.push.toString()]: (state, action: PayloadAction<Entity>) => {
     state.entities.push(action.payload);
-    state.entities = dropRepeatsWith(entityEquals, state.entities);
+    state.entities = uniqWith(entityEquals, state.entities);
   },
   [actions.clear.toString()]: (state, action) => {
     state.entities = [];

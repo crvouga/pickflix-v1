@@ -3,7 +3,7 @@ import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
 import React from "react";
-import { AutoListKey } from "../types";
+import { AutoListKey } from "./query/types";
 import { SvgIconProps } from "material-ui";
 
 type Props = SvgIconProps & {

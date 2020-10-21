@@ -10,8 +10,7 @@ import {
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import React from "react";
-import AutoListListItem from "../lists/auto-list/AutoListListItem";
-import Lists from "../lists/Lists";
+import ListList from "../lists/ListList";
 import useModal from "../navigation/modals/useModal";
 import NavigationBarTopLevel from "../navigation/NavigationBarTopLevel";
 import RecentlyViewed from "./RecentlyViewed";
@@ -51,9 +50,8 @@ export default () => {
           />
         </ListItem>
         <CreateNewListListItem />
-        <AutoListListItem autoListKey="watch-next" />
-        <AutoListListItem autoListKey="liked" />
-        <Lists />
+
+        <ListList />
       </List>
 
       <Divider />

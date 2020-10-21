@@ -6,7 +6,7 @@ import SignInPage from "../auth/SignInPage";
 import DiscoverPage from "../discover/DiscoverMoviePage";
 import DiscoverSearchPage from "../discover/search/DiscoverSearchPage";
 import HomePage from "../home";
-import AutoListPage from "../lists/auto-list/AutoListPage";
+
 import ListPage from "../lists/ListPage";
 import MoviePage from "../movie";
 import CollectionPage from "../movie/collection/CollectionPage";
@@ -38,7 +38,6 @@ export default () => {
           <Route path="/profile" component={ProfilePage} />
           <Route path="/account" component={AccountPage} />
           <Route path="/signIn" component={SignInPage} />
-          <Route path="/auto-list/:autoListKey" component={AutoListPage} />
         </Switch>
         <Snackbar />
         <NavigationBarBottom />

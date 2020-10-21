@@ -1,18 +1,18 @@
 import React from "react";
-import { useQuery } from "react-query";
 import { useHistory } from "react-router";
-import LoadingBox from "../common/components/LoadingBox";
 import ErrorBox from "../common/components/ErrorBox";
-import { getLists, queryKeys } from "./query";
+import LoadingBox from "../common/components/LoadingBox";
 import ListListItem from "./ListListItem";
+import { useQueryLists } from "./hooks/query";
 
 export default () => {
   const history = useHistory();
+
   const onClickList = (list: { id: string }) => () => {
     history.push(`/list/${list.id}`);
   };
 
-  const query = useQuery(queryKeys.lists(), getLists);
+  const query = useQueryLists();
 
   if (query.error) {
     return <ErrorBox />;

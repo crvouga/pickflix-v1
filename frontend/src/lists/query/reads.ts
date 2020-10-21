@@ -1,6 +1,6 @@
-import backendAPI from "../../../backendAPI";
-import { AutoList, List, ListItem, AutoListKey } from "../../types";
-import { TmdbMediaType } from "../../../tmdb/types";
+import backendAPI from "../../backendAPI";
+import { AutoList, List, ListItem, AutoListKey } from "./types";
+import { TmdbMediaType } from "../../tmdb/types";
 
 export const getLists = async () => {
   const { data } = await backendAPI.get<List[]>("/api/lists");

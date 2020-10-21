@@ -17,9 +17,8 @@ export const buildAttachCurrentUser = ({
     const firebaseId = decodedToken.uid;
     const currentUser = await userLogic.getElseCreateNew({firebaseId});
     req.currentUser = currentUser;
-  } catch (error) {
-    req.currentUser = null;
-  } finally {
     next();
+  } catch (error) {
+    res.status(401).json({message: 'authorization header required'}).end();
   }
 };

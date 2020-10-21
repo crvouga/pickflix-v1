@@ -1,10 +1,9 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
-import { useQuery } from "react-query";
 import ErrorBox from "../common/components/ErrorBox";
 import LoadingBox from "../common/components/LoadingBox";
 import Poster from "../movie/components/MoviePosterCard";
-import { getListItems, queryKeys } from "./query";
+import { useQueryListItems } from "./hooks/query";
 
 type Props = {
   listId: string;
@@ -12,9 +11,7 @@ type Props = {
 
 export default (props: Props) => {
   const { listId } = props;
-  const query = useQuery(queryKeys.listItems(listId), () =>
-    getListItems({ listId })
-  );
+  const query = useQueryListItems({ listId });
 
   if (query.error) {
     return <ErrorBox />;

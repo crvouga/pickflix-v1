@@ -4,11 +4,10 @@ import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
 import React from "react";
 import { useDispatch } from "react-redux";
-import AutoListIcon from "../../lists/auto-list/AutoListIcon";
-import useAutoListLogic from "../../lists/auto-list/useAutoListLogic";
-import { addListItemsForm } from "../../lists/redux/add-list-items-form";
+import AutoListIcon from "../../lists/AutoListIcon";
 import useModal from "../../navigation/modals/useModal";
 import { TmdbMediaType } from "../../tmdb/types";
+import useAddListItemForm from "../../lists/hooks/useAddListItemForm";
 
 type Props = {
   tmdbMediaType: TmdbMediaType;
@@ -16,43 +15,30 @@ type Props = {
 };
 
 export default ({ tmdbMediaType, tmdbMediaId }: Props) => {
-  const dispatch = useDispatch();
-
   const addListItemModal = useModal("AddListItem");
-  const watchNextList = useAutoListLogic("watch-next");
-  const likedList = useAutoListLogic("liked");
+  const addListItemForm = useAddListItemForm();
 
   return {
     like: {
       icon: <AutoListIcon autoListKey="liked" />,
       label: "Like",
-      onClick: async () => {
-        if (likedList.status === "success") {
-          await likedList.add({ tmdbMediaType, tmdbMediaId });
-        }
-      },
+      onClick: async () => {},
     },
     watchNext: {
       icon: <AutoListIcon autoListKey="watch-next" />,
       label: "Watch Next",
-      onClick: async () => {
-        if (watchNextList.status === "success") {
-          await watchNextList.add({ tmdbMediaType, tmdbMediaId });
-        }
-      },
+      onClick: async () => {},
     },
     addListItem: {
       icon: true ? <PlaylistAddIcon /> : <PlaylistAddCheckIcon />,
       label: "Save",
       onClick: () => {
-        dispatch(
-          addListItemsForm.actions.setListItemInfos([
-            {
-              tmdbMediaType,
-              tmdbMediaId,
-            },
-          ])
-        );
+        addListItemForm.setItemInfos([
+          {
+            tmdbMediaType,
+            tmdbMediaId,
+          },
+        ]);
         addListItemModal.open();
       },
     },
