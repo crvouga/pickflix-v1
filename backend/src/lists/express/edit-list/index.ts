@@ -21,6 +21,7 @@ export const editList = ({listLogic, middlewares}: Dependencies) => (
 
         res.json(editedList).end();
       } catch (error) {
+        console.log(error);
         next(error);
       }
     }

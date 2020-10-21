@@ -7,12 +7,7 @@ const buildRouterList = [buildListRouter, buildMediaRouter];
 
 const errorHandler: express.ErrorRequestHandler = (err, req, res, next) => {
   if (err) {
-    res
-      .status(400)
-      .json({
-        message: JSON.stringify(err),
-      })
-      .end();
+    res.status(400).json(err).end();
   } else {
     next();
   }

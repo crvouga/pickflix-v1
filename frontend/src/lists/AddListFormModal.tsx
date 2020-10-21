@@ -8,6 +8,7 @@ import {
   makeStyles,
   TextField,
 } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import React, { useEffect } from "react";
 import useModal from "../navigation/modals/useModal";
 import useAddListForm from "./hooks/useAddListForm";
@@ -49,6 +50,11 @@ export default () => {
     >
       <DialogTitle>Create List</DialogTitle>
       <DialogContent>
+        {addListForm.errors.map((error) => (
+          <Box key={error.message} paddingY={1}>
+            <Alert severity="error">{error.message}</Alert>
+          </Box>
+        ))}
         <Box marginBottom={2}>
           <TextField
             onChange={handleChange}

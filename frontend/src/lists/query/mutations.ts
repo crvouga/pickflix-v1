@@ -42,7 +42,6 @@ export const editListMutation = (queryCache: QueryCache) => async (
 
   try {
     const patchedList = await patchList(params);
-
     queryCache.setQueryData(key, patchedList);
   } catch (error) {
     queryCache.setQueryData(key, previous);

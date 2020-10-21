@@ -20,11 +20,12 @@ import {
 import CheckOutlinedIcon from "@material-ui/icons/CheckOutlined";
 import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import ErrorBox from "../common/components/ErrorBox";
 import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
 import { useQueryList, useQueryListItems } from "./hooks/query";
 import useEditListForm from "./hooks/useEditListForm";
+import { Alert } from "@material-ui/lab";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
@@ -46,14 +47,18 @@ export default ({ listId, ...DialogProps }: Props) => {
 
   const queryList = useQueryList({ listId });
   const queryListItems = useQueryListItems({ listId });
-  const list = queryList.data;
-  const listItems = queryListItems.data;
+
+  useEffect(() => {
+    if (DialogProps.open) {
+      editListForm.reset();
+    }
+  }, [DialogProps.open]);
 
   if (queryList.error || queryListItems.error) {
     return <ErrorBox />;
   }
 
-  if (!list || !listItems) {
+  if (!queryList.data || !queryListItems.data) {
     return null;
   }
 
@@ -61,16 +66,18 @@ export default ({ listId, ...DialogProps }: Props) => {
     DialogProps.onClose();
   };
 
+  const list = queryList.data;
+  const listItems = queryListItems.data;
+
   const handleSubmit = async () => {
     try {
       await editListForm.submit({
-        title: refTitle.current?.value || list.title,
-        description: refDescription.current?.value || list.description,
+        title: refTitle.current?.value || "",
+        description: refDescription.current?.value || "",
       });
+      handleClose();
     } catch (error) {
       console.error(error);
-    } finally {
-      handleClose();
     }
   };
 
@@ -89,6 +96,11 @@ export default ({ listId, ...DialogProps }: Props) => {
           </Toolbar>
         </AppBar>
         <Box p={2}>
+          {editListForm.errors.map((error) => (
+            <Box key={error.message} paddingY={1}>
+              <Alert severity="error">{error.message}</Alert>
+            </Box>
+          ))}
           <Box marginBottom={2}>
             <TextField
               defaultValue={list.title}
@@ -101,6 +113,7 @@ export default ({ listId, ...DialogProps }: Props) => {
             />
           </Box>
           <TextField
+            rowsMax={4}
             defaultValue={list.description}
             inputRef={refDescription}
             variant="outlined"

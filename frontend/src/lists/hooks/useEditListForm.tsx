@@ -5,10 +5,18 @@ import { deleteListItemsMutation, editListMutation } from "../query";
 import { ListItem } from "../query/types";
 
 const useEditListFormState = () => {
+  const [errors, setErrors] = useState<{ message: string }[]>([]);
   const [deletions, setDeletions] = useState<{ [id: string]: string }>({});
+  const reset = () => {
+    setErrors([]);
+    setDeletions({});
+  };
   return {
     deletions,
     setDeletions,
+    errors,
+    setErrors,
+    reset,
   };
 };
 
@@ -49,7 +57,10 @@ export default ({ listId }: { listId: string }) => {
 
       snackbar.display({ message: "Saved Changes" });
     } catch (error) {
-      snackbar.display({ message: "Something went wrong" });
+      const errors = error?.response?.data?.errors || [];
+      if (errors.length > 0) {
+        editListFormState.setErrors(errors);
+      }
       throw error;
     }
   };

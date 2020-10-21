@@ -35,7 +35,8 @@ export async function addListItems(
     }
 
     if (foundListItems.length > 0) {
-      throw new Error('try to add duplicate list item');
+      // throw new Error('try to add duplicate list item');
+      return [];
     }
 
     const [addedListItem] = await ListItems.add([listItem]);
