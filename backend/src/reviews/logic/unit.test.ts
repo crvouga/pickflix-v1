@@ -4,6 +4,7 @@ import {makeReviewFake} from '../models/make-review.fake';
 import {buildReviewLogicFake} from './build.fake';
 import {makeUser} from '../../users/models';
 import {ReviewVoteValue} from '../models/make-review-vote';
+import {TmdbMediaType} from '../../media/models/types';
 
 describe('review logic', () => {
   it('gets all reviews for a user', async () => {
@@ -13,7 +14,7 @@ describe('review logic', () => {
       makeReviewFake({
         authorId: user.id,
         tmdbMediaId: `${n}`,
-        tmdbMediaType: 'movie',
+        tmdbMediaType: TmdbMediaType.movie,
       })
     );
 
@@ -35,14 +36,14 @@ describe('review logic', () => {
       makeReviewFake({
         authorId: user.id,
         tmdbMediaId: `550`,
-        tmdbMediaType: 'movie',
+        tmdbMediaType: TmdbMediaType.movie,
       })
     );
 
     const added = await reviewLogic.addReviews(reviewsForMedia);
     const got = await reviewLogic.getReviews({
       tmdbMediaId: `550`,
-      tmdbMediaType: 'movie',
+      tmdbMediaType: TmdbMediaType.movie,
     });
     expect(added).toStrictEqual(got);
   });
@@ -56,7 +57,7 @@ describe('review logic', () => {
       makeReviewFake({
         authorId: user.id,
         tmdbMediaId: tmdbMediaId,
-        tmdbMediaType: 'movie',
+        tmdbMediaType: TmdbMediaType.movie,
       })
     );
     expect.assertions(1);
@@ -133,5 +134,28 @@ describe('review logic', () => {
     expect(after).toHaveLength(1);
   });
 
-  it.todo('get aggergated review');
+  it('get aggergated review', async () => {
+    const {reviewLogic} = buildReviewLogicFake();
+    const user = makeUserFake();
+    const review = await reviewLogic.addReview(makeReviewFake());
+
+    for (const voteValue of [
+      ReviewVoteValue.UP,
+      ReviewVoteValue.DOWN,
+      ReviewVoteValue.UP,
+    ]) {
+      await reviewLogic.castReviewVote({
+        reviewId: review.id,
+        userId: user.id,
+        voteValue,
+      });
+    }
+    const aggergated = await reviewLogic.getReview({
+      userId: user.id,
+      reviewId: review.id,
+    });
+    expect(aggergated?.review).toStrictEqual(review);
+    expect(aggergated?.reviewVoteValue).toStrictEqual(ReviewVoteValue.UP);
+    expect(aggergated?.reviewVoteCount).toStrictEqual(1);
+  });
 });

@@ -1,5 +1,6 @@
 import supertest from 'supertest';
 import {buildExpressAppFake} from '../../../express/build.fake';
+import {TmdbMediaType} from '../../../media/models/types';
 
 describe('/lists/{list-id}/list-items/{list-item-id}', () => {
   it('deletes list item', async done => {
@@ -18,7 +19,7 @@ describe('/lists/{list-id}/list-items/{list-item-id}', () => {
         userId: currentUser.id,
         listId: list.id,
         tmdbMediaId: '42',
-        tmdbMediaType: 'movie',
+        tmdbMediaType: TmdbMediaType.movie,
       },
     ]);
 

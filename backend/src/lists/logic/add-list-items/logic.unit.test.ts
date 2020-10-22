@@ -1,5 +1,6 @@
 import {makeUserFake} from '../../../users/models/make-user.fake';
 import {buildListLogicFake} from '../build.fake';
+import {TmdbMediaType} from '../../../media/models/types';
 describe('add list items to list', () => {
   it('throws if duplicate list items', async () => {
     const {listLogic} = buildListLogicFake();
@@ -19,18 +20,18 @@ describe('add list items to list', () => {
           userId: currentUser.id,
           listId: list.id,
           tmdbMediaId: '550',
-          tmdbMediaType: 'movie',
+          tmdbMediaType: TmdbMediaType.movie,
         },
         {
           userId: currentUser.id,
           tmdbMediaId: '550',
           listId: list.id,
-          tmdbMediaType: 'movie',
+          tmdbMediaType: TmdbMediaType.movie,
         },
         {
           userId: currentUser.id,
           tmdbMediaId: '550',
-          tmdbMediaType: 'movie',
+          tmdbMediaType: TmdbMediaType.movie,
           listId: list.id,
         },
       ])

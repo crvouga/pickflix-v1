@@ -23,13 +23,7 @@ export class ReviewLogic {
     return reviews;
   }
 
-  async getReviewAggergation({
-    userId,
-    reviewId,
-  }: {
-    userId?: UserId;
-    reviewId: ReviewId;
-  }) {
+  async getReview({userId, reviewId}: {userId?: UserId; reviewId: ReviewId}) {
     const {Reviews, ReviewVotes} = this.unitOfWork;
 
     const [[review], [reviewVote], reviewVoteCount] = await Promise.all([
@@ -43,14 +37,18 @@ export class ReviewLogic {
       }),
     ]);
 
+    if (!review) {
+      return null;
+    }
+
     return {
       review,
-      reviewVoteValue: reviewVote?.voteValue || undefined,
+      reviewVoteValue: reviewVote?.voteValue || null,
       reviewVoteCount,
     };
   }
 
-  async getReviewAggergations({
+  async getAllReviewsForMedia({
     tmdbMediaId,
     tmdbMediaType,
     userId,
@@ -65,7 +63,10 @@ export class ReviewLogic {
     });
     const aggergations = await Promise.all(
       foundReviews.map(review =>
-        this.getReviewAggergation({reviewId: review.id, userId})
+        this.getReview({
+          reviewId: review.id,
+          userId,
+        })
       )
     );
     return aggergations;
@@ -139,9 +140,15 @@ export class ReviewLogic {
     return added;
   }
 
-  async uncastReviewVote({reviewId}: {reviewId: ReviewId}) {
+  async uncastReviewVote({
+    userId,
+    reviewId,
+  }: {
+    userId: UserId;
+    reviewId: ReviewId;
+  }) {
     const {ReviewVotes} = this.unitOfWork;
-    const [found] = await ReviewVotes.find({reviewId});
+    const [found] = await ReviewVotes.find({userId, reviewId});
     if (!found) {
       throw new Error("Can't remove review vote that doesn't exists.");
     }

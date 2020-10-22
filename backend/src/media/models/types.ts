@@ -1,4 +1,7 @@
-export type TmdbMediaType = 'movie' | 'tv' | 'person';
+export enum TmdbMediaType {
+  movie = 'movie',
+  tv = 'tv',
+}
 
 export type TmdbMedia = {
   tmdbMediaId: string;

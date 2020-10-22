@@ -1,5 +1,6 @@
 import {buildListLogicFake} from '../build.fake';
 import {makeUserFake} from '../../../users/models/make-user.fake';
+import {TmdbMediaType} from '../../../media/models/types';
 
 describe('getting list items', () => {
   it('get aggergated list items', async () => {
@@ -15,7 +16,7 @@ describe('getting list items', () => {
         userId: user.id,
         listId: list.id,
         tmdbMediaId: `${n}`,
-        tmdbMediaType: 'movie',
+        tmdbMediaType: TmdbMediaType.movie,
       }))
     );
 

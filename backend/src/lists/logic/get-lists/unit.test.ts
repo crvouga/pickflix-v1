@@ -17,7 +17,7 @@ describe('getting lists', () => {
         userId: user.id,
         listId: list.id,
         tmdbMediaId: '550',
-        tmdbMediaType: 'movie',
+        tmdbMediaType: TmdbMediaType.movie,
       },
     ]);
 
