@@ -1,4 +1,5 @@
 import {
+  ListItemProps,
   Avatar,
   ListItem,
   ListItemAvatar,
@@ -12,18 +13,18 @@ import { useHistory } from "react-router";
 import { toYear } from "../../person/utils";
 import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
 
-type Props = {
+type Props = ListItemProps & {
   movie: {
     id: string;
     title: string;
     releaseDate: string;
-    posterPath?: string;
-    backdropPath?: string;
+    posterPath?: string | null;
+    backdropPath?: string | null;
   };
 };
 
 export default (props: Props) => {
-  const { movie } = props;
+  const { movie, ...ListItemProps } = props;
   const { title, releaseDate, id, posterPath, backdropPath } = movie;
   const src = makeTMDbImageURL(
     2,
@@ -46,9 +47,9 @@ export default (props: Props) => {
         primary={title}
         secondary={releaseDate ? toYear(releaseDate) : undefined}
       />
-      <ListItemSecondaryAction>
+      {/* <ListItemSecondaryAction>
         <LaunchIcon />
-      </ListItemSecondaryAction>
+      </ListItemSecondaryAction> */}
     </ListItem>
   );
 };

@@ -1,6 +1,6 @@
 import supertest from 'supertest';
 import {buildExpressAppFake} from '../../../express/build.fake';
-import {TmdbMediaType} from '../../../media/models/types';
+import {TmdbMediaType, TmdbMediaId} from '../../../media/models/types';
 
 describe('GET /list-items/lists', () => {
   it('gets list from list item media', async done => {
@@ -15,7 +15,7 @@ describe('GET /list-items/lists', () => {
     ]);
 
     const tmdbMediaInfo = {
-      tmdbMediaId: '550',
+      tmdbMediaId: 550 as TmdbMediaId,
       tmdbMediaType: 'movie' as TmdbMediaType,
     };
     const listItemInfo = {

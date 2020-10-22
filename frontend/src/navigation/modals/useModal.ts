@@ -3,6 +3,7 @@ import { useHistory, useLocation } from "react-router";
 export type ModalName =
   | "AddListItem"
   | "AddList"
+  | "ReviewForm"
   | "DiscoverSort"
   | "DiscoverSearch"
   | "DiscoverTune";

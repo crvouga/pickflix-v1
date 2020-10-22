@@ -1,4 +1,4 @@
-import {TmdbMediaType} from '../../media/models/types';
+import {TmdbMediaType, TmdbMediaId} from '../../media/models/types';
 import {IUnitOfWork} from '../../unit-of-work/types';
 import {UserId} from '../../users/models/types';
 import {makeReview, PartialReview, ReviewId} from '../models/make-review';
@@ -14,68 +14,72 @@ export class ReviewLogic {
   async getReviews(
     reviewInfo:
       | {authorId: UserId}
-      | {tmdbMediaId: string; tmdbMediaType: TmdbMediaType}
+      | {tmdbMediaId: TmdbMediaId; tmdbMediaType: TmdbMediaType}
   ) {
-    const {Reviews} = this.unitOfWork;
-
-    const reviews = await Reviews.find(reviewInfo);
-
-    return reviews;
+    return await this.unitOfWork.Reviews.find(reviewInfo);
   }
 
-  async getReview({userId, reviewId}: {userId?: UserId; reviewId: ReviewId}) {
-    const {Reviews, ReviewVotes} = this.unitOfWork;
-
+  async getAggregation({
+    userId,
+    reviewId,
+  }: {
+    userId?: UserId;
+    reviewId: ReviewId;
+  }) {
     const [[review], [reviewVote], reviewVoteCount] = await Promise.all([
-      Reviews.get([reviewId]),
-      ReviewVotes.find({
+      this.unitOfWork.Reviews.get([reviewId]),
+      this.unitOfWork.ReviewVotes.find({
         reviewId,
         userId,
       }),
-      ReviewVotes.count({
+      this.unitOfWork.ReviewVotes.count({
         reviewId,
       }),
     ]);
 
     if (!review) {
-      return null;
+      throw new Error('Review does not exists.');
     }
 
-    return {
+    const aggergation = {
       review,
       reviewVoteValue: reviewVote?.voteValue || null,
       reviewVoteCount,
     };
+
+    return aggergation;
   }
 
-  async getAllReviewsForMedia({
+  async getAllAggergationsForMedia({
     tmdbMediaId,
     tmdbMediaType,
     userId,
   }: {
     userId?: UserId;
-    tmdbMediaId: string;
+    tmdbMediaId: TmdbMediaId;
     tmdbMediaType: TmdbMediaType;
   }) {
     const foundReviews = await this.unitOfWork.Reviews.find({
       tmdbMediaId,
       tmdbMediaType,
     });
+
     const aggergations = await Promise.all(
       foundReviews.map(review =>
-        this.getReview({
+        this.getAggregation({
           reviewId: review.id,
           userId,
         })
       )
     );
+
     return aggergations;
   }
 
   async addReview(partialReview: PartialReview) {
-    const {Reviews} = this.unitOfWork;
     const review = makeReview(partialReview);
-    const found = await Reviews.find({
+
+    const found = await this.unitOfWork.Reviews.find({
       authorId: review.authorId,
       tmdbMediaId: review.tmdbMediaId,
       tmdbMediaType: review.tmdbMediaType,
@@ -84,7 +88,9 @@ export class ReviewLogic {
     if (found.length > 0) {
       throw new Error('A user can only have one review per media');
     }
-    const [added] = await Reviews.add([review]);
+
+    const [added] = await this.unitOfWork.Reviews.add([review]);
+
     return added;
   }
 

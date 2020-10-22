@@ -1,10 +1,9 @@
 import {makeId} from '../../id';
+import {TmdbMediaId, TmdbMediaType} from '../../media/models/types';
 import {makeUserFake} from '../../users/models/make-user.fake';
+import {ReviewVoteValue} from '../models/make-review-vote';
 import {makeReviewFake} from '../models/make-review.fake';
 import {buildReviewLogicFake} from './build.fake';
-import {makeUser} from '../../users/models';
-import {ReviewVoteValue} from '../models/make-review-vote';
-import {TmdbMediaType} from '../../media/models/types';
 
 describe('review logic', () => {
   it('gets all reviews for a user', async () => {
@@ -13,7 +12,7 @@ describe('review logic', () => {
     const reviewsByUser = [1, 2, 3].map(n =>
       makeReviewFake({
         authorId: user.id,
-        tmdbMediaId: `${n}`,
+        tmdbMediaId: n,
         tmdbMediaType: TmdbMediaType.movie,
       })
     );
@@ -35,14 +34,14 @@ describe('review logic', () => {
     const reviewsForMedia = users.map(user =>
       makeReviewFake({
         authorId: user.id,
-        tmdbMediaId: `550`,
+        tmdbMediaId: 550,
         tmdbMediaType: TmdbMediaType.movie,
       })
     );
 
     const added = await reviewLogic.addReviews(reviewsForMedia);
     const got = await reviewLogic.getReviews({
-      tmdbMediaId: `550`,
+      tmdbMediaId: 550,
       tmdbMediaType: TmdbMediaType.movie,
     });
     expect(added).toStrictEqual(got);
@@ -52,11 +51,11 @@ describe('review logic', () => {
     const {reviewLogic} = buildReviewLogicFake();
 
     const user = makeUserFake();
-    const tmdbMediaId = '550';
+    const tmdbMediaId: TmdbMediaId = 550;
     const reviewsOnSameMedia = [1, 2].map(n =>
       makeReviewFake({
         authorId: user.id,
-        tmdbMediaId: tmdbMediaId,
+        tmdbMediaId,
         tmdbMediaType: TmdbMediaType.movie,
       })
     );
@@ -150,7 +149,7 @@ describe('review logic', () => {
         voteValue,
       });
     }
-    const aggergated = await reviewLogic.getReview({
+    const aggergated = await reviewLogic.getAggregation({
       userId: user.id,
       reviewId: review.id,
     });

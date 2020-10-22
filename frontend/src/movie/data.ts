@@ -46,10 +46,11 @@ export const fetchMoviePage = async (movieId: string) => {
   return data;
 };
 
+export const useQueryMovie = ({ tmdbMediaId }: { tmdbMediaId: string }) => {
+  return useQuery(["movie", tmdbMediaId], () => fetchMoviePage(tmdbMediaId));
+};
+
 export const useMoviePageQuery = () => {
   const { movieId } = useParams<{ movieId: string }>();
-
-  const query = useQuery(`/movie/${movieId}`, () => fetchMoviePage(movieId));
-
-  return query;
+  return useQueryMovie({ tmdbMediaId: movieId });
 };

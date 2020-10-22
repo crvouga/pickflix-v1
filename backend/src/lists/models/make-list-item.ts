@@ -1,13 +1,12 @@
-import {Dependencies, ListItem, ListId, ListItemId} from './types';
-import {Id} from '../../id/types';
-import {TmdbMediaType} from '../../media/models/types';
+import {TmdbMediaId, TmdbMediaType} from '../../media/models/types';
 import {UserId} from '../../users/models/types';
+import {Dependencies, ListId, ListItem, ListItemId} from './types';
 
 export type PartialListItem = {
   id?: ListItemId;
   userId: UserId;
   listId: ListId;
-  tmdbMediaId: string;
+  tmdbMediaId: TmdbMediaId;
   tmdbMediaType: TmdbMediaType;
   createdAt?: number;
 };
@@ -48,7 +47,7 @@ export const buildMakeListItem = ({makeId, isValidId}: Dependencies) => (
     throw new Error('tmdb id required');
   }
 
-  if (tmdbMediaId && tmdbMediaId.length === 0) {
+  if (tmdbMediaId && typeof tmdbMediaId !== 'number') {
     throw new Error('invalid tmdb id');
   }
 

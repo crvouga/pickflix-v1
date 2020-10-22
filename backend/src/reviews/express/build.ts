@@ -1,6 +1,6 @@
 import {Handler, IRouter} from 'express';
 import {body, param, query, validationResult} from 'express-validator';
-import {TmdbMediaType} from '../../media/models/types';
+import {TmdbMediaId, TmdbMediaType} from '../../media/models/types';
 import {User} from '../../users/models/types';
 import {ReviewId} from '../models/make-review';
 import {ReviewVoteValue} from '../models/make-review-vote';
@@ -18,6 +18,34 @@ export const buildReviewsRouter = ({
   reviewLogic,
   middlewares,
 }: Dependencies) => (router: IRouter) => {
+  router.get(
+    '/reviews',
+    middlewares.attachCurrentUser,
+    query('tmdbMediaId').isString(),
+    query('tmdbMediaType').isIn(Object.values(TmdbMediaType)),
+    handleValidationResult,
+    async (req, res, next) => {
+      try {
+        const currentUser = req.currentUser as User | undefined;
+        const tmdbMediaId = Number(req.query.tmdbMediaId) as TmdbMediaId;
+        const tmdbMediaType = req.query.tmdbMediaType as TmdbMediaType;
+
+        const reviewAggergations = await reviewLogic.getAllAggergationsForMedia(
+          {
+            userId: currentUser?.id,
+            tmdbMediaId,
+            tmdbMediaType,
+          }
+        );
+
+        res.status(200).json(reviewAggergations).end();
+      } catch (error) {
+        console.log(error);
+        next(error);
+      }
+    }
+  );
+
   router.delete(
     '/reviews/:reviewId',
     middlewares.authenticate,
@@ -38,7 +66,7 @@ export const buildReviewsRouter = ({
     '/reviews',
     middlewares.authenticate,
     body('content').isString(),
-    body('tmdbMediaType').isString(),
+    body('tmdbMediaId').exists(),
     body('tmdbMediaType').isIn(Object.values(TmdbMediaType)),
     handleValidationResult,
     async (req, res, next) => {
@@ -47,7 +75,7 @@ export const buildReviewsRouter = ({
         const authorId = currentUser.id;
 
         const content = req.body.content as string;
-        const tmdbMediaId = req.body.tmdbMediaId as string;
+        const tmdbMediaId = Number(req.body.tmdbMediaId) as TmdbMediaId;
         const tmdbMediaType = req.body.tmdbMediaType as TmdbMediaType;
 
         const review = await reviewLogic.addReview({
@@ -56,6 +84,7 @@ export const buildReviewsRouter = ({
           tmdbMediaId,
           tmdbMediaType,
         });
+
         res.status(201).json(review).end();
       } catch (error) {
         next(error);
@@ -83,31 +112,6 @@ export const buildReviewsRouter = ({
         });
 
         res.status(201).json(review).end();
-      } catch (error) {
-        next(error);
-      }
-    }
-  );
-
-  router.get(
-    '/reviews',
-    middlewares.attachCurrentUser,
-    query('tmdbMediaId').isString(),
-    query('tmdbMediaType').isIn(Object.values(TmdbMediaType)),
-    handleValidationResult,
-    async (req, res, next) => {
-      try {
-        const currentUser = req.currentUser as User | undefined;
-        const tmdbMediaId = req.query.tmdbMediaId as string;
-        const tmdbMediaType = req.query.tmdbMediaType as TmdbMediaType;
-
-        const reviews = await reviewLogic.getAllReviewsForMedia({
-          userId: currentUser?.id,
-          tmdbMediaId,
-          tmdbMediaType,
-        });
-
-        res.status(200).json(reviews).end();
       } catch (error) {
         next(error);
       }

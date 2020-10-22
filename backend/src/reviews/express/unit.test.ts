@@ -1,10 +1,35 @@
 import supertest from 'supertest';
 import {buildExpressAppFake} from '../../express/build.fake';
-import {makeUserFake} from '../../users/models/make-user.fake';
-import {makeReviewFake} from '../models/make-review.fake';
 import {TmdbMediaType} from '../../media/models/types';
+import {makeUserFake} from '../../users/models/make-user.fake';
+import {ReviewId} from '../models/make-review';
+import {makeReviewFake} from '../models/make-review.fake';
 
 describe('/api/reviews', () => {
+  it('POST then GET', async () => {
+    const {app} = await buildExpressAppFake();
+
+    const before = await supertest(app).get('/api/reviews').query({
+      tmdbMediaId: '550',
+      tmdbMediaType: TmdbMediaType.movie,
+    });
+
+    const posted = await supertest(app).post('/api/reviews').send({
+      content: 'cool movie',
+      tmdbMediaId: '550',
+      tmdbMediaType: TmdbMediaType.movie,
+    });
+
+    const after = await supertest(app).get('/api/reviews').query({
+      tmdbMediaId: '550',
+      tmdbMediaType: TmdbMediaType.movie,
+    });
+
+    expect(before.body).toHaveLength(0);
+    expect(after.body).toHaveLength(1);
+    expect(after.body[0].review).toEqual(expect.objectContaining(posted.body));
+  });
+
   it('GET /reviews?tmdbMediaId=...&tmdbMediaType=...', async () => {
     const {app, reviewLogic, currentUser} = await buildExpressAppFake();
 
@@ -16,16 +41,16 @@ describe('/api/reviews', () => {
       );
     }
 
-    const expected = await reviewLogic.getAllReviewsForMedia({
+    const expected = await reviewLogic.getAllAggergationsForMedia({
       userId: currentUser.id,
-      tmdbMediaId: '550',
+      tmdbMediaId: 550,
       tmdbMediaType: TmdbMediaType.movie,
     });
 
     const response = await supertest(app)
       .get('/api/reviews')
       .query({
-        tmdbMediaId: '550',
+        tmdbMediaId: 550,
         tmdbMediaType: TmdbMediaType.movie,
       })
       .expect(200);

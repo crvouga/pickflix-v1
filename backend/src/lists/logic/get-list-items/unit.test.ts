@@ -15,7 +15,7 @@ describe('getting list items', () => {
       [1, 2, 3, 4, 5].map(n => ({
         userId: user.id,
         listId: list.id,
-        tmdbMediaId: `${n}`,
+        tmdbMediaId: n,
         tmdbMediaType: TmdbMediaType.movie,
       }))
     );

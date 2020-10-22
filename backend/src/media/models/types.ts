@@ -1,10 +1,11 @@
+export type TmdbMediaId = number;
 export enum TmdbMediaType {
   movie = 'movie',
   tv = 'tv',
 }
 
 export type TmdbMedia = {
-  tmdbMediaId: string;
+  tmdbMediaId: TmdbMediaId;
   tmdbMediaType: TmdbMediaType;
   tmdbData?: any;
 };

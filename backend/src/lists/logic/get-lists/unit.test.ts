@@ -1,6 +1,6 @@
-import {buildListLogicFake} from '../build.fake';
+import {TmdbMediaId, TmdbMediaType} from '../../../media/models/types';
 import {makeUserFake} from '../../../users/models/make-user.fake';
-import {TmdbMediaType} from '../../../media/models/types';
+import {buildListLogicFake} from '../build.fake';
 
 describe('getting lists', () => {
   it('gets aggergated lists by ownerId or listId', async () => {
@@ -16,7 +16,7 @@ describe('getting lists', () => {
       {
         userId: user.id,
         listId: list.id,
-        tmdbMediaId: '550',
+        tmdbMediaId: 550,
         tmdbMediaType: TmdbMediaType.movie,
       },
     ]);
@@ -57,7 +57,7 @@ describe('get lists from list item', () => {
 
     const listItemInfo = {
       userId: user.id,
-      tmdbMediaId: '550',
+      tmdbMediaId: 550 as TmdbMediaId,
       tmdbMediaType: 'movie' as TmdbMediaType,
     };
 

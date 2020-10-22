@@ -18,7 +18,7 @@ describe('/lists/{list-id}/list-items/{list-item-id}', () => {
       {
         userId: currentUser.id,
         listId: list.id,
-        tmdbMediaId: '42',
+        tmdbMediaId: 42,
         tmdbMediaType: TmdbMediaType.movie,
       },
     ]);

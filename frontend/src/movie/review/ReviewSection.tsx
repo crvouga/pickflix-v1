@@ -9,12 +9,21 @@ import React from "react";
 import CurrentUserAvatar from "../../auth/CurrentUserAvatar";
 import { useMoviePageQuery } from "../data";
 import Review from "./Review";
+import ReviewList from "../../reviews/ReviewList";
+import ReviewFormModal from "../../reviews/ReviewFormModal";
+import useBoolean from "../../common/hooks/useBoolean";
+import useModal from "../../navigation/modals/useModal";
 
 export default () => {
   const query = useMoviePageQuery();
-  if (!query.data) return null;
 
-  const { reviews } = query.data;
+  const reviewFormModal = useModal("ReviewForm");
+
+  if (!query.data) {
+    return null;
+  }
+
+  const { reviews, id } = query.data;
 
   return (
     <React.Fragment>
@@ -29,7 +38,7 @@ export default () => {
           />
         </ListItem>
 
-        <ListItem divider button>
+        <ListItem divider button onClick={reviewFormModal.open}>
           <ListItemAvatar>
             <CurrentUserAvatar />
           </ListItemAvatar>
@@ -42,6 +51,11 @@ export default () => {
           </ListItemSecondaryAction> */}
         </ListItem>
       </List>
+
+      <ReviewFormModal tmdbMediaId={query.data.id} tmdbMediaType="movie" />
+
+      <ReviewList tmdbMediaId={query.data.id} tmdbMediaType="movie" />
+
       {reviews.results.map((review, index) => (
         <React.Fragment key={review.id}>
           <Review key={review.id} review={review} p={2} marginY={2} />

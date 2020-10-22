@@ -1,4 +1,4 @@
-import {TmdbMediaType} from '../../../media/models/types';
+import {TmdbMediaType, TmdbMediaId} from '../../../media/models/types';
 import {UserId} from '../../../users/models/types';
 import {AutoListKeys, ListId} from '../../models/types';
 import {ListLogic} from '../build';
@@ -62,7 +62,7 @@ export async function getListsFromListItem(
     tmdbMediaType,
   }: {
     userId: UserId;
-    tmdbMediaId: string;
+    tmdbMediaId: TmdbMediaId;
     tmdbMediaType: TmdbMediaType;
   }
 ) {

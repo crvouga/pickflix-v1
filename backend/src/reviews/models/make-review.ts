@@ -1,7 +1,7 @@
 import {Id} from '../../id/types';
 import {makeId, isValidId} from '../../id';
 import {UserId} from '../../users/models/types';
-import {TmdbMediaType} from '../../media/models/types';
+import {TmdbMediaType, TmdbMediaId} from '../../media/models/types';
 
 export type ReviewId = Id & {ReviewId: true};
 
@@ -10,7 +10,7 @@ export type Review = {
   authorId: UserId;
   content: string;
   createdAt: number;
-  tmdbMediaId: string;
+  tmdbMediaId: TmdbMediaId;
   tmdbMediaType: TmdbMediaType;
 };
 
@@ -19,7 +19,7 @@ export type PartialReview = {
   authorId: UserId;
   content: string;
   createdAt?: number;
-  tmdbMediaId: string;
+  tmdbMediaId: TmdbMediaId;
   tmdbMediaType: TmdbMediaType;
 };
 

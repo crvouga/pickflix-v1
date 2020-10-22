@@ -19,18 +19,18 @@ describe('add list items to list', () => {
         {
           userId: currentUser.id,
           listId: list.id,
-          tmdbMediaId: '550',
+          tmdbMediaId: 550,
           tmdbMediaType: TmdbMediaType.movie,
         },
         {
           userId: currentUser.id,
-          tmdbMediaId: '550',
+          tmdbMediaId: 550,
           listId: list.id,
           tmdbMediaType: TmdbMediaType.movie,
         },
         {
           userId: currentUser.id,
-          tmdbMediaId: '550',
+          tmdbMediaId: 550,
           tmdbMediaType: TmdbMediaType.movie,
           listId: list.id,
         },
