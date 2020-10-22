@@ -70,6 +70,7 @@ export const deleteListMutation = (queryCache: QueryCache) => async (
 
   try {
     await deleteList(params);
+    queryCache.removeQueries(queryKeys.list(listId));
   } catch (error) {
     queryCache.setQueryData(key, previous);
     throw error;

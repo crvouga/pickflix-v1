@@ -4,7 +4,7 @@ import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
 import React from "react";
 import { AutoListKey } from "./query/types";
-import { SvgIconProps } from "material-ui";
+import { SvgIconProps } from "@material-ui/core";
 
 type Props = SvgIconProps & {
   autoListKey: AutoListKey;

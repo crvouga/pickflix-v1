@@ -5,6 +5,10 @@ import {
   IListRepository,
 } from '../lists/repositories/types';
 import {IUserRepository} from '../users/repositories/types';
+import {
+  IReviewRepository,
+  IReviewVoteRepository,
+} from '../reviews/repositories/types';
 
 export interface IUnitOfWork {
   begin(): Promise<void>;
@@ -16,6 +20,8 @@ export interface IUnitOfWork {
   Users: IUserRepository;
   Likes: ILikeRepository;
   AutoLists: IAutoListRepository;
+  Reviews: IReviewRepository;
+  ReviewVotes: IReviewVoteRepository;
 }
 
 export interface Identifiable {

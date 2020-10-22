@@ -24,7 +24,7 @@ const buildRouterList = [
   getListsFromListItem,
 ];
 
-export const buildListRouter = (dependencies: Dependencies) => (
+export const buildListsRouter = (dependencies: Dependencies) => (
   router: express.IRouter
 ) => {
   for (const buildRouter of buildRouterList) {

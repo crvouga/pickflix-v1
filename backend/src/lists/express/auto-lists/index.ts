@@ -16,7 +16,7 @@ export const autoLists = ({listLogic, middlewares}: Dependencies) => (
   router: IRouter
 ) => {
   const autoListMiddlewares = [
-    middlewares.attachCurrentUser,
+    middlewares.authenticate,
     param('autoListKey').isIn(Object.values(AutoListKeys)),
     handleValidationResult,
   ];

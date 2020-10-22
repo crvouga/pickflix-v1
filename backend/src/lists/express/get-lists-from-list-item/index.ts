@@ -9,7 +9,7 @@ export const getListsFromListItem = ({
 }: Dependencies) => (router: IRouter) => {
   router.get(
     '/list-items/lists',
-    middlewares.attachCurrentUser,
+    middlewares.authenticate,
     async (req, res, next) => {
       try {
         const currentUser = req.currentUser as User;

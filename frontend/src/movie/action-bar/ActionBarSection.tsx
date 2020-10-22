@@ -27,7 +27,11 @@ export default () => {
     tmdbMediaType: "movie",
   });
 
-  const actionBarItems = [movieActions.addListItem, movieActions.watchWith];
+  const actionBarItems = [
+    movieActions.like,
+    movieActions.watchNext,
+    movieActions.addListItem,
+  ];
 
   return (
     <Box display="flex" justifyContent="space-around" flexWrap="nowrap">

@@ -8,7 +8,7 @@ export const editList = ({listLogic, middlewares}: Dependencies) => (
 ) => {
   router.patch(
     '/lists/:listId',
-    middlewares.attachCurrentUser,
+    middlewares.authenticate,
     async (req, res, next) => {
       try {
         const listId = req.params.listId as ListId;
@@ -21,7 +21,6 @@ export const editList = ({listLogic, middlewares}: Dependencies) => (
 
         res.json(editedList).end();
       } catch (error) {
-        console.log(error);
         next(error);
       }
     }

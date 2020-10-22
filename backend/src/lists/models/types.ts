@@ -10,8 +10,6 @@ export type Dependencies = {
 export type ListId = Id & {ListId: true};
 export type ListItemId = Id & {ListItemId: true};
 
-export type Visibility = 'public' | 'private';
-
 export type List = {
   type: 'list';
   id: ListId;
@@ -19,7 +17,6 @@ export type List = {
   title: string;
   description: string;
   createdAt: number;
-  visibility: Visibility;
   listItems?: ListItem[];
 };
 
@@ -36,21 +33,10 @@ export enum AutoListKeys {
   Liked = 'liked',
 }
 
-type AutoListRecordId = Id & {AutoListRecordId: true};
-
-export type AutoListRecord = {
-  type: 'AutoListRecord';
-  id: AutoListRecordId;
-  listId: ListId;
-  userId: UserId;
-  key: AutoListKeys;
-};
-
 export type AutoList = {
   type: 'autoList';
   id: ListId;
   ownerId: UserId;
-  title: string;
   key: AutoListKeys;
 };
 

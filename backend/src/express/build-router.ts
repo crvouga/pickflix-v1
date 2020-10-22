@@ -1,9 +1,14 @@
 import express from 'express';
-import {Dependencies} from './types';
-import {buildListRouter} from '../lists/express/build';
+import {buildListsRouter} from '../lists/express/build';
 import {buildMediaRouter} from '../media/express/build';
+import {buildReviewsRouter} from '../reviews/express/build';
+import {Dependencies} from './types';
 
-const buildRouterList = [buildListRouter, buildMediaRouter];
+const buildRouterList = [
+  buildListsRouter,
+  buildMediaRouter,
+  buildReviewsRouter,
+];
 
 const errorHandler: express.ErrorRequestHandler = (err, req, res, next) => {
   if (err) {

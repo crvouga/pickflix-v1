@@ -11,15 +11,14 @@ describe('editing list', () => {
         title: 'hello',
       },
     ]);
-    try {
-      await listLogic.editLists([
+
+    expect(
+      listLogic.editLists([
         {
           id: added.id,
           title: '',
         },
-      ]);
-    } catch (error) {
-      expect(error).toHaveProperty('errors');
-    }
+      ])
+    ).rejects.toBeTruthy();
   });
 });

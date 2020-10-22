@@ -20,7 +20,7 @@ describe('remove lists', () => {
       },
     ]);
 
-    await listLogic.removeLists({listIds: [list1.id, list3.id]});
+    await listLogic.removeLists([list1, list3]);
     const after = await listLogic.getLists({ownerId: user.id});
     expect(after).toEqual(
       expect.arrayContaining([expect.objectContaining(list2)])

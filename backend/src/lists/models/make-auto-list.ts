@@ -1,11 +1,6 @@
 import {UserId} from '../../users/models/types';
 import {AutoList, AutoListKeys, Dependencies, ListId} from './types';
 
-const autoListKeyToTitle: {[key in AutoListKeys]: string} = {
-  'watch-next': 'Watch Next',
-  liked: 'Liked',
-};
-
 export const buildMakeAutoList = ({
   makeId,
   isValidId,
@@ -27,7 +22,6 @@ export const buildMakeAutoList = ({
   return Object.freeze({
     type: 'autoList',
     id,
-    title: autoListKeyToTitle[key],
     ownerId,
     key,
   });

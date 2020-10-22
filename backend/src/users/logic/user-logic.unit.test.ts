@@ -10,17 +10,15 @@ describe('user logic', () => {
     const {userLogic} = buildUserLogicFake();
 
     const created = await userLogic.createNew({firebaseId});
-    const found = await userLogic.getElseCreateNew({firebaseId});
-
-    expect(found).toStrictEqual(created);
+    expect(userLogic.getElseCreateNew({firebaseId})).resolves.toStrictEqual(
+      created
+    );
   });
 
   it('returns falsy when no user exists', async () => {
     const {userLogic} = buildUserLogicFake();
 
-    const found = await userLogic.getById({firebaseId});
-
-    expect(found).toBeFalsy();
+    expect(userLogic.getById({firebaseId})).resolves.toBeFalsy();
   });
 
   it('creates new users', async () => {
@@ -28,10 +26,9 @@ describe('user logic', () => {
 
     const before = await userLogic.getById({firebaseId});
     const created = await userLogic.getElseCreateNew({firebaseId});
-    const after = await userLogic.getById({firebaseId});
 
     expect(before).toBeFalsy();
-    expect(created).toStrictEqual(after);
+    expect(userLogic.getById({firebaseId})).resolves.toStrictEqual(created);
   });
 
   it('emits an event when created', async done => {

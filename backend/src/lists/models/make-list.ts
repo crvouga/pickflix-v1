@@ -1,5 +1,5 @@
 import {UserId} from '../../users/models/types';
-import {Dependencies, List, ListId, Visibility} from './types';
+import {Dependencies, List, ListId} from './types';
 import {ErrorList} from '../../utils';
 
 const MAX_LENGTH_TITLE = 100;
@@ -8,7 +8,7 @@ const MAX_LENGTH_DESCRIPTION = 500;
 export type PartialList = {
   title: string;
   description?: string;
-  visibility?: Visibility;
+
   createdAt?: number;
   ownerId: UserId;
   id?: ListId;
@@ -22,7 +22,6 @@ export const buildMakeList = ({makeId, isValidId}: Dependencies) => (
   const title = partial.title.trim();
   const description = (partial.description || '').trim();
   const createdAt = partial.createdAt || Date.now();
-  const visibility = partial.visibility || 'public';
 
   const errors = [];
 
@@ -63,6 +62,5 @@ export const buildMakeList = ({makeId, isValidId}: Dependencies) => (
     title,
     description,
     createdAt,
-    visibility,
   });
 };

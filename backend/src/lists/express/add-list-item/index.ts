@@ -9,7 +9,7 @@ export const addListItem = ({listLogic, middlewares}: Dependencies) => (
 ) => {
   router.post(
     '/lists/:listId/list-items',
-    middlewares.attachCurrentUser,
+    middlewares.authenticate,
     async (req, res, next) => {
       try {
         const currentUser = req.currentUser as User;
@@ -25,9 +25,9 @@ export const addListItem = ({listLogic, middlewares}: Dependencies) => (
           },
         ]);
 
-        res.status(201).json(listItem);
-      } catch (err) {
-        res.status(400).json({message: 'failed to add item to list'});
+        res.status(201).json(listItem).end();
+      } catch (error) {
+        next(error);
       }
     }
   );

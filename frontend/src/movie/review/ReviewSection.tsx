@@ -31,7 +31,7 @@ export default () => {
 
         <ListItem divider button>
           <ListItemAvatar>
-            <CurrentUserAvatar backgroundColor="none" />
+            <CurrentUserAvatar />
           </ListItemAvatar>
           <ListItemText
             primaryTypographyProps={{ color: "textSecondary" }}
