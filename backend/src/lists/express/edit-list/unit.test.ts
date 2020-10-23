@@ -3,10 +3,10 @@ import {buildExpressAppFake} from '../../../express/build.fake';
 
 describe('PATCH', () => {
   it('sends back error list', async done => {
-    const {currentUser, listLogic, app} = await buildExpressAppFake();
+    const {user, listLogic, app} = await buildExpressAppFake();
     const [created] = await listLogic.addLists([
       {
-        ownerId: currentUser.id,
+        ownerId: user.id,
         title: 'my movies',
       },
     ]);
@@ -25,10 +25,10 @@ describe('PATCH', () => {
     done();
   });
   it('sends back edited list', async done => {
-    const {currentUser, listLogic, app} = await buildExpressAppFake();
+    const {user, listLogic, app} = await buildExpressAppFake();
     const [created] = await listLogic.addLists([
       {
-        ownerId: currentUser.id,
+        ownerId: user.id,
         title: 'my movies',
       },
     ]);

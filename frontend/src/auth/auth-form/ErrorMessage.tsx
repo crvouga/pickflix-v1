@@ -4,6 +4,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { capitalize } from "../../utils";
 import { authForm } from "./redux/auth-form";
+import useAuthForm from "./useAuthForm";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,7 +18,7 @@ const codeToTitle = (code: string) =>
 
 export default () => {
   const classes = useStyles();
-  const error = useSelector(authForm.selectors.error);
+  const { error } = useAuthForm();
 
   return (
     <Collapse in={Boolean(error)}>

@@ -1,6 +1,6 @@
 import {Id} from '../../id/types';
 import {makeId, isValidId} from '../../id';
-import {UserId} from '../../users/models/types';
+import {UserId} from '../../users/models/make-user';
 import {TmdbMediaType, TmdbMediaId} from '../../media/models/types';
 
 export type ReviewId = Id & {ReviewId: true};

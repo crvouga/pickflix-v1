@@ -3,11 +3,11 @@ import {buildExpressAppFake} from '../../../express/build.fake';
 
 describe('add-lists-items', () => {
   it('adds item to list', async done => {
-    const {currentUser, app} = await buildExpressAppFake();
+    const {user, app} = await buildExpressAppFake();
 
     const agent = supertest(app);
     const {body: list} = await agent.post('/api/lists').send({
-      ownerId: currentUser.id,
+      ownerId: user.id,
       title: 'my list',
     });
 

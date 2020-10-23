@@ -1,24 +1,24 @@
 import {IRouter} from 'express';
-import {Dependencies} from '../../../express/types';
-import {Id} from '../../../id/types';
-import {User} from '../../../users/models/types';
+import {ExpressAppDependencies} from '../../../express/types';
+import {User} from '../../../users/models/make-user';
 import {ListId} from '../../models/types';
 
-export const addListItem = ({listLogic, middlewares}: Dependencies) => (
-  router: IRouter
-) => {
+export const addListItem = ({
+  listLogic,
+  middlewares,
+}: ExpressAppDependencies) => (router: IRouter) => {
   router.post(
     '/lists/:listId/list-items',
-    middlewares.authenticate,
+    middlewares.protected,
     async (req, res, next) => {
       try {
-        const currentUser = req.currentUser as User;
+        const user = req.user as User;
         const {tmdbMediaId, tmdbMediaType} = req.body;
         const listId = req.params.listId as ListId;
 
         const [listItem] = await listLogic.addListItems([
           {
-            userId: currentUser.id,
+            userId: user.id,
             listId,
             tmdbMediaId,
             tmdbMediaType,

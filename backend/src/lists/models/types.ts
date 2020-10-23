@@ -1,6 +1,6 @@
 import {Id, MakeId} from '../../id/types';
 import {TmdbMedia} from '../../media/models/types';
-import {UserId} from '../../users/models/types';
+import {UserId} from '../../users/models/make-user';
 
 export type Dependencies = {
   makeId: MakeId;

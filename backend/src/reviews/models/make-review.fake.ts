@@ -1,10 +1,11 @@
+import {makeId} from '../../id';
 import {TmdbMediaType} from '../../media/models/types';
-import {makeUserFake} from '../../users/models/make-user.fake';
+import {UserId} from '../../users/models/make-user';
 import {makeReview, Review} from './make-review';
 
 export const makeReviewFake = (overrides?: Partial<Review>) => {
   return makeReview({
-    authorId: makeUserFake().id,
+    authorId: makeId() as UserId,
     content: 'cool movie',
     tmdbMediaId: 550,
     tmdbMediaType: TmdbMediaType.movie,

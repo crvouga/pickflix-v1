@@ -1,4 +1,4 @@
-import {User} from '../../../users/models/types';
+import {User} from '../../../users/models/make-user';
 import {makeAutoList} from '../../models';
 import {INITIAL_AUTO_LIST_INFOS} from '../../models/constants';
 import {AutoList} from '../../models/types';

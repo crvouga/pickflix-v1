@@ -1,14 +1,14 @@
 import {EventEmitter} from 'events';
-import {UserRepositoryFake} from '../repositories/user-repository.fake';
+import {UnitOfWorkFake} from '../../unit-of-work/unit-of-work.fake';
 import {UserLogic} from './user-logic';
 
 export const buildUserLogicFake = ({
   eventEmitter = new EventEmitter(),
 } = {}) => {
-  const userRepository = new UserRepositoryFake();
+  const unitOfWork = new UnitOfWorkFake();
   const userLogic = new UserLogic({
-    userRepository,
+    unitOfWork,
     eventEmitter,
   });
-  return {userLogic, userRepository, eventEmitter};
+  return {userLogic, eventEmitter};
 };

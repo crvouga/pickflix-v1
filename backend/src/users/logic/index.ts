@@ -1,5 +1,5 @@
-import {userRepository} from '../repositories';
-import {UserLogic} from './user-logic';
 import {eventEmitter} from '../../events';
+import {unitOfWork} from '../../unit-of-work';
+import {UserLogic} from './user-logic';
 
-export const userLogic = new UserLogic({eventEmitter, userRepository});
+export const userLogic = new UserLogic({eventEmitter, unitOfWork});

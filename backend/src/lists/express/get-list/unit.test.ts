@@ -3,8 +3,8 @@ import {buildExpressAppFake} from '../../../express/build.fake';
 
 describe('GET', () => {
   it('gets auto lists', async done => {
-    const {listLogic, currentUser, app} = await buildExpressAppFake();
-    const [added] = await listLogic.initializeAutoLists({user: currentUser});
+    const {listLogic, user, app} = await buildExpressAppFake();
+    const [added] = await listLogic.initializeAutoLists({user: user});
 
     const expected = {
       id: added.id,
@@ -21,11 +21,11 @@ describe('GET', () => {
       });
   });
   it('sends a list with items', async done => {
-    const {listLogic, currentUser, app} = await buildExpressAppFake();
+    const {listLogic, user, app} = await buildExpressAppFake();
 
     const [list] = await listLogic.addLists([
       {
-        ownerId: currentUser.id,
+        ownerId: user.id,
         title: 'my list',
         description: 'my description',
       },

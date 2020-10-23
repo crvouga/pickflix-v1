@@ -1,6 +1,7 @@
 import {IRouter} from 'express';
-import {TmdbMediaType, TmdbMediaId} from '../../../media/models/types';
-import {User} from '../../../users/models/types';
+import passport from 'passport';
+import {TmdbMediaId, TmdbMediaType} from '../../../media/models/types';
+import {User} from '../../../users/models/make-user';
 import {Dependencies} from '../types';
 
 export const getListsFromListItem = ({
@@ -9,10 +10,10 @@ export const getListsFromListItem = ({
 }: Dependencies) => (router: IRouter) => {
   router.get(
     '/list-items/lists',
-    middlewares.authenticate,
+    middlewares.protected,
     async (req, res, next) => {
       try {
-        const currentUser = req.currentUser as User;
+        const currentUser = req.user as User;
         const userId = currentUser.id;
         const tmdbMediaId = Number(req.query.tmdbMediaId) as TmdbMediaId;
         const tmdbMediaType = req.query.tmdbMediaType as TmdbMediaType;

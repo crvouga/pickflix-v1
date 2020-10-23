@@ -1,7 +1,7 @@
 import {Handler, IRouter} from 'express';
 import {body, param, query, validationResult} from 'express-validator';
 import {TmdbMediaId, TmdbMediaType} from '../../media/models/types';
-import {User} from '../../users/models/types';
+import {User} from '../../users/models/make-user';
 import {ReviewId} from '../models/make-review';
 import {ReviewVoteValue} from '../models/make-review-vote';
 import {Dependencies} from './types';
@@ -18,15 +18,17 @@ export const buildReviewsRouter = ({
   reviewLogic,
   middlewares,
 }: Dependencies) => (router: IRouter) => {
+  router.get('/reviews');
+
   router.get(
     '/reviews',
-    middlewares.attachCurrentUser,
-    query('tmdbMediaId').isString(),
+    middlewares.protected,
+    query('tmdbMediaId').isInt(),
     query('tmdbMediaType').isIn(Object.values(TmdbMediaType)),
     handleValidationResult,
     async (req, res, next) => {
       try {
-        const currentUser = req.currentUser as User | undefined;
+        const currentUser = req.user as User;
         const tmdbMediaId = Number(req.query.tmdbMediaId) as TmdbMediaId;
         const tmdbMediaType = req.query.tmdbMediaType as TmdbMediaType;
 
@@ -48,7 +50,7 @@ export const buildReviewsRouter = ({
 
   router.delete(
     '/reviews/:reviewId',
-    middlewares.authenticate,
+    middlewares.protected,
     param('reviewId').isUUID(),
     handleValidationResult,
     async (req, res, next) => {
@@ -64,14 +66,14 @@ export const buildReviewsRouter = ({
 
   router.post(
     '/reviews',
-    middlewares.authenticate,
+    middlewares.protected,
     body('content').isString(),
-    body('tmdbMediaId').exists(),
+    body('tmdbMediaId').isInt(),
     body('tmdbMediaType').isIn(Object.values(TmdbMediaType)),
     handleValidationResult,
     async (req, res, next) => {
       try {
-        const currentUser = req.currentUser as User;
+        const currentUser = req.user as User;
         const authorId = currentUser.id;
 
         const content = req.body.content as string;
@@ -94,13 +96,13 @@ export const buildReviewsRouter = ({
 
   router.patch(
     '/reviews/:reviewId',
-    middlewares.authenticate,
+    middlewares.protected,
     param('reviewId').isUUID(),
     body('content').isString(),
     handleValidationResult,
     async (req, res, next) => {
       try {
-        const currentUser = req.currentUser;
+        const currentUser = req.user as User;
         const authorId = currentUser.id;
         const reviewId = req.params.reviewId as ReviewId;
         const content = req.body.content as string;
@@ -120,13 +122,13 @@ export const buildReviewsRouter = ({
 
   router.post(
     '/reviews/:reviewId/review-votes',
-    middlewares.authenticate,
+    middlewares.protected,
     body('voteValue').isIn(Object.values(ReviewVoteValue)),
     param('reviewId').isUUID(),
     handleValidationResult,
     async (req, res, next) => {
       try {
-        const currentUser = req.currentUser as User;
+        const currentUser = req.user as User;
         const userId = currentUser.id;
         const reviewId = req.params.reviewId as ReviewId;
         const voteValue = req.body.voteValue as ReviewVoteValue;
@@ -145,12 +147,12 @@ export const buildReviewsRouter = ({
 
   router.delete(
     '/reviews/:reviewId/review-votes',
-    middlewares.authenticate,
+    middlewares.protected,
     param('reviewId').isUUID(),
     handleValidationResult,
     async (req, res, next) => {
       try {
-        const currentUser = req.currentUser as User;
+        const currentUser = req.user as User;
         const userId = currentUser.id;
         const reviewId = req.params.reviewId as ReviewId;
 

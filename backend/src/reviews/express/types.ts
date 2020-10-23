@@ -1,1 +1,1 @@
-export {Dependencies} from '../../express/types';
+export {ExpressAppDependencies as Dependencies} from '../../express/types';

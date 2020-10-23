@@ -1,18 +1,19 @@
 import express from 'express';
+import {User} from '../../../users/models/make-user';
 import {Dependencies} from '../types';
 
 export const addList = ({listLogic, middlewares}: Dependencies) => (
   router: express.IRouter
 ) => {
-  router.post('/lists', middlewares.authenticate, async (req, res, next) => {
+  router.post('/lists', middlewares.protected, async (req, res, next) => {
     try {
-      const currentUser = req.currentUser;
-
-      const {title, description} = req.body;
+      const user = req.user as User;
+      const title = req.body.title as string;
+      const description = req.body.description as string;
 
       const [list] = await listLogic.addLists([
         {
-          ownerId: currentUser.id,
+          ownerId: user.id,
           title,
           description,
         },

@@ -1,6 +1,6 @@
-import {IUserRepository} from './types';
 import {RepositoryFake} from '../../unit-of-work/repository.fake';
-import {User} from '../models/types';
+import {User} from '../models/make-user';
+import {IUserRepository} from './types';
 
 export class UserRepositoryFake
   extends RepositoryFake<User>

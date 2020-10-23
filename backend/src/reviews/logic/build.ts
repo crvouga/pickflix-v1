@@ -1,6 +1,6 @@
 import {TmdbMediaType, TmdbMediaId} from '../../media/models/types';
 import {IUnitOfWork} from '../../unit-of-work/types';
-import {UserId} from '../../users/models/types';
+import {UserId} from '../../users/models/make-user';
 import {makeReview, PartialReview, ReviewId} from '../models/make-review';
 import {makeReviewVote, PartialReviewVote} from '../models/make-review-vote';
 

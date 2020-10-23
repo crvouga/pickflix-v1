@@ -22,7 +22,7 @@ describe('add list', () => {
   });
 
   it('responses with bad request', async done => {
-    const {currentUser, app} = await buildExpressAppFake();
+    const {app} = await buildExpressAppFake();
 
     const title = 'my movies';
     const description = 'some cool movies';

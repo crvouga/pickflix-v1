@@ -1,8 +1,7 @@
 import supertest from 'supertest';
 import {buildExpressAppFake} from '../../express/build.fake';
-import {TmdbMediaType} from '../../media/models/types';
+import {TmdbMediaId, TmdbMediaType} from '../../media/models/types';
 import {makeUserFake} from '../../users/models/make-user.fake';
-import {ReviewId} from '../models/make-review';
 import {makeReviewFake} from '../models/make-review.fake';
 
 describe('/api/reviews', () => {
@@ -10,18 +9,18 @@ describe('/api/reviews', () => {
     const {app} = await buildExpressAppFake();
 
     const before = await supertest(app).get('/api/reviews').query({
-      tmdbMediaId: '550',
+      tmdbMediaId: 550,
       tmdbMediaType: TmdbMediaType.movie,
     });
 
     const posted = await supertest(app).post('/api/reviews').send({
       content: 'cool movie',
-      tmdbMediaId: '550',
+      tmdbMediaId: 550,
       tmdbMediaType: TmdbMediaType.movie,
     });
 
     const after = await supertest(app).get('/api/reviews').query({
-      tmdbMediaId: '550',
+      tmdbMediaId: 550,
       tmdbMediaType: TmdbMediaType.movie,
     });
 
@@ -31,18 +30,18 @@ describe('/api/reviews', () => {
   });
 
   it('GET /reviews?tmdbMediaId=...&tmdbMediaType=...', async () => {
-    const {app, reviewLogic, currentUser} = await buildExpressAppFake();
+    const {app, reviewLogic, user} = await buildExpressAppFake();
 
     for (const i of [1, 2, 3]) {
       await reviewLogic.addReview(
         makeReviewFake({
-          authorId: makeUserFake().id,
+          authorId: (await makeUserFake()).id,
         })
       );
     }
 
     const expected = await reviewLogic.getAllAggergationsForMedia({
-      userId: currentUser.id,
+      userId: user.id,
       tmdbMediaId: 550,
       tmdbMediaType: TmdbMediaType.movie,
     });
@@ -59,14 +58,14 @@ describe('/api/reviews', () => {
   });
 
   it('POST /reviews', async () => {
-    const {app, reviewLogic, currentUser} = await buildExpressAppFake();
+    const {app, reviewLogic, user} = await buildExpressAppFake();
 
     const response = await supertest(app)
       .post('/api/reviews')
       .send({
         content: 'cool movie',
-        tmdbMediaId: '550',
-        tmdbMediaType: 'movie',
+        tmdbMediaId: 550 as TmdbMediaId,
+        tmdbMediaType: TmdbMediaType.movie,
       })
       .expect(201);
 
@@ -75,8 +74,8 @@ describe('/api/reviews', () => {
     expect(created).toEqual(
       expect.objectContaining({
         content: 'cool movie',
-        tmdbMediaId: '550',
-        tmdbMediaType: 'movie',
+        tmdbMediaId: 550 as TmdbMediaId,
+        tmdbMediaType: TmdbMediaType.movie,
       })
     );
   });

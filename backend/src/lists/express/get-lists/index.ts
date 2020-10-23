@@ -1,4 +1,5 @@
 import express from 'express';
+import {User} from '../../../users/models/make-user';
 import {Dependencies} from '../types';
 
 const ensureArray = (x: any) => (Array.isArray(x) ? x : [x]);
@@ -6,9 +7,9 @@ const ensureArray = (x: any) => (Array.isArray(x) ? x : [x]);
 export const getLists = ({listLogic, middlewares}: Dependencies) => (
   router: express.IRouter
 ) => {
-  router.get('/lists', middlewares.authenticate, async (req, res, next) => {
+  router.get('/lists', middlewares.protected, async (req, res, next) => {
     try {
-      const currentUser = req.currentUser;
+      const currentUser = req.user as User;
 
       const listInfo = {
         ownerId: currentUser?.id,

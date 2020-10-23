@@ -1,7 +1,7 @@
 import {EventEmitter} from 'events';
 import {ListLogic} from '../lists/logic/build';
 import {EventTypes} from './types';
-import {User} from '../users/models/types';
+import {User} from '../users/models/make-user';
 
 export const buildEventEmitter = ({listLogic}: {listLogic: ListLogic}) => {
   const eventEmitter = new EventEmitter();

@@ -14,8 +14,9 @@ import ErrorBox from "../../common/components/ErrorBox";
 import LoadingBox from "../../common/components/LoadingBox";
 import firebase from "../firebase";
 import { authForm } from "./redux/auth-form";
-import { SignInMethod } from "./redux/types";
+import { SignInMethod } from "./redux/auth-form";
 import { GoogleIcon } from "./socialLoginIcons";
+import useAuthForm from "./useAuthForm";
 
 const methodToProps = {
   [SignInMethod.Google]: {
@@ -25,7 +26,8 @@ const methodToProps = {
 };
 
 const SignInMethods = () => {
-  const { email } = useSelector(authForm.selectors.values);
+  const { email } = useAuthForm();
+
   const query = useQuery(
     `/sign-in-methods/${email}`,
     () => (email ? firebase.auth().fetchSignInMethodsForEmail(email) : null),
@@ -34,14 +36,7 @@ const SignInMethods = () => {
 
   const dispatch = useDispatch();
 
-  const handleSignIn = (method: string) => () => {
-    dispatch(
-      authForm.actions.submit({
-        signInMethod: method as SignInMethod,
-        customParameters: { login_hint: email },
-      })
-    );
-  };
+  const handleSignIn = (method: string) => () => {};
 
   if (query.error) {
     return <ErrorBox />;

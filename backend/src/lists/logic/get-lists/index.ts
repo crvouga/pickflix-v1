@@ -1,5 +1,5 @@
 import {TmdbMediaType, TmdbMediaId} from '../../../media/models/types';
-import {UserId} from '../../../users/models/types';
+import {UserId} from '../../../users/models/make-user';
 import {AutoListKeys, ListId} from '../../models/types';
 import {ListLogic} from '../build';
 

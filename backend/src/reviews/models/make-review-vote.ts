@@ -1,6 +1,6 @@
 import {isValidId, makeId} from '../../id';
 import {Id} from '../../id/types';
-import {UserId} from '../../users/models/types';
+import {UserId} from '../../users/models/make-user';
 import {ReviewId} from './make-review';
 
 export enum ReviewVoteValue {

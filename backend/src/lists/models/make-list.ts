@@ -1,4 +1,4 @@
-import {UserId} from '../../users/models/types';
+import {UserId} from '../../users/models/make-user';
 import {Dependencies, List, ListId} from './types';
 import {ErrorList} from '../../utils';
 

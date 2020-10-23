@@ -2,23 +2,19 @@ import express from 'express';
 import {buildListsRouter} from '../lists/express/build';
 import {buildMediaRouter} from '../media/express/build';
 import {buildReviewsRouter} from '../reviews/express/build';
-import {Dependencies} from './types';
+import {buildAuthRouter, buildUsersRouter} from '../users/express/build';
+import {errorHandler} from './error-handler';
+import {ExpressAppDependencies} from './types';
 
 const buildRouterList = [
   buildListsRouter,
   buildMediaRouter,
   buildReviewsRouter,
+  buildAuthRouter,
+  buildUsersRouter,
 ];
 
-const errorHandler: express.ErrorRequestHandler = (err, req, res, next) => {
-  if (err) {
-    res.status(400).json(err).end();
-  } else {
-    next();
-  }
-};
-
-export const buildRouter = (dependencies: Dependencies) => (
+export const buildRouter = (dependencies: ExpressAppDependencies) => (
   app: express.IRouter
 ) => {
   const router = express.Router();

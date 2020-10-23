@@ -4,6 +4,7 @@ import {ListItemRepositoryFake} from '../lists/repositories/list-item-repository
 import {ListRepositoryFake} from '../lists/repositories/list-repository.fake';
 import {ReviewRepositoryFake} from '../reviews/repositories/review-repository.fake';
 import {ReviewVoteRepositoryFake} from '../reviews/repositories/review-vote-repository.fake';
+import {CredentialRepositoryFake} from '../users/repositories/credential-repository';
 import {UserRepositoryFake} from '../users/repositories/user-repository.fake';
 import {IUnitOfWork} from './types';
 
@@ -15,6 +16,7 @@ export class UnitOfWorkFake implements IUnitOfWork {
   AutoLists: AutoListRepositoryFake;
   Reviews: ReviewRepositoryFake;
   ReviewVotes: ReviewVoteRepositoryFake;
+  Credentials: CredentialRepositoryFake;
 
   constructor() {
     this.Lists = new ListRepositoryFake();
@@ -24,6 +26,7 @@ export class UnitOfWorkFake implements IUnitOfWork {
     this.AutoLists = new AutoListRepositoryFake();
     this.Reviews = new ReviewRepositoryFake();
     this.ReviewVotes = new ReviewVoteRepositoryFake();
+    this.Credentials = new CredentialRepositoryFake();
   }
 
   async begin() {}

@@ -1,4 +1,4 @@
-import {UserId} from '../../users/models/types';
+import {UserId} from '../../users/models/make-user';
 import {AutoList, AutoListKeys, Dependencies, ListId} from './types';
 
 export const buildMakeAutoList = ({

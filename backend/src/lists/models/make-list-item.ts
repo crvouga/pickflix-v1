@@ -1,5 +1,5 @@
 import {TmdbMediaId, TmdbMediaType} from '../../media/models/types';
-import {UserId} from '../../users/models/types';
+import {UserId} from '../../users/models/make-user';
 import {Dependencies, ListId, ListItem, ListItemId} from './types';
 
 export type PartialListItem = {

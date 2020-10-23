@@ -1,48 +1,87 @@
+import bcrypt from 'bcrypt';
 import {EventEmitter} from 'events';
 import {EventTypes} from '../../events/types';
+import {IUnitOfWork} from '../../unit-of-work/types';
 import {makeUser} from '../models';
-import {User, FirebaseId, UserId} from '../models/types';
-import {IUserRepository} from '../repositories/types';
+import {CredentialType, makeCredential} from '../models/make-credential';
+import {UserId} from '../models/make-user';
 
 export class UserLogic {
-  userRepository: IUserRepository;
+  unitOfWork: IUnitOfWork;
   eventEmitter: EventEmitter;
 
   constructor({
-    userRepository,
+    unitOfWork,
     eventEmitter,
   }: {
-    userRepository: IUserRepository;
+    unitOfWork: IUnitOfWork;
     eventEmitter: EventEmitter;
   }) {
-    this.userRepository = userRepository;
+    this.unitOfWork = unitOfWork;
     this.eventEmitter = eventEmitter;
   }
 
-  async getById(userInfo: Partial<User>): Promise<User | undefined> {
-    const [user] = await this.userRepository.find(userInfo);
+  async verifyUsernameAndPassword({
+    username,
+    password,
+  }: {
+    username: string;
+    password: string;
+  }) {
+    const [user] = await this.unitOfWork.Users.find({username});
+    const [passwordCredential] = await this.unitOfWork.Credentials.find({
+      userId: user.id,
+      type: CredentialType.password,
+    });
 
-    return user;
+    if (await bcrypt.compare(password, passwordCredential.passwordHash)) {
+      return user;
+    }
+    return null;
   }
 
-  async createNew({firebaseId}: {firebaseId: FirebaseId}): Promise<User> {
-    const user = makeUser({firebaseId});
+  async createUserWithPassword({
+    username,
+    email,
+    password,
+  }: {
+    username: string;
+    email: string;
+    password: string;
+  }) {
+    const user = makeUser({username, email});
 
-    await this.userRepository.add([user]);
+    const passwordHash = await bcrypt.hash(password, 10);
+
+    const passwordCredential = makeCredential({
+      userId: user.id,
+      passwordHash,
+    });
+
+    await Promise.all([
+      this.unitOfWork.Credentials.add([passwordCredential]),
+      this.unitOfWork.Users.add([user]),
+    ]);
 
     this.eventEmitter.emit(EventTypes.USER_CREATED, {user});
 
     return user;
   }
 
-  async getElseCreateNew(userInfo: {
-    id?: UserId;
-    firebaseId: FirebaseId;
-  }): Promise<User> {
-    const got = await this.getById(userInfo);
-    if (got) {
-      return got;
+  async getUser(userInfo: {username: string} | {id: UserId}) {
+    const [user] = await this.unitOfWork.Users.find(userInfo);
+    return user;
+  }
+
+  async getCredentialTypesForEmail({email}: {email: string}) {
+    const [user] = await this.unitOfWork.Users.find({email});
+    if (!user) {
+      return [];
     }
-    return await this.createNew(userInfo);
+    const credentials = await this.unitOfWork.Credentials.find({
+      userId: user.id,
+    });
+    const credentialTypes = credentials.map(credential => credential.type);
+    return credentialTypes;
   }
 }

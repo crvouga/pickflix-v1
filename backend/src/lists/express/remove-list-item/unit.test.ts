@@ -4,11 +4,11 @@ import {TmdbMediaType} from '../../../media/models/types';
 
 describe('/lists/{list-id}/list-items/{list-item-id}', () => {
   it('deletes list item', async done => {
-    const {app, listLogic, currentUser} = await buildExpressAppFake();
+    const {app, listLogic, user} = await buildExpressAppFake();
 
     const [list] = await listLogic.addLists([
       {
-        ownerId: currentUser.id,
+        ownerId: user.id,
         title: 'my movies',
         description: 'some cool movies',
       },
@@ -16,7 +16,7 @@ describe('/lists/{list-id}/list-items/{list-item-id}', () => {
 
     const [listItem] = await listLogic.addListItems([
       {
-        userId: currentUser.id,
+        userId: user.id,
         listId: list.id,
         tmdbMediaId: 42,
         tmdbMediaType: TmdbMediaType.movie,

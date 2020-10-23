@@ -4,9 +4,9 @@ import {TmdbMediaType, TmdbMediaId} from '../../../media/models/types';
 
 describe('GET /list-items/lists', () => {
   it('gets list from list item media', async done => {
-    const {app, listLogic, currentUser} = await buildExpressAppFake();
+    const {app, listLogic, user} = await buildExpressAppFake();
 
-    const listInfo = {title: 'hello', ownerId: currentUser.id};
+    const listInfo = {title: 'hello', ownerId: user.id};
 
     const [list1, list2, list3] = await listLogic.addLists([
       listInfo,
@@ -20,7 +20,7 @@ describe('GET /list-items/lists', () => {
     };
     const listItemInfo = {
       ...tmdbMediaInfo,
-      userId: currentUser.id,
+      userId: user.id,
     };
 
     await listLogic.addListItems([

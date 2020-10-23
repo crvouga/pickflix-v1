@@ -1,69 +1,77 @@
-import { yupResolver } from "@hookform/resolvers";
 import { Box, Button, TextField, Typography } from "@material-ui/core";
-import React from "react";
-import { Controller, useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import * as yup from "yup";
-import { authForm } from "./redux/auth-form";
-import { FormValues } from "./redux/types";
+import React, { useRef, useState } from "react";
+import useAuthForm from "./useAuthForm";
 
-const schema = yup.object().shape({
-  email: yup.string().email().required(),
-});
+//SOURCE: https://stackoverflow.com/questions/46155/how-to-validate-an-email-address-in-javascript
+function validateEmail(email: string) {
+  const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+}
 
 export default () => {
-  const dispatch = useDispatch();
+  const authForm = useAuthForm();
+  const refEmail = useRef<HTMLInputElement>();
+  const [error, setError] = useState<{ message: string } | undefined>();
+  const [disabled, setDisabled] = useState(true);
 
-  const { handleSubmit, errors, control } = useForm({
-    resolver: yupResolver(schema),
-  });
+  const handleCancel = () => {};
 
-  const handleCancel = () => {
-    dispatch(authForm.actions.reset());
+  const handleChange = (e: React.ChangeEvent<{ value: string }>) => {
+    setDisabled(!validateEmail(e.target.value));
+    if (error) {
+      setError(undefined);
+    }
   };
 
-  const handleNext = async (data: FormValues) => {
-    dispatch(authForm.actions.nextStep(data));
+  const handleSubmit = async () => {
+    const email = (refEmail.current?.value || "").trim();
+    if (validateEmail(email)) {
+      console.log("HELLO");
+      authForm.setEmail(email);
+      authForm.setStep(await authForm.emailToNextStep(email));
+    } else {
+      setError({ message: "Invalid email address" });
+    }
   };
 
   return (
-    <Box p={4}>
+    <Box p={2}>
       <Typography gutterBottom variant="h6" style={{ fontWeight: "bold" }}>
         Sign in with email
       </Typography>
-      <form onSubmit={handleSubmit(handleNext)}>
-        <Controller
-          as={TextField}
-          name="email"
-          label="Email"
-          control={control}
-          defaultValue="crvouga@gmail.com"
-          fullWidth
-          error={errors?.email}
-          helperText={errors?.email?.message}
-          autoFocus
-        />
 
-        <Box textAlign="right" marginTop={2} p={2}>
-          <Box display="inline-block" marginRight={2}>
-            <Button
-              color="primary"
-              onClick={handleCancel}
-              style={{ fontWeight: "bold" }}
-            >
-              Cancel
-            </Button>
-          </Box>
+      <TextField
+        inputRef={refEmail}
+        name="email"
+        label="Email"
+        placeholder="example@email.com"
+        fullWidth
+        autoFocus
+        onChange={handleChange}
+        error={Boolean(error)}
+        helperText={error?.message}
+      />
+
+      <Box textAlign="right" marginTop={2} p={2}>
+        <Box display="inline-block" marginRight={2}>
           <Button
-            type="submit"
-            variant="contained"
             color="primary"
+            onClick={handleCancel}
             style={{ fontWeight: "bold" }}
           >
-            Next
+            Cancel
           </Button>
         </Box>
-      </form>
+        <Button
+          onClick={handleSubmit}
+          variant="contained"
+          color="primary"
+          style={{ fontWeight: "bold" }}
+          disabled={disabled}
+        >
+          Next
+        </Button>
+      </Box>
     </Box>
   );
 };

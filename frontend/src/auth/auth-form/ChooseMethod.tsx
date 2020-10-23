@@ -1,20 +1,17 @@
 import { List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import EmailIcon from "@material-ui/icons/Email";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { authForm } from "./redux/auth-form";
-import { SignInMethod, Step } from "./redux/types";
 import { GoogleIcon } from "./socialLoginIcons";
+import useAuthForm from "./useAuthForm";
+import { AuthFormStep } from "./redux/auth-form";
 
 export default () => {
-  const dispatch = useDispatch();
+  const authForm = useAuthForm();
 
-  const handleSignInWithGoogle = () => {
-    dispatch(authForm.actions.submit({ signInMethod: SignInMethod.Google }));
-  };
+  const handleSignInWithGoogle = async () => {};
 
-  const handleSignInWithPassword = () => {
-    dispatch(authForm.actions.setStep(Step.email));
+  const handleSignInWithPassword = async () => {
+    authForm.setStep(AuthFormStep.email);
   };
 
   return (
