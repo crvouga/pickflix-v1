@@ -6,24 +6,29 @@ import passport from 'passport';
 import {Strategy as LocalStrategy} from 'passport-local';
 import {UserLogic} from '../logic/user-logic';
 import {User, UserId} from '../models/make-user';
-
 import makeFileStore from 'session-file-store';
 import configuration from '../../configuration';
+
 const FileStore = makeFileStore(session);
 
 export const buildAuthMiddleware = ({userLogic}: {userLogic: UserLogic}) => (
   app: Application
 ) => {
   app.use((req, res, next) => {
+    //Important for browser setting cookies
     res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Origin', configuration.clientOrigin);
     res.setHeader(
       'Access-Control-Allow-Headers',
-      'Set-Cookie, withCredentials'
+      'Set-Cookie, withCredentials, Origin, X-Requested-With'
     );
+    res.setHeader(
+      'Access-Control-Allow-Methods',
+      'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+    );
+
     next();
   });
-
   app.use(
     cors({
       origin: true,
@@ -41,16 +46,19 @@ export const buildAuthMiddleware = ({userLogic}: {userLogic: UserLogic}) => (
         path: configuration.storeDirectoryName,
       }),
 
-      secret: 'keyboard cat',
+      secret: configuration.sessionCookieSecret,
       resave: true,
       saveUninitialized: true,
       rolling: true,
 
-      name: 'pickflix',
+      name: 'pickflix-session',
+
       cookie: {
-        httpOnly: false,
-        secure: false,
-        maxAge: 10 * 365 * 24 * 60 * 60,
+        httpOnly: true,
+        path: '/',
+        maxAge: 10 * 365 * 24 * 60 * 60, // 10 years,
+        secure: true,
+        sameSite: 'none',
       },
     })
   );

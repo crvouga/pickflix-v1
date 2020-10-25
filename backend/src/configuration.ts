@@ -1,14 +1,24 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-export default {
+const env = process.env.NODE_ENV || 'development';
+
+const BACKEND_DEV_PORT = 5000;
+
+export default Object.freeze({
   // for dev env
   // make sure .gitignore this!
   storeDirectoryName: 'store',
-  //
-  PORT: process.env.PORT || 5000,
-  // CORS
-  clientOrigin: 'https://pickflix.web.app',
+
+  PORT: process.env.PORT || BACKEND_DEV_PORT,
+
+  sessionCookieSecret: process.env.COOKIE_SECRET || 'cookie secret',
+
+  clientOrigin:
+    env === 'development'
+      ? `http://localhost:3000`
+      : 'https://pickflix.web.app',
+
   clientDomain: 'pickflix.web.app',
   // used by heroku sub dir buildpack since I only want to deploy the backend subdir to heroku
   projectPath: process.env.PROJECT_PATH,
@@ -33,4 +43,4 @@ export default {
   firebaseAdminServiceAccountKeyJSON: JSON.parse(
     process.env.FIREBASE_ADMIN_SERVICE_ACCOUNT_KEY_JSON || ''
   ),
-};
+});
