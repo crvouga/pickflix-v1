@@ -4,35 +4,41 @@ import {Application, Handler} from 'express';
 import session from 'express-session';
 import passport from 'passport';
 import {Strategy as LocalStrategy} from 'passport-local';
+import makeFileStore from 'session-file-store';
+import url from 'url';
+import configuration from '../../configuration';
 import {UserLogic} from '../logic/user-logic';
 import {User, UserId} from '../models/make-user';
-import makeFileStore from 'session-file-store';
-import configuration from '../../configuration';
 
 const FileStore = makeFileStore(session);
+
+const equalsByHostName = (url1: string, url2: string) =>
+  url.parse(url1).hostname === url.parse(url2).hostname;
 
 export const buildAuthMiddleware = ({userLogic}: {userLogic: UserLogic}) => (
   app: Application
 ) => {
-  app.use((req, res, next) => {
-    //Important for browser setting cookies
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Origin', configuration.clientOrigin);
-    res.setHeader(
-      'Access-Control-Allow-Headers',
-      'Set-Cookie, withCredentials, Origin, X-Requested-With'
-    );
-    res.setHeader(
-      'Access-Control-Allow-Methods',
-      'GET, POST, OPTIONS, PUT, PATCH, DELETE'
-    );
-
-    next();
-  });
   app.use(
     cors({
-      origin: true,
+      origin: (origin, callback) => {
+        const found = configuration.clientOriginWhitelist.find(clientOrigin =>
+          equalsByHostName(clientOrigin, origin || '')
+        );
+        if (found) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
       credentials: true,
+      allowedHeaders: [
+        'Set-Cookie',
+        'withCredentials',
+        'Origin',
+        'X-Requested-With',
+        'Content-Type',
+      ],
+      methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'],
     })
   );
 
