@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from "axios";
-import backendAPI from "../../../backendAPI";
+import { BackendAPI } from "../../../backend-api";
 
 export type Paginated<T> = {
   page: number;
@@ -51,7 +51,7 @@ export const getSearchMulti = async (
     };
   }
 
-  const { data } = await backendAPI.get<Paginated<SearchResult>>(
+  const { data } = await BackendAPI.get<Paginated<SearchResult>>(
     "/api/tmdb/search/multi",
     {
       ...config,

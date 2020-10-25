@@ -16,7 +16,6 @@ export type FormValues = {
 
 export enum AuthFormStep {
   email = "EMAIL",
-  emailTaken = "EMAIL_TAKEN",
   emailRegister = "EMAIL_REGISTER",
   emailPassword = "EMAIL_PASSWORD",
 }

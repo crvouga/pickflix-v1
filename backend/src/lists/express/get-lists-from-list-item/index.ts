@@ -10,7 +10,7 @@ export const getListsFromListItem = ({
 }: Dependencies) => (router: IRouter) => {
   router.get(
     '/list-items/lists',
-    middlewares.protected,
+    middlewares.isAuthenticated,
     async (req, res, next) => {
       try {
         const currentUser = req.user as User;

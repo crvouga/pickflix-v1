@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { useParams } from "react-router";
-import backendAPI from "../backendAPI";
+import { BackendAPI } from "../backend-api";
 import {
   MovieCredits,
   MovieDetails,
@@ -25,7 +25,7 @@ export type MoviePageData = {
 } & MovieDetails;
 
 export const fetchMoviePage = async (movieId: string) => {
-  const { data } = await backendAPI.get<MoviePageData>(
+  const { data } = await BackendAPI.get<MoviePageData>(
     `/api/tmdb/movie/${movieId}`,
     {
       params: {

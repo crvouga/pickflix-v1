@@ -7,7 +7,7 @@ const ensureArray = (x: any) => (Array.isArray(x) ? x : [x]);
 export const getLists = ({listLogic, middlewares}: Dependencies) => (
   router: express.IRouter
 ) => {
-  router.get('/lists', middlewares.protected, async (req, res, next) => {
+  router.get('/lists', middlewares.isAuthenticated, async (req, res, next) => {
     try {
       const currentUser = req.user as User;
 

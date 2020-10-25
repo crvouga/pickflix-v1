@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from "axios";
-import backendAPI from "../../../backendAPI";
+import { BackendAPI } from "../../../backend-api";
 import { DiscoverMovieQueryParams, DiscoverMovieResponse } from "../types";
 
 type Certification = {
@@ -13,7 +13,7 @@ type MovieCertificationResponse = {
 };
 
 export const getMovieCertifications = async (config?: AxiosRequestConfig) => {
-  const { data } = await backendAPI.get<MovieCertificationResponse>(
+  const { data } = await BackendAPI.get<MovieCertificationResponse>(
     "/api/tmdb/certification/movie/list",
     config
   );
@@ -21,14 +21,14 @@ export const getMovieCertifications = async (config?: AxiosRequestConfig) => {
 };
 
 export const getMovieGenres = async (config?: AxiosRequestConfig) => {
-  const { data } = await backendAPI.get<{
+  const { data } = await BackendAPI.get<{
     genres: { id: string; name: string }[];
   }>("/api/tmdb/genre/movie/list", config);
   return data;
 };
 
 export const getDiscoverMovie = async (params: DiscoverMovieQueryParams) => {
-  const { data } = await backendAPI.get<DiscoverMovieResponse>(
+  const { data } = await BackendAPI.get<DiscoverMovieResponse>(
     "/api/tmdb/discover/movie",
     {
       params,
@@ -69,7 +69,7 @@ export const getSearchPerson = async (
   if (params.query.length === 0) {
     return emptyResponse;
   }
-  const { data } = await backendAPI.get<Paginated<PersonResult>>(
+  const { data } = await BackendAPI.get<Paginated<PersonResult>>(
     "/api/tmdb/search/person",
     {
       ...config,
@@ -91,7 +91,7 @@ export const getSearchKeyword = async (
   if (params.query.length === 0) {
     return emptyResponse;
   }
-  const { data } = await backendAPI.get<Paginated<KeywordResult>>(
+  const { data } = await BackendAPI.get<Paginated<KeywordResult>>(
     "/api/tmdb/search/keyword",
     {
       ...config,
@@ -114,7 +114,7 @@ export const getSearchCompany = async (
   if (params.query.length === 0) {
     return emptyResponse;
   }
-  const { data } = await backendAPI.get<Paginated<CompanyResult>>(
+  const { data } = await BackendAPI.get<Paginated<CompanyResult>>(
     "/api/tmdb/search/company",
     {
       ...config,

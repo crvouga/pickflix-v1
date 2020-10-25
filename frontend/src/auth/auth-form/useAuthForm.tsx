@@ -2,12 +2,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { bindActionCreators } from "redux";
 import useSnackbar from "../../snackbar/useSnackbar";
-import { CredentialType, getCrendentialTypesForEmail } from "../query/reads";
-import { authForm, AuthFormStep } from "./redux/auth-form";
+import { AuthMethod, getAuthMethods } from "../query/reads";
 import {
-  PostUserWithPasswordParams,
+  postAuth,
+  PostAuthParams,
   postUserWithPassword,
+  PostUserWithPasswordParams,
 } from "../query/writes";
+import { authForm, AuthFormStep } from "./redux/auth-form";
 
 const useAuthFormState = () => {
   const dispatch = useDispatch();
@@ -27,14 +29,14 @@ export default () => {
 
   const emailToNextStep = async (email: string) => {
     try {
-      const credentialTypes = await getCrendentialTypesForEmail(email);
+      const authMethods = await getAuthMethods(email);
 
       const nextStep =
-        credentialTypes.length === 0
+        authMethods.length === 0
           ? AuthFormStep.emailRegister
-          : credentialTypes.includes(CredentialType.password)
+          : authMethods.includes(AuthMethod.password)
           ? AuthFormStep.emailPassword
-          : AuthFormStep.emailTaken;
+          : AuthFormStep.emailPassword;
 
       return nextStep;
     } catch (error) {
@@ -43,8 +45,16 @@ export default () => {
     }
   };
 
-  const createUserWithPassword = async (params: PostUserWithPasswordParams) => {
+  const register = async (params: PostUserWithPasswordParams) => {
     const user = await postUserWithPassword(params);
+    history.push("/");
+    snackbar.display({
+      message: `Signed as ${user.username} (${user.email})`,
+    });
+  };
+
+  const signIn = async (params: PostAuthParams) => {
+    const user = await postAuth(params);
     history.push("/");
     snackbar.display({
       message: `Signed as ${user.username} (${user.email})`,
@@ -55,6 +65,7 @@ export default () => {
     ...authFormState,
     isUsernameTaken,
     emailToNextStep,
-    createUserWithPassword,
+    register,
+    signIn,
   };
 };

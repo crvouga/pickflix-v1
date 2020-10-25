@@ -5,7 +5,7 @@ import {Dependencies} from '../types';
 export const addList = ({listLogic, middlewares}: Dependencies) => (
   router: express.IRouter
 ) => {
-  router.post('/lists', middlewares.protected, async (req, res, next) => {
+  router.post('/lists', middlewares.isAuthenticated, async (req, res, next) => {
     try {
       const user = req.user as User;
       const title = req.body.title as string;

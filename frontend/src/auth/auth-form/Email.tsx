@@ -26,7 +26,6 @@ export default () => {
   const handleSubmit = async () => {
     const email = (refEmail.current?.value || "").trim();
     if (validateEmail(email)) {
-      console.log("HELLO");
       authForm.setEmail(email);
       authForm.setStep(await authForm.emailToNextStep(email));
     } else {
@@ -46,10 +45,15 @@ export default () => {
         label="Email"
         placeholder="example@email.com"
         fullWidth
-        autoFocus
         onChange={handleChange}
         error={Boolean(error)}
         helperText={error?.message}
+        //
+        autoFocus
+        //
+        type="email"
+        autoCorrect="off"
+        autoCapitalize="none"
       />
 
       <Box textAlign="right" marginTop={2} p={2}>

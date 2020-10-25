@@ -1,32 +1,69 @@
-import {LikeRepositoryFake} from '../likes/repositories/like-repository.fake';
-import {AutoListRepositoryFake} from '../lists/repositories/auto-list-repository.fake';
-import {ListItemRepositoryFake} from '../lists/repositories/list-item-repository.fake';
-import {ListRepositoryFake} from '../lists/repositories/list-repository.fake';
-import {ReviewRepositoryFake} from '../reviews/repositories/review-repository.fake';
-import {ReviewVoteRepositoryFake} from '../reviews/repositories/review-vote-repository.fake';
-import {CredentialRepositoryFake} from '../users/repositories/credential-repository';
-import {UserRepositoryFake} from '../users/repositories/user-repository.fake';
+import {LikeRepositoryInMemory} from '../likes/repositories/like-repository.fake';
+import {AutoListRepositoryInMemory} from '../lists/repositories/auto-list-repository.fake';
+import {ListItemRepositoryInMemory} from '../lists/repositories/list-item-repository.fake';
+import {
+  ListRepositoryInMemory,
+  ListRepositoryFileSystem,
+} from '../lists/repositories/list-repository.fake';
+import {ReviewRepositoryInMemory} from '../reviews/repositories/review-repository.fake';
+import {ReviewVoteRepositoryInMemory} from '../reviews/repositories/review-vote-repository.fake';
+import {
+  CredentialRepositoryInMemory,
+  CredentialRepositoryFileSystem,
+} from '../users/repositories/credential-repository.fake';
+import {
+  UserRepositoryInMemory,
+  UserRepositoryFileSystem,
+} from '../users/repositories/user-repository.fake';
 import {IUnitOfWork} from './types';
 
-export class UnitOfWorkFake implements IUnitOfWork {
-  Lists: ListRepositoryFake;
-  ListItems: ListItemRepositoryFake;
-  Users: UserRepositoryFake;
-  Likes: LikeRepositoryFake;
-  AutoLists: AutoListRepositoryFake;
-  Reviews: ReviewRepositoryFake;
-  ReviewVotes: ReviewVoteRepositoryFake;
-  Credentials: CredentialRepositoryFake;
+export class UnitOfWorkDev implements IUnitOfWork {
+  Lists: ListRepositoryFileSystem;
+  ListItems: ListItemRepositoryInMemory;
+  Likes: LikeRepositoryInMemory;
+  AutoLists: AutoListRepositoryInMemory;
+  Reviews: ReviewRepositoryInMemory;
+  ReviewVotes: ReviewVoteRepositoryInMemory;
+
+  Users: UserRepositoryFileSystem;
+  Credentials: CredentialRepositoryFileSystem;
 
   constructor() {
-    this.Lists = new ListRepositoryFake();
-    this.ListItems = new ListItemRepositoryFake();
-    this.Users = new UserRepositoryFake();
-    this.Likes = new LikeRepositoryFake();
-    this.AutoLists = new AutoListRepositoryFake();
-    this.Reviews = new ReviewRepositoryFake();
-    this.ReviewVotes = new ReviewVoteRepositoryFake();
-    this.Credentials = new CredentialRepositoryFake();
+    this.ListItems = new ListItemRepositoryInMemory();
+    this.Likes = new LikeRepositoryInMemory();
+    this.AutoLists = new AutoListRepositoryInMemory();
+    this.Reviews = new ReviewRepositoryInMemory();
+    this.ReviewVotes = new ReviewVoteRepositoryInMemory();
+    //
+    this.Lists = new ListRepositoryFileSystem();
+    this.Users = new UserRepositoryFileSystem();
+    this.Credentials = new CredentialRepositoryFileSystem();
+  }
+
+  async begin() {}
+  async commit() {}
+  async rollback() {}
+}
+
+export class UnitOfWorkInMemory implements IUnitOfWork {
+  Lists: ListRepositoryInMemory;
+  ListItems: ListItemRepositoryInMemory;
+  Users: UserRepositoryInMemory;
+  Likes: LikeRepositoryInMemory;
+  AutoLists: AutoListRepositoryInMemory;
+  Reviews: ReviewRepositoryInMemory;
+  ReviewVotes: ReviewVoteRepositoryInMemory;
+  Credentials: CredentialRepositoryInMemory;
+
+  constructor() {
+    this.Lists = new ListRepositoryInMemory();
+    this.ListItems = new ListItemRepositoryInMemory();
+    this.Likes = new LikeRepositoryInMemory();
+    this.AutoLists = new AutoListRepositoryInMemory();
+    this.Reviews = new ReviewRepositoryInMemory();
+    this.ReviewVotes = new ReviewVoteRepositoryInMemory();
+    this.Users = new UserRepositoryInMemory();
+    this.Credentials = new CredentialRepositoryInMemory();
   }
 
   async begin() {}

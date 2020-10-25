@@ -1,6 +1,5 @@
 import {
   AppBar,
-  Avatar,
   Box,
   Button,
   Dialog,
@@ -21,11 +20,12 @@ import DeleteForeverOutlinedIcon from "@material-ui/icons/DeleteForeverOutlined"
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import WarningIcon from "@material-ui/icons/Warning";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import useBoolean from "../common/hooks/useBoolean";
 import BackButton from "../navigation/BackButton";
-import { auth } from "./redux/auth";
+import AvatarUser from "./AvatarUser";
+import { User } from "./query/types";
+import { useAuth } from "./useAuth";
 
 const useStyles = makeStyles((theme) => ({
   bold: {
@@ -123,30 +123,40 @@ const ConfirmDeleteAccountDialog = (props: {
   );
 };
 
-export default () => {
-  const currentUser = useSelector(auth.selectors.user);
+export default ({ currentUser }: { currentUser: User }) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const history = useHistory();
+  const isSignOutDialogOpen = useBoolean(false);
+  const isDeleteAccountDialogOpen = useBoolean(false);
 
-  const onSignIn = () => {
+  const auth = useAuth();
+
+  const handleSignIn = () => {
     history.push("/signIn");
   };
 
-  const isSignOutDialogOpen = useBoolean(false);
-  const onSignOut = () => {
-    dispatch(auth.actions.signOut());
-    history.push("/");
+  const handleSignOut = async () => {
+    await auth.signOut();
   };
 
-  const isDeleteAccountDialogOpen = useBoolean(false);
-  const onDeleteAccount = () => {
-    dispatch(auth.actions.deleteUser());
-    history.push("/");
+  const handleDeleteCurrentUser = async () => {
+    await auth.deleteCurrentUser();
   };
 
   return (
     <React.Fragment>
+      <ConfirmSignOutDialog
+        isOpen={isSignOutDialogOpen.value}
+        close={isSignOutDialogOpen.setFalse}
+        onSignOut={handleSignOut}
+      />
+
+      <ConfirmDeleteAccountDialog
+        isOpen={isDeleteAccountDialogOpen.value}
+        close={isDeleteAccountDialogOpen.setFalse}
+        onDeleteAccount={handleDeleteCurrentUser}
+      />
+
       <AppBar color="default" position="sticky">
         <Toolbar>
           <BackButton />
@@ -158,17 +168,14 @@ export default () => {
       <List>
         <ListItem>
           <ListItemAvatar>
-            <Avatar
-              className={classes.backgroundColorWhite}
-              src={currentUser?.photoURL || undefined}
-            />
+            <AvatarUser user={currentUser} />
           </ListItemAvatar>
           <ListItemText
-            primary={currentUser?.displayName}
-            secondary={currentUser?.email}
+            primary={currentUser.displayName}
+            secondary={currentUser.email}
           />
         </ListItem>
-        <ListItem button onClick={onSignIn}>
+        <ListItem button onClick={handleSignIn}>
           <ListItemIcon>
             <AccountBoxOutlinedIcon />
           </ListItemIcon>
@@ -181,11 +188,6 @@ export default () => {
           </ListItemIcon>
           <ListItemText primary="Sign Out" />
         </ListItem>
-        <ConfirmSignOutDialog
-          isOpen={isSignOutDialogOpen.value}
-          close={isSignOutDialogOpen.setFalse}
-          onSignOut={onSignOut}
-        />
 
         <ListItem button onClick={isDeleteAccountDialogOpen.setTrue}>
           <ListItemIcon>
@@ -197,11 +199,6 @@ export default () => {
             primary="Delete Account"
           />
         </ListItem>
-        <ConfirmDeleteAccountDialog
-          isOpen={isDeleteAccountDialogOpen.value}
-          close={isDeleteAccountDialogOpen.setFalse}
-          onDeleteAccount={onDeleteAccount}
-        />
       </List>
     </React.Fragment>
   );

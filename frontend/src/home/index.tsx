@@ -2,7 +2,7 @@ import { Box, BoxProps, Typography } from "@material-ui/core";
 import * as R from "ramda";
 import React from "react";
 import { useQuery } from "react-query";
-import backendAPI from "../backendAPI";
+import { BackendAPI } from "../backend-api";
 import HorizontalScroll from "../common/components/HorizontalScroll";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPageTopLevel from "../common/page/LoadingPageTopLevel";
@@ -56,7 +56,7 @@ const fetchHomePage = async () => {
   const names = R.keys(urlByName);
   const urls = R.values(urlByName);
   const responses = await Promise.all(
-    R.map((url) => backendAPI.get(url), urls)
+    R.map((url) => BackendAPI.get(url), urls)
   );
   return R.zipObj(names, R.pluck("data", responses));
 };

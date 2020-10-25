@@ -30,8 +30,8 @@ export default () => {
   const snackbar = useSnackbar();
   const addListFormState = useAddListFormState();
 
-  const submit = async () => {
-    const { title, itemInfos } = addListFormState;
+  const submit = async ({ title }: { title: string }) => {
+    const { itemInfos } = addListFormState;
     try {
       const listInfo = {
         title,

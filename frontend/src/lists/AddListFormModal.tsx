@@ -9,7 +9,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import useModal from "../navigation/modals/useModal";
 import useAddListForm from "./hooks/useAddListForm";
 
@@ -33,13 +33,12 @@ export default () => {
     addListModal.close();
   };
 
-  const handleSubmit = async () => {
-    await addListForm.submit();
-    handleClose();
-  };
+  const refTitle = useRef<HTMLInputElement>();
 
-  const handleChange = (e: React.ChangeEvent<{ value: string }>) => {
-    addListForm.setTitle(e.target.value);
+  const handleSubmit = async () => {
+    const title = refTitle.current?.value || "";
+    await addListForm.submit({ title });
+    handleClose();
   };
 
   return (
@@ -57,7 +56,7 @@ export default () => {
         ))}
         <Box marginBottom={2}>
           <TextField
-            onChange={handleChange}
+            inputRef={refTitle}
             variant="outlined"
             name="title"
             label="Title"

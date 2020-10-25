@@ -22,7 +22,7 @@ export const buildReviewsRouter = ({
 
   router.get(
     '/reviews',
-    middlewares.protected,
+    middlewares.isAuthenticated,
     query('tmdbMediaId').isInt(),
     query('tmdbMediaType').isIn(Object.values(TmdbMediaType)),
     handleValidationResult,
@@ -42,7 +42,6 @@ export const buildReviewsRouter = ({
 
         res.status(200).json(reviewAggergations).end();
       } catch (error) {
-        console.log(error);
         next(error);
       }
     }
@@ -50,7 +49,7 @@ export const buildReviewsRouter = ({
 
   router.delete(
     '/reviews/:reviewId',
-    middlewares.protected,
+    middlewares.isAuthenticated,
     param('reviewId').isUUID(),
     handleValidationResult,
     async (req, res, next) => {
@@ -66,7 +65,7 @@ export const buildReviewsRouter = ({
 
   router.post(
     '/reviews',
-    middlewares.protected,
+    middlewares.isAuthenticated,
     body('content').isString(),
     body('tmdbMediaId').isInt(),
     body('tmdbMediaType').isIn(Object.values(TmdbMediaType)),
@@ -96,7 +95,7 @@ export const buildReviewsRouter = ({
 
   router.patch(
     '/reviews/:reviewId',
-    middlewares.protected,
+    middlewares.isAuthenticated,
     param('reviewId').isUUID(),
     body('content').isString(),
     handleValidationResult,
@@ -122,7 +121,7 @@ export const buildReviewsRouter = ({
 
   router.post(
     '/reviews/:reviewId/review-votes',
-    middlewares.protected,
+    middlewares.isAuthenticated,
     body('voteValue').isIn(Object.values(ReviewVoteValue)),
     param('reviewId').isUUID(),
     handleValidationResult,
@@ -147,7 +146,7 @@ export const buildReviewsRouter = ({
 
   router.delete(
     '/reviews/:reviewId/review-votes',
-    middlewares.protected,
+    middlewares.isAuthenticated,
     param('reviewId').isUUID(),
     handleValidationResult,
     async (req, res, next) => {

@@ -5,24 +5,21 @@ import {
   Dialog,
   Divider,
   IconButton,
-  InputBase,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
   makeStyles,
   Slide,
-  Toolbar,
-  Typography,
   TextField,
-  Switch,
+  Toolbar,
 } from "@material-ui/core";
 import { TransitionProps } from "@material-ui/core/transitions";
 import CloseIcon from "@material-ui/icons/Close";
 import MovieIcon from "@material-ui/icons/Movie";
 import SendIcon from "@material-ui/icons/Send";
-import { Rating } from "@material-ui/lab";
 import React, { useRef, useState } from "react";
+import { useHistory } from "react-router";
 import ErrorBox from "../common/components/ErrorBox";
 import ListItemSkeleton from "../common/components/ListItemSkeleton";
 import { useQueryMovie } from "../movie/data";
@@ -103,8 +100,10 @@ export default (props: Props) => {
     }
   };
 
+  const history = useHistory();
   const handleClose = async () => {
-    reviewFormModal.close();
+    history.goBack();
+    // reviewFormModal.close();
   };
 
   const handleSubmit = async () => {

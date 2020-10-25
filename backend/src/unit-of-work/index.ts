@@ -1,3 +1,10 @@
-import {UnitOfWorkFake} from './unit-of-work.fake';
+import {UnitOfWorkInMemory, UnitOfWorkDev} from './unit-of-work.fake';
 
-export const unitOfWork = new UnitOfWorkFake();
+const env = process.env.NODE_ENV || 'development';
+
+export const unitOfWork =
+  env === 'development'
+    ? new UnitOfWorkDev()
+    : env === 'test'
+    ? new UnitOfWorkInMemory()
+    : new UnitOfWorkInMemory();

@@ -2,7 +2,7 @@ import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router";
-import backendAPI from "../../backendAPI";
+import { BackendAPI } from "../../backend-api";
 import ReadMore from "../../common/components/ReadMore";
 import NavigationBarFadeIn from "../../navigation/NavigationBarFadeIn";
 import ErrorPage from "../../common/page/ErrorPage";
@@ -18,9 +18,9 @@ export default () => {
   const query = useQuery<Collection, string>(
     ["collection", collectionId].join(""),
     () =>
-      backendAPI
-        .get(`/api/tmdb/collection/${collectionId}`)
-        .then((res) => res.data),
+      BackendAPI.get(`/api/tmdb/collection/${collectionId}`).then(
+        (res) => res.data
+      ),
     {}
   );
 

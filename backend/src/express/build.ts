@@ -1,17 +1,22 @@
 import bodyParser from 'body-parser';
-import express from 'express';
-import cors from './cors';
-import {ExpressAppDependencies} from './types';
+import {Application} from 'express';
+import {buildAuthMiddleware} from '../users/express/build-auth-middleware';
 import {buildRouter} from './build-router';
-import {buildPassport} from '../users/express/build-passport';
+import {ExpressAppDependencies} from './types';
 
-export const buildExpressApp = (dependencies: ExpressAppDependencies) => (
-  app: express.Application
+const buildMiddleware = (dependencies: ExpressAppDependencies) => (
+  app: Application
 ) => {
   app.use(bodyParser.json());
-  app.use(cors());
-  buildPassport(dependencies)(app);
-  buildRouter(dependencies)(app);
+  buildAuthMiddleware(dependencies)(app);
+};
 
-  return {app};
+export const buildExpressApp = (dependencies: ExpressAppDependencies) => (
+  app: Application
+) => {
+  buildMiddleware(dependencies)(app);
+  buildRouter(dependencies)(app);
+  return {
+    app,
+  };
 };

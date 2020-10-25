@@ -2,7 +2,7 @@ import { Container } from "@material-ui/core";
 import React from "react";
 import { Route, Switch } from "react-router";
 import AccountPage from "../auth/AccountPage";
-import SignInPage from "../auth/SignInPage";
+import SignInPage from "../auth/auth-form/SignInPage";
 import DiscoverPage from "../discover/DiscoverMoviePage";
 import DiscoverSearchPage from "../discover/search/DiscoverSearchPage";
 import HomePage from "../home";

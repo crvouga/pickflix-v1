@@ -1,9 +1,9 @@
-import {RepositoryFake} from '../../unit-of-work/repository.fake';
+import {RepositoryInMemory} from '../../unit-of-work/repository.in-memory';
 import {ReviewVote} from '../models/make-review-vote';
 import {IReviewVoteRepository} from './types';
 
-export class ReviewVoteRepositoryFake
-  extends RepositoryFake<ReviewVote>
+export class ReviewVoteRepositoryInMemory
+  extends RepositoryInMemory<ReviewVote>
   implements IReviewVoteRepository {
   constructor() {
     super();

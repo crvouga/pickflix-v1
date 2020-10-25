@@ -9,7 +9,7 @@ export const addListItem = ({
 }: ExpressAppDependencies) => (router: IRouter) => {
   router.post(
     '/lists/:listId/list-items',
-    middlewares.protected,
+    middlewares.isAuthenticated,
     async (req, res, next) => {
       try {
         const user = req.user as User;

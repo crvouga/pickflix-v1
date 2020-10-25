@@ -5,6 +5,7 @@ import {IUnitOfWork} from '../../unit-of-work/types';
 import {makeUser} from '../models';
 import {CredentialType, makeCredential} from '../models/make-credential';
 import {UserId} from '../models/make-user';
+import {ErrorList} from '../../utils';
 
 export class UserLogic {
   unitOfWork: IUnitOfWork;
@@ -21,46 +22,80 @@ export class UserLogic {
     this.eventEmitter = eventEmitter;
   }
 
-  async verifyUsernameAndPassword({
-    username,
+  async verifyEmailAndPassword({
+    email,
     password,
   }: {
-    username: string;
+    email: string;
     password: string;
   }) {
-    const [user] = await this.unitOfWork.Users.find({username});
-    const [passwordCredential] = await this.unitOfWork.Credentials.find({
+    const {Users, Credentials} = this.unitOfWork;
+
+    const [user] = await Users.find({email});
+
+    if (!user) {
+      throw new Error('User does not exists.');
+    }
+
+    const [passwordCredential] = await Credentials.find({
       userId: user.id,
       type: CredentialType.password,
     });
 
+    if (!passwordCredential) {
+      throw new Error('User does not have a password.');
+    }
+
     if (await bcrypt.compare(password, passwordCredential.passwordHash)) {
       return user;
     }
+
     return null;
   }
 
   async createUserWithPassword({
     username,
+    displayName,
     email,
     password,
   }: {
     username: string;
+    displayName: string;
     email: string;
     password: string;
   }) {
-    const user = makeUser({username, email});
+    const {Users, Credentials} = this.unitOfWork;
 
-    const passwordHash = await bcrypt.hash(password, 10);
+    const [foundUsernames, foundEmails] = await Promise.all([
+      Users.find({
+        username,
+      }),
+      Users.find({
+        email,
+      }),
+    ]);
+
+    const errors = [];
+    if (foundUsernames.length > 0) {
+      errors.push({key: 'username', message: 'Username taken.'});
+    }
+    if (foundEmails.length > 0) {
+      errors.push({key: 'email', message: 'Email taken.'});
+    }
+    if (errors.length > 0) {
+      throw new ErrorList(errors);
+    }
+
+    const user = makeUser({username, displayName, email});
 
     const passwordCredential = makeCredential({
       userId: user.id,
-      passwordHash,
+      passwordHash: await bcrypt.hash(password, 10),
     });
 
     await Promise.all([
-      this.unitOfWork.Credentials.add([passwordCredential]),
-      this.unitOfWork.Users.add([user]),
+      Users.add([user]),
+      Credentials.add([passwordCredential]),
     ]);
 
     this.eventEmitter.emit(EventTypes.USER_CREATED, {user});

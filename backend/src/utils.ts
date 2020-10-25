@@ -1,4 +1,5 @@
-type ErrorMessage = {[key: string]: any} & {
+type ErrorMessage = {
+  key: string;
   message: string;
 };
 

@@ -1,4 +1,4 @@
-import backendAPI from "../backendAPI";
+import { BackendAPI } from "../backend-api";
 
 export const embedConfig = {
   embedOptions: {
@@ -33,13 +33,12 @@ export const details = ({ videoId }: { videoId: string }) => {
   if (!videoId) {
     return Promise.resolve({});
   }
-  return backendAPI
-    .get("/api/youtube/videos", {
-      params: {
-        id: videoId,
-        part: "snippet,statistics",
-      },
-    })
+  return BackendAPI.get("/api/youtube/videos", {
+    params: {
+      id: videoId,
+      part: "snippet,statistics",
+    },
+  })
     .then((res) => res.data)
     .catch((err) => {
       console.error(err);
@@ -51,16 +50,15 @@ export const commentThreadList = ({ videoId }: { videoId: string }) => {
   if (!videoId) {
     return Promise.resolve({});
   }
-  return backendAPI
-    .get("/api/youtube/commentThreads", {
-      params: {
-        videoId: videoId,
-        part: "snippet",
-        order: "relevance",
-        textFormat: "plainText",
-        maxResults: 50,
-      },
-    })
+  return BackendAPI.get("/api/youtube/commentThreads", {
+    params: {
+      videoId: videoId,
+      part: "snippet",
+      order: "relevance",
+      textFormat: "plainText",
+      maxResults: 50,
+    },
+  })
     .then((res) => res.data)
     .catch((err) => {
       console.error(err);

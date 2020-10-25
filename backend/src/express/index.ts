@@ -2,7 +2,10 @@ import express from 'express';
 import {listLogic} from '../lists/logic';
 import {mediaLogic} from '../media/logic';
 import {reviewLogic} from '../reviews/logic';
-import {authenticate, attachUser} from '../users/express/middlewares';
+import {
+  authenticate,
+  isAuthenticated,
+} from '../users/express/build-auth-middleware';
 import {userLogic} from '../users/logic';
 import {buildExpressApp} from './build';
 import {ExpressAppDependencies} from './types';
@@ -13,8 +16,8 @@ export const dependencies: ExpressAppDependencies = {
   mediaLogic,
   reviewLogic,
   middlewares: {
-    attachUser,
-    protected: authenticate,
+    authenticate: authenticate,
+    isAuthenticated: isAuthenticated,
   },
 };
 

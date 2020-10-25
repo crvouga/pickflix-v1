@@ -8,7 +8,7 @@ export const removeListItem = ({listLogic, middlewares}: Dependencies) => (
 ) => {
   router.delete(
     '/lists/:listId/list-items',
-    middlewares.protected,
+    middlewares.isAuthenticated,
     async (req, res, next) => {
       try {
         const listItemIds = req.body as ListItemId[];

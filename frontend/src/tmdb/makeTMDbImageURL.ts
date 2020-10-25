@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import backendAPI from "../backendAPI";
+import { BackendAPI } from "../backend-api";
 import {
   ImagePaths,
   PathKey,
@@ -51,7 +51,7 @@ const makeImageUrl = (
 };
 
 const getTmdbConfig = async () => {
-  const { data } = await backendAPI.get<TmdbConfiguration>(
+  const { data } = await BackendAPI.get<TmdbConfiguration>(
     "/api/tmdb/configuration"
   );
   return data;

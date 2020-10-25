@@ -1,4 +1,4 @@
-import backendAPI from "../../backendAPI";
+import { BackendAPI } from "../../backend-api";
 import { TmdbMediaType } from "../../tmdb/types";
 import { List, ListItem } from "./types";
 
@@ -18,7 +18,7 @@ export const postListItem = async ({
   tmdbMediaId,
   tmdbMediaType,
 }: PostListItemParams) => {
-  const { data } = await backendAPI.post<ListItem>(
+  const { data } = await BackendAPI.post<ListItem>(
     `/api/lists/${listId}/list-items`,
     {
       tmdbMediaId,
@@ -39,7 +39,7 @@ export type PostListParams = {
 };
 
 export const postList = async ({ title, description }: PostListParams) => {
-  const { data } = await backendAPI.post<List>(`/api/lists/`, {
+  const { data } = await BackendAPI.post<List>(`/api/lists/`, {
     title,
     description,
   });
@@ -60,7 +60,7 @@ export const deleteListItems = async ({
   listId,
   listItemIds,
 }: DeleteListItemsParams) => {
-  return await backendAPI.delete<void>(`/api/lists/${listId}/list-items`, {
+  return await BackendAPI.delete<void>(`/api/lists/${listId}/list-items`, {
     data: listItemIds,
   });
 };
@@ -75,7 +75,7 @@ export type DeleteListParams = {
 };
 
 export const deleteList = async ({ listId }: DeleteListParams) => {
-  const { data } = await backendAPI.delete<{}>(`/api/lists/${listId}`);
+  const { data } = await BackendAPI.delete<{}>(`/api/lists/${listId}`);
   return data;
 };
 
@@ -95,7 +95,7 @@ export const patchList = async ({
   title,
   description,
 }: PatchListParams) => {
-  const { data } = await backendAPI.patch<List>(`/api/lists/${listId}`, {
+  const { data } = await BackendAPI.patch<List>(`/api/lists/${listId}`, {
     title,
     description,
   });

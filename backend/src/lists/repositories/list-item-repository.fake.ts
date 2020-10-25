@@ -1,9 +1,9 @@
-import {RepositoryFake} from '../../unit-of-work/repository.fake';
+import {RepositoryInMemory} from '../../unit-of-work/repository.in-memory';
 import {ListItem} from '../models/types';
 import {IListItemRepository} from './types';
 
-export class ListItemRepositoryFake
-  extends RepositoryFake<ListItem>
+export class ListItemRepositoryInMemory
+  extends RepositoryInMemory<ListItem>
   implements IListItemRepository {
   constructor() {
     super();

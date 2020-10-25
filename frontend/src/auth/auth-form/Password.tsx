@@ -1,26 +1,42 @@
 import { Box, Button, TextField, Typography } from "@material-ui/core";
-import React from "react";
-import { Controller } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useRef } from "react";
 import * as yup from "yup";
-import { authForm, FormValues } from "./redux/auth-form";
+import useAuthForm from "./useAuthForm";
 
 const schema = yup.object().shape({});
 
 export default () => {
+  const authForm = useAuthForm();
+  const refPassword = useRef<HTMLInputElement>();
+
   const handleCancel = () => {};
 
-  const submit = (data: FormValues) => {};
+  const handleSubmit = async () => {
+    const email = authForm.email || "";
+    const password = refPassword.current?.value || "";
+
+    await authForm.signIn({
+      email,
+      password,
+    });
+  };
 
   return (
-    <Box p={4}>
+    <Box p={2}>
       <Typography gutterBottom variant="h6" style={{ fontWeight: "bold" }}>
         Sign in with email
       </Typography>
 
-      <TextField type="email" name="email" label="Email" fullWidth disabled />
-      <Controller
-        as={TextField}
+      <TextField
+        type="email"
+        name="email"
+        label="Email"
+        value={authForm.email}
+        fullWidth
+        disabled
+      />
+      <TextField
+        inputRef={refPassword}
         type="password"
         name="password"
         label="Password"
@@ -39,6 +55,7 @@ export default () => {
           </Button>
         </Box>
         <Button
+          onClick={handleSubmit}
           variant="contained"
           color="primary"
           style={{ fontWeight: "bold" }}

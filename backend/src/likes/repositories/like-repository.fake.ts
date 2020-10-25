@@ -1,9 +1,9 @@
-import {RepositoryFake} from '../../unit-of-work/repository.fake';
+import {RepositoryInMemory} from '../../unit-of-work/repository.in-memory';
 import {Like} from '../models/types';
 import {ILikeRepository} from './types';
 
-export class LikeRepositoryFake
-  extends RepositoryFake<Like>
+export class LikeRepositoryInMemory
+  extends RepositoryInMemory<Like>
   implements ILikeRepository {
   constructor() {
     super();

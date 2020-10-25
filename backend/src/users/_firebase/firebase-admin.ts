@@ -1,5 +1,5 @@
 import firebaseAdmin from 'firebase-admin';
-import env from '../configuration';
+import env from '../../configuration';
 
 firebaseAdmin.initializeApp({
   credential: firebaseAdmin.credential.cert(
@@ -8,4 +8,6 @@ firebaseAdmin.initializeApp({
   databaseURL: 'https://pickflix.firebaseio.com',
 });
 
-export {firebaseAdmin};
+const firebaseAdminAuth = firebaseAdmin.auth();
+
+export {firebaseAdmin, firebaseAdminAuth};

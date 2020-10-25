@@ -16,7 +16,7 @@ import { groupBy } from "ramda";
 import React, { useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { useHistory, useParams } from "react-router";
-import backendAPI from "../../backendAPI";
+import { BackendAPI } from "../../backend-api";
 import ListItemSkeleton from "../../common/components/ListItemSkeleton";
 import ErrorPage from "../../common/page/ErrorPage";
 import {
@@ -112,9 +112,9 @@ const SkeletonPage = () => {
 };
 
 const fetchMovieCredits = (movieId: string) =>
-  backendAPI
-    .get<MovieCredits>(`/api/tmdb/movie/${movieId}/credits`)
-    .then((res) => res.data);
+  BackendAPI.get<MovieCredits>(`/api/tmdb/movie/${movieId}/credits`).then(
+    (res) => res.data
+  );
 
 export default () => {
   const history = useHistory();

@@ -1,5 +1,5 @@
 import { TmdbMediaType } from "../../tmdb/types";
-import backendAPI from "../../backendAPI";
+import { BackendAPI } from "../../backend-api";
 import { ReviewAggergation } from "./types";
 
 /*
@@ -13,7 +13,7 @@ export type GetReviewsParams = {
 };
 
 export const getReviews = async (params: GetReviewsParams) => {
-  const { data } = await backendAPI.get<ReviewAggergation[]>("/api/reviews", {
+  const { data } = await BackendAPI.get<ReviewAggergation[]>("/api/reviews", {
     params,
   });
   return data;

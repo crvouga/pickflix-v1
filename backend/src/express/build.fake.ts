@@ -26,8 +26,8 @@ export const buildExpressAppFake = async () => {
     mediaLogic,
     reviewLogic,
     middlewares: {
-      attachUser: stub,
-      protected: stub,
+      authenticate: stub,
+      isAuthenticated: stub,
     },
   };
 

@@ -1,4 +1,4 @@
-import backendAPI from "../../backendAPI";
+import { BackendAPI } from "../../backend-api";
 import { TmdbMediaType } from "../../tmdb/types";
 import { Review, ReviewVote, ReviewVoteValue } from "./types";
 
@@ -14,7 +14,7 @@ export type PostReviewParams = {
 };
 
 export const postReview = async (params: PostReviewParams) => {
-  const { data } = await backendAPI.post<Review>("/api/reviews", {
+  const { data } = await BackendAPI.post<Review>("/api/reviews", {
     content: params.content,
     tmdbMediaId: params.tmdbMediaId,
     tmdbMediaType: params.tmdbMediaType,
@@ -33,7 +33,7 @@ export type PatchReviewParams = {
 };
 
 export const patchReview = async ({ content, reviewId }: PatchReviewParams) => {
-  const { data } = await backendAPI.post<Review>(`/api/reviews/${reviewId}`, {
+  const { data } = await BackendAPI.post<Review>(`/api/reviews/${reviewId}`, {
     data: {
       content,
     },
@@ -51,7 +51,7 @@ export type DeleteReviewParams = {
 };
 
 export const deleteReview = async ({ reviewId }: DeleteReviewParams) => {
-  const { data } = await backendAPI.delete<{}>(`/api/reviews/${reviewId}`);
+  const { data } = await BackendAPI.delete<{}>(`/api/reviews/${reviewId}`);
   return data;
 };
 
@@ -69,7 +69,7 @@ export const postReviewVote = async ({
   reviewId,
   voteValue,
 }: PostReviewVoteParams) => {
-  const { data } = await backendAPI.post<ReviewVote>(
+  const { data } = await BackendAPI.post<ReviewVote>(
     `/api/reviews/${reviewId}/review-votes`,
     {
       data: {
@@ -92,7 +92,7 @@ export type DeleteReviewVoteParams = {
 export const deleteReviewVote = async ({
   reviewId,
 }: DeleteReviewVoteParams) => {
-  const { data } = await backendAPI.delete<{}>(
+  const { data } = await BackendAPI.delete<{}>(
     `/api/reviews/${reviewId}/review-votes`
   );
   return data;

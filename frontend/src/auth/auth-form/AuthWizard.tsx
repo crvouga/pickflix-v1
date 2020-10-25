@@ -1,8 +1,8 @@
 import { Box, BoxProps, LinearProgress } from "@material-ui/core";
 import React, { useEffect } from "react";
 import Email from "./Email";
-import EmailPassword from "./EmailPassword";
-import EmailTaken from "./EmailTaken";
+import Password from "./Password";
+
 import ErrorMessage from "./ErrorMessage";
 import { AuthFormStep } from "./redux/auth-form";
 import Register from "./Register";
@@ -24,9 +24,8 @@ export default (props: Props) => {
       {
         {
           [AuthFormStep.email]: <Email />,
-          [AuthFormStep.emailTaken]: <EmailTaken />,
+          [AuthFormStep.emailPassword]: <Password />,
           [AuthFormStep.emailRegister]: <Register />,
-          [AuthFormStep.emailPassword]: <EmailPassword />,
         }[authForm.step]
       }
     </Box>

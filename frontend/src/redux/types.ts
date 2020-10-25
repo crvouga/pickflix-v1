@@ -1,5 +1,4 @@
 import { AuthFormState } from "../auth/auth-form/redux/auth-form";
-import { AuthState } from "../auth/redux/types";
 import { DiscoverActiveTags } from "../discover/redux/discover-active-tags";
 import { DiscoverTagsState } from "../discover/redux/discover-tags";
 import { AddListFormState } from "../lists/redux/add-list-form";
@@ -17,7 +16,6 @@ export type AppState = {
   addListForm: AddListFormState;
   video: VideoState;
   history: HistoryState;
-  auth: AuthState;
   authForm: AuthFormState;
   snackbar: SnackbarState;
   search: SearchState;

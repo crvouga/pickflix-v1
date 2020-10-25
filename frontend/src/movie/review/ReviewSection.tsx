@@ -6,13 +6,12 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import React from "react";
-import CurrentUserAvatar from "../../auth/CurrentUserAvatar";
+import AvatarCurrentUser from "../../auth/AvatarCurrentUser";
+import useModal from "../../navigation/modals/useModal";
+import ReviewFormModal from "../../reviews/ReviewFormModal";
+import ReviewList from "../../reviews/ReviewList";
 import { useMoviePageQuery } from "../data";
 import Review from "./Review";
-import ReviewList from "../../reviews/ReviewList";
-import ReviewFormModal from "../../reviews/ReviewFormModal";
-import useBoolean from "../../common/hooks/useBoolean";
-import useModal from "../../navigation/modals/useModal";
 
 export default () => {
   const query = useMoviePageQuery();
@@ -40,7 +39,7 @@ export default () => {
 
         <ListItem divider button onClick={reviewFormModal.open}>
           <ListItemAvatar>
-            <CurrentUserAvatar />
+            <AvatarCurrentUser />
           </ListItemAvatar>
           <ListItemText
             primaryTypographyProps={{ color: "textSecondary" }}

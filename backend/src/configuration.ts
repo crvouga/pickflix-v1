@@ -2,6 +2,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export default {
+  // for dev env
+  // make sure .gitignore this!
+  storeDirectoryName: 'store',
+  //
   PORT: process.env.PORT || 5000,
   // CORS
   clientOrigin: 'https://pickflix.web.app',

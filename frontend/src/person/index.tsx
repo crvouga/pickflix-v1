@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
-import backendAPI from "../backendAPI";
+import { BackendAPI } from "../backend-api";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
 import NavigationBarFadeIn from "../navigation/NavigationBarFadeIn";
@@ -19,23 +19,16 @@ import MovieCreditsSection from "./MovieCreditsSection";
 import PosterHeader from "./PosterHeader";
 
 const fetchPersonPage = (personId: string) =>
-  backendAPI
-    .get<
-      {
-        credits: PersonMovieCreditsResponse;
-        images: PersonImagesResponse;
-      } & PersonDetailsResponse
-    >(`/api/tmdb/person/${personId}`, {
-      params: {
-        appendToResponse: [
-          "credits",
-          "movie_credits",
-          "images",
-          "tagged_images",
-        ],
-      },
-    })
-    .then((res) => res.data);
+  BackendAPI.get<
+    {
+      credits: PersonMovieCreditsResponse;
+      images: PersonImagesResponse;
+    } & PersonDetailsResponse
+  >(`/api/tmdb/person/${personId}`, {
+    params: {
+      appendToResponse: ["credits", "movie_credits", "images", "tagged_images"],
+    },
+  }).then((res) => res.data);
 
 const useStyles = makeStyles((theme) => ({
   fadeToBackground: {

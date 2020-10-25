@@ -8,7 +8,7 @@ export const editList = ({listLogic, middlewares}: Dependencies) => (
 ) => {
   router.patch(
     '/lists/:listId',
-    middlewares.protected,
+    middlewares.isAuthenticated,
     async (req, res, next) => {
       try {
         const listId = req.params.listId as ListId;

@@ -1,19 +1,26 @@
-import {IRouter, Handler} from 'express';
-import {User} from '../models/make-user';
+import {IRouter} from 'express';
 import {Dependencies} from './types';
-import {validationResult, query, body} from 'express-validator';
-const handleValidationResult: Handler = (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({errors: errors.array()});
-  }
-  next();
-};
 
 export const buildAuthRouter = ({userLogic, middlewares}: Dependencies) => (
   router: IRouter
 ) => {
-  router.get('/auth/credentials', async (req, res, next) => {
+  router.get('/auth', middlewares.isAuthenticated, (req, res, next) => {
+    res.status(200).json(req.user);
+  });
+
+  router.delete('/auth', (req, res) => {
+    req.logout();
+    if (req.session) {
+      req.session.destroy(error => {});
+    }
+    res.status(204).end();
+  });
+
+  router.post('/auth', middlewares.authenticate, (req, res) => {
+    res.status(201).json(req.user).end();
+  });
+
+  router.get('/auth/methods', async (req, res, next) => {
     try {
       const email = req.query.email as string;
       const credentialTypes = await userLogic.getCredentialTypesForEmail({
@@ -24,68 +31,41 @@ export const buildAuthRouter = ({userLogic, middlewares}: Dependencies) => (
       next(error);
     }
   });
-
-  router.get('/auth', middlewares.attachUser, (req, res, next) => {
-    const user = req.user;
-    if (user) {
-      res.status(200).json(user);
-    } else {
-      res.status(404).end();
-    }
-  });
-
-  router.delete('/auth', middlewares.attachUser, (req, res) => {
-    req.logout();
-    if (req.session) {
-      req.session.destroy(error => {});
-    }
-    res.json({
-      message: 'You have been logged out.',
-    });
-  });
-
-  router.post('/auth', middlewares.attachUser, (req, res) => {
-    if (!req.user) {
-      return res.status(401).json({
-        message: 'Invalid username or password.',
-      });
-    }
-    const {id, username} = req.user as User;
-    res
-      .status(200)
-      .json({
-        id,
-        username,
-      })
-      .end();
-  });
 };
 
-export const buildUsersRouter = ({userLogic}: Dependencies) => (
+export const buildUsersRouter = ({userLogic, middlewares}: Dependencies) => (
   router: IRouter
 ) => {
-  router.post(
-    '/users/password',
-    body('username').isString(),
-    body('email').isEmail(),
-    body('password').isString(),
-    handleValidationResult,
+  router.get(
+    '/users/current',
+    middlewares.isAuthenticated,
     async (req, res, next) => {
-      try {
-        const email = req.body.email;
-        const username = req.body.username;
-        const password = req.body.password;
-
-        const user = await userLogic.createUserWithPassword({
-          email,
-          username,
-          password,
-        });
-
-        res.status(201).json(user).end();
-      } catch (error) {
-        next(error);
-      }
+      res.status(200).json(req.user);
     }
   );
+
+  router.post('/users/password', async (req, res, next) => {
+    const email = req.body.email;
+    const username = req.body.username;
+    const displayName = req.body.displayName;
+    const password = req.body.password;
+    try {
+      const user = await userLogic.createUserWithPassword({
+        email,
+        displayName,
+        username,
+        password,
+      });
+
+      req.logIn(user, error => {
+        if (error) {
+          next(error);
+        } else {
+          res.status(201).json(user).end();
+        }
+      });
+    } catch (error) {
+      next(error);
+    }
+  });
 };

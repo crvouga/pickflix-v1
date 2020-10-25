@@ -1,7 +1,7 @@
-import { IconButton, makeStyles, IconButtonProps } from "@material-ui/core";
+import { IconButton, IconButtonProps, makeStyles } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router";
-import CurrentUserAvatar from "../auth/CurrentUserAvatar";
+import AvatarCurrentUser from "../auth/AvatarCurrentUser";
 
 const useStyles = makeStyles((theme) => ({
   small: {
@@ -21,7 +21,7 @@ export default (props: IconButtonProps) => {
 
   return (
     <IconButton onClick={onAccount} {...props}>
-      <CurrentUserAvatar className={classes.small} />
+      <AvatarCurrentUser className={classes.small} />
     </IconButton>
   );
 };
