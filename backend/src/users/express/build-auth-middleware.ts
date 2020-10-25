@@ -35,7 +35,9 @@ export const buildAuthMiddleware = ({userLogic}: {userLogic: UserLogic}) => (
 
         return callback(new Error('Not allowed by CORS'));
       },
+
       credentials: true,
+
       allowedHeaders: [
         'Set-Cookie',
         'withCredentials',
@@ -43,13 +45,12 @@ export const buildAuthMiddleware = ({userLogic}: {userLogic: UserLogic}) => (
         'X-Requested-With',
         'Content-Type',
       ],
+
       methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'],
     })
   );
 
   app.use(cookieParser());
-
-  app.set('trust proxy', 1);
 
   app.use(
     session({

@@ -21,6 +21,8 @@ export const dependencies: ExpressAppDependencies = {
   },
 };
 
-export const app = express();
-
-buildExpressApp(dependencies)(app);
+export const makeExpressApp = () => {
+  const app = express();
+  buildExpressApp(dependencies)(app);
+  return app;
+};

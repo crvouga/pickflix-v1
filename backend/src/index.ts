@@ -1,17 +1,38 @@
 import fs from 'fs';
 import https from 'https';
 import configuration from './configuration';
-import {app} from './express';
+import {makeExpressApp} from './express';
 
-if (!fs.existsSync(configuration.storePath)) {
-  fs.mkdirSync(configuration.storePath);
-  fs.mkdirSync(configuration.sessionStorePath);
-}
+const makeStoreDirs = () => {
+  if (!fs.existsSync(configuration.storePath)) {
+    fs.mkdirSync(configuration.storePath);
+    fs.mkdirSync(configuration.sessionStorePath);
+  }
+};
 
-const key = fs.readFileSync('localhost-key.pem', 'utf-8');
-const cert = fs.readFileSync('localhost.pem', 'utf-8');
+const makeHttpsLocalhostCert = () => {
+  const key = fs.readFileSync('localhost-key.pem', 'utf-8');
+  const cert = fs.readFileSync('localhost.pem', 'utf-8');
+  return {
+    key,
+    cert,
+  };
+};
 
-const server = https.createServer({key, cert}, app);
+const makeServer = () => {
+  const app = makeExpressApp();
+
+  if (configuration.env === 'development') {
+    makeStoreDirs();
+    const {key, cert} = makeHttpsLocalhostCert();
+    const server = https.createServer({key, cert}, app);
+    return server;
+  }
+
+  return app;
+};
+
+const server = makeServer();
 
 server.listen(configuration.PORT, () => {
   console.log(
