@@ -10,6 +10,7 @@ describe('DELETE', () => {
         title: 'my movies',
       },
     ]);
+
     await supertest(app).delete(`/api/lists/${list.id}`).expect(204);
     const lists = await listLogic.getLists({id: list.id});
     expect(lists).toHaveLength(0);

@@ -7,6 +7,10 @@ export const removeList = ({listLogic, middlewares}: Dependencies) => (
 ) => {
   router.delete(
     '/lists/:listId',
+    (req, res, next) => {
+      console.log('HELLO');
+      next();
+    },
     middlewares.isAuthenticated,
     async (req, res, next) => {
       try {
@@ -16,6 +20,7 @@ export const removeList = ({listLogic, middlewares}: Dependencies) => (
 
         res.status(204).end();
       } catch (error) {
+        console.log(error);
         next(error);
       }
     }

@@ -16,6 +16,7 @@ export const buildExpressAppFake = async () => {
   const user = makeUserFake();
 
   const stub: Handler = (req, res, next) => {
+    console.log({stub: user});
     req.user = user;
     next();
   };

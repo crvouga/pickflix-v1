@@ -18,10 +18,6 @@ export default Object.freeze({
   // use for setting cookies and CORS
   sessionCookieSecret:
     process.env.SESSION_COOKIE_SECRET || 'session cookie secret',
-  clientOrigin:
-    env === 'development'
-      ? `https://localhost:3000`
-      : 'https://pickflix.web.app',
 
   clientOriginWhitelist: [
     'https://localhost:3000',

@@ -12,7 +12,7 @@ import {User, UserId} from '../models/make-user';
 
 const FileStore = makeFileStore(session);
 
-const equalsByHostName = (url1: string, url2: string) =>
+const isEqualHostName = (url1: string, url2: string) =>
   url.parse(url1).hostname === url.parse(url2).hostname;
 
 export const buildAuthMiddleware = ({userLogic}: {userLogic: UserLogic}) => (
@@ -21,14 +21,19 @@ export const buildAuthMiddleware = ({userLogic}: {userLogic: UserLogic}) => (
   app.use(
     cors({
       origin: (origin, callback) => {
-        const found = configuration.clientOriginWhitelist.find(clientOrigin =>
-          equalsByHostName(clientOrigin, origin || '')
-        );
-        if (found) {
-          callback(null, true);
-        } else {
-          callback(new Error('Not allowed by CORS'));
+        if (origin === undefined) {
+          return callback(null, true);
         }
+
+        const found = configuration.clientOriginWhitelist.find(clientOrigin =>
+          isEqualHostName(clientOrigin, origin)
+        );
+
+        if (found) {
+          return callback(null, true);
+        }
+
+        return callback(new Error('Not allowed by CORS'));
       },
       credentials: true,
       allowedHeaders: [

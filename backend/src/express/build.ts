@@ -8,6 +8,7 @@ const buildMiddleware = (dependencies: ExpressAppDependencies) => (
   app: Application
 ) => {
   app.use(bodyParser.json());
+
   buildAuthMiddleware(dependencies)(app);
 };
 
