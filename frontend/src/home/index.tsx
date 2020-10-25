@@ -10,10 +10,9 @@ import MoviePosterCardScroll from "../movie/components/MoviePosterCardScroll";
 import NavigationBarTopLevel from "../navigation/NavigationBarTopLevel";
 import PersonAvatar from "../person/PersonAvatar";
 import { Movie, Person } from "../tmdb/types";
-import Header from "./Header";
 
 const Title = ({ children, ...props }: BoxProps) => (
-  <Box paddingLeft={2} paddingBottom={1} {...props}>
+  <Box paddingX={2} {...props}>
     <Typography gutterBottom variant="h6">
       {children}
     </Typography>
@@ -41,6 +40,7 @@ const renderAvatarScroll = (title: string, persons: Person[]) => (
 const renderMovieScroll = (title: string, movies: Movie[]) => (
   <React.Fragment>
     <Title>{title}</Title>
+
     <MoviePosterCardScroll movies={movies} />
   </React.Fragment>
 );
@@ -50,7 +50,8 @@ const fetchHomePage = async () => {
     popular: "/api/tmdb/movie/popular",
     personPopular: "/api/tmdb/person/popular",
     upcoming: "/api/tmdb/movie/upcoming",
-    topRated: "/api/tmdb/movie/topRated",
+    topRated:
+      "/api/tmdb/discover/movie?vote_count.gte=8000&vote_average.gte=8.0",
     nowPlaying: "/api/tmdb/movie/nowPlaying",
   };
   const names = R.keys(urlByName);
@@ -79,12 +80,13 @@ export default () => {
   return (
     <React.Fragment>
       <NavigationBarTopLevel />
-      <Header movies={popular.results} />
-
-      {renderMovieScroll("Top Rated", topRated.results)}
-      {renderMovieScroll("Trending", upcoming.results)}
-      {renderMovieScroll("Now Playing", nowPlaying.results)}
-      {renderAvatarScroll("Popular People", personPopular.results)}
+      <Box paddingY={2}>
+        {renderMovieScroll("Popular", popular.results)}
+        {renderMovieScroll("Top Rated", topRated.results)}
+        {renderMovieScroll("Trending", upcoming.results)}
+        {renderMovieScroll("Now Playing", nowPlaying.results)}
+        {renderAvatarScroll("Popular People", personPopular.results)}
+      </Box>
     </React.Fragment>
   );
 };

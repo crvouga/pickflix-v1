@@ -2,18 +2,12 @@ import fs from 'fs';
 import {innerJoin, whereEq} from 'ramda';
 import configuration from '../configuration';
 import {Identifiable, IRepository} from './types';
-
-const DIR = configuration.storeDirectoryName;
-
 export class RepositoryFileSystem<T extends Identifiable>
   implements IRepository<T> {
   filename: string;
 
   constructor(collectionName: string) {
-    if (!fs.existsSync(DIR)) {
-      fs.mkdirSync(DIR);
-    }
-    this.filename = `${DIR}/${collectionName}.json`;
+    this.filename = `${configuration.storePath}/${collectionName}.json`;
   }
 
   read(): {[id: string]: T} {

@@ -43,7 +43,7 @@ export const buildAuthMiddleware = ({userLogic}: {userLogic: UserLogic}) => (
   app.use(
     session({
       store: new FileStore({
-        path: configuration.storeDirectoryName,
+        path: configuration.sessionStorePath,
       }),
 
       secret: configuration.sessionCookieSecret,

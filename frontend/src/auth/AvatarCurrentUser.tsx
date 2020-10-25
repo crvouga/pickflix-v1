@@ -9,7 +9,7 @@ export default (props: AvatarProps) => {
 
   if (currentUser === "loading") {
     return (
-      <Skeleton variant="circle">
+      <Skeleton variant="circle" className={props.className}>
         <Avatar {...props} />
       </Skeleton>
     );

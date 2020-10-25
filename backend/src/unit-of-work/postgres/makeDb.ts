@@ -1,9 +1,9 @@
 import pg from 'pg';
-import pgClientConfigs from './pgClientConfigs';
+import configuration from '../../configuration';
 import {Db} from './Db';
+import pgClientConfigs from './pgClientConfigs';
 
-const env = process.env.NODE_ENV || 'development';
-const clientConfig = pgClientConfigs[env];
+const clientConfig = pgClientConfigs[configuration.env];
 const pool = new pg.Pool(clientConfig);
 
 export const makeDb = async (): Promise<Db> => {

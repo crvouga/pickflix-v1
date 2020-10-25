@@ -5,6 +5,13 @@ import { fade } from "@material-ui/core/styles/colorManipulator";
 /* 
 
 */
+export const nameToInitials = (name: string) =>
+  name
+    .split(" ")
+    .map((word) => word[0])
+    .join("")
+    .toUpperCase()
+    .substr(0, 2);
 
 export const capitalize = (string: string) =>
   (string[0] || "").toUpperCase() +

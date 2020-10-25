@@ -6,40 +6,51 @@ const env = process.env.NODE_ENV || 'development';
 const BACKEND_DEV_PORT = 5000;
 
 export default Object.freeze({
-  // for dev env
-  // make sure .gitignore this!
-  storeDirectoryName: 'store',
-
+  env,
+  //
   PORT: process.env.PORT || BACKEND_DEV_PORT,
 
-  sessionCookieSecret: process.env.COOKIE_SECRET || 'cookie secret',
+  // MAKE SURE .gitignore THIS!
+  // used to store session data and data access layer in dev
+  storePath: '_store',
+  sessionStorePath: '_store/session',
 
+  // use for setting cookies and CORS
+  sessionCookieSecret:
+    process.env.SESSION_COOKIE_SECRET || 'session cookie secret',
   clientOrigin:
     env === 'development'
-      ? `http://localhost:3000`
+      ? `https://localhost:3000`
       : 'https://pickflix.web.app',
 
-  clientDomain: 'pickflix.web.app',
+  clientOriginWhitelist: [
+    'https://localhost:3000',
+    'https://192.168.7.30:3000',
+    'https://pickflix.web.app',
+  ],
+
+  // for heroku deployment
   // used by heroku sub dir buildpack since I only want to deploy the backend subdir to heroku
   projectPath: process.env.PROJECT_PATH,
-  // used for database
-  // Source: https://cloud.mongodb.com/v2/5ebb5d21f7a74e506ce600db#clusters.
+
+  // for database
+  // SOURCE: https://cloud.mongodb.com/v2/5ebb5d21f7a74e506ce600db#clusters.
   mongoDbConnectionURI: process.env.MONGODB_CONNECTION_URI,
 
   // used for database
-  // Used by Heroku postgres add on
+  // used by Heroku postgres add on
   databaseURL: process.env.DATABASE_URL,
 
   // for movie data
-  // Source: https://www.themoviedb.org/settings/api.
+  // SOURCE: https://www.themoviedb.org/settings/api.
   TMDbAPIKey: process.env.TMDB_API_KEY,
 
   // for youtube data
-  // Source: https://console.developers.google.com/apis/api/youtube.googleapis.com/credentials?project=pickflix.
+  // SOURCE: https://console.developers.google.com/apis/api/youtube.googleapis.com/credentials?project=pickflix.
   youtubeAPIKey: process.env.YOUTUBE_API_KEY,
 
   // for authentication with firebase admin
-  // Source: https://console.firebase.google.com/project/pickflix/settings/serviceaccounts/adminsdk
+  // SOURCE: https://console.firebase.google.com/project/pickflix/settings/serviceaccounts/adminsdk
   firebaseAdminServiceAccountKeyJSON: JSON.parse(
     process.env.FIREBASE_ADMIN_SERVICE_ACCOUNT_KEY_JSON || ''
   ),

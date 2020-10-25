@@ -1,4 +1,4 @@
-/store
+/_store
 /node_modules
 /build
 .env

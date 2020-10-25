@@ -16,8 +16,8 @@ export const dependencies: ExpressAppDependencies = {
   mediaLogic,
   reviewLogic,
   middlewares: {
-    authenticate: authenticate,
-    isAuthenticated: isAuthenticated,
+    authenticate,
+    isAuthenticated,
   },
 };
 

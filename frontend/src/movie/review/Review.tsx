@@ -3,6 +3,7 @@ import React from "react";
 import ReadMore from "../../common/components/ReadMore";
 import * as TMDb from "../../tmdb/attribution";
 import { MovieReview } from "../../tmdb/types";
+import { nameToInitials } from "../../utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,14 +26,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const toInitials = (fullname: string) =>
-  fullname
-    .split(" ")
-    .map((word) => word[0])
-    .join("")
-    .toUpperCase()
-    .substr(0, 2);
-
 type Props = BoxProps & {
   review: MovieReview;
 };
@@ -45,7 +38,7 @@ export default ({ review, ...props }: Props) => {
     content,
     author,
   } = review;
-  const initials = toInitials(author);
+  const initials = nameToInitials(author);
 
   return (
     <div className={classes.root}>
