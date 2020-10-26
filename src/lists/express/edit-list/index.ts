@@ -1,22 +1,22 @@
-import {IRouter} from 'express';
-import R from 'ramda';
-import {ListId} from '../../../lists/models/types';
-import {Dependencies} from '../types';
+import { IRouter } from "express";
+import R from "ramda";
+import { ListId } from "../../models/types";
+import { Dependencies } from "../types";
 
-export const editList = ({listLogic, middlewares}: Dependencies) => (
+export const editList = ({ listLogic, middlewares }: Dependencies) => (
   router: IRouter
 ) => {
   router.patch(
-    '/lists/:listId',
+    "/lists/:listId",
     middlewares.isAuthenticated,
     async (req, res, next) => {
       try {
         const listId = req.params.listId as ListId;
 
-        const edits = R.pick(['title', 'description'], req.body);
+        const edits = R.pick(["title", "description"], req.body);
 
         const [editedList] = await listLogic.editLists([
-          {id: listId, ...edits},
+          { id: listId, ...edits },
         ]);
 
         res.json(editedList).end();
