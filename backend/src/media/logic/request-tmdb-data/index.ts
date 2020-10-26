@@ -1,7 +1,7 @@
-import {camelizeKeys, decamelize, decamelizeKeys} from 'humps';
-import qs from 'qs';
-import config from '../../../configuration';
-import {MediaLogic} from '../build';
+import { camelizeKeys, decamelize, decamelizeKeys } from "humps";
+import qs from "qs";
+import config from "../../../configuration";
+import { MediaLogic } from "../build";
 
 export async function requestTmdbData(
   this: MediaLogic,
@@ -17,21 +17,21 @@ export async function requestTmdbData(
 ) {
   const params = decamelizeKeys({
     ...query,
-    apiKey: config.TMDbAPIKey,
+    apiKey: config.TMDB_API_KEY,
   });
 
   const url = [
     decamelize(path),
-    '?',
+    "?",
     qs.stringify(params, {
-      arrayFormat: 'comma',
+      arrayFormat: "comma",
       encode: false,
     }),
-  ].join('');
+  ].join("");
 
   const tmdbResponse = await this.axios({
-    method: 'get',
-    url: 'https://api.themoviedb.org/3' + url,
+    method: "get",
+    url: "https://api.themoviedb.org/3" + url,
   });
 
   const data = camelizeKeys(tmdbResponse.data, (key, convert) => {

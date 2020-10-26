@@ -7,9 +7,7 @@ const PATH_TO_FRONTEND = path.join(PATH_TO_ROOT_DIR, "frontend", "build");
 const PATH_TO_STORE = path.join(__dirname, "..", "_store");
 const PATH_TO_SESSION_STORE = path.join(PATH_TO_STORE, "session");
 
-const result = dotenv.config({
-  path: PATH_TO_ENV,
-});
+const result = dotenv.config();
 
 if (result.error) {
   throw result.error;
@@ -41,25 +39,15 @@ export default Object.freeze({
   // used for database
   // used by Heroku postgres add on
   // SOURCE: https://dashboard.heroku.com/apps/pickflix-backend
-  databaseURL: process.env.DATABASE_URL,
-
-  // used by heroku buildpack
-  // SOURCE: https://elements.heroku.com/buildpacks/timanovsky/subdir-heroku-buildpack
-  PROJECT_PATH: process.env.PROJECT_PATH,
+  DATABASE_URL: process.env.DATABASE_URL,
 
   // for movie data
   // SOURCE: https://www.themoviedb.org/settings/api.
-  TMDbAPIKey: process.env.TMDB_API_KEY,
+  TMDB_API_KEY: process.env.TMDB_API_KEY,
 
   // for youtube data
   // SOURCE: https://console.developers.google.com/apis/api/youtube.googleapis.com/credentials?project=pickflix.
-  youtubeAPIKey: process.env.YOUTUBE_API_KEY,
-
-  // for authentication with firebase admin
-  // SOURCE: https://console.firebase.google.com/project/pickflix/settings/serviceaccounts/adminsdk
-  firebaseAdminServiceAccountKeyJSON: JSON.parse(
-    process.env.FIREBASE_ADMIN_SERVICE_ACCOUNT_KEY_JSON || ""
-  ),
+  YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
 
   // file path to frontend static files
   PATH_TO_FRONTEND,
