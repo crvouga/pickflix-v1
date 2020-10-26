@@ -4,22 +4,16 @@ import { Application, Handler } from "express";
 import session from "express-session";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import makeFileStore from "session-file-store";
 import configuration from "../../configuration";
 import { UserLogic } from "../logic/user-logic";
 import { User, UserId } from "../models/make-user";
 
 const getSessionStore = () => {
-  if (configuration.env === "development" || configuration.env === "test") {
-    const FileStore = makeFileStore(session);
-    return new FileStore({ path: configuration.PATH_TO_SESSION_STORE });
-  } else {
-    const MongoStore = makeMongoStore(session);
-    return new MongoStore({
-      url: configuration.MONGODB_CONNECTION_URI,
-      mongoOptions: {},
-    });
-  }
+  const MongoStore = makeMongoStore(session);
+  return new MongoStore({
+    url: configuration.MONGODB_CONNECTION_URI,
+    mongoOptions: {},
+  });
 };
 
 export const buildAuthMiddleware = ({

@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import path from "path";
 
-const PATH_TO_ROOT_DIR = path.join(__dirname, "..");
+const PATH_TO_ROOT_DIR = path.join(__dirname, "..", "..");
 
 const PATH_TO_ENV = path.join(PATH_TO_ROOT_DIR, ".env");
 const PATH_TO_FRONTEND = path.join(PATH_TO_ROOT_DIR, "frontend", "build");
