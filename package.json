@@ -20,5 +20,8 @@
     "build-frontend": "cd frontend && npm install && npm run build",
     "build": "npm run build-frontend && npm run build-backend",
     "postinstall": "npm run build"
+  },
+  "engines": {
+    "node": "12.18.2"
   }
 }

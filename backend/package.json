@@ -9,9 +9,6 @@
     "start": "node build/index.js",
     "dev": "nodemon build/index.js"
   },
-  "engines": {
-    "node": "12.18.2"
-  },
   "license": "ISC",
   "dependencies": {
     "@keyv/mongo": "^1.1.0",
