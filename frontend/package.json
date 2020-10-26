@@ -56,9 +56,7 @@
     "use-debounce": "^5.0.1",
     "uuid": "^8.3.0",
     "yup": "^0.29.1",
-    "typescript": "^3.9.7"
-  },
-  "devDependencies": {
+    "typescript": "^3.9.7",
     "@types/fastclick": "^1.0.29",
     "@types/jest": "^26.0.14",
     "@types/match-sorter": "^4.0.0",
@@ -74,7 +72,9 @@
     "@types/react-redux": "^7.1.9",
     "@types/react-router-dom": "^5.1.5",
     "@types/react-swipeable-views": "^0.13.0",
-    "@types/yup": "^0.29.7",
+    "@types/yup": "^0.29.7"
+  },
+  "devDependencies": {
     "@typescript-eslint/eslint-plugin": "4.0.1",
     "@typescript-eslint/parser": "4.0.1"
   },
