@@ -6,12 +6,13 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router";
-import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
+import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
 import { MovieCreditCast, MovieCreditCrew } from "../../tmdb/types";
 
 type Props = { credit: MovieCreditCast | MovieCreditCrew };
 
 export default ({ credit }: Props) => {
+  const makeImageUrl = useMakeImageUrl();
   const history = useHistory();
 
   const handleClick = () => {
@@ -21,7 +22,7 @@ export default ({ credit }: Props) => {
   return (
     <ListItem key={credit.creditId} onClick={handleClick} button>
       <ListItemAvatar>
-        <Avatar src={makeTMDbImageURL(4, credit)} />
+        <Avatar src={makeImageUrl(4, credit)} />
       </ListItemAvatar>
       <ListItemText
         primary={credit.name}

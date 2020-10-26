@@ -57,14 +57,6 @@ const getTmdbConfig = async () => {
   return data;
 };
 
-let tmdbConfiguration: TmdbConfiguration | undefined = undefined;
-getTmdbConfig().then((data) => {
-  tmdbConfiguration = data;
-});
-
-export default (sizeIndex: number, hasPathKey: ImagePaths) =>
-  makeImageUrl(tmdbConfiguration, sizeIndex, hasPathKey);
-
 export const useMakeImageUrl = () => {
   const query = useQuery(["tmdb", "config"], () => getTmdbConfig(), {
     staleTime: Infinity,

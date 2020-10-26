@@ -46,8 +46,8 @@ export default (props: Props) => {
   const { movie, sizeIndex = 4 } = props;
   const { id, posterPath, title } = movie;
   const classes = useStyles();
-  const makeTMDbImageURL = useMakeImageUrl();
-  const posterURL = makeTMDbImageURL(sizeIndex, { posterPath });
+  const makeImageUrl = useMakeImageUrl();
+  const posterURL = makeImageUrl(sizeIndex, { posterPath });
 
   const history = useHistory();
   const handleClick = () => {

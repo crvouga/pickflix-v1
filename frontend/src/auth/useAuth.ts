@@ -4,7 +4,10 @@ import { useHistory } from "react-router";
 import useSnackbar from "../snackbar/useSnackbar";
 
 export const useQueryUser = () => {
-  return useQuery(queryKeys.user(), () => getCurrentUser(), { retry: 1 });
+  return useQuery(queryKeys.user(), () => getCurrentUser(), {
+    retry: 0,
+    staleTime: Infinity,
+  });
 };
 
 export const useCurrentUser = (): User | "loading" | null => {

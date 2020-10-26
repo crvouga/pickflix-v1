@@ -7,7 +7,7 @@ import {
 import "moment-duration-format";
 import React from "react";
 import AspectRatio from "../../common/components/AspectRatio";
-import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
+import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
 import { makeFadeToBackgroundCss } from "../../utils";
 import { MoviePageData, useMoviePageQuery } from "../data";
 import * as utils from "../utils";
@@ -29,8 +29,7 @@ const titleToVariant = (title: string): TypographyVariant => {
 };
 
 type StyleProps = {
-  backdropPath?: string;
-  posterPath?: string;
+  url?: string;
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -44,11 +43,7 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
     width: "100%",
 
-    backgroundImage: ({ backdropPath, posterPath }: StyleProps) =>
-      `url(${makeTMDbImageURL(
-        4,
-        backdropPath ? { backdropPath } : { posterPath }
-      )})`,
+    backgroundImage: ({ url }: StyleProps) => `url(${url})`,
     backgroundSize: "cover",
     backgroundPosition: "center center",
   },
@@ -62,8 +57,17 @@ const toSubtitle1 = (data: MoviePageData) =>
   );
 
 export default () => {
+  const makeImageUrl = useMakeImageUrl();
+
   const { data } = useMoviePageQuery();
-  const classes = useStyles(data);
+  const classes = useStyles({
+    url: makeImageUrl(
+      4,
+      data?.backdropPath
+        ? { backdropPath: data?.backdropPath }
+        : { posterPath: data?.posterPath }
+    ),
+  });
 
   if (!data) {
     return null;

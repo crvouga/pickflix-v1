@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import moment from "moment";
 import React from "react";
-import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
+import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
 
 type Props = {
   movie: {
@@ -22,6 +22,7 @@ type Props = {
 };
 
 export default ({ movie, onClick }: Props) => {
+  const makeImageUrl = useMakeImageUrl();
   return (
     <Card onClick={onClick}>
       <CardActionArea>
@@ -35,7 +36,7 @@ export default ({ movie, onClick }: Props) => {
         />
         <CardMedia
           style={{ height: 0, paddingTop: "56.25%" }}
-          image={makeTMDbImageURL(
+          image={makeImageUrl(
             3,
             movie.backdropPath
               ? { backdropPath: movie.backdropPath }

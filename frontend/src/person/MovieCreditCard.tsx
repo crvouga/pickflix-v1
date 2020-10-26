@@ -10,7 +10,7 @@ import React from "react";
 import { useHistory } from "react-router";
 import ReadMore from "../common/components/ReadMore";
 import * as movieUtils from "../movie/utils";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
+import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
 import { ImagePaths } from "../tmdb/types";
 
 type Credit = ImagePaths & {
@@ -25,6 +25,8 @@ type Cast = Credit & { character: string };
 type Crew = Credit & { job: string; department: string };
 
 export default ({ credit }: { credit: Cast | Credit }) => {
+  const makeImageUrl = useMakeImageUrl();
+
   const history = useHistory();
 
   const handleClick = () => {
@@ -35,7 +37,7 @@ export default ({ credit }: { credit: Cast | Credit }) => {
     movieUtils.SMALL_DOT
   );
 
-  const image = makeTMDbImageURL(
+  const image = makeImageUrl(
     3,
     credit.backdropPath
       ? { backdropPath: credit.backdropPath }

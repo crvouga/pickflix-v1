@@ -3,38 +3,41 @@ dotenv.config();
 
 const env = process.env.NODE_ENV || 'development';
 
-const BACKEND_DEV_PORT = 5000;
+if (!process.env.MONGODB_CONNECTION_URI) {
+  throw new Error('MONGODB_CONNECTION_URI required');
+}
 
 export default Object.freeze({
   env,
   //
-  PORT: process.env.PORT || BACKEND_DEV_PORT,
+  PORT: process.env.PORT || 5000,
 
   // MAKE SURE .gitignore THIS!
   // used to store session data and data access layer in dev
   storePath: '_store',
   sessionStorePath: '_store/session',
 
-  // use for setting cookies and CORS
   sessionCookieSecret:
     process.env.SESSION_COOKIE_SECRET || 'session cookie secret',
 
+  //used for CORS
   clientOriginWhitelist: [
     'https://localhost:3000',
     'https://192.168.7.30:3000',
     'https://pickflix.web.app',
   ],
 
-  // for heroku deployment
-  // used by heroku sub dir buildpack since I only want to deploy the backend subdir to heroku
+  // used by heroku sub dir buildpack since I only want to deploy the /backend subdir to heroku
+  // SOURCE: https://github.com/timanovsky/subdir-heroku-buildpack
   projectPath: process.env.PROJECT_PATH,
 
-  // for database
+  // used for database
   // SOURCE: https://cloud.mongodb.com/v2/5ebb5d21f7a74e506ce600db#clusters.
   mongoDbConnectionURI: process.env.MONGODB_CONNECTION_URI,
 
   // used for database
   // used by Heroku postgres add on
+  // SOURCE: https://dashboard.heroku.com/apps/pickflix-backend
   databaseURL: process.env.DATABASE_URL,
 
   // for movie data

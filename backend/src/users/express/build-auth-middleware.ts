@@ -1,3 +1,4 @@
+import makeMongoStore from 'connect-mongo';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import {Application, Handler} from 'express';
@@ -11,6 +12,11 @@ import {UserLogic} from '../logic/user-logic';
 import {User, UserId} from '../models/make-user';
 
 const FileStore = makeFileStore(session);
+const MongoStore = makeMongoStore(session);
+const sessionStore = new MongoStore({
+  url: configuration.mongoDbConnectionURI,
+  mongoOptions: {},
+});
 
 const isEqualHostName = (url1: string, url2: string) =>
   url.parse(url1).hostname === url.parse(url2).hostname;
@@ -44,9 +50,12 @@ export const buildAuthMiddleware = ({userLogic}: {userLogic: UserLogic}) => (
         'Origin',
         'X-Requested-With',
         'Content-Type',
+        'Authorization',
       ],
 
       methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'],
+
+      preflightContinue: true,
     })
   );
 
@@ -54,10 +63,7 @@ export const buildAuthMiddleware = ({userLogic}: {userLogic: UserLogic}) => (
 
   app.use(
     session({
-      store: new FileStore({
-        path: configuration.sessionStorePath,
-      }),
-
+      store: sessionStore,
       secret: configuration.sessionCookieSecret,
       resave: true,
       saveUninitialized: true,
@@ -119,11 +125,13 @@ export type AuthenticateMiddleware = Handler;
 export const authenticate: Handler = (req, res, next) => {
   passport.authenticate('local', (error, user, info) => {
     if (error) {
-      console.error(error);
+      return res.status(401).json(info).end();
     }
-
     req.logIn(user, error => {
-      next();
+      if (error) {
+        return res.status(401).json(info).end();
+      }
+      return next();
     });
   })(req, res, next);
 };

@@ -1,6 +1,6 @@
 import { Box, BoxProps, makeStyles } from "@material-ui/core";
 import React from "react";
-import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
+import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
 
 type Props = {
   backdropPath: string;
@@ -14,8 +14,7 @@ const useStyles = makeStyles({
     width: "100%",
     height: 0,
     paddingTop: "56.25%",
-    backgroundImage: ({ backdropPath }: { backdropPath: string }) =>
-      `url(${makeTMDbImageURL(3, { backdropPath })})`,
+    backgroundImage: ({ url }: { url?: string }) => `url(${url})`,
     backgroundOrigin: "center",
     backgroundSize: "cover",
     zIndex: -1,
@@ -23,6 +22,7 @@ const useStyles = makeStyles({
 });
 
 export default ({ backdropPath, ...props }: Props) => {
-  const classes = useStyles({ backdropPath });
+  const makeImageUrl = useMakeImageUrl();
+  const classes = useStyles({ url: makeImageUrl(3, { backdropPath }) });
   return <Box className={classes.root} {...props} />;
 };

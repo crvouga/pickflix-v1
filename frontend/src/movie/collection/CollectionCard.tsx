@@ -9,7 +9,7 @@ import {
 import * as R from "ramda";
 import React from "react";
 import ReadMore from "../../common/components/ReadMore";
-import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
+import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
 import { Collection, CollectionPart } from "../../tmdb/types";
 import { toReleaseYear } from "../utils";
 import { collectionToBackdropPath } from "./utils";
@@ -32,6 +32,7 @@ const releaseYearRange = (parts: CollectionPart[]) => {
 
 export default ({ collection, onClick }: Props) => {
   const { name, overview, parts } = collection;
+  const makeImageUrl = useMakeImageUrl();
 
   return (
     <Card>
@@ -46,7 +47,7 @@ export default ({ collection, onClick }: Props) => {
         />
         <CardMedia
           style={{ height: 0, paddingTop: "56.25%" }}
-          image={makeTMDbImageURL(3, {
+          image={makeImageUrl(3, {
             backdropPath: collectionToBackdropPath(collection),
           })}
         />

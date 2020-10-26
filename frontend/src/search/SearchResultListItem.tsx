@@ -11,7 +11,7 @@ import { uniqBy } from "ramda";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
+import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
 import { SearchResult } from "./query";
 import { search } from "./redux/search";
 
@@ -20,6 +20,7 @@ type Props = ListItemProps & {
 };
 
 export default ({ result, ...ListItemProps }: Props) => {
+  const makeImageUrl = useMakeImageUrl();
   const dispatch = useDispatch();
   const searchHistory = useSelector(search.selectors.history);
   const history = useHistory();
@@ -48,7 +49,7 @@ export default ({ result, ...ListItemProps }: Props) => {
           {...ListItemProps}
         >
           <ListItemAvatar>
-            <Avatar variant="square" src={makeTMDbImageURL(4, result)}>
+            <Avatar variant="square" src={makeImageUrl(4, result)}>
               <MovieIcon />
             </Avatar>
           </ListItemAvatar>
@@ -68,7 +69,7 @@ export default ({ result, ...ListItemProps }: Props) => {
           {...ListItemProps}
         >
           <ListItemAvatar>
-            <Avatar src={makeTMDbImageURL(4, result)} />
+            <Avatar src={makeImageUrl(4, result)} />
           </ListItemAvatar>
           <ListItemText
             primary={result.name}

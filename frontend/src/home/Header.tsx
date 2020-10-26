@@ -5,12 +5,12 @@ import { useHistory } from "react-router";
 import SwipeableViews from "react-swipeable-views";
 import AbsolutePositionBox from "../common/components/AbsolutePositionBox";
 import AspectRatio from "../common/components/AspectRatio";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
+import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
 import { Movie } from "../tmdb/types";
 
 const useStyles = makeStyles({
   box: {
-    backgroundImage: ({ movieBackdropURL }: { movieBackdropURL: string }) =>
+    backgroundImage: ({ movieBackdropURL }: { movieBackdropURL?: string }) =>
       `url(${movieBackdropURL})`,
     backgroundSize: "cover",
     width: "100%",
@@ -20,11 +20,12 @@ const useStyles = makeStyles({
 });
 
 const HeaderItem = ({ movie }: { movie: Movie }) => {
+  const makeImageUrl = useMakeImageUrl();
   const history = useHistory();
   const handleClick = () => {
     history.push(`/movie/${movie.id}`);
   };
-  const movieBackdropURL = makeTMDbImageURL(2, {
+  const movieBackdropURL = makeImageUrl(2, {
     backdropPath: movie.backdropPath,
   });
   const classes = useStyles({

@@ -1,7 +1,7 @@
 import { Avatar, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import useBoolean from "../common/hooks/useBoolean";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
+import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
 import {
   PersonDetailsResponse,
   PersonImagesResponse,
@@ -38,6 +38,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default (props: Props) => {
+  const makeImageUrl = useMakeImageUrl();
+
   const { details, images } = props;
   const classes = useStyles();
 
@@ -54,7 +56,7 @@ export default (props: Props) => {
         <Avatar
           onClick={isImageGalleryDialogOpen.setTrue}
           className={classes.avatar}
-          src={makeTMDbImageURL(4, details)}
+          src={makeImageUrl(4, details)}
         />
       </div>
       <Typography align="center" variant="h5" style={{ fontWeight: "bold" }}>

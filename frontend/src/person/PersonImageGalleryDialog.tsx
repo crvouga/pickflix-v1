@@ -1,7 +1,7 @@
 import { Dialog, DialogProps } from "@material-ui/core";
 import React from "react";
 import SwipeableViews from "react-swipeable-views";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
+import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
 import { PersonImagesResponse } from "../tmdb/types";
 
 type Props = DialogProps & {
@@ -10,7 +10,7 @@ type Props = DialogProps & {
 
 export default (props: Props) => {
   const { images, ...DialogProps } = props;
-
+  const makeImageUrl = useMakeImageUrl();
   return (
     <Dialog
       PaperProps={{ style: { background: "transparent" } }}
@@ -22,7 +22,7 @@ export default (props: Props) => {
             key={profile.filePath}
             alt=""
             width="100%"
-            src={makeTMDbImageURL(Infinity, { profilePath: profile.filePath })}
+            src={makeImageUrl(Infinity, { profilePath: profile.filePath })}
           />
         ))}
       </SwipeableViews>

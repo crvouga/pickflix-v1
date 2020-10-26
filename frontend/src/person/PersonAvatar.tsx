@@ -3,7 +3,7 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import React from "react";
 import { useHistory } from "react-router";
 import AspectRatio from "../common/components/AspectRatio";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
+import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
 import { Person } from "../tmdb/types";
 
 const useStyles = makeStyles((theme) => ({
@@ -22,7 +22,8 @@ interface Props extends BoxProps {
 export default ({ person, skeleton, ...restOfProps }: Props) => {
   const { profilePath } = person;
   const classes = useStyles();
-  const profileURL = makeTMDbImageURL(2, { profilePath });
+  const makeImageUrl = useMakeImageUrl();
+  const profileURL = makeImageUrl(2, { profilePath });
   const history = useHistory();
   const handleClick = () => {
     history.push(`/person/${person.id}`);

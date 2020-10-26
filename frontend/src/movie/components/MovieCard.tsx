@@ -11,7 +11,7 @@ import moment from "moment";
 import React from "react";
 import { useHistory } from "react-router";
 import ReadMore from "../../common/components/ReadMore";
-import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
+import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
 
 type Movie = {
   id: string;
@@ -27,14 +27,6 @@ type Props = {
   CardHeaderProps?: CardHeaderProps;
 };
 
-const movieToImageUrl = (movie: Movie) =>
-  makeTMDbImageURL(
-    3,
-    movie.backdropPath
-      ? { backdropPath: movie.backdropPath }
-      : { posterPath: movie.posterPath }
-  );
-
 const movieToSubheader = (movie: Movie) =>
   moment(movie.releaseDate).isValid()
     ? moment(movie.releaseDate).format("YYYY")
@@ -42,12 +34,18 @@ const movieToSubheader = (movie: Movie) =>
 
 export default ({ movie, CardHeaderProps }: Props) => {
   const history = useHistory();
+  const makeImageUrl = useMakeImageUrl();
+  const image = makeImageUrl(
+    3,
+    movie.backdropPath
+      ? { backdropPath: movie.backdropPath }
+      : { posterPath: movie.posterPath }
+  );
   const handleClick = () => {
     history.push(`/movie/${movie.id}`);
   };
 
   const subheader = movieToSubheader(movie);
-  const image = movieToImageUrl(movie);
 
   return (
     <Card>

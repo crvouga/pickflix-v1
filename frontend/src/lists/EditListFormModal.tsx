@@ -22,7 +22,7 @@ import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import React, { useRef, useEffect } from "react";
 import ErrorBox from "../common/components/ErrorBox";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
+import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
 import { useQueryList, useQueryListItems } from "./hooks/query";
 import useEditListForm from "./hooks/useEditListForm";
 import { Alert } from "@material-ui/lab";
@@ -40,7 +40,7 @@ type Props = DialogProps & {
 
 export default ({ listId, ...DialogProps }: Props) => {
   const classesDialog = useStylesDialog();
-
+  const makeImageUrl = useMakeImageUrl();
   const editListForm = useEditListForm({ listId });
   const refTitle = useRef<HTMLInputElement>();
   const refDescription = useRef<HTMLInputElement>();
@@ -152,7 +152,7 @@ export default ({ listId, ...DialogProps }: Props) => {
                 <ListItemAvatar>
                   <Avatar
                     variant="square"
-                    src={makeTMDbImageURL(3, listItem?.tmdbData)}
+                    src={makeImageUrl(3, listItem?.tmdbData)}
                   />
                 </ListItemAvatar>
                 <Box

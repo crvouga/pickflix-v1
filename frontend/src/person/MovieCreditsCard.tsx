@@ -10,7 +10,7 @@ import { mergeAll } from "ramda";
 import React from "react";
 import { useHistory } from "react-router";
 import ReadMore from "../common/components/ReadMore";
-import makeTMDbImageURL from "../tmdb/makeTMDbImageURL";
+import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
 import { PersonMovieCredit } from "../tmdb/types";
 
 type Props = {
@@ -29,8 +29,9 @@ export default ({ credits }: Props) => {
   const handleClick = () => {
     history.push(`/movie/${mergedCredit.id}`);
   };
+  const makeImageUrl = useMakeImageUrl();
 
-  const image = makeTMDbImageURL(
+  const image = makeImageUrl(
     3,
     mergedCredit.backdropPath
       ? { backdropPath: mergedCredit.backdropPath }

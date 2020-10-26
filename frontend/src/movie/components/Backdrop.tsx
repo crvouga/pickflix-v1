@@ -4,7 +4,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/opacity.css";
 import { useHistory } from "react-router";
 import AspectRatio from "../../common/components/AspectRatio";
-import makeTMDbImageURL from "../../tmdb/makeTMDbImageURL";
+import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
 import { Movie } from "../../tmdb/types";
 
 const useStyles = makeStyles((theme) => ({
@@ -26,8 +26,10 @@ interface Props extends BoxProps {
 
 export default ({ movie, ...restOfProps }: Props) => {
   const { backdropPath, posterPath } = movie;
-  const backdropURL = makeTMDbImageURL(2, { backdropPath });
-  const posterURL = makeTMDbImageURL(2, { posterPath });
+  const makeImageUrl = useMakeImageUrl();
+
+  const backdropURL = makeImageUrl(2, { backdropPath });
+  const posterURL = makeImageUrl(2, { posterPath });
   const classes = useStyles({ backdropURL, posterURL });
   const history = useHistory();
   const onClick = () => {

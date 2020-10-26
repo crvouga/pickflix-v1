@@ -63,7 +63,7 @@ const selectors = {
 
 const reducer = createReducer(initialState, {
   [actions.push.toString()]: (state, action: PayloadAction<Entity>) => {
-    state.entities.push(action.payload);
+    state.entities.unshift(action.payload);
     state.entities = uniqWith(entityEquals, state.entities);
   },
   [actions.clear.toString()]: (state, action) => {
