@@ -7,7 +7,7 @@ export class RepositoryFileSystem<T extends Identifiable>
   filename: string;
 
   constructor(collectionName: string) {
-    this.filename = `${configuration.STORE_PATH}/${collectionName}.json`;
+    this.filename = `${configuration.PATH_TO_STORE}/${collectionName}.json`;
   }
 
   read(): { [id: string]: T } {

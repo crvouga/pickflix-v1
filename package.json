@@ -13,15 +13,5 @@
     "url": "https://github.com/crvouga/Pickflix/issues"
   },
   "homepage": "https://github.com/crvouga/Pickflix#readme",
-  "dependencies": {},
-  "scripts": {
-    "build-backend": "cd backend && npm install && npm run build",
-    "build-frontend": "cd frontend && npm install && npm run build",
-    "build": "npm run build-backend && npm run build-frontend",
-    "postinstall": "npm run build",
-    "start": "cd backend && npm start"
-  },
-  "devDependencies": {
-    "typescript": "^4.0.3"
-  }
+  "dependencies": {}
 }

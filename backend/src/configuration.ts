@@ -2,11 +2,10 @@ import dotenv from "dotenv";
 import path from "path";
 
 const PATH_TO_ROOT_DIR = path.join(__dirname, "..", "..");
-const PATH_TO_ENV = path.join(PATH_TO_ROOT_DIR, ".env");
+const PATH_TO_ENV = path.join("..", ".env");
 const PATH_TO_FRONTEND = path.join(PATH_TO_ROOT_DIR, "frontend", "build");
-
-const STORE_PATH = path.join(__dirname, "..", "_store");
-const SESSION_STORE_PATH = path.join(STORE_PATH, "session");
+const PATH_TO_STORE = path.join(__dirname, "..", "_store");
+const PATH_TO_SESSION_STORE = path.join(PATH_TO_STORE, "session");
 
 const result = dotenv.config({
   path: PATH_TO_ENV,
@@ -29,8 +28,8 @@ export default Object.freeze({
 
   // MAKE SURE .gitignore THIS!
   // used to store session data and data access layer in dev
-  STORE_PATH,
-  SESSION_STORE_PATH,
+  PATH_TO_STORE,
+  PATH_TO_SESSION_STORE,
 
   SESSION_COOKIE_SECRET:
     process.env.SESSION_COOKIE_SECRET || "session cookie secret",
@@ -43,6 +42,10 @@ export default Object.freeze({
   // used by Heroku postgres add on
   // SOURCE: https://dashboard.heroku.com/apps/pickflix-backend
   databaseURL: process.env.DATABASE_URL,
+
+  // used by heroku buildpack
+  // SOURCE: https://elements.heroku.com/buildpacks/timanovsky/subdir-heroku-buildpack
+  PROJECT_PATH: process.env.PROJECT_PATH,
 
   // for movie data
   // SOURCE: https://www.themoviedb.org/settings/api.

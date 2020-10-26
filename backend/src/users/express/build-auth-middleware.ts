@@ -12,7 +12,7 @@ import { User, UserId } from "../models/make-user";
 const getSessionStore = () => {
   if (configuration.env === "development" || configuration.env === "test") {
     const FileStore = makeFileStore(session);
-    return new FileStore({ path: configuration.SESSION_STORE_PATH });
+    return new FileStore({ path: configuration.PATH_TO_SESSION_STORE });
   } else {
     const MongoStore = makeMongoStore(session);
     return new MongoStore({
