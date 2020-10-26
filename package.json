@@ -16,8 +16,7 @@
   "dependencies": {},
   "scripts": {
     "start": "cd backend && npm start",
-    "install": "cd backend && npm install",
-    "postinstall": "cd backend && npm run build",
+    "postinstall": "cd backend && npm install",
     "heroku-postbuild": "cd frontend && npm install && npm run build"
   },
   "engines": {
