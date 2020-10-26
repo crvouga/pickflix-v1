@@ -6,8 +6,6 @@
   "scripts": {
     "tsc": "tsc",
     "build": "npm run tsc",
-    "build-frontend": "cd ../frontend && npm run build",
-    "postinstall": "npm run build && npm run build-frontend",
     "start": "node build/index.js",
     "dev": "nodemon build/index.js"
   },
