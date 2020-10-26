@@ -111,8 +111,8 @@ const SkeletonPage = () => {
   );
 };
 
-const fetchMovieCredits = (movieId: string) =>
-  BackendAPI.get<MovieCredits>(`/api/tmdb/movie/${movieId}/credits`).then(
+const fetchMovieCredits = (tmdbMediaId: string) =>
+  BackendAPI.get<MovieCredits>(`/api/tmdb/movie/${tmdbMediaId}/credits`).then(
     (res) => res.data
   );
 
@@ -122,10 +122,10 @@ export default () => {
 
   const [searchText, setSearchText] = useState("");
 
-  const { movieId } = useParams<{ movieId: string }>();
+  const { tmdbMediaId } = useParams<{ tmdbMediaId: string }>();
 
-  const query = useQuery(`/movie/${movieId}/credits`, () =>
-    fetchMovieCredits(movieId)
+  const query = useQuery(`/movie/${tmdbMediaId}/credits`, () =>
+    fetchMovieCredits(tmdbMediaId)
   );
 
   if (query.isError) {

@@ -62,7 +62,7 @@ const MediaInfo = (props: Props) => {
   const movie = queryMovie.data;
   const subtitle = [
     movieUtils.releaseYear(movie),
-    movieUtils.rated(movie),
+    movieUtils.toCertification(movie),
     // movieUtils.runtime(movie),
   ].join(` ${movieUtils.SMALL_DOT} `);
 

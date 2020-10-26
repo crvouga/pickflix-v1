@@ -18,6 +18,7 @@ import Snackbar from "../snackbar/Snackbar";
 import VideoPage from "../video/VideoPage";
 import Modals from "./modals/Modals";
 import NavigationBarBottom from "./NavigationBarBottom";
+import MovieVideoPage from "../movie/video/MovieVideoPage";
 
 export default () => {
   return (
@@ -26,20 +27,33 @@ export default () => {
       <Container disableGutters maxWidth="xs">
         <Switch>
           <Route exact path="/" component={HomePage} />
+
           <Route path="/discover/search" component={DiscoverSearchPage} />
           <Route path="/discover" component={DiscoverPage} />
+
           <Route path="/search" component={SearchPage} />
+
           <Route path="/video" component={VideoPage} />
-          <Route path="/movie/:movieId/credits" component={CreditsPage} />
-          <Route path="/movie/:movieId" component={MoviePage} />
+
+          <Route path="/movie/:tmdbMediaId/video" component={MovieVideoPage} />
+          <Route path="/movie/:tmdbMediaId/credits" component={CreditsPage} />
+          <Route path="/movie/:tmdbMediaId" component={MoviePage} />
+
           <Route path="/person/:personId" component={PersonPage} />
+
           <Route path="/collection/:collectionId" component={CollectionPage} />
+
           <Route path="/list/:listId" component={ListPage} />
+
           <Route path="/profile" component={ProfilePage} />
+
           <Route path="/account" component={AccountPage} />
+
           <Route path="/signIn" component={SignInPage} />
         </Switch>
+
         <Snackbar />
+
         <NavigationBarBottom />
       </Container>
     </React.Fragment>

@@ -6,7 +6,7 @@ import { useMoviePageQuery } from "../data";
 import WatchVideosButton from "./WatchVideosButton";
 
 export default () => {
-  const { movieId } = useParams<{ movieId: string }>();
+  const { tmdbMediaId } = useParams<{ tmdbMediaId: string }>();
 
   const query = useMoviePageQuery();
   if (!query.data) return null;
@@ -15,7 +15,7 @@ export default () => {
 
   const tmdbMedia: TmdbMedia = {
     tmdbMediaType: "movie",
-    tmdbMediaId: movieId,
+    tmdbMediaId: tmdbMediaId,
     tmdbData: details,
   };
 

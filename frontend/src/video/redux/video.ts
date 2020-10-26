@@ -52,6 +52,7 @@ const isPlaying = createSelector([slice], (slice) => slice.isPlaying);
 const currentVideo = createSelector([slice], (slice) => slice.currentVideo);
 const playlist = createSelector([slice], (slice) => slice.playlist);
 const selectors = {
+  slice,
   isPlaying,
   currentVideo,
   playlist,

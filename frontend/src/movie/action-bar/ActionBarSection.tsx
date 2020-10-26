@@ -20,10 +20,10 @@ const useStylesIconButton = makeStyles((theme) => ({
 
 export default () => {
   const classesIconButton = useStylesIconButton();
-  const { movieId } = useParams<{ movieId: string }>();
+  const { tmdbMediaId } = useParams<{ tmdbMediaId: string }>();
 
   const movieActions = useActions({
-    tmdbMediaId: movieId,
+    tmdbMediaId: tmdbMediaId,
     tmdbMediaType: "movie",
   });
 

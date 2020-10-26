@@ -41,7 +41,7 @@ type Props = {
   disabled?: boolean;
 };
 
-export const MOVIE_POSTER_ASPECT_RATIO: [number, number] = [18, 24];
+export const MOVIE_POSTER_ASPECT_RATIO: [number, number] = [16, 9];
 
 export default (props: Props) => {
   const { movie, sizeIndex = 4, disabled = false } = props;
@@ -53,7 +53,7 @@ export default (props: Props) => {
   const history = useHistory();
   const handleClick = () => {
     if (id) {
-      history.push(`/movie/${id}/video`);
+      history.push(`/movie/${id}`);
     }
   };
 
@@ -66,10 +66,6 @@ export default (props: Props) => {
             style: { position: "relative", width: "100%" },
           }}
         >
-          {!posterPath && (
-            <Typography className={classes.fallback}>{title}</Typography>
-          )}
-
           {posterPath && (
             <LazyLoadImage
               className={classes.borderRadius}

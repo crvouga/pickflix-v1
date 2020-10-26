@@ -24,9 +24,9 @@ export type MoviePageData = {
   releaseDates: MovieReleaseDates;
 } & MovieDetails;
 
-export const fetchMoviePage = async (movieId: string) => {
+export const fetchMoviePage = async (tmdbMediaId: string) => {
   const { data } = await BackendAPI.get<MoviePageData>(
-    `/api/tmdb/movie/${movieId}`,
+    `/api/tmdb/movie/${tmdbMediaId}`,
     {
       params: {
         appendToResponse: [
@@ -51,6 +51,6 @@ export const useQueryMovie = ({ tmdbMediaId }: { tmdbMediaId: string }) => {
 };
 
 export const useMoviePageQuery = () => {
-  const { movieId } = useParams<{ movieId: string }>();
-  return useQueryMovie({ tmdbMediaId: movieId });
+  const { tmdbMediaId } = useParams<{ tmdbMediaId: string }>();
+  return useQueryMovie({ tmdbMediaId: tmdbMediaId });
 };

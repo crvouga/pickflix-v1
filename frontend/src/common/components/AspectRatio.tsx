@@ -1,6 +1,7 @@
 import { Box, BoxProps, makeStyles } from "@material-ui/core";
 import React from "react";
 import AbsolutePositionBox from "./AbsolutePositionBox";
+import clsx from "clsx";
 
 const useStyles = makeStyles({
   svg: {
@@ -12,13 +13,24 @@ type Props = React.PropsWithChildren<{
   ratio: [number, number];
   ContainerProps?: BoxProps;
   ContentProps?: BoxProps;
+  SVGProps?: Omit<React.SVGProps<SVGElement>, "ref">;
 }>;
 
-export default ({ ratio, ContainerProps, ContentProps, children }: Props) => {
+export default ({
+  ratio,
+  SVGProps,
+  ContainerProps,
+  ContentProps,
+  children,
+}: Props) => {
   const classes = useStyles();
   return (
     <Box position="relative" {...ContainerProps}>
-      <svg className={classes.svg} viewBox={[0, 0, ...ratio].join(", ")} />
+      <svg
+        viewBox={[0, 0, ...ratio].join(", ")}
+        className={clsx(classes.svg, SVGProps?.className)}
+        {...SVGProps}
+      />
       <AbsolutePositionBox {...ContentProps}>{children}</AbsolutePositionBox>
     </Box>
   );

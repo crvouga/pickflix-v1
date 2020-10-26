@@ -29,6 +29,8 @@ export const revenue = ({ revenue }: MovieDetails) =>
 export const runtime = ({ runtime }: MovieDetails) =>
   runtime ? moment.duration(runtime, "minutes").format("h[h] m[m]") : EMPTY;
 
+export const toRuntime = runtime;
+
 export const toReleaseYear = ({
   releaseDate,
 }: {
@@ -38,10 +40,10 @@ export const toReleaseYear = ({
 export const releaseYear = ({ releaseDate }: MovieDetails) =>
   releaseDate ? moment(releaseDate).format("YYYY") : EMPTY;
 
-export const certification = ({ releaseDates }: ReleaseDateProp) =>
+export const toCertification = ({ releaseDates }: ReleaseDateProp) =>
   releaseDates.results
     .find((_) => _.iso_3166_1 === "US")
     ?.releaseDates.map((_) => _.certification)
-    .find((_) => _.length !== 0) || "-";
+    .find((_) => _.length !== 0);
 
-export const rated = certification;
+export const toRated = toCertification;

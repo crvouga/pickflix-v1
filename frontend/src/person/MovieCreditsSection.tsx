@@ -56,14 +56,14 @@ export default ({ details, credits }: Props) => {
     setSelectedDepartment(selectedDepartment === department ? "" : department);
   };
 
-  const creditsByMovieIdEntries = Object.entries(toCreditsById(credits));
+  const creditsBytmdbMediaIdEntries = Object.entries(toCreditsById(credits));
 
-  const filtered = creditsByMovieIdEntries.filter(([id, credits]) =>
+  const filtered = creditsBytmdbMediaIdEntries.filter(([id, credits]) =>
     credits.find((credit) => credit.department === selectedDepartment)
   );
 
   const filteredEntries =
-    filtered.length === 0 ? creditsByMovieIdEntries : filtered;
+    filtered.length === 0 ? creditsBytmdbMediaIdEntries : filtered;
 
   return (
     <div>
@@ -105,8 +105,8 @@ export default ({ details, credits }: Props) => {
           flexWrap="wrap"
           paddingX={1 / 2}
         >
-          {filteredEntries.map(([movieId, movieCredits]) => (
-            <Box key={movieId} width="50%" p={1 / 2}>
+          {filteredEntries.map(([tmdbMediaId, movieCredits]) => (
+            <Box key={tmdbMediaId} width="50%" p={1 / 2}>
               <Poster movie={mergeAll(movieCredits)} />
             </Box>
           ))}
@@ -114,8 +114,8 @@ export default ({ details, credits }: Props) => {
       )}
       {!isGridOn && (
         <Box paddingX={2}>
-          {filteredEntries.map(([movieId, movieCredits]) => (
-            <Box key={movieId} marginBottom={2}>
+          {filteredEntries.map(([tmdbMediaId, movieCredits]) => (
+            <Box key={tmdbMediaId} marginBottom={2}>
               <MovieCard
                 movie={mergeAll(movieCredits)}
                 CardHeaderProps={{ subheader: toSubheader(movieCredits) }}

@@ -16,7 +16,7 @@ import CreditsListCard from "./CreditsListCard";
 
 export default () => {
   const history = useHistory();
-  const { movieId } = useParams<{ movieId: string }>();
+  const { tmdbMediaId } = useParams<{ tmdbMediaId: string }>();
 
   const query = useMoviePageQuery();
   if (!query.data) return null;
@@ -28,7 +28,7 @@ export default () => {
   const topCredits = take(10, [...directors, ...cast, ...restOfCrew]);
 
   const handleClick = () => {
-    history.push(`/movie/${movieId}/credits`);
+    history.push(`/movie/${tmdbMediaId}/credits`);
   };
 
   return (
