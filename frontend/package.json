@@ -59,9 +59,7 @@
     "units-css": "^0.4.0",
     "use-debounce": "^5.0.1",
     "uuid": "^8.3.0",
-    "yup": "^0.29.1"
-  },
-  "devDependencies": {
+    "yup": "^0.29.1",
     "@typescript-eslint/eslint-plugin": "4.0.1",
     "@typescript-eslint/parser": "4.0.1",
     "@types/fastclick": "^1.0.29",
@@ -82,6 +80,7 @@
     "@types/yup": "^0.29.7",
     "typescript": "^3.9.7"
   },
+  "devDependencies": {},
   "browserslist": {
     "production": [
       ">0.2%",

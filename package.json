@@ -17,9 +17,5 @@
   "bugs": {
     "url": "https://github.com/crvouga/pickflix/issues"
   },
-  "homepage": "https://github.com/crvouga/pickflix#readme",
-  "dependencies": {
-    "ts-node": "^9.0.0",
-    "typescript": "^4.0.3"
-  }
+  "homepage": "https://github.com/crvouga/pickflix#readme"
 }
