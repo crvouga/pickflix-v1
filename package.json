@@ -20,5 +20,8 @@
     "build": "npm run build-backend && npm run build-frontend",
     "postinstall": "npm run build",
     "start": "cd backend && npm start"
+  },
+  "devDependencies": {
+    "typescript": "^4.0.3"
   }
 }

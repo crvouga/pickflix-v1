@@ -5,8 +5,8 @@ const PATH_TO_ROOT_DIR = path.join(__dirname, "..", "..");
 const PATH_TO_ENV = path.join(PATH_TO_ROOT_DIR, ".env");
 const PATH_TO_FRONTEND = path.join(PATH_TO_ROOT_DIR, "frontend", "build");
 
-const STORE_PATH = path.join(PATH_TO_ROOT_DIR, "_store");
-const SESSION_STORE_PATH = path.join(PATH_TO_ROOT_DIR, "_store", "session");
+const STORE_PATH = path.join(__dirname, "..", "_store");
+const SESSION_STORE_PATH = path.join(STORE_PATH, "session");
 
 const result = dotenv.config({
   path: PATH_TO_ENV,
