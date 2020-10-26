@@ -55,7 +55,8 @@
     "units-css": "^0.4.0",
     "use-debounce": "^5.0.1",
     "uuid": "^8.3.0",
-    "yup": "^0.29.1"
+    "yup": "^0.29.1",
+    "typescript": "^3.9.7"
   },
   "devDependencies": {
     "@types/fastclick": "^1.0.29",
@@ -75,9 +76,7 @@
     "@types/react-swipeable-views": "^0.13.0",
     "@types/yup": "^0.29.7",
     "@typescript-eslint/eslint-plugin": "4.0.1",
-    "@typescript-eslint/parser": "4.0.1",
-    "ts-migrate": "^0.1.4",
-    "typescript": "^3.9.7"
+    "@typescript-eslint/parser": "4.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
