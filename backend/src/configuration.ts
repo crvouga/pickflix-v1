@@ -1,10 +1,25 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import dotenv from "dotenv";
+import path from "path";
 
-const env = process.env.NODE_ENV || 'development';
+const PATH_TO_ROOT_DIR = path.join(__dirname, "..", "..");
+const PATH_TO_ENV = path.join(PATH_TO_ROOT_DIR, ".env");
+const PATH_TO_FRONTEND = path.join(PATH_TO_ROOT_DIR, "frontend", "build");
+
+const STORE_PATH = path.join(PATH_TO_ROOT_DIR, "_store");
+const SESSION_STORE_PATH = path.join(PATH_TO_ROOT_DIR, "_store", "session");
+
+const result = dotenv.config({
+  path: PATH_TO_ENV,
+});
+
+if (result.error) {
+  throw result.error;
+}
+
+const env = process.env.NODE_ENV || "development";
 
 if (!process.env.MONGODB_CONNECTION_URI) {
-  throw new Error('MONGODB_CONNECTION_URI required');
+  throw { message: "MONGODB_CONNECTION_URI required" };
 }
 
 export default Object.freeze({
@@ -14,26 +29,15 @@ export default Object.freeze({
 
   // MAKE SURE .gitignore THIS!
   // used to store session data and data access layer in dev
-  storePath: '_store',
-  sessionStorePath: '_store/session',
+  STORE_PATH,
+  SESSION_STORE_PATH,
 
-  sessionCookieSecret:
-    process.env.SESSION_COOKIE_SECRET || 'session cookie secret',
-
-  //used for CORS
-  clientOriginWhitelist: [
-    'https://localhost:3000',
-    'https://192.168.7.30:3000',
-    'https://pickflix.web.app',
-  ],
-
-  // used by heroku sub dir buildpack since I only want to deploy the /backend subdir to heroku
-  // SOURCE: https://github.com/timanovsky/subdir-heroku-buildpack
-  projectPath: process.env.PROJECT_PATH,
+  SESSION_COOKIE_SECRET:
+    process.env.SESSION_COOKIE_SECRET || "session cookie secret",
 
   // used for database
   // SOURCE: https://cloud.mongodb.com/v2/5ebb5d21f7a74e506ce600db#clusters.
-  mongoDbConnectionURI: process.env.MONGODB_CONNECTION_URI,
+  MONGODB_CONNECTION_URI: process.env.MONGODB_CONNECTION_URI,
 
   // used for database
   // used by Heroku postgres add on
@@ -51,6 +55,9 @@ export default Object.freeze({
   // for authentication with firebase admin
   // SOURCE: https://console.firebase.google.com/project/pickflix/settings/serviceaccounts/adminsdk
   firebaseAdminServiceAccountKeyJSON: JSON.parse(
-    process.env.FIREBASE_ADMIN_SERVICE_ACCOUNT_KEY_JSON || ''
+    process.env.FIREBASE_ADMIN_SERVICE_ACCOUNT_KEY_JSON || ""
   ),
+
+  // file path to frontend static files
+  PATH_TO_FRONTEND,
 });

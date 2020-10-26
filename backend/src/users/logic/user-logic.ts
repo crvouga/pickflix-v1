@@ -5,7 +5,6 @@ import {IUnitOfWork} from '../../unit-of-work/types';
 import {makeUser} from '../models';
 import {CredentialType, makeCredential} from '../models/make-credential';
 import {UserId} from '../models/make-user';
-import {ErrorList} from '../../utils';
 
 export class UserLogic {
   unitOfWork: IUnitOfWork;
@@ -83,7 +82,7 @@ export class UserLogic {
       errors.push({key: 'email', message: 'Email taken.'});
     }
     if (errors.length > 0) {
-      throw new ErrorList(errors);
+      throw errors;
     }
 
     const user = makeUser({username, displayName, email});

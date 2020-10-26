@@ -1,7 +1,6 @@
 import * as EmailValidator from 'email-validator';
 import {isValidId, makeId} from '../../id';
 import {Id} from '../../id/types';
-import {ErrorList} from '../../utils';
 
 const hasWhiteSpace = (s: string) => s.indexOf(' ') >= 0;
 

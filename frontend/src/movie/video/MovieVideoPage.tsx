@@ -129,6 +129,7 @@ export default () => {
       <Paper>
         <PlaylistSection />
       </Paper>
+
       <Box p={2}>
         <MovieCardSection />
       </Box>

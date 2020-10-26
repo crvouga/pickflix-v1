@@ -7,7 +7,7 @@ import {
   isAuthenticated,
 } from '../users/express/build-auth-middleware';
 import {userLogic} from '../users/logic';
-import {buildExpressApp} from './build';
+import {buildExpressApp} from './build-express-app';
 import {ExpressAppDependencies} from './types';
 
 export const dependencies: ExpressAppDependencies = {

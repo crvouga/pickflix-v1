@@ -1,5 +1,3 @@
-# https://pickflix.web.app/
-
 # Pickflix 🎬🎥🍿
 
 An app that helps you pick flixs 🍿 to watch.

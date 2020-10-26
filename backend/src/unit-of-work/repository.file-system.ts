@@ -1,24 +1,24 @@
-import fs from 'fs';
-import {innerJoin, whereEq} from 'ramda';
-import configuration from '../configuration';
-import {Identifiable, IRepository} from './types';
+import fs from "fs";
+import { innerJoin, whereEq } from "ramda";
+import configuration from "../configuration";
+import { Identifiable, IRepository } from "./types";
 export class RepositoryFileSystem<T extends Identifiable>
   implements IRepository<T> {
   filename: string;
 
   constructor(collectionName: string) {
-    this.filename = `${configuration.storePath}/${collectionName}.json`;
+    this.filename = `${configuration.STORE_PATH}/${collectionName}.json`;
   }
 
-  read(): {[id: string]: T} {
+  read(): { [id: string]: T } {
     try {
-      return JSON.parse(fs.readFileSync(this.filename, 'utf8'));
+      return JSON.parse(fs.readFileSync(this.filename, "utf8"));
     } catch (error) {
       return {};
     }
   }
 
-  write(data: {[id: string]: T}) {
+  write(data: { [id: string]: T }) {
     fs.writeFileSync(this.filename, JSON.stringify(data));
   }
 
@@ -51,7 +51,7 @@ export class RepositoryFileSystem<T extends Identifiable>
   }
 
   async remove(
-    entityInfos: Array<Partial<T> & Pick<T, 'id'>>
+    entityInfos: Array<Partial<T> & Pick<T, "id">>
   ): Promise<boolean> {
     const db = this.read();
     for (const entityInfo of entityInfos) {
@@ -61,13 +61,13 @@ export class RepositoryFileSystem<T extends Identifiable>
     return true;
   }
 
-  async update(entityInfos: Array<Partial<T> & Pick<T, 'id'>>): Promise<T[]> {
+  async update(entityInfos: Array<Partial<T> & Pick<T, "id">>): Promise<T[]> {
     const db = this.read();
     const updatedEntities = [];
-    for (const {id, ...entityInfo} of entityInfos) {
+    for (const { id, ...entityInfo } of entityInfos) {
       const entity = db[id];
       if (!entity) {
-        throw new Error('entity does not exists');
+        throw new Error("entity does not exists");
       }
       const updatedEntity = {
         ...entity,

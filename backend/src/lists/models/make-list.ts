@@ -1,6 +1,5 @@
 import {UserId} from '../../users/models/make-user';
 import {Dependencies, List, ListId} from './types';
-import {ErrorList} from '../../utils';
 
 const MAX_LENGTH_TITLE = 100;
 const MAX_LENGTH_DESCRIPTION = 500;
@@ -52,7 +51,7 @@ export const buildMakeList = ({makeId, isValidId}: Dependencies) => (
   }
 
   if (errors.length > 0) {
-    throw new ErrorList(errors);
+    throw errors;
   }
 
   return Object.freeze({

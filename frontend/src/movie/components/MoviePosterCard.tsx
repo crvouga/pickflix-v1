@@ -53,7 +53,7 @@ export default (props: Props) => {
   const history = useHistory();
   const handleClick = () => {
     if (id) {
-      history.push(`/movie/${id}/video`);
+      history.push(`/movie/${id}`);
     }
   };
 
