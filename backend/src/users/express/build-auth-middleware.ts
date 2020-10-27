@@ -25,7 +25,7 @@ const getSessionStore = () => {
         path: `${configuration.PATH_TO_FILE_STORE}/session`,
       });
 
-    case "test":
+    default:
       return undefined;
   }
 };

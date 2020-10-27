@@ -1,9 +1,9 @@
-import pg from 'pg';
-import fs from 'fs';
-import pgClientConfigs from './pgClientConfigs';
-import {Db} from './Db';
+import pg from "pg";
+import fs from "fs";
+import pgClientConfigs from "./pgClientConfigs";
+import { Db } from "./Db";
 
-const pool = new pg.Pool(pgClientConfigs.test);
+const pool = new pg.Pool(pgClientConfigs("test"));
 
 export const makeTestDb = async (): Promise<Db> => {
   const query = async (sql: string) => {
@@ -15,7 +15,7 @@ export const makeTestDb = async (): Promise<Db> => {
   };
 };
 
-const createAllTabslSql = fs.readFileSync(__dirname + '/tables.sql').toString();
+const createAllTabslSql = fs.readFileSync(__dirname + "/tables.sql").toString();
 
 const dropAllTablesSql = `
   DROP SCHEMA public CASCADE;
