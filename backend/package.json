@@ -1,7 +1,8 @@
 {
   "scripts": {
     "test": "clear && npx jest",
-    "postinstall": "tsc",
+    "tsc": "tsc",
+    "postinstall": "npm run tsc",
     "start": "node build/index.js",
     "dev": "NODE_ENV=development nodemon build/index.js"
   },
