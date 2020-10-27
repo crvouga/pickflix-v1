@@ -7,13 +7,27 @@ import { Strategy as LocalStrategy } from "passport-local";
 import configuration from "../../configuration";
 import { UserLogic } from "../logic/user-logic";
 import { User, UserId } from "../models/make-user";
+import makeFileStore from "session-file-store";
 
 const getSessionStore = () => {
-  const MongoStore = makeMongoStore(session);
-  return new MongoStore({
-    url: configuration.MONGODB_CONNECTION_URI,
-    mongoOptions: {},
-  });
+  switch (configuration.NODE_ENV) {
+    case "production":
+      const MongoStore = makeMongoStore(session);
+      return new MongoStore({
+        url: configuration.MONGODB_CONNECTION_URI,
+        mongoOptions: {},
+      });
+
+    case "development":
+      const FileStore = makeFileStore(session);
+      return new FileStore({
+        logFn: () => {},
+        path: `${configuration.PATH_TO_FILE_STORE}/session`,
+      });
+
+    case "test":
+      return undefined;
+  }
 };
 
 export const buildAuthMiddleware = ({
@@ -31,7 +45,7 @@ export const buildAuthMiddleware = ({
       resave: false,
       saveUninitialized: false,
       cookie: {
-        secure: configuration.env !== "development",
+        secure: configuration.NODE_ENV !== "development",
         maxAge: 10 * 365 * 24 * 60 * 60, // 10 years,
       },
     })

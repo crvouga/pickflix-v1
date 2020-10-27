@@ -1,25 +1,25 @@
-import supertest from 'supertest';
-import {buildExpressAppFake} from '../../../express/build.fake';
+import supertest from "supertest";
+import { buildExpressAppFake } from "../../../express/build.fake";
 
-describe('add-lists-items', () => {
-  it('adds item to list', async done => {
-    const {user, app} = await buildExpressAppFake();
+describe("add-lists-items", () => {
+  it("adds item to list", async (done) => {
+    const { user, app } = await buildExpressAppFake();
 
     const agent = supertest(app);
-    const {body: list} = await agent.post('/api/lists').send({
+    const { body: list } = await agent.post("/api/lists").send({
       ownerId: user.id,
-      title: 'my list',
+      title: "my list",
     });
 
     const listItemInfo = {
       tmdbMediaId: 42,
-      tmdbMediaType: 'movie',
+      tmdbMediaType: "movie",
     };
     await agent
       .post(`/api/lists/${list.id}/list-items`)
       .send(listItemInfo)
       .expect(201)
-      .then(response => {
+      .then((response) => {
         expect(response.body).toEqual(expect.objectContaining(listItemInfo));
       });
     done();

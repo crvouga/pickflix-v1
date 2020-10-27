@@ -1,13 +1,11 @@
-import express from 'express';
-import {User} from '../../../users/models/make-user';
-import {Dependencies} from '../types';
+import express from "express";
+import { User } from "../../../users/models/make-user";
+import { Dependencies } from "../types";
 
-const ensureArray = (x: any) => (Array.isArray(x) ? x : [x]);
-
-export const getLists = ({listLogic, middlewares}: Dependencies) => (
+export const getLists = ({ listLogic, middlewares }: Dependencies) => (
   router: express.IRouter
 ) => {
-  router.get('/lists', middlewares.isAuthenticated, async (req, res, next) => {
+  router.get("/lists", middlewares.isAuthenticated, async (req, res, next) => {
     try {
       const currentUser = req.user as User;
 

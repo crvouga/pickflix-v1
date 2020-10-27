@@ -1,13 +1,13 @@
-import {IRouter} from 'express';
-import {ListId} from '../../models/types';
-import {Dependencies} from '../types';
+import { IRouter } from "express";
+import { ListId } from "../../models/types";
+import { Dependencies } from "../types";
 
-export const getList = ({listLogic}: Dependencies) => (router: IRouter) => {
-  router.get('/lists/:listId', async (req, res, next) => {
+export const getList = ({ listLogic }: Dependencies) => (router: IRouter) => {
+  router.get("/lists/:listId", async (req, res, next) => {
     try {
       const listId = req.params.listId as ListId;
 
-      const lists = await listLogic.getLists({id: listId});
+      const lists = await listLogic.getLists({ id: listId });
 
       if (lists.length > 0) {
         const [list] = lists;
@@ -15,7 +15,7 @@ export const getList = ({listLogic}: Dependencies) => (router: IRouter) => {
         return res.json(list);
       }
 
-      const autoLists = await listLogic.getAutoLists({id: listId});
+      const autoLists = await listLogic.getAutoLists({ id: listId });
 
       if (autoLists.length > 0) {
         const [autoList] = autoLists;
@@ -23,9 +23,9 @@ export const getList = ({listLogic}: Dependencies) => (router: IRouter) => {
         return res.json(autoList);
       }
 
-      res.status(404).end();
+      return res.status(404).end();
     } catch (error) {
-      next(error);
+      return next(error);
     }
   });
 };

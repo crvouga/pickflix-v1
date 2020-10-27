@@ -1,21 +1,22 @@
-import {makeUserFake} from '../../../users/models/make-user.fake';
-import {buildListLogicFake} from '../build.fake';
-import {TmdbMediaType} from '../../../media/models/types';
-describe('add list items to list', () => {
-  it('throws if duplicate list items', async () => {
-    const {listLogic} = buildListLogicFake();
+import { makeUserFake } from "../../../users/models/make-user.fake";
+import { buildListLogicFake } from "../build.fake";
+import { TmdbMediaType } from "../../../media/models/types";
+describe("add list items to list", () => {
+  it("rejects if duplicate list items", async () => {
+    const { listLogic } = buildListLogicFake();
 
     const currentUser = makeUserFake();
 
     const [list] = await listLogic.addLists([
       {
         ownerId: currentUser.id,
-        title: 'my list',
+        title: "my list",
       },
     ]);
 
-    expect(
-      listLogic.addListItems([
+    expect.assertions(1);
+    try {
+      await listLogic.addListItems([
         {
           userId: currentUser.id,
           listId: list.id,
@@ -34,7 +35,10 @@ describe('add list items to list', () => {
           tmdbMediaType: TmdbMediaType.movie,
           listId: list.id,
         },
-      ])
-    ).rejects.toBeTruthy();
+      ]);
+      expect(true).toBeTruthy();
+    } catch (error) {
+      expect(error).toBeTruthy();
+    }
   });
 });

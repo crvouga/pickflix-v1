@@ -1,24 +1,27 @@
-import {buildListLogicFake} from '../build.fake';
-import {makeUserFake} from '../../../users/models/make-user.fake';
+import { buildListLogicFake } from "../build.fake";
+import { makeUserFake } from "../../../users/models/make-user.fake";
 
-describe('editing list', () => {
-  it('rejects invalid edits', async () => {
-    const {listLogic} = buildListLogicFake();
+describe("editing list", () => {
+  it("rejects invalid edits", async () => {
+    const { listLogic } = buildListLogicFake();
     const user = makeUserFake();
     const [added] = await listLogic.addLists([
       {
         ownerId: user.id,
-        title: 'hello',
+        title: "hello",
       },
     ]);
 
-    expect(
-      listLogic.editLists([
+    expect.assertions(1);
+    try {
+      await listLogic.editLists([
         {
           id: added.id,
-          title: '',
+          title: "",
         },
-      ])
-    ).rejects.toBeTruthy();
+      ]);
+    } catch (error) {
+      expect(error).toBeTruthy();
+    }
   });
 });

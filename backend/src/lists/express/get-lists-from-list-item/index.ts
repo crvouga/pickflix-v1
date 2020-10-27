@@ -1,15 +1,14 @@
-import {IRouter} from 'express';
-import passport from 'passport';
-import {TmdbMediaId, TmdbMediaType} from '../../../media/models/types';
-import {User} from '../../../users/models/make-user';
-import {Dependencies} from '../types';
+import { IRouter } from "express";
+import { TmdbMediaId, TmdbMediaType } from "../../../media/models/types";
+import { User } from "../../../users/models/make-user";
+import { Dependencies } from "../types";
 
 export const getListsFromListItem = ({
   listLogic,
   middlewares,
 }: Dependencies) => (router: IRouter) => {
   router.get(
-    '/list-items/lists',
+    "/list-items/lists",
     middlewares.isAuthenticated,
     async (req, res, next) => {
       try {

@@ -1,13 +1,12 @@
-import express from 'express';
-import {Id} from '../../../id/types';
-import {Dependencies} from '../types';
-import {ListId, ListItemId} from '../../models/types';
+import express from "express";
+import { ListId, ListItemId } from "../../models/types";
+import { Dependencies } from "../types";
 
-export const removeListItem = ({listLogic, middlewares}: Dependencies) => (
+export const removeListItem = ({ listLogic, middlewares }: Dependencies) => (
   router: express.IRouter
 ) => {
   router.delete(
-    '/lists/:listId/list-items',
+    "/lists/:listId/list-items",
     middlewares.isAuthenticated,
     async (req, res, next) => {
       try {
@@ -16,7 +15,7 @@ export const removeListItem = ({listLogic, middlewares}: Dependencies) => (
         const listId = req.params.listId as ListId;
 
         await listLogic.removeListItems(
-          listItemIds.map(listItemId => ({listId: listId, id: listItemId}))
+          listItemIds.map((listItemId) => ({ listId: listId, id: listItemId }))
         );
 
         res.status(204).end();

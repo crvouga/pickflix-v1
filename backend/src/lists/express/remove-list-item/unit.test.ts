@@ -1,16 +1,16 @@
-import supertest from 'supertest';
-import {buildExpressAppFake} from '../../../express/build.fake';
-import {TmdbMediaType} from '../../../media/models/types';
+import supertest from "supertest";
+import { buildExpressAppFake } from "../../../express/build.fake";
+import { TmdbMediaType } from "../../../media/models/types";
 
-describe('/lists/{list-id}/list-items/{list-item-id}', () => {
-  it('deletes list item', async done => {
-    const {app, listLogic, user} = await buildExpressAppFake();
+describe("/lists/{list-id}/list-items/{list-item-id}", () => {
+  it("deletes list item", async (done) => {
+    const { app, listLogic, user } = await buildExpressAppFake();
 
     const [list] = await listLogic.addLists([
       {
         ownerId: user.id,
-        title: 'my movies',
-        description: 'some cool movies',
+        title: "my movies",
+        description: "some cool movies",
       },
     ]);
 
@@ -28,7 +28,7 @@ describe('/lists/{list-id}/list-items/{list-item-id}', () => {
       .send([listItem.id])
       .expect(204);
 
-    const listItems = await listLogic.getListItems({listId: list.id});
+    const listItems = await listLogic.getListItems({ listId: list.id });
     expect(listItems).not.toContainEqual(listItem);
 
     done();

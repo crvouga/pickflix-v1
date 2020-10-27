@@ -1,30 +1,30 @@
-import {Handler, IRouter} from 'express';
-import {body, param, query, validationResult} from 'express-validator';
-import {TmdbMediaId, TmdbMediaType} from '../../media/models/types';
-import {User} from '../../users/models/make-user';
-import {ReviewId} from '../models/make-review';
-import {ReviewVoteValue} from '../models/make-review-vote';
-import {Dependencies} from './types';
+import { Handler, IRouter } from "express";
+import { body, param, query, validationResult } from "express-validator";
+import { TmdbMediaId, TmdbMediaType } from "../../media/models/types";
+import { User } from "../../users/models/make-user";
+import { ReviewId } from "../models/make-review";
+import { ReviewVoteValue } from "../models/make-review-vote";
+import { Dependencies } from "./types";
 
 const handleValidationResult: Handler = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({errors: errors.array()});
+    return res.status(400).json({ errors: errors.array() });
   }
-  next();
+  return next();
 };
 
 export const buildReviewsRouter = ({
   reviewLogic,
   middlewares,
 }: Dependencies) => (router: IRouter) => {
-  router.get('/reviews');
+  router.get("/reviews");
 
   router.get(
-    '/reviews',
+    "/reviews",
     middlewares.isAuthenticated,
-    query('tmdbMediaId').isInt(),
-    query('tmdbMediaType').isIn(Object.values(TmdbMediaType)),
+    query("tmdbMediaId").isInt(),
+    query("tmdbMediaType").isIn(Object.values(TmdbMediaType)),
     handleValidationResult,
     async (req, res, next) => {
       try {
@@ -48,14 +48,14 @@ export const buildReviewsRouter = ({
   );
 
   router.delete(
-    '/reviews/:reviewId',
+    "/reviews/:reviewId",
     middlewares.isAuthenticated,
-    param('reviewId').isUUID(),
+    param("reviewId").isUUID(),
     handleValidationResult,
     async (req, res, next) => {
       try {
         const reviewId = req.params.reviewId as ReviewId;
-        await reviewLogic.removeReviews([{id: reviewId}]);
+        await reviewLogic.removeReviews([{ id: reviewId }]);
         res.status(204).end();
       } catch (error) {
         next(error);
@@ -64,11 +64,11 @@ export const buildReviewsRouter = ({
   );
 
   router.post(
-    '/reviews',
+    "/reviews",
     middlewares.isAuthenticated,
-    body('content').isString(),
-    body('tmdbMediaId').isInt(),
-    body('tmdbMediaType').isIn(Object.values(TmdbMediaType)),
+    body("content").isString(),
+    body("tmdbMediaId").isInt(),
+    body("tmdbMediaType").isIn(Object.values(TmdbMediaType)),
     handleValidationResult,
     async (req, res, next) => {
       try {
@@ -94,10 +94,10 @@ export const buildReviewsRouter = ({
   );
 
   router.patch(
-    '/reviews/:reviewId',
+    "/reviews/:reviewId",
     middlewares.isAuthenticated,
-    param('reviewId').isUUID(),
-    body('content').isString(),
+    param("reviewId").isUUID(),
+    body("content").isString(),
     handleValidationResult,
     async (req, res, next) => {
       try {
@@ -120,10 +120,10 @@ export const buildReviewsRouter = ({
   );
 
   router.post(
-    '/reviews/:reviewId/review-votes',
+    "/reviews/:reviewId/review-votes",
     middlewares.isAuthenticated,
-    body('voteValue').isIn(Object.values(ReviewVoteValue)),
-    param('reviewId').isUUID(),
+    body("voteValue").isIn(Object.values(ReviewVoteValue)),
+    param("reviewId").isUUID(),
     handleValidationResult,
     async (req, res, next) => {
       try {
@@ -145,9 +145,9 @@ export const buildReviewsRouter = ({
   );
 
   router.delete(
-    '/reviews/:reviewId/review-votes',
+    "/reviews/:reviewId/review-votes",
     middlewares.isAuthenticated,
-    param('reviewId').isUUID(),
+    param("reviewId").isUUID(),
     handleValidationResult,
     async (req, res, next) => {
       try {

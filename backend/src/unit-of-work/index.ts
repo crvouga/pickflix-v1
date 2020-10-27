@@ -1,9 +1,9 @@
-import {UnitOfWorkInMemory, UnitOfWorkDev} from './unit-of-work.fake';
-import configuration from '../configuration';
+import { UnitOfWorkInMemory, UnitOfWorkDev } from "./unit-of-work.fake";
+import configuration from "../configuration";
 
 export const unitOfWork =
-  configuration.env === 'development'
+  configuration.NODE_ENV === "development"
     ? new UnitOfWorkDev()
-    : configuration.env === 'test'
+    : configuration.NODE_ENV === "test"
     ? new UnitOfWorkInMemory()
     : new UnitOfWorkInMemory();
