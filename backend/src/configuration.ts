@@ -1,4 +1,6 @@
+import dotenv from "dotenv";
 import path from "path";
+dotenv.config();
 
 if (!process.env.YOUTUBE_API_KEY) {
   throw "YOUTUBE_API_KEY required";
@@ -16,10 +18,7 @@ if (process.env.NODE_ENV === "production" && !process.env.DATABASE_URL) {
   throw "DATABASE_URL required";
 }
 
-if (
-  process.env.NODE_ENV === "production" &&
-  !process.env.SESSION_COOKIE_SECRET
-) {
+if (!process.env.SESSION_COOKIE_SECRET) {
   throw "SESSION_COOKIE_SECRET required";
 }
 
@@ -29,6 +28,7 @@ const configuration = Object.freeze({
     | "test"
     | "development"
     | "production",
+
   //
   PORT: process.env.PORT || "5000",
 
@@ -39,8 +39,8 @@ const configuration = Object.freeze({
   // file path to frontend static files
   PATH_TO_FRONTEND: path.join(__dirname, "..", "..", "frontend", "build"),
 
-  SESSION_COOKIE_SECRET:
-    process.env.SESSION_COOKIE_SECRET || "session cookie secret",
+  //
+  SESSION_COOKIE_SECRET: process.env.SESSION_COOKIE_SECRET,
 
   // used for database
   // SOURCE: https://cloud.mongodb.com/v2/5ebb5d21f7a74e506ce600db#clusters.
