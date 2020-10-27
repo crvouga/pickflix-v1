@@ -1,10 +1,10 @@
 {
   "scripts": {
     "test": "clear && npx jest",
-    "tsc": "tsc",
+    "tsc": "tsc -p tsconfig.production.json",
     "postinstall": "npm run tsc",
     "start": "node build/index.js",
-    "dev": "NODE_ENV=development nodemon build/index.js"
+    "dev": "nodemon build/index.js"
   },
   "name": "pickflix",
   "version": "1.0.0",
