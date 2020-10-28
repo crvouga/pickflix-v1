@@ -30,11 +30,33 @@ const getSessionStore = () => {
   }
 };
 
+const getSessionCookieConfig = () => {
+  switch (configuration.NODE_ENV) {
+    case "production":
+      return {
+        maxAge: 10 * 365 * 24 * 60 * 60, // 10 years,
+        secure: true,
+        path: "/",
+        sameSite: "strict" as "strict",
+        httpOnly: true,
+      };
+    default:
+      return {
+        maxAge: 10 * 365 * 24 * 60 * 60, // 10 years,
+        path: "/",
+        secure: false,
+        httpOnly: true,
+      };
+  }
+};
+
 export const buildAuthMiddleware = ({
   userLogic,
 }: {
   userLogic: UserLogic;
 }) => (app: Application) => {
+  app.set("trust proxy", 1);
+
   app.use(cookieParser());
 
   app.use(
@@ -44,10 +66,7 @@ export const buildAuthMiddleware = ({
       secret: configuration.SESSION_COOKIE_SECRET,
       resave: false,
       saveUninitialized: false,
-      cookie: {
-        secure: configuration.NODE_ENV !== "development",
-        maxAge: 10 * 365 * 24 * 60 * 60, // 10 years,
-      },
+      cookie: getSessionCookieConfig(),
     })
   );
 
