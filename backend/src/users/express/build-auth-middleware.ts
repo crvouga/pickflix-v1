@@ -86,7 +86,6 @@ export const buildAuthMiddleware = ({
             callback(null, user ? user : false);
           })
           .catch((error) => {
-            console.log({ error });
             callback(error);
           });
       }

@@ -20,6 +20,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "start",
     textAlign: "left",
     color: theme.palette.text.secondary,
+    marginRight: theme.spacing(3),
+    marginLeft: theme.spacing(3),
   },
   icon: {
     marginRight: theme.spacing(1),

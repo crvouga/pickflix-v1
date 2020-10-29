@@ -11,7 +11,7 @@ import MoviePage from "../movie/MoviePage";
 import MovieVideoPage from "../movie/video/MovieVideoPage";
 import PersonPage from "../person";
 import ProfilePage from "../profile/ProfilePage";
-import SearchPage from "../search/SearchPage";
+
 import Snackbar from "../snackbar/Snackbar";
 import VideoPage from "../video/VideoPage";
 import Modals from "./modals/Modals";
@@ -26,8 +26,6 @@ export default () => {
 
         <Route path="/discover/search" component={DiscoverSearchPage} />
         <Route path="/discover" component={DiscoverPage} />
-
-        <Route path="/search" component={SearchPage} />
 
         <Route path="/video" component={VideoPage} />
 

@@ -50,7 +50,6 @@ export const buildUsersRouter = ({ userLogic, middlewares }: Dependencies) => (
 
       res.status(201).json({ message: "Password reset email sent" });
     } catch (error) {
-      console.log(error);
       next(error);
     }
   });
@@ -65,7 +64,6 @@ export const buildUsersRouter = ({ userLogic, middlewares }: Dependencies) => (
       });
       res.status(204).json({ message: "Password was changed" }).end();
     } catch (error) {
-      console.log(error);
       next(error);
     }
   });

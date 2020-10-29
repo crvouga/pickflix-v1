@@ -7,7 +7,7 @@ import { useDebounce } from "use-debounce/lib";
 import { getSearchMulti, queryKeys } from "./query";
 
 export default (searchQuery: string) => {
-  const [debounced] = useDebounce(encodeURI(searchQuery.trim()), 500);
+  const [debounced] = useDebounce(encodeURI(searchQuery.trim()), 333);
 
   const query = useInfiniteQuery(
     queryKeys.searchMulti(debounced),
