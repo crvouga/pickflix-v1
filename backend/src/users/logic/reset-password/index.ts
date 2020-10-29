@@ -5,8 +5,8 @@ import {
   makePasswordHash,
 } from "../../models/make-credential";
 import { UserLogic } from "../user-logic";
-import { castLink, makeResetPasswordEmail } from "./reset-password-email";
-import { decodeToken, encodeToken } from "./reset-password-token";
+import { castLink, makeResetPasswordEmail } from "./email";
+import { decodeToken, encodeToken } from "./token";
 
 export const makeResetPasswordToken = ({
   user,

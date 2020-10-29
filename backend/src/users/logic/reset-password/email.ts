@@ -1,5 +1,5 @@
 import { Email } from "../../../email";
-import { User } from "../../../users/models";
+import { User } from "../../models";
 
 export type Link = string & { Link: true };
 export const castLink = (link: string): Link => {
@@ -15,7 +15,6 @@ const SEND_GRID_REGISTERED_EMAIL_ADDRESS = "pickflix1@gmail.com";
 
 export const makeResetEmailHtml = (resetPasswordLink: string) =>
   `
-  <h1>Password Reset</h1>
   <p>
     You are receiving this because you (or someone else) have requested the reset of the password  for your account.
   </p>

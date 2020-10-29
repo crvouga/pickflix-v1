@@ -1,6 +1,6 @@
 import { IRouter } from "express";
 import { Dependencies } from "./types";
-import { castLink } from "../logic/reset-password/reset-password-email";
+import { castLink } from "../logic/reset-password/email";
 import { URL } from "url";
 
 export const buildAuthRouter = ({ userLogic, middlewares }: Dependencies) => (
