@@ -1,25 +1,29 @@
 import { EventEmitter } from "events";
-import { EventTypes } from "../../events/types";
-import { makeUserFake } from "../models/make-user.fake";
-import { buildUserLogicFake } from "./user-logic.fake";
+import { EventTypes } from "../../../events";
+import { makeUserFake } from "../../models";
+import { buildUserLogicFake } from "../user-logic.fake";
 
 describe("user logic", () => {
   it("creates and gets user", async () => {
     const { userLogic } = buildUserLogicFake();
-    const created = await userLogic.createUserWithPassword({
-      email: "crvouga@gmail.com",
+    const user = await userLogic.createUserWithPassword({
+      emailAddress: "crvouga@gmail.com",
       displayName: "Chris",
       username: "crvouga",
       password: "password",
     });
-    const got = await userLogic.getUser({ id: created.id });
-    expect(created).toStrictEqual(got);
+    const got1 = await userLogic.getUser({ id: user.id });
+    const got2 = await userLogic.getUser({ username: user.username });
+    const got3 = await userLogic.getUser({ emailAddress: user.emailAddress });
+    expect(got1).toStrictEqual(user);
+    expect(got2).toStrictEqual(user);
+    expect(got3).toStrictEqual(user);
   });
 
   it("only allows unique email and or username", async () => {
     const { userLogic } = buildUserLogicFake();
     const info = {
-      email: "crvouga@gmail.com",
+      emailAddress: "crvouga@gmail.com",
       username: "123",
       displayName: "chris",
       password: "password",
@@ -36,19 +40,23 @@ describe("user logic", () => {
 
   it("verifies username and password", async () => {
     const { userLogic } = buildUserLogicFake();
+
+    const PASSWORD = "password";
+
     const userInfo = {
-      email: "crvouga@gmail.com",
+      emailAddress: "crvouga@gmail.com",
       username: "crvouga",
-      password: "password",
+      password: PASSWORD,
       displayName: "Christopher Vouga",
     };
 
     const created = await userLogic.createUserWithPassword(userInfo);
 
-    const verified = await userLogic.verifyEmailAndPassword({
-      email: userInfo.email,
-      password: "password",
+    const verified = await userLogic.verifyEmailAddressAndPassword({
+      emailAddress: created.emailAddress,
+      password: PASSWORD,
     });
+
     expect(created).toStrictEqual(verified);
   });
   it("emits an event when created", async (done) => {
@@ -60,10 +68,10 @@ describe("user logic", () => {
         emit: emitMock,
       },
     });
-    const { username, email, displayName } = makeUserFake();
+    const { username, emailAddress, displayName } = makeUserFake();
     const user = await userLogic.createUserWithPassword({
       username,
-      email,
+      emailAddress,
       displayName,
       password: "password",
     });

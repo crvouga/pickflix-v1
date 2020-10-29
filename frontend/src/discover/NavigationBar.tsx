@@ -1,8 +1,8 @@
 import { AppBar, Box, makeStyles, Toolbar } from "@material-ui/core";
 import React from "react";
 import PickflixLogo from "../common/PickflixLogo";
-import AccountButton from "../navigation/AccountButton";
-import SearchButton from "../navigation/SearchButton";
+import { IconButtonUser } from "../navigation/User";
+import { SearchButton } from "../navigation/Search";
 import { AddButton, RedoButton, TuneButton, UndoButton } from "./Actions";
 import DiscoverMovieTags from "./TagScroll";
 
@@ -20,7 +20,7 @@ export default () => {
       <Toolbar className={classes.navBar}>
         <PickflixLogo flex={1} />
         <SearchButton />
-        <AccountButton />
+        <IconButtonUser />
       </Toolbar>
 
       <Toolbar>

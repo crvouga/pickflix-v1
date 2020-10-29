@@ -2,10 +2,10 @@ import { Avatar, AvatarProps } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import React from "react";
 import AvatarUser from "./AvatarUser";
-import { useAuth } from "./useAuth";
+import { useCurrentUser } from "./useAuth";
 
 export default (props: AvatarProps) => {
-  const { currentUser } = useAuth();
+  const currentUser = useCurrentUser();
 
   if (currentUser === "loading") {
     return (

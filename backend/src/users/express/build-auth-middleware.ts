@@ -63,7 +63,7 @@ export const buildAuthMiddleware = ({
     session({
       name: "pickflix-session",
       store: getSessionStore(),
-      secret: configuration.SESSION_COOKIE_SECRET,
+      secret: configuration.SECRET,
       resave: false,
       saveUninitialized: false,
       cookie: getSessionCookieConfig(),
@@ -73,13 +73,13 @@ export const buildAuthMiddleware = ({
   passport.use(
     new LocalStrategy(
       {
-        usernameField: "email",
+        usernameField: "emailAddress",
         passwordField: "password",
       },
-      (email, password, callback) => {
+      (emailAddress, password, callback) => {
         userLogic
-          .verifyEmailAndPassword({
-            email,
+          .verifyEmailAddressAndPassword({
+            emailAddress,
             password,
           })
           .then((user) => {
@@ -126,7 +126,7 @@ export const authenticate: Handler = (req, res, next) => {
         return next(error);
       }
 
-      return res.status(200).json(user).end();
+      return res.status(201).json(user).end();
     });
   })(req, res, next);
 };

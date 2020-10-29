@@ -18,8 +18,12 @@ if (process.env.NODE_ENV === "production" && !process.env.DATABASE_URL) {
   throw "DATABASE_URL required";
 }
 
-if (!process.env.SESSION_COOKIE_SECRET) {
-  throw "SESSION_COOKIE_SECRET required";
+if (!process.env.SEND_GRID_API_KEY) {
+  throw "SEND_GRID_API_KEY required";
+}
+
+if (!process.env.SECRET) {
+  throw "SECRET required";
 }
 
 const configuration = Object.freeze({
@@ -58,6 +62,13 @@ const configuration = Object.freeze({
   // for youtube data
   // SOURCE: https://console.developers.google.com/apis/api/youtube.googleapis.com/credentials?project=pickflix.
   YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
+
+  // for sending emails
+  // SOUCRE: https://app.sendgrid.com
+  SEND_GRID_API_KEY: process.env.SEND_GRID_API_KEY,
+
+  // secret for making secrets
+  SECRET: process.env.SECRET,
 });
 
 export default configuration;

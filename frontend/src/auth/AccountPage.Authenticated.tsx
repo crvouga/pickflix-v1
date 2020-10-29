@@ -54,11 +54,7 @@ const ConfirmSignOutDialog = (props: {
 }) => {
   const { isOpen, close, onSignOut } = props;
   return (
-    <Dialog
-      open={isOpen}
-      onClose={close}
-      PaperProps={{ style: { width: "80%" } }}
-    >
+    <Dialog open={isOpen} onClose={close}>
       <DialogTitle>Sign out?</DialogTitle>
       <DialogActions>
         <Button onClick={close}>Cancel</Button>
@@ -82,11 +78,7 @@ const ConfirmDeleteAccountDialog = (props: {
     setValue(e.target.value);
   };
   return (
-    <Dialog
-      open={isOpen}
-      onClose={close}
-      PaperProps={{ style: { width: "80%" } }}
-    >
+    <Dialog open={isOpen} onClose={close}>
       <DialogTitle className={classes.danger}>Delete Account</DialogTitle>
 
       <ListItem>
@@ -139,9 +131,7 @@ export default ({ currentUser }: { currentUser: User }) => {
     await auth.signOut();
   };
 
-  const handleDeleteCurrentUser = async () => {
-    await auth.deleteCurrentUser();
-  };
+  const handleDeleteCurrentUser = async () => {};
 
   return (
     <React.Fragment>
@@ -172,7 +162,7 @@ export default ({ currentUser }: { currentUser: User }) => {
           </ListItemAvatar>
           <ListItemText
             primary={currentUser.displayName}
-            secondary={currentUser.email}
+            secondary={currentUser.emailAddress}
           />
         </ListItem>
         <ListItem button onClick={handleSignIn}>

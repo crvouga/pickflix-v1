@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AspectRatio from "../common/components/AspectRatio";
 import * as youtubeAPI from "../youtube/api";
 import { video } from "./redux/video";
-import { APP_BAR_HEIGHT } from "../navigation/NavigationBarTopLevel";
+import { APP_BAR_HEIGHT } from "../navigation/NavBar";
 
 const useStyles = makeStyles((theme) => ({
   playerContainer: {

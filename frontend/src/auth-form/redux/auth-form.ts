@@ -1,6 +1,7 @@
 import { createAction, createReducer, createSelector } from "@reduxjs/toolkit";
 import { FirebaseError } from "firebase";
-import { AppState } from "../../../redux/types";
+import { AppState } from "../../redux/types";
+import { User } from "../../auth/query";
 
 const name = "authForm";
 
@@ -15,9 +16,9 @@ export type FormValues = {
 };
 
 export enum AuthFormStep {
-  email = "EMAIL",
-  emailRegister = "EMAIL_REGISTER",
-  emailPassword = "EMAIL_PASSWORD",
+  credential = "CREDENTIAL",
+  signUp = "SIGN_UP",
+  signIn = "SIGN_IN",
 }
 
 export enum SignInMethod {
@@ -32,13 +33,15 @@ export interface AuthFormState {
   step: AuthFormStep;
   error: FirebaseError | null;
   email: string | null;
+  user: User | null;
 }
 
 export const initialState: AuthFormState = {
   status: null,
-  step: AuthFormStep.email,
+  step: AuthFormStep.credential,
   error: null,
   email: null,
+  user: null,
 };
 
 /* 
@@ -61,6 +64,7 @@ const actions = {
   setError: createAction<Error | undefined>(`${name}/SET_ERROR`),
   reset: createAction(`${name}/RESET`),
   setEmail: createAction<string | null>(`${name}/SET_EMAIL`),
+  setUser: createAction<User>(`${name}/SET_USER`),
 };
 
 /* 
@@ -80,6 +84,9 @@ const reducer = createReducer(initialState, {
   },
   [actions.setEmail.toString()]: (state, action) => {
     state.email = action.payload;
+  },
+  [actions.setUser.toString()]: (state, action) => {
+    state.user = action.payload;
   },
   [actions.reset.toString()]: (state, action) => {
     return initialState;

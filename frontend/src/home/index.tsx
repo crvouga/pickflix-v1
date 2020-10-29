@@ -5,11 +5,12 @@ import { useQuery } from "react-query";
 import { BackendAPI } from "../backend-api";
 import HorizontalScroll from "../common/components/HorizontalScroll";
 import ErrorPage from "../common/page/ErrorPage";
-import LoadingPageTopLevel from "../common/page/LoadingPageTopLevel";
+import LoadingPage from "../common/page/LoadingPage";
 import MoviePosterCardScroll from "../movie/components/MoviePosterCardScroll";
-import NavigationBarTopLevel from "../navigation/NavigationBarTopLevel";
+
 import PersonAvatar from "../person/PersonAvatar";
 import { Movie, Person } from "../tmdb/types";
+import NavBar from "../navigation/NavBar";
 
 const Title = ({ children, ...props }: BoxProps) => (
   <Box paddingX={2} {...props}>
@@ -70,7 +71,7 @@ export default () => {
   }
 
   if (!query.data) {
-    return <LoadingPageTopLevel />;
+    return <LoadingPage />;
   }
 
   const {
@@ -79,7 +80,7 @@ export default () => {
 
   return (
     <React.Fragment>
-      <NavigationBarTopLevel />
+      <NavBar />
       <Box paddingY={2}>
         {renderMovieScroll("Popular", popular.results)}
         {renderMovieScroll("Top Rated", topRated.results)}

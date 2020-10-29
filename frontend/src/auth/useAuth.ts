@@ -1,17 +1,21 @@
 import { useQuery, useQueryCache } from "react-query";
-import { deleteAuth, User, getCurrentUser, postAuth, queryKeys } from "./query";
 import { useHistory } from "react-router";
 import useSnackbar from "../snackbar/useSnackbar";
-
-export const useQueryUser = () => {
-  return useQuery(queryKeys.user(), () => getCurrentUser(), {
-    retry: 0,
-    staleTime: Infinity,
-  });
-};
+import {
+  deleteAuth,
+  getCurrentUser,
+  postAuth,
+  PostAuthParams,
+  postUserWithPassword,
+  PostUserWithPasswordParams,
+  queryKeys,
+  User,
+} from "./query";
 
 export const useCurrentUser = (): User | "loading" | null => {
-  const query = useQueryUser();
+  const query = useQuery(queryKeys.user(), () => getCurrentUser(), {
+    retry: 0,
+  });
 
   switch (query.status) {
     case "loading":
@@ -31,42 +35,41 @@ export const useCurrentUser = (): User | "loading" | null => {
 };
 
 export const useAuth = () => {
-  const currentUser = useCurrentUser();
+  const history = useHistory();
   const queryCache = useQueryCache();
   const snackbar = useSnackbar();
-  const history = useHistory();
+
+  const signUp = async (params: PostUserWithPasswordParams) => {
+    const user = await postUserWithPassword(params);
+    queryCache.invalidateQueries((query) => query.queryKey.includes("user"));
+    snackbar.display({
+      message: `Signed in as ${user.username}`,
+    });
+    history.push("/");
+  };
+
+  const signIn = async (params: PostAuthParams) => {
+    const user = await postAuth(params);
+    queryCache.invalidateQueries((query) => query.queryKey.includes("user"));
+    snackbar.display({
+      message: `Signed in as ${user.username}`,
+    });
+    history.push("/");
+  };
 
   const signOut = async () => {
     await deleteAuth();
     history.push("/");
     queryCache.removeQueries(queryKeys.user());
-    queryCache.invalidateQueries((query) => {
-      return query.queryKey.includes("user");
-    });
+    queryCache.invalidateQueries((query) => query.queryKey.includes("user"));
     snackbar.display({
       message: "You are now signed out",
     });
   };
 
-  const signIn = async ({
-    email,
-    password,
-  }: {
-    email: string;
-    password: string;
-  }) => {
-    await postAuth({
-      email,
-      password,
-    });
-  };
-
-  const deleteCurrentUser = async () => {};
-
   return {
-    currentUser,
-    signOut,
+    signUp,
     signIn,
-    deleteCurrentUser,
+    signOut,
   };
 };

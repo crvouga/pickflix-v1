@@ -1,15 +1,15 @@
-import {TmdbMediaId, TmdbMediaType} from '../../../media/models/types';
-import {makeUserFake} from '../../../users/models/make-user.fake';
-import {buildListLogicFake} from '../build.fake';
+import { TmdbMediaId, TmdbMediaType } from "../../../media/models/types";
+import { makeUserFake } from "../../../users/models/make-user.fake";
+import { buildListLogicFake } from "../build.fake";
 
-describe('getting lists', () => {
-  it('gets aggergated lists by ownerId or listId', async () => {
-    const {listLogic} = buildListLogicFake();
+describe("getting lists", () => {
+  it("gets aggergated lists by ownerId or listId", async () => {
+    const { listLogic } = buildListLogicFake();
     const user = makeUserFake();
     const [list] = await listLogic.addLists([
       {
         ownerId: user.id,
-        title: 'my list',
+        title: "my list",
       },
     ]);
     const [listItem] = await listLogic.addListItems([
@@ -21,7 +21,7 @@ describe('getting lists', () => {
       },
     ]);
 
-    const [aggergatedList1] = await listLogic.getLists({id: list.id});
+    const [aggergatedList1] = await listLogic.getLists({ id: list.id });
     const [aggergatedList2] = await listLogic.getLists({
       ownerId: user.id,
     });
@@ -43,13 +43,13 @@ describe('getting lists', () => {
   });
 });
 
-describe('get lists from list item', () => {
-  it('gets list from list item', async () => {
-    const {listLogic} = buildListLogicFake();
+describe("get lists from list item", () => {
+  it("gets list from list item", async () => {
+    const { listLogic } = buildListLogicFake();
     const user = makeUserFake();
 
     const [list1, list2, list3] = await listLogic.addLists(
-      [1, 2, 3].map(n => ({
+      [1, 2, 3].map((n) => ({
         ownerId: user.id,
         title: `list ${n}`,
       }))
@@ -58,7 +58,7 @@ describe('get lists from list item', () => {
     const listItemInfo = {
       userId: user.id,
       tmdbMediaId: 550 as TmdbMediaId,
-      tmdbMediaType: 'movie' as TmdbMediaType,
+      tmdbMediaType: "movie" as TmdbMediaType,
     };
 
     await listLogic.addListItems([

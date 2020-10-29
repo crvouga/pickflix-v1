@@ -1,5 +1,4 @@
 import pg from "pg";
-import configuration from "../../configuration";
 import { Db } from "./Db";
 import getPgClientConfigs from "./pgClientConfigs";
 

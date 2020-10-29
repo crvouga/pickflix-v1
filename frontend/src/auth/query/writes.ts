@@ -2,7 +2,7 @@ import { BackendAPI } from "../../backend-api";
 import { User } from "./types";
 
 export type PostUserWithPasswordParams = {
-  email: string;
+  emailAddress: string;
   username: string;
   displayName: string;
   password: string;
@@ -21,7 +21,7 @@ export const postUserWithPassword = async (
 */
 
 export type PostAuthParams = {
-  email: string;
+  emailAddress: string;
   password: string;
 };
 

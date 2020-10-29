@@ -1,15 +1,15 @@
-import {makeId} from '../../id';
-import {TmdbMediaId, TmdbMediaType} from '../../media/models/types';
-import {makeUserFake} from '../../users/models/make-user.fake';
-import {ReviewVoteValue} from '../models/make-review-vote';
-import {makeReviewFake} from '../models/make-review.fake';
-import {buildReviewLogicFake} from './build.fake';
+import { makeId } from "../../id";
+import { TmdbMediaId, TmdbMediaType } from "../../media/models/types";
+import { makeUserFake } from "../../users/models/make-user.fake";
+import { ReviewVoteValue } from "../models/make-review-vote";
+import { makeReviewFake } from "../models/make-review.fake";
+import { buildReviewLogicFake } from "./build.fake";
 
-describe('review logic', () => {
-  it('gets all reviews for a user', async () => {
-    const {reviewLogic} = buildReviewLogicFake();
+describe("review logic", () => {
+  it("gets all reviews for a user", async () => {
+    const { reviewLogic } = buildReviewLogicFake();
     const user = makeUserFake();
-    const reviewsByUser = [1, 2, 3].map(n =>
+    const reviewsByUser = [1, 2, 3].map((n) =>
       makeReviewFake({
         authorId: user.id,
         tmdbMediaId: n,
@@ -18,20 +18,20 @@ describe('review logic', () => {
     );
 
     const added = await reviewLogic.addReviews(reviewsByUser);
-    const got = await reviewLogic.getReviews({authorId: user.id});
+    const got = await reviewLogic.getReviews({ authorId: user.id });
     expect(added).toStrictEqual(got);
   });
 
-  it('gets review for a media', async () => {
-    const {reviewLogic} = buildReviewLogicFake();
+  it("gets review for a media", async () => {
+    const { reviewLogic } = buildReviewLogicFake();
 
-    const users = [1, 2, 3].map(n =>
+    const users = [1, 2, 3].map(() =>
       makeUserFake({
         id: makeId(),
       })
     );
 
-    const reviewsForMedia = users.map(user =>
+    const reviewsForMedia = users.map((user) =>
       makeReviewFake({
         authorId: user.id,
         tmdbMediaId: 550,
@@ -47,12 +47,12 @@ describe('review logic', () => {
     expect(added).toStrictEqual(got);
   });
 
-  it('only allows one review per media', async () => {
-    const {reviewLogic} = buildReviewLogicFake();
+  it("only allows one review per media", async () => {
+    const { reviewLogic } = buildReviewLogicFake();
 
     const user = makeUserFake();
     const tmdbMediaId: TmdbMediaId = 550;
-    const reviewsOnSameMedia = [1, 2].map(n =>
+    const reviewsOnSameMedia = [1, 2].map(() =>
       makeReviewFake({
         authorId: user.id,
         tmdbMediaId,
@@ -66,8 +66,8 @@ describe('review logic', () => {
       expect(error).toBeTruthy();
     }
   });
-  it('adds review', async () => {
-    const {reviewLogic} = buildReviewLogicFake();
+  it("adds review", async () => {
+    const { reviewLogic } = buildReviewLogicFake();
     const reviewInfo = makeReviewFake();
     const added = await reviewLogic.addReviews([reviewInfo]);
     const got = await reviewLogic.unitOfWork.Reviews.get([
@@ -75,8 +75,8 @@ describe('review logic', () => {
     ]);
     expect(got).toMatchObject(added);
   });
-  it('removes review', async () => {
-    const {reviewLogic} = buildReviewLogicFake();
+  it("removes review", async () => {
+    const { reviewLogic } = buildReviewLogicFake();
 
     const reviewInfo = makeReviewFake();
     await reviewLogic.addReviews([reviewInfo]);
@@ -84,26 +84,28 @@ describe('review logic', () => {
       authorId: reviewInfo.authorId,
     });
     await reviewLogic.removeReviews(before);
-    const after = await reviewLogic.getReviews({authorId: reviewInfo.authorId});
+    const after = await reviewLogic.getReviews({
+      authorId: reviewInfo.authorId,
+    });
     expect(before).toHaveLength(1);
     expect(after).toHaveLength(0);
   });
-  it('edits review', async () => {
-    const {reviewLogic} = buildReviewLogicFake();
+  it("edits review", async () => {
+    const { reviewLogic } = buildReviewLogicFake();
 
-    const [{content: contentBefore, ...before}] = await reviewLogic.addReviews([
-      makeReviewFake({content: 'good'}),
-    ]);
-    const {content: contentAfter, ...after} = await reviewLogic.editReview({
+    const [
+      { content: contentBefore, ...before },
+    ] = await reviewLogic.addReviews([makeReviewFake({ content: "good" })]);
+    const { content: contentAfter, ...after } = await reviewLogic.editReview({
       ...before,
-      content: 'bad',
+      content: "bad",
     });
     expect(after).toMatchObject(before);
     expect(contentAfter).not.toEqual(contentBefore);
   });
 
-  it('casts uses most recent vote', async () => {
-    const {reviewLogic} = buildReviewLogicFake();
+  it("casts uses most recent vote", async () => {
+    const { reviewLogic } = buildReviewLogicFake();
     const user = makeUserFake();
 
     const review = await reviewLogic.addReview(makeReviewFake());
@@ -133,8 +135,8 @@ describe('review logic', () => {
     expect(after).toHaveLength(1);
   });
 
-  it('get aggergated review', async () => {
-    const {reviewLogic} = buildReviewLogicFake();
+  it("get aggergated review", async () => {
+    const { reviewLogic } = buildReviewLogicFake();
     const user = makeUserFake();
     const review = await reviewLogic.addReview(makeReviewFake());
 

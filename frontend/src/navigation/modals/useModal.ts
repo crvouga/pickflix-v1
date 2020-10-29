@@ -6,7 +6,9 @@ export type ModalName =
   | "ReviewForm"
   | "DiscoverSort"
   | "DiscoverSearch"
-  | "DiscoverTune";
+  | "DiscoverTune"
+  | "Search"
+  | "Account";
 
 export default (modalName: ModalName) => {
   const history = useHistory();
@@ -23,7 +25,7 @@ export default (modalName: ModalName) => {
   };
 
   const close = () => {
-    history.push({
+    history.replace({
       state: {
         [modalName]: false,
       },

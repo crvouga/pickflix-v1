@@ -1,24 +1,24 @@
-import supertest from 'supertest';
-import {buildExpressAppFake} from '../../../express/build.fake';
+import supertest from "supertest";
+import { buildExpressAppFake } from "../../../express/build.fake";
 
-describe('GET /lists', () => {
-  it('gets lists for current user', async done => {
-    const {listLogic, user, app} = await buildExpressAppFake();
+describe("GET /lists", () => {
+  it("gets lists for current user", async (done) => {
+    const { listLogic, user, app } = await buildExpressAppFake();
 
     const lists = await listLogic.addLists(
-      [1, 2, 3, 4, 5].map(n => ({
+      [1, 2, 3, 4, 5].map(() => ({
         ownerId: user.id,
-        title: 'my movies 1',
-        description: 'some cool movies...',
+        title: "my movies 1",
+        description: "some cool movies...",
       }))
     );
 
     supertest(app)
-      .get('/api/lists')
+      .get("/api/lists")
       .expect(200)
-      .then(response => {
+      .then((response) => {
         expect(response.body).toEqual(
-          expect.arrayContaining(lists.map(_ => expect.objectContaining(_)))
+          expect.arrayContaining(lists.map((_) => expect.objectContaining(_)))
         );
         done();
       });

@@ -22,9 +22,11 @@ export const releaseDate = ({ details }: DetailsProp) =>
 
 export const budget = ({ budget }: MovieDetails) =>
   budget ? `$${commas(budget)}` : EMPTY;
-
+export const toBudget = budget;
 export const revenue = ({ revenue }: MovieDetails) =>
   revenue ? `$${commas(revenue)}` : EMPTY;
+
+export const toRevenue = revenue;
 
 export const runtime = ({ runtime }: MovieDetails) =>
   runtime ? moment.duration(runtime, "minutes").format("h[h] m[m]") : EMPTY;

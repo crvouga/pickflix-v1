@@ -9,6 +9,7 @@ import {
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import clsx from "clsx";
 import React from "react";
+import { useHistory } from "react-router";
 
 type StyleProps = {
   scale: number;
@@ -38,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     alignItems: "center",
     transform: ({ scale }: StyleProps) => `scale(${scale})`,
+    cursor: "pointer",
     // justifyContent: "center",
   },
 }));

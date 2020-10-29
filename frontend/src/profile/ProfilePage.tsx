@@ -12,8 +12,9 @@ import AddIcon from "@material-ui/icons/Add";
 import React from "react";
 import ListList from "../lists/ListList";
 import useModal from "../navigation/modals/useModal";
-import NavigationBarTopLevel from "../navigation/NavigationBarTopLevel";
+
 import RecentlyViewed from "./RecentlyViewed";
+import NavBar from "../navigation/NavBar";
 
 const CreateNewListListItem = () => {
   const theme = useTheme();
@@ -40,7 +41,7 @@ const CreateNewListListItem = () => {
 export default () => {
   return (
     <React.Fragment>
-      <NavigationBarTopLevel />
+      <NavBar />
 
       <List>
         <ListItem>

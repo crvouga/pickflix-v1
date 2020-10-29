@@ -1,4 +1,4 @@
-import { AuthFormState } from "../auth/auth-form/redux/auth-form";
+import { AuthFormState } from "../auth-form/redux/auth-form";
 import { DiscoverActiveTags } from "../discover/redux/discover-active-tags";
 import { DiscoverTagsState } from "../discover/redux/discover-tags";
 import { AddListFormState } from "../lists/redux/add-list-form";

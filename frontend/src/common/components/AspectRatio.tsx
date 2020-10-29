@@ -9,12 +9,12 @@ const useStyles = makeStyles({
   },
 });
 
-type Props = React.PropsWithChildren<{
+type Props = BoxProps & {
   ratio: [number, number];
   ContainerProps?: BoxProps;
   ContentProps?: BoxProps;
   SVGProps?: Omit<React.SVGProps<SVGElement>, "ref">;
-}>;
+};
 
 export default ({
   ratio,
@@ -22,10 +22,11 @@ export default ({
   ContainerProps,
   ContentProps,
   children,
+  ...props
 }: Props) => {
   const classes = useStyles();
   return (
-    <Box position="relative" {...ContainerProps}>
+    <Box position="relative" {...ContainerProps} {...props}>
       <svg
         viewBox={[0, 0, ...ratio].join(", ")}
         className={clsx(classes.svg, SVGProps?.className)}

@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
-import NavigationBarFadeIn from "../navigation/NavigationBarFadeIn";
+
 import { history } from "../navigation/history/history";
 import ActionBarSection from "./action-bar/ActionBarSection";
 import CollectionSection from "./collection/CollectionSection";
@@ -15,6 +15,7 @@ import HeaderSection from "./header/HeaderSection";
 import RelatedMoviesSection from "./related-movies/RelatedMoviesSection";
 import ReviewSection from "./review/ReviewSection";
 import VideosSection from "./video/VideosSection";
+import NavBar from "../navigation/NavBar";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -42,7 +43,7 @@ export default () => {
 
   return (
     <React.Fragment>
-      <NavigationBarFadeIn title={query.data.title} />
+      <NavBar />
       <HeaderSection />
       <div className={classes.body}>
         <ActionBarSection />

@@ -1,17 +1,23 @@
-import {makeId} from '../../id';
-import {Id} from '../../id/types';
-import {UserId} from './make-user';
+import bcrypt from "bcrypt";
+import { makeId } from "../../id";
+import { Id } from "../../id/types";
+import { UserId } from "./make-user";
+
+export const makePasswordHash = (password: string) => bcrypt.hash(password, 10);
+export const passwordHashCompare = (password: string, hash: string) =>
+  bcrypt.compare(password, hash);
 
 export enum CredentialType {
-  password = 'password',
+  password = "password",
 }
 
 export type CredentialPassword = {
   type: CredentialType.password;
   passwordHash: string;
+  verifiedAt: number;
 };
 
-export type CredentialId = Id & {CredentialId: true};
+export type CredentialId = Id & { CredentialId: true };
 
 export type Credential = CredentialPassword & {
   type: CredentialType;
@@ -20,16 +26,21 @@ export type Credential = CredentialPassword & {
 };
 
 export const makeCredential = ({
+  id,
   userId,
   passwordHash,
+  verifiedAt,
 }: {
+  id?: CredentialId;
   userId: UserId;
   passwordHash: string;
+  verifiedAt: number;
 }): Credential => {
   return {
+    id: id || (makeId() as CredentialId),
     type: CredentialType.password,
-    id: makeId() as CredentialId,
     userId,
     passwordHash,
+    verifiedAt,
   };
 };

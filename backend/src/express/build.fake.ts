@@ -15,6 +15,7 @@ export const buildExpressAppFake = async () => {
 
   const user = makeUserFake();
 
+  //@ts-ignore
   const stub: Handler = (req, res, next) => {
     req.user = user;
     next();

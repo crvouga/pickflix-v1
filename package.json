@@ -3,6 +3,7 @@
     "test": "clear && cd backend && npm test",
     "postinstall": "cd backend && npm install",
     "heroku-postbuild": "cd frontend && npm install && npm run build",
+    "heroku-write-env": " heroku config -s -a crvouga-pickflix > .env",
     "start": "cd backend && npm run start"
   },
   "name": "pickflix",
@@ -18,5 +19,10 @@
   "bugs": {
     "url": "https://github.com/crvouga/pickflix/issues"
   },
-  "homepage": "https://github.com/crvouga/pickflix#readme"
+  "homepage": "https://github.com/crvouga/pickflix#readme",
+  "dependencies": {
+    "@types/jsonwebtoken": "^8.5.0",
+    "jsonwebtoken": "^8.5.1",
+    "node-html-parser": "^1.4.3"
+  }
 }

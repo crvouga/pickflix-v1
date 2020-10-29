@@ -2,7 +2,7 @@ import { List, Paper } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import MovieListItem from "../movie/components/MovieListItem";
-import NavigationBarTopLevel from "../navigation/NavigationBarTopLevel";
+import NavBar from "../navigation/NavBar";
 import YoutubeSection from "../youtube/Section";
 import CurrentVideoPlayer from "./CurrentVideoPlayer";
 import PlaylistSection from "./PlaylistSection";
@@ -13,7 +13,7 @@ export default () => {
 
   return (
     <React.Fragment>
-      <NavigationBarTopLevel />
+      <NavBar />
 
       <CurrentVideoPlayer />
 

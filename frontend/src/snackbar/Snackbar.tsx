@@ -17,26 +17,13 @@ const Transition = (props: TransitionProps) => (
   <Slide direction="up" {...props} />
 );
 
-const useStylesSnackbar = makeStyles((theme: Theme) => ({
-  root: {
-    margin: 0,
-    padding: 0,
-    width: "100%",
-    left: 0,
-    zIndex: theme.zIndex.appBar - 1,
-    bottom: theme.mixins.toolbar.minHeight, //bottom nav bar
-    minHeight: theme.spacing(6),
-  },
-}));
+const useStylesSnackbar = makeStyles((theme) => ({}));
 
 const useStylesSnackbarContent = makeStyles((theme) => ({
   root: {
-    width: "100%",
     backgroundColor: theme.palette.background.paper,
     color: theme.palette.text.primary,
     fontWeight: "bold",
-    borderBottomLeftRadius: 0,
-    borderBottomRightRadius: 0,
   },
 }));
 

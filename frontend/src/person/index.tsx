@@ -6,7 +6,7 @@ import { useParams } from "react-router";
 import { BackendAPI } from "../backend-api";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
-import NavigationBarFadeIn from "../navigation/NavigationBarFadeIn";
+
 import { history } from "../navigation/history/history";
 import {
   PersonDetailsResponse,
@@ -17,6 +17,7 @@ import { makeFadeToBackgroundCss } from "../utils";
 import Details from "./Details";
 import MovieCreditsSection from "./MovieCreditsSection";
 import PosterHeader from "./PosterHeader";
+import NavBar from "../navigation/NavBar";
 
 const fetchPersonPage = (personId: string) =>
   BackendAPI.get<
@@ -68,7 +69,7 @@ export default () => {
 
   return (
     <React.Fragment>
-      <NavigationBarFadeIn title={details.name} />
+      <NavBar />
 
       <Box
         position="sticky"

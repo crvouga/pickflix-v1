@@ -4,13 +4,14 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router";
 import { BackendAPI } from "../../backend-api";
 import ReadMore from "../../common/components/ReadMore";
-import NavigationBarFadeIn from "../../navigation/NavigationBarFadeIn";
+
 import ErrorPage from "../../common/page/ErrorPage";
 import LoadingPage from "../../common/page/LoadingPage";
 import { Collection } from "../../tmdb/types";
 import MovieCard from "../components/MovieCard";
 import BackdropHeader from "./BackdropHeader";
 import { collectionToBackdropPath } from "./utils";
+import NavBar from "../../navigation/NavBar";
 
 export default () => {
   const { collectionId } = useParams<{ collectionId: string }>();
@@ -37,7 +38,7 @@ export default () => {
 
   return (
     <React.Fragment>
-      <NavigationBarFadeIn title={name} />
+      <NavBar />
 
       <BackdropHeader backdropPath={collectionToBackdropPath(collection)} />
 

@@ -19,6 +19,10 @@ function stringToHslColor(str: string, s: number, l: number) {
   return "hsl(" + h + ", " + s + "%, " + l + "%)";
 }
 
+export const getUserColor = (user: User) => {
+  return stringToHslColor(user.username, 50, 50);
+};
+
 const useStyles = makeStyles((theme) => ({
   avatar: {
     fontWeight: "bold",

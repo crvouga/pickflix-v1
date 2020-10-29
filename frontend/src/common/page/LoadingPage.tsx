@@ -1,6 +1,7 @@
 import { CircularProgress, makeStyles } from "@material-ui/core";
 import React from "react";
 import NavigationBar from "../../navigation/NavigationBar";
+import NavBar from "../../navigation/NavBar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,7 +18,7 @@ export default () => {
   const classes = useStyles();
   return (
     <React.Fragment>
-      <NavigationBar />
+      <NavBar />
       <div className={classes.root}>
         <CircularProgress color="inherit" disableShrink size="2em" />
       </div>

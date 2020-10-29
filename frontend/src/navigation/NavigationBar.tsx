@@ -1,7 +1,7 @@
 import { AppBar, AppBarProps, Toolbar, Typography } from "@material-ui/core";
 import React from "react";
 import BackButton from "./BackButton";
-import SearchButton from "./SearchButton";
+import { SearchButton } from "./Search";
 
 type Props = {
   title?: string;

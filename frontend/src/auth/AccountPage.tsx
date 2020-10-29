@@ -1,18 +1,29 @@
 import React from "react";
+import LoadingBox from "../common/components/LoadingBox";
 import AccountPageAuthenticated from "./AccountPage.Authenticated";
-import AccountPageLoading from "./AccountPage.Loading";
-import AccountPageUnauthenticated from "./AccountPage.Unauthenticated";
-import { useAuth } from "./useAuth";
+import AccountPageNavBar from "./AccountPage.NavBar";
+import AuthWizard from "../auth-form/AuthWizard";
+import { useAuth, useCurrentUser } from "./useAuth";
 
 export default () => {
-  const { currentUser } = useAuth();
+  const currentUser = useCurrentUser();
 
   if (currentUser === "loading") {
-    return <AccountPageLoading />;
+    return (
+      <React.Fragment>
+        <AccountPageNavBar />
+        <LoadingBox />
+      </React.Fragment>
+    );
   }
 
   if (currentUser === null) {
-    return <AccountPageUnauthenticated />;
+    return (
+      <React.Fragment>
+        <AccountPageNavBar />
+        <AuthWizard />
+      </React.Fragment>
+    );
   }
 
   return <AccountPageAuthenticated currentUser={currentUser} />;

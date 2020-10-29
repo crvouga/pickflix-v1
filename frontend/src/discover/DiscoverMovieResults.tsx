@@ -58,7 +58,7 @@ export default () => {
       <div className={classes.root}>
         {data.map((response) =>
           response.results.map((result) => (
-            <Box p={1 / 2} width="50%" key={result.id}>
+            <Box p={1 / 2} width="50%" maxWidth="150px" key={result.id}>
               <Poster sizeIndex={2} movie={result} />
             </Box>
           ))

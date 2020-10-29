@@ -1,5 +1,5 @@
 import { combineReducers, Reducer } from "@reduxjs/toolkit";
-import { authForm } from "../auth/auth-form/redux/auth-form";
+import { authForm } from "../auth-form/redux/auth-form";
 import { discoverActiveTags } from "../discover/redux/discover-active-tags";
 import { discoverTags } from "../discover/redux/discover-tags";
 import { addListForm } from "../lists/redux/add-list-form";

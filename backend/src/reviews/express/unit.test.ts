@@ -32,6 +32,7 @@ describe("/api/reviews", () => {
   it("GET /reviews?tmdbMediaId=...&tmdbMediaType=...", async () => {
     const { app, reviewLogic, user } = await buildExpressAppFake();
 
+    //@ts-ignore
     for (const i of [1, 2, 3]) {
       await reviewLogic.addReview(
         makeReviewFake({
