@@ -54,7 +54,7 @@ export class UserLogic {
     return passwordCredential;
   }
 
-  async findUsers(
+  async getUsers(
     userInfo: { username: string } | { id: UserId } | { emailAddress: string }
   ) {
     return await this.unitOfWork.Users.find(userInfo);

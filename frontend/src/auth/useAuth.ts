@@ -13,7 +13,7 @@ import {
 } from "./query";
 
 export const useCurrentUser = (): User | "loading" | null => {
-  const query = useQuery(queryKeys.user(), () => getCurrentUser(), {
+  const query = useQuery(queryKeys.currentUser(), () => getCurrentUser(), {
     retry: 0,
   });
 
@@ -60,7 +60,7 @@ export const useAuth = () => {
   const signOut = async () => {
     await deleteAuth();
     history.push("/");
-    queryCache.removeQueries(queryKeys.user());
+    queryCache.removeQueries(queryKeys.currentUser());
     queryCache.invalidateQueries((query) => query.queryKey.includes("user"));
     snackbar.display({
       message: "You are now signed out",

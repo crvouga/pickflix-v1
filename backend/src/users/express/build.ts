@@ -76,8 +76,8 @@ export const buildUsersRouter = ({ userLogic, middlewares }: Dependencies) => (
       const emailAddress = req.query.emailAddress as string;
 
       const [emailResults, usernameResults] = await Promise.all([
-        userLogic.findUsers({ emailAddress }),
-        userLogic.findUsers({ username }),
+        userLogic.getUsers({ emailAddress }),
+        userLogic.getUsers({ username }),
       ]);
 
       const users = [...emailResults, ...usernameResults];

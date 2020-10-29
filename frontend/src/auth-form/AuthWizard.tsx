@@ -11,6 +11,7 @@ import Password from "./Password";
 import PasswordForgot from "./PasswordForgot";
 import PasswordReset from "./PasswordReset";
 import PickUsername from "./PickUsername";
+import ErrorBox from "../common/components/ErrorBox";
 
 const CurrentStep = () => {
   const location = useLocation();
@@ -21,11 +22,9 @@ const CurrentStep = () => {
   const resetPasswordToken = params.get("resetPasswordToken");
   const forgotPasswordFlag = params.get("forgotPasswordFlag");
 
-  const queryUser = useQuery(queryKeys.user(emailAddress || ""), () =>
+  const queryUsers = useQuery(queryKeys.users(emailAddress || ""), () =>
     emailAddress ? getUsers({ emailAddress }) : Promise.reject()
   );
-
-  const user = queryUser?.data?.[0];
 
   if (!emailAddress) {
     return <Email />;
@@ -40,9 +39,25 @@ const CurrentStep = () => {
     );
   }
 
-  if (!user) {
+  if (queryUsers.error) {
+    return <ErrorBox />;
+  }
+
+  if (!queryUsers.data) {
     return <LoadingBox />;
   }
+
+  const users = queryUsers.data;
+
+  if (users.length === 0 && !username) {
+    return <PickUsername emailAddress={emailAddress} />;
+  }
+
+  if (users.length === 0 && username) {
+    return <CreateAccount username={username} emailAddress={emailAddress} />;
+  }
+
+  const user = users[0];
 
   if (user && forgotPasswordFlag) {
     return <PasswordForgot user={user} />;
@@ -52,11 +67,7 @@ const CurrentStep = () => {
     return <Password user={user} />;
   }
 
-  if (!username) {
-    return <PickUsername emailAddress={emailAddress} />;
-  }
-
-  return <CreateAccount username={username} emailAddress={emailAddress} />;
+  throw new Error("invalid auth wizard step");
 };
 
 export default () => {
