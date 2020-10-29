@@ -1,5 +1,5 @@
 import { combineReducers, Reducer } from "@reduxjs/toolkit";
-import { authForm } from "../auth-form/redux/auth-form";
+
 import { discoverActiveTags } from "../discover/redux/discover-active-tags";
 import { discoverTags } from "../discover/redux/discover-tags";
 import { addListForm } from "../lists/redux/add-list-form";
@@ -16,7 +16,6 @@ const reducers: { [key in keyof AppState]: Reducer } = {
   editListForm: editListForm.reducer,
   addListForm: addListForm.reducer,
   addListItemForm: addListItemForm.reducer,
-  authForm: authForm.reducer,
   discoverTags: discoverTags.reducer,
   discoverActiveTags: discoverActiveTags.reducer,
   history: history.reducer,

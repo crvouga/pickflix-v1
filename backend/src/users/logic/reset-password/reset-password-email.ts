@@ -13,14 +13,21 @@ export const castLink = (link: string): Link => {
 
 const SEND_GRID_REGISTERED_EMAIL_ADDRESS = "pickflix1@gmail.com";
 
-export const RESET_EMAIL_HTML_LINK_DOM_ID = "link";
 export const makeResetEmailHtml = (resetPasswordLink: string) =>
-  `You are receiving this because you (or someone else) have requested the reset of the password for your account. 
-  Please click on the following link, or paste this into your browser to complete the process:
-
-  <a id="${RESET_EMAIL_HTML_LINK_DOM_ID}" href="${resetPasswordLink}">Reset Your Password</a>
-  
-  If you did not request this, please ignore this email and your password will remain unchanged.`;
+  `
+  <h1>Password Reset</h1>
+  <p>
+    You are receiving this because you (or someone else) have requested the reset of the password  for your account.
+  </p>
+  <p>
+    Please click on the following link, or paste this into your browser to complete the process:
+  </p>
+  <p>
+    <a href="${resetPasswordLink}">Reset Your Password</a>
+  </p>
+  <p>
+    If you did not request this, please ignore this email and your password will remain unchanged.
+  </p>`;
 
 export const makeResetPasswordEmail = ({
   user,

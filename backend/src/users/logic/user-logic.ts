@@ -61,11 +61,11 @@ export class UserLogic {
   }
 
   async getUser(
-    userInfo: { username: string } | { id: UserId } | { emailAddress: string }
+    info: { username: string } | { id: UserId } | { emailAddress: string }
   ) {
     const { Users } = this.unitOfWork;
 
-    const [user] = await Users.find(userInfo);
+    const [user] = await Users.find(info);
 
     if (!user) {
       throw new Error("User does not exists");

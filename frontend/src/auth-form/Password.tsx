@@ -1,19 +1,19 @@
 import {
   Box,
   Button,
+  IconButton,
+  InputAdornment,
   makeStyles,
   TextField,
   Typography,
-  InputAdornment,
-  IconButton,
 } from "@material-ui/core";
-import React, { useRef, useState } from "react";
-import AvatarUser from "../auth/AvatarUser";
-import { useAuth } from "../auth/useAuth";
-import { useAuthForm } from "./useAuthForm";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
+import React, { useRef, useState } from "react";
+import AvatarUser from "../auth/AvatarUser";
 import { User } from "../auth/query";
+import { useAuth } from "../auth/useAuth";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default ({ user }: { user: User }) => {
   const classes = useStyles();
-
+  const history = useHistory();
   const auth = useAuth();
   const refPassword = useRef<HTMLInputElement>();
   const [disabled, setDisabled] = useState(true);
@@ -31,6 +31,12 @@ export default ({ user }: { user: User }) => {
 
   const handleChange = (e: React.ChangeEvent<{ value: string }>) => {
     setDisabled(e.target.value.length <= 2);
+  };
+
+  const handleForgotPassword = () => {
+    history.push(
+      `/auth?emailAddress=${user.emailAddress}&forgotPasswordFlag=1`
+    );
   };
 
   const handleSubmit = async () => {
@@ -77,7 +83,7 @@ export default ({ user }: { user: User }) => {
         />
       </Box>
 
-      <Box paddingBottom>
+      <Box paddingBottom={2}>
         <Button
           onClick={handleSubmit}
           variant="contained"
@@ -86,6 +92,21 @@ export default ({ user }: { user: User }) => {
           disabled={disabled}
         >
           Sign In
+        </Button>
+      </Box>
+      <Box
+        paddingBottom={2}
+        display="flex"
+        flexDirection="row-reverse"
+        color="text.secondary"
+      >
+        <Button
+          size="small"
+          color="inherit"
+          onClick={handleForgotPassword}
+          variant="text"
+        >
+          Forgot Password?
         </Button>
       </Box>
     </React.Fragment>

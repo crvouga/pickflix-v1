@@ -5,7 +5,7 @@ import {
   makePasswordHash,
 } from "../../models/make-credential";
 import { UserLogic } from "../user-logic";
-import { Link, makeResetPasswordEmail } from "./reset-password-email";
+import { castLink, makeResetPasswordEmail } from "./reset-password-email";
 import { decodeToken, encodeToken } from "./reset-password-token";
 
 export const makeResetPasswordToken = ({
@@ -23,14 +23,30 @@ export const makeResetPasswordToken = ({
     userId: user.id,
   });
 
+const makeResetPasswordLink = ({
+  redirectUrl,
+  token,
+  emailAddress,
+}: {
+  redirectUrl: string;
+  token: string;
+  emailAddress: string;
+}) => {
+  const url = new URL(redirectUrl);
+  url.searchParams.append("resetPasswordToken", token);
+  url.searchParams.append("emailAddress", emailAddress);
+  const link = castLink(url.toString());
+  return link;
+};
+
 export async function getResetPasswordEmail(
   this: UserLogic,
   {
     emailAddress,
-    tokenToLink,
+    redirectUrl,
   }: {
     emailAddress: string;
-    tokenToLink: (token: string) => Link;
+    redirectUrl: string;
   }
 ) {
   const user = await this.getUser({ emailAddress });
@@ -39,11 +55,20 @@ export async function getResetPasswordEmail(
     userId: user.id,
   });
 
-  const token = makeResetPasswordToken({ user, passwordCredential });
+  const token = makeResetPasswordToken({
+    user,
+    passwordCredential,
+  });
+
+  const link = makeResetPasswordLink({
+    redirectUrl,
+    token,
+    emailAddress,
+  });
 
   const email = makeResetPasswordEmail({
     user,
-    link: tokenToLink(token),
+    link,
   });
 
   return email;
@@ -53,15 +78,15 @@ export async function sendResetPasswordEmail(
   this: UserLogic,
   {
     emailAddress,
-    tokenToLink,
+    redirectUrl,
   }: {
     emailAddress: string;
-    tokenToLink: (token: string) => Link;
+    redirectUrl: string;
   }
 ) {
   const email = await this.getResetPasswordEmail({
     emailAddress,
-    tokenToLink,
+    redirectUrl,
   });
 
   await this.emailService.sendEmail(email);
@@ -70,16 +95,16 @@ export async function sendResetPasswordEmail(
 export async function resetPassword(
   this: UserLogic,
   {
-    token,
+    resetPasswordToken,
     newPassword,
   }: {
-    token: string;
+    resetPasswordToken: string;
     newPassword: string;
   }
 ) {
   const { Credentials } = this.unitOfWork;
 
-  const tokenData = decodeToken(token);
+  const tokenData = decodeToken(resetPasswordToken);
 
   const user = await this.getUser({ id: tokenData.userId });
 
@@ -88,7 +113,7 @@ export async function resetPassword(
   });
 
   if (tokenData.passwordVerifiedAt < passwordCredential.verifiedAt) {
-    throw new Error("User signed after sending password reset email");
+    throw new Error("User signed in after sending password reset email");
   }
 
   if (tokenData.passwordHash !== passwordCredential.passwordHash) {

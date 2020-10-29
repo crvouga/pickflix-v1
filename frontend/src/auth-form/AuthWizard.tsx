@@ -5,40 +5,58 @@ import { useHistory, useLocation } from "react-router";
 import { getUsers, queryKeys } from "../auth/query";
 import LoadingBox from "../common/components/LoadingBox";
 import PickflixLogo from "../common/PickflixLogo";
+import CreateAccount from "./CreateAccount";
 import Email from "./Email";
+import Password from "./Password";
+import PasswordForgot from "./PasswordForgot";
+import PasswordReset from "./PasswordReset";
 import PickUsername from "./PickUsername";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
 
 const CurrentStep = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const emailAddress = params.get("emailAddress");
 
+  const emailAddress = params.get("emailAddress");
   const username = params.get("username");
+  const resetPasswordToken = params.get("resetPasswordToken");
+  const forgotPasswordFlag = params.get("forgotPasswordFlag");
+
   const queryUser = useQuery(queryKeys.user(emailAddress || ""), () =>
     emailAddress ? getUsers({ emailAddress }) : Promise.reject()
   );
+
+  const user = queryUser?.data?.[0];
 
   if (!emailAddress) {
     return <Email />;
   }
 
-  if (!queryUser.data) {
+  if (emailAddress && resetPasswordToken) {
+    return (
+      <PasswordReset
+        emailAddress={emailAddress}
+        resetPasswordToken={resetPasswordToken}
+      />
+    );
+  }
+
+  if (!user) {
     return <LoadingBox />;
   }
 
-  const users = queryUser.data;
+  if (user && forgotPasswordFlag) {
+    return <PasswordForgot user={user} />;
+  }
 
-  if (users.length > 0) {
-    return <SignIn user={users[0]} />;
+  if (user) {
+    return <Password user={user} />;
   }
 
   if (!username) {
     return <PickUsername emailAddress={emailAddress} />;
   }
 
-  return <SignUp username={username} emailAddress={emailAddress} />;
+  return <CreateAccount username={username} emailAddress={emailAddress} />;
 };
 
 export default () => {
