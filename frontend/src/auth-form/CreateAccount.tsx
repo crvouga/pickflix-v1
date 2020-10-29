@@ -60,6 +60,7 @@ export default ({
           fullWidth
           autoCorrect="off"
           autoCapitalize="none"
+          autoComplete="off"
           onChange={(e) => {
             setPassword(e.target.value);
           }}
@@ -73,6 +74,7 @@ export default ({
           label="Repeat Password"
           fullWidth
           autoCorrect="off"
+          autoComplete="off"
           autoCapitalize="none"
           helperText={
             password !== passwordRepeat ? "Does not match password" : ""

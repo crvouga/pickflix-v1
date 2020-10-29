@@ -20,6 +20,7 @@ export async function verifyEmailAddressAndPassword(
   const { Credentials } = this.unitOfWork;
 
   const user = await this.getUser({ emailAddress });
+
   const passwordCredential = await this.getPasswordCredential({
     userId: user.id,
   });
@@ -34,7 +35,7 @@ export async function verifyEmailAddressAndPassword(
     return user;
   }
 
-  throw new Error("Passwords don't match");
+  throw new Error("Incorrect Password");
 }
 
 export async function createUserWithPassword(

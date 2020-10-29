@@ -80,13 +80,17 @@ export class UserLogic {
     emailAddress: string;
   }) {
     const [user] = await this.unitOfWork.Users.find({ emailAddress });
+
     if (!user) {
       return [];
     }
+
     const credentials = await this.unitOfWork.Credentials.find({
       userId: user.id,
     });
+
     const credentialTypes = credentials.map((credential) => credential.type);
+
     return credentialTypes;
   }
 }

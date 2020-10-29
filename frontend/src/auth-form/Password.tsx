@@ -28,6 +28,7 @@ export default ({ user }: { user: User }) => {
   const refPassword = useRef<HTMLInputElement>();
   const [disabled, setDisabled] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState<string | undefined>();
 
   const handleChange = (e: React.ChangeEvent<{ value: string }>) => {
     setDisabled(e.target.value.length <= 2);
@@ -41,10 +42,17 @@ export default ({ user }: { user: User }) => {
 
   const handleSubmit = async () => {
     const password = refPassword.current?.value || "";
-    await auth.signIn({
-      emailAddress: user.emailAddress,
-      password,
-    });
+    try {
+      await auth.signIn({
+        emailAddress: user.emailAddress,
+        password,
+      });
+    } catch (error) {
+      if (error?.response?.status === 400) {
+        setPasswordError("Incorrect Password");
+      } else {
+      }
+    }
   };
 
   return (
@@ -68,6 +76,8 @@ export default ({ user }: { user: User }) => {
           onChange={handleChange}
           autoFocus
           autoComplete="on"
+          error={Boolean(passwordError)}
+          helperText={passwordError}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">

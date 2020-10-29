@@ -49,12 +49,19 @@ export const useAuth = () => {
   };
 
   const signIn = async (params: PostAuthParams) => {
-    const user = await postAuth(params);
-    queryCache.invalidateQueries((query) => query.queryKey.includes("user"));
-    snackbar.display({
-      message: `Signed in as ${user.username}`,
-    });
-    history.push("/");
+    try {
+      const user = await postAuth(params);
+      queryCache.invalidateQueries((query) => query.queryKey.includes("user"));
+      snackbar.display({
+        message: `Signed in as ${user.username}`,
+      });
+      history.push("/");
+    } catch (error) {
+      snackbar.display({
+        message: "Something went wrong",
+      });
+      throw error;
+    }
   };
 
   const signOut = async () => {
