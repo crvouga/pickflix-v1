@@ -1,11 +1,25 @@
 import moment from "moment";
 import "moment-duration-format";
 import numeral from "numeral";
-import { MovieDetails, MovieReleaseDates } from "../tmdb/types";
+import {
+  MovieDetails,
+  MovieReleaseDates,
+  MovieCredit,
+  MovieCreditCrew,
+  MovieGenre,
+} from "../tmdb/types";
+import MovieCredits from "./MovieCredits";
 
 type DetailsProp = { details: MovieDetails };
 // type KeywordsProp = { keywords: MovieKeywords };
 type ReleaseDateProp = { releaseDates: MovieReleaseDates };
+
+export const toGenres = ({ genres }: { genres: MovieGenre[] }) => {
+  return genres
+    .slice(0, 2)
+    .map((_) => _.name)
+    .join("/");
+};
 
 export const commas = (_: any) => numeral(_).format("0,0");
 export const SMALL_DOT = "·";
@@ -20,18 +34,14 @@ export const voteCount = ({ details }: DetailsProp) =>
 export const releaseDate = ({ details }: DetailsProp) =>
   moment(details.releaseDate).format("MMMM Do YYYY");
 
-export const budget = ({ budget }: MovieDetails) =>
-  budget ? `$${commas(budget)}` : EMPTY;
-export const toBudget = budget;
-export const revenue = ({ revenue }: MovieDetails) =>
-  revenue ? `$${commas(revenue)}` : EMPTY;
+export const toBudget = ({ budget }: { budget?: number }) =>
+  budget ? `$${commas(budget)}` : null;
 
-export const toRevenue = revenue;
+export const toRevenue = ({ revenue }: { revenue?: number }) =>
+  revenue ? `$${commas(revenue)}` : null;
 
-export const runtime = ({ runtime }: MovieDetails) =>
-  runtime ? moment.duration(runtime, "minutes").format("h[h] m[m]") : EMPTY;
-
-export const toRuntime = runtime;
+export const toRuntime = ({ runtime }: MovieDetails) =>
+  runtime ? moment.duration(runtime, "minutes").format("h[h] m[m]") : null;
 
 export const toReleaseYear = ({
   releaseDate,
@@ -40,7 +50,7 @@ export const toReleaseYear = ({
 }): string => moment(releaseDate).format("YYYY");
 
 export const releaseYear = ({ releaseDate }: MovieDetails) =>
-  releaseDate ? moment(releaseDate).format("YYYY") : EMPTY;
+  releaseDate ? moment(releaseDate).format("YYYY") : null;
 
 export const toCertification = ({ releaseDates }: ReleaseDateProp) =>
   releaseDates.results
@@ -49,3 +59,7 @@ export const toCertification = ({ releaseDates }: ReleaseDateProp) =>
     .find((_) => _.length !== 0);
 
 export const toRated = toCertification;
+
+export const toDirectors = ({ crew }: { crew: MovieCreditCrew[] }) => {
+  return crew.filter((credit) => credit.job === "Director");
+};

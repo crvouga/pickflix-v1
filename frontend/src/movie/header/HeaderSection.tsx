@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
 export const HEADER_ASPECT_RATIO: [number, number] = [4, 3];
 
 const toSubtitle1 = (data: MoviePageData) =>
-  [utils.toRated(data), utils.releaseYear(data), utils.runtime(data)].join(
+  [utils.toRated(data), utils.toReleaseYear(data), utils.toRuntime(data)].join(
     ` ${utils.SMALL_DOT} `
   );
 

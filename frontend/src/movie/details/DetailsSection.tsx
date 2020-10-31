@@ -39,7 +39,7 @@ export default () => {
         />
       </Box> */}
 
-      <Box display="flex" flexDirection="row">
+      {/* <Box display="flex" flexDirection="row">
         <DetailListItem
           ListItemTextProps={{
             primary: "Budget",
@@ -52,7 +52,7 @@ export default () => {
             secondary: utils.revenue(query.data),
           }}
         />
-      </Box>
+      </Box> */}
     </List>
   );
 };

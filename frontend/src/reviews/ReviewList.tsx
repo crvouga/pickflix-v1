@@ -1,4 +1,4 @@
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import ErrorBox from "../common/components/ErrorBox";
 import LoadingBox from "../common/components/LoadingBox";
@@ -19,18 +19,21 @@ export default (props: Props) => {
   }
 
   if (!query.data) {
-    return <LoadingBox />;
+    return <LoadingBox p={6} />;
   }
 
   const reviews = query.data;
 
   return (
-    <div>
+    <React.Fragment>
+      <Box paddingX={2}>
+        <Typography variant="h6">Reviews</Typography>
+      </Box>
       {reviews.map((review) => (
         <Box>
           <Review {...review} />
         </Box>
       ))}
-    </div>
+    </React.Fragment>
   );
 };

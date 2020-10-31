@@ -18,7 +18,6 @@ export default () => {
 
   return (
     <React.Fragment>
-      <Typography color="primary">Recent</Typography>
       <List>
         {searchHistory.history.map((result) => (
           <SearchHistoryListItem key={result.id} result={result} />

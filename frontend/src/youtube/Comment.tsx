@@ -4,8 +4,9 @@ import moment from "moment";
 import numeral from "numeral";
 import React from "react";
 import ReadMore from "../common/components/ReadMore";
-import * as youtubeAPI from "./api";
-import { YoutubeComment } from "./types";
+
+import { YoutubeComment } from "./query/types";
+import { youtubeCommentTextToMarkdown } from "./query";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,28 +48,13 @@ interface Props {
 }
 
 export default ({ comment }: Props) => {
-  const {
-    // kind,
-    // etag,
-    // id,
-    snippet,
-  } = comment;
+  const { snippet } = comment;
   const {
     authorDisplayName,
     authorProfileImageUrl,
-    // authorChannelUrl,
-    // authorChannelId,
-    // channelId,
-    // videoId,
     textDisplay,
-    // textOriginal,
-    // parentId,
-    // canRate,
-    // viewerRating,
     likeCount,
-    // moderationStatus,
     publishedAt,
-    // updatedAt,
   } = snippet;
 
   const classes = useStyles();
@@ -82,9 +68,7 @@ export default ({ comment }: Props) => {
 
   const handleAvatarClick = () => {};
 
-  const textDisplayMarkdown = youtubeAPI.youtbeCommentTextToMarkdown(
-    textDisplay
-  );
+  const textDisplayMarkdown = youtubeCommentTextToMarkdown(textDisplay);
 
   return (
     <div className={classes.root}>
@@ -95,10 +79,8 @@ export default ({ comment }: Props) => {
         <Typography variant="subtitle2" color="textSecondary">
           {subtitle1}
         </Typography>
-        <ReadMore
-          text={textDisplayMarkdown}
-          TypographyProps={{ variant: "body1" }}
-        />
+        <Typography variant="body1">{textDisplayMarkdown}</Typography>
+
         <div className={classes.actions}>
           {likeCount > 0 && (
             <React.Fragment>

@@ -19,13 +19,13 @@ import MovieCreditsSection from "./MovieCreditsSection";
 import PosterHeader from "./PosterHeader";
 import NavBar from "../navigation/NavBar";
 
-const fetchPersonPage = (personId: string) =>
+const fetchPersonPage = (tmdbMediaId: string) =>
   BackendAPI.get<
     {
       credits: PersonMovieCreditsResponse;
       images: PersonImagesResponse;
     } & PersonDetailsResponse
-  >(`/api/tmdb/person/${personId}`, {
+  >(`/api/tmdb/person/${tmdbMediaId}`, {
     params: {
       appendToResponse: ["credits", "movie_credits", "images", "tagged_images"],
     },
@@ -39,10 +39,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const { personId } = useParams<{ personId: string }>();
+  const { tmdbMediaId } = useParams<{ tmdbMediaId: string }>();
 
-  const query = useQuery(`/person/${personId}`, () =>
-    fetchPersonPage(personId)
+  const query = useQuery(`/person/${tmdbMediaId}`, () =>
+    fetchPersonPage(tmdbMediaId)
   );
 
   const dispatch = useDispatch();

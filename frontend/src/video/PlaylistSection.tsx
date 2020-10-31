@@ -9,7 +9,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import ExpandIcon from "../common/components/ExpandIcon";
 import useBoolean from "../common/hooks/useBoolean";
-import PlaylistListItem from "./PlaylistListItem";
+
 import { video } from "./redux/video";
 import { renderText } from "./utils";
 
@@ -25,14 +25,7 @@ export default () => {
           <ExpandIcon expanded={expanded.value} />
         </ListItemSecondaryAction>
       </ListItem>
-      <Collapse in={expanded.value}>
-        {playlist.map((playlistVideo) => (
-          <PlaylistListItem
-            key={playlistVideo.key}
-            playlistVideo={playlistVideo}
-          />
-        ))}
-      </Collapse>
+      <Collapse in={expanded.value}></Collapse>
     </List>
   );
 };

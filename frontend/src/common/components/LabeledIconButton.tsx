@@ -1,38 +1,35 @@
 import {
-  IconButton,
-  IconButtonProps,
+  Box,
+  ButtonBase,
+  ButtonBaseProps,
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import React from "react";
+import clsx from "clsx";
+import React, { ReactNode } from "react";
 
-const useStylesIconButton = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    color: theme.palette.action.active,
-  },
-  label: {
     display: "flex",
     flexDirection: "column",
-    fontSize: "0.5em",
-  },
-  disabled: {
-    color: theme.palette.action.disabled,
+    padding: theme.spacing(1),
+    flex: 1,
   },
 }));
 
-type Props = IconButtonProps & {
+type Props = ButtonBaseProps & {
+  icon: ReactNode;
   label: string;
 };
 
-export default ({ label, children, ...props }: Props) => {
-  const classesIconButton = useStylesIconButton();
-
+export default ({ label, icon, ...props }: Props) => {
+  const classes = useStyles();
   return (
-    <IconButton classes={classesIconButton} {...props}>
-      {children}
+    <ButtonBase {...props} className={clsx(classes.root, props.className)}>
+      <Box>{icon}</Box>
       <Typography color="inherit" variant="subtitle2">
         {label}
       </Typography>
-    </IconButton>
+    </ButtonBase>
   );
 };

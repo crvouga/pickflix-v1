@@ -11,7 +11,7 @@ import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "360px",
+    width: "400px",
     padding: theme.spacing(1),
     backgroundColor: theme.palette.action.hover,
     borderRadius: theme.spacing(0.5),

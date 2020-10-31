@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   input: {
-    fontSize: "1.5em",
+    fontSize: "1.25em",
     fontWeight: "bold",
   },
 }));

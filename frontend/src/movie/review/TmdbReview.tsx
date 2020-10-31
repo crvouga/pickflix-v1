@@ -1,6 +1,5 @@
 import { Avatar, BoxProps, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
-import ReadMore from "../../common/components/ReadMore";
 import * as TMDb from "../../tmdb/attribution";
 import { MovieReview } from "../../tmdb/types";
 import { nameToInitials } from "../../utils";
@@ -38,6 +37,7 @@ export default ({ review, ...props }: Props) => {
     content,
     author,
   } = review;
+
   const initials = nameToInitials(author);
 
   return (
@@ -49,7 +49,9 @@ export default ({ review, ...props }: Props) => {
       </div>
       <div className={classes.body}>
         <Typography color="textSecondary">{author}</Typography>
-        <ReadMore TypographyProps={{ color: "textPrimary" }} text={content} />
+        <Typography color="textPrimary" variant="body1">
+          {content}
+        </Typography>
       </div>
     </div>
   );

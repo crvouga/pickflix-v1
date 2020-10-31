@@ -1,38 +1,16 @@
-import { makeStyles } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import React from "react";
 import YoutubeComment from "./Comment";
-import { YoutubeCommentThread } from "./types";
+import { YoutubeCommentThread } from "./query/types";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: `${theme.spacing(2)} ${theme.spacing(1)}`,
-  },
-}));
-
-interface Props {
+type Props = {
   commentThread: YoutubeCommentThread;
-}
+};
 
 export default ({ commentThread }: Props) => {
   const {
-    // kind,
-    // etag,
-    // id,
-    snippet: {
-      // channelId,
-      // videoId,
-      topLevelComment,
-      // canReply,
-      // totalReplyCount,
-      // isPublic,
-    },
+    snippet: { topLevelComment },
   } = commentThread;
 
-  const classes = useStyles();
-
-  return (
-    <div className={classes.root}>
-      <YoutubeComment comment={topLevelComment} />
-    </div>
-  );
+  return <YoutubeComment comment={topLevelComment} />;
 };

@@ -8,7 +8,8 @@ import AutoListIcon from "../../lists/AutoListIcon";
 import useModal from "../../navigation/modals/useModal";
 import { TmdbMediaType } from "../../tmdb/types";
 import useAddListItemForm from "../../lists/hooks/useAddListItemForm";
-
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 type Props = {
   tmdbMediaType: TmdbMediaType;
   tmdbMediaId: string;
@@ -19,6 +20,11 @@ export default ({ tmdbMediaType, tmdbMediaId }: Props) => {
   const addListItemForm = useAddListItemForm();
 
   return {
+    favorite: {
+      icon: true ? <FavoriteBorderIcon /> : <FavoriteIcon />,
+      label: "Favorite",
+      onClick: () => {},
+    },
     like: {
       icon: <AutoListIcon autoListKey="liked" />,
       label: "Like",

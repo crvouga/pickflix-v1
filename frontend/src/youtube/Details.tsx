@@ -17,7 +17,7 @@ import React from "react";
 import ReactMarkdown from "react-markdown";
 import ExpandIcon from "../common/components/ExpandIcon";
 import useBoolean from "../common/hooks/useBoolean";
-import { YoutubeVideoSnippet, YoutubeVideoStatistics } from "./types";
+import { YoutubeVideoSnippet, YoutubeVideoStatistics } from "./query/types";
 
 const useStyles = makeStyles((theme) => ({
   mainDetails: {
@@ -69,35 +69,16 @@ const formatNumberShort = (number: number) =>
 
 const formatNumberLong = (number: number) => numeral(number).format("0,0");
 
-interface Props {
+type Props = {
   statistics: YoutubeVideoStatistics;
   snippet: YoutubeVideoSnippet;
-}
+};
 
 export default ({ statistics, snippet }: Props) => {
   const classes = useStyles();
 
-  const {
-    // categoryId,
-    // channelId,
-    // channelTitle,
-    // defaultAudioLanguage,
-    description,
-    // liveBroadcastContent,
-    // localized,
-    publishedAt,
-    // tags,
-    // thumbnails,
-    title,
-  } = snippet;
-
-  const {
-    // commentCount,
-    dislikeCount,
-    // favoriteCount,
-    likeCount,
-    viewCount,
-  } = statistics;
+  const { description, publishedAt, title } = snippet;
+  const { dislikeCount, likeCount, viewCount } = statistics;
 
   const isDetailsOpen = useBoolean(false);
 

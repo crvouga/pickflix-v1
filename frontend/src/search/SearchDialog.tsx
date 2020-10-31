@@ -62,13 +62,12 @@ export default () => {
           {isMobile && <CloseButton />}
         </Box>
       </AppBar>
-      <Box p={2}>
-        {text.trim().length === 0 ? (
-          <SearchHistoryList />
-        ) : (
-          <SearchResultList text={text} />
-        )}
-      </Box>
+
+      {text.trim().length === 0 ? (
+        <SearchHistoryList />
+      ) : (
+        <SearchResultList text={text} />
+      )}
     </Dialog>
   );
 };

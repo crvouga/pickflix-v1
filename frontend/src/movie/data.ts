@@ -31,7 +31,6 @@ export const fetchMoviePage = async (tmdbMediaId: string) => {
       params: {
         appendToResponse: [
           "credits",
-          "reviews",
           "similar",
           "recommendations",
           "keywords",

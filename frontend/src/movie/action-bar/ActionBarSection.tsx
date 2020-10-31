@@ -1,27 +1,22 @@
-import { Box, IconButton, makeStyles, Typography } from "@material-ui/core";
+import { Box, makeStyles } from "@material-ui/core";
 import React from "react";
 import { useParams } from "react-router";
-
+import LabeledIconButton from "../../common/components/LabeledIconButton";
 import useActions from "./useActions";
 
-const useStylesIconButton = makeStyles((theme) => ({
-  root: {
-    color: theme.palette.action.active,
-  },
-  label: {
-    display: "flex",
-    flexDirection: "column",
-    fontSize: "0.5em",
-  },
-  disabled: {
-    color: theme.palette.action.disabled,
+type Props = {
+  tmdbMediaId: string;
+};
+
+const useStyles = makeStyles((theme) => ({
+  button: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
   },
 }));
 
-export default () => {
-  const classesIconButton = useStylesIconButton();
-  const { tmdbMediaId } = useParams<{ tmdbMediaId: string }>();
-
+export default ({ tmdbMediaId }: Props) => {
+  const classes = useStyles();
   const movieActions = useActions({
     tmdbMediaId: tmdbMediaId,
     tmdbMediaType: "movie",
@@ -29,19 +24,21 @@ export default () => {
 
   const actionBarItems = [
     movieActions.like,
+    // movieActions.favorite,
     movieActions.watchNext,
     movieActions.addListItem,
   ];
 
   return (
-    <Box display="flex" justifyContent="space-around" flexWrap="nowrap">
+    <Box display="flex" justifyContent="space-between" flexWrap="nowrap">
       {actionBarItems.map(({ icon, label, onClick }) => (
-        <IconButton key={label} onClick={onClick} classes={classesIconButton}>
-          {icon}
-          <Typography color="inherit" variant="subtitle2">
-            {label}
-          </Typography>
-        </IconButton>
+        <LabeledIconButton
+          className={classes.button}
+          key={label}
+          icon={icon}
+          label={label}
+          onClick={onClick}
+        />
       ))}
     </Box>
   );

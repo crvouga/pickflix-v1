@@ -16,16 +16,22 @@ export interface VideoProgress {
   loadedSeconds: number;
 }
 
-export interface VideoState {
+type VideoError = {
+  [key: string]: string;
+};
+
+export type VideoState = {
   isPlaying: boolean;
   currentVideo: MovieVideo | undefined;
   playlist: MovieVideo[];
-}
+  error: VideoError | undefined;
+};
 
 export const initialState: VideoState = {
   isPlaying: false,
   currentVideo: undefined,
   playlist: [],
+  error: undefined,
 };
 
 /* 
@@ -38,6 +44,8 @@ const actions = {
   ),
   setPlaylist: createAction<MovieVideo[]>(name + "/SET_PLAYLIST"),
   setIsPlaying: createAction<boolean>(name + "/SET_IS_PLAYING"),
+  setError: createAction<VideoError | undefined>(name + "/SET_ERROR"),
+
   //
   progress: createAction<VideoProgress>(name + "/PROGRESS"),
 };
@@ -72,6 +80,9 @@ export const reducer = createReducer(initialState, {
   },
   [actions.setPlaylist.toString()]: (state, action) => {
     state.playlist = action.payload;
+  },
+  [actions.setError.toString()]: (state, action) => {
+    state.error = action.payload;
   },
 });
 
