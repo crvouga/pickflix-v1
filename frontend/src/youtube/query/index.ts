@@ -49,7 +49,7 @@ export const queryKeys = {
     "details",
     videoId,
   ],
-  youtubeCommentThread: ({ videoId }: { videoId: string }) => [
+  youtubeCommentThread: ({ videoId }: { videoId?: string }) => [
     "yotube",
     "commentThread",
     videoId,

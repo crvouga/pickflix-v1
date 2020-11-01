@@ -57,9 +57,7 @@ export default ({ tmdbMediaId }: { tmdbMediaId: string }) => {
           <ReviewList tmdbMediaId={tmdbMediaId} tmdbMediaType="movie" />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          {videoState.currentVideo && (
-            <YoutubeComments videoId={videoState.currentVideo.key} />
-          )}
+          <YoutubeComments videoId={videoState.currentVideo?.key} />
         </TabPanel>
         <TabPanel value={value} index={2}>
           <TmdbMovieReviews tmdbMediaId={tmdbMediaId} />

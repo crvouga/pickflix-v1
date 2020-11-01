@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "clear && npx jest",
+    "test": "clear && npx jest --runInBand --detectOpenHandles",
     "tsc": "tsc -p tsconfig.production.json",
     "postinstall": "npm run tsc",
     "start": "node build/index.js",

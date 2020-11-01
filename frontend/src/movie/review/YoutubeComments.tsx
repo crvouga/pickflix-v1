@@ -8,9 +8,9 @@ import {
   queryKeys,
 } from "../../youtube/query";
 
-export default ({ videoId }: { videoId: string }) => {
+export default ({ videoId }: { videoId?: string }) => {
   const query = useQuery(queryKeys.youtubeCommentThread({ videoId }), () =>
-    getYoutubeVideoCommentThreadList({ videoId })
+    videoId ? getYoutubeVideoCommentThreadList({ videoId }) : Promise.reject()
   );
 
   if (query.error) {
@@ -26,9 +26,7 @@ export default ({ videoId }: { videoId: string }) => {
   return (
     <React.Fragment>
       <Box paddingX={2}>
-        <Typography variant="h6">
-          {commentThreadList.pageInfo.totalResults} Comments
-        </Typography>
+        <Typography variant="h6">Comments</Typography>
       </Box>
       <CommentThreadList commentThreadList={commentThreadList} />
     </React.Fragment>
