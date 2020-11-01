@@ -1,12 +1,12 @@
 import { Avatar, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
-import useBoolean from "../common/hooks/useBoolean";
-import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
+import useBoolean from "../../common/hooks/useBoolean";
+import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
 import {
   PersonDetailsResponse,
   PersonImagesResponse,
   PersonMovieCreditsResponse,
-} from "../tmdb/types";
+} from "../../tmdb/types";
 import PersonImageGalleryDialog from "./PersonImageGalleryDialog";
 
 interface Props {

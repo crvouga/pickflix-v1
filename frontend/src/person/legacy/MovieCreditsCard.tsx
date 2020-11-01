@@ -9,9 +9,9 @@ import {
 import { mergeAll } from "ramda";
 import React from "react";
 import { useHistory } from "react-router";
-import ReadMore from "../common/components/ReadMore";
-import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
-import { PersonMovieCredit } from "../tmdb/types";
+import ReadMore from "../../common/components/ReadMore";
+import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
+import { PersonMovieCredit } from "../../tmdb/types";
 
 type Props = {
   credits: PersonMovieCredit[];

@@ -2,7 +2,7 @@ import { Box, Divider, List, Typography } from "@material-ui/core";
 import React from "react";
 import * as R from "remeda"; // tree-shaking supported!
 import { MovieCreditCrew } from "../tmdb/types";
-import ActionBarSection from "./action-bar/ActionBarSection";
+import ActionBarSection from "./legacy/ActionBarSection";
 import CreditsListItem from "./credits/CreditsListItem";
 import { MoviePageData } from "./data";
 import {

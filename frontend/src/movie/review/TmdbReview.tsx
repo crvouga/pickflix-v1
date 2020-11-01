@@ -1,5 +1,6 @@
 import { Avatar, BoxProps, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
+import MarkdownTypography from "../../common/components/MarkdownTypography";
 import * as TMDb from "../../tmdb/attribution";
 import { MovieReview } from "../../tmdb/types";
 import { nameToInitials } from "../../utils";
@@ -49,9 +50,7 @@ export default ({ review, ...props }: Props) => {
       </div>
       <div className={classes.body}>
         <Typography color="textSecondary">{author}</Typography>
-        <Typography color="textPrimary" variant="body1">
-          {content}
-        </Typography>
+        <MarkdownTypography>{content}</MarkdownTypography>
       </div>
     </div>
   );

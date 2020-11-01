@@ -8,10 +8,10 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router";
-import ReadMore from "../common/components/ReadMore";
-import * as movieUtils from "../movie/utils";
-import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
-import { ImagePaths } from "../tmdb/types";
+import ReadMore from "../../common/components/ReadMore";
+import * as movieUtils from "../../movie/utils";
+import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
+import { ImagePaths } from "../../tmdb/types";
 
 type Credit = ImagePaths & {
   id: string;

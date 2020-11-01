@@ -5,7 +5,7 @@ import DiscoverPage from "../discover/DiscoverMoviePage";
 import HomePage from "../home";
 import ListPage from "../lists/ListPage";
 import MoviePage from "../movie/MoviePage";
-import PersonPage from "../person";
+import PersonPage from "../person/legacy";
 import ProfilePage from "../profile/ProfilePage";
 import Snackbar from "../snackbar/Snackbar";
 import Modals from "./modals/Modals";

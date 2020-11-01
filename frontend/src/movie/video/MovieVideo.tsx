@@ -1,15 +1,12 @@
 import {
   Box,
+  Divider,
   Hidden,
   List,
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
   Paper,
-  Typography,
-  IconButton,
-  Divider,
-  ListItemIcon,
 } from "@material-ui/core";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import React from "react";

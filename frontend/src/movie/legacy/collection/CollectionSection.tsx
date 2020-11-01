@@ -2,9 +2,9 @@ import { Box } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import { useHistory } from "react-router";
-import { BackendAPI } from "../../backend-api";
-import { Collection } from "../../tmdb/types";
-import { useMoviePageQuery } from "../data";
+import { BackendAPI } from "../../../backend-api";
+import { Collection } from "../../../tmdb/types";
+import { useMoviePageQuery } from "../../data";
 import CollectionCard from "./CollectionCard";
 
 const fetchCollection = async (collectionId: string) => {

@@ -12,7 +12,7 @@ import React from "react";
 import { useHistory, useParams } from "react-router";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
 import { useMoviePageQuery } from "../data";
-import CreditsListCard from "./CreditsListCard";
+import CreditsListCard from "../credits/CreditsListCard";
 
 export default () => {
   const history = useHistory();

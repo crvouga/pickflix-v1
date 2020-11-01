@@ -6,11 +6,11 @@ import {
 } from "@material-ui/core";
 import "moment-duration-format";
 import React from "react";
-import AspectRatio from "../../common/components/AspectRatio";
-import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
-import { makeFadeToBackgroundCss } from "../../utils";
-import { MoviePageData, useMoviePageQuery } from "../data";
-import * as utils from "../utils";
+import AspectRatio from "../../../common/components/AspectRatio";
+import { useMakeImageUrl } from "../../../tmdb/makeTMDbImageURL";
+import { makeFadeToBackgroundCss } from "../../../utils";
+import { MoviePageData, useMoviePageQuery } from "../../data";
+import * as utils from "../../utils";
 
 // TODO: make better
 const titleToVariant = (title: string): TypographyVariant => {

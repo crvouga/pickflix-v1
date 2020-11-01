@@ -1,7 +1,7 @@
 import { Box, BoxProps, Typography } from "@material-ui/core";
 import React from "react";
 import Poster from "../movie/components/MoviePosterCard";
-import PersonAvatar from "../person/PersonAvatar";
+import PersonAvatar from "../person/legacy/PersonAvatar";
 import { Movie, Person } from "../tmdb/types";
 
 interface Props extends BoxProps {

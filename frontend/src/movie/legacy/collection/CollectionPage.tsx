@@ -2,16 +2,16 @@ import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router";
-import { BackendAPI } from "../../backend-api";
-import ReadMore from "../../common/components/ReadMore";
+import { BackendAPI } from "../../../backend-api";
+import ReadMore from "../../../common/components/ReadMore";
 
-import ErrorPage from "../../common/page/ErrorPage";
-import LoadingPage from "../../common/page/LoadingPage";
-import { Collection } from "../../tmdb/types";
-import MovieCard from "../components/MovieCard";
+import ErrorPage from "../../../common/page/ErrorPage";
+import LoadingPage from "../../../common/page/LoadingPage";
+import { Collection } from "../../../tmdb/types";
+import MovieCard from "../../components/MovieCard";
 import BackdropHeader from "./BackdropHeader";
 import { collectionToBackdropPath } from "./utils";
-import NavBar from "../../navigation/NavBar";
+import NavBar from "../../../navigation/NavBar";
 
 export default () => {
   const { collectionId } = useParams<{ collectionId: string }>();

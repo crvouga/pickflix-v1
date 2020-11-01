@@ -24,7 +24,7 @@ import {
   MovieCreditCrew,
   MovieCredits,
 } from "../../tmdb/types";
-import CreditsListItem from "./CreditsListItem";
+import CreditsListItem from "../credits/CreditsListItem";
 
 type CreditsListProps = {
   creditsByDepartment: {

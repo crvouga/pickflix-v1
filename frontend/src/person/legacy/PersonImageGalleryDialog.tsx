@@ -1,8 +1,8 @@
 import { Dialog, DialogProps } from "@material-ui/core";
 import React from "react";
 import SwipeableViews from "react-swipeable-views";
-import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
-import { PersonImagesResponse } from "../tmdb/types";
+import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
+import { PersonImagesResponse } from "../../tmdb/types";
 
 type Props = DialogProps & {
   images: PersonImagesResponse;

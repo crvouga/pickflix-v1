@@ -8,10 +8,10 @@ import {
 } from "@material-ui/core";
 import * as R from "ramda";
 import React from "react";
-import ReadMore from "../../common/components/ReadMore";
-import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
-import { Collection, CollectionPart } from "../../tmdb/types";
-import { toReleaseYear } from "../utils";
+import ReadMore from "../../../common/components/ReadMore";
+import { useMakeImageUrl } from "../../../tmdb/makeTMDbImageURL";
+import { Collection, CollectionPart } from "../../../tmdb/types";
+import { toReleaseYear } from "../../utils";
 import { collectionToBackdropPath } from "./utils";
 
 interface Props {

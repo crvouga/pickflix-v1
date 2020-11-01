@@ -2,9 +2,9 @@ import { makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import { DiscoverMovieTag, TagType } from "../../discover/query/types";
-import { discoverActiveTags } from "../../discover/redux/discover-active-tags";
-import { useMoviePageQuery } from "../data";
+import { DiscoverMovieTag, TagType } from "../../../discover/query/types";
+import { discoverActiveTags } from "../../../discover/redux/discover-active-tags";
+import { useMoviePageQuery } from "../../data";
 import TagScroll from "./TagScroll";
 
 const useStyles = makeStyles((theme) => ({

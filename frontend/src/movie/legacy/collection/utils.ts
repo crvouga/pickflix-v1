@@ -1,4 +1,4 @@
-import { Collection } from "../../tmdb/types";
+import { Collection } from "../../../tmdb/types";
 
 export const collectionToBackdropPath = (collection: Collection) =>
   collection.backdropPath ||

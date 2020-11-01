@@ -1,6 +1,6 @@
 import { Box, BoxProps, makeStyles } from "@material-ui/core";
 import React from "react";
-import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
+import { useMakeImageUrl } from "../../../tmdb/makeTMDbImageURL";
 
 type Props = {
   backdropPath: string;

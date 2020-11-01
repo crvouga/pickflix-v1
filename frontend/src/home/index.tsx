@@ -8,7 +8,7 @@ import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
 import MoviePosterCardScroll from "../movie/components/MoviePosterCardScroll";
 
-import PersonAvatar from "../person/PersonAvatar";
+import PersonAvatar from "../person/legacy/PersonAvatar";
 import { Movie, Person } from "../tmdb/types";
 import NavBar from "../navigation/NavBar";
 

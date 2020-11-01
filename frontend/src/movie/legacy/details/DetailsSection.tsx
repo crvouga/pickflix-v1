@@ -1,8 +1,8 @@
 import { Box, List, Typography } from "@material-ui/core";
 import React from "react";
-import ReadMore from "../../common/components/ReadMore";
-import { useMoviePageQuery } from "../data";
-import * as utils from "../utils";
+import ReadMore from "../../../common/components/ReadMore";
+import { useMoviePageQuery } from "../../data";
+import * as utils from "../../utils";
 import DetailListItem from "./DetailListItem";
 
 export default () => {

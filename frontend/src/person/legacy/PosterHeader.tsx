@@ -1,14 +1,14 @@
 import { Box, makeStyles } from "@material-ui/core";
 import * as R from "ramda";
 import React from "react";
-import AspectRatio from "../common/components/AspectRatio";
-import { MOVIE_POSTER_ASPECT_RATIO } from "../movie/components/MoviePosterCard";
-import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
+import AspectRatio from "../../common/components/AspectRatio";
+import { MOVIE_POSTER_ASPECT_RATIO } from "../../movie/components/MoviePosterCard";
+import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
 import {
   PersonDetailsResponse,
   PersonMovieCreditsResponse,
-} from "../tmdb/types";
-import * as utils from "./utils";
+} from "../../tmdb/types";
+import * as utils from "../utils";
 
 interface Props {
   details: PersonDetailsResponse;

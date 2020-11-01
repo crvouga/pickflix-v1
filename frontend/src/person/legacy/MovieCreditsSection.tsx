@@ -5,17 +5,17 @@ import SortIcon from "@material-ui/icons/Sort";
 import { groupBy, mergeAll, thunkify, uniq } from "ramda";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import HorizontalScroll from "../common/components/HorizontalScroll";
-import OpenDiscoverButton from "../discover/OpenDiscoverButton";
-import { TagType } from "../discover/query/types";
-import MovieCard from "../movie/components/MovieCard";
-import Poster from "../movie/components/MoviePosterCard";
+import HorizontalScroll from "../../common/components/HorizontalScroll";
+import OpenDiscoverButton from "../../discover/OpenDiscoverButton";
+import { TagType } from "../../discover/query/types";
+import MovieCard from "../../movie/components/MovieCard";
+import Poster from "../../movie/components/MoviePosterCard";
 import {
   PersonDetailsResponse,
   PersonMovieCredit,
   PersonMovieCreditsResponse,
-} from "../tmdb/types";
-import { personPageUi } from "./redux/person-page-ui";
+} from "../../tmdb/types";
+import { personPageUi } from "../redux/person-page-ui";
 
 type Props = {
   credits: PersonMovieCreditsResponse;

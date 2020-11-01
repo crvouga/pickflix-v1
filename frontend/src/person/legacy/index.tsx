@@ -3,21 +3,21 @@ import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
-import { BackendAPI } from "../backend-api";
-import ErrorPage from "../common/page/ErrorPage";
-import LoadingPage from "../common/page/LoadingPage";
+import { BackendAPI } from "../../backend-api";
+import ErrorPage from "../../common/page/ErrorPage";
+import LoadingPage from "../../common/page/LoadingPage";
 
-import { history } from "../navigation/history/history";
+import { history } from "../../navigation/history/history";
 import {
   PersonDetailsResponse,
   PersonImagesResponse,
   PersonMovieCreditsResponse,
-} from "../tmdb/types";
-import { makeFadeToBackgroundCss } from "../utils";
+} from "../../tmdb/types";
+import { makeFadeToBackgroundCss } from "../../utils";
 import Details from "./Details";
 import MovieCreditsSection from "./MovieCreditsSection";
 import PosterHeader from "./PosterHeader";
-import NavBar from "../navigation/NavBar";
+import NavBar from "../../navigation/NavBar";
 
 const fetchPersonPage = (tmdbMediaId: string) =>
   BackendAPI.get<

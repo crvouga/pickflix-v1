@@ -1,9 +1,9 @@
 import { Box, ButtonBase, Typography } from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
 import moment from "moment";
 import numeral from "numeral";
 import React from "react";
 import { useQuery } from "react-query";
-import AspectRatio from "../../common/components/AspectRatio";
 import { MovieVideo } from "../../tmdb/types";
 import {
   getYoutubeVideoDetails,
@@ -11,7 +11,6 @@ import {
   videoKeyToThumbnailURL,
   YoutubeVideo,
 } from "../../youtube/query";
-import { Skeleton } from "@material-ui/lab";
 
 export const VideoListItem = ({
   image,
