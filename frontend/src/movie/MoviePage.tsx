@@ -14,6 +14,7 @@ import MovieRelated from "./MovieRelated";
 import ReviewsAndComments from "./review/ReviewsAndComments";
 import MovieVideo from "./video/MovieVideo";
 import MovieCollection from "./MovieCollection";
+import usePageHistory from "../home/page-history/usePageHistory";
 
 const useStyles = makeStyles((theme) => ({
   sticky: {
@@ -23,42 +24,41 @@ const useStyles = makeStyles((theme) => ({
       zIndex: theme.zIndex.appBar - 1,
     },
   },
-  columns: {
-    display: "flex",
-    flexDirection: "row-reverse",
-    [theme.breakpoints.down("xs")]: {
-      flexDirection: "column",
-    },
-  },
-  body: {
-    backgroundColor: theme.palette.background.default,
-  },
 }));
 
 export default () => {
   const classes = useStyles();
   const makeImageUrl = useMakeImageUrl();
   const { tmdbMediaId } = useParams<{ tmdbMediaId: string }>();
-  const { data, error } = useQueryMovie({ tmdbMediaId });
+  const query = useQueryMovie({ tmdbMediaId });
 
-  const videoState = useVideoState();
+  const pageHistory = usePageHistory();
   useEffect(() => {
-    if (data) {
-      videoState.setCurrentVideo(data.videos.results[0]);
-      videoState.setPlaylist(data.videos.results);
-      videoState.setError(undefined);
+    if (query.data) {
+      pageHistory.push({ mediaType: "movie", ...query.data });
     }
-  }, [Boolean(data)]);
+  }, [query.data]);
 
-  if (error) {
+  if (query.error) {
     return <ErrorPage />;
   }
 
-  if (!data) {
+  if (!query.data) {
     return <LoadingPage />;
   }
 
-  const backdrop = makeImageUrl(2, { backdropPath: data.backdropPath });
+  const {
+    credits,
+    images,
+    videos,
+    similar,
+    recommendations,
+    releaseDates,
+    keywords,
+    ...details
+  } = query.data;
+
+  const backdrop = makeImageUrl(2, { backdropPath: query.data.backdropPath });
 
   return (
     <React.Fragment>
@@ -68,29 +68,27 @@ export default () => {
         <VideoPlayer light={backdrop} />
       </Container>
 
-      <Container disableGutters maxWidth="md" className={classes.columns}>
+      <Container disableGutters maxWidth="md">
         <Grid container direction="row-reverse">
           <Grid item xs={12} sm={6}>
-            <MovieVideo />
+            <MovieVideo videos={videos} />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <MovieDetails data={data} />
+            <MovieDetails releaseDates={releaseDates} details={details} />
           </Grid>
         </Grid>
       </Container>
 
       <Container maxWidth="md" disableGutters>
-        <MovieCredits credits={data.credits} />
+        <MovieCredits credits={credits} />
 
-        {data.belongsToCollection && (
-          <MovieCollection collectionId={data.belongsToCollection.id} />
+        {details.belongsToCollection && (
+          <MovieCollection collectionId={details.belongsToCollection.id} />
         )}
 
-        <MovieRelated
-          similar={data.similar}
-          recommendations={data.recommendations}
-        />
-        <ReviewsAndComments tmdbMediaId={data.id} />
+        <MovieRelated similar={similar} recommendations={recommendations} />
+
+        <ReviewsAndComments tmdbMediaId={query.data.id} />
       </Container>
     </React.Fragment>
   );

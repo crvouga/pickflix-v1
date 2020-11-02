@@ -10,22 +10,21 @@ import {
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import React from "react";
 
-interface Props {
-  DialogProps: DialogProps;
+type Props = DialogProps & {
   onClear: () => void;
-}
+};
 const close = (DialogProps: DialogProps) => () => {
   if (DialogProps.onClose) {
     DialogProps.onClose({}, "backdropClick");
   }
 };
 
-export default ({ DialogProps, onClear }: Props) => {
+export default ({ onClear, ...DialogProps }: Props) => {
   return (
     <Dialog {...DialogProps}>
       <DialogContent>
         <DialogContentText>
-          Are you sure you want to clear recently viewed?
+          Are you sure you want to clear history?
         </DialogContentText>
       </DialogContent>
       <DialogActions>

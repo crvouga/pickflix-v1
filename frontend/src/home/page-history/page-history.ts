@@ -7,7 +7,7 @@ import {
 import { uniqWith } from "ramda";
 import { AppState } from "../../redux/types";
 
-const name = "history";
+const name = "page-history";
 
 /* 
 
@@ -30,11 +30,11 @@ export type Entity =
 const entityEquals = (entity1: Entity, entity2: Entity) =>
   entity1.id === entity2.id && entity1.mediaType === entity2.mediaType;
 
-export type HistoryState = {
+export type PageHistoryState = {
   entities: Entity[];
 };
 
-const initialState: HistoryState = {
+const initialState: PageHistoryState = {
   entities: [],
 };
 
@@ -43,18 +43,18 @@ const initialState: HistoryState = {
 */
 
 const actions = {
-  push: createAction<Entity>(name + "/push"),
-  clear: createAction(name + "/clear"),
+  push: createAction<Entity>(name + "/PUSH"),
+  clear: createAction(name + "/CLEAR"),
 };
 
 /* 
 
 */
 
-const slice = (state: AppState) => state.history;
-const entities = createSelector([slice], (slice) => slice.entities);
+const slice = (state: AppState) => state.pageHistory;
 const selectors = {
-  entities,
+  slice,
+  entities: createSelector([slice], (slice) => slice.entities),
 };
 
 /* 
@@ -75,7 +75,7 @@ const reducer = createReducer(initialState, {
 
 */
 
-export const history = {
+export const pageHistory = {
   actions,
   selectors,
   reducer,

@@ -3,7 +3,7 @@ import React from "react";
 import { useQuery } from "react-query";
 import { BackendAPI } from "../backend-api";
 import { Collection } from "../tmdb/types";
-import MoviePosterCardScroll from "./components/MoviePosterCardScroll";
+import MoviePosterScroll from "./components/MoviePosterScroll";
 
 const queryKeys = {
   collection: (collectionId: string) => ["collection", collectionId],
@@ -36,13 +36,13 @@ export default ({ collectionId }: { collectionId: string }) => {
   return (
     <React.Fragment>
       <React.Fragment>
-        <Box marginLeft={2}>
+        <Box paddingX={2} paddingBottom={1}>
           <Typography variant="h6">{name}</Typography>
-          <Typography color="textSecondary" gutterBottom variant="body2">
+          <Typography color="textSecondary" variant="body2">
             {overview}
           </Typography>
         </Box>
-        <MoviePosterCardScroll movies={parts} />
+        <MoviePosterScroll movies={parts} />
       </React.Fragment>
     </React.Fragment>
   );

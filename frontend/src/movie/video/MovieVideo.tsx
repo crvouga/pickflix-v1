@@ -9,8 +9,8 @@ import {
   Paper,
 } from "@material-ui/core";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
-import React from "react";
-import { MovieVideo } from "../../tmdb/types";
+import React, { useEffect } from "react";
+import { MovieVideo, MovieVideos } from "../../tmdb/types";
 import useVideoState from "../../video/useVideoState";
 import { YoutubeStatusAlertError } from "../../youtube/YoutubeStatusAlert";
 import {
@@ -42,8 +42,14 @@ const VideosScroll = ({
   );
 };
 
-export default () => {
+export default ({ videos }: { videos: MovieVideos }) => {
   const videoState = useVideoState();
+
+  useEffect(() => {
+    videoState.setCurrentVideo(videos.results[0]);
+    videoState.setPlaylist(videos.results);
+    videoState.setError(undefined);
+  }, []);
 
   const handleClick = (video: MovieVideo) => {
     videoState.setCurrentVideo(video);

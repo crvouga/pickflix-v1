@@ -4,7 +4,6 @@ import React from "react";
 import { useHistory } from "react-router";
 import AspectRatio from "../../common/components/AspectRatio";
 import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
-import { Person } from "../../tmdb/types";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -14,12 +13,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface Props extends BoxProps {
-  person: { profilePath: string } & Partial<Person>;
-  skeleton?: boolean;
-}
+type Props = BoxProps & {
+  person: { profilePath: string; id: string };
+};
 
-export default ({ person, skeleton, ...restOfProps }: Props) => {
+export default ({ person, ...restOfProps }: Props) => {
   const { profilePath } = person;
   const classes = useStyles();
   const makeImageUrl = useMakeImageUrl();
@@ -32,16 +30,7 @@ export default ({ person, skeleton, ...restOfProps }: Props) => {
   return (
     <Box onClick={handleClick} {...restOfProps}>
       <AspectRatio ratio={[1, 1]}>
-        {!skeleton && <Avatar className={classes.avatar} src={profileURL} />}
-
-        {skeleton && (
-          <Skeleton
-            variant="circle"
-            animation="wave"
-            width="100%"
-            height="100%"
-          />
-        )}
+        <Avatar className={classes.avatar} src={profileURL} />
       </AspectRatio>
     </Box>
   );

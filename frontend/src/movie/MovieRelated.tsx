@@ -2,7 +2,7 @@ import { Box, Typography } from "@material-ui/core";
 import { take, uniqBy } from "ramda";
 import React from "react";
 import { MovieRecommendations, MovieSimilar } from "../tmdb/types";
-import MoviePosterCardScroll from "./components/MoviePosterCardScroll";
+import MoviePosterScroll from "./components/MoviePosterScroll";
 
 export default ({
   similar,
@@ -19,6 +19,10 @@ export default ({
     ])
   );
 
+  if (movies.length === 0) {
+    return null;
+  }
+
   return (
     <React.Fragment>
       <Box marginLeft={2}>
@@ -26,7 +30,7 @@ export default ({
           People Also Liked
         </Typography>
       </Box>
-      <MoviePosterCardScroll movies={movies} />
+      <MoviePosterScroll movies={movies} />
     </React.Fragment>
   );
 };

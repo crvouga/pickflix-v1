@@ -3,7 +3,7 @@ import { DiscoverTagsState } from "../discover/redux/discover-tags";
 import { AddListFormState } from "../lists/redux/add-list-form";
 import { AddListItemFormState } from "../lists/redux/add-list-item-form";
 import { EditListFormState } from "../lists/redux/edit-list-form";
-import { HistoryState } from "../navigation/history/history";
+import { PageHistoryState } from "../home/page-history/page-history";
 import { PersonPageUiState } from "../person/redux/person-page-ui";
 import { SearchState } from "../search/redux/search";
 import { SnackbarState } from "../snackbar/redux/snackbar";
@@ -14,7 +14,7 @@ export type AppState = {
   addListItemForm: AddListItemFormState;
   addListForm: AddListFormState;
   video: VideoState;
-  history: HistoryState;
+  pageHistory: PageHistoryState;
   snackbar: SnackbarState;
   search: SearchState;
   personPageUi: PersonPageUiState;

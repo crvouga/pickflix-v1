@@ -1,19 +1,17 @@
-import { Box, Divider, List, Typography } from "@material-ui/core";
+import { Box, Divider, Typography } from "@material-ui/core";
 import React from "react";
-import * as R from "remeda"; // tree-shaking supported!
-import { MovieCreditCrew } from "../tmdb/types";
+import { MovieDetails, MovieReleaseDates } from "../tmdb/types";
 import ActionBarSection from "./legacy/ActionBarSection";
-import CreditsListItem from "./credits/CreditsListItem";
-import { MoviePageData } from "./data";
 import {
   SMALL_DOT,
   toBudget,
   toCertification,
+  toGenres,
   toReleaseYear,
   toRevenue,
   toRuntime,
-  toGenres,
 } from "./utils";
+import ReadMoreTypography from "../common/components/ReadMoreTypography";
 
 const BudgetRevenue = ({
   budget,
@@ -42,12 +40,18 @@ const BudgetRevenue = ({
   ) : null;
 };
 
-export default ({ data }: { data: MoviePageData }) => {
+export default ({
+  details,
+  releaseDates,
+}: {
+  details: MovieDetails;
+  releaseDates: MovieReleaseDates;
+}) => {
   const subtitle = [
-    toCertification(data),
-    toReleaseYear(data),
-    toGenres(data),
-    toRuntime(data),
+    toCertification({ releaseDates }),
+    toReleaseYear(details),
+    toGenres(details),
+    toRuntime(details),
   ]
     .filter((_) => _)
     .join(` ${SMALL_DOT} `);
@@ -55,7 +59,7 @@ export default ({ data }: { data: MoviePageData }) => {
   return (
     <Box>
       <Box p={2}>
-        <Typography variant="h4">{data.title}</Typography>
+        <Typography variant="h4">{details.title}</Typography>
         <Typography variant="subtitle1" color="textSecondary">
           {subtitle}
         </Typography>
@@ -63,20 +67,25 @@ export default ({ data }: { data: MoviePageData }) => {
 
       <Divider />
 
-      <ActionBarSection tmdbMediaId={data.id} />
+      <ActionBarSection tmdbMediaId={details.id} />
 
       <Divider />
 
       <Box p={2}>
         <Typography align="center" variant="h6">
-          {data.tagline}
+          {details.tagline}
         </Typography>
-        <Typography variant="body1" color="textSecondary" gutterBottom>
-          {data.overview}
-        </Typography>
+        <ReadMoreTypography
+          variant="body1"
+          color="textSecondary"
+          gutterBottom
+          ideal={500}
+        >
+          {details.overview}
+        </ReadMoreTypography>
       </Box>
 
-      <BudgetRevenue budget={data.budget} revenue={data.revenue} />
+      <BudgetRevenue budget={details.budget} revenue={details.revenue} />
     </Box>
   );
 };

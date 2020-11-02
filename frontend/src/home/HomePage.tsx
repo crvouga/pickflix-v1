@@ -1,4 +1,4 @@
-import { Box, BoxProps, Typography } from "@material-ui/core";
+import { Box, BoxProps, Typography, Container } from "@material-ui/core";
 import * as R from "ramda";
 import React from "react";
 import { useQuery } from "react-query";
@@ -6,11 +6,13 @@ import { BackendAPI } from "../backend-api";
 import HorizontalScroll from "../common/components/HorizontalScroll";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
-import MoviePosterCardScroll from "../movie/components/MoviePosterCardScroll";
+import MoviePosterScroll from "../movie/components/MoviePosterScroll";
 
 import PersonAvatar from "../person/legacy/PersonAvatar";
 import { Movie, Person } from "../tmdb/types";
 import NavBar from "../navigation/NavBar";
+import usePageHistory from "./page-history/usePageHistory";
+import PageHistory from "./page-history/PageHistory";
 
 const Title = ({ children, ...props }: BoxProps) => (
   <Box paddingX={2} {...props}>
@@ -42,7 +44,7 @@ const renderMovieScroll = (title: string, movies: Movie[]) => (
   <React.Fragment>
     <Title>{title}</Title>
 
-    <MoviePosterCardScroll movies={movies} />
+    <MoviePosterScroll movies={movies} />
   </React.Fragment>
 );
 
@@ -55,11 +57,9 @@ const fetchHomePage = async () => {
       "/api/tmdb/discover/movie?vote_count.gte=8000&vote_average.gte=8.0",
     nowPlaying: "/api/tmdb/movie/nowPlaying",
   };
-  const names = R.keys(urlByName);
-  const urls = R.values(urlByName);
-  const responses = await Promise.all(
-    R.map((url) => BackendAPI.get(url), urls)
-  );
+  const names = Object.keys(urlByName);
+  const urls = Object.values(urlByName);
+  const responses = await Promise.all(urls.map((url) => BackendAPI.get(url)));
   return R.zipObj(names, R.pluck("data", responses));
 };
 
@@ -81,13 +81,16 @@ export default () => {
   return (
     <React.Fragment>
       <NavBar />
-      <Box paddingY={2}>
-        {renderMovieScroll("Popular", popular.results)}
-        {renderMovieScroll("Top Rated", topRated.results)}
-        {renderMovieScroll("Trending", upcoming.results)}
-        {renderMovieScroll("Now Playing", nowPlaying.results)}
-        {renderAvatarScroll("Popular People", personPopular.results)}
-      </Box>
+      <Container disableGutters maxWidth="md">
+        <Box paddingY={2}>
+          <PageHistory />
+          {renderMovieScroll("Popular", popular.results)}
+          {renderMovieScroll("Top Rated", topRated.results)}
+          {renderMovieScroll("Trending", upcoming.results)}
+          {renderMovieScroll("Now Playing", nowPlaying.results)}
+          {renderAvatarScroll("Popular People", personPopular.results)}
+        </Box>
+      </Container>
     </React.Fragment>
   );
 };

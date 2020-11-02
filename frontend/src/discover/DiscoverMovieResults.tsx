@@ -8,6 +8,10 @@ import MoviePosterCardSkeleton from "../movie/components/MoviePosterCardSkeleton
 import { tagsToParams } from "./query/types";
 import useDiscoverLogic from "./useDiscoverLogic";
 import useDiscoverMovieQuery from "./useDiscoverQuery";
+import MoviePosterGrid, {
+  MoviePosterGridSkeleton,
+} from "../movie/components/MoviePosterGrid";
+import { unnest } from "ramda";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,17 +34,7 @@ export default () => {
   }
 
   if (!data) {
-    return (
-      <React.Fragment>
-        <div className={classes.root}>
-          {[1, 2, 3, 4].map((n) => (
-            <Box p={1 / 2} width="50%" key={n}>
-              <MoviePosterCardSkeleton />
-            </Box>
-          ))}
-        </div>
-      </React.Fragment>
-    );
+    return <MoviePosterGridSkeleton posterCount={12} />;
   }
 
   if (data[0] && data[0].results.length === 0) {
@@ -55,15 +49,7 @@ export default () => {
 
   return (
     <React.Fragment>
-      <div className={classes.root}>
-        {data.map((response) =>
-          response.results.map((result) => (
-            <Box p={1 / 2} width="50%" maxWidth="150px" key={result.id}>
-              <Poster sizeIndex={2} movie={result} />
-            </Box>
-          ))
-        )}
-      </div>
+      <MoviePosterGrid movies={data.flatMap((response) => response.results)} />
       <div ref={fetchMoreRef} />
       {canFetchMore && <LoadingBox m={4} />}
     </React.Fragment>

@@ -17,9 +17,9 @@ export const VideoListItem = ({
   title,
   subtitle,
 }: {
-  image: string;
-  title: string;
-  subtitle: string;
+  image?: string;
+  title?: string;
+  subtitle?: string;
 }) => {
   return (
     <Box
@@ -92,25 +92,31 @@ export const VideoListItemSkeleton = () => {
   );
 };
 
-export const toViewCount = (video: YoutubeVideo) =>
+export const toViewCount = (video: Partial<YoutubeVideo>) =>
   numeral(video?.statistics?.viewCount)
     .format("0.0a")
     .replace(".0", "")
     .toUpperCase();
 
-export const toPublishedAt = (video: YoutubeVideo) =>
-  moment(video.snippet.publishedAt, "YYYYMMDD")
+export const toPublishedAt = (video: Partial<YoutubeVideo>) =>
+  moment(video?.snippet?.publishedAt, "YYYYMMDD")
     .fromNow()
     .replace("a ", "1 ")
     .replace(" ago", "");
 
-const toThumbnail = (video: YoutubeVideo) =>
-  Object.values(video.snippet.thumbnails)[2]?.url ||
-  Object.values(video.snippet.thumbnails)[1]?.url ||
-  Object.values(video.snippet.thumbnails)[0]?.url ||
-  videoKeyToThumbnailURL(video.id);
+const toThumbnail = (video: Partial<YoutubeVideo>) =>
+  video &&
+  video.snippet &&
+  (Object.values(video.snippet.thumbnails)[2]?.url ||
+    Object.values(video.snippet.thumbnails)[1]?.url ||
+    Object.values(video.snippet.thumbnails)[0]?.url ||
+    (video.id && videoKeyToThumbnailURL(video.id)));
 
-export const YoutubeVideoListItem = ({ video }: { video: YoutubeVideo }) => {
+export const YoutubeVideoListItem = ({
+  video,
+}: {
+  video: Partial<YoutubeVideo>;
+}) => {
   const subtitle = [
     `${toViewCount(video)} views`,
     `${toPublishedAt(video)} old`,
@@ -118,7 +124,7 @@ export const YoutubeVideoListItem = ({ video }: { video: YoutubeVideo }) => {
   return (
     <VideoListItem
       image={toThumbnail(video)}
-      title={video.snippet.title}
+      title={video?.snippet?.title}
       subtitle={subtitle}
     />
   );

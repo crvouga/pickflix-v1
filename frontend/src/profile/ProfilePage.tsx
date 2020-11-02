@@ -13,7 +13,7 @@ import React from "react";
 import ListList from "../lists/ListList";
 import useModal from "../navigation/modals/useModal";
 
-import RecentlyViewed from "./RecentlyViewed";
+import RecentlyViewed from "../home/page-history/PageHistory";
 import NavBar from "../navigation/NavBar";
 
 const CreateNewListListItem = () => {

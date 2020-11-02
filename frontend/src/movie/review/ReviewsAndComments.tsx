@@ -1,6 +1,5 @@
 import { Box, Tab, Tabs, Typography } from "@material-ui/core";
 import React from "react";
-import SwipeableViews from "react-swipeable-views";
 import ReviewList from "../../reviews/ReviewList";
 import useVideoState from "../../video/useVideoState";
 import TmdbMovieReviews from "./TmdbMovieReviews";
@@ -14,7 +13,7 @@ const TabPanel = (props: {
   const { children, value, index } = props;
 
   return (
-    <Box hidden={value !== index} minHeight="60vh">
+    <Box hidden={value !== index} minHeight="360px">
       {value === index && <React.Fragment>{children}</React.Fragment>}
     </Box>
   );
@@ -23,7 +22,7 @@ const TabPanel = (props: {
 export default ({ tmdbMediaId }: { tmdbMediaId: string }) => {
   const videoState = useVideoState();
 
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(1);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
@@ -52,17 +51,15 @@ export default ({ tmdbMediaId }: { tmdbMediaId: string }) => {
         </Tabs>
       </Box>
 
-      <SwipeableViews index={value} onChangeIndex={handleChangeIndex}>
-        <TabPanel value={value} index={0}>
-          <ReviewList tmdbMediaId={tmdbMediaId} tmdbMediaType="movie" />
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <YoutubeComments videoId={videoState.currentVideo?.key} />
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <TmdbMovieReviews tmdbMediaId={tmdbMediaId} />
-        </TabPanel>
-      </SwipeableViews>
+      <TabPanel value={value} index={0}>
+        <ReviewList tmdbMediaId={tmdbMediaId} tmdbMediaType="movie" />
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <YoutubeComments videoId={videoState.currentVideo?.key} />
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        <TmdbMovieReviews tmdbMediaId={tmdbMediaId} />
+      </TabPanel>
     </React.Fragment>
   );
 };

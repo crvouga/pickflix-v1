@@ -1,5 +1,6 @@
 import {
   Card,
+  Box,
   CardActionArea,
   makeStyles,
   Typography,
@@ -67,7 +68,17 @@ export default (props: Props) => {
           }}
         >
           {!posterPath && (
-            <Typography className={classes.fallback}>{title}</Typography>
+            <Box
+              display="flex"
+              width="100%"
+              height="100%"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <Typography variant="h5" className={classes.fallback}>
+                {title}
+              </Typography>
+            </Box>
           )}
 
           {posterPath && (

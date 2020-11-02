@@ -15,7 +15,6 @@ import {
 
 export type MoviePageData = {
   credits: MovieCredits;
-  reviews: MovieReviews;
   keywords: MovieKeywords;
   images: MovieImages;
   similar: MovieSimilar;

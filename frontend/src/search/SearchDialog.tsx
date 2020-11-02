@@ -12,20 +12,7 @@ import useModal from "../navigation/modals/useModal";
 import SearchHistoryList from "./SearchHistoryList";
 import SearchResultList from "./SearchResultList";
 import SearchTextField from "./SearchTextField";
-
-const useStylesDialog = makeStyles((theme) => ({
-  paper: {
-    backgroundColor: theme.palette.background.default,
-
-    [theme.breakpoints.up("sm")]: {
-      marginTop: "60px",
-      marginBottom: "auto",
-      minHeight: "360px",
-      maxHeight: "480px",
-      width: "480px",
-    },
-  },
-}));
+import ResponsiveDialog from "../common/components/ResponsiveDialog";
 
 const CloseButton = () => {
   const searchModal = useModal("Search");
@@ -38,7 +25,6 @@ const CloseButton = () => {
 };
 
 export default () => {
-  const classesDialog = useStylesDialog();
   const searchModal = useModal("Search");
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
@@ -49,8 +35,7 @@ export default () => {
   }, [searchModal.isOpen]);
 
   return (
-    <Dialog
-      classes={classesDialog}
+    <ResponsiveDialog
       fullScreen={isMobile}
       open={searchModal.isOpen}
       onClose={searchModal.close}
@@ -68,6 +53,6 @@ export default () => {
       ) : (
         <SearchResultList text={text} />
       )}
-    </Dialog>
+    </ResponsiveDialog>
   );
 };
