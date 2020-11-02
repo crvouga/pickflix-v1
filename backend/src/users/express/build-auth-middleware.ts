@@ -8,6 +8,7 @@ import configuration from "../../configuration";
 import { UserLogic } from "../logic/user-logic";
 import { User, UserId } from "../models/make-user";
 import makeFileStore from "session-file-store";
+import csrf from "csurf";
 
 const getSessionStore = () => {
   switch (configuration.NODE_ENV) {
@@ -69,6 +70,17 @@ export const buildAuthMiddleware = ({
       cookie: getSessionCookieConfig(),
     })
   );
+
+  app.use(
+    csrf({
+      cookie: true,
+    })
+  );
+
+  app.use((req, res, next) => {
+    res.cookie("XSRF-TOKEN", req.csrfToken());
+    next();
+  });
 
   passport.use(
     new LocalStrategy(
