@@ -1,28 +1,16 @@
-import { Box, makeStyles, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import { useDebounce } from "use-debounce/lib";
 import ErrorBox from "../common/components/ErrorBox";
 import LoadingBox from "../common/components/LoadingBox";
-import Poster from "../movie/components/MoviePosterCard";
-import MoviePosterCardSkeleton from "../movie/components/MoviePosterCardSkeleton";
-import { tagsToParams } from "./query/types";
-import useDiscoverLogic from "./useDiscoverLogic";
-import useDiscoverMovieQuery from "./useDiscoverQuery";
 import MoviePosterGrid, {
   MoviePosterGridSkeleton,
 } from "../movie/components/MoviePosterGrid";
-import { unnest } from "ramda";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-  },
-}));
+import { tagsToParams } from "./query/types";
+import useDiscoverLogic from "./useDiscoverLogic";
+import useDiscoverMovieQuery from "./useDiscoverQuery";
 
 export default () => {
-  const classes = useStyles();
   const { activeTags } = useDiscoverLogic();
   const [discoverQueryParams] = useDebounce(tagsToParams(activeTags), 100);
   const { fetchMoreRef, data, error, canFetchMore } = useDiscoverMovieQuery(

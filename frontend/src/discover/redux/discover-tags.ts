@@ -25,6 +25,7 @@ const initialState: DiscoverTagsState = {
 const slice = (state: AppState) => state.discoverTags;
 const tags = createSelector([slice], (slice) => slice.tags);
 const selectors = {
+  slice,
   tags,
 };
 

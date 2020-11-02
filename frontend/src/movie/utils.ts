@@ -2,13 +2,11 @@ import moment from "moment";
 import "moment-duration-format";
 import numeral from "numeral";
 import {
-  MovieDetails,
-  MovieReleaseDates,
-  MovieCredit,
   MovieCreditCrew,
+  MovieDetails,
   MovieGenre,
+  MovieReleaseDates,
 } from "../tmdb/types";
-import MovieCredits from "./MovieCredits";
 
 type DetailsProp = { details: MovieDetails };
 // type KeywordsProp = { keywords: MovieKeywords };

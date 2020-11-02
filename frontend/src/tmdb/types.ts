@@ -1,3 +1,8 @@
+export type Paginated<Result> = {
+  page: number;
+  totalPages: number;
+  results: Result[];
+};
 export type TmdbMediaType = "movie" | "person" | "tv";
 
 export type TmdbMedia = {
@@ -268,13 +273,8 @@ export interface MovieImages {
   posters: MovieImagePoster[];
 }
 
-export interface MovieSimilar {
-  results: Movie[];
-}
-
-export interface MovieRecommendations {
-  results: Movie[];
-}
+export type MovieSimilar = Paginated<Movie>;
+export type MovieRecommendations = Paginated<Movie>;
 
 //https://developers.themoviedb.org/3/people/get-person-details
 export interface PersonDetailsResponse {

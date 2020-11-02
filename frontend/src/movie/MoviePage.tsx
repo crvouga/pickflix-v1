@@ -3,18 +3,17 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
+import usePageHistory from "../home/page-history/usePageHistory";
 import NavBar, { APP_BAR_HEIGHT } from "../navigation/NavBar";
 import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
-import useVideoState from "../video/useVideoState";
 import VideoPlayer from "../video/VideoPlayer";
-import { useQueryMovie } from "./data";
-import MovieCredits from "./MovieCredits";
+import MovieCredits from "./credits/MovieCredits";
+import { useQueryMovie } from "./query";
+import MovieCollection from "./MovieCollection";
 import MovieDetails from "./MovieDetails";
-import MovieRelated from "./MovieRelated";
+import MovieRelated from "./related/MovieRelated";
 import ReviewsAndComments from "./review/ReviewsAndComments";
 import MovieVideo from "./video/MovieVideo";
-import MovieCollection from "./MovieCollection";
-import usePageHistory from "../home/page-history/usePageHistory";
 
 const useStyles = makeStyles((theme) => ({
   sticky: {
@@ -86,9 +85,13 @@ export default () => {
           <MovieCollection collectionId={details.belongsToCollection.id} />
         )}
 
-        <MovieRelated similar={similar} recommendations={recommendations} />
+        <MovieRelated
+          tmdbMediaId={details.id}
+          similar={similar}
+          recommendations={recommendations}
+        />
 
-        <ReviewsAndComments tmdbMediaId={query.data.id} />
+        <ReviewsAndComments tmdbMediaId={details.id} />
       </Container>
     </React.Fragment>
   );

@@ -9,42 +9,40 @@ import {
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { partition, take, whereEq } from "ramda";
 import React from "react";
-import { useHistory, useParams } from "react-router";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
-import { useMoviePageQuery } from "../data";
-import CreditsListCard from "../credits/CreditsListCard";
+import { MovieCredits } from "../../tmdb/types";
+import CreditsListCard from "./CreditsListCard";
+import CreditsDialog from "./CreditsDialog";
+import useBoolean from "../../common/hooks/useBoolean";
 
-export default () => {
-  const history = useHistory();
-  const { tmdbMediaId } = useParams<{ tmdbMediaId: string }>();
-
-  const query = useMoviePageQuery();
-  if (!query.data) return null;
-
-  const { credits } = query.data;
-
+export default ({ credits }: { credits: MovieCredits }) => {
   const { cast, crew } = credits;
   const [directors, restOfCrew] = partition(whereEq({ job: "Director" }), crew);
   const topCredits = take(10, [...directors, ...cast, ...restOfCrew]);
 
-  const handleClick = () => {
-    history.push(`/movie/${tmdbMediaId}/credits`);
-  };
+  const isOpen = useBoolean(false);
 
   return (
-    <List>
-      <ListItem button onClick={handleClick}>
-        <ListItemText
-          primaryTypographyProps={{
-            variant: "h6",
-            style: { fontWeight: "bold" },
-          }}
-          primary="Cast & Crew"
-        />
-        <ListItemSecondaryAction style={{ pointerEvents: "none" }}>
-          <Button>See All</Button>
-        </ListItemSecondaryAction>
-      </ListItem>
+    <React.Fragment>
+      <CreditsDialog
+        credits={credits}
+        open={isOpen.value}
+        onClose={isOpen.setFalse}
+      />
+      <List>
+        <ListItem button onClick={isOpen.setTrue}>
+          <ListItemText
+            primaryTypographyProps={{
+              variant: "h6",
+              style: { fontWeight: "bold" },
+            }}
+            primary="Cast & Crew"
+          />
+          <ListItemSecondaryAction style={{ pointerEvents: "none" }}>
+            <Button>See All</Button>
+          </ListItemSecondaryAction>
+        </ListItem>
+      </List>
       <HorizontalScroll paddingLeft={2}>
         {topCredits.map((credit) => (
           <Box width="150px" key={credit.creditId} marginRight={1}>
@@ -55,12 +53,12 @@ export default () => {
         <Button
           variant="outlined"
           endIcon={<ArrowForwardIcon />}
-          onClick={handleClick}
+          onClick={isOpen.setTrue}
         >
           See All
         </Button>
         <Box height="100%" width="auto" marginRight={2} />
       </HorizontalScroll>
-    </List>
+    </React.Fragment>
   );
 };

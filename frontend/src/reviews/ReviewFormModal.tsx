@@ -22,12 +22,13 @@ import React, { useRef, useState } from "react";
 import { useHistory } from "react-router";
 import ErrorBox from "../common/components/ErrorBox";
 import ListItemSkeleton from "../common/components/ListItemSkeleton";
-import { useQueryMovie } from "../movie/data";
+import { useQueryMovie } from "../movie/query";
 import * as movieUtils from "../movie/utils";
 import useModal from "../navigation/modals/useModal";
 import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
 import { TmdbMediaType } from "../tmdb/types";
 import useReviewForm from "./hooks/useReviewForm";
+
 const Transition = (props: TransitionProps) => {
   return <Slide direction="up" {...props} />;
 };

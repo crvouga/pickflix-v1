@@ -51,6 +51,25 @@ const getSessionCookieConfig = () => {
   }
 };
 
+const getCSRFCookieConfig = () => {
+  switch (configuration.NODE_ENV) {
+    case "production":
+      return {
+        secure: true,
+        path: "/",
+        sameSite: "strict" as "strict",
+        httpOnly: true,
+      };
+    default:
+      return {
+        path: "/",
+        secure: false,
+        sameSite: "strict" as "strict",
+        httpOnly: true,
+      };
+  }
+};
+
 export const buildAuthMiddleware = ({
   userLogic,
 }: {
@@ -73,7 +92,7 @@ export const buildAuthMiddleware = ({
 
   app.use(
     csrf({
-      cookie: true,
+      cookie: getCSRFCookieConfig(),
     })
   );
 

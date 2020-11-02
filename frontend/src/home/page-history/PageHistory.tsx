@@ -1,4 +1,10 @@
-import { Box, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
+import {
+  Box,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from "@material-ui/core";
 import HistoryIcon from "@material-ui/icons/History";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -11,6 +17,10 @@ import usePageHistory from "./usePageHistory";
 export default () => {
   const pageHistory = usePageHistory();
   const open = useBoolean();
+
+  if (pageHistory.entities.length === 0) {
+    return null;
+  }
 
   const handleClear = () => {
     pageHistory.clear();
@@ -25,15 +35,9 @@ export default () => {
         onClear={handleClear}
       />
 
-      <ListItem button>
-        <ListItemIcon>
-          <HistoryIcon />
-        </ListItemIcon>
-        <ListItemText
-          primaryTypographyProps={{ variant: "h6" }}
-          primary="Recent"
-        />
-      </ListItem>
+      <Box paddingX={2} paddingBottom={1}>
+        <Typography variant="h6">Recent</Typography>
+      </Box>
 
       <HorizontalScroll paddingLeft={2}>
         {pageHistory.entities.slice(0, 25).map((entity) => (

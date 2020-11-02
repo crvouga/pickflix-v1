@@ -21,7 +21,9 @@
   },
   "homepage": "https://github.com/crvouga/pickflix#readme",
   "dependencies": {
+    "@types/csurf": "^1.9.36",
     "@types/jsonwebtoken": "^8.5.0",
+    "csurf": "^1.11.0",
     "jsonwebtoken": "^8.5.1",
     "node-html-parser": "^1.4.3"
   }

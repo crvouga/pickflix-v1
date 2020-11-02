@@ -1,32 +1,49 @@
-import { difference } from "ramda";
+import { difference, union, without } from "ramda";
 import { useDispatch, useSelector } from "react-redux";
+import { bindActionCreators } from "redux";
 import { DiscoverMovieTag } from "./query/types";
 import { discoverActiveTags } from "./redux/discover-active-tags";
 import { discoverTags } from "./redux/discover-tags";
 
-export default () => {
+const useDiscoverState = () => {
   const dispatch = useDispatch();
-
-  const activeTags = useSelector(discoverActiveTags.selectors.activeTags);
-  const tags = useSelector(discoverTags.selectors.tags);
-  const nonActiveTags = difference(tags, activeTags);
-
-  const activateTag = (tag: DiscoverMovieTag) =>
-    dispatch(discoverActiveTags.actions.activate(tag));
-  const deactivateTag = (tag: DiscoverMovieTag) =>
-    dispatch(discoverActiveTags.actions.deactivate(tag));
-  const undo = () => dispatch(discoverActiveTags.actions.undo());
-  const redo = () => dispatch(discoverActiveTags.actions.redo());
-  const clear = () => dispatch(discoverActiveTags.actions.setActiveTags([]));
+  const activeTagsSlice = useSelector(discoverActiveTags.selectors.slice);
+  const tagsSlice = useSelector(discoverTags.selectors.slice);
 
   return {
-    activeTags,
+    ...activeTagsSlice,
+    ...activeTagsSlice.present,
+    ...tagsSlice,
+    ...bindActionCreators(discoverActiveTags.actions, dispatch),
+    ...bindActionCreators(discoverTags.actions, dispatch),
+  };
+};
+
+export default () => {
+  const discoverState = useDiscoverState();
+
+  const nonActiveTags = difference(
+    discoverState.tags,
+    discoverState.activeTags
+  );
+
+  const activateTag = (tag: DiscoverMovieTag) => {
+    discoverState.setActiveTags(union([tag], discoverState.activeTags));
+  };
+
+  const deactivateTag = (tag: DiscoverMovieTag) => {
+    discoverState.setActiveTags(without([tag], discoverState.activeTags));
+  };
+
+  const clear = () => {
+    discoverState.setActiveTags([]);
+  };
+
+  return {
+    ...discoverState,
     nonActiveTags,
-    tags,
     activateTag,
     deactivateTag,
     clear,
-    undo,
-    redo,
   };
 };

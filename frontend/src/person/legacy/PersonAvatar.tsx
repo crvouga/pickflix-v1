@@ -28,7 +28,7 @@ export default ({ person, ...restOfProps }: Props) => {
   };
 
   return (
-    <Box onClick={handleClick} {...restOfProps}>
+    <Box onClick={handleClick} width="100%" {...restOfProps}>
       <AspectRatio ratio={[1, 1]}>
         <Avatar className={classes.avatar} src={profileURL} />
       </AspectRatio>

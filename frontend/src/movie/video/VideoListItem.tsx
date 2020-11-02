@@ -11,6 +11,17 @@ import {
   videoKeyToThumbnailURL,
   YoutubeVideo,
 } from "../../youtube/query";
+export const toViewCount = (video: Partial<YoutubeVideo>) =>
+  numeral(video?.statistics?.viewCount)
+    .format("0.0")
+    .replace(".0", "")
+    .toUpperCase();
+
+export const toPublishedAt = (video: Partial<YoutubeVideo>) =>
+  moment(video?.snippet?.publishedAt, "YYYYMMDD")
+    .fromNow()
+    .replace("a ", "1 ")
+    .replace(" ago", "");
 
 export const VideoListItem = ({
   image,
@@ -92,18 +103,6 @@ export const VideoListItemSkeleton = () => {
   );
 };
 
-export const toViewCount = (video: Partial<YoutubeVideo>) =>
-  numeral(video?.statistics?.viewCount)
-    .format("0.0a")
-    .replace(".0", "")
-    .toUpperCase();
-
-export const toPublishedAt = (video: Partial<YoutubeVideo>) =>
-  moment(video?.snippet?.publishedAt, "YYYYMMDD")
-    .fromNow()
-    .replace("a ", "1 ")
-    .replace(" ago", "");
-
 const toThumbnail = (video: Partial<YoutubeVideo>) =>
   video &&
   video.snippet &&
@@ -143,17 +142,18 @@ export const MovieVideoListItem = ({ video }: { video: MovieVideo }) => {
 export const YoutubeVideoListItemContainer = ({
   videoId,
 }: {
-  videoId: string;
+  videoId?: string;
 }) => {
-  const query = useQuery(queryKeys.youtubeVideoDetails({ videoId }), () =>
-    getYoutubeVideoDetails({ videoId })
+  const query = useQuery(
+    videoId && queryKeys.youtubeVideoDetails({ videoId }),
+    () => (videoId ? getYoutubeVideoDetails({ videoId }) : Promise.reject())
   );
 
   if (query.error) {
     return null;
   }
 
-  if (!query.data) {
+  if (!videoId || !query.data) {
     return <VideoListItemSkeleton />;
   }
 

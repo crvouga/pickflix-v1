@@ -16,12 +16,7 @@ export default ({ entity }: Props) => {
     case "person":
       return (
         <React.Fragment>
-          <Box
-            paddingBottom={1}
-            display="flex"
-            justifyContent="center"
-            maxWidth="100%"
-          >
+          <Box paddingBottom={1} display="flex" justifyContent="center">
             <PersonAvatar person={entity} />
           </Box>
           <Typography noWrap align="center" variant="h6">

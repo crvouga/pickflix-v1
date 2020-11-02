@@ -3,6 +3,7 @@ import { YoutubeVideoListResponse } from "./types";
 
 import axios from "axios";
 import { YoutubeCommentThreadListResponse } from "./youtube-comment-types";
+import { useQuery } from "react-query";
 
 export * from "./types";
 
@@ -44,7 +45,7 @@ export const queryKeys = {
     "embedded",
     videoId,
   ],
-  youtubeVideoDetails: ({ videoId }: { videoId: string }) => [
+  youtubeVideoDetails: ({ videoId }: { videoId?: string }) => [
     "youtube",
     "details",
     videoId,
@@ -85,6 +86,16 @@ export const getYoutubeVideoDetails = async ({
     }
   );
   return data;
+};
+
+export const useQueryYoutubeVideoDetails = ({
+  videoId,
+}: {
+  videoId?: string;
+}) => {
+  return useQuery(queryKeys.youtubeVideoDetails({ videoId }), () =>
+    videoId ? getYoutubeVideoDetails({ videoId }) : Promise.reject()
+  );
 };
 
 export const getYoutubeVideoCommentThreadList = async ({
