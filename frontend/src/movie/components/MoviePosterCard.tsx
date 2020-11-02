@@ -1,16 +1,17 @@
 import {
-  Card,
   Box,
+  Card,
   CardActionArea,
   makeStyles,
   Typography,
 } from "@material-ui/core";
+import clsx from "clsx";
 import React from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import "react-lazy-load-image-component/src/effects/opacity.css";
 import { useHistory } from "react-router";
 import AspectRatio from "../../common/components/AspectRatio";
+import { useLazyImage } from "../../common/hooks/useLazyImage";
 import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
 
 const useStyles = makeStyles((theme) => ({
@@ -27,6 +28,20 @@ const useStyles = makeStyles((theme) => ({
   },
   borderRadius: {
     borderRadius: theme.spacing(1 / 2),
+  },
+  blur: {
+    filter: "blur(8px)",
+  },
+  unblur: {
+    animation: `$unblurEffect ${theme.transitions.duration.enteringScreen}ms ${theme.transitions.easing.easeIn}`,
+  },
+  "@keyframes unblurEffect": {
+    "0%": {
+      filter: "blur(8px)",
+    },
+    "100%": {
+      filter: "blur(0px)",
+    },
   },
 }));
 
@@ -45,11 +60,9 @@ type Props = {
 export const MOVIE_POSTER_ASPECT_RATIO: [number, number] = [18, 24];
 
 export default (props: Props) => {
-  const { movie, sizeIndex = 4, disabled = false } = props;
+  const { movie, sizeIndex = 5, disabled = false } = props;
   const { id, posterPath, title } = movie;
   const classes = useStyles();
-  const makeImageUrl = useMakeImageUrl();
-  const posterURL = makeImageUrl(sizeIndex, { posterPath });
 
   const history = useHistory();
   const handleClick = () => {
@@ -57,6 +70,14 @@ export default (props: Props) => {
       history.push(`/movie/${id}`);
     }
   };
+
+  const makeImageUrl = useMakeImageUrl();
+  const highQuality = makeImageUrl(sizeIndex, { posterPath }) || "";
+  const lowQuality = makeImageUrl(0, { posterPath }) || "";
+  const lazyImage = useLazyImage({
+    highQuality,
+    lowQuality,
+  });
 
   return (
     <Card className={classes.borderRadius} onClick={handleClick}>
@@ -82,10 +103,13 @@ export default (props: Props) => {
           )}
 
           {posterPath && (
-            <LazyLoadImage
-              className={classes.borderRadius}
-              effect="opacity"
-              src={posterURL}
+            <img
+              ref={lazyImage.ref}
+              className={clsx(classes.borderRadius, {
+                [classes.blur]: lazyImage.src === lowQuality,
+                [classes.unblur]: lazyImage.src === highQuality,
+              })}
+              src={lazyImage.src}
               width="100%"
               height="100%"
             />
