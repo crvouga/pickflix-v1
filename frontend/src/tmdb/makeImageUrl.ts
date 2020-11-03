@@ -1,5 +1,4 @@
-import { useQuery } from "react-query";
-import { BackendAPI } from "../backend-api";
+import { TMDB_CONFIGURATION_KEY } from "./TmdbConfigurationGate";
 import {
   ImagePaths,
   PathKey,
@@ -50,24 +49,9 @@ const makeImageUrl = (
   return imageUrl;
 };
 
-const getTmdbConfig = async () => {
-  const { data } = await BackendAPI.get<TmdbConfiguration>(
-    "/api/tmdb/configuration"
+export default (sizeIndex: number, hasPathKey: ImagePaths) => {
+  const tmdbConfiguration = JSON.parse(
+    localStorage.getItem(TMDB_CONFIGURATION_KEY) || "{}"
   );
-  return data;
-};
-
-export const useMakeImageUrl = () => {
-  const query = useQuery(["tmdb", "config"], () => getTmdbConfig(), {
-    staleTime: Infinity,
-  });
-
-  if (query.error || !query.data) {
-    return (sizeIndex: number, hasPathKey: ImagePaths) => undefined;
-  }
-
-  const tmdbConfiguration = query.data;
-
-  return (sizeIndex: number, hasPathKey: ImagePaths) =>
-    makeImageUrl(tmdbConfiguration, sizeIndex, hasPathKey);
+  return makeImageUrl(tmdbConfiguration, sizeIndex, hasPathKey);
 };

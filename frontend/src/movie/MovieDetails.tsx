@@ -1,7 +1,8 @@
 import { Box, Divider, Typography } from "@material-ui/core";
 import React from "react";
+import ReadMoreTypography from "../common/components/ReadMoreTypography";
 import { MovieDetails, MovieReleaseDates } from "../tmdb/types";
-import ActionBarSection from "./legacy/ActionBarSection";
+import ActionBarSection from "./action-bar/ActionBarSection";
 import {
   SMALL_DOT,
   toBudget,
@@ -11,7 +12,6 @@ import {
   toRevenue,
   toRuntime,
 } from "./utils";
-import ReadMoreTypography from "../common/components/ReadMoreTypography";
 
 const BudgetRevenue = ({
   budget,

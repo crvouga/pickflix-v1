@@ -5,7 +5,7 @@ import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
 import usePageHistory from "../home/page-history/usePageHistory";
 import NavBar, { APP_BAR_HEIGHT } from "../navigation/NavBar";
-import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
+import makeImageUrl from "../tmdb/makeImageUrl";
 import VideoPlayer from "../video/VideoPlayer";
 import MovieCredits from "./credits/MovieCredits";
 import { useQueryMovie } from "./query";
@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
-  const makeImageUrl = useMakeImageUrl();
+
   const { tmdbMediaId } = useParams<{ tmdbMediaId: string }>();
   const query = useQueryMovie({ tmdbMediaId });
 

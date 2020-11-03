@@ -7,13 +7,13 @@ import {
 } from "@material-ui/core";
 import BusinessIcon from "@material-ui/icons/Business";
 import React from "react";
-import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
+import makeImageUrl from "../../tmdb/makeImageUrl";
 import { capitalizeWords } from "../../utils";
 import {
   DiscoverMovieTag,
   sortByKeyToName,
-  yearRangeToName,
   TagType,
+  yearRangeToName,
 } from "../query/types";
 
 type Props = Omit<ListItemProps, "button"> & {
@@ -21,7 +21,6 @@ type Props = Omit<ListItemProps, "button"> & {
 };
 
 export default (props: Props) => {
-  const makeImageUrl = useMakeImageUrl();
   const { tag, ...listItemProps } = props;
 
   switch (tag.type) {

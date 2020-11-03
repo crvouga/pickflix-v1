@@ -1,5 +1,4 @@
-import { once } from "ramda";
-import { useEffect, useState, ImgHTMLAttributes } from "react";
+import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 export const useLazyImage = ({
@@ -11,23 +10,18 @@ export const useLazyImage = ({
 }) => {
   const { ref, inView } = useInView();
   const [src, setSrc] = useState<string | undefined>(undefined);
-
-  const loadHighQuality = once(() => {
-    const image = new Image();
-    image.onload = () => {
-      setSrc(highQuality);
-    };
-    image.src = highQuality;
-  });
-
-  const loadLowQuality = once(() => {
-    setSrc(lowQuality);
-  });
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    loadLowQuality();
-    if (inView) {
-      loadHighQuality();
+    if (inView && !loaded) {
+      setLoaded(true);
+      setSrc(lowQuality);
+
+      const highQualityImage = new Image();
+      highQualityImage.onload = () => {
+        setSrc(highQuality);
+      };
+      highQualityImage.src = highQuality;
     }
   }, [inView]);
 

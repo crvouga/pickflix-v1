@@ -2,6 +2,7 @@ import {
   Box,
   Card,
   CardActionArea,
+  CardMedia,
   makeStyles,
   Typography,
 } from "@material-ui/core";
@@ -12,32 +13,24 @@ import "react-lazy-load-image-component/src/effects/opacity.css";
 import { useHistory } from "react-router";
 import AspectRatio from "../../common/components/AspectRatio";
 import { useLazyImage } from "../../common/hooks/useLazyImage";
-import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
+import makeImageUrl from "../../tmdb/makeImageUrl";
 
 const useStyles = makeStyles((theme) => ({
-  fallback: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
-    padding: theme.spacing(1),
-    width: "100%",
+  breakWord: {
     wordBreak: "break-word",
-    fontWeight: "bold",
   },
   borderRadius: {
     borderRadius: theme.spacing(1 / 2),
   },
   blur: {
-    filter: "blur(8px)",
+    filter: "blur(4px)",
   },
   unblur: {
     animation: `$unblurEffect ${theme.transitions.duration.enteringScreen}ms ${theme.transitions.easing.easeIn}`,
   },
   "@keyframes unblurEffect": {
     "0%": {
-      filter: "blur(8px)",
+      filter: "blur(4px)",
     },
     "100%": {
       filter: "blur(0px)",
@@ -60,8 +53,12 @@ type Props = {
 export const MOVIE_POSTER_ASPECT_RATIO: [number, number] = [18, 24];
 
 export default (props: Props) => {
-  const { movie, sizeIndex = 5, disabled = false } = props;
-  const { id, posterPath, title } = movie;
+  const {
+    movie: { id, posterPath, title },
+    sizeIndex = 5,
+    disabled = false,
+  } = props;
+
   const classes = useStyles();
 
   const history = useHistory();
@@ -71,16 +68,19 @@ export default (props: Props) => {
     }
   };
 
-  const makeImageUrl = useMakeImageUrl();
-  const highQuality = makeImageUrl(sizeIndex, { posterPath }) || "";
-  const lowQuality = makeImageUrl(0, { posterPath }) || "";
+  const highQuality = makeImageUrl(sizeIndex, { posterPath });
+  const lowQuality = makeImageUrl(0, { posterPath });
   const lazyImage = useLazyImage({
     highQuality,
     lowQuality,
   });
 
   return (
-    <Card className={classes.borderRadius} onClick={handleClick}>
+    <Card
+      className={classes.borderRadius}
+      onClick={handleClick}
+      ref={lazyImage.ref}
+    >
       <CardActionArea disabled={disabled}>
         <AspectRatio
           ratio={MOVIE_POSTER_ASPECT_RATIO}
@@ -88,31 +88,36 @@ export default (props: Props) => {
             style: { position: "relative", width: "100%" },
           }}
         >
+          {posterPath && lazyImage.src && (
+            <CardMedia
+              className={clsx(classes.borderRadius, {
+                [classes.blur]: lazyImage.src === lowQuality,
+                [classes.unblur]: lazyImage.src === highQuality,
+              })}
+              style={{
+                width: "100%",
+                height: "100%",
+              }}
+              image={lazyImage.src}
+            />
+          )}
+
           {!posterPath && (
             <Box
+              style={{
+                wordBreak: "break-word",
+              }}
               display="flex"
               width="100%"
               height="100%"
               justifyContent="center"
               alignItems="center"
+              p={2}
             >
-              <Typography variant="h5" className={classes.fallback}>
+              <Typography variant="h5" align="center">
                 {title}
               </Typography>
             </Box>
-          )}
-
-          {posterPath && (
-            <img
-              ref={lazyImage.ref}
-              className={clsx(classes.borderRadius, {
-                [classes.blur]: lazyImage.src === lowQuality,
-                [classes.unblur]: lazyImage.src === highQuality,
-              })}
-              src={lazyImage.src}
-              width="100%"
-              height="100%"
-            />
           )}
         </AspectRatio>
       </CardActionArea>

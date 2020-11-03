@@ -9,7 +9,7 @@ import {
   makeStyles,
   CardActions,
 } from "@material-ui/core";
-import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
+import makeImageUrl from "../tmdb/makeImageUrl";
 import { PersonDetailsResponse } from "../tmdb/types";
 import OpenDiscoverButton from "../discover/OpenDiscoverButton";
 import { TagType } from "../discover/query/types";
@@ -27,7 +27,7 @@ type Props = {
 
 export default ({ details }: Props) => {
   const classes = useStyles();
-  const makeImageUrl = useMakeImageUrl();
+
   const profileUrl = makeImageUrl(3, details);
   return (
     <Card>

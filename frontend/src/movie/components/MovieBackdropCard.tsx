@@ -10,7 +10,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import "react-lazy-load-image-component/src/effects/opacity.css";
 import { useHistory } from "react-router";
 import AspectRatio from "../../common/components/AspectRatio";
-import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
+import makeImageUrl from "../../tmdb/makeImageUrl";
 
 const useStyles = makeStyles((theme) => ({
   fallback: {
@@ -47,7 +47,7 @@ export default (props: Props) => {
   const { movie, sizeIndex = 4, disabled = false } = props;
   const { id, posterPath, title } = movie;
   const classes = useStyles();
-  const makeImageUrl = useMakeImageUrl();
+
   const posterURL = makeImageUrl(sizeIndex, { posterPath });
 
   const history = useHistory();

@@ -8,13 +8,12 @@ import {
 import React from "react";
 import { useHistory } from "react-router";
 import AspectRatio from "../../common/components/AspectRatio";
-import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
+import makeImageUrl from "../../tmdb/makeImageUrl";
 import { MovieCreditCast, MovieCreditCrew } from "../../tmdb/types";
 
 type Props = { credit: MovieCreditCast | MovieCreditCrew };
 
 export default ({ credit }: Props) => {
-  const makeImageUrl = useMakeImageUrl();
   const history = useHistory();
   const handleClick = () => {
     history.push(`/person/${credit.id}`);

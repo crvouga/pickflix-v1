@@ -19,6 +19,7 @@ import MoviePosterGrid, {
 } from "../components/MoviePosterGrid";
 import { getMovieSimilar, queryKeys, getMovieRecommendations } from "../query";
 import { uniqBy } from "ramda";
+import MoviePosterGridInfinite from "../components/MoviePosterGridInfinite";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
@@ -46,78 +47,20 @@ const TabPanel = (props: {
 };
 
 const Similar = ({ tmdbMediaId }: { tmdbMediaId: string }) => {
-  const {
-    fetchMoreRef,
-    data,
-    error,
-    canFetchMore,
-  } = useInfiniteQueryPagination(
-    queryKeys.similar({ tmdbMediaId }),
-    ({ lastPage }) => getMovieSimilar({ tmdbMediaId, page: lastPage }),
-    {}
-  );
-
-  if (error) {
-    return null;
-  }
-
-  if (!data) {
-    return <MoviePosterGridSkeleton posterCount={12} />;
-  }
-
-  if (data[0] && data[0].results.length === 0) {
-    return null;
-  }
-
-  const movies = uniqBy(
-    (_) => _.id,
-    data.flatMap((_) => _.results)
-  );
-
   return (
-    <React.Fragment>
-      <MoviePosterGrid movies={movies} />
-      <div ref={fetchMoreRef} />
-      {canFetchMore && <LoadingBox m={6} />}
-    </React.Fragment>
+    <MoviePosterGridInfinite
+      queryKey={queryKeys.similar({ tmdbMediaId })}
+      queryFn={({ page }) => getMovieSimilar({ tmdbMediaId, page })}
+    />
   );
 };
 
 const Recommendations = ({ tmdbMediaId }: { tmdbMediaId: string }) => {
-  const {
-    fetchMoreRef,
-    data,
-    error,
-    canFetchMore,
-  } = useInfiniteQueryPagination(
-    queryKeys.recommendations({ tmdbMediaId }),
-    ({ lastPage }) => getMovieRecommendations({ tmdbMediaId, page: lastPage }),
-    {}
-  );
-
-  if (error) {
-    return null;
-  }
-
-  if (!data) {
-    return <MoviePosterGridSkeleton posterCount={12} />;
-  }
-
-  if (data[0] && data[0].results.length === 0) {
-    return null;
-  }
-
-  const movies = uniqBy(
-    (_) => _.id,
-    data.flatMap((_) => _.results)
-  );
-
   return (
-    <React.Fragment>
-      <MoviePosterGrid movies={movies} />
-      <div ref={fetchMoreRef} />
-      {canFetchMore && <LoadingBox m={6} />}
-    </React.Fragment>
+    <MoviePosterGridInfinite
+      queryKey={queryKeys.recommendations({ tmdbMediaId })}
+      queryFn={({ page }) => getMovieRecommendations({ tmdbMediaId, page })}
+    />
   );
 };
 

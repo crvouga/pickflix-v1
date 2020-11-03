@@ -13,13 +13,12 @@ import BottomButton from "../common/components/BottomButton";
 import ErrorBox from "../common/components/ErrorBox";
 import LoadingBox from "../common/components/LoadingBox";
 import useModal from "../navigation/modals/useModal";
-import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
+import makeImageUrl from "../tmdb/makeImageUrl";
 import { useQueryLists } from "./hooks/query";
 import useAddListForm from "./hooks/useAddListForm";
 import useAddListItemForm from "./hooks/useAddListItemForm";
 
 const Lists = ({ onClick }: { onClick: (listId: string) => void }) => {
-  const makeImageUrl = useMakeImageUrl();
   const query = useQueryLists();
 
   if (query.error) {

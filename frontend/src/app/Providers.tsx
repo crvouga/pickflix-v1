@@ -8,6 +8,7 @@ import { queryCache } from "../query/query-cache";
 import { configureReduxStore } from "../redux/configure-redux-store";
 import AppLoadingPage from "./AppLoadingPage";
 import ThemeProvider from "./ThemeProvider";
+import TmdbConfigurationGate from "../tmdb/TmdbConfigurationGate";
 
 const { store, persistor } = configureReduxStore();
 
@@ -20,7 +21,9 @@ export default ({ children }: Props) => {
         <Router history={history}>
           <ReactQueryCacheProvider queryCache={queryCache}>
             <PersistGate loading={<AppLoadingPage />} persistor={persistor}>
-              {children}
+              <TmdbConfigurationGate loading={<AppLoadingPage />}>
+                {children}
+              </TmdbConfigurationGate>
             </PersistGate>
           </ReactQueryCacheProvider>
         </Router>

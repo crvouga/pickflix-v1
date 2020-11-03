@@ -11,8 +11,8 @@ export const MoviePosterGrid = (props: Props) => {
   const { movies } = props;
   return (
     <Grid container spacing={1}>
-      {movies.map((movie) => (
-        <Grid item xs={6} sm={4} md={3} key={movie.id}>
+      {movies.map((movie, index) => (
+        <Grid item xs={6} sm={4} md={3} key={index}>
           <MoviePosterCard movie={movie} />
         </Grid>
       ))}

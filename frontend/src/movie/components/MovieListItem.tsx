@@ -11,7 +11,7 @@ import MovieIcon from "@material-ui/icons/Movie";
 import React from "react";
 import { useHistory } from "react-router";
 import { toYear } from "../../person/utils";
-import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
+import makeImageUrl from "../../tmdb/makeImageUrl";
 
 type Props = ListItemProps & {
   movie: {
@@ -26,7 +26,6 @@ type Props = ListItemProps & {
 export default (props: Props) => {
   const { movie, ...ListItemProps } = props;
   const { title, releaseDate, id, posterPath, backdropPath } = movie;
-  const makeImageUrl = useMakeImageUrl();
 
   const src = makeImageUrl(2, posterPath ? { posterPath } : { backdropPath });
 

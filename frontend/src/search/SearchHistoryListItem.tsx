@@ -15,7 +15,7 @@ import { ListItemProps } from "material-ui";
 import moment from "moment";
 import React from "react";
 import { useHistory } from "react-router";
-import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
+import makeImageUrl from "../tmdb/makeImageUrl";
 import { SearchResult } from "./query";
 import useSearchHistory from "./useSearchHistory";
 import HistoryIcon from "@material-ui/icons/History";
@@ -51,7 +51,7 @@ const DeleteButton = ({ result }: { result: SearchResult }) => {
 export default ({ result, ...ListItemProps }: Props) => {
   const classes = useStyles();
   const history = useHistory();
-  const makeImageUrl = useMakeImageUrl();
+
   const searchHistory = useSearchHistory();
 
   const handleClick = (result: SearchResult) => () => {

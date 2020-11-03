@@ -9,7 +9,7 @@ import { ListItemProps } from "material-ui";
 import moment from "moment";
 import React from "react";
 import { useHistory } from "react-router";
-import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
+import makeImageUrl from "../tmdb/makeImageUrl";
 import { SearchResult } from "./query";
 import useSearchHistory from "./useSearchHistory";
 
@@ -19,7 +19,7 @@ type Props = ListItemProps & {
 
 export default ({ result, ...ListItemProps }: Props) => {
   const history = useHistory();
-  const makeImageUrl = useMakeImageUrl();
+
   const searchHistory = useSearchHistory();
 
   const handleClick = (result: SearchResult) => () => {

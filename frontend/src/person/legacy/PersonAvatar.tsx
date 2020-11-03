@@ -3,7 +3,7 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import React from "react";
 import { useHistory } from "react-router";
 import AspectRatio from "../../common/components/AspectRatio";
-import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
+import makeImageUrl from "../../tmdb/makeImageUrl";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -20,7 +20,7 @@ type Props = BoxProps & {
 export default ({ person, ...restOfProps }: Props) => {
   const { profilePath } = person;
   const classes = useStyles();
-  const makeImageUrl = useMakeImageUrl();
+
   const profileURL = makeImageUrl(2, { profilePath });
   const history = useHistory();
   const handleClick = () => {

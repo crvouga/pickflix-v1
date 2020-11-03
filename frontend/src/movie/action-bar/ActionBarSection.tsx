@@ -2,7 +2,7 @@ import { Box, makeStyles } from "@material-ui/core";
 import React from "react";
 import { useParams } from "react-router";
 import LabeledIconButton from "../../common/components/LabeledIconButton";
-import useActions from "../action-bar/useActions";
+import useActions from "./useActions";
 
 type Props = {
   tmdbMediaId: string;

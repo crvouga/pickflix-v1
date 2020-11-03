@@ -1,7 +1,7 @@
 import { Avatar, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import useBoolean from "../../common/hooks/useBoolean";
-import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
+import makeImageUrl from "../../tmdb/makeImageUrl";
 import {
   PersonDetailsResponse,
   PersonImagesResponse,
@@ -38,8 +38,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default (props: Props) => {
-  const makeImageUrl = useMakeImageUrl();
-
   const { details, images } = props;
   const classes = useStyles();
 

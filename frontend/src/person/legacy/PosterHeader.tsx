@@ -3,7 +3,7 @@ import * as R from "ramda";
 import React from "react";
 import AspectRatio from "../../common/components/AspectRatio";
 import { MOVIE_POSTER_ASPECT_RATIO } from "../../movie/components/MoviePosterCard";
-import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
+import makeImageUrl from "../../tmdb/makeImageUrl";
 import {
   PersonDetailsResponse,
   PersonMovieCreditsResponse,
@@ -35,7 +35,7 @@ const countToSizeIndex: { [key: number]: number } = {
 
 export default (props: Props) => {
   const classes = useStyles();
-  const makeImageUrl = useMakeImageUrl();
+
   const posters = R.uniqBy(
     (_) => _.id,
     utils.knownForMovies(props).filter((_) => _.posterPath)

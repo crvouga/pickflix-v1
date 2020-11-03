@@ -1,7 +1,7 @@
 import { Avatar, ChipProps } from "@material-ui/core";
 import BusinessIcon from "@material-ui/icons/Business";
 import React from "react";
-import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
+import makeImageUrl from "../tmdb/makeImageUrl";
 import { capitalizeWords } from "../utils";
 import Tag from "./BaseTag";
 import {
@@ -16,7 +16,6 @@ type Props = ChipProps & {
 };
 
 export default (props: Props) => {
-  const makeImageUrl = useMakeImageUrl();
   const { tag, ...chipProps } = props;
 
   switch (tag.type) {

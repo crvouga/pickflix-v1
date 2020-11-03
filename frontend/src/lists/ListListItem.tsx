@@ -11,7 +11,7 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import MovieIcon from "@material-ui/icons/Movie";
 import PublicOutlinedIcon from "@material-ui/icons/PublicOutlined";
 import React from "react";
-import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
+import makeImageUrl from "../tmdb/makeImageUrl";
 import { List } from "./query/types";
 
 type Props = ListItemProps & {
@@ -20,7 +20,6 @@ type Props = ListItemProps & {
 };
 
 export default ({ list, onClick }: Props) => {
-  const makeImageUrl = useMakeImageUrl();
   const listItem = list?.listItems?.[0];
   return (
     <ListItem button onClick={onClick}>

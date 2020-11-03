@@ -25,7 +25,7 @@ import ListItemSkeleton from "../common/components/ListItemSkeleton";
 import { useQueryMovie } from "../movie/query";
 import * as movieUtils from "../movie/utils";
 import useModal from "../navigation/modals/useModal";
-import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
+import makeImageUrl from "../tmdb/makeImageUrl";
 import { TmdbMediaType } from "../tmdb/types";
 import useReviewForm from "./hooks/useReviewForm";
 
@@ -45,7 +45,6 @@ type Props = {
 };
 
 const MediaInfo = (props: Props) => {
-  const makeImageUrl = useMakeImageUrl();
   const queryMovie = useQueryMovie(props);
 
   if (queryMovie.error) {

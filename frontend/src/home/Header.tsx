@@ -5,7 +5,7 @@ import { useHistory } from "react-router";
 import SwipeableViews from "react-swipeable-views";
 import AbsolutePositionBox from "../common/components/AbsolutePositionBox";
 import AspectRatio from "../common/components/AspectRatio";
-import { useMakeImageUrl } from "../tmdb/makeTMDbImageURL";
+import makeImageUrl from "../tmdb/makeImageUrl";
 import { Movie } from "../tmdb/types";
 
 const useStyles = makeStyles({
@@ -20,7 +20,6 @@ const useStyles = makeStyles({
 });
 
 const HeaderItem = ({ movie }: { movie: Movie }) => {
-  const makeImageUrl = useMakeImageUrl();
   const history = useHistory();
   const handleClick = () => {
     history.push(`/movie/${movie.id}`);

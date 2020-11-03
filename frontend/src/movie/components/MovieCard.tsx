@@ -11,7 +11,7 @@ import moment from "moment";
 import React from "react";
 import { useHistory } from "react-router";
 import ReadMore from "../../common/components/ReadMore";
-import { useMakeImageUrl } from "../../tmdb/makeTMDbImageURL";
+import makeImageUrl from "../../tmdb/makeImageUrl";
 
 type Movie = {
   id: string;
@@ -34,7 +34,7 @@ const movieToSubheader = (movie: Movie) =>
 
 export default ({ movie, CardHeaderProps }: Props) => {
   const history = useHistory();
-  const makeImageUrl = useMakeImageUrl();
+
   const image = makeImageUrl(
     3,
     movie.backdropPath
