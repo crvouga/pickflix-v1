@@ -15,3 +15,5 @@ export const keywordSearch = (text: string) => ["keyword", text];
 export const companySearch = (text: string) => ["company", text];
 
 export const certifications = () => ["certification", "movie", "list"];
+
+export const index = () => ["index"];

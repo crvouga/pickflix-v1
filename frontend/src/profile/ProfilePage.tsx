@@ -1,65 +1,19 @@
-import {
-  Avatar,
-  Box,
-  Divider,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  useTheme,
-} from "@material-ui/core";
-import AddIcon from "@material-ui/icons/Add";
 import React from "react";
-import ListList from "../lists/ListList";
-import useModal from "../navigation/modals/useModal";
-
-import RecentlyViewed from "../home/page-history/PageHistory";
-import NavBar from "../navigation/NavBar";
-
-const CreateNewListListItem = () => {
-  const theme = useTheme();
-  const addListModal = useModal("AddList");
-  const handleClick = () => {
-    addListModal.open();
-  };
-
-  return (
-    <ListItem button onClick={handleClick}>
-      <ListItemAvatar>
-        <Avatar style={{ backgroundColor: "transparent" }}>
-          <AddIcon style={{ color: theme.palette.primary.main }} />
-        </Avatar>
-      </ListItemAvatar>
-      <ListItemText
-        style={{ color: theme.palette.primary.main }}
-        primary="Create New List"
-      />
-    </ListItem>
-  );
-};
+import { useCurrentUser } from "../auth/useAuth";
+import LoadingPage from "../common/page/LoadingPage";
+import ProfilePageAuthenticated from "./ProfilePage.Authenticated";
+import ProfilePageUnauthenticated from "./ProfilePage.Unauthenticated";
 
 export default () => {
-  return (
-    <React.Fragment>
-      <NavBar />
+  const currentUser = useCurrentUser();
 
-      <List>
-        <ListItem>
-          <ListItemText
-            primaryTypographyProps={{ variant: "h6" }}
-            primary="Lists"
-          />
-        </ListItem>
-        <CreateNewListListItem />
+  if (currentUser === "loading") {
+    return <LoadingPage />;
+  }
 
-        <ListList />
-      </List>
+  if (currentUser === null) {
+    return <ProfilePageUnauthenticated />;
+  }
 
-      <Divider />
-
-      <Box paddingY={2}>
-        <RecentlyViewed />
-      </Box>
-    </React.Fragment>
-  );
+  return <ProfilePageAuthenticated currentUser={currentUser} />;
 };

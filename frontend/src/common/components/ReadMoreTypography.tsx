@@ -41,17 +41,19 @@ export default (props: Props) => {
     <Typography {...TypographyProps}>
       {isIn ? text : headTextWithTrail}
 
-      <Box
-        display="inline"
-        fontWeight="bold"
-        color="info.main"
-        onClick={() => {
-          setIsIn((isIn) => !isIn);
-        }}
-      >
-        {" "}
-        {isIn ? readLessText : readMoreText}
-      </Box>
+      {!isIn && (
+        <Box
+          display="inline"
+          fontWeight="bold"
+          color="text.disabled"
+          onClick={() => {
+            setIsIn((isIn) => !isIn);
+          }}
+        >
+          {" "}
+          {isIn ? readLessText : readMoreText}
+        </Box>
+      )}
     </Typography>
   );
 };

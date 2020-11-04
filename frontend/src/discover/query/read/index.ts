@@ -1,5 +1,6 @@
 import { AxiosRequestConfig } from "axios";
 import { BackendAPI } from "../../../backend-api";
+import { Movie, Person } from "../../../tmdb/types";
 import { DiscoverMovieQueryParams, DiscoverMovieResponse } from "../types";
 
 type Certification = {

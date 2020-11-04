@@ -1,22 +1,22 @@
-import { Dialog, fade, makeStyles } from "@material-ui/core";
+import {
+  AppBar,
+  Button,
+  useMediaQuery,
+  useTheme,
+  Box,
+} from "@material-ui/core";
 import React, { useState } from "react";
+import ResponsiveDialog from "../../common/components/ResponsiveDialog";
 import useModal from "../../navigation/modals/useModal";
+import SearchTextField from "../../search/SearchTextField";
 import { DiscoverMovieTag } from "../query/types";
-import useDiscoverLogic from "../useDiscoverLogic";
-import SearchBar from "./SearchBar";
+import useDiscoverState from "../useDiscoverState";
 import SearchResults from "./SearchResults";
 
-const useStylesDialog = makeStyles((theme) => ({
-  paper: {
-    backgroundColor: fade(theme.palette.background.default, 0.9),
-  },
-}));
-
 export default () => {
-  const classesDialog = useStylesDialog();
   const discoverMovieTagSearchModal = useModal("DiscoverSearch");
   const [searchQuery, setSearchQuery] = useState("");
-  const discoverLogic = useDiscoverLogic();
+  const discoverLogic = useDiscoverState();
 
   const handleClick = (tag: DiscoverMovieTag) => {
     discoverMovieTagSearchModal.close();
@@ -24,15 +24,32 @@ export default () => {
     discoverLogic.activateTag(tag);
   };
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+
   return (
-    <Dialog
-      fullScreen
-      classes={classesDialog}
+    <ResponsiveDialog
       open={discoverMovieTagSearchModal.isOpen}
-      scroll="body"
+      onClose={() => discoverMovieTagSearchModal.close()}
     >
-      <SearchBar onChange={setSearchQuery} />
+      <AppBar color="default" position="sticky">
+        <Box display="flex" p={1}>
+          <SearchTextField
+            placeholder="Search Tags"
+            onChange={setSearchQuery}
+          />
+          {isMobile && (
+            <Button
+              color="primary"
+              size="large"
+              onClick={() => discoverMovieTagSearchModal.close()}
+            >
+              Done
+            </Button>
+          )}
+        </Box>
+      </AppBar>
       <SearchResults onClick={handleClick} searchQuery={searchQuery} />
-    </Dialog>
+    </ResponsiveDialog>
   );
 };

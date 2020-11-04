@@ -4,6 +4,7 @@ import ErrorBox from "../common/components/ErrorBox";
 import LoadingBox from "../common/components/LoadingBox";
 import Poster from "../movie/components/MoviePosterCard";
 import { useQueryListItems } from "./hooks/query";
+import MoviePosterGrid from "../movie/components/MoviePosterGrid";
 
 type Props = {
   listId: string;
@@ -39,12 +40,6 @@ export default (props: Props) => {
   }
 
   return (
-    <Box display="flex" flexDirection="row" flexWrap="wrap">
-      {listItems.map((listItem) => (
-        <Box p={1 / 2} width="50%" key={listItem.id}>
-          <Poster movie={listItem?.tmdbData} />
-        </Box>
-      ))}
-    </Box>
+    <MoviePosterGrid movies={listItems.map((listItem) => listItem.tmdbData)} />
   );
 };

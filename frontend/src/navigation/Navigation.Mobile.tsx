@@ -4,14 +4,14 @@ import {
   BottomNavigationActionProps,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import ExploreIcon from "@material-ui/icons/Explore";
-import ExploreOutlinedIcon from "@material-ui/icons/ExploreOutlined";
-import HomeIcon from "@material-ui/icons/Home";
-import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
-import PersonIcon from "@material-ui/icons/Person";
-import PersonOutlinedIcon from "@material-ui/icons/PersonOutlined";
 import React from "react";
 import { useHistory, useLocation } from "react-router";
+import {
+  DiscoverPageIcon,
+  HomePageIcon,
+  ProfilePageIcon,
+  SearchPageIcon,
+} from "./PageIcons";
 
 export const BOTTOM_NAVIGATION_BAR_HEIGHT = 56;
 
@@ -48,7 +48,6 @@ const useStylesBottomNavigationAction = makeStyles((theme) => ({
 }));
 
 export default () => {
-  const classes = useStyles();
   const classesBottomNavigation = useStylesBottomNavigation();
   const classesBottomNavigationAction = useStylesBottomNavigationAction();
 
@@ -58,7 +57,7 @@ export default () => {
   const navigationActions: BottomNavigationActionProps[] = [
     {
       value: "/",
-      icon: location.pathname === "/" ? <HomeIcon /> : <HomeOutlinedIcon />,
+      icon: <HomePageIcon />,
       label: "Home",
       onClick: () => {
         history.push("/");
@@ -66,27 +65,24 @@ export default () => {
     },
     {
       value: "/discover",
-      label: "Explore",
-      icon:
-        location.pathname === "/discover" ? (
-          <ExploreIcon />
-        ) : (
-          <ExploreOutlinedIcon />
-        ),
+      label: "Discover",
+      icon: <DiscoverPageIcon />,
       onClick: () => {
         history.push("/discover");
       },
     },
-
+    {
+      value: "/search",
+      label: "Search",
+      icon: <SearchPageIcon />,
+      onClick: () => {
+        history.push("/search");
+      },
+    },
     {
       value: "/profile",
       label: "Profile",
-      icon:
-        location.pathname === "/profile" ? (
-          <PersonIcon />
-        ) : (
-          <PersonOutlinedIcon />
-        ),
+      icon: <ProfilePageIcon />,
       onClick: () => {
         history.push("/profile");
       },
@@ -94,24 +90,21 @@ export default () => {
   ];
 
   return (
-    <React.Fragment>
-      <BottomNavigation
-        value={location.pathname}
-        showLabels
-        classes={classesBottomNavigation}
-      >
-        {navigationActions.map(({ value, label, icon, onClick }) => (
-          <BottomNavigationAction
-            classes={classesBottomNavigationAction}
-            key={value}
-            value={value}
-            label={label}
-            icon={icon}
-            onClick={onClick}
-          />
-        ))}
-      </BottomNavigation>
-      <div className={classes.toolbar} />
-    </React.Fragment>
+    <BottomNavigation
+      value={location.pathname}
+      showLabels
+      classes={classesBottomNavigation}
+    >
+      {navigationActions.map(({ value, label, icon, onClick }) => (
+        <BottomNavigationAction
+          classes={classesBottomNavigationAction}
+          key={value}
+          value={value}
+          label={label}
+          icon={icon}
+          onClick={onClick}
+        />
+      ))}
+    </BottomNavigation>
   );
 };

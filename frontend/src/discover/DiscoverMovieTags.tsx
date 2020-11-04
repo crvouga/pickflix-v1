@@ -2,7 +2,7 @@ import { Box, makeStyles } from "@material-ui/core";
 import { thunkify } from "ramda";
 import React, { useEffect, useRef } from "react";
 import DiscoverMovieTag from "./DiscoverMovieTag";
-import useDiscoverLogic from "./useDiscoverLogic";
+import useDiscoverState from "./useDiscoverState";
 
 const useStyles = makeStyles((theme) => ({
   chipContainer: {
@@ -23,7 +23,7 @@ export default () => {
     nonActiveTags,
     deactivateTag,
     activateTag,
-  } = useDiscoverLogic();
+  } = useDiscoverState();
 
   const chipContainerRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {

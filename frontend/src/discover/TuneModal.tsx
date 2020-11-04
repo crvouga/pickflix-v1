@@ -24,17 +24,12 @@ import {
   TagType,
   yearRangeToName,
 } from "./query/types";
-import useDiscoverLogic from "./useDiscoverLogic";
-
-const useStylesDialog = makeStyles((theme) => ({
-  paper: {
-    backgroundColor: fade(theme.palette.background.default, 0.9),
-  },
-}));
+import useDiscoverState from "./useDiscoverState";
+import ResponsiveDialog from "../common/components/ResponsiveDialog";
 
 const ReleaseYearRangeSection = () => {
   const discoverTuneModal = useModal("DiscoverTune");
-  const { activateTag } = useDiscoverLogic();
+  const { activateTag } = useDiscoverState();
 
   const handleClick = (decade: [number, number]) => {
     activateTag({
@@ -70,7 +65,7 @@ const ReleaseYearRangeSection = () => {
 
 const SortBySection = () => {
   const discoverTuneModal = useModal("DiscoverTune");
-  const { activateTag } = useDiscoverLogic();
+  const { activateTag } = useDiscoverState();
 
   const handleClick = (sortBy: SortByKey) => {
     activateTag({
@@ -104,7 +99,7 @@ const SortBySection = () => {
 
 const CertificationSection = () => {
   const discoverTuneModal = useModal("DiscoverTune");
-  const { activateTag } = useDiscoverLogic();
+  const { activateTag } = useDiscoverState();
 
   const handleClick = (certification: string) => {
     activateTag({
@@ -152,13 +147,10 @@ const CertificationSection = () => {
 };
 
 export default () => {
-  const classesDialog = useStylesDialog();
   const discoverTuneModal = useModal("DiscoverTune");
 
   return (
-    <Dialog
-      fullScreen
-      classes={classesDialog}
+    <ResponsiveDialog
       open={discoverTuneModal.isOpen}
       onClose={discoverTuneModal.close}
     >
@@ -174,6 +166,6 @@ export default () => {
       <ReleaseYearRangeSection />
       <SortBySection />
       <CertificationSection />
-    </Dialog>
+    </ResponsiveDialog>
   );
 };

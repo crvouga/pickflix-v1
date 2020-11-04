@@ -1,6 +1,17 @@
 import axios from "axios";
-import { Theme } from "@material-ui/core";
+import { Theme, DialogProps } from "@material-ui/core";
 import { fade } from "@material-ui/core/styles/colorManipulator";
+
+/* 
+
+
+*/
+
+export const closeDialog = (props: DialogProps) => {
+  if (props.onClose) {
+    props.onClose({}, "backdropClick");
+  }
+};
 
 /* 
 

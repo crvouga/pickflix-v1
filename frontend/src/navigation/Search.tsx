@@ -11,14 +11,13 @@ import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "400px",
+    width: "300px",
     padding: theme.spacing(1),
     backgroundColor: theme.palette.action.hover,
     borderRadius: theme.spacing(0.5),
     display: "flex",
     flexDirection: "row",
-    justifyContent: "start",
-    textAlign: "left",
+    justifyContent: "center",
     color: theme.palette.text.secondary,
     marginRight: theme.spacing(3),
     marginLeft: theme.spacing(3),
@@ -33,7 +32,7 @@ export const SearchBox = (props: ButtonBaseProps) => {
   return (
     <ButtonBase className={classes.root} {...props}>
       <SearchIcon className={classes.icon} />
-      <Typography>Search Pickflix</Typography>
+      <Typography>Search</Typography>
     </ButtonBase>
   );
 };

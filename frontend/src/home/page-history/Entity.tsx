@@ -1,7 +1,7 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import Poster from "../../movie/components/MoviePosterCard";
-import PersonAvatar from "../../person/legacy/PersonAvatar";
+import PersonAvatar from "../../person/PersonAvatar";
 import { Entity } from "./page-history";
 
 type Props = {

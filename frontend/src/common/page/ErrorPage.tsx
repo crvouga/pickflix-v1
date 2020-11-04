@@ -1,7 +1,7 @@
 import { Button, makeStyles, Typography } from "@material-ui/core";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import React from "react";
-import NavigationBar from "../../navigation/NavigationBar";
+import ResponsiveNavigation from "../../navigation/ResponsiveNavigation";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,7 +24,7 @@ export default () => {
 
   return (
     <React.Fragment>
-      <NavigationBar />
+      <ResponsiveNavigation />
       <div className={classes.root}>
         <Typography variant="h6">Something went wrong</Typography>
         <Typography gutterBottom color="textSecondary">

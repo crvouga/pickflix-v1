@@ -3,7 +3,7 @@ import ExploreOutlinedIcon from "@material-ui/icons/ExploreOutlined";
 import React from "react";
 import { useHistory } from "react-router";
 import { DiscoverMovieTag } from "./query/types";
-import useDiscoverLogic from "./useDiscoverLogic";
+import useDiscoverState from "./useDiscoverState";
 
 type Props = IconButtonProps & {
   tag: DiscoverMovieTag;
@@ -11,7 +11,7 @@ type Props = IconButtonProps & {
 
 export default ({ tag, ...props }: Props) => {
   const history = useHistory();
-  const discoverLogic = useDiscoverLogic();
+  const discoverLogic = useDiscoverState();
 
   const handleClick = () => {
     discoverLogic.clear();

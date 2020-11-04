@@ -1,13 +1,5 @@
-import {
-  Box,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-} from "@material-ui/core";
-import HistoryIcon from "@material-ui/icons/History";
+import { Box, Typography } from "@material-ui/core";
 import React from "react";
-import { useDispatch } from "react-redux";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
 import useBoolean from "../../common/hooks/useBoolean";
 import ClearDialog from "./ClearDialog";

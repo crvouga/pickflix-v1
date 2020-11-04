@@ -1,45 +1,15 @@
-import { Box, IconButton, Tab, Tabs, Toolbar } from "@material-ui/core";
-import GridOnIcon from "@material-ui/icons/GridOn";
-import ListIcon from "@material-ui/icons/List";
-import SearchIcon from "@material-ui/icons/Search";
-import SortIcon from "@material-ui/icons/Sort";
-import ToggleButton from "@material-ui/lab/ToggleButton";
-import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-import React from "react";
+import { Box, MenuItem, Select, Tab, Tabs } from "@material-ui/core";
+import { ascend, descend, sort, uniqBy } from "ramda";
+import React, { ChangeEvent, useState } from "react";
+import useBoolean from "../../common/hooks/useBoolean";
+import MoviePosterGrid from "../../movie/components/MoviePosterGrid";
 import {
   PersonDetailsResponse,
+  PersonMovieCredit,
   PersonMovieCreditsResponse,
 } from "../../tmdb/types";
-import PersonCreditsCast from "./PersonCreditsCast";
-import PersonCreditsCrew from "./PersonCreditsCrew";
-import ViewComfyIcon from "@material-ui/icons/ViewComfy";
-import ViewModuleIcon from "@material-ui/icons/ViewModule";
-const ToggleButtons = () => {
-  const [alignment, setAlignment] = React.useState<string | null>("left");
-
-  const handleAlignment = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string | null
-  ) => {
-    setAlignment(newAlignment);
-  };
-
-  return (
-    <ToggleButtonGroup
-      value={alignment}
-      exclusive
-      onChange={handleAlignment}
-      aria-label="text alignment"
-    >
-      <ToggleButton value="left" aria-label="left aligned">
-        <ViewComfyIcon />
-      </ToggleButton>
-      <ToggleButton value="center" aria-label="centered">
-        <ViewModuleIcon />
-      </ToggleButton>
-    </ToggleButtonGroup>
-  );
-};
+import PersonCreditsDialog from "./PersonCreditsDialog";
+import moment from "moment";
 
 const TabPanel = (props: {
   children?: React.ReactNode;
@@ -60,51 +30,93 @@ type Props = {
   credits: PersonMovieCreditsResponse;
 };
 
+enum SortKey {
+  MostPopular = "Most Popular",
+  DateAddedOldest = "Date Added (Oldest)",
+  DateAddedNewest = "Date Added (Newest)",
+}
+
+const sortBySortKey = {
+  [SortKey.MostPopular]: (credits: PersonMovieCredit[]) =>
+    credits.slice().sort((a, b) => b.popularity - a.popularity),
+
+  [SortKey.DateAddedNewest]: (credits: PersonMovieCredit[]) =>
+    credits
+      .slice()
+      .sort(
+        (a, b) =>
+          new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime()
+      ),
+
+  [SortKey.DateAddedOldest]: (credits: PersonMovieCredit[]) =>
+    credits
+      .slice()
+      .sort(
+        (a, b) =>
+          new Date(a.releaseDate).getTime() - new Date(b.releaseDate).getTime()
+      ),
+};
+
 export default ({ details, credits }: Props) => {
+  const isDialogOpen = useBoolean(false);
   const { cast, crew } = credits;
 
-  const knownForCast = details.knownForDepartment.toLowerCase() === "acting";
+  const knownForCast =
+    (details.knownForDepartment || "acting").toLowerCase() === "acting" &&
+    cast.length > 0;
 
-  const [value, setValue] = React.useState(knownForCast ? 0 : 1);
+  const [index, setIndex] = useState(knownForCast ? 0 : 1);
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue);
+  const handleChangeIndex = (event: ChangeEvent<{}>, newIndex: number) => {
+    setIndex(newIndex);
   };
 
-  const handleChangeIndex = (index: number) => {
-    setValue(index);
+  const [sortKey, setSortKey] = useState<SortKey>(SortKey.MostPopular);
+  const handleChangeSortKey = (event: ChangeEvent<{ value: unknown }>) => {
+    setSortKey(event.target.value as SortKey);
   };
+
+  const movies = uniqBy(
+    (_) => _.id,
+    sortBySortKey[sortKey](index === 0 ? cast : crew)
+  );
 
   return (
     <React.Fragment>
-      <Toolbar>
-        <IconButton>
-          <SearchIcon />
-        </IconButton>
-        <IconButton>
-          <SortIcon />
-        </IconButton>
-      </Toolbar>
-      <Box paddingX={2} paddingBottom={2}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          centered
-        >
-          <Tab disabled={cast.length === 0} label={`Cast · ${cast.length}`} />
-          <Tab disabled={crew.length === 0} label={`Crew · ${crew.length}`} />
-        </Tabs>
+      <PersonCreditsDialog
+        credits={credits}
+        open={isDialogOpen.value}
+        onClose={isDialogOpen.setFalse}
+      />
+      <Box display="flex" flexWrap="wrap">
+        <Box flex={1} paddingRight={4} p={2}>
+          <Tabs
+            value={index}
+            onChange={handleChangeIndex}
+            indicatorColor="primary"
+            textColor="primary"
+          >
+            <Tab disabled={cast.length === 0} label={`Cast · ${cast.length}`} />
+            <Tab disabled={crew.length === 0} label={`Crew · ${crew.length}`} />
+          </Tabs>
+        </Box>
+        <Box display="flex" justifyContent="center" alignItems="center" p={2}>
+          <Select
+            variant="outlined"
+            value={sortKey}
+            onChange={handleChangeSortKey}
+            autoWidth
+          >
+            {Object.entries(SortKey).map(([key, value]) => (
+              <MenuItem key={key} value={value}>
+                {value}
+              </MenuItem>
+            ))}
+          </Select>
+        </Box>
       </Box>
 
-      <TabPanel value={value} index={0}>
-        <PersonCreditsCast cast={cast} />
-      </TabPanel>
-
-      <TabPanel value={value} index={1}>
-        <PersonCreditsCrew crew={crew} />
-      </TabPanel>
+      <MoviePosterGrid movies={movies} />
     </React.Fragment>
   );
 };

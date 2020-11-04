@@ -7,11 +7,11 @@ import MoviePosterGrid, {
   MoviePosterGridSkeleton,
 } from "../movie/components/MoviePosterGrid";
 import { tagsToParams } from "./query/types";
-import useDiscoverLogic from "./useDiscoverLogic";
+import useDiscoverState from "./useDiscoverState";
 import useDiscoverMovieQuery from "./useDiscoverQuery";
 
 export default () => {
-  const { activeTags } = useDiscoverLogic();
+  const { activeTags } = useDiscoverState();
   const [discoverQueryParams] = useDebounce(tagsToParams(activeTags), 100);
   const { fetchMoreRef, data, error, canFetchMore } = useDiscoverMovieQuery(
     discoverQueryParams

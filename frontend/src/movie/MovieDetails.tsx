@@ -79,7 +79,7 @@ export default ({
           variant="body1"
           color="textSecondary"
           gutterBottom
-          ideal={500}
+          ideal={250}
         >
           {details.overview}
         </ReadMoreTypography>

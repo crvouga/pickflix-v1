@@ -2,7 +2,7 @@ import matchSorter from "match-sorter";
 import { uniqBy } from "ramda";
 import { useDebounce } from "use-debounce";
 import { DiscoverMovieTag, TagType } from "../query/types";
-import useDiscoverLogic from "../useDiscoverLogic";
+import useDiscoverState from "../useDiscoverState";
 import useSearchQuery from "./useSearchQuery";
 
 type Props = {
@@ -16,7 +16,7 @@ const filter = (searchQuery: string, tags: DiscoverMovieTag[]) => {
 };
 
 export default ({ searchQuery }: Props) => {
-  const { tags } = useDiscoverLogic();
+  const { tags } = useDiscoverState();
 
   const filteredTags = filter(searchQuery, tags);
 

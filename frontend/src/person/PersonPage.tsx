@@ -1,11 +1,19 @@
-import { Container } from "@material-ui/core";
+import {
+  AppBar,
+  Container,
+  Hidden,
+  Toolbar,
+  Typography,
+} from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
 import usePageHistory from "../home/page-history/usePageHistory";
-import NavBar from "../navigation/NavBar";
+import BackButton from "../navigation/BackButton";
+import NavigationDesktop from "../navigation/Navigation.Desktop";
+import NavigationMobile from "../navigation/Navigation.Mobile";
 import PersonCredits from "./credits/PersonCredits";
 import PersonDetails from "./PersonDetails";
 import { getPersonPage, queryKeys } from "./query";
@@ -35,7 +43,19 @@ export default () => {
 
   return (
     <React.Fragment>
-      <NavBar />
+      <Hidden xsDown>
+        <NavigationDesktop />
+      </Hidden>
+      <Hidden smUp>
+        <AppBar color="default" position="sticky">
+          <Toolbar>
+            <BackButton edge="start" />
+            <Typography variant="h6">{details.name}</Typography>
+          </Toolbar>
+        </AppBar>
+        <NavigationMobile />
+      </Hidden>
+
       <Container disableGutters maxWidth="md">
         <PersonDetails details={details} />
         <PersonCredits details={details} credits={credits} />
