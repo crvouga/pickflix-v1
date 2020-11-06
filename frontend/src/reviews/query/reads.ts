@@ -18,3 +18,5 @@ export const getReviews = async (params: GetReviewsParams) => {
   });
   return data;
 };
+
+export const getReviewsForUser = async ({ userId }: { userId: string }) => {};

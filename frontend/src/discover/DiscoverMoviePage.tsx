@@ -32,7 +32,7 @@ export default () => {
       <ResponsiveNavigation />
 
       <Box className={classes.sticky}>
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" disableGutters>
           <Toolbar>
             <AddButton edge="start" />
             <TuneButton />
@@ -47,7 +47,9 @@ export default () => {
       </Box>
 
       <Container maxWidth="md" disableGutters>
-        <DiscoverMovieResults />
+        <Box p={1}>
+          <DiscoverMovieResults />
+        </Box>
       </Container>
     </React.Fragment>
   );

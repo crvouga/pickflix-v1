@@ -13,11 +13,11 @@ import { useHistory } from "react-router";
 import { toYear } from "../../person/utils";
 import makeImageUrl from "../../tmdb/makeImageUrl";
 
-type Props = ListItemProps & {
+type Props = Omit<ListItemProps, "button"> & {
   movie: {
     id: string;
     title: string;
-    releaseDate: string;
+    releaseDate?: string | null;
     posterPath?: string | null;
     backdropPath?: string | null;
   };
@@ -35,7 +35,7 @@ export default (props: Props) => {
   };
 
   return (
-    <ListItem button onClick={handleClick}>
+    <ListItem onClick={handleClick} {...ListItemProps}>
       <ListItemAvatar>
         <Avatar variant="square" src={src}>
           <MovieIcon />

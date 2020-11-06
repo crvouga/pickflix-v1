@@ -5,7 +5,6 @@ import ListItemSkeleton from "../common/components/ListItemSkeleton";
 import LoadingBox from "../common/components/LoadingBox";
 import SearchResultListItem from "./SearchResultListItem";
 import useSearchQuery from "./useSearchQuery";
-import useSearchKeyboardBindings from "./useSearchKeyboardBindings";
 
 type Props = {
   text: string;

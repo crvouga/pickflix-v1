@@ -11,6 +11,7 @@ export const queryKeys = {
   tmdbConfiguration: () => ["tmdb", "configuration"],
   video: (tmdbMediaId: string) => ["video", tmdbMediaId],
   movieReviews: (tmdbMediaId: string) => ["movie", tmdbMediaId, "reviews"],
+  searchMovies: ({ query }: { query: string }) => ["search", "movie", query],
 };
 
 export const getTmdbMovieReviews = async ({
@@ -62,6 +63,25 @@ export const getTopRatedMovies = async () => {
 export const getNowPlayingMovies = async () => {
   const { data } = await BackendAPI.get<Paginated<Movie>>(
     "/api/tmdb/movie/nowPlaying"
+  );
+  return data;
+};
+
+export const getSearchMovies = async ({
+  query,
+  page,
+}: {
+  query: string;
+  page: number;
+}) => {
+  const { data } = await BackendAPI.get<Paginated<Movie>>(
+    "/api/tmdb/search/movie",
+    {
+      params: {
+        query,
+        page,
+      },
+    }
   );
   return data;
 };

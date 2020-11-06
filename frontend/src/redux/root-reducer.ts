@@ -10,8 +10,10 @@ import { search } from "../search/redux/search";
 import { snackbar } from "../snackbar/redux/snackbar";
 import { video } from "../video/redux/video";
 import { AppState } from "./types";
+import { reviewForm } from "../reviews/redux/review-form";
 
 const reducers: { [key in keyof AppState]: Reducer } = {
+  reviewForm: reviewForm.reducer,
   editListForm: editListForm.reducer,
   addListForm: addListForm.reducer,
   addListItemForm: addListItemForm.reducer,

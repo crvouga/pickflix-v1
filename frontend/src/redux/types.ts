@@ -8,8 +8,10 @@ import { PersonPageUiState } from "../person/redux/person-page-ui";
 import { SearchState } from "../search/redux/search";
 import { SnackbarState } from "../snackbar/redux/snackbar";
 import { VideoState } from "../video/redux/video";
+import { ReviewFormState } from "../reviews/redux/review-form";
 
 export type AppState = {
+  reviewForm: ReviewFormState;
   editListForm: EditListFormState;
   addListItemForm: AddListItemFormState;
   addListForm: AddListFormState;

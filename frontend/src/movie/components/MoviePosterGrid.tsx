@@ -12,7 +12,7 @@ export const MoviePosterGrid = (props: Props) => {
   return (
     <Grid container spacing={1}>
       {movies.map((movie, index) => (
-        <Grid item xs={6} sm={4} md={3} key={index}>
+        <Grid item xs={6} sm={4} md={3} key={[movie.id, index].join(" ")}>
           <MoviePosterCard movie={movie} />
         </Grid>
       ))}

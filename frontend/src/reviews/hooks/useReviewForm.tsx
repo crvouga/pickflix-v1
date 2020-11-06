@@ -2,21 +2,33 @@ import { TmdbMediaType } from "../../tmdb/types";
 import { addReviewMutation } from "../query";
 import { useQueryCache } from "react-query";
 import useSnackbar from "../../snackbar/useSnackbar";
+import { useSelector, useDispatch } from "react-redux";
+import { reviewForm } from "../redux/review-form";
+import { bindActionCreators } from "redux";
 
-type Props = {
-  tmdbMediaId: string;
-  tmdbMediaType: TmdbMediaType;
+const useReviewFormState = () => {
+  const slice = useSelector(reviewForm.selectors.slice);
+  const dispatch = useDispatch();
+  return {
+    ...slice,
+    ...bindActionCreators(reviewForm.actions, dispatch),
+  };
 };
 
-export default ({ tmdbMediaId, tmdbMediaType }: Props) => {
+export default () => {
+  const reviewFormState = useReviewFormState();
+  const { tmdbMedia } = reviewFormState;
   const queryCache = useQueryCache();
   const snackbar = useSnackbar();
   const submit = async ({ content }: { content: string }) => {
+    if (!tmdbMedia) {
+      throw new Error("tmdbMedia required");
+    }
+
     try {
       await addReviewMutation(queryCache)({
+        ...tmdbMedia,
         content,
-        tmdbMediaId,
-        tmdbMediaType,
       });
 
       snackbar.display({
@@ -29,6 +41,7 @@ export default ({ tmdbMediaId, tmdbMediaType }: Props) => {
   };
 
   return {
+    ...reviewFormState,
     submit,
   };
 };

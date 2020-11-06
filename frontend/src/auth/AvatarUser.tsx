@@ -35,9 +35,12 @@ const useStyles = makeStyles((theme) => ({
 export default ({ user, ...AvatarProps }: Props) => {
   const classes = useStyles({ user });
   const initials = nameToInitials(user.displayName);
-  const className = clsx(classes.avatar, AvatarProps.className);
+
   return (
-    <Avatar {...AvatarProps} className={className}>
+    <Avatar
+      {...AvatarProps}
+      className={clsx(classes.avatar, AvatarProps.className)}
+    >
       {initials}
     </Avatar>
   );

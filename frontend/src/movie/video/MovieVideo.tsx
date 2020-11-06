@@ -1,6 +1,5 @@
 import {
   Box,
-  Divider,
   Hidden,
   List,
   ListItem,
@@ -9,16 +8,13 @@ import {
   Paper,
 } from "@material-ui/core";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import useBoolean from "../../common/hooks/useBoolean";
 import { MovieVideo, MovieVideos } from "../../tmdb/types";
 import useVideoState from "../../video/useVideoState";
 import { YoutubeStatusAlertError } from "../../youtube/YoutubeStatusAlert";
-import {
-  MovieVideoListItem,
-  YoutubeVideoListItemContainer,
-} from "./VideoListItem";
 import MovieVideoDialog from "./MovieVideoDialog";
-import useBoolean from "../../common/hooks/useBoolean";
+import { MovieVideoListItem } from "./VideoListItem";
 
 const VIDEO_MAX_LENGTH = 3;
 
@@ -44,7 +40,13 @@ const VideosScroll = ({
   );
 };
 
-export default ({ videos }: { videos: MovieVideos }) => {
+export default ({
+  tmdbMediaId,
+  videos,
+}: {
+  tmdbMediaId: string;
+  videos: MovieVideos;
+}) => {
   const videoState = useVideoState();
   const isDialogOpen = useBoolean(false);
 
@@ -52,7 +54,7 @@ export default ({ videos }: { videos: MovieVideos }) => {
     videoState.setCurrentVideo(videos.results[0]);
     videoState.setPlaylist(videos.results);
     videoState.setError(undefined);
-  }, []);
+  }, [tmdbMediaId]);
 
   const handleClick = (video: MovieVideo) => {
     videoState.setCurrentVideo(video);

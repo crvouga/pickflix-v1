@@ -93,7 +93,7 @@ export default () => {
       <Container disableGutters maxWidth="md">
         <Grid container direction="row-reverse">
           <Grid item xs={12} sm={6}>
-            <MovieVideo videos={videos} />
+            <MovieVideo tmdbMediaId={details.id} videos={videos} />
           </Grid>
           <Grid item xs={12} sm={6}>
             <MovieDetails releaseDates={releaseDates} details={details} />

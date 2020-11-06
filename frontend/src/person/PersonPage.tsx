@@ -12,8 +12,7 @@ import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
 import usePageHistory from "../home/page-history/usePageHistory";
 import BackButton from "../navigation/BackButton";
-import NavigationDesktop from "../navigation/Navigation.Desktop";
-import NavigationMobile from "../navigation/Navigation.Mobile";
+import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
 import PersonCredits from "./credits/PersonCredits";
 import PersonDetails from "./PersonDetails";
 import { getPersonPage, queryKeys } from "./query";
@@ -43,9 +42,7 @@ export default () => {
 
   return (
     <React.Fragment>
-      <Hidden xsDown>
-        <NavigationDesktop />
-      </Hidden>
+      <ResponsiveNavigation />
       <Hidden smUp>
         <AppBar color="default" position="sticky">
           <Toolbar>
@@ -53,11 +50,11 @@ export default () => {
             <Typography variant="h6">{details.name}</Typography>
           </Toolbar>
         </AppBar>
-        <NavigationMobile />
       </Hidden>
 
+      <PersonDetails details={details} />
+
       <Container disableGutters maxWidth="md">
-        <PersonDetails details={details} />
         <PersonCredits details={details} credits={credits} />
       </Container>
     </React.Fragment>
