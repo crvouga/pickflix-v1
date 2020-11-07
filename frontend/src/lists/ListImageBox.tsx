@@ -4,6 +4,13 @@ import React from "react";
 import AspectRatio from "../common/components/AspectRatio";
 import makeImageUrl from "../tmdb/makeImageUrl";
 import { ListAggergation } from "./query/types";
+import clsx from "clsx";
+
+const useStyles = makeStyles((theme) => ({
+  borderRadius: {
+    borderRadius: theme.spacing(1),
+  },
+}));
 
 const useStylesPosterBox = makeStyles((theme) => ({
   poster: {
@@ -11,23 +18,23 @@ const useStylesPosterBox = makeStyles((theme) => ({
     backgroundImage: ({ posterSrc }: { posterSrc: string }) =>
       `url(${posterSrc})`,
   },
-  iconContainer: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: theme.palette.grey[300],
-  },
 }));
 
 const PosterBox = ({
   posterPath,
   ...props
 }: { posterPath?: string } & BoxProps) => {
-  const classes = useStylesPosterBox({
+  const classesPosterBox = useStylesPosterBox({
     posterSrc: makeImageUrl(2, { posterPath }),
   });
 
-  return <AspectRatio ratio={[1, 1]} className={classes.poster} {...props} />;
+  return (
+    <AspectRatio
+      ratio={[1, 1]}
+      className={classesPosterBox.poster}
+      {...props}
+    />
+  );
 };
 
 const useStylesMovieIconBox = makeStyles((theme) => ({
@@ -40,12 +47,12 @@ const useStylesMovieIconBox = makeStyles((theme) => ({
 }));
 
 const MovieIconBox = (props: BoxProps) => {
-  const classes = useStylesMovieIconBox();
+  const classesMovieIconBox = useStylesMovieIconBox();
   return (
     <AspectRatio
       ratio={[1, 1]}
       ContentProps={{
-        className: classes.iconContainer,
+        className: classesMovieIconBox.iconContainer,
       }}
       {...props}
     >
@@ -55,6 +62,8 @@ const MovieIconBox = (props: BoxProps) => {
 };
 
 export default ({ list, ...props }: { list: ListAggergation } & BoxProps) => {
+  const classes = useStyles();
+
   if (list.listItems.length === 0) {
     return <MovieIconBox {...props} />;
   }
@@ -73,6 +82,7 @@ export default ({ list, ...props }: { list: ListAggergation } & BoxProps) => {
   return (
     <AspectRatio
       ratio={[1, 1]}
+      className={classes.borderRadius}
       ContentProps={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
       {...props}
     >

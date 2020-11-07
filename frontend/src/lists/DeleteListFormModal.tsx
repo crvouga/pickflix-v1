@@ -11,6 +11,7 @@ import useDeleteListForm from "./hooks/useDeleteListForm";
 const useStylesDialog = makeStyles({
   paper: {
     width: "80%",
+    maxWidth: "360px",
   },
 });
 
@@ -24,11 +25,11 @@ export default (props: Props) => {
   const { listId, onClose, open } = props;
   const classesDialog = useStylesDialog();
 
-  const deleteListForm = useDeleteListForm({ listId });
+  const deleteListForm = useDeleteListForm();
 
   const handleDelete = async () => {
     try {
-      await deleteListForm.submit();
+      await deleteListForm.submit({ listId });
     } finally {
       onClose();
     }

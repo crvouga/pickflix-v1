@@ -1,57 +1,37 @@
-import {
-  Avatar,
-  ListItem,
-  ListItemAvatar,
-  ListItemIcon,
-  ListItemProps,
-  ListItemSecondaryAction,
-  ListItemText,
-} from "@material-ui/core";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import MovieIcon from "@material-ui/icons/Movie";
-import PublicOutlinedIcon from "@material-ui/icons/PublicOutlined";
+import { Box, ButtonBase, Typography, Chip } from "@material-ui/core";
 import React from "react";
-import makeImageUrl from "../tmdb/makeImageUrl";
+import AvatarUser from "../auth/AvatarUser";
+import ListImageBox from "./ListImageBox";
 import { ListAggergation } from "./query/types";
 
-type Props = ListItemProps & {
-  list: ListAggergation;
-  onClick: () => void;
-};
-
-export default ({ list, onClick }: Props) => {
-  const listItem = list?.listItems?.[0];
+export default ({ list }: { list: ListAggergation }) => {
   return (
-    <ListItem button onClick={onClick}>
-      <ListItemAvatar>
-        <Avatar
-          key={listItem?.listItem.id}
-          variant="square"
-          src={makeImageUrl(3, {
-            posterPath: listItem?.tmdbData.posterPath,
-          })}
+    <ButtonBase style={{ width: "100%" }}>
+      <Box display="flex" width="100%">
+        <Box width="100px">
+          <ListImageBox list={list} width="100%" />
+        </Box>
+        <Box
+          paddingLeft={2}
+          textAlign="left"
+          display="flex"
+          flexDirection="column"
+          alignItems="flex-start"
         >
-          <MovieIcon />
-        </Avatar>
-      </ListItemAvatar>
-
-      <ListItemText
-        primary={list?.list.title}
-        secondary={`${list?.listItemCount || 0} items`}
-      />
-
-      <ListItemSecondaryAction>
-        {list.list.visibility === "public" && (
-          <ListItemIcon>
-            <PublicOutlinedIcon />
-          </ListItemIcon>
-        )}
-        {list.list.visibility === "private" && (
-          <ListItemIcon>
-            <LockOutlinedIcon />
-          </ListItemIcon>
-        )}
-      </ListItemSecondaryAction>
-    </ListItem>
+          <Typography variant="h5">{list.list.title}</Typography>
+          <Typography variant="subtitle1" color="textSecondary">
+            {list.listItemCount} items
+          </Typography>
+          <Box>
+            <Chip
+              size="small"
+              variant="outlined"
+              avatar={<AvatarUser user={list.owner} />}
+              label={list.owner.username}
+            />
+          </Box>
+        </Box>
+      </Box>
+    </ButtonBase>
   );
 };

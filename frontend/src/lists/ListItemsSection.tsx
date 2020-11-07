@@ -2,9 +2,8 @@ import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import ErrorBox from "../common/components/ErrorBox";
 import LoadingBox from "../common/components/LoadingBox";
-import Poster from "../movie/components/MoviePosterCard";
-import { useQueryListItems } from "./hooks/query";
 import MoviePosterGrid from "../movie/components/MoviePosterGrid";
+import { useQueryListItems } from "./hooks/query";
 
 type Props = {
   listId: string;

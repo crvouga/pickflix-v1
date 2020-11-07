@@ -4,7 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { ViewListButton } from "../../snackbar/Snackbar";
 import useSnackbar from "../../snackbar/useSnackbar";
-import { addListItemMutation, addListMutation } from "../query";
+import {
+  addListItemMutation,
+  addListMutation,
+  postList,
+  postListItem,
+} from "../query";
 import { addListForm } from "../redux/add-list-form";
 
 const useAddListFormState = () => {
@@ -33,24 +38,21 @@ export default () => {
   const submit = async ({ title }: { title: string }) => {
     const { itemInfos } = addListFormState;
     try {
-      const listInfo = {
+      const list = await postList({
         title,
         description: "",
-      };
-
-      const list = await addListMutation(queryCache)(listInfo);
+      });
 
       snackbar.display({
         message: `Created "${list.title}"`,
         action: <ViewListButton listId={list.id} />,
       });
 
-      if (itemInfos.length > 0) {
-        const listItemInfo = {
+      if (itemInfos[0]) {
+        await postListItem({
           ...itemInfos[0],
           listId: list.id,
-        };
-        await addListItemMutation(queryCache)(listItemInfo);
+        });
       }
     } catch (error) {
       const errors = error?.response?.data?.errors || [];
@@ -58,6 +60,8 @@ export default () => {
         addListFormState.setErrors(errors);
       }
       throw error;
+    } finally {
+      queryCache.invalidateQueries((query) => query.queryKey.includes("lists"));
     }
   };
 

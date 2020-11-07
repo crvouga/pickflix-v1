@@ -74,7 +74,9 @@ export default ({ currentUser }: { currentUser: User }) => {
         </Button>
       </Box>
 
-      <UserListsList onClick={handleClick} username={currentUser.username} />
+      <Box p={1}>
+        <UserListsList onClick={handleClick} username={currentUser.username} />
+      </Box>
     </ResponsiveDialog>
   );
 };

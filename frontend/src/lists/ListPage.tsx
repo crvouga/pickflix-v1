@@ -1,29 +1,33 @@
 import {
+  AppBar,
   Box,
+  Chip,
+  Container,
+  Hidden,
   IconButton,
   Paper,
   Toolbar,
   Typography,
-  Hidden,
-  AppBar,
-  Container,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/DeleteForeverOutlined";
 import EditIcon from "@material-ui/icons/EditOutlined";
 import React from "react";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
+import AvatarUser from "../auth/AvatarUser";
 import useBoolean from "../common/hooks/useBoolean";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
+import BackButton from "../navigation/BackButton";
 import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
 import DeleteListFormModal from "./DeleteListFormModal";
 import EditListFormModal from "./EditListFormModal";
 import { useQueryList } from "./hooks/query";
+import ListImageBox from "./ListImageBox";
 import ListItemsSection from "./ListItemsSection";
-import BackButton from "../navigation/BackButton";
 
 export default () => {
   const { listId } = useParams<{ listId: string }>();
+  const history = useHistory();
   const query = useQueryList({ listId });
 
   const isEditListModalOpen = useBoolean(false);
@@ -66,11 +70,29 @@ export default () => {
       <Box paddingBottom={2}>
         <Paper>
           <Container maxWidth="md">
-            <Box p={2} paddingTop={4} display="flex" flexDirection="row">
-              <Box>
+            <Box
+              width="100%"
+              display="flex"
+              flexDirection="column"
+              justifyContent="center"
+              alignItems="center"
+              p={2}
+            >
+              <Box width="150px" paddingBottom={1}>
+                <ListImageBox list={list} />
+              </Box>
+              <Box paddingBottom={1}>
                 <Typography variant="h5">{list.list.title}</Typography>
                 <Typography variant="body1">{list.list.description}</Typography>
               </Box>
+              <Chip
+                variant="outlined"
+                onClick={() => {
+                  history.push(`/user/${list.owner.username}`);
+                }}
+                avatar={<AvatarUser user={list.owner} />}
+                label={list.owner.username}
+              />
             </Box>
 
             <Toolbar>
@@ -85,7 +107,7 @@ export default () => {
           </Container>
         </Paper>
       </Box>
-      <Container maxWidth="md">
+      <Container disableGutters maxWidth="md">
         <ListItemsSection listId={list.list.id} />
       </Container>
     </React.Fragment>

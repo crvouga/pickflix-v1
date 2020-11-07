@@ -27,12 +27,11 @@ export default () => {
   const addListItemFormState = useAddListItemFormState();
 
   const submit = async (params: PostListItemParams) => {
-    console.log({ params });
     try {
-      const listItem = await postListItem(params);
+      await postListItem(params);
       snackbar.display({
         message: `Added to list`,
-        action: <ViewListButton listId={listItem.listId} />,
+        action: <ViewListButton listId={params.listId} />,
       });
     } catch (error) {
       snackbar.display({

@@ -9,6 +9,7 @@ import {
   Paper,
   Toolbar,
   Typography,
+  Button,
 } from "@material-ui/core";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import RateReviewOutlinedIcon from "@material-ui/icons/RateReviewOutlined";
@@ -96,36 +97,42 @@ export default ({ currentUser }: { currentUser: User }) => {
         </Container>
       </Paper>
 
-      <Container maxWidth="md" disableGutters>
-        <Box display="flex" paddingY={2}>
-          <LabeledIconButton
-            onClick={addListModal.open}
-            icon={<PlaylistAddIcon />}
-            label="Create List"
-          />
-          <LabeledIconButton
-            onClick={reviewModal.open}
-            icon={<RateReviewOutlinedIcon />}
-            label="Write Review"
-          />
-          {/* <LabeledIconButton icon={<GroupOutlinedIcon />} label="Watch With" /> */}
-        </Box>
-
-        <Box paddingX={2}>
-          <Grid container>
-            <Grid item xs={12} sm={6}>
+      <Container maxWidth="md">
+        <Grid container>
+          <Grid item xs={12} sm={6}>
+            <Box p={2}>
               <Typography variant="h5">Lists</Typography>
+              <Button
+                fullWidth
+                size="large"
+                onClick={addListModal.open}
+                startIcon={<PlaylistAddIcon />}
+                variant="outlined"
+              >
+                Create List
+              </Button>
               <UserListsList
                 onClick={handleClickList}
                 username={currentUser.username}
               />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <Typography variant="h5">Reviews</Typography>
-              <UserReviewsList username={currentUser.username} />
-            </Grid>
+            </Box>
           </Grid>
-        </Box>
+          <Grid item xs={12} sm={6}>
+            <Box p={2}>
+              <Typography variant="h5">Reviews</Typography>
+              <Button
+                fullWidth
+                size="large"
+                onClick={reviewModal.open}
+                startIcon={<RateReviewOutlinedIcon />}
+                variant="outlined"
+              >
+                Write Review
+              </Button>
+              <UserReviewsList username={currentUser.username} />
+            </Box>
+          </Grid>
+        </Grid>
       </Container>
     </React.Fragment>
   );

@@ -1,26 +1,18 @@
-import { Box, Card, Typography, CardActionArea } from "@material-ui/core";
+import {
+  Box,
+  Card,
+  Typography,
+  CardActionArea,
+  ButtonBase,
+} from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import LoadingBox from "../common/components/LoadingBox";
 import ListImageBox from "./ListImageBox";
 import { getUsersLists, queryKeys } from "./query";
 import { ListAggergation } from "./query/types";
-
-export const MediaList = ({ list }: { list: ListAggergation }) => {
-  return (
-    <CardActionArea>
-      <Box display="flex" width="100%">
-        <Box width="100px">
-          <ListImageBox list={list} width="100%" height="100%" />
-        </Box>
-        <Box p={2}>
-          <Typography variant="h5">{list.list.title}</Typography>
-          <Typography>{list.listItemCount} items</Typography>
-        </Box>
-      </Box>
-    </CardActionArea>
-  );
-};
+import AvatarUser from "../auth/AvatarUser";
+import ListListItem from "./ListListItem";
 
 export default ({
   username,
@@ -53,7 +45,7 @@ export default ({
     <React.Fragment>
       {lists.map((list) => (
         <Box key={list.list.id} paddingY={1} onClick={() => handleClick(list)}>
-          <MediaList list={list} />
+          <ListListItem list={list} />
         </Box>
       ))}
     </React.Fragment>

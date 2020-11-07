@@ -26,6 +26,7 @@ import makeImageUrl from "../tmdb/makeImageUrl";
 import { useQueryList, useQueryListItems } from "./hooks/query";
 import useEditListForm from "./hooks/useEditListForm";
 import { Alert } from "@material-ui/lab";
+import ResponsiveDialog from "../common/components/ResponsiveDialog";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
@@ -41,7 +42,7 @@ type Props = DialogProps & {
 export default ({ listId, ...DialogProps }: Props) => {
   const classesDialog = useStylesDialog();
 
-  const editListForm = useEditListForm({ listId });
+  const editListForm = useEditListForm();
   const refTitle = useRef<HTMLInputElement>();
   const refDescription = useRef<HTMLInputElement>();
 
@@ -72,8 +73,10 @@ export default ({ listId, ...DialogProps }: Props) => {
   const handleSubmit = async () => {
     try {
       await editListForm.submit({
+        listId,
         title: refTitle.current?.value || "",
         description: refDescription.current?.value || "",
+        listItemIds: Object.values(editListForm.deletions),
       });
       handleClose();
     } catch (error) {
@@ -82,7 +85,7 @@ export default ({ listId, ...DialogProps }: Props) => {
   };
 
   return (
-    <Dialog fullScreen classes={classesDialog} {...DialogProps}>
+    <ResponsiveDialog {...DialogProps}>
       <React.Fragment>
         <AppBar color="default" position="sticky">
           <Toolbar>
@@ -176,6 +179,6 @@ export default ({ listId, ...DialogProps }: Props) => {
           </List>
         </Box>
       </React.Fragment>
-    </Dialog>
+    </ResponsiveDialog>
   );
 };

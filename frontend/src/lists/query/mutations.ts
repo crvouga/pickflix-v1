@@ -1,6 +1,6 @@
 import { innerJoin } from "ramda";
 import { QueryCache } from "react-query";
-import { List, ListItem } from "./types";
+import { List, ListItem, ListAggergation } from "./types";
 import { queryKeys } from "./query-keys";
 import {
   deleteList,
@@ -26,72 +26,27 @@ export const editListMutation = (queryCache: QueryCache) => async (
   const { title, description, listId } = params;
   const key = queryKeys.list(listId);
 
-  const previous = queryCache.getQueryData<List>(key);
+  const previous = queryCache.getQueryData<ListAggergation>(key);
 
   if (!previous) {
     throw new Error("no list to edit");
   }
 
-  const optimistic: List = {
+  const optimistic: ListAggergation = {
     ...previous,
-    title,
-    description,
+    list: {
+      ...previous.list,
+      title,
+      description,
+    },
   };
 
   queryCache.setQueryData(key, optimistic);
 
   try {
-    const patchedList = await patchList(params);
-    queryCache.setQueryData(key, patchedList);
+    await patchList(params);
   } catch (error) {
     queryCache.setQueryData(key, previous);
-    throw error;
-  } finally {
-    queryCache.invalidateQueries(key);
-  }
-};
-
-/* 
-
-
-*/
-
-export const deleteListMutation = (queryCache: QueryCache) => async (
-  params: DeleteListParams
-) => {
-  const { listId } = params;
-  const key = queryKeys.lists();
-
-  const previous = queryCache.getQueryData<List[]>(key) || [];
-
-  const optimistic = previous.filter((list) => list.id !== listId);
-
-  queryCache.setQueryData(key, optimistic);
-
-  try {
-    await deleteList(params);
-    queryCache.removeQueries(queryKeys.list(listId));
-  } catch (error) {
-    queryCache.setQueryData(key, previous);
-    throw error;
-  } finally {
-    queryCache.invalidateQueries(key);
-  }
-};
-
-/* 
-
-
-*/
-
-export const addListMutation = (queryCache: QueryCache) => async (
-  params: PostListParams
-) => {
-  const key = queryKeys.lists();
-  try {
-    const postedList = await postList(params);
-    return postedList;
-  } catch (error) {
     throw error;
   } finally {
     queryCache.invalidateQueries(key);
@@ -129,6 +84,24 @@ export const deleteListItemsMutation = (queryCache: QueryCache) => async ({
     });
   } catch (error) {
     queryCache.setQueryData(key, previousListItems);
+    throw error;
+  } finally {
+    queryCache.invalidateQueries(key);
+  }
+};
+/* 
+
+
+*/
+
+export const addListMutation = (queryCache: QueryCache) => async (
+  params: PostListParams
+) => {
+  const key = queryKeys.lists();
+  try {
+    const postedList = await postList(params);
+    return postedList;
+  } catch (error) {
     throw error;
   } finally {
     queryCache.invalidateQueries(key);

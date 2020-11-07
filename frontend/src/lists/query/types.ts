@@ -1,4 +1,5 @@
 import { Movie } from "../../tmdb/types";
+import { User } from "../../auth/query";
 
 export type ListItem = {
   id: string;
@@ -23,9 +24,9 @@ export type List = {
 
 export type ListAggergation = {
   list: List;
-  //
   listItemCount: number;
   listItems: ListItemAggergation[];
+  owner: User;
 };
 
 export type AutoListKey = "watch-next" | "liked";

@@ -2,7 +2,7 @@ import React from "react";
 import { useCurrentUser } from "../auth/useAuth";
 import LoadingPage from "../common/page/LoadingPage";
 import ProfilePageAuthenticated from "./ProfilePage.Authenticated";
-import ProfilePageUnauthenticated from "./ProfilePage.Unauthenticated";
+import SignInPage from "./SignInPage";
 
 export default () => {
   const currentUser = useCurrentUser();
@@ -12,7 +12,7 @@ export default () => {
   }
 
   if (currentUser === null) {
-    return <ProfilePageUnauthenticated />;
+    return <SignInPage />;
   }
 
   return <ProfilePageAuthenticated currentUser={currentUser} />;

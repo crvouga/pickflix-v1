@@ -20,28 +20,22 @@ const useEditListFormState = () => {
   };
 };
 
-export default ({ listId }: { listId: string }) => {
+export default () => {
   const queryCache = useQueryCache();
   const snackbar = useSnackbar();
   const editListFormState = useEditListFormState();
 
-  const toggleDeletion = (listItem: ListItem) => {
-    const { [listItem.id]: id, ...ids } = editListFormState.deletions;
-    editListFormState.setDeletions({
-      ...ids,
-      ...(id ? {} : { [listItem.id]: listItem.id }),
-    });
-  };
-
   const submit = async ({
+    listId,
     title,
     description,
+    listItemIds,
   }: {
+    listId: string;
     title: string;
     description: string;
+    listItemIds: string[];
   }) => {
-    const { deletions } = editListFormState;
-
     try {
       await Promise.all([
         editListMutation(queryCache)({
@@ -51,7 +45,7 @@ export default ({ listId }: { listId: string }) => {
         }),
         deleteListItemsMutation(queryCache)({
           listId,
-          listItemIds: Object.values(deletions),
+          listItemIds,
         }),
       ]);
 
@@ -63,6 +57,14 @@ export default ({ listId }: { listId: string }) => {
       }
       throw error;
     }
+  };
+
+  const toggleDeletion = (listItem: ListItem) => {
+    const { [listItem.id]: id, ...ids } = editListFormState.deletions;
+    editListFormState.setDeletions({
+      ...ids,
+      ...(id ? {} : { [listItem.id]: listItem.id }),
+    });
   };
 
   return {

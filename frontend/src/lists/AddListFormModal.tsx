@@ -15,6 +15,7 @@ import useAddListForm from "./hooks/useAddListForm";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
+    maxWidth: "360px",
     width: "80%",
   },
 }));

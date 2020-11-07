@@ -36,15 +36,6 @@ export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
 
         return res.json(listAggergation);
       }
-
-      const autoLists = await listLogic.getAutoLists({ id: listId });
-
-      if (autoLists.length > 0) {
-        const [autoList] = autoLists;
-
-        return res.json(autoList);
-      }
-
       return res.status(404).end();
     } catch (error) {
       return next(error);
