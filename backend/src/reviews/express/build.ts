@@ -5,9 +5,11 @@ import { User } from "../../users/models/make-user";
 import { ReviewId } from "../models/make-review";
 import { ReviewVoteValue } from "../models/make-review-vote";
 import { Dependencies } from "./types";
+import { userLogic } from "../../users/logic";
 
 const handleValidationResult: Handler = (req, res, next) => {
   const errors = validationResult(req);
+
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
@@ -18,7 +20,26 @@ export const buildReviewsRouter = ({
   reviewLogic,
   middlewares,
 }: Dependencies) => (router: IRouter) => {
-  router.get("/reviews");
+  router.get(
+    "/users/:username/reviews",
+    param("username").isString(),
+    handleValidationResult,
+    async (req, res, next) => {
+      try {
+        const username = req.params.username as string;
+
+        const user = await userLogic.getUser({ username });
+
+        const reviewAggergations = await reviewLogic.getAllAggergations({
+          authorId: user.id,
+        });
+
+        res.status(200).json(reviewAggergations).end();
+      } catch (error) {
+        next(error);
+      }
+    }
+  );
 
   router.get(
     "/reviews",
@@ -32,13 +53,11 @@ export const buildReviewsRouter = ({
         const tmdbMediaId = Number(req.query.tmdbMediaId) as TmdbMediaId;
         const tmdbMediaType = req.query.tmdbMediaType as TmdbMediaType;
 
-        const reviewAggergations = await reviewLogic.getAllAggergationsForMedia(
-          {
-            userId: currentUser?.id,
-            tmdbMediaId,
-            tmdbMediaType,
-          }
-        );
+        const reviewAggergations = await reviewLogic.getAllAggergations({
+          userId: currentUser?.id,
+          tmdbMediaId,
+          tmdbMediaType,
+        });
 
         res.status(200).json(reviewAggergations).end();
       } catch (error) {
@@ -67,6 +86,7 @@ export const buildReviewsRouter = ({
     "/reviews",
     middlewares.isAuthenticated,
     body("content").isString(),
+    body("rating").isInt(),
     body("tmdbMediaId").isInt(),
     body("tmdbMediaType").isIn(Object.values(TmdbMediaType)),
     handleValidationResult,
@@ -76,12 +96,14 @@ export const buildReviewsRouter = ({
         const authorId = currentUser.id;
 
         const content = req.body.content as string;
+        const rating = req.body.rating as number;
         const tmdbMediaId = Number(req.body.tmdbMediaId) as TmdbMediaId;
         const tmdbMediaType = req.body.tmdbMediaType as TmdbMediaType;
 
         const review = await reviewLogic.addReview({
           authorId,
           content,
+          rating,
           tmdbMediaId,
           tmdbMediaType,
         });

@@ -12,10 +12,10 @@ import MovieIcon from "@material-ui/icons/Movie";
 import PublicOutlinedIcon from "@material-ui/icons/PublicOutlined";
 import React from "react";
 import makeImageUrl from "../tmdb/makeImageUrl";
-import { List } from "./query/types";
+import { ListAggergation } from "./query/types";
 
 type Props = ListItemProps & {
-  list: List;
+  list: ListAggergation;
   onClick: () => void;
 };
 
@@ -25,7 +25,7 @@ export default ({ list, onClick }: Props) => {
     <ListItem button onClick={onClick}>
       <ListItemAvatar>
         <Avatar
-          key={listItem?.id}
+          key={listItem?.listItem.id}
           variant="square"
           src={makeImageUrl(3, {
             posterPath: listItem?.tmdbData.posterPath,
@@ -36,17 +36,17 @@ export default ({ list, onClick }: Props) => {
       </ListItemAvatar>
 
       <ListItemText
-        primary={list?.title}
+        primary={list?.list.title}
         secondary={`${list?.listItemCount || 0} items`}
       />
 
       <ListItemSecondaryAction>
-        {list.visibility === "public" && (
+        {list.list.visibility === "public" && (
           <ListItemIcon>
             <PublicOutlinedIcon />
           </ListItemIcon>
         )}
-        {list.visibility === "private" && (
+        {list.list.visibility === "private" && (
           <ListItemIcon>
             <LockOutlinedIcon />
           </ListItemIcon>

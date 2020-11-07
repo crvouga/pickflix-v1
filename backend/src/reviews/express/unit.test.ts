@@ -15,6 +15,7 @@ describe("/api/reviews", () => {
 
     const posted = await supertest(app).post("/api/reviews").send({
       content: "cool movie",
+      rating: 5,
       tmdbMediaId: 550,
       tmdbMediaType: TmdbMediaType.movie,
     });
@@ -29,36 +30,7 @@ describe("/api/reviews", () => {
     expect(after.body[0].review).toEqual(expect.objectContaining(posted.body));
   });
 
-  it("GET /reviews?tmdbMediaId=...&tmdbMediaType=...", async () => {
-    const { app, reviewLogic, user } = await buildExpressAppFake();
-
-    //@ts-ignore
-    for (const i of [1, 2, 3]) {
-      await reviewLogic.addReview(
-        makeReviewFake({
-          authorId: (await makeUserFake()).id,
-        })
-      );
-    }
-
-    const expected = await reviewLogic.getAllAggergationsForMedia({
-      userId: user.id,
-      tmdbMediaId: 550,
-      tmdbMediaType: TmdbMediaType.movie,
-    });
-
-    const response = await supertest(app)
-      .get("/api/reviews")
-      .query({
-        tmdbMediaId: 550,
-        tmdbMediaType: TmdbMediaType.movie,
-      })
-      .expect(200);
-
-    expect(response.body).toStrictEqual(expected);
-  });
-
-  it("POST /reviews", async () => {
+  it("POST /reviews", async (done) => {
     const { app } = await buildExpressAppFake();
 
     const response = await supertest(app)
@@ -67,6 +39,7 @@ describe("/api/reviews", () => {
         content: "cool movie",
         tmdbMediaId: 550 as TmdbMediaId,
         tmdbMediaType: TmdbMediaType.movie,
+        rating: 4,
       })
       .expect(201);
 
@@ -79,5 +52,6 @@ describe("/api/reviews", () => {
         tmdbMediaType: TmdbMediaType.movie,
       })
     );
+    done();
   });
 });

@@ -4,57 +4,50 @@ import { TmdbMediaId, TmdbMediaType } from "../../../media/models/types";
 
 describe("GET /lists/{list-id}/list-items", () => {
   it("gets items", async (done) => {
-    try {
-      const { app, listLogic, user } = await buildExpressAppFake();
+    const { app, listLogic, user } = await buildExpressAppFake();
 
-      const [list] = await listLogic.addLists([
-        {
-          ownerId: user.id,
-          title: "my list",
-        },
-      ]);
+    const [list] = await listLogic.addLists([
+      {
+        ownerId: user.id,
+        title: "my list",
+      },
+    ]);
 
-      const listItems = await listLogic.addListItems([
-        {
-          userId: user.id,
-          tmdbMediaId: 550,
-          tmdbMediaType: TmdbMediaType.movie,
-          listId: list.id,
-        },
-      ]);
+    const listItems = await listLogic.addListItems([
+      {
+        userId: user.id,
+        tmdbMediaId: 550,
+        tmdbMediaType: TmdbMediaType.movie,
+        listId: list.id,
+      },
+    ]);
 
-      await supertest(app)
-        .get(`/api/lists/${list.id}/list-items`)
-        .expect(200)
-        .then((response) => {
-          expect(response.body).toEqual(
-            expect.arrayContaining(
-              listItems.map((listItem) =>
-                expect.objectContaining({
-                  ...listItem,
-                  tmdbData: expect.objectContaining({}),
-                })
-              )
-            )
-          );
-        });
-    } catch (error) {
-      expect(false).toBe(true);
-    } finally {
-      done();
-    }
+    await supertest(app)
+      .get(`/api/lists/${list.id}/list-items`)
+      .expect(200)
+      .then((response) => {
+        expect(response.body.map((_) => _.listItem)).toEqual(
+          expect.arrayContaining(
+            listItems.map((listItem) => expect.objectContaining(listItem))
+          )
+        );
+      });
+    done();
   });
 });
 
 describe("POST /lists/{list-id}/list-items", () => {
   it("adds item to list", async (done) => {
-    const { user, app } = await buildExpressAppFake();
+    const { user, listLogic, app } = await buildExpressAppFake();
 
     const agent = supertest(app);
-    const { body: list } = await agent.post("/api/lists").send({
-      ownerId: user.id,
-      title: "my list",
-    });
+    const [list] = await listLogic.addLists([
+      {
+        ownerId: user.id,
+        title: "cool movies",
+        description: "cool",
+      },
+    ]);
 
     const listItemInfo = {
       tmdbMediaId: 42,
@@ -63,10 +56,8 @@ describe("POST /lists/{list-id}/list-items", () => {
     await agent
       .post(`/api/lists/${list.id}/list-items`)
       .send(listItemInfo)
-      .expect(201)
-      .then((response) => {
-        expect(response.body).toEqual(expect.objectContaining(listItemInfo));
-      });
+      .expect(201);
+
     done();
   });
 });
@@ -97,8 +88,10 @@ describe("DELETE /lists/{list-id}/list-items/{list-item-id}", () => {
       .send([listItem.id])
       .expect(204);
 
-    const listItems = await listLogic.getListItems({ listId: list.id });
-    expect(listItems).not.toContainEqual(listItem);
+    const listItemAggergations = await listLogic.getListItemAggergations({
+      listId: list.id,
+    });
+    expect(listItemAggergations).not.toContainEqual({ listItem });
 
     done();
   });

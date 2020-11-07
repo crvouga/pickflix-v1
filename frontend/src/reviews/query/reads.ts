@@ -19,4 +19,9 @@ export const getReviews = async (params: GetReviewsParams) => {
   return data;
 };
 
-export const getReviewsForUser = async ({ userId }: { userId: string }) => {};
+export const getUsersReviews = async ({ username }: { username: string }) => {
+  const { data } = await BackendAPI.get<ReviewAggergation[]>(
+    `/api/users/${username}/reviews`
+  );
+  return data;
+};

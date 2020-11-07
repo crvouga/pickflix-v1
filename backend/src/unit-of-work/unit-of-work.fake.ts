@@ -1,29 +1,36 @@
-import {LikeRepositoryInMemory} from '../likes/repositories/like-repository.fake';
-import {AutoListRepositoryInMemory} from '../lists/repositories/auto-list-repository.fake';
-import {ListItemRepositoryInMemory} from '../lists/repositories/list-item-repository.fake';
+import { LikeRepositoryInMemory } from "../likes/repositories/like-repository.fake";
+import { AutoListRepositoryInMemory } from "../lists/repositories/auto-list-repository.fake";
+import { ListItemRepositoryInMemory } from "../lists/repositories/list-item-repository.fake";
 import {
   ListRepositoryInMemory,
   ListRepositoryFileSystem,
-} from '../lists/repositories/list-repository.fake';
-import {ReviewRepositoryInMemory} from '../reviews/repositories/review-repository.fake';
-import {ReviewVoteRepositoryInMemory} from '../reviews/repositories/review-vote-repository.fake';
+} from "../lists/repositories/list-repository.fake";
+import {
+  ReviewRepositoryInMemory,
+  ReviewRepositoryFileSystem,
+} from "../reviews/repositories/review-repository.fake";
+import {
+  ReviewVoteRepositoryInMemory,
+  ReviewVoteRepositoryFileSystem,
+} from "../reviews/repositories/review-vote-repository.fake";
 import {
   CredentialRepositoryInMemory,
   CredentialRepositoryFileSystem,
-} from '../users/repositories/credential-repository.fake';
+} from "../users/repositories/credential-repository.fake";
 import {
   UserRepositoryInMemory,
   UserRepositoryFileSystem,
-} from '../users/repositories/user-repository.fake';
-import {IUnitOfWork} from './types';
+} from "../users/repositories/user-repository.fake";
+import { IUnitOfWork } from "./types";
 
 export class UnitOfWorkDev implements IUnitOfWork {
   Lists: ListRepositoryFileSystem;
   ListItems: ListItemRepositoryInMemory;
   Likes: LikeRepositoryInMemory;
   AutoLists: AutoListRepositoryInMemory;
-  Reviews: ReviewRepositoryInMemory;
-  ReviewVotes: ReviewVoteRepositoryInMemory;
+
+  Reviews: ReviewRepositoryFileSystem;
+  ReviewVotes: ReviewVoteRepositoryFileSystem;
 
   Users: UserRepositoryFileSystem;
   Credentials: CredentialRepositoryFileSystem;
@@ -32,8 +39,8 @@ export class UnitOfWorkDev implements IUnitOfWork {
     this.ListItems = new ListItemRepositoryInMemory();
     this.Likes = new LikeRepositoryInMemory();
     this.AutoLists = new AutoListRepositoryInMemory();
-    this.Reviews = new ReviewRepositoryInMemory();
-    this.ReviewVotes = new ReviewVoteRepositoryInMemory();
+    this.Reviews = new ReviewRepositoryFileSystem();
+    this.ReviewVotes = new ReviewVoteRepositoryFileSystem();
     //
     this.Lists = new ListRepositoryFileSystem();
     this.Users = new UserRepositoryFileSystem();

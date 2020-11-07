@@ -10,8 +10,10 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
   router.get("/lists/:listId/list-items", async (req, res, next) => {
     try {
       const listId = req.params.listId as ListId;
-      const listItems = await listLogic.getListItems({ listId });
-      res.json(listItems);
+      const listItemAggergations = await listLogic.getListItemAggergations({
+        listId,
+      });
+      res.status(200).json(listItemAggergations).end();
     } catch (error) {
       next(error);
     }
@@ -26,7 +28,7 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
         const { tmdbMediaId, tmdbMediaType } = req.body;
         const listId = req.params.listId as ListId;
 
-        const [listItem] = await listLogic.addListItems([
+        const [added] = await listLogic.addListItems([
           {
             userId: user.id,
             listId,
@@ -35,7 +37,7 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
           },
         ]);
 
-        res.status(201).json(listItem).end();
+        res.status(201).json(added).end();
       } catch (error) {
         next(error);
       }

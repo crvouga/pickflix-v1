@@ -1,5 +1,5 @@
-import { TmdbMediaType } from "../../tmdb/types";
-import { addReviewMutation } from "../query";
+import { TmdbMediaType, TmdbMedia } from "../../tmdb/types";
+import { addReviewMutation, postReview } from "../query";
 import { useQueryCache } from "react-query";
 import useSnackbar from "../../snackbar/useSnackbar";
 import { useSelector, useDispatch } from "react-redux";
@@ -17,18 +17,23 @@ const useReviewFormState = () => {
 
 export default () => {
   const reviewFormState = useReviewFormState();
-  const { tmdbMedia } = reviewFormState;
   const queryCache = useQueryCache();
   const snackbar = useSnackbar();
-  const submit = async ({ content }: { content: string }) => {
-    if (!tmdbMedia) {
-      throw new Error("tmdbMedia required");
-    }
 
+  const submit = async ({
+    content,
+    rating,
+    tmdbMedia,
+  }: {
+    tmdbMedia: TmdbMedia;
+    rating: number;
+    content: string;
+  }) => {
     try {
-      await addReviewMutation(queryCache)({
+      const review = await postReview({
         ...tmdbMedia,
         content,
+        rating,
       });
 
       snackbar.display({
@@ -37,6 +42,9 @@ export default () => {
     } catch (error) {
       throw error;
     } finally {
+      queryCache.invalidateQueries((query) =>
+        query.queryKey.includes("reviews")
+      );
     }
   };
 

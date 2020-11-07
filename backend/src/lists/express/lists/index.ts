@@ -4,20 +4,20 @@ import { Dependencies } from "../types";
 import { User } from "../../../users/models";
 import { pick } from "ramda";
 
-export const lists = ({ listLogic, middlewares }: Dependencies) => (
+export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
   router: IRouter
 ) => {
-  router.get("/lists", middlewares.isAuthenticated, async (req, res, next) => {
+  router.get("/users/:username/lists", async (req, res, next) => {
     try {
-      const currentUser = req.user as User;
+      const username = req.params.username as string;
 
-      const listInfo = {
-        ownerId: currentUser?.id,
-      };
+      const user = await userLogic.getUser({ username });
 
-      const lists = await listLogic.getLists(listInfo);
+      const listAggergations = await listLogic.getListAggergations({
+        ownerId: user.id,
+      });
 
-      res.json(lists).end();
+      res.status(200).json(listAggergations).end();
     } catch (error) {
       next(error);
     }
@@ -27,12 +27,14 @@ export const lists = ({ listLogic, middlewares }: Dependencies) => (
     try {
       const listId = req.params.listId as ListId;
 
-      const lists = await listLogic.getLists({ id: listId });
+      const listAggergations = await listLogic.getListAggergations({
+        id: listId,
+      });
 
-      if (lists.length > 0) {
-        const [list] = lists;
+      if (listAggergations.length > 0) {
+        const [listAggergation] = listAggergations;
 
-        return res.json(list);
+        return res.json(listAggergation);
       }
 
       const autoLists = await listLogic.getAutoLists({ id: listId });
@@ -89,19 +91,15 @@ export const lists = ({ listLogic, middlewares }: Dependencies) => (
     }
   });
 
-  router.delete(
-    "/lists/:listId",
-    middlewares.isAuthenticated,
-    async (req, res, next) => {
-      try {
-        const listId = req.params.listId as ListId;
+  router.delete("/lists/:listId", async (req, res, next) => {
+    try {
+      const listId = req.params.listId as ListId;
 
-        await listLogic.removeLists([{ id: listId }]);
+      await listLogic.removeLists([{ id: listId }]);
 
-        res.status(204).end();
-      } catch (error) {
-        next(error);
-      }
+      res.status(204).end();
+    } catch (error) {
+      next(error);
     }
-  );
+  });
 };

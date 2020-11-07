@@ -103,7 +103,7 @@ export default ({ listId, ...DialogProps }: Props) => {
           ))}
           <Box marginBottom={2}>
             <TextField
-              defaultValue={list.title}
+              defaultValue={list.list.title}
               inputRef={refTitle}
               variant="outlined"
               name="title"
@@ -114,7 +114,7 @@ export default ({ listId, ...DialogProps }: Props) => {
           </Box>
           <TextField
             rowsMax={4}
-            defaultValue={list.description}
+            defaultValue={list.list.description}
             inputRef={refDescription}
             variant="outlined"
             name="description"
@@ -145,9 +145,9 @@ export default ({ listId, ...DialogProps }: Props) => {
             {listItems.map((listItem) => (
               <ListItem
                 divider
-                key={listItem.id}
+                key={listItem.listItem.id}
                 button
-                onClick={() => editListForm.toggleDeletion(listItem)}
+                onClick={() => editListForm.toggleDeletion(listItem.listItem)}
               >
                 <ListItemAvatar>
                   <Avatar
@@ -157,7 +157,7 @@ export default ({ listId, ...DialogProps }: Props) => {
                 </ListItemAvatar>
                 <Box
                   color={
-                    editListForm.deletions[listItem.id]
+                    editListForm.deletions[listItem.listItem.id]
                       ? "text.primary"
                       : "text.disabled"
                   }
@@ -166,7 +166,9 @@ export default ({ listId, ...DialogProps }: Props) => {
                 </Box>
                 <ListItemSecondaryAction>
                   <Checkbox
-                    checked={Boolean(editListForm.deletions[listItem.id])}
+                    checked={Boolean(
+                      editListForm.deletions[listItem.listItem.id]
+                    )}
                   />
                 </ListItemSecondaryAction>
               </ListItem>

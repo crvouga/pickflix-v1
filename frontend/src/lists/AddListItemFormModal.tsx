@@ -1,68 +1,25 @@
 import {
-  Avatar,
+  AppBar,
+  Box,
   Button,
-  Dialog,
-  List,
   ListItem,
-  ListItemAvatar,
   ListItemText,
+  Typography,
+  Hidden,
+  ButtonBase,
 } from "@material-ui/core";
-import MovieIcon from "@material-ui/icons/Movie";
 import React from "react";
-import BottomButton from "../common/components/BottomButton";
-import ErrorBox from "../common/components/ErrorBox";
-import LoadingBox from "../common/components/LoadingBox";
+import { User } from "../auth/query";
+import ResponsiveDialog from "../common/components/ResponsiveDialog";
 import useModal from "../navigation/modals/useModal";
-import makeImageUrl from "../tmdb/makeImageUrl";
-import { useQueryLists } from "./hooks/query";
 import useAddListForm from "./hooks/useAddListForm";
 import useAddListItemForm from "./hooks/useAddListItemForm";
+import UserListsList from "./UserListsList";
+import { ListAggergation } from "./query/types";
+import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
+import LabeledIconButton from "../common/components/LabeledIconButton";
 
-const Lists = ({ onClick }: { onClick: (listId: string) => void }) => {
-  const query = useQueryLists();
-
-  if (query.error) {
-    return <ErrorBox />;
-  }
-
-  if (!query.data) {
-    return <LoadingBox />;
-  }
-
-  const lists = query.data;
-
-  return (
-    <List>
-      {lists.map((list, index) => (
-        <ListItem
-          key={list?.id || index}
-          divider
-          button
-          onClick={() => onClick(list?.id)}
-        >
-          <ListItemAvatar>
-            <Avatar
-              key={list.listItems[0]?.id || index}
-              variant="square"
-              src={makeImageUrl(1, {
-                posterPath: list.listItems[0]?.tmdbData.posterPath,
-              })}
-            >
-              <MovieIcon />
-            </Avatar>
-          </ListItemAvatar>
-
-          <ListItemText
-            primary={list.title}
-            secondary={`${list?.listItemCount || 0} items`}
-          />
-        </ListItem>
-      ))}
-    </List>
-  );
-};
-
-export default () => {
+export default ({ currentUser }: { currentUser: User }) => {
   const addListItemModal = useModal("AddListItem");
   const addListItemForm = useAddListItemForm();
 
@@ -80,21 +37,44 @@ export default () => {
     addListModal.open();
   };
 
-  const handleClickList = async (listId: string) => {
-    await addListItemForm.submit(listId);
-    handleClose();
+  const handleClick = async (list: ListAggergation) => {
+    const tmdbMedia = addListItemForm.itemInfos[0];
+
+    if (tmdbMedia) {
+      await addListItemForm.submit({
+        ...tmdbMedia,
+        listId: list.list.id,
+      });
+      handleClose();
+    }
   };
 
   return (
-    <Dialog fullScreen open={addListItemModal.isOpen} onClose={handleClose}>
-      <ListItem divider>
-        <ListItemText primary="Save to..." />
-        <Button onClick={handleClickCreate} color="primary">
+    <ResponsiveDialog open={addListItemModal.isOpen} onClose={handleClose}>
+      <AppBar color="default" position="sticky">
+        <Box display="flex" padding={2} alignItems="center">
+          <Box flex={1}>
+            <Typography variant="h6">Add to list</Typography>
+          </Box>
+          <Hidden smUp>
+            <Button onClick={handleClose} size="large">
+              Cancel
+            </Button>
+          </Hidden>
+        </Box>
+      </AppBar>
+      <Box p={1}>
+        <Button
+          onClick={handleClickCreate}
+          size="large"
+          fullWidth
+          startIcon={<PlaylistAddIcon />}
+        >
           Create New
         </Button>
-      </ListItem>
-      <Lists onClick={handleClickList} />
-      <BottomButton onClick={handleClose} />
-    </Dialog>
+      </Box>
+
+      <UserListsList onClick={handleClick} username={currentUser.username} />
+    </ResponsiveDialog>
   );
 };

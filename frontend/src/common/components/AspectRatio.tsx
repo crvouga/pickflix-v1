@@ -1,7 +1,6 @@
 import { Box, BoxProps, makeStyles } from "@material-ui/core";
-import React from "react";
-import AbsolutePositionBox from "./AbsolutePositionBox";
 import clsx from "clsx";
+import React from "react";
 
 const useStyles = makeStyles({
   svg: {
@@ -32,7 +31,16 @@ export default ({
         className={clsx(classes.svg, SVGProps?.className)}
         {...SVGProps}
       />
-      <AbsolutePositionBox {...ContentProps}>{children}</AbsolutePositionBox>
+      <Box
+        position="absolute"
+        top={0}
+        left={0}
+        width="100%"
+        height="100%"
+        {...ContentProps}
+      >
+        {children}
+      </Box>
     </Box>
   );
 };

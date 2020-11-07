@@ -1,13 +1,15 @@
+import { Movie } from "../../tmdb/types";
+
 export type ListItem = {
   id: string;
   tmdbMediaId: string;
   tmdbMediaType: "movie" | "person";
   listId: string;
-  tmdbData: {
-    id: string;
-    posterPath: string;
-    title: string;
-  };
+};
+
+export type ListItemAggergation = {
+  listItem: ListItem;
+  tmdbData: Movie;
 };
 
 export type List = {
@@ -17,20 +19,13 @@ export type List = {
   isAutoCreated: boolean;
   createdAt: string;
   visibility: "public" | "private";
+};
+
+export type ListAggergation = {
+  list: List;
   //
   listItemCount: number;
-  listItems: ListItem[];
+  listItems: ListItemAggergation[];
 };
 
 export type AutoListKey = "watch-next" | "liked";
-
-export type AutoList = {
-  type: "autoList";
-  id: string;
-  ownerId: string;
-  key: AutoListKey;
-  title: string;
-  //
-  listItems: ListItem[];
-  listItemCount: number;
-};

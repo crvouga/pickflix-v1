@@ -4,7 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { ViewListButton } from "../../snackbar/Snackbar";
 import useSnackbar from "../../snackbar/useSnackbar";
-import { addListItemMutation, queryKeys } from "../query";
+import {
+  addListItemMutation,
+  queryKeys,
+  postListItem,
+  PostListItemParams,
+} from "../query";
 import { List as IList } from "../query/types";
 import { addListItemForm } from "../redux/add-list-item-form";
 
@@ -18,28 +23,16 @@ const useAddListItemFormState = () => {
 };
 
 export default () => {
-  const queryCache = useQueryCache();
   const snackbar = useSnackbar();
   const addListItemFormState = useAddListItemFormState();
 
-  const submit = async (listId: string) => {
-    const itemInfo = addListItemFormState.itemInfos[0];
-    const lists = queryCache.getQueryData<IList[]>(queryKeys.lists());
-    const list = lists?.find((list) => list.id === listId);
-
+  const submit = async (params: PostListItemParams) => {
+    console.log({ params });
     try {
-      if (!list) {
-        throw new Error("list doesn't exists");
-      }
-
-      await addListItemMutation(queryCache)({
-        ...itemInfo,
-        listId: list.id,
-      });
-
+      const listItem = await postListItem(params);
       snackbar.display({
-        message: `Added to "${list.title}"`,
-        action: <ViewListButton listId={listId} />,
+        message: `Added to list`,
+        action: <ViewListButton listId={listItem.listId} />,
       });
     } catch (error) {
       snackbar.display({

@@ -1,18 +1,18 @@
-import {ListId, ListItem} from '../../models/types';
-import {ListLogic} from '../build';
+import { ListId } from "../../models/types";
+import { ListLogic } from "../build";
 
-export async function getListItems(
+export async function getListItemAggergations(
   this: ListLogic,
   {
     listId,
   }: {
     listId: ListId;
   }
-): Promise<ListItem[]> {
-  const listItems = await this.unitOfWork.ListItems.find({listId});
+) {
+  const listItems = await this.unitOfWork.ListItems.find({ listId });
 
   const aggergatedListItems = await Promise.all(
-    listItems.map(listItem => this.aggergateListItem(listItem))
+    listItems.map((listItem) => this.aggergateListItem(listItem))
   );
 
   return aggergatedListItems;

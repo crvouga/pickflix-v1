@@ -1,5 +1,5 @@
-import {AutoList, List, ListItem} from '../../models/types';
-import {ListLogic} from '../build';
+import { AutoList, List, ListItem } from "../../models/types";
+import { ListLogic } from "../build";
 
 export async function aggergateListItem(this: ListLogic, listItem: ListItem) {
   const tmdbData = await this.mediaLogic.requestTmdbData({
@@ -7,7 +7,7 @@ export async function aggergateListItem(this: ListLogic, listItem: ListItem) {
   });
 
   return {
-    ...listItem,
+    listItem,
     tmdbData,
   };
 }
@@ -20,11 +20,13 @@ export async function aggergateList<T extends List | AutoList>(
     listId: list.id,
   });
 
-  const listItems = await this.getListItems({listId: list.id});
+  const listItems = await this.getListItemAggergations({
+    listId: list.id,
+  });
 
   return {
     listItems,
     listItemCount,
-    ...list,
+    list,
   };
 }

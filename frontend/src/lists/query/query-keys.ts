@@ -17,4 +17,10 @@ export const queryKeys = {
     tmdbMediaId: string;
     tmdbMediaType: TmdbMediaType;
   }) => ["user", "list-items", "lists", tmdbMediaId, tmdbMediaType],
+
+  userLists: ({ username }: { username: string }) => [
+    "user",
+    username,
+    "lists",
+  ],
 };

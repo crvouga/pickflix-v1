@@ -16,7 +16,7 @@ export const addReviewMutation = (queryCache: QueryCache) => async (
   } catch (error) {
     throw error;
   } finally {
-    queryCache.invalidateQueries(queryKeys.reviews(params));
+    queryCache.invalidateQueries((query) => query.queryKey.includes("reviews"));
   }
 };
 

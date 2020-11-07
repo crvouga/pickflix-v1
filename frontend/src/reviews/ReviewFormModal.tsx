@@ -13,6 +13,8 @@ import AddOrEditReview from "./AddOrEditReview";
 import ChooseMedia from "./ChooseMedia";
 import useReviewForm from "./hooks/useReviewForm";
 import useBoolean from "../common/hooks/useBoolean";
+import { useQuery } from "react-query";
+import { queryKeys } from "./query";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
@@ -34,8 +36,6 @@ export default () => {
   const handleCancel = () => {
     if (reviewForm.tmdbMedia) {
       isConformationDialogOpen.setTrue();
-      // reviewFormModal.close();
-      // reviewForm.setTmdbMedia(undefined);
     } else {
       reviewFormModal.close();
     }
@@ -47,9 +47,25 @@ export default () => {
     reviewForm.setTmdbMedia(undefined);
   };
 
-  const handleSubmit = async ({ content }: { content: string }) => {
+  const handleSubmit = async ({
+    rating,
+    content,
+  }: {
+    rating: number;
+    content: string;
+  }) => {
+    const tmdbMedia = reviewForm.tmdbMedia;
+
+    if (!tmdbMedia) {
+      throw new Error("tmdbMedia required");
+    }
+
     try {
-      await reviewForm.submit({ content });
+      await reviewForm.submit({
+        tmdbMedia,
+        rating,
+        content,
+      });
       reviewFormModal.close();
       reviewForm.setTmdbMedia(undefined);
     } catch (error) {}

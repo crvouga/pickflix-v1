@@ -1,40 +1,40 @@
-import {TmdbMediaType, TmdbMediaId} from '../../../media/models/types';
-import {UserId} from '../../../users/models/make-user';
-import {AutoListKeys, ListId} from '../../models/types';
-import {ListLogic} from '../build';
+import { TmdbMediaType, TmdbMediaId } from "../../../media/models/types";
+import { UserId } from "../../../users/models/make-user";
+import { AutoListKeys, ListId } from "../../models/types";
+import { ListLogic } from "../build";
 
 export async function getAutoLists(
   this: ListLogic,
   listInfo:
-    | {ownerId: UserId}
-    | {id: ListId}
-    | {key: AutoListKeys; ownerId: UserId}
+    | { ownerId: UserId }
+    | { id: ListId }
+    | { key: AutoListKeys; ownerId: UserId }
 ) {
   const {
-    unitOfWork: {AutoLists},
+    unitOfWork: { AutoLists },
   } = this;
 
   const autoLists = await AutoLists.find(listInfo);
 
   const aggergatedAutoLists = await Promise.all(
-    autoLists.map(list => this.aggergateList(list))
+    autoLists.map((list) => this.aggergateList(list))
   );
 
   return aggergatedAutoLists;
 }
 
-export async function getLists(
+export async function getListAggergations(
   this: ListLogic,
-  listInfo: {id: ListId} | {ownerId: UserId}
+  listInfo: { id: ListId } | { ownerId: UserId }
 ) {
   const {
-    unitOfWork: {Lists},
+    unitOfWork: { Lists },
   } = this;
 
   const lists = await Lists.find(listInfo);
 
   const aggergatedLists = await Promise.all(
-    lists.map(list => this.aggergateList(list))
+    lists.map((list) => this.aggergateList(list))
   );
 
   return aggergatedLists;
@@ -42,10 +42,10 @@ export async function getLists(
 
 export async function getListsAndAutoLists(
   this: ListLogic,
-  listInfo: {id: ListId} | {ownerId: UserId}
+  listInfo: { id: ListId } | { ownerId: UserId }
 ) {
   const [lists, autoLists] = await Promise.all([
-    this.getLists(listInfo),
+    this.getListAggergations(listInfo),
     this.getAutoLists(listInfo),
   ]);
 
@@ -72,7 +72,7 @@ export async function getListsFromListItem(
     tmdbMediaType,
   });
 
-  const listIds = listItems.map(listItem => listItem.listId);
+  const listIds = listItems.map((listItem) => listItem.listId);
 
   const [lists, autoLists] = await Promise.all([
     this.unitOfWork.Lists.get(listIds),

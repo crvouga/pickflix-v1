@@ -13,57 +13,15 @@ describe("DELETE /lists", () => {
 
     await supertest(app).delete(`/api/lists/${list.id}`).expect(204);
 
-    const lists = await listLogic.getLists({ id: list.id });
+    const got = await listLogic.getListAggergations({ id: list.id });
 
-    expect(lists).toHaveLength(0);
+    expect(got).toHaveLength(0);
 
     done();
   });
 });
 
 describe("GET /lists", () => {
-  it("gets lists for current user", async (done) => {
-    const { listLogic, user, app } = await buildExpressAppFake();
-
-    const lists = await listLogic.addLists(
-      [1, 2, 3, 4, 5].map(() => ({
-        ownerId: user.id,
-        title: "my movies 1",
-        description: "some cool movies...",
-      }))
-    );
-
-    supertest(app)
-      .get("/api/lists")
-      .expect(200)
-      .then((response) => {
-        expect(response.body).toEqual(
-          expect.arrayContaining(lists.map((_) => expect.objectContaining(_)))
-        );
-        done();
-      });
-  });
-});
-
-describe("GET /lists", () => {
-  it("gets auto lists", async (done) => {
-    const { listLogic, user, app } = await buildExpressAppFake();
-    const [added] = await listLogic.initializeAutoLists({ user: user });
-
-    const expected = {
-      id: added.id,
-      ownerId: added.ownerId,
-      key: added.key,
-    };
-
-    supertest(app)
-      .get(`/api/lists/${added.id}`)
-      .expect(200)
-      .then((response) => {
-        expect(response.body).toEqual(expect.objectContaining(expected));
-        done();
-      });
-  });
   it("sends a list with items", async (done) => {
     const { listLogic, user, app } = await buildExpressAppFake();
 
@@ -86,7 +44,7 @@ describe("GET /lists", () => {
       .get(`/api/lists/${list.id}`)
       .expect(200)
       .then((response) => {
-        expect(response.body).toEqual(expect.objectContaining(expected));
+        expect(response.body.list).toEqual(expect.objectContaining(expected));
         done();
       });
   });

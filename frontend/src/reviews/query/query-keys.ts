@@ -16,4 +16,10 @@ export const queryKeys = {
     tmdbMediaId: string;
     tmdbMediaType: TmdbMediaType;
   }) => ["user", "reviews", tmdbMediaId, tmdbMediaType],
+
+  usersReviews: ({ username }: { username: string }) => [
+    "user",
+    username,
+    "reviews",
+  ],
 };

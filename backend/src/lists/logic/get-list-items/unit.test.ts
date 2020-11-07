@@ -1,18 +1,18 @@
-import {buildListLogicFake} from '../build.fake';
-import {makeUserFake} from '../../../users/models/make-user.fake';
-import {TmdbMediaType} from '../../../media/models/types';
+import { buildListLogicFake } from "../build.fake";
+import { makeUserFake } from "../../../users/models/make-user.fake";
+import { TmdbMediaType } from "../../../media/models/types";
 
-describe('getting list items', () => {
-  it('get aggergated list items', async () => {
-    const {listLogic} = buildListLogicFake();
+describe("getting list items", () => {
+  it("get aggergated list items", async () => {
+    const { listLogic } = buildListLogicFake();
 
     const user = makeUserFake();
     const [list] = await listLogic.addLists([
-      {ownerId: user.id, title: 'my list'},
+      { ownerId: user.id, title: "my list" },
     ]);
 
     const listItems = await listLogic.addListItems(
-      [1, 2, 3, 4, 5].map(n => ({
+      [1, 2, 3, 4, 5].map((n) => ({
         userId: user.id,
         listId: list.id,
         tmdbMediaId: n,
@@ -20,13 +20,15 @@ describe('getting list items', () => {
       }))
     );
 
-    const aggergatedListItems = await listLogic.getListItems({listId: list.id});
+    const aggergatedListItems = await listLogic.getListItemAggergations({
+      listId: list.id,
+    });
 
     expect(aggergatedListItems).toEqual(
       expect.arrayContaining(
-        listItems.map(listItem =>
+        listItems.map((listItem) =>
           expect.objectContaining({
-            ...listItem,
+            listItem,
             tmdbData: expect.any(Object),
           })
         )

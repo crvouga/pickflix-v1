@@ -21,8 +21,10 @@ describe("getting lists", () => {
       },
     ]);
 
-    const [aggergatedList1] = await listLogic.getLists({ id: list.id });
-    const [aggergatedList2] = await listLogic.getLists({
+    const [aggergatedList1] = await listLogic.getListAggergations({
+      id: list.id,
+    });
+    const [aggergatedList2] = await listLogic.getListAggergations({
       ownerId: user.id,
     });
 
@@ -30,11 +32,11 @@ describe("getting lists", () => {
 
     expect(aggergatedList1).toEqual(
       expect.objectContaining({
-        ...list,
+        list,
         listItemCount: expect.any(Number),
         listItems: expect.arrayContaining([
           expect.objectContaining({
-            ...listItem,
+            listItem,
             tmdbData: expect.any(Object),
           }),
         ]),

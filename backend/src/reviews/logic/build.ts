@@ -1,20 +1,29 @@
-import {TmdbMediaType, TmdbMediaId} from '../../media/models/types';
-import {IUnitOfWork} from '../../unit-of-work/types';
-import {UserId} from '../../users/models/make-user';
-import {makeReview, PartialReview, ReviewId} from '../models/make-review';
-import {makeReviewVote, PartialReviewVote} from '../models/make-review-vote';
+import { TmdbMediaType, TmdbMediaId } from "../../media/models/types";
+import { IUnitOfWork } from "../../unit-of-work/types";
+import { UserId } from "../../users/models/make-user";
+import { makeReview, PartialReview, ReviewId } from "../models/make-review";
+import { makeReviewVote, PartialReviewVote } from "../models/make-review-vote";
+import { MediaLogic } from "../../media/logic/build";
 
 export class ReviewLogic {
+  mediaLogic: MediaLogic;
   unitOfWork: IUnitOfWork;
 
-  constructor({unitOfWork}: {unitOfWork: IUnitOfWork}) {
+  constructor({
+    unitOfWork,
+    mediaLogic,
+  }: {
+    unitOfWork: IUnitOfWork;
+    mediaLogic: MediaLogic;
+  }) {
     this.unitOfWork = unitOfWork;
+    this.mediaLogic = mediaLogic;
   }
 
   async getReviews(
     reviewInfo:
-      | {authorId: UserId}
-      | {tmdbMediaId: TmdbMediaId; tmdbMediaType: TmdbMediaType}
+      | { authorId: UserId }
+      | { tmdbMediaId: TmdbMediaId; tmdbMediaType: TmdbMediaType }
   ) {
     return await this.unitOfWork.Reviews.find(reviewInfo);
   }
@@ -26,46 +35,56 @@ export class ReviewLogic {
     userId?: UserId;
     reviewId: ReviewId;
   }) {
+    const { Users, ReviewVotes, Reviews } = this.unitOfWork;
+
     const [[review], [reviewVote], reviewVoteCount] = await Promise.all([
-      this.unitOfWork.Reviews.get([reviewId]),
-      this.unitOfWork.ReviewVotes.find({
+      Reviews.get([reviewId]),
+      ReviewVotes.find({
         reviewId,
         userId,
       }),
-      this.unitOfWork.ReviewVotes.count({
+      ReviewVotes.count({
         reviewId,
       }),
     ]);
 
     if (!review) {
-      throw new Error('Review does not exists.');
+      throw new Error("Review does not exists.");
     }
 
-    const aggergation = {
+    const [author] = await Users.find({ id: review.authorId });
+
+    const tmdbData = await this.mediaLogic.requestTmdbData({
+      path: `/${review.tmdbMediaType}/${review.tmdbMediaId}`,
+    });
+
+    return {
       review,
       reviewVoteValue: reviewVote?.voteValue || null,
       reviewVoteCount,
+      author,
+      tmdbData,
     };
-
-    return aggergation;
   }
 
-  async getAllAggergationsForMedia({
-    tmdbMediaId,
-    tmdbMediaType,
+  async getAllAggergations({
     userId,
+    ...reviewInfo
   }: {
     userId?: UserId;
-    tmdbMediaId: TmdbMediaId;
-    tmdbMediaType: TmdbMediaType;
-  }) {
-    const foundReviews = await this.unitOfWork.Reviews.find({
-      tmdbMediaId,
-      tmdbMediaType,
-    });
+  } & (
+    | {
+        tmdbMediaId: TmdbMediaId;
+        tmdbMediaType: TmdbMediaType;
+      }
+    | { authorId: UserId }
+  )) {
+    const { Reviews } = this.unitOfWork;
+
+    const found = await Reviews.find(reviewInfo);
 
     const aggergations = await Promise.all(
-      foundReviews.map(review =>
+      found.map((review) =>
         this.getAggregation({
           reviewId: review.id,
           userId,
@@ -77,19 +96,21 @@ export class ReviewLogic {
   }
 
   async addReview(partialReview: PartialReview) {
+    const { Reviews } = this.unitOfWork;
+
     const review = makeReview(partialReview);
 
-    const found = await this.unitOfWork.Reviews.find({
+    const found = await Reviews.find({
       authorId: review.authorId,
       tmdbMediaId: review.tmdbMediaId,
       tmdbMediaType: review.tmdbMediaType,
     });
 
     if (found.length > 0) {
-      throw new Error('A user can only have one review per media');
+      throw new Error("A user can only have one review per media");
     }
 
-    const [added] = await this.unitOfWork.Reviews.add([review]);
+    const [added] = await Reviews.add([review]);
 
     return added;
   }
@@ -102,8 +123,8 @@ export class ReviewLogic {
     return added;
   }
 
-  async removeReviews(reviewInfos: {id: ReviewId}[]) {
-    const {Reviews} = this.unitOfWork;
+  async removeReviews(reviewInfos: { id: ReviewId }[]) {
+    const { Reviews } = this.unitOfWork;
     await Reviews.remove(reviewInfos);
   }
 
@@ -112,24 +133,24 @@ export class ReviewLogic {
     authorId: UserId;
     content: string;
   }) {
-    const {Reviews} = this.unitOfWork;
-    const {id, authorId, ...edits} = reviewInfo;
+    const { Reviews } = this.unitOfWork;
+    const { id, authorId, ...edits } = reviewInfo;
 
-    const [existing] = await Reviews.find({id, authorId});
+    const [existing] = await Reviews.find({ id, authorId });
     if (!existing) {
       throw new Error("Can't edit a review that doesn't exists.");
     }
-    const edited = makeReview({...existing, ...edits});
+    const edited = makeReview({ ...existing, ...edits });
     await Reviews.update([edited]);
     return edited;
   }
 
   async castReviewVote(partialReviewVote: PartialReviewVote) {
-    const {Reviews, ReviewVotes} = this.unitOfWork;
+    const { Reviews, ReviewVotes } = this.unitOfWork;
 
     const reviewVote = makeReviewVote(partialReviewVote);
 
-    const [existingReview] = await Reviews.find({id: reviewVote.reviewId});
+    const [existingReview] = await Reviews.find({ id: reviewVote.reviewId });
     if (!existingReview) {
       throw new Error("Can't vote on a review that doesn't exists.");
     }
@@ -153,8 +174,8 @@ export class ReviewLogic {
     userId: UserId;
     reviewId: ReviewId;
   }) {
-    const {ReviewVotes} = this.unitOfWork;
-    const [found] = await ReviewVotes.find({userId, reviewId});
+    const { ReviewVotes } = this.unitOfWork;
+    const [found] = await ReviewVotes.find({ userId, reviewId });
     if (!found) {
       throw new Error("Can't remove review vote that doesn't exists.");
     }

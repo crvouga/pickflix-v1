@@ -13,6 +13,7 @@ import MoviePosterCard from "../movie/components/MoviePosterCard";
 import { useQueryMovie } from "../movie/query";
 import * as movieUtils from "../movie/utils";
 import { TmdbMedia, TmdbMediaType } from "../tmdb/types";
+import { Rating } from "@material-ui/lab";
 
 type Props = {
   tmdbMedia: {
@@ -67,13 +68,15 @@ export default ({
 }: {
   tmdbMedia: TmdbMedia;
   onCancel: () => void;
-  onSubmit: (_: { content: string }) => void;
+  onSubmit: (_: { rating: number; content: string }) => void;
 }) => {
+  const [rating, setRating] = useState<number | null>(null);
   const [content, setContent] = useState("");
 
   const handleSubmit = () => {
-    if (content.length > 0) {
+    if (rating && content.length > 0) {
       onSubmit({
+        rating,
         content,
       });
     }
@@ -98,6 +101,22 @@ export default ({
       <Box p={2}>
         <Box paddingBottom={2}>
           <MediaInfo tmdbMedia={tmdbMedia} />
+        </Box>
+
+        <Box paddingBottom={1}>
+          <Rating
+            size="large"
+            value={rating}
+            onChangeActive={(e, newValue) => {
+              if (newValue > 0) {
+                setRating(Math.min(Math.max(0, newValue), 5));
+              }
+            }}
+            // onChange={(e, newValue) => {
+            //   console.log({ onChange: newValue });
+            //   setRating(newValue);
+            // }}
+          />
         </Box>
 
         <Box>

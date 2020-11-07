@@ -2,11 +2,9 @@ import {
   AppBar,
   Box,
   Container,
+  Grid,
   Hidden,
   IconButton,
-  List,
-  ListItem,
-  ListItemText,
   makeStyles,
   Paper,
   Toolbar,
@@ -20,11 +18,13 @@ import AvatarUser from "../auth/AvatarUser";
 import { User } from "../auth/query";
 import LabeledIconButton from "../common/components/LabeledIconButton";
 import useBoolean from "../common/hooks/useBoolean";
-import ListList from "../lists/ListList";
-import BackButton from "../navigation/BackButton";
+import UserListsList from "../lists/UserListsList";
 import useModal from "../navigation/modals/useModal";
 import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
+import UserReviewsList from "../reviews/UserReviewsList";
 import OptionsDialog from "./OptionsDialog";
+import { ListAggergation } from "../lists/query/types";
+import { useHistory } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -36,10 +36,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default ({ currentUser }: { currentUser: User }) => {
   const classes = useStyles();
-
+  const history = useHistory();
   const isDialogOpen = useBoolean(false);
   const addListModal = useModal("AddList");
   const reviewModal = useModal("ReviewForm");
+
+  const handleClickList = (list: ListAggergation) => {
+    history.push(`/list/${list.list.id}`);
+  };
 
   return (
     <React.Fragment>
@@ -106,15 +110,22 @@ export default ({ currentUser }: { currentUser: User }) => {
           />
           {/* <LabeledIconButton icon={<GroupOutlinedIcon />} label="Watch With" /> */}
         </Box>
-        <List>
-          <ListItem>
-            <ListItemText
-              primaryTypographyProps={{ variant: "h6" }}
-              primary="Lists"
-            />
-          </ListItem>
-          <ListList />
-        </List>
+
+        <Box paddingX={2}>
+          <Grid container>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="h5">Lists</Typography>
+              <UserListsList
+                onClick={handleClickList}
+                username={currentUser.username}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="h5">Reviews</Typography>
+              <UserReviewsList username={currentUser.username} />
+            </Grid>
+          </Grid>
+        </Box>
       </Container>
     </React.Fragment>
   );

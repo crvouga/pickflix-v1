@@ -46,19 +46,19 @@ export default () => {
         <AppBar position="sticky" color="default">
           <Toolbar>
             <BackButton />
-            <Typography variant="h6">{list.title}</Typography>
+            <Typography variant="h6">{list.list.title}</Typography>
           </Toolbar>
         </AppBar>
       </Hidden>
 
       <DeleteListFormModal
-        listId={list.id}
+        listId={list.list.id}
         open={isDeleteListModalOpen.value}
         onClose={isDeleteListModalOpen.setFalse}
       />
 
       <EditListFormModal
-        listId={list.id}
+        listId={list.list.id}
         open={isEditListModalOpen.value}
         onClose={isEditListModalOpen.setFalse}
       />
@@ -68,8 +68,8 @@ export default () => {
           <Container maxWidth="md">
             <Box p={2} paddingTop={4} display="flex" flexDirection="row">
               <Box>
-                <Typography variant="h5">{list.title}</Typography>
-                <Typography variant="body1">{list.description}</Typography>
+                <Typography variant="h5">{list.list.title}</Typography>
+                <Typography variant="body1">{list.list.description}</Typography>
               </Box>
             </Box>
 
@@ -86,7 +86,7 @@ export default () => {
         </Paper>
       </Box>
       <Container maxWidth="md">
-        <ListItemsSection listId={list.id} />
+        <ListItemsSection listId={list.list.id} />
       </Container>
     </React.Fragment>
   );
