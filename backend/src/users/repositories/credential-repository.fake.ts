@@ -1,18 +1,18 @@
-import {RepositoryFileSystem} from '../../unit-of-work/repository.file-system';
-import {RepositoryInMemory} from '../../unit-of-work/repository.in-memory';
-import {Credential} from '../models/make-credential';
-import {ICredentialRepository} from './types';
+import { RepositoryFileSystem } from "../../unit-of-work/repository.file-system";
+import { RepositoryHashMap } from "../../unit-of-work/repository.hash-map";
+import { Credential } from "../models/make-credential";
+import { ICredentialRepository } from "./types";
 
 export class CredentialRepositoryFileSystem
   extends RepositoryFileSystem<Credential>
   implements ICredentialRepository {
   constructor() {
-    super('credentials');
+    super("credentials");
   }
 }
 
-export class CredentialRepositoryInMemory
-  extends RepositoryInMemory<Credential>
+export class CredentialRepositoryHashMap
+  extends RepositoryHashMap<Credential>
   implements ICredentialRepository {
   constructor() {
     super();

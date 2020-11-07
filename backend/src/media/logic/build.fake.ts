@@ -1,6 +1,6 @@
-import {MediaLogic} from './build';
-import {AxiosRequestConfig} from 'axios';
-import {UnitOfWorkInMemory} from '../../unit-of-work/unit-of-work.fake';
+import { MediaLogic } from "./build";
+import { AxiosRequestConfig } from "axios";
+import { UnitOfWorkHashMap } from "../../unit-of-work/unit-of-work.fake";
 
 const buildKeyvFake = () => {
   const keyvMap = new Map<any, any>();
@@ -15,14 +15,14 @@ const buildKeyvFake = () => {
 };
 
 export const buildMediaLogicFake = () => {
-  const {keyv, keyvMap} = buildKeyvFake();
+  const { keyv, keyvMap } = buildKeyvFake();
 
   const mediaLogic = new MediaLogic({
     keyv,
     axios: async (_: AxiosRequestConfig) => ({
       data: {},
     }),
-    unitOfWork: new UnitOfWorkInMemory(),
+    unitOfWork: new UnitOfWorkHashMap(),
   });
 
   return {

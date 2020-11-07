@@ -1,7 +1,7 @@
-import {ListItemRepositoryInMemory} from './list-item-repository.fake';
-import {ListRepositoryInMemory} from './list-repository.fake';
-import {AutoListRepositoryInMemory} from './auto-list-repository.fake';
+import { ListItemRepositoryHashMap } from "./list-item-repository.fake";
+import { ListRepositoryHashMap } from "./list-repository.fake";
+import { AutoListRepositoryHashMap } from "./auto-list-repository.fake";
 
-export const ListRepository = new ListRepositoryInMemory();
-export const ListItemRepository = new ListItemRepositoryInMemory();
-export const AutoListRepository = new AutoListRepositoryInMemory();
+export const ListRepository = new ListRepositoryHashMap();
+export const ListItemRepository = new ListItemRepositoryHashMap();
+export const AutoListRepository = new AutoListRepositoryHashMap();

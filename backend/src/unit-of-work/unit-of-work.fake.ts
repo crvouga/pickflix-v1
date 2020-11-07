@@ -1,47 +1,47 @@
-import { LikeRepositoryInMemory } from "../likes/repositories/like-repository.fake";
-import { AutoListRepositoryInMemory } from "../lists/repositories/auto-list-repository.fake";
-import { ListItemRepositoryInMemory } from "../lists/repositories/list-item-repository.fake";
 import {
-  ListRepositoryInMemory,
+  AutoListRepositoryHashMap,
+  AutoListRepositoryFileSystem,
+} from "../lists/repositories/auto-list-repository.fake";
+import {
+  ListItemRepositoryHashMap,
+  ListItemRepositoryFileSystem,
+} from "../lists/repositories/list-item-repository.fake";
+import {
+  ListRepositoryHashMap,
   ListRepositoryFileSystem,
 } from "../lists/repositories/list-repository.fake";
 import {
-  ReviewRepositoryInMemory,
+  ReviewRepositoryHashMap,
   ReviewRepositoryFileSystem,
 } from "../reviews/repositories/review-repository.fake";
 import {
-  ReviewVoteRepositoryInMemory,
+  ReviewVoteRepositoryHashMap,
   ReviewVoteRepositoryFileSystem,
 } from "../reviews/repositories/review-vote-repository.fake";
 import {
-  CredentialRepositoryInMemory,
+  CredentialRepositoryHashMap,
   CredentialRepositoryFileSystem,
 } from "../users/repositories/credential-repository.fake";
 import {
-  UserRepositoryInMemory,
+  UserRepositoryHashMap,
   UserRepositoryFileSystem,
 } from "../users/repositories/user-repository.fake";
 import { IUnitOfWork } from "./types";
 
-export class UnitOfWorkDev implements IUnitOfWork {
+export class UnitOfWorkFileSystem implements IUnitOfWork {
   Lists: ListRepositoryFileSystem;
-  ListItems: ListItemRepositoryInMemory;
-  Likes: LikeRepositoryInMemory;
-  AutoLists: AutoListRepositoryInMemory;
-
+  ListItems: ListItemRepositoryFileSystem;
+  AutoLists: AutoListRepositoryFileSystem;
   Reviews: ReviewRepositoryFileSystem;
   ReviewVotes: ReviewVoteRepositoryFileSystem;
-
   Users: UserRepositoryFileSystem;
   Credentials: CredentialRepositoryFileSystem;
 
   constructor() {
-    this.ListItems = new ListItemRepositoryInMemory();
-    this.Likes = new LikeRepositoryInMemory();
-    this.AutoLists = new AutoListRepositoryInMemory();
+    this.ListItems = new ListItemRepositoryFileSystem();
+    this.AutoLists = new AutoListRepositoryFileSystem();
     this.Reviews = new ReviewRepositoryFileSystem();
     this.ReviewVotes = new ReviewVoteRepositoryFileSystem();
-    //
     this.Lists = new ListRepositoryFileSystem();
     this.Users = new UserRepositoryFileSystem();
     this.Credentials = new CredentialRepositoryFileSystem();
@@ -52,25 +52,23 @@ export class UnitOfWorkDev implements IUnitOfWork {
   async rollback() {}
 }
 
-export class UnitOfWorkInMemory implements IUnitOfWork {
-  Lists: ListRepositoryInMemory;
-  ListItems: ListItemRepositoryInMemory;
-  Users: UserRepositoryInMemory;
-  Likes: LikeRepositoryInMemory;
-  AutoLists: AutoListRepositoryInMemory;
-  Reviews: ReviewRepositoryInMemory;
-  ReviewVotes: ReviewVoteRepositoryInMemory;
-  Credentials: CredentialRepositoryInMemory;
+export class UnitOfWorkHashMap implements IUnitOfWork {
+  AutoLists: AutoListRepositoryHashMap;
+  Lists: ListRepositoryHashMap;
+  ListItems: ListItemRepositoryHashMap;
+  Users: UserRepositoryHashMap;
+  Credentials: CredentialRepositoryHashMap;
+  Reviews: ReviewRepositoryHashMap;
+  ReviewVotes: ReviewVoteRepositoryHashMap;
 
   constructor() {
-    this.Lists = new ListRepositoryInMemory();
-    this.ListItems = new ListItemRepositoryInMemory();
-    this.Likes = new LikeRepositoryInMemory();
-    this.AutoLists = new AutoListRepositoryInMemory();
-    this.Reviews = new ReviewRepositoryInMemory();
-    this.ReviewVotes = new ReviewVoteRepositoryInMemory();
-    this.Users = new UserRepositoryInMemory();
-    this.Credentials = new CredentialRepositoryInMemory();
+    this.Lists = new ListRepositoryHashMap();
+    this.ListItems = new ListItemRepositoryHashMap();
+    this.AutoLists = new AutoListRepositoryHashMap();
+    this.Reviews = new ReviewRepositoryHashMap();
+    this.ReviewVotes = new ReviewVoteRepositoryHashMap();
+    this.Users = new UserRepositoryHashMap();
+    this.Credentials = new CredentialRepositoryHashMap();
   }
 
   async begin() {}

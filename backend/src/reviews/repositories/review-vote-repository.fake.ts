@@ -1,10 +1,10 @@
-import { RepositoryInMemory } from "../../unit-of-work/repository.in-memory";
+import { RepositoryHashMap } from "../../unit-of-work/repository.hash-map";
 import { ReviewVote } from "../models/make-review-vote";
 import { IReviewVoteRepository } from "./types";
 import { RepositoryFileSystem } from "../../unit-of-work/repository.file-system";
 
-export class ReviewVoteRepositoryInMemory
-  extends RepositoryInMemory<ReviewVote>
+export class ReviewVoteRepositoryHashMap
+  extends RepositoryHashMap<ReviewVote>
   implements IReviewVoteRepository {
   constructor() {
     super();

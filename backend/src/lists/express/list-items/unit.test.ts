@@ -26,9 +26,9 @@ describe("GET /lists/{list-id}/list-items", () => {
       .get(`/api/lists/${list.id}/list-items`)
       .expect(200)
       .then((response) => {
-        expect(response.body.map((_) => _.listItem)).toEqual(
+        expect(response.body).toEqual(
           expect.arrayContaining(
-            listItems.map((listItem) => expect.objectContaining(listItem))
+            listItems.map((listItem) => expect.objectContaining({ listItem }))
           )
         );
       });

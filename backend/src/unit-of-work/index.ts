@@ -1,14 +1,14 @@
-import { UnitOfWorkDev, UnitOfWorkInMemory } from "./unit-of-work.fake";
+import { UnitOfWorkFileSystem, UnitOfWorkHashMap } from "./unit-of-work.fake";
 import configuration from "../configuration";
 
 const getUnitOfWork = () => {
   switch (configuration.NODE_ENV) {
     case "development":
-      return new UnitOfWorkDev();
+      return new UnitOfWorkFileSystem();
     case "test":
-      return new UnitOfWorkInMemory();
+      return new UnitOfWorkHashMap();
     case "production":
-      return new UnitOfWorkInMemory();
+      return new UnitOfWorkHashMap();
   }
 };
 

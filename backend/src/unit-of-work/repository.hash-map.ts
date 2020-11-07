@@ -1,9 +1,9 @@
-import {whereEq, innerJoin} from 'ramda';
-import {Identifiable, IRepository} from './types';
+import { whereEq, innerJoin } from "ramda";
+import { Identifiable, IRepository } from "./types";
 
-export class RepositoryInMemory<T extends Identifiable>
+export class RepositoryHashMap<T extends Identifiable>
   implements IRepository<T> {
-  db: {[id: string]: T};
+  db: { [id: string]: T };
 
   constructor() {
     this.db = {};
@@ -34,7 +34,7 @@ export class RepositoryInMemory<T extends Identifiable>
   }
 
   async remove(
-    entityInfos: Array<Partial<T> & Pick<T, 'id'>>
+    entityInfos: Array<Partial<T> & Pick<T, "id">>
   ): Promise<boolean> {
     for (const entityInfo of entityInfos) {
       delete this.db[entityInfo.id];
@@ -42,12 +42,12 @@ export class RepositoryInMemory<T extends Identifiable>
     return true;
   }
 
-  async update(entityInfos: Array<Partial<T> & Pick<T, 'id'>>): Promise<T[]> {
+  async update(entityInfos: Array<Partial<T> & Pick<T, "id">>): Promise<T[]> {
     const updatedEntities = [];
-    for (const {id, ...entityInfo} of entityInfos) {
+    for (const { id, ...entityInfo } of entityInfos) {
       const entity = this.db[id];
       if (!entity) {
-        throw new Error('entity does not exists');
+        throw new Error("entity does not exists");
       }
       const updatedEntity = {
         ...entity,

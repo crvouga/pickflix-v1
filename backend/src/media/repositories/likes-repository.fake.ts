@@ -1,9 +1,9 @@
-import {RepositoryInMemory} from '../../unit-of-work/repository.in-memory';
-import {Entity} from '../models/types';
-import {ILikesRepository} from './types';
+import { RepositoryHashMap } from "../../unit-of-work/repository.hash-map";
+import { Entity } from "../models/types";
+import { ILikesRepository } from "./types";
 
-export class LikesRepositoryInMemory
-  extends RepositoryInMemory<Entity>
+export class LikesRepositoryHashMap
+  extends RepositoryHashMap<Entity>
   implements ILikesRepository {
   constructor() {
     super();

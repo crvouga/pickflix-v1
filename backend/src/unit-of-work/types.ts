@@ -1,17 +1,16 @@
-import {ILikeRepository} from '../likes/repositories/types';
 import {
   IAutoListRepository,
   IListItemRepository,
   IListRepository,
-} from '../lists/repositories/types';
+} from "../lists/repositories/types";
 import {
   IReviewRepository,
   IReviewVoteRepository,
-} from '../reviews/repositories/types';
+} from "../reviews/repositories/types";
 import {
   ICredentialRepository,
   IUserRepository,
-} from '../users/repositories/types';
+} from "../users/repositories/types";
 
 export interface IUnitOfWork {
   begin(): Promise<void>;
@@ -19,10 +18,9 @@ export interface IUnitOfWork {
   rollback(): Promise<void>;
 
   Lists: IListRepository;
+  AutoLists: IAutoListRepository;
   ListItems: IListItemRepository;
   Users: IUserRepository;
-  Likes: ILikeRepository;
-  AutoLists: IAutoListRepository;
   Reviews: IReviewRepository;
   ReviewVotes: IReviewVoteRepository;
   Credentials: ICredentialRepository;
@@ -36,7 +34,7 @@ export interface IRepository<T extends Identifiable> {
   find: (_: Partial<T>) => Promise<T[]>;
   get: (_: string[]) => Promise<T[]>;
   add: (_: T[]) => Promise<T[]>;
-  remove: (_: Array<Partial<T> & Pick<T, 'id'>>) => Promise<boolean>;
-  update: (_: Array<Partial<T> & Pick<T, 'id'>>) => Promise<T[]>;
+  remove: (_: Array<Partial<T> & Pick<T, "id">>) => Promise<boolean>;
+  update: (_: Array<Partial<T> & Pick<T, "id">>) => Promise<T[]>;
   count: (_: Partial<T>) => Promise<number>;
 }

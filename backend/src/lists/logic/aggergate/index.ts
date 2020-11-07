@@ -16,17 +16,22 @@ export async function aggergateList<T extends List | AutoList>(
   this: ListLogic,
   list: T
 ) {
-  const listItemCount = await this.unitOfWork.ListItems.count({
-    listId: list.id,
-  });
+  const { ListItems, Users } = this.unitOfWork;
 
-  const listItems = await this.getListItemAggergations({
-    listId: list.id,
-  });
+  const [listItemCount, listItems, [owner]] = await Promise.all([
+    ListItems.count({
+      listId: list.id,
+    }),
+    this.getListItemAggergations({
+      listId: list.id,
+    }),
+    Users.find({ id: list.ownerId }),
+  ]);
 
   return {
     listItems,
     listItemCount,
     list,
+    owner,
   };
 }

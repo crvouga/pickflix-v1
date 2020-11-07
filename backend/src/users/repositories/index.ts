@@ -1,5 +1,5 @@
-import {CredentialRepositoryInMemory} from './credential-repository.fake';
-import {UserRepositoryInMemory} from './user-repository.fake';
+import { CredentialRepositoryHashMap } from "./credential-repository.fake";
+import { UserRepositoryHashMap } from "./user-repository.fake";
 
-export const userRepository = new UserRepositoryInMemory();
-export const credentialRepository = new CredentialRepositoryInMemory();
+export const userRepository = new UserRepositoryHashMap();
+export const credentialRepository = new CredentialRepositoryHashMap();
