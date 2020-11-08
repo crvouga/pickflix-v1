@@ -1,4 +1,4 @@
-import { AutoList, List, ListItem } from "../../models/types";
+import { AutoList, List, ListItem } from "../../models";
 import { ListLogic } from "../build";
 
 export async function aggergateListItem(this: ListLogic, listItem: ListItem) {

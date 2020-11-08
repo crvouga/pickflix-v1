@@ -1,14 +1,13 @@
-import {makeListItem} from '../../models';
-import {ListItem} from '../../models/types';
-import {ListLogic} from '../build';
-import {PartialListItem} from '../../models/make-list-item';
+import { ListItem, makeListItem } from "../../models";
+import { PartialListItem } from "../../models/make-list-item";
+import { ListLogic } from "../build";
 
 export async function addListItems(
   this: ListLogic,
   listItemInfos: PartialListItem[]
 ): Promise<ListItem[]> {
   const {
-    unitOfWork: {ListItems, Lists, AutoLists},
+    unitOfWork: { ListItems, Lists, AutoLists },
   } = this;
 
   const addedListItems = [];
@@ -31,7 +30,7 @@ export async function addListItems(
     ]);
 
     if (foundLists.length === 0 && foundAutoLists.length === 0) {
-      throw new Error('list does not exists');
+      throw new Error("list does not exists");
     }
 
     if (foundListItems.length > 0) {

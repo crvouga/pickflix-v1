@@ -1,6 +1,6 @@
 import { MediaLogic } from "../../media/logic/build";
 import { IUnitOfWork } from "../../unit-of-work/types";
-import { ListItemId } from "../models/types";
+import { ListItemId } from "../models";
 import { addListItems } from "./add-list-items/logic";
 import { addLists } from "./add-lists";
 import { aggergateList, aggergateListItem } from "./aggergate";

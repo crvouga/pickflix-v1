@@ -1,6 +1,6 @@
-import {AutoListKeys} from './types';
+import { AutoListKeys } from ".";
 
-export const INITIAL_AUTO_LIST_INFOS: {key: AutoListKeys}[] = [
+export const INITIAL_AUTO_LIST_INFOS: { key: AutoListKeys }[] = [
   {
     key: AutoListKeys.WatchNext,
   },

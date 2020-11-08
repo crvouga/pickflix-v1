@@ -1,7 +1,7 @@
 import express from "express";
 import { TmdbMediaId, TmdbMediaType } from "../../../media/models/types";
 import { User } from "../../../users/models";
-import { ListId, ListItemId } from "../../models/types";
+import { ListId, ListItemId } from "../../models";
 import { Dependencies } from "../types";
 
 export const listItems = ({ listLogic, middlewares }: Dependencies) => (

@@ -1,6 +1,6 @@
 import { RepositoryFileSystem } from "../../unit-of-work/repository.file-system";
 import { RepositoryHashMap } from "../../unit-of-work/repository.hash-map";
-import { AutoList } from "../models/types";
+import { AutoList } from "../models";
 import { IAutoListRepository } from "./types";
 
 export class AutoListRepositoryHashMap

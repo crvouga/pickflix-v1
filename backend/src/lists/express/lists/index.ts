@@ -1,8 +1,8 @@
 import { IRouter } from "express";
-import { ListId } from "../../models/types";
-import { Dependencies } from "../types";
-import { User } from "../../../users/models";
 import { pick } from "ramda";
+import { User } from "../../../users/models";
+import { ListId } from "../../models";
+import { Dependencies } from "../types";
 
 export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
   router: IRouter

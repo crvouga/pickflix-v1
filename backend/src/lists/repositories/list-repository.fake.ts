@@ -1,6 +1,6 @@
 import { RepositoryFileSystem } from "../../unit-of-work/repository.file-system";
 import { RepositoryHashMap } from "../../unit-of-work/repository.hash-map";
-import { List } from "../models/types";
+import { List } from "../models";
 import { IListRepository } from "./types";
 
 export class ListRepositoryHashMap

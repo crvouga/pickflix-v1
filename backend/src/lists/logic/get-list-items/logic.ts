@@ -1,4 +1,4 @@
-import { ListId } from "../../models/types";
+import { ListId } from "../../models";
 import { ListLogic } from "../build";
 
 export async function getListItemAggergations(

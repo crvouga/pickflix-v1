@@ -1,6 +1,4 @@
-import { makeList } from "../../models";
-import { PartialList } from "../../models/make-list";
-import { List } from "../../models/types";
+import { List, makeList, PartialList } from "../../models";
 import { ListLogic } from "../build";
 
 export async function addLists(

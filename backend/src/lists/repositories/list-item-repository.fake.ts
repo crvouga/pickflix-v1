@@ -1,7 +1,7 @@
-import { RepositoryHashMap } from "../../unit-of-work/repository.hash-map";
-import { ListItem } from "../models/types";
-import { IListItemRepository } from "./types";
 import { RepositoryFileSystem } from "../../unit-of-work/repository.file-system";
+import { RepositoryHashMap } from "../../unit-of-work/repository.hash-map";
+import { ListItem } from "../models";
+import { IListItemRepository } from "./types";
 
 export class ListItemRepositoryHashMap
   extends RepositoryHashMap<ListItem>

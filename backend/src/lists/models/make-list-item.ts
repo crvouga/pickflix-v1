@@ -1,6 +1,22 @@
-import {TmdbMediaId, TmdbMediaType} from '../../media/models/types';
-import {UserId} from '../../users/models/make-user';
-import {Dependencies, ListId, ListItem, ListItemId} from './types';
+import {
+  TmdbMediaId,
+  TmdbMediaType,
+  TmdbMedia,
+} from "../../media/models/types";
+import { UserId } from "../../users/models/make-user";
+import { Id } from "../../id/types";
+import { ListId } from ".";
+import { makeId, isValidId } from "../../id";
+
+export type ListItemId = Id & { ListItemId: true };
+
+export type ListItem = {
+  type: "listItem";
+  id: ListItemId;
+  userId: UserId;
+  listId: ListId;
+  createdAt: number;
+} & TmdbMedia;
 
 export type PartialListItem = {
   id?: ListItemId;
@@ -11,9 +27,7 @@ export type PartialListItem = {
   createdAt?: number;
 };
 
-export const buildMakeListItem = ({makeId, isValidId}: Dependencies) => (
-  listItemInfo: PartialListItem
-): ListItem => {
+export const makeListItem = (partial: PartialListItem): ListItem => {
   const {
     id = makeId() as ListItemId,
     createdAt = Date.now(),
@@ -21,22 +35,22 @@ export const buildMakeListItem = ({makeId, isValidId}: Dependencies) => (
     listId,
     tmdbMediaId,
     tmdbMediaType,
-  } = listItemInfo;
+  } = partial;
 
   if (!isValidId(id)) {
-    throw new Error('invalid id');
+    throw new Error("invalid id");
   }
 
   if (!isValidId(listId)) {
-    throw new Error('invalid list id');
+    throw new Error("invalid list id");
   }
 
   if (!isValidId(userId)) {
-    throw new Error('invalid user id');
+    throw new Error("invalid user id");
   }
 
   return Object.freeze({
-    type: 'listItem',
+    type: "listItem",
     id,
     userId,
     listId,
