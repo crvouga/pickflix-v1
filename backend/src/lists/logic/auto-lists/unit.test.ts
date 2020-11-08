@@ -6,7 +6,7 @@ describe("create auto lists", () => {
     const { listLogic } = buildListLogicFake();
     const user = makeUserFake();
     const added = await listLogic.initializeAutoLists({ user });
-    const got = await listLogic.getAutoLists({ ownerId: user.id });
+    const got = await listLogic.getAutoListAggergations({ ownerId: user.id });
 
     expect(got.map((_) => _.list)).toEqual(
       expect.arrayContaining(

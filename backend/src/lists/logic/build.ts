@@ -1,19 +1,19 @@
 import { MediaLogic } from "../../media/logic/build";
 import { IUnitOfWork } from "../../unit-of-work/types";
-import { ListItemId } from "../models";
-import { addListItems } from "./add-list-items/logic";
-import { addLists } from "./add-lists";
+
 import { aggergateList, aggergateListItem } from "./aggergate";
-import { editLists } from "./edit-lists/logic";
-import { getListItemAggergations } from "./get-list-items/logic";
+
 import {
-  getAutoLists,
-  getListAggergations,
-  getListsAndAutoLists,
-  getListsFromListItem,
-} from "./get-lists";
-import { initializeAutoLists } from "./initialize-auto-lists/logic";
-import { removeLists } from "./remove-lists";
+  getListItemAggergations,
+  addListItems,
+  removeListItems,
+} from "./list-items";
+import {
+  initializeAutoLists,
+  getAutoListAggergations,
+} from "./auto-lists/logic";
+
+import { removeLists, addLists, editLists, getListAggergations } from "./lists";
 
 export class ListLogic {
   unitOfWork: IUnitOfWork;
@@ -32,18 +32,16 @@ export class ListLogic {
 
   aggergateList = aggergateList;
   aggergateListItem = aggergateListItem;
+
   initializeAutoLists = initializeAutoLists;
-  getAutoLists = getAutoLists;
-  addLists = addLists;
-  getListAggergations = getListAggergations;
-  addListItems = addListItems;
+  getAutoListAggergations = getAutoListAggergations;
+
   getListItemAggergations = getListItemAggergations;
+  addListItems = addListItems;
+  removeListItems = removeListItems;
+
+  getListAggergations = getListAggergations;
+  addLists = addLists;
   removeLists = removeLists;
   editLists = editLists;
-  getListsAndAutoLists = getListsAndAutoLists;
-  getListsFromListItem = getListsFromListItem;
-
-  async removeListItems(listItemInfos: { id: ListItemId }[]) {
-    await this.unitOfWork.ListItems.remove(listItemInfos);
-  }
 }

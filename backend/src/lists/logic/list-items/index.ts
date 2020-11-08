@@ -1,6 +1,30 @@
-import { ListItem, makeListItem } from "../../models";
-import { PartialListItem } from "../../models/make-list-item";
+import { ListId, ListItem, makeListItem } from "../../models";
+import { ListItemId, PartialListItem } from "../../models/make-list-item";
 import { ListLogic } from "../build";
+
+export async function removeListItems(
+  this: ListLogic,
+  listItemInfos: { id: ListItemId }[]
+) {
+  await this.unitOfWork.ListItems.remove(listItemInfos);
+}
+
+export async function getListItemAggergations(
+  this: ListLogic,
+  {
+    listId,
+  }: {
+    listId: ListId;
+  }
+) {
+  const listItems = await this.unitOfWork.ListItems.find({ listId });
+
+  const aggergatedListItems = await Promise.all(
+    listItems.map((listItem) => this.aggergateListItem(listItem))
+  );
+
+  return aggergatedListItems;
+}
 
 export async function addListItems(
   this: ListLogic,

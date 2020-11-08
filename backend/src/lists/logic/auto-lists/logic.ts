@@ -1,12 +1,12 @@
-import { User } from "../../../users/models/make-user";
-import { AutoList, makeAutoList } from "../../models";
+import { User, UserId } from "../../../users/models/make-user";
+import { AutoList, makeAutoList, ListId } from "../../models";
 import { INITIAL_AUTO_LIST_INFOS } from "../../models/constants";
 import { ListLogic } from "../build";
 
 export async function initializeAutoLists(
   this: ListLogic,
   { user }: { user: User }
-): Promise<AutoList[]> {
+) {
   for (const { key } of INITIAL_AUTO_LIST_INFOS) {
     const found = await this.unitOfWork.AutoLists.find({
       ownerId: user.id,
@@ -28,4 +28,19 @@ export async function initializeAutoLists(
   const added = await this.unitOfWork.AutoLists.add(autoLists);
 
   return added;
+}
+
+export async function getAutoListAggergations(
+  this: ListLogic,
+  listInfo: { id: ListId } | { ownerId: UserId }
+) {
+  const { AutoLists } = this.unitOfWork;
+
+  const lists = await AutoLists.find(listInfo);
+
+  const aggergatedLists = await Promise.all(
+    lists.map((list) => this.aggergateList(list))
+  );
+
+  return aggergatedLists;
 }
