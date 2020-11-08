@@ -1,10 +1,10 @@
 import {
   AppBar,
   Box,
+  Container,
   IconButton,
   makeStyles,
   Toolbar,
-  Container,
 } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router";
@@ -35,7 +35,7 @@ export default () => {
   };
 
   const handleClickProfile = () => {
-    history.push("/profile");
+    history.push("/user");
   };
 
   const handleClickDiscover = () => {

@@ -18,6 +18,8 @@ export const BOTTOM_NAVIGATION_BAR_HEIGHT = 56;
 const useStyles = makeStyles((theme) => ({
   toolbar: {
     ...theme.mixins.toolbar,
+    position: "fixed",
+    top: "auto",
     bottom: 0,
   },
 }));
@@ -48,6 +50,7 @@ const useStylesBottomNavigationAction = makeStyles((theme) => ({
 }));
 
 export default () => {
+  const classes = useStyles();
   const classesBottomNavigation = useStylesBottomNavigation();
   const classesBottomNavigationAction = useStylesBottomNavigationAction();
 
@@ -84,7 +87,7 @@ export default () => {
       label: "Profile",
       icon: <ProfilePageIcon />,
       onClick: () => {
-        history.push("/profile");
+        history.push("/user");
       },
     },
   ];
@@ -105,6 +108,7 @@ export default () => {
           onClick={onClick}
         />
       ))}
+      <div className={classes.toolbar} />
     </BottomNavigation>
   );
 };

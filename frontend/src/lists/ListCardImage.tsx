@@ -42,7 +42,12 @@ const useStylesMovieIconBox = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: theme.palette.grey[600],
+    backgroundColor: theme.palette.grey[700],
+  },
+  icon: {
+    width: "66%",
+    height: "66%",
+    color: "black",
   },
 }));
 
@@ -56,7 +61,7 @@ const MovieIconBox = (props: BoxProps) => {
       }}
       {...props}
     >
-      <MovieIcon style={{ width: "66%", height: "66%", color: "black" }} />
+      <MovieIcon className={classesMovieIconBox.icon} />
     </AspectRatio>
   );
 };
@@ -64,31 +69,32 @@ const MovieIconBox = (props: BoxProps) => {
 export default ({ list, ...props }: { list: ListAggergation } & BoxProps) => {
   const classes = useStyles();
 
-  if (list.listItems.length === 0) {
-    return <MovieIconBox {...props} />;
-  }
-
-  if (list.listItems.length < 4) {
-    const listItem = list.listItems[0];
-    return (
-      <PosterBox
-        width="100%"
-        posterPath={listItem.tmdbData.posterPath}
-        {...props}
-      />
-    );
-  }
-
   return (
     <AspectRatio
       ratio={[1, 1]}
       className={classes.borderRadius}
-      ContentProps={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}
+      ContentProps={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "row",
+        flexWrap: "wrap",
+      }}
       {...props}
     >
-      {list.listItems.slice(0, 4).map((listItem) => (
-        <PosterBox posterPath={listItem.tmdbData.posterPath} width="50%" />
-      ))}
+      {[...list.listItems, null, null, null, null]
+        .slice(0, 4)
+        .map((listItem, index) => (
+          <React.Fragment key={listItem?.listItem.id || index}>
+            {listItem ? (
+              <PosterBox
+                posterPath={listItem.tmdbData.posterPath}
+                width="50%"
+              />
+            ) : (
+              <MovieIconBox width="50%" />
+            )}
+          </React.Fragment>
+        ))}
     </AspectRatio>
   );
 };

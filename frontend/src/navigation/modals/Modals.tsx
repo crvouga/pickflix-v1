@@ -1,10 +1,10 @@
 import React from "react";
+import AccountModal from "../../auth/AccountModal";
 import AddListFormModal from "../../lists/AddListFormModal";
 import AddListItemFormModal from "../../lists/AddListItemFormModal";
-import SearchModal from "../../search/SearchDialog";
-import AccountModal from "../../auth/AccountModal";
 import ReviewFormModal from "../../reviews/ReviewFormModal";
-import { useCurrentUser } from "../../auth/useAuth";
+import SearchModal from "../../search/SearchDialog";
+import useCurrentUser from "../../users/useCurrentUser";
 
 export default () => {
   const currentUser = useCurrentUser();

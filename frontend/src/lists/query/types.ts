@@ -1,5 +1,5 @@
 import { Movie } from "../../tmdb/types";
-import { User } from "../../auth/query";
+import { User } from "../../users/query";
 
 export type ListItem = {
   id: string;

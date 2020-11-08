@@ -14,7 +14,7 @@ import ChooseMedia from "./ChooseMedia";
 import useReviewForm from "./hooks/useReviewForm";
 import useBoolean from "../common/hooks/useBoolean";
 import { useQuery } from "react-query";
-import { queryKeys } from "./query";
+import { queryKeys, PostReviewParams } from "./query";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
@@ -47,25 +47,9 @@ export default () => {
     reviewForm.setTmdbMedia(undefined);
   };
 
-  const handleSubmit = async ({
-    rating,
-    content,
-  }: {
-    rating: number;
-    content: string;
-  }) => {
-    const tmdbMedia = reviewForm.tmdbMedia;
-
-    if (!tmdbMedia) {
-      throw new Error("tmdbMedia required");
-    }
-
+  const handleSubmit = async (params: PostReviewParams) => {
     try {
-      await reviewForm.submit({
-        tmdbMedia,
-        rating,
-        content,
-      });
+      await reviewForm.submit(params);
       reviewFormModal.close();
       reviewForm.setTmdbMedia(undefined);
     } catch (error) {}

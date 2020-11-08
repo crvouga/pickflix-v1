@@ -1,8 +1,8 @@
 import React from "react";
-import { useCurrentUser } from "../auth/useAuth";
+import { Redirect } from "react-router";
 import LoadingPage from "../common/page/LoadingPage";
-import ProfilePageAuthenticated from "./ProfilePage.Authenticated";
 import SignInPage from "./SignInPage";
+import useCurrentUser from "./useCurrentUser";
 
 export default () => {
   const currentUser = useCurrentUser();
@@ -15,5 +15,5 @@ export default () => {
     return <SignInPage />;
   }
 
-  return <ProfilePageAuthenticated currentUser={currentUser} />;
+  return <Redirect to={`/user/${currentUser.username}`} />;
 };

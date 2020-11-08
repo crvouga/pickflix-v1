@@ -1,25 +1,17 @@
-import {
-  Box,
-  Card,
-  Typography,
-  CardActionArea,
-  ButtonBase,
-} from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import LoadingBox from "../common/components/LoadingBox";
-import ListImageBox from "./ListImageBox";
-import { getUsersLists, queryKeys } from "./query";
-import { ListAggergation } from "./query/types";
-import AvatarUser from "../auth/AvatarUser";
-import ListListItem from "./ListListItem";
+import ListCard from "../lists/ListCard";
+import { getUsersLists, ListAggergation, queryKeys } from "../lists/query";
+import { User } from "./query";
 
 export default ({
-  username,
+  user,
   onClick,
 }: {
   onClick?: (list: ListAggergation) => void;
-  username: string;
+  user: User;
 }) => {
   const handleClick = (list: ListAggergation) => {
     if (onClick) {
@@ -27,9 +19,7 @@ export default ({
     }
   };
 
-  const query = useQuery(queryKeys.userLists({ username }), () =>
-    getUsersLists({ username })
-  );
+  const query = useQuery(queryKeys.userLists(user), () => getUsersLists(user));
 
   if (query.error) {
     return null;
@@ -45,7 +35,7 @@ export default ({
     <React.Fragment>
       {lists.map((list) => (
         <Box key={list.list.id} paddingY={1} onClick={() => handleClick(list)}>
-          <ListListItem list={list} />
+          <ListCard list={list} />
         </Box>
       ))}
     </React.Fragment>

@@ -1,8 +1,8 @@
 import { Avatar, AvatarProps } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import React from "react";
-import AvatarUser from "./AvatarUser";
-import { useCurrentUser } from "./useAuth";
+import AvatarUser from "../users/AvatarUser";
+import useCurrentUser from "../users/useCurrentUser";
 
 export default (props: AvatarProps) => {
   const currentUser = useCurrentUser();

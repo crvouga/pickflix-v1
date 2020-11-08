@@ -1,17 +1,15 @@
 import {
   Box,
   Button,
-  makeStyles,
+  CircularProgress,
   TextField,
   Typography,
-  CircularProgress,
 } from "@material-ui/core";
 import React, { useRef, useState } from "react";
-import { useHistory } from "react-router";
 import { useQuery } from "react-query";
-
+import { useHistory } from "react-router";
 import { useDebounce } from "use-debounce/lib";
-import { getUsers } from "../auth/query";
+import { getUsers } from "../users/query";
 
 //copyed from server
 const USERNAME_REGEXP = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;

@@ -30,7 +30,7 @@ export default () => {
       throw error;
     } finally {
       queryCache.invalidateQueries(key);
-      history.push("/profile");
+      history.push("/user");
     }
   };
 

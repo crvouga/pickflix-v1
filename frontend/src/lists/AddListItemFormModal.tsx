@@ -9,15 +9,15 @@ import {
   ButtonBase,
 } from "@material-ui/core";
 import React from "react";
-import { User } from "../auth/query";
+import { User } from "../users/query";
 import ResponsiveDialog from "../common/components/ResponsiveDialog";
 import useModal from "../navigation/modals/useModal";
 import useAddListForm from "./hooks/useAddListForm";
 import useAddListItemForm from "./hooks/useAddListItemForm";
-import UserListsList from "./UserListsList";
 import { ListAggergation } from "./query/types";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import LabeledIconButton from "../common/components/LabeledIconButton";
+import UserListsList from "../users/UserListsList";
 
 export default ({ currentUser }: { currentUser: User }) => {
   const addListItemModal = useModal("AddListItem");
@@ -75,7 +75,7 @@ export default ({ currentUser }: { currentUser: User }) => {
       </Box>
 
       <Box p={1}>
-        <UserListsList onClick={handleClick} username={currentUser.username} />
+        <UserListsList onClick={handleClick} user={currentUser} />
       </Box>
     </ResponsiveDialog>
   );

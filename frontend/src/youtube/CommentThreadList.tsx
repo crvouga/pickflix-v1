@@ -1,4 +1,4 @@
-import { Divider } from "@material-ui/core";
+import { Divider, Box } from "@material-ui/core";
 import React from "react";
 import YoutubeCommentThread from "./CommentThread";
 import { YoutubeCommentThreadListResponse } from "./query/youtube-comment-types";
@@ -13,9 +13,9 @@ export default ({ commentThreadList }: Props) => {
   return (
     <React.Fragment>
       {items.map((commentThread, i) => (
-        <React.Fragment key={commentThread.id}>
+        <Box key={commentThread.id} paddingX={2} paddingY={1}>
           <YoutubeCommentThread commentThread={commentThread} />
-        </React.Fragment>
+        </Box>
       ))}
     </React.Fragment>
   );

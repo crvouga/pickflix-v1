@@ -14,6 +14,7 @@ describe("/api/reviews", () => {
     });
 
     const posted = await supertest(app).post("/api/reviews").send({
+      title: "Cool Movie",
       content: "cool movie",
       rating: 5,
       tmdbMediaId: 550,
@@ -36,6 +37,7 @@ describe("/api/reviews", () => {
     const response = await supertest(app)
       .post("/api/reviews")
       .send({
+        title: "Cool Movie",
         content: "cool movie",
         tmdbMediaId: 550 as TmdbMediaId,
         tmdbMediaType: TmdbMediaType.movie,

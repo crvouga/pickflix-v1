@@ -1,10 +1,11 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
-import ErrorBox from "../common/components/ErrorBox";
-import LoadingBox from "../common/components/LoadingBox";
-import { TmdbMediaType } from "../tmdb/types";
-import { useQueryReviews } from "./query/hooks";
-import Review from "./Review";
+import ErrorBox from "../../common/components/ErrorBox";
+import LoadingBox from "../../common/components/LoadingBox";
+import { TmdbMediaType } from "../../tmdb/types";
+import { useQueryReviews } from "../../reviews/query/hooks";
+import Review from "../../users/UserReviewsListItem";
+import MovieReviewListItem from "./MovieReviewListItem";
 
 type Props = {
   tmdbMediaId: string;
@@ -30,8 +31,8 @@ export default (props: Props) => {
         <Typography variant="h6">Reviews</Typography>
       </Box>
       {reviews.map((review) => (
-        <Box>
-          <Review {...review} />
+        <Box paddingX={2} paddingY={1}>
+          <MovieReviewListItem review={review} />
         </Box>
       ))}
     </React.Fragment>

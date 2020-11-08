@@ -23,8 +23,8 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import useBoolean from "../common/hooks/useBoolean";
 import BackButton from "../navigation/BackButton";
-import AvatarUser from "./AvatarUser";
-import { User } from "./query/types";
+import AvatarUser from "../users/AvatarUser";
+import { User } from "../users/query";
 import { useAuth } from "./useAuth";
 
 const useStyles = makeStyles((theme) => ({

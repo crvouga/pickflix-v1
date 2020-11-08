@@ -1,5 +1,5 @@
 import { TmdbMediaType, TmdbMedia } from "../../tmdb/types";
-import { addReviewMutation, postReview } from "../query";
+import { addReviewMutation, postReview, PostReviewParams } from "../query";
 import { useQueryCache } from "react-query";
 import useSnackbar from "../../snackbar/useSnackbar";
 import { useSelector, useDispatch } from "react-redux";
@@ -20,21 +20,9 @@ export default () => {
   const queryCache = useQueryCache();
   const snackbar = useSnackbar();
 
-  const submit = async ({
-    content,
-    rating,
-    tmdbMedia,
-  }: {
-    tmdbMedia: TmdbMedia;
-    rating: number;
-    content: string;
-  }) => {
+  const submit = async (params: PostReviewParams) => {
     try {
-      const review = await postReview({
-        ...tmdbMedia,
-        content,
-        rating,
-      });
+      await postReview(params);
 
       snackbar.display({
         message: "Review posted",

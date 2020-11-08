@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import ErrorBox from "../../common/components/ErrorBox";
 import LoadingBox from "../../common/components/LoadingBox";
 import { getTmdbMovieReviews, queryKeys } from "../../tmdb/query";
-import TmdbReview from "./TmdbReview";
+import TmdbReview from "./TmdbReviewListItem";
 
 export default ({ tmdbMediaId }: { tmdbMediaId: string }) => {
   const query = useQuery(queryKeys.movieReviews(tmdbMediaId), () =>
@@ -26,9 +26,9 @@ export default ({ tmdbMediaId }: { tmdbMediaId: string }) => {
       <Box paddingX={2}>
         <Typography variant="h6">{reviews.results.length} Reviews</Typography>
       </Box>
-      {reviews.results.map((review, index) => (
-        <Box key={review.id}>
-          <TmdbReview key={review.id} review={review} p={2} marginY={2} />
+      {reviews.results.map((review) => (
+        <Box key={review.id} paddingX={2} paddingY={1}>
+          <TmdbReview review={review} />
         </Box>
       ))}
     </React.Fragment>

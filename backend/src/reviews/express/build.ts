@@ -85,6 +85,7 @@ export const buildReviewsRouter = ({
   router.post(
     "/reviews",
     middlewares.isAuthenticated,
+    body("title").isString(),
     body("content").isString(),
     body("rating").isInt(),
     body("tmdbMediaId").isInt(),
@@ -95,12 +96,14 @@ export const buildReviewsRouter = ({
         const currentUser = req.user as User;
         const authorId = currentUser.id;
 
+        const title = req.body.title as string;
         const content = req.body.content as string;
         const rating = req.body.rating as number;
         const tmdbMediaId = Number(req.body.tmdbMediaId) as TmdbMediaId;
         const tmdbMediaType = req.body.tmdbMediaType as TmdbMediaType;
 
         const review = await reviewLogic.addReview({
+          title,
           authorId,
           content,
           rating,

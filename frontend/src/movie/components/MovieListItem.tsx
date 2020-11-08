@@ -5,6 +5,7 @@ import {
   ListItemAvatar,
   ListItemSecondaryAction,
   ListItemText,
+  CardActionArea,
 } from "@material-ui/core";
 import LaunchIcon from "@material-ui/icons/Launch";
 import MovieIcon from "@material-ui/icons/Movie";
@@ -35,19 +36,18 @@ export default (props: Props) => {
   };
 
   return (
-    <ListItem onClick={handleClick} {...ListItemProps}>
-      <ListItemAvatar>
-        <Avatar variant="square" src={src}>
-          <MovieIcon />
-        </Avatar>
-      </ListItemAvatar>
-      <ListItemText
-        primary={title}
-        secondary={releaseDate ? toYear(releaseDate) : undefined}
-      />
-      {/* <ListItemSecondaryAction>
-        <LaunchIcon />
-      </ListItemSecondaryAction> */}
-    </ListItem>
+    <CardActionArea>
+      <ListItem onClick={handleClick} {...ListItemProps}>
+        <ListItemAvatar>
+          <Avatar variant="square" src={src}>
+            <MovieIcon />
+          </Avatar>
+        </ListItemAvatar>
+        <ListItemText
+          primary={title}
+          secondary={releaseDate ? toYear(releaseDate) : undefined}
+        />
+      </ListItem>
+    </CardActionArea>
   );
 };

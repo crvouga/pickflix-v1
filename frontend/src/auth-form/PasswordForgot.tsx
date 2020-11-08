@@ -1,7 +1,7 @@
 import { Box, Button, Typography } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import React, { useState } from "react";
-import { User } from "../auth/query";
+import { User } from "../users/query";
 import useSnackbar from "../snackbar/useSnackbar";
 import { postForgotPassword } from "./query";
 

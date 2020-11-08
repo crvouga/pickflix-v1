@@ -2,7 +2,7 @@ import { Avatar, AvatarProps, makeStyles } from "@material-ui/core";
 import clsx from "clsx";
 import React from "react";
 import { nameToInitials } from "../utils";
-import { User } from "./query/types";
+import { User } from "./query";
 
 type Props = AvatarProps & {
   user: User;

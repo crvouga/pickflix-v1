@@ -1,15 +1,26 @@
 import { BackendAPI } from "../../backend-api";
-import { User } from "./types";
 
-export enum AuthMethod {
-  password = "password",
-}
-export const getAuthMethods = async (email: string) => {
-  const { data } = await BackendAPI.get<AuthMethod[]>("/api/auth/methods", {
-    params: {
-      email,
-    },
-  });
+export type User = {
+  type: "user";
+  id: string;
+  username: string;
+  emailAddress: string;
+  displayName: string;
+};
+
+export const queryKeys = {
+  user: ({ username }: { username: string }) => ["users", username],
+  currentUser: () => ["user"],
+  users: (email: string) => ["users", email],
+};
+
+/* 
+
+
+*/
+
+export const getUser = async ({ username }: { username: string }) => {
+  const { data } = await BackendAPI.get<User>(`/api/users/${username}`);
   return data;
 };
 

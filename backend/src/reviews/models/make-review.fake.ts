@@ -7,6 +7,7 @@ export const makeReviewFake = (overrides?: Partial<Review>) => {
   return makeReview({
     rating: 4,
     authorId: makeId() as UserId,
+    title: "Cool Movie",
     content: "cool movie",
     tmdbMediaId: 550,
     tmdbMediaType: TmdbMediaType.movie,

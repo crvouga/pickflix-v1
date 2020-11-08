@@ -11,16 +11,12 @@ export type PostReviewParams = {
   tmdbMediaId: string;
   tmdbMediaType: TmdbMediaType;
   content: string;
+  title: string;
   rating: number;
 };
 
 export const postReview = async (params: PostReviewParams) => {
-  const { data } = await BackendAPI.post<Review>("/api/reviews", {
-    content: params.content,
-    rating: params.rating,
-    tmdbMediaId: params.tmdbMediaId,
-    tmdbMediaType: params.tmdbMediaType,
-  });
+  const { data } = await BackendAPI.post<Review>("/api/reviews", params);
   return data;
 };
 

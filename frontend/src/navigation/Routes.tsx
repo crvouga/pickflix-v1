@@ -5,11 +5,12 @@ import DiscoverMoviePage from "../discover/DiscoverMoviePage";
 import ListPage from "../lists/ListPage";
 import MoviePage from "../movie/MoviePage";
 import PersonPage from "../person/PersonPage";
-import ProfilePage from "../profile/ProfilePage";
+import CurrentUserPage from "../users/CurrentUserPage";
 import Snackbar from "../snackbar/Snackbar";
 import Modals from "./modals/Modals";
 import HomePage from "../home/HomePage";
 import SearchPage from "../search/SearchPage.Mobile";
+import UserPage from "../users/UserPage";
 
 export default () => {
   return (
@@ -23,7 +24,8 @@ export default () => {
         <Route path="/movie/:tmdbMediaId" component={MoviePage} />
         <Route path="/person/:tmdbMediaId" component={PersonPage} />
         <Route path="/list/:listId" component={ListPage} />
-        <Route path="/profile" component={ProfilePage} />
+        <Route path="/user/:username" component={UserPage} />
+        <Route path="/user" component={CurrentUserPage} />
         <Route path="/auth" component={AuthPage} />
       </Switch>
     </React.Fragment>

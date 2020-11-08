@@ -1,0 +1,24 @@
+import { useQuery } from "react-query";
+import { getCurrentUser, queryKeys, User } from "./query";
+
+export default (): User | "loading" | null => {
+  const query = useQuery(queryKeys.currentUser(), () => getCurrentUser(), {
+    retry: 0,
+  });
+
+  switch (query.status) {
+    case "loading":
+      return "loading";
+
+    case "success":
+      const currentUser = query.data;
+      if (currentUser) {
+        return currentUser;
+      } else {
+        return null;
+      }
+
+    default:
+      return null;
+  }
+};

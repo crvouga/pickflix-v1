@@ -1,4 +1,11 @@
-import { Avatar, BoxProps, makeStyles, Typography } from "@material-ui/core";
+import {
+  Avatar,
+  Box,
+  BoxProps,
+  Card,
+  CardHeader,
+  makeStyles,
+} from "@material-ui/core";
 import React from "react";
 import MarkdownTypography from "../../common/components/MarkdownTypography";
 import * as TMDb from "../../tmdb/attribution";
@@ -6,23 +13,10 @@ import { MovieReview } from "../../tmdb/types";
 import { nameToInitials } from "../../utils";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "start",
-    padding: theme.spacing(2),
-  },
-  avatarContainer: {
-    marginRight: theme.spacing(2),
-  },
   avatar: {
     textDecoration: "none",
     color: TMDb.palette.primary,
     background: `linear-gradient(${TMDb.palette.tertiary}, ${TMDb.palette.secondary})`,
-  },
-  body: {
-    display: "flex",
-    flexDirection: "column",
   },
 }));
 
@@ -39,19 +33,17 @@ export default ({ review, ...props }: Props) => {
     author,
   } = review;
 
-  const initials = nameToInitials(author);
-
   return (
-    <div className={classes.root}>
-      <div className={classes.avatarContainer}>
-        <Avatar className={classes.avatar} component="a" href={url}>
-          {initials}
-        </Avatar>
-      </div>
-      <div className={classes.body}>
-        <Typography color="textSecondary">{author}</Typography>
+    <Card>
+      <CardHeader
+        avatar={
+          <Avatar className={classes.avatar}>{nameToInitials(author)}</Avatar>
+        }
+        title={author}
+      />
+      <Box paddingX={2} paddingBottom={2}>
         <MarkdownTypography>{content}</MarkdownTypography>
-      </div>
-    </div>
+      </Box>
+    </Card>
   );
 };

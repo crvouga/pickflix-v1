@@ -1,9 +1,10 @@
 import { TmdbMediaType, Movie } from "../../tmdb/types";
-import { User } from "../../auth/query";
+import { User } from "../../users/query";
 
 export type Review = {
   id: string;
   authorId: string;
+  title: string;
   content: string;
   rating: number;
   createdAt: number;

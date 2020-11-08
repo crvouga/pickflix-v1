@@ -14,6 +14,7 @@ import { useQueryMovie } from "../movie/query";
 import * as movieUtils from "../movie/utils";
 import { TmdbMedia, TmdbMediaType } from "../tmdb/types";
 import { Rating } from "@material-ui/lab";
+import { PostReviewParams } from "./query";
 
 type Props = {
   tmdbMedia: {
@@ -68,21 +69,25 @@ export default ({
 }: {
   tmdbMedia: TmdbMedia;
   onCancel: () => void;
-  onSubmit: (_: { rating: number; content: string }) => void;
+  onSubmit: (_: PostReviewParams) => void;
 }) => {
   const [rating, setRating] = useState<number | null>(null);
+  const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
   const handleSubmit = () => {
     if (rating && content.length > 0) {
       onSubmit({
+        ...tmdbMedia,
+        title,
         rating,
         content,
       });
     }
   };
 
-  const disabled = content.length === 0;
+  const disabled =
+    title.length === 0 || content.length === 0 || rating === null;
 
   return (
     <React.Fragment>
@@ -116,6 +121,18 @@ export default ({
             //   console.log({ onChange: newValue });
             //   setRating(newValue);
             // }}
+          />
+        </Box>
+
+        <Box paddingBottom={1}>
+          <TextField
+            variant="outlined"
+            style={{ fontWeight: "bold", fontSize: "1.25em" }}
+            fullWidth
+            onChange={(e) => {
+              setTitle(e.target.value || "");
+            }}
+            label="Title"
           />
         </Box>
 

@@ -68,6 +68,27 @@ export const buildUsersRouter = ({ userLogic, middlewares }: Dependencies) => (
     }
   });
 
+  router.get(
+    "/users/current",
+    middlewares.isAuthenticated,
+    async (req, res) => {
+      res.status(200).json(req.user);
+    }
+  );
+
+  router.get("/users/:username", async (req, res, next) => {
+    try {
+      const username = req.params.username as string;
+      const [user] = await userLogic.getUsers({ username });
+      if (user) {
+        return res.status(200).json(user).end();
+      }
+      return res.status(404).json({ message: "User does not exists" }).end();
+    } catch (error) {
+      return next(error);
+    }
+  });
+
   router.get("/users", async (req, res, next) => {
     try {
       const username = req.query.username as string;
@@ -84,14 +105,6 @@ export const buildUsersRouter = ({ userLogic, middlewares }: Dependencies) => (
       return next(error);
     }
   });
-
-  router.get(
-    "/users/current",
-    middlewares.isAuthenticated,
-    async (req, res) => {
-      res.status(200).json(req.user);
-    }
-  );
 
   router.post("/users/password", async (req, res, next) => {
     const emailAddress = req.body.emailAddress;

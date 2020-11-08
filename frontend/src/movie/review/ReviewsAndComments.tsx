@@ -1,9 +1,9 @@
 import { Box, Tab, Tabs, Typography } from "@material-ui/core";
 import React from "react";
-import ReviewList from "../../reviews/ReviewList";
 import useVideoState from "../../video/useVideoState";
-import TmdbMovieReviews from "./TmdbMovieReviews";
-import YoutubeComments from "./YoutubeComments";
+import MovieReviewList from "./MovieReviewList";
+import TmdbMovieReviewList from "./TmdbMovieReviewList";
+import YoutubeCommentList from "./YoutubeCommentList";
 
 const TabPanel = (props: {
   children?: React.ReactNode;
@@ -52,13 +52,13 @@ export default ({ tmdbMediaId }: { tmdbMediaId: string }) => {
       </Box>
 
       <TabPanel value={value} index={0}>
-        <ReviewList tmdbMediaId={tmdbMediaId} tmdbMediaType="movie" />
+        <MovieReviewList tmdbMediaId={tmdbMediaId} tmdbMediaType="movie" />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <YoutubeComments videoId={videoState.currentVideo?.key} />
+        <YoutubeCommentList videoId={videoState.currentVideo?.key} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <TmdbMovieReviews tmdbMediaId={tmdbMediaId} />
+        <TmdbMovieReviewList tmdbMediaId={tmdbMediaId} />
       </TabPanel>
     </React.Fragment>
   );

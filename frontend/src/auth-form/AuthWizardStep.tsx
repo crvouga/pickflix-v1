@@ -1,11 +1,9 @@
-import { Box, Paper } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
-import { useHistory, useLocation } from "react-router";
-import { getUsers, queryKeys } from "../auth/query";
+import { useLocation } from "react-router";
 import ErrorBox from "../common/components/ErrorBox";
 import LoadingBox from "../common/components/LoadingBox";
-import PickflixLogo from "../common/PickflixLogo";
+import { getUsers, queryKeys } from "../users/query";
 import CreateAccount from "./CreateAccount";
 import Email from "./Email";
 import Password from "./Password";

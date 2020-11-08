@@ -13,7 +13,7 @@ import DeleteIcon from "@material-ui/icons/DeleteForeverOutlined";
 import EditIcon from "@material-ui/icons/EditOutlined";
 import React from "react";
 import { useHistory, useParams } from "react-router";
-import AvatarUser from "../auth/AvatarUser";
+import AvatarUser from "../users/AvatarUser";
 import useBoolean from "../common/hooks/useBoolean";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
@@ -22,7 +22,7 @@ import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
 import DeleteListFormModal from "./DeleteListFormModal";
 import EditListFormModal from "./EditListFormModal";
 import { useQueryList } from "./hooks/query";
-import ListImageBox from "./ListImageBox";
+import ListCardImage from "./ListCardImage";
 import ListItemsSection from "./ListItemsSection";
 
 export default () => {
@@ -50,7 +50,9 @@ export default () => {
         <AppBar position="sticky" color="default">
           <Toolbar>
             <BackButton />
-            <Typography variant="h6">{list.list.title}</Typography>
+            <Typography variant="h6" noWrap>
+              {list.list.title}
+            </Typography>
           </Toolbar>
         </AppBar>
       </Hidden>
@@ -79,14 +81,17 @@ export default () => {
               p={2}
             >
               <Box width="150px" paddingBottom={1}>
-                <ListImageBox list={list} />
+                <ListCardImage list={list} />
               </Box>
               <Box paddingBottom={1}>
-                <Typography variant="h5">{list.list.title}</Typography>
+                <Typography variant="h5" style={{ wordBreak: "break-all" }}>
+                  {list.list.title}
+                </Typography>
                 <Typography variant="body1">{list.list.description}</Typography>
               </Box>
               <Chip
                 variant="outlined"
+                size="medium"
                 onClick={() => {
                   history.push(`/user/${list.owner.username}`);
                 }}
