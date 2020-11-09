@@ -6,7 +6,7 @@ export const useQueryLists = () => {
 };
 
 export const useQueryList = ({ listId }: { listId: string }) => {
-  return useQuery(queryKeys.list(listId), () => getList({ listId }));
+  return useQuery(queryKeys.list({ listId }), () => getList({ listId }));
 };
 
 export const useQueryListItems = ({ listId }: { listId: string }) => {

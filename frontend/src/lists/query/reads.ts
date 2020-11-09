@@ -12,7 +12,13 @@ export const queryKeys = {
   lists: () => ["current-user", "lists"],
   autoLists: () => ["current-user", "auto-lists"],
 
-  list: (listId: string) => ["lists", listId],
+  autoList: ({ autoListId }: { autoListId: string }) => [
+    "auto-lists",
+    autoListId,
+  ],
+
+  list: ({ listId }: { listId: string }) => ["lists", listId],
+  listsOrAutoLists: ({ id }: { id: string }) => ["lists", "autoLists", id],
 
   listItems: (params: GetListItemsParams) => ["list-items", params],
 
@@ -53,6 +59,16 @@ export const getLists = async () => {
 export const getAutoLists = async () => {
   const { data } = await BackendAPI.get<AutoListAggergation[]>(
     "/api/auto-lists"
+  );
+  return data;
+};
+
+export const getListsOrAutoLists = async ({ id }: { id: string }) => {
+  const { data } = await BackendAPI.get<ListAggergation | AutoListAggergation>(
+    `/api/lists`,
+    {
+      params: { id },
+    }
   );
   return data;
 };

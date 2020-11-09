@@ -22,7 +22,7 @@ export const editListMutation = (queryCache: QueryCache) => async (
   params: PatchListParams
 ) => {
   const { title, description, listId } = params;
-  const key = queryKeys.list(listId);
+  const key = queryKeys.list({ listId });
 
   const previous = queryCache.getQueryData<ListAggergation>(key);
 

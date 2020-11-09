@@ -8,48 +8,24 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
-import { useQuery } from "react-query";
-import { useHistory, useParams } from "react-router";
-import ErrorPage from "../../common/page/ErrorPage";
-import LoadingPage from "../../common/page/LoadingPage";
 import BackButton from "../../navigation/BackButton";
 import ResponsiveNavigation from "../../navigation/ResponsiveNavigation";
-import useCurrentUser from "../../users/useCurrentUser";
+import ChipUser from "../../users/ChipUser";
+import { User } from "../../users/query";
 import ListItemsSection from "../ListItemsSection";
 import {
-  getAutoList,
   queryKeys,
+  AutoListAggergation,
   toAutoListName,
-  AutoListKeys,
-  getUsersAutoList,
+  getAutoList,
 } from "../query";
 import AutoListIcon from "./AutoListIcon";
-import ChipUser from "../../users/ChipUser";
+import { useQuery } from "react-query";
+import { useParams } from "react-router";
+import ErrorPage from "../../common/page/ErrorPage";
+import LoadingPage from "../../common/page/LoadingPage";
 
-export default () => {
-  const { username, autoListKey } = useParams<{
-    username: string;
-    autoListKey: AutoListKeys;
-  }>();
-
-  const query = useQuery(
-    queryKeys.userAutoList({ username, autoListKey }),
-    () => getUsersAutoList({ username, autoListKey })
-  );
-
-  const currentUser = useCurrentUser();
-
-  if (query.error) {
-    return <ErrorPage />;
-  }
-
-  if (!query.data || currentUser === "loading") {
-    return <LoadingPage />;
-  }
-
-  const autoList = query.data;
-  const isCurrentUser = currentUser && currentUser.id === autoList.owner.id;
-
+const AutoListPage = ({ autoList }: { autoList: AutoListAggergation }) => {
   return (
     <React.Fragment>
       <ResponsiveNavigation />
@@ -104,4 +80,24 @@ export default () => {
       </Container>
     </React.Fragment>
   );
+};
+
+export default () => {
+  const { autoListId } = useParams<{ autoListId: string }>();
+
+  const query = useQuery(queryKeys.autoList({ autoListId }), () =>
+    getAutoList({ autoListId })
+  );
+
+  if (query.error) {
+    return <ErrorPage />;
+  }
+
+  if (!query.data) {
+    return <LoadingPage />;
+  }
+
+  const autoList = query.data;
+
+  return <AutoListPage autoList={autoList} />;
 };

@@ -18,7 +18,7 @@ export default () => {
       queryCache.setQueryData(key, optimistic);
 
       await deleteList({ listId });
-      queryCache.removeQueries(queryKeys.list(listId));
+      queryCache.removeQueries(queryKeys.list({ listId }));
       snackbar.display({
         message: "Deleted list",
       });

@@ -8,7 +8,9 @@ export const useLazyImage = ({
   highQuality: string;
   lowQuality: string;
 }) => {
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView({
+    rootMargin: "200px",
+  });
   const [src, setSrc] = useState<string | undefined>(undefined);
   const [loaded, setLoaded] = useState(false);
 

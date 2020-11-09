@@ -1,21 +1,26 @@
 import {
   AppBar,
+  Box,
   Container,
   Grid,
   Hidden,
   makeStyles,
+  Switch,
   Toolbar,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@material-ui/core";
+import clsx from "clsx";
 import React, { useEffect } from "react";
 import { useParams } from "react-router";
+import useBoolean from "../common/hooks/useBoolean";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
 import usePageHistory from "../home/page-history/usePageHistory";
 import BackButton from "../navigation/BackButton";
 import { APP_BAR_HEIGHT } from "../navigation/constants";
-import NavigationDesktop from "../navigation/Navigation.Desktop";
-import NavigationMobile from "../navigation/Navigation.Mobile";
+import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
 import makeImageUrl from "../tmdb/makeImageUrl";
 import VideoPlayer from "../video/VideoPlayer";
 import MovieCredits from "./credits/MovieCredits";
@@ -25,20 +30,21 @@ import { useQueryMovie } from "./query";
 import MovieRelated from "./related/MovieRelated";
 import ReviewsAndComments from "./review/ReviewsAndComments";
 import MovieVideo from "./video/MovieVideo";
-import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
 
 const useStyles = makeStyles((theme) => ({
   sticky: {
-    [theme.breakpoints.down("xs")]: {
-      position: "sticky",
-      top: APP_BAR_HEIGHT,
-      zIndex: theme.zIndex.appBar - 1,
-    },
+    position: "sticky",
+    top: APP_BAR_HEIGHT,
+    zIndex: theme.zIndex.appBar - 1,
   },
 }));
 
 export default () => {
   const classes = useStyles();
+
+  const isStickyPlayer = useBoolean(true);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   const { tmdbMediaId } = useParams<{ tmdbMediaId: string }>();
   const query = useQueryMovie({ tmdbMediaId });
@@ -79,14 +85,27 @@ export default () => {
         <AppBar color="default" position="sticky">
           <Toolbar>
             <BackButton />
-            <Typography variant="h6" noWrap>
-              {details.title}
-            </Typography>
+            <Box flex={1}>
+              <Typography variant="h6" noWrap>
+                {details.title}
+              </Typography>
+            </Box>
+            <Switch
+              checked={isStickyPlayer.value}
+              onClick={() => {
+                console.log("TOGGLE");
+                isStickyPlayer.toggle();
+              }}
+            />
           </Toolbar>
         </AppBar>
       </Hidden>
 
-      <Container disableGutters maxWidth="md" className={classes.sticky}>
+      <Container
+        disableGutters
+        maxWidth="md"
+        className={clsx({ [classes.sticky]: isStickyPlayer.value && isMobile })}
+      >
         <VideoPlayer light={backdrop} />
       </Container>
 

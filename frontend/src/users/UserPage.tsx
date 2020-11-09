@@ -125,9 +125,7 @@ export default () => {
               <Typography variant="h5">Auto Lists</Typography>
               <UserAutoListsList
                 onClick={(autoList) => {
-                  history.push(
-                    `/user/${username}/auto-list/${autoList.list.key}`
-                  );
+                  history.push(`/auto-list/${autoList.list.id}`);
                 }}
                 user={user}
               />

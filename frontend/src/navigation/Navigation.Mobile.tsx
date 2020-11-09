@@ -12,16 +12,12 @@ import {
   ProfilePageIcon,
   SearchPageIcon,
 } from "./PageIcons";
+import { APP_BAR_HEIGHT } from "./constants";
 
 export const BOTTOM_NAVIGATION_BAR_HEIGHT = 56;
 
 const useStyles = makeStyles((theme) => ({
-  toolbar: {
-    ...theme.mixins.toolbar,
-    position: "fixed",
-    top: "auto",
-    bottom: 0,
-  },
+  gutter: theme.mixins.toolbar,
 }));
 
 const useStylesBottomNavigation = makeStyles((theme) => ({
@@ -49,8 +45,12 @@ const useStylesBottomNavigationAction = makeStyles((theme) => ({
   },
 }));
 
-export default () => {
+export const BottomNavigationGutter = () => {
   const classes = useStyles();
+  return <div className={classes.gutter} />;
+};
+
+export default () => {
   const classesBottomNavigation = useStylesBottomNavigation();
   const classesBottomNavigationAction = useStylesBottomNavigationAction();
 
@@ -108,7 +108,6 @@ export default () => {
           onClick={onClick}
         />
       ))}
-      <div className={classes.toolbar} />
     </BottomNavigation>
   );
 };

@@ -1,4 +1,4 @@
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress, Button } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import LabeledIconButton from "../../common/components/LabeledIconButton";
@@ -13,6 +13,8 @@ import {
 import useListItemToggleState from "../useListItemToggleState";
 import AutoListIcon from "./AutoListIcon";
 import useSnackbar from "../../snackbar/useSnackbar";
+import { ViewListButton } from "../../snackbar/Snackbar";
+import { useHistory } from "react-router";
 
 const AutoListToggleListItemButton = ({
   autoListKey,
@@ -21,6 +23,7 @@ const AutoListToggleListItemButton = ({
   listId,
 }: TmdbMedia & { listId: string; autoListKey: AutoListKeys }) => {
   const snackbar = useSnackbar();
+  const history = useHistory();
   const toggleState = useListItemToggleState({
     tmdbMediaType,
     tmdbMediaId,
@@ -33,6 +36,16 @@ const AutoListToggleListItemButton = ({
       if (isIn) {
         snackbar.display({
           message: `Added to ${toAutoListName(autoListKey)}`,
+          action: (
+            <Button
+              color="primary"
+              onClick={() => {
+                history.push(`/auto-list/${listId}`);
+              }}
+            >
+              See List
+            </Button>
+          ),
         });
       } else {
         snackbar.display({

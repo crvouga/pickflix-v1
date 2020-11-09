@@ -26,11 +26,6 @@ export default () => {
         onClose={open.setFalse}
         onClear={handleClear}
       />
-
-      <Box paddingX={2} paddingBottom={1}>
-        <Typography variant="h6">Recent</Typography>
-      </Box>
-
       <HorizontalScroll paddingLeft={2}>
         {pageHistory.entities.slice(0, 25).map((entity) => (
           <Box key={entity.id} marginRight={1} width="180px">

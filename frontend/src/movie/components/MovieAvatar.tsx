@@ -11,7 +11,7 @@ type Props = AvatarProps & {
 
 export default ({ movie, ...props }: Props) => {
   return (
-    <Avatar variant="square" src={makeImageUrl(2, movie)} {...props}>
+    <Avatar variant="square" src={makeImageUrl(1, movie)} {...props}>
       <MovieIcon />
     </Avatar>
   );
