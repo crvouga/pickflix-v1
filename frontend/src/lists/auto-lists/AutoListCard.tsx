@@ -1,32 +1,41 @@
 import { Box, Card, CardActionArea, Grid, Typography } from "@material-ui/core";
 import React from "react";
-import ChipUser from "../users/ChipUser";
-import ListImageBox from "./ListCardImage";
-import { ListAggergation } from "./query/types";
+import { AutoListAggergation, toAutoListName } from "../query";
+import AutoListIcon from "./AutoListIcon";
 
-export default ({ list }: { list: ListAggergation }) => {
+type Props = {
+  autoList: AutoListAggergation;
+};
+
+export default ({ autoList }: Props) => {
   return (
     <Card>
       <CardActionArea>
         <Grid container direction="row">
           <Grid item>
-            <Box width="100px">
-              <ListImageBox list={list} width="100%" />
+            <Box
+              width="100px"
+              height="100%"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+            >
+              <AutoListIcon
+                style={{ width: "50px", height: "50px" }}
+                autoListKey={autoList.list.key}
+              />
             </Box>
           </Grid>
           <Grid item zeroMinWidth xs>
             <Box p={2}>
               <Typography variant="h6" noWrap>
-                {list.list.title}
+                {toAutoListName(autoList.list.key)}
               </Typography>
               <Box display="flex" alignItems="center">
                 <Box marginRight={1}>
                   <Typography variant="subtitle1" color="textSecondary" noWrap>
-                    {list.listItemCount} items
+                    {autoList.listItemCount} items
                   </Typography>
-                </Box>
-                <Box>
-                  <ChipUser noLink size="small" user={list.owner} />
                 </Box>
               </Box>
             </Box>

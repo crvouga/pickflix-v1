@@ -11,6 +11,7 @@ import Modals from "./modals/Modals";
 import HomePage from "../home/HomePage";
 import SearchPage from "../search/SearchPage.Mobile";
 import UserPage from "../users/UserPage";
+import AutoListPage from "../lists/auto-lists/AutoListPage";
 
 export default () => {
   return (
@@ -24,6 +25,10 @@ export default () => {
         <Route path="/movie/:tmdbMediaId" component={MoviePage} />
         <Route path="/person/:tmdbMediaId" component={PersonPage} />
         <Route path="/list/:listId" component={ListPage} />
+        <Route
+          path="/user/:username/auto-list/:autoListKey"
+          component={AutoListPage}
+        />
         <Route path="/user/:username" component={UserPage} />
         <Route path="/user" component={CurrentUserPage} />
         <Route path="/auth" component={AuthPage} />

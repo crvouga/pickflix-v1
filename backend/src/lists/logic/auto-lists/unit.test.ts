@@ -1,7 +1,8 @@
 import { buildListLogicFake } from "../build.fake";
 import { makeUserFake } from "../../../users/models/make-user.fake";
+import { AutoListKeys } from "../../models";
 
-describe("create auto lists", () => {
+describe("auto list logic", () => {
   it("creates auto lists", async () => {
     const { listLogic } = buildListLogicFake();
     const user = makeUserFake();
@@ -12,6 +13,20 @@ describe("create auto lists", () => {
       expect.arrayContaining(
         added.map((added) => expect.objectContaining(added))
       )
+    );
+  });
+
+  it("gets aggergated auto lists for user indexed by key", async () => {
+    const { listLogic } = buildListLogicFake();
+    const user = makeUserFake();
+    await listLogic.initializeAutoLists({ user });
+
+    const byKey = await listLogic.getAutoListAggergationsByKey({
+      ownerId: user.id,
+    });
+
+    expect(Object.keys(byKey).sort()).toEqual(
+      Object.values(AutoListKeys).sort()
     );
   });
 });

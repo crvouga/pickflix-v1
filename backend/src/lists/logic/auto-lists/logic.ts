@@ -1,14 +1,22 @@
 import { User, UserId } from "../../../users/models/make-user";
-import { AutoList, makeAutoList, ListId } from "../../models";
-import { INITIAL_AUTO_LIST_INFOS } from "../../models/constants";
+import {
+  AutoList,
+  AutoListKeys,
+  INITIAL_AUTO_LIST_INFOS,
+  makeAutoList,
+  ListId,
+} from "../../models";
+import { ListAggergate } from "../../models/types";
 import { ListLogic } from "../build";
 
 export async function initializeAutoLists(
   this: ListLogic,
   { user }: { user: User }
 ) {
+  const { AutoLists } = this.unitOfWork;
+
   for (const { key } of INITIAL_AUTO_LIST_INFOS) {
-    const found = await this.unitOfWork.AutoLists.find({
+    const found = await AutoLists.find({
       ownerId: user.id,
       key,
     });
@@ -32,15 +40,50 @@ export async function initializeAutoLists(
 
 export async function getAutoListAggergations(
   this: ListLogic,
-  listInfo: { id: ListId } | { ownerId: UserId }
+  autoListInfo:
+    | { id: ListId }
+    | { ownerId: UserId }
+    | { ownerId: UserId; key: AutoListKeys }
 ) {
   const { AutoLists } = this.unitOfWork;
 
-  const lists = await AutoLists.find(listInfo);
+  const lists = await AutoLists.find(autoListInfo);
 
   const aggergatedLists = await Promise.all(
     lists.map((list) => this.aggergateList(list))
   );
 
   return aggergatedLists;
+}
+
+export async function getAutoListAggergationsByKey(
+  this: ListLogic,
+  autoListInfo: { ownerId: UserId }
+) {
+  const aggergatedLists = await this.getAutoListAggergations(autoListInfo);
+
+  const byKey = aggergatedLists.reduce(
+    (byKey, list) => ({
+      ...byKey,
+      [list.list.key]: list,
+    }),
+    {}
+  ) as { [key in AutoListKeys]: ListAggergate<AutoList> };
+
+  return byKey;
+}
+
+export async function getAutoList(
+  this: ListLogic,
+  autoListInfo: { key: AutoListKeys; ownerId: UserId }
+) {
+  const { AutoLists } = this.unitOfWork;
+
+  const [found] = await AutoLists.find(autoListInfo);
+
+  if (!found) {
+    throw new Error("Auto list does not exists");
+  }
+
+  return found;
 }

@@ -27,16 +27,15 @@ export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
     try {
       const listId = req.params.listId as ListId;
 
-      const listAggergations = await listLogic.getListAggergations({
+      const [list] = await listLogic.getListAggergations({
         id: listId,
       });
 
-      if (listAggergations.length > 0) {
-        const [listAggergation] = listAggergations;
-
-        return res.json(listAggergation);
+      if (list) {
+        return res.status(200).json(list).end();
+      } else {
+        return res.status(404).end();
       }
-      return res.status(404).end();
     } catch (error) {
       return next(error);
     }

@@ -28,6 +28,7 @@ import { getUser, queryKeys } from "./query";
 import useCurrentUser from "./useCurrentUser";
 import UserListsList from "./UserListsList";
 import UserReviewsList from "./UserReviewsList";
+import UserAutoListsList from "./UserAutoListsList";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -121,8 +122,24 @@ export default () => {
         <Grid container>
           <Grid item xs={12} sm={6}>
             <Box p={2}>
+              <Typography variant="h5">Auto Lists</Typography>
+              <UserAutoListsList
+                onClick={(autoList) => {
+                  history.push(
+                    `/user/${username}/auto-list/${autoList.list.key}`
+                  );
+                }}
+                user={user}
+              />
+            </Box>
+            <Box p={2}>
               <Typography variant="h5">Lists</Typography>
-              <UserListsList user={user} />
+              <UserListsList
+                onClick={(list) => {
+                  history.push(`/list/${list.list.id}`);
+                }}
+                user={user}
+              />
             </Box>
           </Grid>
           <Grid item xs={12} sm={6}>

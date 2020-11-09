@@ -1,19 +1,19 @@
 import { MediaLogic } from "../../media/logic/build";
 import { IUnitOfWork } from "../../unit-of-work/types";
-
 import { aggergateList, aggergateListItem } from "./aggergate";
-
 import {
-  getListItemAggergations,
+  getAutoList,
+  getAutoListAggergations,
+  getAutoListAggergationsByKey,
+  initializeAutoLists,
+} from "./auto-lists/logic";
+import {
   addListItems,
+  getListItem,
+  getListItemAggergations,
   removeListItems,
 } from "./list-items";
-import {
-  initializeAutoLists,
-  getAutoListAggergations,
-} from "./auto-lists/logic";
-
-import { removeLists, addLists, editLists, getListAggergations } from "./lists";
+import { addLists, editLists, getListAggergations, removeLists } from "./lists";
 
 export class ListLogic {
   unitOfWork: IUnitOfWork;
@@ -35,10 +35,13 @@ export class ListLogic {
 
   initializeAutoLists = initializeAutoLists;
   getAutoListAggergations = getAutoListAggergations;
+  getAutoListAggergationsByKey = getAutoListAggergationsByKey;
+  getAutoList = getAutoList;
 
   getListItemAggergations = getListItemAggergations;
   addListItems = addListItems;
   removeListItems = removeListItems;
+  getListItem = getListItem;
 
   getListAggergations = getListAggergations;
   addLists = addLists;

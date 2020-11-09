@@ -3,10 +3,10 @@ import React from "react";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
 import MovieCard, { Movie } from "./MoviePosterCard";
 
-interface Props {
+type Props = {
   movies: Movie[];
   ItemBoxProps?: BoxProps;
-}
+};
 
 export default (props: Props) => {
   const { movies, ItemBoxProps } = props;

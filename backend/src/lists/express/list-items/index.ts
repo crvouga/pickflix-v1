@@ -7,9 +7,9 @@ import { Dependencies } from "../types";
 export const listItems = ({ listLogic, middlewares }: Dependencies) => (
   router: express.IRouter
 ) => {
-  router.get("/lists/:listId/list-items", async (req, res, next) => {
+  router.get("/list-items", async (req, res, next) => {
     try {
-      const listId = req.params.listId as ListId;
+      const listId = req.query.listId as ListId;
       const listItemAggergations = await listLogic.getListItemAggergations({
         listId,
       });

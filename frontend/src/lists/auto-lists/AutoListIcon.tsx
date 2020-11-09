@@ -1,29 +1,36 @@
+import { SvgIconProps, useTheme } from "@material-ui/core";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
 import React from "react";
-import { AutoListKey } from "./query/types";
-import { SvgIconProps } from "@material-ui/core";
+import { AutoListKeys } from "../query/types";
 
 type Props = SvgIconProps & {
-  autoListKey: AutoListKey;
+  autoListKey: AutoListKeys;
   filled?: boolean;
   className?: string;
 };
 
-export default ({ autoListKey, filled = false, className }: Props) => {
+export default ({
+  autoListKey,
+  filled = false,
+  className,
+  ...props
+}: Props) => {
   const iconProps = {
+    ...props,
     className,
   };
+
   switch (autoListKey) {
-    case "watch-next":
+    case AutoListKeys.WatchNext:
       return filled ? (
         <BookmarkIcon {...iconProps} />
       ) : (
         <BookmarkBorderIcon {...iconProps} />
       );
-    case "liked":
+    case AutoListKeys.Liked:
       return filled ? (
         <ThumbUpAltIcon {...iconProps} />
       ) : (

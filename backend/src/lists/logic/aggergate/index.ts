@@ -1,9 +1,16 @@
 import { AutoList, List, ListItem } from "../../models";
+import { ListAggergate, ListItemAggergate } from "../../models/types";
 import { ListLogic } from "../build";
 
-export async function aggergateListItem(this: ListLogic, listItem: ListItem) {
+export async function aggergateListItem(
+  this: ListLogic,
+  listItem: ListItem
+): Promise<ListItemAggergate> {
   const tmdbData = await this.mediaLogic.requestTmdbData({
     path: `/${listItem.tmdbMediaType}/${listItem.tmdbMediaId}`,
+    query: {
+      appendToResponse: "similar",
+    },
   });
 
   return {
@@ -15,7 +22,7 @@ export async function aggergateListItem(this: ListLogic, listItem: ListItem) {
 export async function aggergateList<T extends List | AutoList>(
   this: ListLogic,
   list: T
-) {
+): Promise<ListAggergate<T>> {
   const { ListItems, Users } = this.unitOfWork;
 
   const [listItemCount, listItems, [owner]] = await Promise.all([

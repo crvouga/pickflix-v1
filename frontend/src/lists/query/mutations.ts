@@ -1,12 +1,10 @@
 import { innerJoin } from "ramda";
 import { QueryCache } from "react-query";
-import { List, ListItem, ListAggergation } from "./types";
-import { queryKeys } from "./query-keys";
+import { queryKeys } from "./reads";
+import { ListAggergation, ListItem } from "./types";
 import {
-  deleteList,
   deleteListItems,
   DeleteListItemsParams,
-  DeleteListParams,
   patchList,
   PatchListParams,
   postList,

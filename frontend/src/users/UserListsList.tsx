@@ -1,4 +1,4 @@
-import { Box } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import LoadingBox from "../common/components/LoadingBox";
@@ -30,6 +30,14 @@ export default ({
   }
 
   const lists = query.data;
+
+  if (lists.length === 0) {
+    return (
+      <Box m={6} display="flex" justifyContent="center" alignItems="center">
+        <Typography color="textSecondary">No lists</Typography>
+      </Box>
+    );
+  }
 
   return (
     <React.Fragment>

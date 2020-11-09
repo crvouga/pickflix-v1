@@ -3,15 +3,17 @@ import React from "react";
 import ErrorBox from "../common/components/ErrorBox";
 import LoadingBox from "../common/components/LoadingBox";
 import MoviePosterGrid from "../movie/components/MoviePosterGrid";
-import { useQueryListItems } from "./hooks/query";
+import { getListItems, queryKeys } from "./query";
+import { useQuery } from "react-query";
 
 type Props = {
   listId: string;
 };
 
-export default (props: Props) => {
-  const { listId } = props;
-  const query = useQueryListItems({ listId });
+export default ({ listId }: Props) => {
+  const query = useQuery(queryKeys.listItems(listId), () =>
+    getListItems({ listId })
+  );
 
   if (query.error) {
     return <ErrorBox />;

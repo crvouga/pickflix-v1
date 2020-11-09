@@ -1,6 +1,7 @@
 import { ListId, ListItem, makeListItem } from "../../models";
 import { ListItemId, PartialListItem } from "../../models/make-list-item";
 import { ListLogic } from "../build";
+import { TmdbMediaId, TmdbMediaType } from "../../../media/models/types";
 
 export async function removeListItems(
   this: ListLogic,
@@ -11,13 +12,19 @@ export async function removeListItems(
 
 export async function getListItemAggergations(
   this: ListLogic,
-  {
-    listId,
-  }: {
-    listId: ListId;
-  }
+  listItemInfo:
+    | {
+        listId: ListId;
+      }
+    | {
+        listId: ListId;
+        tmdbMediaId: TmdbMediaId;
+        tmdbMediaType: TmdbMediaType;
+      }
 ) {
-  const listItems = await this.unitOfWork.ListItems.find({ listId });
+  const { ListItems } = this.unitOfWork;
+
+  const listItems = await ListItems.find(listItemInfo);
 
   const aggergatedListItems = await Promise.all(
     listItems.map((listItem) => this.aggergateListItem(listItem))
@@ -26,13 +33,27 @@ export async function getListItemAggergations(
   return aggergatedListItems;
 }
 
+export async function getListItem(
+  this: ListLogic,
+  listItemInfo: {
+    listId: ListId;
+    tmdbMediaId: TmdbMediaId;
+    tmdbMediaType: TmdbMediaType;
+  }
+) {
+  const { ListItems } = this.unitOfWork;
+  const [found] = await ListItems.find(listItemInfo);
+  if (!found) {
+    throw new Error("List item does not exists");
+  }
+  return found;
+}
+
 export async function addListItems(
   this: ListLogic,
   listItemInfos: PartialListItem[]
 ): Promise<ListItem[]> {
-  const {
-    unitOfWork: { ListItems, Lists, AutoLists },
-  } = this;
+  const { ListItems, Lists, AutoLists } = this.unitOfWork;
 
   const addedListItems = [];
 
@@ -58,8 +79,7 @@ export async function addListItems(
     }
 
     if (foundListItems.length > 0) {
-      // throw new Error('try to add duplicate list item');
-      return [];
+      throw new Error("try to add duplicate list item");
     }
 
     const [addedListItem] = await ListItems.add([listItem]);

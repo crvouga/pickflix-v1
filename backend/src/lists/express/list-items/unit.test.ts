@@ -23,7 +23,8 @@ describe("GET /lists/{list-id}/list-items", () => {
     ]);
 
     await supertest(app)
-      .get(`/api/lists/${list.id}/list-items`)
+      .get(`/api/list-items`)
+      .query({ listId: list.id })
       .expect(200)
       .then((response) => {
         expect(response.body).toEqual(

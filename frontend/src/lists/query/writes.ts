@@ -1,6 +1,60 @@
 import { BackendAPI } from "../../backend-api";
 import { TmdbMediaType } from "../../tmdb/types";
-import { List, ListItem } from "./types";
+import { AutoListKeys, List, ListItem } from "./types";
+
+/*
+
+
+*/
+
+export type PostAutoListListItemParams = {
+  autoListKey: AutoListKeys;
+  tmdbMediaId: string;
+  tmdbMediaType: TmdbMediaType;
+};
+
+export const postAutoListListItem = async ({
+  autoListKey,
+  tmdbMediaId,
+  tmdbMediaType,
+}: PostAutoListListItemParams) => {
+  const { data } = await BackendAPI.post<ListItem>(
+    `/api/auto-lists/${autoListKey}/list-items`,
+    {
+      tmdbMediaId,
+      tmdbMediaType,
+    }
+  );
+  return data;
+};
+
+/* 
+
+
+*/
+
+export type DeleteAutoListListItemParams = {
+  autoListKey: AutoListKeys;
+  tmdbMediaId: string;
+  tmdbMediaType: TmdbMediaType;
+};
+
+export const deleteAutoListListItem = async ({
+  autoListKey,
+  tmdbMediaId,
+  tmdbMediaType,
+}: PostAutoListListItemParams) => {
+  const { data } = await BackendAPI.delete<{}>(
+    `/api/auto-lists/${autoListKey}/list-items`,
+    {
+      params: {
+        tmdbMediaId,
+        tmdbMediaType,
+      },
+    }
+  );
+  return data;
+};
 
 /* 
 

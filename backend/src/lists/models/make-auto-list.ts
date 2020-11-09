@@ -7,6 +7,15 @@ export enum AutoListKeys {
   Liked = "liked",
 }
 
+export const INITIAL_AUTO_LIST_INFOS: { key: AutoListKeys }[] = [
+  {
+    key: AutoListKeys.WatchNext,
+  },
+  {
+    key: AutoListKeys.Liked,
+  },
+];
+
 export type AutoList = {
   type: "autoList";
   id: ListId;

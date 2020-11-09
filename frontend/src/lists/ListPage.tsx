@@ -24,11 +24,14 @@ import EditListFormModal from "./EditListFormModal";
 import { useQueryList } from "./hooks/query";
 import ListCardImage from "./ListCardImage";
 import ListItemsSection from "./ListItemsSection";
+import useCurrentUser from "../users/useCurrentUser";
 
 export default () => {
   const { listId } = useParams<{ listId: string }>();
   const history = useHistory();
   const query = useQueryList({ listId });
+
+  const currentUser = useCurrentUser();
 
   const isEditListModalOpen = useBoolean(false);
   const isDeleteListModalOpen = useBoolean(false);
@@ -37,11 +40,12 @@ export default () => {
     return <ErrorPage />;
   }
 
-  if (!query.data) {
+  if (!query.data || currentUser === "loading") {
     return <LoadingPage />;
   }
 
   const list = query.data;
+  const isCurrentUser = currentUser && currentUser.id === list.owner.id;
 
   return (
     <React.Fragment>
@@ -84,10 +88,16 @@ export default () => {
                 <ListCardImage list={list} />
               </Box>
               <Box paddingBottom={1}>
-                <Typography variant="h5" style={{ wordBreak: "break-all" }}>
+                <Typography
+                  variant="h5"
+                  align="center"
+                  style={{ wordBreak: "break-all" }}
+                >
                   {list.list.title}
                 </Typography>
-                <Typography variant="body1">{list.list.description}</Typography>
+                <Typography variant="body1" align="center">
+                  {list.list.description}
+                </Typography>
               </Box>
               <Chip
                 variant="outlined"
@@ -100,15 +110,17 @@ export default () => {
               />
             </Box>
 
-            <Toolbar>
-              <IconButton onClick={isEditListModalOpen.setTrue}>
-                <EditIcon />
-              </IconButton>
+            {isCurrentUser && (
+              <Toolbar>
+                <IconButton onClick={isEditListModalOpen.setTrue}>
+                  <EditIcon />
+                </IconButton>
 
-              <IconButton onClick={isDeleteListModalOpen.setTrue}>
-                <DeleteIcon />
-              </IconButton>
-            </Toolbar>
+                <IconButton onClick={isDeleteListModalOpen.setTrue}>
+                  <DeleteIcon />
+                </IconButton>
+              </Toolbar>
+            )}
           </Container>
         </Paper>
       </Box>
