@@ -89,12 +89,7 @@ describe("PATCH /lists", () => {
       .send(edits)
       .expect(200)
       .then((response) => {
-        expect(response.body).toEqual(
-          expect.objectContaining({
-            ...created,
-            ...edits,
-          })
-        );
+        expect(response.body).toMatchObject(edits);
       });
     done();
   });

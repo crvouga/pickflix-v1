@@ -11,6 +11,7 @@ export type List = {
   title: string;
   description: string;
   createdAt: number;
+  updatedAt: number;
 };
 
 export type PartialList = {
@@ -70,5 +71,6 @@ export const makeList = (partial: PartialList): List => {
     title,
     description,
     createdAt,
+    updatedAt: Date.now(),
   });
 };

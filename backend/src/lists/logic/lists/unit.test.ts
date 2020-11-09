@@ -2,7 +2,40 @@ import { TmdbMediaType } from "../../../media/models/types";
 import { makeUserFake } from "../../../users/models/make-user.fake";
 import { buildListLogicFake } from "../build.fake";
 
-describe("remove lists", () => {
+describe("list logic", () => {
+  it("orders list by most recently item added", async () => {
+    const { listLogic } = buildListLogicFake();
+    const user = makeUserFake();
+    const [list1, list2] = await listLogic.addLists([
+      {
+        ownerId: user.id,
+        title: "list1",
+      },
+      {
+        ownerId: user.id,
+        title: "list2",
+      },
+    ]);
+
+    const before = await listLogic.getListAggergations({ ownerId: user.id });
+
+    await listLogic.addListItems([
+      {
+        userId: user.id,
+        listId: list2.id,
+        tmdbMediaId: 550,
+        tmdbMediaType: TmdbMediaType.movie,
+      },
+    ]);
+
+    const after = await listLogic.getListAggergations({ ownerId: user.id });
+
+    expect(before[0].list.id).toBe(list1.id);
+    expect(before[1].list.id).toBe(list2.id);
+    expect(after[0].list.id).toBe(list2.id);
+    expect(after[1].list.id).toBe(list1.id);
+  });
+
   it("removes lists", async () => {
     const { listLogic } = buildListLogicFake();
     const user = makeUserFake();
@@ -27,9 +60,6 @@ describe("remove lists", () => {
       expect.arrayContaining([expect.objectContaining(list2)])
     );
   });
-});
-
-describe("getting lists", () => {
   it("gets aggergated lists by ownerId or listId", async () => {
     const { listLogic } = buildListLogicFake();
     const user = makeUserFake();
@@ -59,7 +89,9 @@ describe("getting lists", () => {
 
     expect(aggergatedList1).toEqual(
       expect.objectContaining({
-        list,
+        list: {
+          id: list.id,
+        },
         listItemCount: expect.any(Number),
         listItems: expect.arrayContaining([
           expect.objectContaining({
@@ -70,9 +102,7 @@ describe("getting lists", () => {
       })
     );
   });
-});
 
-describe("editing list", () => {
   it("rejects invalid edits", async () => {
     const { listLogic } = buildListLogicFake();
     const user = makeUserFake();
@@ -95,9 +125,7 @@ describe("editing list", () => {
       expect(error).toBeTruthy();
     }
   });
-});
 
-describe("add lists", () => {
   it("adds lists", async () => {
     try {
       const { listLogic } = buildListLogicFake();

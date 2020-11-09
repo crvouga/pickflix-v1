@@ -24,7 +24,9 @@ export async function getListAggergations(
     unitOfWork: { Lists },
   } = this;
 
-  const lists = await Lists.find(listInfo);
+  const lists = await Lists.find(listInfo, {
+    orderBy: [["updatedAt", "descend"]],
+  });
 
   const aggergatedLists = await Promise.all(
     lists.map((list) => this.aggergateList(list))

@@ -1,4 +1,4 @@
-import { ListId, ListItem, makeListItem } from "../../models";
+import { ListId, ListItem, makeListItem, makeList } from "../../models";
 import { ListItemId, PartialListItem } from "../../models/make-list-item";
 import { ListLogic } from "../build";
 import { TmdbMediaId, TmdbMediaType } from "../../../media/models/types";
@@ -62,7 +62,7 @@ export async function addListItems(
   for (const listItemInfo of listItemInfos) {
     const listItem = makeListItem(listItemInfo);
 
-    const [foundLists, foundAutoLists, foundListItems] = await Promise.all([
+    const [[list], [autoList], foundListItems] = await Promise.all([
       Lists.find({
         id: listItem.listId,
       }),
@@ -76,7 +76,7 @@ export async function addListItems(
       }),
     ]);
 
-    if (foundLists.length === 0 && foundAutoLists.length === 0) {
+    if (!list && !autoList) {
       throw new Error("list does not exists");
     }
 
@@ -85,6 +85,9 @@ export async function addListItems(
     }
 
     const [addedListItem] = await ListItems.add([listItem]);
+
+    await Lists.update([makeList(list)]);
+
     addedListItems.push(addedListItem);
   }
 
