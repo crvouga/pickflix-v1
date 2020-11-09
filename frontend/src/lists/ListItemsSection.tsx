@@ -11,7 +11,7 @@ type Props = {
 };
 
 export default ({ listId }: Props) => {
-  const query = useQuery(queryKeys.listItems(listId), () =>
+  const query = useQuery(queryKeys.listItems({ listId }), () =>
     getListItems({ listId })
   );
 

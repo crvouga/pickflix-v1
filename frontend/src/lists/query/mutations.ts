@@ -56,35 +56,36 @@ export const editListMutation = (queryCache: QueryCache) => async (
 
 */
 
-export const deleteListItemsMutation = (queryCache: QueryCache) => async ({
-  listItemIds,
-  listId,
-}: DeleteListItemsParams) => {
-  const key = queryKeys.listItems(listId);
-  const previousListItems = queryCache.getQueryData<ListItem[]>(key);
+export const deleteListItemsMutation = (queryCache: QueryCache) => async (
+  params: DeleteListItemsParams
+) => {
+  // const key = queryKeys.listItems(listId);
+  // const previousListItems = queryCache.getQueryData<ListItem[]>(key);
 
-  if (!previousListItems) {
-    throw new Error("no list items to delete");
-  }
+  // if (!previousListItems) {
+  //   throw new Error("no list items to delete");
+  // }
 
-  const optimistic = innerJoin(
-    (listItem, id) => listItem.id !== id,
-    previousListItems,
-    listItemIds
-  );
+  // const optimistic = innerJoin(
+  //   (listItem, id) => listItem.id !== id,
+  //   previousListItems,
+  //   listItemIds
+  // );
 
-  queryCache.setQueryData(key, optimistic);
+  // queryCache.setQueryData(key, optimistic);
 
   try {
-    await deleteListItems({
-      listId,
-      listItemIds,
-    });
+    await deleteListItems(params);
   } catch (error) {
-    queryCache.setQueryData(key, previousListItems);
+    // queryCache.setQueryData(key, previousListItems);
     throw error;
   } finally {
-    queryCache.invalidateQueries(key);
+    const ids = params.map((param) =>
+      "id" in param ? param.id : param.listId
+    );
+    queryCache.invalidateQueries((query) =>
+      query.queryKey.some((_: any) => ids.includes(_))
+    );
   }
 };
 /* 
@@ -114,7 +115,7 @@ export const addListMutation = (queryCache: QueryCache) => async (
 export const addListItemMutation = (queryCache: QueryCache) => async (
   params: PostListItemParams
 ) => {
-  const key = queryKeys.listItems(params.listId);
+  const key = queryKeys.listItems({ listId: params.listId });
   try {
     const listItem = await postListItem(params);
     return listItem;

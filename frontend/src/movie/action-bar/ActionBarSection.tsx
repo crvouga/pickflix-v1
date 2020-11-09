@@ -1,7 +1,8 @@
 import { Box, makeStyles } from "@material-ui/core";
 import React from "react";
-import { useParams } from "react-router";
 import LabeledIconButton from "../../common/components/LabeledIconButton";
+import AutoListToggleListItemButton from "../../lists/auto-lists/AutoListToggleListItemButton";
+import { AutoListKeys } from "../../lists/query";
 import useActions from "./useActions";
 
 type Props = {
@@ -22,15 +23,21 @@ export default ({ tmdbMediaId }: Props) => {
     tmdbMediaType: "movie",
   });
 
-  const actionBarItems = [
-    movieActions.like,
-    // movieActions.favorite,
-    movieActions.watchNext,
-    movieActions.addListItem,
-  ];
+  const actionBarItems = [movieActions.addListItem];
 
   return (
     <Box display="flex" justifyContent="space-between" flexWrap="nowrap">
+      <AutoListToggleListItemButton
+        autoListKey={AutoListKeys.Liked}
+        tmdbMediaId={tmdbMediaId}
+        tmdbMediaType="movie"
+      />
+      <AutoListToggleListItemButton
+        autoListKey={AutoListKeys.WatchNext}
+        tmdbMediaId={tmdbMediaId}
+        tmdbMediaType="movie"
+      />
+
       {actionBarItems.map(({ icon, label, onClick }) => (
         <LabeledIconButton
           className={classes.button}

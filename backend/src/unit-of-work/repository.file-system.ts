@@ -51,9 +51,7 @@ export class RepositoryFileSystem<T extends Identifiable>
     return entities;
   }
 
-  async remove(
-    entityInfos: Array<Partial<T> & Pick<T, "id">>
-  ): Promise<boolean> {
+  async remove(entityInfos: Partial<T>[]): Promise<boolean> {
     this.read();
     await this.repositoryHashMap.remove(entityInfos);
     this.write();

@@ -1,4 +1,12 @@
-import { whereEq, innerJoin, ascend, descend, sortWith } from "ramda";
+import {
+  whereEq,
+  innerJoin,
+  ascend,
+  descend,
+  sortWith,
+  filter,
+  reject,
+} from "ramda";
 import { Identifiable, IRepository, FindOptions } from "./types";
 
 export class RepositoryHashMap<T extends Identifiable>
@@ -43,11 +51,9 @@ export class RepositoryHashMap<T extends Identifiable>
     return entities;
   }
 
-  async remove(
-    entityInfos: Array<Partial<T> & Pick<T, "id">>
-  ): Promise<boolean> {
+  async remove(entityInfos: Partial<T>[]): Promise<boolean> {
     for (const entityInfo of entityInfos) {
-      delete this.db[entityInfo.id];
+      this.db = reject(whereEq(entityInfo), this.db);
     }
     return true;
   }

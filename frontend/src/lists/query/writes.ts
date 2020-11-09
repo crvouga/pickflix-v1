@@ -72,13 +72,11 @@ export const postListItem = async ({
   tmdbMediaId,
   tmdbMediaType,
 }: PostListItemParams) => {
-  const { data } = await BackendAPI.post<ListItem>(
-    `/api/lists/${listId}/list-items`,
-    {
-      tmdbMediaId,
-      tmdbMediaType,
-    }
-  );
+  const { data } = await BackendAPI.post<ListItem>(`/api/list-items`, {
+    listId,
+    tmdbMediaId,
+    tmdbMediaType,
+  });
   return data;
 };
 
@@ -105,17 +103,21 @@ export const postList = async ({ title, description }: PostListParams) => {
 
 */
 
-export type DeleteListItemsParams = {
-  listId: string;
-  listItemIds: string[];
-};
+export type DeleteListItemParams =
+  | {
+      id: string;
+    }
+  | {
+      listId: string;
+      tmdbMediaId: string;
+      tmdbMediaType: TmdbMediaType;
+    };
 
-export const deleteListItems = async ({
-  listId,
-  listItemIds,
-}: DeleteListItemsParams) => {
-  return await BackendAPI.delete<void>(`/api/lists/${listId}/list-items`, {
-    data: listItemIds,
+export type DeleteListItemsParams = DeleteListItemParams[];
+
+export const deleteListItems = async (params: DeleteListItemsParams) => {
+  return await BackendAPI.delete<void>(`/api/list-items`, {
+    data: params,
   });
 };
 

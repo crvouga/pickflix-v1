@@ -1,36 +1,59 @@
 import express from "express";
-import { TmdbMediaId, TmdbMediaType } from "../../../media/models/types";
+import {
+  TmdbMediaId,
+  TmdbMediaType,
+  TmdbMedia,
+} from "../../../media/models/types";
 import { User } from "../../../users/models";
 import { ListId, ListItemId } from "../../models";
 import { Dependencies } from "../types";
+import { composeP } from "ramda";
 
 export const listItems = ({ listLogic, middlewares }: Dependencies) => (
   router: express.IRouter
 ) => {
   router.get("/list-items", async (req, res, next) => {
     try {
-      const listId = req.query.listId as ListId;
-      const listItemAggergations = await listLogic.getListItemAggergations({
-        listId,
-      });
-      res.status(200).json(listItemAggergations).end();
+      const listId = req.query.listId as ListId | undefined;
+      const tmdbMediaId = Number(req.query.tmdbMediaId) as
+        | TmdbMediaId
+        | undefined;
+      const tmdbMediaType = req.query.tmdbMediaType as
+        | TmdbMediaType
+        | undefined;
+
+      if (listId && tmdbMediaId && tmdbMediaType) {
+        const listItems = await listLogic.getListItemAggergations({
+          listId,
+          tmdbMediaId,
+          tmdbMediaType,
+        });
+        return res.status(200).json(listItems).end();
+      }
+      if (listId) {
+        const listItems = await listLogic.getListItemAggergations({
+          listId,
+        });
+        return res.status(200).json(listItems).end();
+      }
+
+      return res.status(404).end();
     } catch (error) {
       next(error);
     }
   });
 
   router.post(
-    "/lists/:listId/list-items",
+    "/list-items",
     middlewares.isAuthenticated,
     async (req, res, next) => {
       try {
-        const user = req.user as User;
-        const { tmdbMediaId, tmdbMediaType } = req.body;
-        const listId = req.params.listId as ListId;
+        const authenticatedUser = req.user as User;
+        const { listId, tmdbMediaId, tmdbMediaType } = req.body;
 
         const [added] = await listLogic.addListItems([
           {
-            userId: user.id,
+            userId: authenticatedUser.id,
             listId,
             tmdbMediaId,
             tmdbMediaType,
@@ -39,23 +62,27 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
 
         res.status(201).json(added).end();
       } catch (error) {
+        console.log(error);
         next(error);
       }
     }
   );
 
   router.delete(
-    "/lists/:listId/list-items",
+    "/list-items",
     middlewares.isAuthenticated,
     async (req, res, next) => {
       try {
-        const listItemIds = req.body as ListItemId[];
+        const listItemInfos = req.body as (
+          | { id: ListItemId }
+          | {
+              listId: ListId;
+              tmdbMediaId: TmdbMediaId;
+              tmdbMediaType: TmdbMediaType;
+            }
+        )[];
 
-        const listId = req.params.listId as ListId;
-
-        await listLogic.removeListItems(
-          listItemIds.map((listItemId) => ({ listId: listId, id: listItemId }))
-        );
+        await listLogic.removeListItems(listItemInfos);
 
         res.status(204).end();
       } catch (error) {

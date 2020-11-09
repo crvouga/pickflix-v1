@@ -42,7 +42,7 @@ export interface IRepository<T extends Identifiable> {
   find: (_: Partial<T>, options?: FindOptions<T>) => Promise<T[]>;
   get: (_: string[]) => Promise<T[]>;
   add: (_: T[]) => Promise<T[]>;
-  remove: (_: Array<Partial<T> & Pick<T, "id">>) => Promise<boolean>;
+  remove: (_: Partial<T>[]) => Promise<boolean>;
   update: (_: Array<Partial<T> & Pick<T, "id">>) => Promise<T[]>;
   count: (_: Partial<T>) => Promise<number>;
 }

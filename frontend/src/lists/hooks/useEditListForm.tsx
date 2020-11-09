@@ -43,10 +43,7 @@ export default () => {
           title,
           description,
         }),
-        deleteListItemsMutation(queryCache)({
-          listId,
-          listItemIds,
-        }),
+        deleteListItemsMutation(queryCache)(listItemIds.map((id) => ({ id }))),
       ]);
 
       snackbar.display({ message: "Saved Changes" });

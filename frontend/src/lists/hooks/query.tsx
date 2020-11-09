@@ -10,5 +10,7 @@ export const useQueryList = ({ listId }: { listId: string }) => {
 };
 
 export const useQueryListItems = ({ listId }: { listId: string }) => {
-  return useQuery(queryKeys.listItems(listId), () => getListItems({ listId }));
+  return useQuery(queryKeys.listItems({ listId }), () =>
+    getListItems({ listId })
+  );
 };

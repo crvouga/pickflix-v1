@@ -35,9 +35,6 @@ describe("getting list items", () => {
       )
     );
   });
-});
-
-describe("add list items to list", () => {
   it("rejects if duplicate list items", async () => {
     const { listLogic } = buildListLogicFake();
 
@@ -76,5 +73,60 @@ describe("add list items to list", () => {
     } catch (error) {
       expect(error).toBeTruthy();
     }
+  });
+
+  it("removes list item by list id and media ids", async () => {
+    const { listLogic } = buildListLogicFake();
+
+    const currentUser = makeUserFake();
+
+    const [list] = await listLogic.addLists([
+      {
+        ownerId: currentUser.id,
+        title: "my list",
+      },
+    ]);
+
+    await listLogic.addListItems([
+      {
+        userId: currentUser.id,
+        listId: list.id,
+        tmdbMediaId: 550,
+        tmdbMediaType: TmdbMediaType.movie,
+      },
+      {
+        userId: currentUser.id,
+        tmdbMediaId: 123123,
+        listId: list.id,
+        tmdbMediaType: TmdbMediaType.movie,
+      },
+    ]);
+
+    const before = await listLogic.getListItemAggergations({ listId: list.id });
+    await listLogic.removeListItems([
+      {
+        listId: list.id,
+        tmdbMediaId: 550,
+        tmdbMediaType: TmdbMediaType.movie,
+      },
+    ]);
+    const after = await listLogic.getListItemAggergations({ listId: list.id });
+    expect(before).toHaveLength(2);
+    expect(after).toHaveLength(1);
+
+    expect(
+      await listLogic.getListItemAggergations({
+        listId: list.id,
+        tmdbMediaId: 550,
+        tmdbMediaType: TmdbMediaType.movie,
+      })
+    ).toHaveLength(0);
+    expect(
+      await listLogic.getListItemAggergations({
+        tmdbMediaId: 123123,
+        listId: list.id,
+        tmdbMediaType: TmdbMediaType.movie,
+      })
+    ).toHaveLength(1);
   });
 });

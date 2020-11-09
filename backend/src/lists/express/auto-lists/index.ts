@@ -10,26 +10,15 @@ export const autoLists = ({
   middlewares,
 }: Dependencies) => (router: IRouter) => {
   router.get(
-    "/auto-lists/:autoListKey/list-items",
+    "/auto-lists",
     middlewares.isAuthenticated,
     async (req, res, next) => {
-      const autoListKey = req.params.autoListKey as AutoListKeys;
-      const tmdbMediaId = Number(req.query.tmdbMediaId) as TmdbMediaId;
-      const tmdbMediaType = req.query.tmdbMediaType as TmdbMediaType;
-      const currentUser = req.user as User;
       try {
-        const autoList = await listLogic.getAutoList({
-          key: autoListKey,
+        const currentUser = req.user as User;
+        const autoLists = await listLogic.getAutoListAggergations({
           ownerId: currentUser.id,
         });
-
-        const listItems = await listLogic.getListItemAggergations({
-          listId: autoList.id,
-          tmdbMediaId,
-          tmdbMediaType,
-        });
-
-        res.status(200).json(listItems).end();
+        res.status(200).json(autoLists).end();
       } catch (error) {
         next(error);
       }
@@ -149,4 +138,61 @@ export const autoLists = ({
       next(error);
     }
   });
+
+  router.get(
+    "/auto-lists/:autoListKey",
+    middlewares.isAuthenticated,
+    async (req, res, next) => {
+      const autoListKey = req.params.autoListKey as AutoListKeys;
+      const tmdbMediaId = Number(req.query.tmdbMediaId) as TmdbMediaId;
+      const tmdbMediaType = req.query.tmdbMediaType as TmdbMediaType;
+      const currentUser = req.user as User;
+
+      try {
+        const autoList = await listLogic.getAutoList({
+          key: autoListKey,
+          ownerId: currentUser.id,
+        });
+
+        const listItems = await listLogic.getListItemAggergations({
+          listId: autoList.id,
+          tmdbMediaId,
+          tmdbMediaType,
+        });
+
+        res.status(200).json(listItems).end();
+      } catch (error) {
+        next(error);
+      }
+    }
+  );
+
+  router.get(
+    "/users/:username/auto-lists/:autoListKey/list-items",
+    async (req, res, next) => {
+      const autoListKey = req.params.autoListKey as AutoListKeys;
+      const username = req.params.username as string;
+      const tmdbMediaId = Number(req.query.tmdbMediaId) as TmdbMediaId;
+      const tmdbMediaType = req.query.tmdbMediaType as TmdbMediaType;
+
+      try {
+        const user = await userLogic.getUser({ username });
+
+        const autoList = await listLogic.getAutoList({
+          key: autoListKey,
+          ownerId: user.id,
+        });
+
+        const listItems = await listLogic.getListItemAggergations({
+          listId: autoList.id,
+          tmdbMediaId,
+          tmdbMediaType,
+        });
+
+        res.status(200).json(listItems).end();
+      } catch (error) {
+        next(error);
+      }
+    }
+  );
 };

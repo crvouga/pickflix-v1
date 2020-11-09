@@ -1,13 +1,24 @@
-import { ListId, ListItem, makeListItem, makeList } from "../../models";
+import { TmdbMediaId, TmdbMediaType } from "../../../media/models/types";
+import { ListId, ListItem, makeList, makeListItem } from "../../models";
 import { ListItemId, PartialListItem } from "../../models/make-list-item";
 import { ListLogic } from "../build";
-import { TmdbMediaId, TmdbMediaType } from "../../../media/models/types";
 
 export async function removeListItems(
   this: ListLogic,
-  listItemInfos: { id: ListItemId }[]
+  listItemInfos: (
+    | {
+        id: ListItemId;
+      }
+    | {
+        listId: ListId;
+        tmdbMediaId: TmdbMediaId;
+        tmdbMediaType: TmdbMediaType;
+      }
+  )[]
 ) {
-  await this.unitOfWork.ListItems.remove(listItemInfos);
+  const { ListItems } = this.unitOfWork;
+
+  await ListItems.remove(listItemInfos);
 }
 
 export async function getListItemAggergations(
@@ -86,7 +97,9 @@ export async function addListItems(
 
     const [addedListItem] = await ListItems.add([listItem]);
 
-    await Lists.update([makeList(list)]);
+    if (list) {
+      await Lists.update([makeList(list)]);
+    }
 
     addedListItems.push(addedListItem);
   }

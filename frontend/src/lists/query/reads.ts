@@ -9,11 +9,12 @@ import {
 } from "./types";
 
 export const queryKeys = {
-  lists: () => ["user", "lists"],
+  lists: () => ["current-user", "lists"],
+  autoLists: () => ["current-user", "auto-lists"],
 
   list: (listId: string) => ["lists", listId],
 
-  listItems: (listId: string) => ["lists", listId, "list-items"],
+  listItems: (params: GetListItemsParams) => ["list-items", params],
 
   userLists: ({ username }: { username: string }) => [
     "users",
@@ -49,6 +50,13 @@ export const getLists = async () => {
   return data;
 };
 
+export const getAutoLists = async () => {
+  const { data } = await BackendAPI.get<AutoListAggergation[]>(
+    "/api/auto-lists"
+  );
+  return data;
+};
+
 export const getList = async ({ listId }: { listId: string }) => {
   const { data } = await BackendAPI.get<ListAggergation>(
     `/api/lists/${listId}`
@@ -56,13 +64,15 @@ export const getList = async ({ listId }: { listId: string }) => {
   return data;
 };
 
-export const getListItems = async ({ listId }: { listId: string }) => {
+type GetListItemsParams =
+  | { listId: string }
+  | { listId: string; tmdbMediaId: string; tmdbMediaType: TmdbMediaType };
+
+export const getListItems = async (params: GetListItemsParams) => {
   const { data } = await BackendAPI.get<ListItemAggergation[]>(
     `/api/list-items`,
     {
-      params: {
-        listId,
-      },
+      params,
     }
   );
   return data;
@@ -73,12 +83,6 @@ export const getUsersLists = async ({ username }: { username: string }) => {
     `/api/users/${username}/lists`
   );
   return data;
-};
-
-export type GetAutoListListItemsParams = {
-  autoListKey: AutoListKeys;
-  tmdbMediaType: TmdbMediaType;
-  tmdbMediaId: string;
 };
 
 export const getAutoList = async ({ autoListId }: { autoListId: string }) => {
@@ -101,13 +105,21 @@ export const getUsersAutoList = async ({
   return data;
 };
 
+export type GetAutoListListItemsParams = {
+  autoListKey: AutoListKeys;
+  tmdbMediaType: TmdbMediaType;
+  tmdbMediaId: string;
+  username: string;
+};
+
 export const getAutoListListItems = async ({
   autoListKey,
   tmdbMediaType,
   tmdbMediaId,
+  username,
 }: GetAutoListListItemsParams) => {
   const { data } = await BackendAPI.get<ListItemAggergation[]>(
-    `/api/auto-lists/${autoListKey}/list-items`,
+    `/api/users/${username}/auto-lists/${autoListKey}/list-items`,
     {
       params: {
         tmdbMediaType,

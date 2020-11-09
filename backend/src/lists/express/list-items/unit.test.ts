@@ -51,13 +51,12 @@ describe("POST /lists/{list-id}/list-items", () => {
     ]);
 
     const listItemInfo = {
+      listId: list.id,
       tmdbMediaId: 42,
       tmdbMediaType: "movie",
     };
-    await agent
-      .post(`/api/lists/${list.id}/list-items`)
-      .send(listItemInfo)
-      .expect(201);
+
+    await agent.post(`/api/list-items`).send(listItemInfo).expect(201);
 
     done();
   });
@@ -85,8 +84,8 @@ describe("DELETE /lists/{list-id}/list-items/{list-item-id}", () => {
     ]);
 
     await supertest(app)
-      .delete(`/api/lists/${list.id}/list-items`)
-      .send([listItem.id])
+      .delete(`/api/list-items`)
+      .send([{ id: listItem.id }])
       .expect(204);
 
     const listItemAggergations = await listLogic.getListItemAggergations({
