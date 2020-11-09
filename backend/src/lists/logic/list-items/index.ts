@@ -24,7 +24,9 @@ export async function getListItemAggergations(
 ) {
   const { ListItems } = this.unitOfWork;
 
-  const listItems = await ListItems.find(listItemInfo);
+  const listItems = await ListItems.find(listItemInfo, {
+    orderBy: [["createdAt", "descend"]],
+  });
 
   const aggergatedListItems = await Promise.all(
     listItems.map((listItem) => this.aggergateListItem(listItem))

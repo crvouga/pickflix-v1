@@ -1,5 +1,5 @@
-import { whereEq, innerJoin } from "ramda";
-import { Identifiable, IRepository } from "./types";
+import { whereEq, innerJoin, ascend, descend, sortWith } from "ramda";
+import { Identifiable, IRepository, FindOptions } from "./types";
 
 export class RepositoryHashMap<T extends Identifiable>
   implements IRepository<T> {
@@ -9,8 +9,18 @@ export class RepositoryHashMap<T extends Identifiable>
     this.db = {};
   }
 
-  async find(entityInfo: Partial<T>): Promise<T[]> {
-    return Object.values(this.db).filter(whereEq(entityInfo));
+  async find(entityInfo: Partial<T>, options?: FindOptions<T>): Promise<T[]> {
+    const comparators =
+      options?.orderBy?.map(([key, direction]) =>
+        direction === "ascend"
+          ? ascend<T>((entity) => entity[key])
+          : descend<T>((entity) => entity[key])
+      ) || [];
+
+    return sortWith(
+      comparators,
+      Object.values(this.db).filter(whereEq(entityInfo))
+    );
   }
 
   async get(entityIds: string[]): Promise<T[]> {

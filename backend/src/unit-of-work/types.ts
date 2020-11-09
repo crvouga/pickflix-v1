@@ -30,8 +30,16 @@ export interface Identifiable {
   id: string;
 }
 
+type OrderByDirection = "ascend" | "descend";
+
+type OrderBy<T> = [keyof T, OrderByDirection][];
+
+export type FindOptions<T> = {
+  orderBy?: OrderBy<T>;
+};
+
 export interface IRepository<T extends Identifiable> {
-  find: (_: Partial<T>) => Promise<T[]>;
+  find: (_: Partial<T>, options?: FindOptions<T>) => Promise<T[]>;
   get: (_: string[]) => Promise<T[]>;
   add: (_: T[]) => Promise<T[]>;
   remove: (_: Array<Partial<T> & Pick<T, "id">>) => Promise<boolean>;

@@ -1,82 +1,69 @@
 import fs from "fs";
-import { innerJoin, whereEq } from "ramda";
+import { innerJoin, whereEq, ascend, prop, descend, sortWith } from "ramda";
 import configuration from "../configuration";
-import { Identifiable, IRepository } from "./types";
+import { Identifiable, IRepository, FindOptions } from "./types";
+import { RepositoryHashMap } from "./repository.hash-map";
 export class RepositoryFileSystem<T extends Identifiable>
   implements IRepository<T> {
   filename: string;
+  repositoryHashMap: RepositoryHashMap<T>;
 
   constructor(collectionName: string) {
     this.filename = `${configuration.PATH_TO_FILE_STORE}/${collectionName}.json`;
+    this.repositoryHashMap = new RepositoryHashMap<T>();
   }
 
   read(): { [id: string]: T } {
     try {
-      return JSON.parse(fs.readFileSync(this.filename, "utf8"));
+      const db = JSON.parse(fs.readFileSync(this.filename, "utf8"));
+      this.repositoryHashMap.db = db;
+      return db;
     } catch (error) {
+      this.repositoryHashMap.db = {};
       return {};
     }
   }
 
-  write(data: { [id: string]: T }) {
-    fs.writeFileSync(this.filename, JSON.stringify(data));
+  write() {
+    const db = this.repositoryHashMap.db;
+    fs.writeFileSync(this.filename, JSON.stringify(db));
   }
 
-  async find(entityInfo: Partial<T>): Promise<T[]> {
-    const db = this.read();
-    return Object.values(db).filter(whereEq(entityInfo));
+  async find(entityInfo: Partial<T>, options?: FindOptions<T>): Promise<T[]> {
+    this.read();
+    return await this.repositoryHashMap.find(entityInfo, options);
   }
 
   async get(entityIds: string[]): Promise<T[]> {
-    const db = this.read();
-    return innerJoin(
-      (value, entityId) => value.id === entityId,
-      Object.values(db),
-      entityIds
-    );
+    this.read();
+    return await this.repositoryHashMap.get(entityIds);
   }
 
   async count(entityInfo: Partial<T>): Promise<number> {
-    const found = await this.find(entityInfo);
-    return found.length;
+    this.read();
+    return await this.repositoryHashMap.count(entityInfo);
   }
 
   async add(entities: T[]): Promise<T[]> {
-    const db = this.read();
-    for (const entity of entities) {
-      db[entity.id] = entity;
-    }
-    this.write(db);
+    this.read();
+    await this.repositoryHashMap.add(entities);
+    this.write();
     return entities;
   }
 
   async remove(
     entityInfos: Array<Partial<T> & Pick<T, "id">>
   ): Promise<boolean> {
-    const db = this.read();
-    for (const entityInfo of entityInfos) {
-      delete db[entityInfo.id];
-    }
-    this.write(db);
+    this.read();
+    await this.repositoryHashMap.remove(entityInfos);
+    this.write();
     return true;
   }
 
   async update(entityInfos: Array<Partial<T> & Pick<T, "id">>): Promise<T[]> {
-    const db = this.read();
-    const updatedEntities = [];
-    for (const { id, ...entityInfo } of entityInfos) {
-      const entity = db[id];
-      if (!entity) {
-        throw new Error("entity does not exists");
-      }
-      const updatedEntity = {
-        ...entity,
-        ...entityInfo,
-      };
-      db[id] = updatedEntity;
-      updatedEntities.push(updatedEntity);
-    }
-    this.write(db);
+    this.read();
+    const updatedEntities = await this.repositoryHashMap.update(entityInfos);
+    this.write();
     return updatedEntities;
   }
 }
