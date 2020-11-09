@@ -87,7 +87,7 @@ export default () => {
       >
         <DialogTitle>Discard Review?</DialogTitle>
         <DialogActions>
-          <Button>Cancel</Button>
+          <Button onClick={isConformationDialogOpen.setFalse}>Cancel</Button>
           <Button onClick={handleDiscard}>Discard</Button>
         </DialogActions>
       </Dialog>

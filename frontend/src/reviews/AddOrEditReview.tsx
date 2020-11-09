@@ -6,14 +6,13 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import React, { useRef, useState } from "react";
-import ErrorBox from "../common/components/ErrorBox";
-import LoadingBox from "../common/components/LoadingBox";
-import MoviePosterCard from "../movie/components/MoviePosterCard";
-import { useQueryMovie } from "../movie/query";
-import * as movieUtils from "../movie/utils";
-import { TmdbMedia, TmdbMediaType } from "../tmdb/types";
 import { Rating } from "@material-ui/lab";
+import React, { useState } from "react";
+import ErrorBox from "../common/components/ErrorBox";
+import ListItemSkeleton from "../common/components/ListItemSkeleton";
+import MovieListItem from "../movie/components/MovieListItem";
+import { useQueryMovie } from "../movie/query";
+import { TmdbMedia, TmdbMediaType } from "../tmdb/types";
 import { PostReviewParams } from "./query";
 
 type Props = {
@@ -31,35 +30,11 @@ const MediaInfo = ({ tmdbMedia }: { tmdbMedia: TmdbMedia }) => {
   }
 
   if (!queryMovie.data) {
-    return <LoadingBox m={6} />;
+    return <ListItemSkeleton />;
   }
-
   const movie = queryMovie.data;
-  const subtitle = [
-    movieUtils.releaseYear(movie),
-    movieUtils.toCertification(movie),
-    // movieUtils.runtime(movie),
-  ]
-    .filter((_) => _)
-    .join(` ${movieUtils.SMALL_DOT} `);
 
-  return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Box width="120px" paddingBottom={1}>
-        <MoviePosterCard noLink movie={movie} />
-      </Box>
-      <Box>
-        <Typography variant="h5" align="center">
-          {movie.title}
-        </Typography>
-      </Box>
-    </Box>
-  );
+  return <MovieListItem movie={movie} />;
 };
 
 export default ({
@@ -104,9 +79,7 @@ export default ({
         </Box>
       </AppBar>
       <Box p={2}>
-        <Box paddingBottom={2}>
-          <MediaInfo tmdbMedia={tmdbMedia} />
-        </Box>
+        <MediaInfo tmdbMedia={tmdbMedia} />
 
         <Box paddingBottom={1}>
           <Rating
