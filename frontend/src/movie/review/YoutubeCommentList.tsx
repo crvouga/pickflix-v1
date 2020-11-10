@@ -13,7 +13,7 @@ export default ({ videoId }: { videoId?: string }) => {
     videoId ? getYoutubeVideoCommentThreadList({ videoId }) : Promise.reject()
   );
 
-  if (query.error) {
+  if (!videoId || query.error) {
     return null;
   }
 

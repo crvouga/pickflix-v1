@@ -16,6 +16,13 @@ import { useLazyImage } from "../../common/hooks/useLazyImage";
 import makeImageUrl from "../../tmdb/makeImageUrl";
 
 const useStyles = makeStyles((theme) => ({
+  fallback: {
+    wordBreak: "break-word",
+    display: "flex",
+    alignItems: "center",
+    width: "100%",
+    height: "100%",
+  },
   breakWord: {
     wordBreak: "break-word",
   },
@@ -105,21 +112,13 @@ export default (props: Props) => {
           )}
 
           {!posterPath && (
-            <Box
-              style={{
-                wordBreak: "break-word",
-              }}
-              display="flex"
-              width="100%"
-              height="100%"
-              justifyContent="center"
-              alignItems="center"
-              p={2}
+            <Typography
+              variant="h5"
+              align="center"
+              className={classes.fallback}
             >
-              <Typography variant="h5" align="center">
-                {title}
-              </Typography>
-            </Box>
+              {title}
+            </Typography>
           )}
         </AspectRatio>
       </CardActionArea>

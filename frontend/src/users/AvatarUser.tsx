@@ -34,14 +34,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default ({ user, ...AvatarProps }: Props) => {
   const classes = useStyles({ user });
-  const initials = nameToInitials(user.displayName);
 
   return (
     <Avatar
       {...AvatarProps}
       className={clsx(classes.avatar, AvatarProps.className)}
     >
-      {initials}
+      {user.username[0].toUpperCase()}
     </Avatar>
   );
 };

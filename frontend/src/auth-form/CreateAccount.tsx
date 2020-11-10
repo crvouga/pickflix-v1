@@ -15,7 +15,7 @@ export default ({
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const [displayName, setDisplayName] = useState("");
 
-  const disabled = displayName.length === 0 || password !== passwordRepeat;
+  const disabled = password !== passwordRepeat;
 
   const handleSubmit = async () => {
     await auth.signUp({
@@ -39,7 +39,7 @@ export default ({
         <Typography align="center">{username}</Typography>
       </Box>
 
-      <Box paddingBottom={2}>
+      {/* <Box paddingBottom={2}>
         <TextField
           type="name"
           autoFocus
@@ -50,7 +50,7 @@ export default ({
             setDisplayName(e.target.value);
           }}
         />
-      </Box>
+      </Box> */}
 
       <Box paddingBottom={2}>
         <TextField

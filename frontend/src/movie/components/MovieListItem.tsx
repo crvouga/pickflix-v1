@@ -15,6 +15,8 @@ import { toYear } from "../../person/utils";
 import makeImageUrl from "../../tmdb/makeImageUrl";
 
 type Props = Omit<ListItemProps, "button"> & {
+  noLink?: boolean;
+  onClick?: () => void;
   movie: {
     id: string;
     title: string;
@@ -25,7 +27,7 @@ type Props = Omit<ListItemProps, "button"> & {
 };
 
 export default (props: Props) => {
-  const { movie, ...ListItemProps } = props;
+  const { disabled = false, movie, onClick, ...ListItemProps } = props;
   const { title, releaseDate, id, posterPath, backdropPath } = movie;
 
   const src = makeImageUrl(2, posterPath ? { posterPath } : { backdropPath });
@@ -36,8 +38,8 @@ export default (props: Props) => {
   };
 
   return (
-    <CardActionArea>
-      <ListItem onClick={handleClick} {...ListItemProps}>
+    <CardActionArea disabled={disabled} onClick={onClick || handleClick}>
+      <ListItem {...ListItemProps}>
         <ListItemAvatar>
           <Avatar variant="square" src={src}>
             <MovieIcon />

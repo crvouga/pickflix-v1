@@ -12,7 +12,7 @@ export type ReadMoreProps = {
   children: string;
 };
 
-type Props = TypographyProps & ReadMoreProps;
+type Props = TypographyProps<"div"> & ReadMoreProps;
 
 export default (props: Props) => {
   const {
@@ -38,7 +38,7 @@ export default (props: Props) => {
   }
 
   return (
-    <Typography {...TypographyProps}>
+    <Typography component="div" {...TypographyProps}>
       {isIn ? text : headTextWithTrail}
 
       {!isIn && (

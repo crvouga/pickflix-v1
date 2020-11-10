@@ -35,15 +35,13 @@ export default ({ collectionId }: { collectionId: string }) => {
 
   return (
     <React.Fragment>
-      <React.Fragment>
-        <Box paddingX={2} paddingBottom={1}>
-          <Typography variant="h6">{name}</Typography>
-          <Typography color="textSecondary" variant="body2">
-            {overview}
-          </Typography>
-        </Box>
-        <MoviePosterScroll movies={parts} />
-      </React.Fragment>
+      <Box paddingX={2} paddingBottom={1}>
+        <Typography variant="h6">{name}</Typography>
+        <Typography color="textSecondary" variant="body2">
+          {overview}
+        </Typography>
+      </Box>
+      <MoviePosterScroll movies={parts} />
     </React.Fragment>
   );
 };

@@ -10,7 +10,7 @@ export type User = {
 
 export const queryKeys = {
   user: ({ username }: { username: string }) => ["users", username],
-  currentUser: () => ["user"],
+  currentUser: () => ["current-user"],
   users: (email: string) => ["users", email],
 };
 
@@ -48,6 +48,6 @@ export const getUsers = async ({
 */
 
 export const getCurrentUser = async () => {
-  const { data } = await BackendAPI.get<User>("/api/users/current");
+  const { data } = await BackendAPI.get<User | null>("/api/auth");
   return data;
 };

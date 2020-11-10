@@ -5,36 +5,45 @@ import {
   Hidden,
   TextField,
   Typography,
+  withStyles,
 } from "@material-ui/core";
-import { Rating } from "@material-ui/lab";
+import MuiRating from "@material-ui/lab/Rating";
 import React, { useState } from "react";
-import ErrorBox from "../common/components/ErrorBox";
 import ListItemSkeleton from "../common/components/ListItemSkeleton";
 import MovieListItem from "../movie/components/MovieListItem";
 import { useQueryMovie } from "../movie/query";
-import { TmdbMedia, TmdbMediaType } from "../tmdb/types";
-import { PostReviewParams, MAX_RATING } from "./query";
+import { TmdbMedia } from "../tmdb/types";
+import { useQueryCurrentUser } from "../users/useCurrentUser";
+import UserListItem from "../users/UserListItem";
+import { PostReviewParams } from "./query";
 
-type Props = {
-  tmdbMedia: {
-    tmdbMediaId: string;
-    tmdbMediaType: TmdbMediaType;
-  };
+const Rating = withStyles({
+  root: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+})(MuiRating);
+
+const CurrentUserInfo = () => {
+  const query = useQueryCurrentUser();
+
+  if (query.error) return null;
+  if (!query.data) return <ListItemSkeleton />;
+
+  return (
+    <UserListItem
+      user={query.data}
+      ListItemTextProps={{ secondary: "Public Post" }}
+      onClick={() => {}}
+    />
+  );
 };
 
 const MediaInfo = ({ tmdbMedia }: { tmdbMedia: TmdbMedia }) => {
-  const queryMovie = useQueryMovie(tmdbMedia);
-
-  if (queryMovie.error) {
-    return <ErrorBox />;
-  }
-
-  if (!queryMovie.data) {
-    return <ListItemSkeleton />;
-  }
-  const movie = queryMovie.data;
-
-  return <MovieListItem movie={movie} />;
+  const query = useQueryMovie(tmdbMedia);
+  if (query.error) return null;
+  if (!query.data) return <ListItemSkeleton />;
+  return <MovieListItem movie={query.data} onClick={() => {}} />;
 };
 
 export default ({
@@ -50,19 +59,18 @@ export default ({
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
+  const disabled = rating === null || !(1 <= rating && rating <= 5);
+
   const handleSubmit = () => {
-    if (rating && content.length > 0) {
+    if (rating) {
       onSubmit({
         ...tmdbMedia,
-        title,
         rating,
+        title,
         content,
       });
     }
   };
-
-  const disabled =
-    title.length === 0 || content.length === 0 || rating === null;
 
   return (
     <React.Fragment>
@@ -81,24 +89,13 @@ export default ({
       <Box p={2}>
         <MediaInfo tmdbMedia={tmdbMedia} />
 
-        <Box paddingBottom={1}>
-          <Rating
-            size="large"
-            value={rating}
-            max={MAX_RATING}
-            onChangeActive={(e, newValue) => {
-              if (newValue > 0) {
-                setRating(Math.min(Math.max(0, newValue), 5));
-              }
-            }}
-            // onChange={(e, newValue) => {
-            //   console.log({ onChange: newValue });
-            //   setRating(newValue);
-            // }}
-          />
+        <CurrentUserInfo />
+
+        <Box paddingY={2} display="flex" justifyContent="center">
+          <Rating name="size-large" defaultValue={2} size="large" />
         </Box>
 
-        <Box paddingBottom={1}>
+        {/* <Box paddingBottom={1}>
           <TextField
             variant="outlined"
             style={{ fontWeight: "bold", fontSize: "1.25em" }}
@@ -108,7 +105,7 @@ export default ({
             }}
             label="Title"
           />
-        </Box>
+        </Box> */}
 
         <Box>
           <TextField
@@ -121,7 +118,7 @@ export default ({
             onChange={(e) => {
               setContent(e.target.value || "");
             }}
-            label="Write your review here"
+            label="Write Review Here"
           />
         </Box>
 

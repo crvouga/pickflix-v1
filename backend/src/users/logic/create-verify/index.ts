@@ -47,7 +47,7 @@ export async function createUserWithPassword(
     password,
   }: {
     username: string;
-    displayName: string;
+    displayName?: string;
     emailAddress: string;
     password: string;
   }

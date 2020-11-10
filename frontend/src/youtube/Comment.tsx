@@ -79,9 +79,11 @@ export default ({ comment }: Props) => {
           }
         />
         <CardContent>
-          <Typography variant="subtitle2" color="textSecondary">
-            {formattedPublishedAt}
-          </Typography>
+          <Box paddingBottom={1}>
+            <Typography variant="subtitle2" color="textSecondary">
+              {formattedPublishedAt}
+            </Typography>
+          </Box>
           <Box paddingBottom={1}>
             <Typography variant="body1">{textDisplayMarkdown}</Typography>
           </Box>

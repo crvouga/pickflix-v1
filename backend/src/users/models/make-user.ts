@@ -20,12 +20,12 @@ export const makeUser = (partial: {
   id?: UserId;
   username: string;
   emailAddress: string;
-  displayName: string;
+  displayName?: string;
 }): User => {
   const id = partial.id || (makeId() as UserId);
   const emailAddress = partial.emailAddress.trim();
   const username = partial.username.trim();
-  const displayName = partial.displayName.trim();
+  const displayName = (partial.displayName || "").trim();
 
   const errors = [];
 
@@ -37,12 +37,12 @@ export const makeUser = (partial: {
     errors.push({ key: "id", message: "Invalid user id." });
   }
 
-  if (displayName.length === 0) {
-    errors.push({
-      key: "displayName",
-      message: "Display name can not be empty.",
-    });
-  }
+  // if (displayName.length === 0) {
+  //   errors.push({
+  //     key: "displayName",
+  //     message: "Display name can not be empty.",
+  //   });
+  // }
 
   if (username.length < MIN_USERNAME_LENGTH) {
     errors.push({

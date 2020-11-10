@@ -1,13 +1,15 @@
 import { IRouter } from "express";
 import { Dependencies } from "./types";
-import { castLink } from "../logic/reset-password/email";
-import { URL } from "url";
 
 export const buildAuthRouter = ({ userLogic, middlewares }: Dependencies) => (
   router: IRouter
 ) => {
   router.get("/auth", middlewares.isAuthenticated, (req, res) => {
-    res.status(200).json(req.user);
+    if (req.isAuthenticated()) {
+      return res.status(200).json(req.user);
+    } else {
+      return res.status(204).json(null).end();
+    }
   });
 
   router.delete("/auth", (req, res) => {

@@ -81,8 +81,6 @@ export const reviews = ({
   router.post(
     "/reviews",
     middlewares.isAuthenticated,
-    body("title").isString(),
-    body("content").isString(),
     body("rating").isInt(),
     body("tmdbMediaId").isInt(),
     body("tmdbMediaType").isIn(Object.values(TmdbMediaType)),

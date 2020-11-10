@@ -1,6 +1,5 @@
 import {
   AppBar,
-  Box,
   Container,
   Grid,
   Hidden,
@@ -23,6 +22,7 @@ import BackButton from "../navigation/BackButton";
 import { APP_BAR_HEIGHT } from "../navigation/constants";
 import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
 import makeImageUrl from "../tmdb/makeImageUrl";
+import useVideoState from "../video/useVideoState";
 import VideoPlayer from "../video/VideoPlayer";
 import MovieCredits from "./credits/MovieCredits";
 import MovieCollection from "./MovieCollection";
@@ -33,7 +33,6 @@ import MovieRelated from "./related/MovieRelated";
 import ReviewsAndComments from "./review/ReviewsAndComments";
 import ReviewsSummary from "./review/ReviewsSummary";
 import MovieVideo from "./video/MovieVideo";
-import useVideoState from "../video/useVideoState";
 
 const ToggleIcon = ({ on }: { on: boolean }) => {
   return on ? <ToggleOnOutlinedIcon /> : <ToggleOffOutlinedIcon />;
@@ -102,11 +101,11 @@ export default () => {
         <AppBar color="default" position="sticky">
           <Toolbar>
             <BackButton />
-            <Box flex={1}>
-              <Typography variant="h6" noWrap>
-                {details.title}
-              </Typography>
-            </Box>
+
+            <Typography variant="h6" noWrap style={{ flex: 1 }}>
+              {details.title}
+            </Typography>
+
             <IconButton
               onClick={() => {
                 moviePageUiState.toggleIsVideoPlayerSticky();
@@ -152,7 +151,11 @@ export default () => {
           recommendations={recommendations}
         />
 
-        <ReviewsSummary tmdbMediaId={details.id} />
+        <Grid container>
+          <Grid item xs>
+            <ReviewsSummary tmdbMediaId={details.id} />
+          </Grid>
+        </Grid>
 
         <ReviewsAndComments tmdbMediaId={details.id} />
       </Container>

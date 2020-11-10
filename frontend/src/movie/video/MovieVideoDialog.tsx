@@ -11,8 +11,8 @@ import React from "react";
 import ResponsiveDialog from "../../common/components/ResponsiveDialog";
 import { closeDialog } from "../../utils";
 import useVideoState from "../../video/useVideoState";
-import { YoutubeVideoListItemContainer } from "./VideoListItem";
 import { YoutubeDetailsContainer } from "../../youtube/YoutubeVideo";
+import { MovieVideoListItem } from "./VideoListItem";
 
 export default (props: DialogProps) => {
   const videoState = useVideoState();
@@ -53,9 +53,11 @@ export default (props: DialogProps) => {
             onClick={() => {
               closeDialog(props);
               videoState.setCurrentVideo(video);
+              videoState.setIsPlaying(true);
+              videoState.setLight();
             }}
           >
-            <YoutubeVideoListItemContainer videoId={video.id} />
+            <MovieVideoListItem video={video} />
           </Box>
         ))}
       </List>

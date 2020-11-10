@@ -69,6 +69,14 @@ const MovieIconBox = (props: BoxProps) => {
 export default ({ list, ...props }: { list: ListAggergation } & BoxProps) => {
   const classes = useStyles();
 
+  if (list.listItemCount === 0) {
+    return <MovieIconBox />;
+  }
+
+  if (list.listItemCount < 4) {
+    return <PosterBox posterPath={list.listItems[0].tmdbData.posterPath} />;
+  }
+
   return (
     <AspectRatio
       ratio={[1, 1]}

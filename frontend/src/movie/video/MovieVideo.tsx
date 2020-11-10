@@ -51,7 +51,8 @@ export default ({
   const isDialogOpen = useBoolean(false);
 
   useEffect(() => {
-    videoState.setCurrentVideo(videos.results[0]);
+    const trailer = videos.results.find((video) => video.type === "Trailer");
+    videoState.setCurrentVideo(trailer || videos.results[0]);
     videoState.setPlaylist(videos.results);
     videoState.setError(undefined);
   }, [tmdbMediaId]);
@@ -77,18 +78,16 @@ export default ({
       />
 
       <Paper>
-        <List>
-          <ListItem button onClick={isDialogOpen.setTrue}>
-            <ListItemText
-              primaryTypographyProps={{ variant: "h6" }}
-              primary="Videos"
-              secondary={`${videoState.playlist.length} videos`}
-            />
-            <ListItemSecondaryAction>
-              <UnfoldMoreIcon />
-            </ListItemSecondaryAction>
-          </ListItem>
-        </List>
+        <ListItem onClick={isDialogOpen.setTrue}>
+          <ListItemText
+            primaryTypographyProps={{ variant: "h6" }}
+            primary="Videos"
+            secondary={`${videoState.playlist.length} videos`}
+          />
+          <ListItemSecondaryAction>
+            <UnfoldMoreIcon />
+          </ListItemSecondaryAction>
+        </ListItem>
 
         <Hidden xsDown>
           <VideosScroll
