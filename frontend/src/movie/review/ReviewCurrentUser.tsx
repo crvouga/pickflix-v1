@@ -1,14 +1,9 @@
-import { useQueryCurrentUser } from "../../users/useCurrentUser";
-import WithCurrentUser from "../../users/WithCurrentUser";
+import { User } from "../../users/query";
 
-export default ({ currentUser }) => {
-  return (
-    <WithCurrentUser
-      render={(currentUser) => {
-        if (currentUser) {
-          return;
-        }
-      }}
-    />
-  );
+type Props = {
+  currentUser: User;
+};
+
+export default ({ currentUser }: Props) => {
+  return null;
 };
