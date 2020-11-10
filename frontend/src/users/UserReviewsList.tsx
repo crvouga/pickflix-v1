@@ -3,8 +3,8 @@ import React from "react";
 import { useQuery } from "react-query";
 import LoadingBox from "../common/components/LoadingBox";
 import { getUsersReviews, queryKeys } from "../reviews/query";
+import ReviewCard from "../reviews/ReviewCard";
 import { User } from "./query";
-import UserReviewsListItem from "./UserReviewsListItem";
 
 export default ({ user }: { user: User }) => {
   const query = useQuery(queryKeys.usersReviews(user), () =>
@@ -35,7 +35,7 @@ export default ({ user }: { user: User }) => {
     <Box>
       {reviews.map((review) => (
         <Box key={review.review.id} paddingY={1} paddingBottom={2}>
-          <UserReviewsListItem review={review} />
+          <ReviewCard showMedia review={review} />
         </Box>
       ))}
     </Box>

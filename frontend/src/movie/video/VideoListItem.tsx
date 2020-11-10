@@ -10,7 +10,9 @@ import {
   queryKeys,
   videoKeyToThumbnailURL,
   YoutubeVideo,
+  useQueryYoutubeVideoDetails,
 } from "../../youtube/query";
+
 export const toViewCount = (video: Partial<YoutubeVideo>) =>
   numeral(video?.statistics?.viewCount)
     .format("0.0")
@@ -144,11 +146,7 @@ export const YoutubeVideoListItemContainer = ({
 }: {
   videoId?: string;
 }) => {
-  const query = useQuery(
-    videoId && queryKeys.youtubeVideoDetails({ videoId }),
-    () => (videoId ? getYoutubeVideoDetails({ videoId }) : Promise.reject())
-  );
-
+  const query = useQueryYoutubeVideoDetails({ videoId });
   if (query.error) {
     return null;
   }

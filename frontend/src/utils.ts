@@ -15,7 +15,12 @@ export const closeDialog = (props: DialogProps) => {
 
 /* 
 
+
 */
+
+export const pluralize = (number: number, word: string) =>
+  `${number} ${word}${number === 1 ? "" : "s"}`;
+
 export const nameToInitials = (name: string) =>
   name
     .split(" ")

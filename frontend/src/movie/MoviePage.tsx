@@ -4,17 +4,18 @@ import {
   Container,
   Grid,
   Hidden,
+  IconButton,
   makeStyles,
-  Switch,
   Toolbar,
   Typography,
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
+import ToggleOffOutlinedIcon from "@material-ui/icons/ToggleOffOutlined";
+import ToggleOnOutlinedIcon from "@material-ui/icons/ToggleOnOutlined";
 import clsx from "clsx";
 import React, { useEffect } from "react";
 import { useParams } from "react-router";
-import useBoolean from "../common/hooks/useBoolean";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
 import usePageHistory from "../home/page-history/usePageHistory";
@@ -27,10 +28,16 @@ import MovieCredits from "./credits/MovieCredits";
 import MovieCollection from "./MovieCollection";
 import MovieDetails from "./MovieDetails";
 import { useQueryMovie } from "./query";
+import useMoviePageUiState from "./redux/useMoviePageUiState";
 import MovieRelated from "./related/MovieRelated";
 import ReviewsAndComments from "./review/ReviewsAndComments";
+import ReviewsSummary from "./review/ReviewsSummary";
 import MovieVideo from "./video/MovieVideo";
+import useVideoState from "../video/useVideoState";
 
+const ToggleIcon = ({ on }: { on: boolean }) => {
+  return on ? <ToggleOnOutlinedIcon /> : <ToggleOffOutlinedIcon />;
+};
 const useStyles = makeStyles((theme) => ({
   sticky: {
     position: "sticky",
@@ -42,9 +49,17 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const classes = useStyles();
 
-  const isStickyPlayer = useBoolean(true);
+  const moviePageUiState = useMoviePageUiState();
+  const videoState = useVideoState();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+
+  useEffect(() => {
+    videoState.setIsPlaying(moviePageUiState.isVideoPlayerSticky);
+    if (moviePageUiState.isVideoPlayerSticky && videoState.light) {
+      videoState.setLight(undefined);
+    }
+  }, [moviePageUiState.isVideoPlayerSticky]);
 
   const { tmdbMediaId } = useParams<{ tmdbMediaId: string }>();
   const query = useQueryMovie({ tmdbMediaId });
@@ -53,6 +68,10 @@ export default () => {
   useEffect(() => {
     if (query.data) {
       pageHistory.push({ mediaType: "movie", ...query.data });
+      const backdrop = makeImageUrl(2, {
+        backdropPath: query.data.backdropPath,
+      });
+      videoState.setLight(backdrop);
     }
   }, [query.data]);
 
@@ -75,8 +94,6 @@ export default () => {
     ...details
   } = query.data;
 
-  const backdrop = makeImageUrl(2, { backdropPath: query.data.backdropPath });
-
   return (
     <React.Fragment>
       <ResponsiveNavigation />
@@ -90,13 +107,13 @@ export default () => {
                 {details.title}
               </Typography>
             </Box>
-            <Switch
-              checked={isStickyPlayer.value}
+            <IconButton
               onClick={() => {
-                console.log("TOGGLE");
-                isStickyPlayer.toggle();
+                moviePageUiState.toggleIsVideoPlayerSticky();
               }}
-            />
+            >
+              <ToggleIcon on={moviePageUiState.isVideoPlayerSticky} />
+            </IconButton>
           </Toolbar>
         </AppBar>
       </Hidden>
@@ -104,9 +121,11 @@ export default () => {
       <Container
         disableGutters
         maxWidth="md"
-        className={clsx({ [classes.sticky]: isStickyPlayer.value && isMobile })}
+        className={clsx({
+          [classes.sticky]: moviePageUiState.isVideoPlayerSticky && isMobile,
+        })}
       >
-        <VideoPlayer light={backdrop} />
+        <VideoPlayer />
       </Container>
 
       <Container disableGutters maxWidth="md">
@@ -132,6 +151,8 @@ export default () => {
           similar={similar}
           recommendations={recommendations}
         />
+
+        <ReviewsSummary tmdbMediaId={details.id} />
 
         <ReviewsAndComments tmdbMediaId={details.id} />
       </Container>

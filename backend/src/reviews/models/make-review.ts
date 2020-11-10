@@ -27,8 +27,10 @@ export type PartialReview = {
   tmdbMediaType: TmdbMediaType;
 };
 
-const MAX_RATING = 5;
-const MIN_RATING = 0;
+export const MAX_RATING = 5;
+export const MIN_RATING = 1;
+export const RATINGS = [1, 2, 3, 4, 5];
+
 const MIN_CONTENT_LENGTH = 1;
 const MAX_CONTENT_LENGTH = 600;
 const MIN_TITLE_LENGTH = 1;

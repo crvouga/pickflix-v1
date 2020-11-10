@@ -1,8 +1,6 @@
 import supertest from "supertest";
-import { buildExpressAppFake } from "../../express/build.fake";
-import { TmdbMediaId, TmdbMediaType } from "../../media/models/types";
-import { makeUserFake } from "../../users/models/make-user.fake";
-import { makeReviewFake } from "../models/make-review.fake";
+import { buildExpressAppFake } from "../../../express/build.fake";
+import { TmdbMediaId, TmdbMediaType } from "../../../media/models/types";
 
 describe("/api/reviews", () => {
   it("POST then GET", async () => {

@@ -13,7 +13,7 @@ import ListItemSkeleton from "../common/components/ListItemSkeleton";
 import MovieListItem from "../movie/components/MovieListItem";
 import { useQueryMovie } from "../movie/query";
 import { TmdbMedia, TmdbMediaType } from "../tmdb/types";
-import { PostReviewParams } from "./query";
+import { PostReviewParams, MAX_RATING } from "./query";
 
 type Props = {
   tmdbMedia: {
@@ -85,6 +85,7 @@ export default ({
           <Rating
             size="large"
             value={rating}
+            max={MAX_RATING}
             onChangeActive={(e, newValue) => {
               if (newValue > 0) {
                 setRating(Math.min(Math.max(0, newValue), 5));

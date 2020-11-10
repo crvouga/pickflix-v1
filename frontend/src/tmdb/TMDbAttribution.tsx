@@ -1,6 +1,14 @@
-import { Box, Typography } from "@material-ui/core";
+import { Box, Typography, BoxProps } from "@material-ui/core";
 import React from "react";
 import { blueLong2URL } from "./attribution";
+
+export const TmdbLogo = (props: BoxProps) => {
+  return (
+    <Box {...props}>
+      <img style={{ width: "100%" }} src={blueLong2URL} alt="tmdb" />
+    </Box>
+  );
+};
 
 export default () => {
   return (

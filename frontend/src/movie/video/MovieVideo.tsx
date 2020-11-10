@@ -65,11 +65,11 @@ export default ({
 
   return (
     <React.Fragment>
-      {videoState.error && (
+      {/* {videoState.error && (
         <Box paddingY={2}>
           <YoutubeStatusAlertError />
         </Box>
-      )}
+      )} */}
 
       <MovieVideoDialog
         open={isDialogOpen.value}
@@ -88,12 +88,6 @@ export default ({
               <UnfoldMoreIcon />
             </ListItemSecondaryAction>
           </ListItem>
-
-          {/* {videoState.currentVideo && (
-            <YoutubeVideoListItemContainer
-              videoId={videoState.currentVideo.key}
-            />
-          )} */}
         </List>
 
         <Hidden xsDown>

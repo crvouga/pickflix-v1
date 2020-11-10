@@ -1,9 +1,16 @@
-import { TmdbMediaType, TmdbMediaId } from "../../media/models/types";
+import { MediaLogic } from "../../media/logic/build";
+import { TmdbMediaId, TmdbMediaType } from "../../media/models/types";
 import { IUnitOfWork } from "../../unit-of-work/types";
 import { UserId } from "../../users/models/make-user";
-import { makeReview, PartialReview, ReviewId } from "../models/make-review";
+import {
+  makeReview,
+  MAX_RATING,
+  MIN_RATING,
+  PartialReview,
+  ReviewId,
+  RATINGS,
+} from "../models/make-review";
 import { makeReviewVote, PartialReviewVote } from "../models/make-review-vote";
-import { MediaLogic } from "../../media/logic/build";
 
 export class ReviewLogic {
   mediaLogic: MediaLogic;
@@ -52,17 +59,30 @@ export class ReviewLogic {
       throw new Error("Review does not exists.");
     }
 
-    const [author] = await Users.find({ id: review.authorId });
-
-    const tmdbData = await this.mediaLogic.requestTmdbData({
-      path: `/${review.tmdbMediaType}/${review.tmdbMediaId}`,
-    });
+    const [
+      [author],
+      authorReviewCount,
+      mediaReviewCount,
+      tmdbData,
+    ] = await Promise.all([
+      Users.find({ id: review.authorId }),
+      Reviews.count({ authorId: review.authorId }),
+      Reviews.count({
+        tmdbMediaType: review.tmdbMediaType,
+        tmdbMediaId: review.tmdbMediaId,
+      }),
+      this.mediaLogic.requestTmdbData({
+        path: `/${review.tmdbMediaType}/${review.tmdbMediaId}`,
+      }),
+    ]);
 
     return {
       review,
       reviewVoteValue: reviewVote?.voteValue || null,
       reviewVoteCount,
       author,
+      authorReviewCount,
+      mediaReviewCount,
       tmdbData,
     };
   }
@@ -180,5 +200,43 @@ export class ReviewLogic {
       throw new Error("Can't remove review vote that doesn't exists.");
     }
     await ReviewVotes.remove([found]);
+  }
+
+  async getRatingFrequency({
+    tmdbMediaId,
+    tmdbMediaType,
+  }: {
+    tmdbMediaId: TmdbMediaId;
+    tmdbMediaType: TmdbMediaType;
+  }) {
+    const { Reviews } = this.unitOfWork;
+
+    const ratingFrequency: {
+      [rating: number]: number;
+    } = {};
+
+    for (const rating of RATINGS) {
+      ratingFrequency[rating] = await Reviews.count({
+        rating,
+        tmdbMediaId,
+        tmdbMediaType,
+      });
+    }
+
+    const ratingCount = await Reviews.count({
+      tmdbMediaId,
+      tmdbMediaType,
+    });
+
+    const ratingAverage =
+      Object.entries(ratingFrequency)
+        .map(([rating, frequency]) => Number(rating) * frequency)
+        .reduce((a, b) => a + b, 0) / Math.max(ratingCount, 1);
+
+    return {
+      ratingCount,
+      ratingFrequency,
+      ratingAverage,
+    };
   }
 }

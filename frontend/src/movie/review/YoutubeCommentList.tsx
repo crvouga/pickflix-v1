@@ -23,12 +23,5 @@ export default ({ videoId }: { videoId?: string }) => {
 
   const commentThreadList = query.data;
 
-  return (
-    <React.Fragment>
-      <Box paddingX={2}>
-        <Typography variant="h6">Comments</Typography>
-      </Box>
-      <CommentThreadList commentThreadList={commentThreadList} />
-    </React.Fragment>
-  );
+  return <CommentThreadList commentThreadList={commentThreadList} />;
 };

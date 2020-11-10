@@ -39,6 +39,7 @@ export default (props: ReactPlayerProps) => {
           onError={(error) => {
             videoState.setError(error);
           }}
+          light={videoState.light}
           {...props}
         />
       )}

@@ -19,10 +19,11 @@ export enum ReviewVoteValue {
 
 export type ReviewAggergation = {
   author: User;
+  authorReviewCount: number;
   review: Review;
-
   reviewVoteCount: number;
   reviewVoteValue: ReviewVoteValue | null;
+  mediaReviewCount: number;
   tmdbData: Movie;
 };
 
@@ -32,3 +33,14 @@ export type ReviewVote = {
   reviewId: string;
   voteValue: ReviewVoteValue;
 };
+
+export type ReviewStatistics = {
+  ratingCount: number;
+  ratingFrequency: {
+    [rating: number]: number;
+  };
+  ratingAverage: number;
+};
+
+export const MIN_RATING = 1;
+export const MAX_RATING = 5;

@@ -1,11 +1,11 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
+import { useQuery } from "react-query";
 import ErrorBox from "../../common/components/ErrorBox";
 import LoadingBox from "../../common/components/LoadingBox";
+import { getReviews, queryKeys } from "../../reviews/query";
 import { TmdbMediaType } from "../../tmdb/types";
-import { useQueryReviews } from "../../reviews/query/hooks";
-import Review from "../../users/UserReviewsListItem";
-import MovieReviewListItem from "./MovieReviewListItem";
+import ReviewCard from "../../reviews/ReviewCard";
 
 type Props = {
   tmdbMediaId: string;
@@ -13,7 +13,7 @@ type Props = {
 };
 
 export default (props: Props) => {
-  const query = useQueryReviews(props);
+  const query = useQuery(queryKeys.reviews(props), () => getReviews(props));
 
   if (query.error) {
     return <ErrorBox />;
@@ -27,12 +27,9 @@ export default (props: Props) => {
 
   return (
     <React.Fragment>
-      <Box paddingX={2}>
-        <Typography variant="h6">Reviews</Typography>
-      </Box>
       {reviews.map((review) => (
         <Box paddingX={2} paddingY={1}>
-          <MovieReviewListItem review={review} />
+          <ReviewCard showUser review={review} />
         </Box>
       ))}
     </React.Fragment>

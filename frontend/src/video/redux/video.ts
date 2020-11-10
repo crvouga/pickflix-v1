@@ -25,6 +25,7 @@ export type VideoState = {
   currentVideo: MovieVideo | undefined;
   playlist: MovieVideo[];
   error: VideoError | undefined;
+  light: string | undefined;
 };
 
 export const initialState: VideoState = {
@@ -32,6 +33,7 @@ export const initialState: VideoState = {
   currentVideo: undefined,
   playlist: [],
   error: undefined,
+  light: undefined,
 };
 
 /* 
@@ -45,7 +47,7 @@ const actions = {
   setPlaylist: createAction<MovieVideo[]>(name + "/SET_PLAYLIST"),
   setIsPlaying: createAction<boolean>(name + "/SET_IS_PLAYING"),
   setError: createAction<VideoError | undefined>(name + "/SET_ERROR"),
-
+  setLight: createAction<string | undefined>(name + "/SET_LIGHT"),
   //
   progress: createAction<VideoProgress>(name + "/PROGRESS"),
 };
@@ -83,6 +85,9 @@ export const reducer = createReducer(initialState, {
   },
   [actions.setError.toString()]: (state, action) => {
     state.error = action.payload;
+  },
+  [actions.setLight.toString()]: (state, action) => {
+    state.light = action.payload;
   },
 });
 

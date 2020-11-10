@@ -9,6 +9,7 @@ import { SearchState } from "../search/redux/search";
 import { SnackbarState } from "../snackbar/redux/snackbar";
 import { VideoState } from "../video/redux/video";
 import { ReviewFormState } from "../reviews/redux/review-form";
+import { MoviePageUiState } from "../movie/redux/movie-page-ui";
 
 export type AppState = {
   reviewForm: ReviewFormState;
@@ -20,6 +21,7 @@ export type AppState = {
   snackbar: SnackbarState;
   search: SearchState;
   personPageUi: PersonPageUiState;
+  moviePageUi: MoviePageUiState;
   discoverActiveTags: DiscoverActiveTags;
   discoverTags: DiscoverTagsState;
 };

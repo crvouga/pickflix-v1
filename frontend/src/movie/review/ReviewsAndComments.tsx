@@ -1,9 +1,10 @@
 import { Box, Tab, Tabs, Typography } from "@material-ui/core";
 import React from "react";
 import useVideoState from "../../video/useVideoState";
-import MovieReviewList from "./MovieReviewList";
-import TmdbMovieReviewList from "./TmdbMovieReviewList";
+import MovieReviewList from "./ReviewCardList";
+import TmdbReviewCardList from "./TmdbReviewCardList";
 import YoutubeCommentList from "./YoutubeCommentList";
+import useMoviePageUiState from "../redux/useMoviePageUiState";
 
 const TabPanel = (props: {
   children?: React.ReactNode;
@@ -21,15 +22,11 @@ const TabPanel = (props: {
 
 export default ({ tmdbMediaId }: { tmdbMediaId: string }) => {
   const videoState = useVideoState();
+  const moviePageUiState = useMoviePageUiState();
 
-  const [value, setValue] = React.useState(1);
-
+  const index = moviePageUiState.reviewCommentsTabIndex;
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue);
-  };
-
-  const handleChangeIndex = (index: number) => {
-    setValue(index);
+    moviePageUiState.setReviewCommentsTabIndex(newValue);
   };
 
   return (
@@ -39,7 +36,7 @@ export default ({ tmdbMediaId }: { tmdbMediaId: string }) => {
       </Box>
       <Box paddingBottom={2}>
         <Tabs
-          value={value}
+          value={index}
           onChange={handleChange}
           indicatorColor="primary"
           textColor="primary"
@@ -51,14 +48,14 @@ export default ({ tmdbMediaId }: { tmdbMediaId: string }) => {
         </Tabs>
       </Box>
 
-      <TabPanel value={value} index={0}>
+      <TabPanel value={index} index={0}>
         <MovieReviewList tmdbMediaId={tmdbMediaId} tmdbMediaType="movie" />
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel value={index} index={1}>
         <YoutubeCommentList videoId={videoState.currentVideo?.key} />
       </TabPanel>
-      <TabPanel value={value} index={2}>
-        <TmdbMovieReviewList tmdbMediaId={tmdbMediaId} />
+      <TabPanel value={index} index={2}>
+        <TmdbReviewCardList tmdbMediaId={tmdbMediaId} />
       </TabPanel>
     </React.Fragment>
   );

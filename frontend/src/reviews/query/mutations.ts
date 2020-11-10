@@ -1,5 +1,4 @@
 import { QueryCache } from "react-query";
-import { queryKeys } from "./query-keys";
 import { postReview, PostReviewParams } from "./writes";
 
 /* 
