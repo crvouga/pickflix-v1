@@ -51,10 +51,17 @@ export const getReviewStatistics = async (
 
 */
 
-export type GetReviewsParams = {
-  tmdbMediaId: string;
-  tmdbMediaType: TmdbMediaType;
-};
+export type GetReviewsParams =
+  | { authorId: string }
+  | {
+      tmdbMediaId: string;
+      tmdbMediaType: TmdbMediaType;
+    }
+  | {
+      authorId: string;
+      tmdbMediaId: string;
+      tmdbMediaType: TmdbMediaType;
+    };
 
 export const getReviews = async (params: GetReviewsParams) => {
   const { data } = await BackendAPI.get<ReviewAggergation[]>("/api/reviews", {

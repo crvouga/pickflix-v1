@@ -120,7 +120,7 @@ export default () => {
               <ListItemIcon>
                 <TrendingUpOutlinedIcon />
               </ListItemIcon>
-              <ListItemText primary="Upcoming" />
+              <ListItemText primary="Popular People" />
             </ListItem>
 
             <HorizontalScroll paddingLeft={2}>

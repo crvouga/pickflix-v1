@@ -77,5 +77,6 @@ export const YoutubeDetailsContainer = ({ videoId }: { videoId: string }) => {
   if (query.error) {
     return null;
   }
+
   return <YoutubeDetails video={query.data?.items[0]} />;
 };

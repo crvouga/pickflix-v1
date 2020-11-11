@@ -6,6 +6,9 @@ import {
   sortWith,
   filter,
   reject,
+  pickBy,
+  not,
+  isNil,
 } from "ramda";
 import { Identifiable, IRepository, FindOptions } from "./types";
 
@@ -27,7 +30,9 @@ export class RepositoryHashMap<T extends Identifiable>
 
     return sortWith(
       comparators,
-      Object.values(this.db).filter(whereEq(entityInfo))
+      Object.values(this.db).filter(
+        whereEq(pickBy((value, key) => not(isNil(value)), entityInfo))
+      )
     );
   }
 

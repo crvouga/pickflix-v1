@@ -2,6 +2,7 @@ import qs from "qs";
 import config from "../../../configuration";
 
 import { MediaLogic } from "../build";
+import configuration from "../../../configuration";
 
 const stringifyConfig: qs.IStringifyOptions = {
   arrayFormat: "comma",

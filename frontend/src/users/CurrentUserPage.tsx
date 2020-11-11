@@ -1,19 +1,19 @@
 import React from "react";
 import { Redirect } from "react-router";
-import LoadingPage from "../common/page/LoadingPage";
 import SignInPage from "./SignInPage";
-import useCurrentUser from "./useCurrentUser";
+import { useQueryCurrentUser } from "./useCurrentUser";
+import LoadingPage from "../common/page/LoadingPage";
 
 export default () => {
-  const currentUser = useCurrentUser();
+  const query = useQueryCurrentUser();
 
-  if (currentUser === "loading") {
-    return <LoadingPage />;
-  }
-
-  if (currentUser === null) {
+  if (query.error || query.data === null) {
     return <SignInPage />;
   }
 
-  return <Redirect to={`/user/${currentUser.username}`} />;
+  if (!query.data) {
+    return <LoadingPage />;
+  }
+
+  return <Redirect to={`/user/${query.data.user.username}`} />;
 };

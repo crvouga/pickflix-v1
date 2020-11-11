@@ -1,5 +1,6 @@
 import {
   AppBar,
+  Box,
   Container,
   Grid,
   Hidden,
@@ -33,6 +34,7 @@ import MovieRelated from "./related/MovieRelated";
 import ReviewsAndComments from "./review/ReviewsAndComments";
 import ReviewsSummary from "./review/ReviewsSummary";
 import MovieVideo from "./video/MovieVideo";
+import YourReview from "./review/YourReview";
 
 const ToggleIcon = ({ on }: { on: boolean }) => {
   return on ? <ToggleOnOutlinedIcon /> : <ToggleOffOutlinedIcon />;
@@ -139,21 +141,33 @@ export default () => {
       </Container>
 
       <Container maxWidth="md" disableGutters>
-        <MovieCredits credits={credits} />
-
+        <Box paddingBottom={2}>
+          <MovieCredits credits={credits} />
+        </Box>
         {details.belongsToCollection && (
-          <MovieCollection collectionId={details.belongsToCollection.id} />
+          <Box paddingBottom={2}>
+            <MovieCollection collectionId={details.belongsToCollection.id} />
+          </Box>
         )}
 
-        <MovieRelated
-          tmdbMediaId={details.id}
-          similar={similar}
-          recommendations={recommendations}
-        />
+        <Box paddingBottom={2}>
+          <MovieRelated
+            tmdbMediaId={details.id}
+            similar={similar}
+            recommendations={recommendations}
+          />
+        </Box>
 
         <Grid container>
-          <Grid item xs>
-            <ReviewsSummary tmdbMediaId={details.id} />
+          <Grid item xs={12} sm={6}>
+            <Box paddingBottom={2}>
+              <ReviewsSummary tmdbMediaId={details.id} />
+            </Box>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Box paddingBottom={2}>
+              <YourReview tmdbMediaId={details.id} tmdbMediaType="movie" />
+            </Box>
           </Grid>
         </Grid>
 

@@ -74,6 +74,24 @@ export class UserLogic {
     return user;
   }
 
+  async getUserAggergation(
+    info: { username: string } | { id: UserId } | { emailAddress: string }
+  ) {
+    const { Reviews, Lists } = this.unitOfWork;
+    const user = await this.getUser(info);
+
+    const [reviewCount, listCount] = await Promise.all([
+      Reviews.count({ authorId: user.id }),
+      Lists.count({ ownerId: user.id }),
+    ]);
+
+    return {
+      user,
+      reviewCount,
+      listCount,
+    };
+  }
+
   async getCredentialTypesForEmailAddress({
     emailAddress,
   }: {

@@ -9,6 +9,7 @@ import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import React from "react";
 
 import { useLocation } from "react-router";
+import { useQueryCurrentUser } from "../users/useCurrentUser";
 
 export const DiscoverPageIcon = () => {
   const location = useLocation();
@@ -20,8 +21,10 @@ export const DiscoverPageIcon = () => {
 };
 
 export const ProfilePageIcon = () => {
+  const query = useQueryCurrentUser();
   const location = useLocation();
-  return location.pathname === "/profile" ? (
+  return query.data &&
+    location.pathname === `/user/${query.data.user.username}` ? (
     <PersonIcon />
   ) : (
     <PersonOutlinedIcon />

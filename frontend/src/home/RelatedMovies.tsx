@@ -30,7 +30,7 @@ export default ({ user }: Props) => {
   return (
     <React.Fragment>
       {autoListsByKey.liked.listItems.slice(0, 10).map((item) => (
-        <React.Fragment>
+        <React.Fragment key={item.listItem.id}>
           <ListItem
             button
             onClick={() => {

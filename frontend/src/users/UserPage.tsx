@@ -19,16 +19,15 @@ import { useHistory, useParams } from "react-router";
 import useBoolean from "../common/hooks/useBoolean";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
-import { ListAggergation } from "../lists/query/types";
 import useModal from "../navigation/modals/useModal";
 import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
 import AvatarUser from "./AvatarUser";
 import OptionsDialog from "./OptionsDialog";
 import { getUser, queryKeys } from "./query";
 import useCurrentUser from "./useCurrentUser";
+import UserAutoListsList from "./UserAutoListsList";
 import UserListsList from "./UserListsList";
 import UserReviewsList from "./UserReviewsList";
-import UserAutoListsList from "./UserAutoListsList";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -50,10 +49,6 @@ export default () => {
     getUser({ username })
   );
 
-  const handleClickList = (list: ListAggergation) => {
-    history.push(`/list/${list.list.id}`);
-  };
-
   if (query.error) {
     return <ErrorPage />;
   }
@@ -63,7 +58,7 @@ export default () => {
   }
 
   const user = query.data;
-  const isCurrentUser = currentUser !== null && user.id === currentUser.id;
+  const isCurrentUser = currentUser !== null && user.user.id === currentUser.id;
 
   return (
     <React.Fragment>
@@ -78,7 +73,7 @@ export default () => {
           <Toolbar>
             <Box flex={1}>
               <Typography variant="h6" align="center">
-                {user.username}
+                {user.user.username}
               </Typography>
             </Box>
           </Toolbar>
@@ -94,11 +89,11 @@ export default () => {
               justifyContent="center"
               paddingBottom={1}
             >
-              <AvatarUser user={user} className={classes.avatar} />
+              <AvatarUser user={user.user} className={classes.avatar} />
             </Box>
             <Box display="flex" justifyContent="center" alignItems="center">
               <Typography variant="h4" align="center">
-                {user.username}
+                {user.user.username}
               </Typography>
             </Box>
           </Box>
@@ -127,7 +122,7 @@ export default () => {
                 onClick={(autoList) => {
                   history.push(`/auto-list/${autoList.list.id}`);
                 }}
-                user={user}
+                user={user.user}
               />
             </Box>
             <Box p={2}>
@@ -136,14 +131,14 @@ export default () => {
                 onClick={(list) => {
                   history.push(`/list/${list.list.id}`);
                 }}
-                user={user}
+                user={user.user}
               />
             </Box>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Box p={2}>
               <Typography variant="h5">Reviews</Typography>
-              <UserReviewsList user={user} />
+              <UserReviewsList user={user.user} />
             </Box>
           </Grid>
         </Grid>

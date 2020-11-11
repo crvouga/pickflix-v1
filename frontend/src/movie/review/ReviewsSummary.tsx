@@ -27,12 +27,17 @@ export default ({ tmdbMediaId }: Props) => {
   const statistics = query.data;
 
   return (
-    <Box width="100%" maxWidth="360px" p={2} display="flex">
-      <Box width="66.66%">
-        <RatingDistributon statistics={statistics} />
+    <Box width="100%" paddingX={2}>
+      <Box paddingBottom={1}>
+        <Typography variant="h6">Reviews Summary</Typography>
       </Box>
-      <Box width="33.33%">
-        <RatingAverage statistics={statistics} />
+      <Box display="flex">
+        <Box width="66.66%">
+          <RatingDistributon statistics={statistics} />
+        </Box>
+        <Box width="33.33%">
+          <RatingAverage statistics={statistics} />
+        </Box>
       </Box>
     </Box>
   );

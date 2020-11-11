@@ -4,9 +4,12 @@ import { Dependencies } from "./types";
 export const buildAuthRouter = ({ userLogic, middlewares }: Dependencies) => (
   router: IRouter
 ) => {
-  router.get("/auth", middlewares.isAuthenticated, (req, res) => {
-    if (req.isAuthenticated()) {
-      return res.status(200).json(req.user);
+  router.get("/auth", middlewares.isAuthenticated, async (req, res) => {
+    if (req.isAuthenticated() && req.user) {
+      const userAggergation = await userLogic.getUserAggergation({
+        username: req.user.username,
+      });
+      return res.status(200).json(userAggergation);
     } else {
       return res.status(204).json(null).end();
     }
@@ -81,11 +84,8 @@ export const buildUsersRouter = ({ userLogic, middlewares }: Dependencies) => (
   router.get("/users/:username", async (req, res, next) => {
     try {
       const username = req.params.username as string;
-      const [user] = await userLogic.getUsers({ username });
-      if (user) {
-        return res.status(200).json(user).end();
-      }
-      return res.status(404).json({ message: "User does not exists" }).end();
+      const userAggergation = await userLogic.getUserAggergation({ username });
+      return res.status(200).json(userAggergation).end();
     } catch (error) {
       return next(error);
     }

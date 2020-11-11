@@ -64,30 +64,30 @@ export default ({
 
   const handleOpen = () => {};
 
+  if (videoState.playlist.length === 0) {
+    return null;
+  }
+
   return (
     <React.Fragment>
-      {/* {videoState.error && (
-        <Box paddingY={2}>
-          <YoutubeStatusAlertError />
-        </Box>
-      )} */}
-
       <MovieVideoDialog
         open={isDialogOpen.value}
         onClose={isDialogOpen.setFalse}
       />
 
       <Paper>
-        <ListItem onClick={isDialogOpen.setTrue}>
-          <ListItemText
-            primaryTypographyProps={{ variant: "h6" }}
-            primary="Videos"
-            secondary={`${videoState.playlist.length} videos`}
-          />
-          <ListItemSecondaryAction>
-            <UnfoldMoreIcon />
-          </ListItemSecondaryAction>
-        </ListItem>
+        <List disablePadding>
+          <ListItem onClick={isDialogOpen.setTrue}>
+            <ListItemText
+              primaryTypographyProps={{ variant: "h6" }}
+              primary="Videos"
+              secondary={`${videoState.playlist.length} videos`}
+            />
+            <ListItemSecondaryAction>
+              <UnfoldMoreIcon />
+            </ListItemSecondaryAction>
+          </ListItem>
+        </List>
 
         <Hidden xsDown>
           <VideosScroll

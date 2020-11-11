@@ -29,7 +29,7 @@ export default ({ credits }: { credits: MovieCredits }) => {
         open={isOpen.value}
         onClose={isOpen.setFalse}
       />
-      <List>
+      <List disablePadding>
         <ListItem button onClick={isOpen.setTrue}>
           <ListItemText
             primaryTypographyProps={{

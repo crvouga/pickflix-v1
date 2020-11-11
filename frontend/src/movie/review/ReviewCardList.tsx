@@ -1,11 +1,11 @@
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import ErrorBox from "../../common/components/ErrorBox";
 import LoadingBox from "../../common/components/LoadingBox";
 import { getReviews, queryKeys } from "../../reviews/query";
-import { TmdbMediaType } from "../../tmdb/types";
 import ReviewCard from "../../reviews/ReviewCard";
+import { TmdbMediaType } from "../../tmdb/types";
 
 type Props = {
   tmdbMediaId: string;
@@ -28,7 +28,7 @@ export default (props: Props) => {
   return (
     <React.Fragment>
       {reviews.map((review) => (
-        <Box paddingX={2} paddingY={1}>
+        <Box paddingX={2} paddingY={1} key={review.review.id}>
           <ReviewCard showUser review={review} />
         </Box>
       ))}

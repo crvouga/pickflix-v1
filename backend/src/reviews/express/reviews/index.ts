@@ -1,7 +1,7 @@
 import { Handler, IRouter } from "express";
 import { body, param, query, validationResult } from "express-validator";
 import { TmdbMediaId, TmdbMediaType } from "../../../media/models/types";
-import { User } from "../../../users/models/make-user";
+import { User, UserId } from "../../../users/models/make-user";
 import { ReviewId } from "../../models/make-review";
 import { Dependencies } from "../types";
 
@@ -42,20 +42,49 @@ export const reviews = ({
 
   router.get(
     "/reviews",
-    query("tmdbMediaId").isInt(),
-    query("tmdbMediaType").isIn(Object.values(TmdbMediaType)),
-    handleValidationResult,
+
     async (req, res, next) => {
       try {
-        const tmdbMediaId = Number(req.query.tmdbMediaId) as TmdbMediaId;
-        const tmdbMediaType = req.query.tmdbMediaType as TmdbMediaType;
+        const authorId = req.query.authorId as UserId | undefined;
+        const tmdbMediaId = Number(req.query.tmdbMediaId) as
+          | TmdbMediaId
+          | undefined;
+        const tmdbMediaType = req.query.tmdbMediaType as
+          | TmdbMediaType
+          | undefined;
 
-        const reviewAggergations = await reviewLogic.getAllAggergations({
-          tmdbMediaId,
-          tmdbMediaType,
-        });
+        let reviewInfo;
 
-        res.status(200).json(reviewAggergations).end();
+        if (authorId) {
+          reviewInfo = {
+            authorId,
+          };
+        }
+
+        if (tmdbMediaId && tmdbMediaType) {
+          reviewInfo = {
+            tmdbMediaId,
+            tmdbMediaType,
+          };
+        }
+
+        if (authorId && tmdbMediaId && tmdbMediaType) {
+          reviewInfo = {
+            authorId,
+            tmdbMediaId,
+            tmdbMediaType,
+          };
+        }
+
+        if (reviewInfo) {
+          const reviewAggergations = await reviewLogic.getAllAggergations(
+            reviewInfo
+          );
+
+          res.status(200).json(reviewAggergations).end();
+        } else {
+          res.status(400).json({ message: "invalid query params" }).end();
+        }
       } catch (error) {
         next(error);
       }

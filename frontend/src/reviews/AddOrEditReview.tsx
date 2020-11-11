@@ -32,7 +32,7 @@ const CurrentUserInfo = () => {
 
   return (
     <UserListItem
-      user={query.data}
+      user={query.data.user}
       ListItemTextProps={{ secondary: "Public Post" }}
       onClick={() => {}}
     />
@@ -92,7 +92,20 @@ export default ({
         <CurrentUserInfo />
 
         <Box paddingY={2} display="flex" justifyContent="center">
-          <Rating name="size-large" defaultValue={2} size="large" />
+          <Rating
+            name="review-form-rating"
+            value={rating}
+            size="large"
+            onChangeActive={(e, value) => {
+              if (value > 0) {
+                setRating(value);
+              }
+            }}
+            onChange={(e, value) => {
+              console.log({ value });
+              setRating(value);
+            }}
+          />
         </Box>
 
         {/* <Box paddingBottom={1}>

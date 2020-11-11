@@ -8,6 +8,12 @@ export type User = {
   displayName: string;
 };
 
+export type UserAggergation = {
+  user: User;
+  reviewCount: number;
+  listCount: number;
+};
+
 export const queryKeys = {
   user: ({ username }: { username: string }) => ["users", username],
   currentUser: () => ["current-user"],
@@ -20,7 +26,9 @@ export const queryKeys = {
 */
 
 export const getUser = async ({ username }: { username: string }) => {
-  const { data } = await BackendAPI.get<User>(`/api/users/${username}`);
+  const { data } = await BackendAPI.get<UserAggergation>(
+    `/api/users/${username}`
+  );
   return data;
 };
 
@@ -48,6 +56,6 @@ export const getUsers = async ({
 */
 
 export const getCurrentUser = async () => {
-  const { data } = await BackendAPI.get<User | null>("/api/auth");
+  const { data } = await BackendAPI.get<UserAggergation | null>("/api/auth");
   return data;
 };

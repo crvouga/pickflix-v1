@@ -1,15 +1,9 @@
+import { Box, Container, Typography } from "@material-ui/core";
 import React from "react";
+import SignInButton from "../auth/SignInButton";
 import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
-import { Box, Typography, Button, Container } from "@material-ui/core";
-import { useHistory } from "react-router";
 
 export default () => {
-  const history = useHistory();
-
-  const handleClickSignIn = () => {
-    history.push("/auth");
-  };
-
   return (
     <React.Fragment>
       <ResponsiveNavigation />
@@ -31,18 +25,7 @@ export default () => {
                 Signing in lets you create lists and write reviews.
               </Typography>
             </Box>
-            <Box color="text.primary" fontWeight="bold">
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={handleClickSignIn}
-                size="large"
-                style={{ color: "inherit", fontWeight: "inherit" }}
-                fullWidth
-              >
-                Sign In
-              </Button>
-            </Box>
+            <SignInButton />
           </Box>
         </Box>
       </Container>

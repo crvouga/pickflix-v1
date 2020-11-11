@@ -19,7 +19,7 @@ export default (): User | "loading" | null => {
     case "success":
       const currentUser = query.data;
       if (currentUser) {
-        return currentUser;
+        return currentUser.user;
       } else {
         return null;
       }

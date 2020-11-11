@@ -42,9 +42,9 @@ export default (props: DialogProps) => {
           )}
         </Box>
 
-        {videoState.currentVideo && (
+        {/* {videoState.currentVideo && (
           <YoutubeDetailsContainer videoId={videoState.currentVideo.id} />
-        )}
+        )} */}
       </AppBar>
       <List>
         {videoState.playlist.map((video) => (

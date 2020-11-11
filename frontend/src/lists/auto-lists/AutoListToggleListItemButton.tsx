@@ -1,8 +1,9 @@
-import { CircularProgress, Button } from "@material-ui/core";
+import { Button, CircularProgress } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
+import { useHistory } from "react-router";
 import LabeledIconButton from "../../common/components/LabeledIconButton";
-import LoadingBox from "../../common/components/LoadingBox";
+import useSnackbar from "../../snackbar/useSnackbar";
 import { TmdbMedia } from "../../tmdb/types";
 import {
   AutoListKeys,
@@ -12,9 +13,6 @@ import {
 } from "../query";
 import useListItemToggleState from "../useListItemToggleState";
 import AutoListIcon from "./AutoListIcon";
-import useSnackbar from "../../snackbar/useSnackbar";
-import { ViewListButton } from "../../snackbar/Snackbar";
-import { useHistory } from "react-router";
 
 const AutoListToggleListItemButton = ({
   autoListKey,

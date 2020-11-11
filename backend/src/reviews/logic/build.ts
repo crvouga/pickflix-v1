@@ -93,11 +93,16 @@ export class ReviewLogic {
   }: {
     userId?: UserId;
   } & (
+    | { authorId: UserId }
     | {
         tmdbMediaId: TmdbMediaId;
         tmdbMediaType: TmdbMediaType;
       }
-    | { authorId: UserId }
+    | {
+        tmdbMediaId: TmdbMediaId;
+        tmdbMediaType: TmdbMediaType;
+        authorId: UserId;
+      }
   )) {
     const { Reviews } = this.unitOfWork;
 
