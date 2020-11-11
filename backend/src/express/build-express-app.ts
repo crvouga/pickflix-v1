@@ -17,7 +17,6 @@ const buildMiddleware = (dependencies: ExpressAppDependencies) => (
 const buildFrontendRouter = () => (app: Application) => {
   app.use(express.static(configuration.PATH_TO_FRONTEND));
 
-  //@ts-ignore
   app.get("*", (req, res) => {
     res.sendFile(path.resolve(configuration.PATH_TO_FRONTEND, "index.html"));
   });

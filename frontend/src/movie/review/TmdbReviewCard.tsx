@@ -46,7 +46,12 @@ export default ({ review, ...props }: Props) => {
   return (
     <React.Fragment>
       <Dialog open={isDialogOpen.value} onClose={isDialogOpen.setFalse}>
-        <ButtonGroup fullWidth size="large" orientation="vertical">
+        <ButtonGroup
+          variant="text"
+          fullWidth
+          size="large"
+          orientation="vertical"
+        >
           <Button
             onClick={() => {
               window.location.href = url;

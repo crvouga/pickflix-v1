@@ -20,31 +20,11 @@ export const reviews = ({
   userLogic,
 }: Dependencies) => (router: IRouter) => {
   router.get(
-    "/users/:username/reviews",
-    param("username").isString(),
-    handleValidationResult,
-    async (req, res, next) => {
-      try {
-        const username = req.params.username as string;
-
-        const user = await userLogic.getUser({ username });
-
-        const reviewAggergations = await reviewLogic.getAllAggergations({
-          authorId: user.id,
-        });
-
-        res.status(200).json(reviewAggergations).end();
-      } catch (error) {
-        next(error);
-      }
-    }
-  );
-
-  router.get(
     "/reviews",
 
     async (req, res, next) => {
       try {
+        const userId = req.query.userId as UserId | undefined;
         const authorId = req.query.authorId as UserId | undefined;
         const tmdbMediaId = Number(req.query.tmdbMediaId) as
           | TmdbMediaId
@@ -77,9 +57,10 @@ export const reviews = ({
         }
 
         if (reviewInfo) {
-          const reviewAggergations = await reviewLogic.getAllAggergations(
-            reviewInfo
-          );
+          const reviewAggergations = await reviewLogic.getAllAggergations({
+            userId,
+            ...reviewInfo,
+          });
 
           res.status(200).json(reviewAggergations).end();
         } else {

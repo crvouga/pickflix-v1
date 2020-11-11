@@ -71,11 +71,15 @@ export default () => {
       <Hidden smUp>
         <AppBar color="default" position="sticky">
           <Toolbar>
+            <IconButton onClick={isDialogOpen.setTrue}>
+              <SettingsIcon />
+            </IconButton>
             <Box flex={1}>
               <Typography variant="h6" align="center">
                 {user.user.username}
               </Typography>
             </Box>
+            <Box p={3} />
           </Toolbar>
         </AppBar>
       </Hidden>
@@ -98,7 +102,7 @@ export default () => {
             </Box>
           </Box>
           {isCurrentUser && (
-            <Toolbar>
+            <Toolbar disableGutters>
               <IconButton onClick={isDialogOpen.setTrue}>
                 <SettingsIcon />
               </IconButton>

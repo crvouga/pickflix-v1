@@ -70,9 +70,7 @@ export const postReviewVote = async ({
   const { data } = await BackendAPI.post<ReviewVote>(
     `/api/reviews/${reviewId}/review-votes`,
     {
-      data: {
-        voteValue,
-      },
+      voteValue,
     }
   );
   return data;

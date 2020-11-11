@@ -1,5 +1,5 @@
 import { Handler, IRouter } from "express";
-import { body, param, validationResult } from "express-validator";
+import { validationResult } from "express-validator";
 import { User } from "../../../users/models/make-user";
 import { ReviewId } from "../../models/make-review";
 import { ReviewVoteValue } from "../../models/make-review-vote";
@@ -20,9 +20,6 @@ export const reviewVotes = ({ reviewLogic, middlewares }: Dependencies) => (
   router.post(
     "/reviews/:reviewId/review-votes",
     middlewares.isAuthenticated,
-    body("voteValue").isIn(Object.values(ReviewVoteValue)),
-    param("reviewId").isUUID(),
-    handleValidationResult,
     async (req, res, next) => {
       try {
         const currentUser = req.user as User;
@@ -35,6 +32,7 @@ export const reviewVotes = ({ reviewLogic, middlewares }: Dependencies) => (
           reviewId,
           voteValue,
         });
+        console.log({ reviewVote });
         res.status(201).json(reviewVote).end();
       } catch (error) {
         next(error);
@@ -45,8 +43,6 @@ export const reviewVotes = ({ reviewLogic, middlewares }: Dependencies) => (
   router.delete(
     "/reviews/:reviewId/review-votes",
     middlewares.isAuthenticated,
-    param("reviewId").isUUID(),
-    handleValidationResult,
     async (req, res, next) => {
       try {
         const currentUser = req.user as User;

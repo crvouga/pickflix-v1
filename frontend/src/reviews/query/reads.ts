@@ -1,10 +1,9 @@
 import { BackendAPI } from "../../backend-api";
 import { TmdbMediaType } from "../../tmdb/types";
 import { ReviewAggergation, ReviewStatistics } from "./types";
+import { useQuery } from "react-query";
 
 export const queryKeys = {
-  reviews: (params: GetReviewsParams) => ["reviews", params],
-
   reviewStatistics: (params: GetReviewStatisticsParams) => [
     "reviews",
     "statistics",
@@ -51,28 +50,30 @@ export const getReviewStatistics = async (
 
 */
 
-export type GetReviewsParams =
-  | { authorId: string }
-  | {
-      tmdbMediaId: string;
-      tmdbMediaType: TmdbMediaType;
-    }
-  | {
-      authorId: string;
-      tmdbMediaId: string;
-      tmdbMediaType: TmdbMediaType;
-    };
+export type GetReviewsParams = {
+  authorId?: string;
+  tmdbMediaId?: string;
+  tmdbMediaType?: TmdbMediaType;
+  userId?: string;
+};
+
+export type GetReviewsData = ReviewAggergation[];
 
 export const getReviews = async (params: GetReviewsParams) => {
-  const { data } = await BackendAPI.get<ReviewAggergation[]>("/api/reviews", {
+  const { data } = await BackendAPI.get<GetReviewsData>("/api/reviews", {
     params,
   });
   return data;
 };
 
-export const getUsersReviews = async ({ username }: { username: string }) => {
-  const { data } = await BackendAPI.get<ReviewAggergation[]>(
-    `/api/users/${username}/reviews`
-  );
-  return data;
+export const getReviewsQueryKey = (params: GetReviewsParams) => [
+  "reviews",
+  params.authorId,
+  params.tmdbMediaId,
+  params.tmdbMediaType,
+  params.userId,
+];
+
+export const useQueryReviews = (params: GetReviewsParams) => {
+  return useQuery(getReviewsQueryKey(params), () => getReviews(params));
 };

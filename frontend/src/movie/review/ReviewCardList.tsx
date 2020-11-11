@@ -1,11 +1,11 @@
 import { Box } from "@material-ui/core";
 import React from "react";
-import { useQuery } from "react-query";
 import ErrorBox from "../../common/components/ErrorBox";
 import LoadingBox from "../../common/components/LoadingBox";
-import { getReviews, queryKeys } from "../../reviews/query";
+import { useQueryReviews, getReviewsQueryKey } from "../../reviews/query";
 import ReviewCard from "../../reviews/ReviewCard";
 import { TmdbMediaType } from "../../tmdb/types";
+import useReviewVoteValueState from "../../reviews/useReviewVoteValueState";
 
 type Props = {
   tmdbMediaId: string;
@@ -13,7 +13,10 @@ type Props = {
 };
 
 export default (props: Props) => {
-  const query = useQuery(queryKeys.reviews(props), () => getReviews(props));
+  const query = useQueryReviews(props);
+  const reviewVoteValueState = useReviewVoteValueState({
+    queryKey: getReviewsQueryKey(props),
+  });
 
   if (query.error) {
     return <ErrorBox />;
@@ -29,7 +32,16 @@ export default (props: Props) => {
     <React.Fragment>
       {reviews.map((review) => (
         <Box paddingX={2} paddingY={1} key={review.review.id}>
-          <ReviewCard showUser review={review} />
+          <ReviewCard
+            showUser
+            review={review}
+            onVoteDown={() => {
+              reviewVoteValueState.voteDown(review);
+            }}
+            onVoteUp={() => {
+              reviewVoteValueState.voteUp(review);
+            }}
+          />
         </Box>
       ))}
     </React.Fragment>

@@ -10,7 +10,11 @@ import {
   ReviewId,
   RATINGS,
 } from "../models/make-review";
-import { makeReviewVote, PartialReviewVote } from "../models/make-review-vote";
+import {
+  makeReviewVote,
+  PartialReviewVote,
+  ReviewVoteValue,
+} from "../models/make-review-vote";
 
 export class ReviewLogic {
   mediaLogic: MediaLogic;
@@ -44,14 +48,30 @@ export class ReviewLogic {
   }) {
     const { Users, ReviewVotes, Reviews } = this.unitOfWork;
 
-    const [[review], [reviewVote], reviewVoteCount] = await Promise.all([
-      Reviews.get([reviewId]),
+    const [
+      [review],
+      [reviewVote],
+      reviewVoteCount,
+      reviewUpVoteCount,
+      reviewDownVoteCount,
+    ] = await Promise.all([
+      Reviews.find({
+        id: reviewId,
+      }),
       ReviewVotes.find({
         reviewId,
         userId,
       }),
       ReviewVotes.count({
         reviewId,
+      }),
+      ReviewVotes.count({
+        reviewId,
+        voteValue: ReviewVoteValue.UP,
+      }),
+      ReviewVotes.count({
+        reviewId,
+        voteValue: ReviewVoteValue.DOWN,
       }),
     ]);
 
@@ -78,12 +98,14 @@ export class ReviewLogic {
 
     return {
       review,
-      reviewVoteValue: reviewVote?.voteValue || null,
       reviewVoteCount,
       author,
       authorReviewCount,
       mediaReviewCount,
       tmdbData,
+      reviewVoteValue: reviewVote?.voteValue || null,
+      reviewUpVoteCount,
+      reviewDownVoteCount,
     };
   }
 
@@ -181,15 +203,23 @@ export class ReviewLogic {
     }
 
     //ensure one vote per user per review
-    const found = await ReviewVotes.find({
+    const [found] = await ReviewVotes.find({
       reviewId: reviewVote.reviewId,
       userId: reviewVote.userId,
     });
-    await ReviewVotes.remove(found);
+    if (found) {
+      const [updated] = await ReviewVotes.update([
+        {
+          id: found.id,
+          voteValue: reviewVote.voteValue,
+        },
+      ]);
+      return updated;
+    } else {
+      const [added] = await ReviewVotes.add([reviewVote]);
 
-    const [added] = await ReviewVotes.add([reviewVote]);
-
-    return added;
+      return added;
+    }
   }
 
   async uncastReviewVote({

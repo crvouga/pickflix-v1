@@ -108,19 +108,7 @@ export default ({
           />
         </Box>
 
-        {/* <Box paddingBottom={1}>
-          <TextField
-            variant="outlined"
-            style={{ fontWeight: "bold", fontSize: "1.25em" }}
-            fullWidth
-            onChange={(e) => {
-              setTitle(e.target.value || "");
-            }}
-            label="Title"
-          />
-        </Box> */}
-
-        <Box>
+        <Box paddingBottom={1}>
           <TextField
             variant="outlined"
             style={{ fontWeight: "bold", fontSize: "1.25em" }}
@@ -135,20 +123,22 @@ export default ({
           />
         </Box>
 
-        <Box display="flex" flexDirection="row-reverse" p={2}>
-          <Box>
-            <Button
-              disabled={disabled}
-              variant="contained"
-              color="primary"
-              onClick={handleSubmit}
-            >
-              Submit
-            </Button>
-          </Box>
-          <Box marginRight={2}>
-            <Button onClick={onCancel}>Cancel</Button>
-          </Box>
+        <Box paddingBottom={1}>
+          <Button fullWidth onClick={onCancel}>
+            Cancel
+          </Button>
+        </Box>
+
+        <Box paddingBottom={1}>
+          <Button
+            disabled={disabled}
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+            fullWidth
+          >
+            Submit
+          </Button>
         </Box>
       </Box>
     </React.Fragment>

@@ -1,14 +1,20 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
-import { useQuery } from "react-query";
 import LoadingBox from "../common/components/LoadingBox";
-import { getUsersReviews, queryKeys } from "../reviews/query";
+import { useQueryReviews, getReviewsQueryKey } from "../reviews/query";
 import ReviewCard from "../reviews/ReviewCard";
 import { User } from "./query";
+import useReviewVoteValueState from "../reviews/useReviewVoteValueState";
 
 export default ({ user }: { user: User }) => {
-  const query = useQuery(queryKeys.usersReviews(user), () =>
-    getUsersReviews(user)
+  const query = useQueryReviews({
+    authorId: user.id,
+  });
+
+  const reviewVoteState = useReviewVoteValueState(
+    getReviewsQueryKey({
+      authorId: user.id,
+    })
   );
 
   if (query.error) {
@@ -16,7 +22,7 @@ export default ({ user }: { user: User }) => {
   }
 
   if (!query.data) {
-    return <LoadingBox m={6} />;
+    return null;
   }
 
   const reviews = query.data;
@@ -35,7 +41,16 @@ export default ({ user }: { user: User }) => {
     <Box>
       {reviews.map((review) => (
         <Box key={review.review.id} paddingY={1} paddingBottom={2}>
-          <ReviewCard showMedia review={review} />
+          <ReviewCard
+            showMedia
+            review={review}
+            onVoteDown={() => {
+              reviewVoteState.voteDown(review);
+            }}
+            onVoteUp={() => {
+              reviewVoteState.voteUp(review);
+            }}
+          />
         </Box>
       ))}
     </Box>

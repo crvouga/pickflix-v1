@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
   fallback: {
     wordBreak: "break-word",
     display: "flex",
+    justifyContent: "center",
     alignItems: "center",
     width: "100%",
     height: "100%",

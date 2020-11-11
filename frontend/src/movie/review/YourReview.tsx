@@ -1,25 +1,22 @@
 import {
   Box,
   Card,
-  CardContent,
-  CardHeader,
-  Typography,
   CardActionArea,
+  CardContent,
+  Typography,
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import React from "react";
-import { useQuery } from "react-query";
 import SignInButton from "../../auth/SignInButton";
-import { getReviews, queryKeys } from "../../reviews/query";
+import useModal from "../../navigation/modals/useModal";
+import useReviewForm from "../../reviews/hooks/useReviewForm";
+import { useQueryReviews } from "../../reviews/query";
+import ReviewCard from "../../reviews/ReviewCard";
 import { TmdbMedia } from "../../tmdb/types";
 import AvatarUser from "../../users/AvatarUser";
 import { UserAggergation } from "../../users/query";
 import { useQueryCurrentUser } from "../../users/useCurrentUser";
 import { pluralize } from "../../utils";
-import useModal from "../../navigation/modals/useModal";
-import { reviewForm } from "../../reviews/redux/review-form";
-import useReviewForm from "../../reviews/hooks/useReviewForm";
-import ReviewCard from "../../reviews/ReviewCard";
 
 const AddReviewCard = ({
   user,
@@ -81,7 +78,7 @@ const YourReview = ({
     tmdbMediaId,
   };
 
-  const query = useQuery(queryKeys.reviews(params), () => getReviews(params));
+  const query = useQueryReviews(params);
 
   if (query.error) {
     return null;
@@ -105,7 +102,15 @@ const YourReview = ({
     return <AddReviewCard user={user} onClick={handleClick} />;
   }
 
-  return <ReviewCard showUser review={reviews[0]} />;
+  return (
+    <ReviewCard
+      showUser
+      review={reviews[0]}
+      onEdit={() => {
+        console.log("EDIT");
+      }}
+    />
+  );
 };
 
 export default (props: TmdbMedia) => {

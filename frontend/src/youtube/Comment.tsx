@@ -9,6 +9,7 @@ import {
   Dialog,
   IconButton,
   Typography,
+  CardActions,
 } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -48,7 +49,7 @@ export default ({ comment }: Props) => {
   return (
     <React.Fragment>
       <Dialog open={isDialogOpen.value} onClose={isDialogOpen.setFalse}>
-        <ButtonGroup orientation="vertical">
+        <ButtonGroup variant="text" orientation="vertical">
           <Button
             onClick={() => {
               window.location.href = comment.snippet.authorChannelUrl;
@@ -87,24 +88,19 @@ export default ({ comment }: Props) => {
           <Box paddingBottom={1}>
             <Typography variant="body1">{textDisplayMarkdown}</Typography>
           </Box>
-          <Box display="flex" alignItems="center">
-            <Box marginRight={1} color="text.primary">
-              <ThumbUpAltOutlinedIcon
-                color="inherit"
-                style={{
-                  display: "block",
-                  fontSize: "1.25em",
-                }}
-              />
-            </Box>
-
-            <Box marginRight={1}>
-              <Typography variant="subtitle2" color="textSecondary">
-                {formattedLikes}
-              </Typography>
-            </Box>
-          </Box>
         </CardContent>
+        <CardActions>
+          <Button
+            disableRipple
+            disableFocusRipple
+            disableElevation
+            disableTouchRipple
+            size="large"
+            startIcon={<ThumbUpAltOutlinedIcon />}
+          >
+            {formattedLikes}
+          </Button>
+        </CardActions>
       </Card>
     </React.Fragment>
   );

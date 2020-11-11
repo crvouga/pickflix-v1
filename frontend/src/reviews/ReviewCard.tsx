@@ -2,31 +2,43 @@ import {
   Box,
   Card,
   CardActionArea,
-  CardHeader,
-  CardProps,
-  Typography,
+  CardActions,
   CardContent,
+  CardHeader,
+  Typography,
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import moment from "moment";
 import React from "react";
 import { useHistory } from "react-router";
-import { ReviewAggergation } from "./query/types";
-import AvatarUser from "../users/AvatarUser";
 import MovieAvatar from "../movie/components/MovieAvatar";
+import AvatarUser from "../users/AvatarUser";
 import { pluralize } from "../utils";
+import { ReviewAggergation } from "./query/types";
+import { EditButton, VoteDownButton, VoteUpButton } from "./ReviewCardButtons";
 
 type Props = {
   review: ReviewAggergation;
   showUser?: boolean;
   showMedia?: boolean;
+  onVoteUp?: () => void;
+  onVoteDown?: () => void;
+  onEdit?: () => void;
 };
 
 const toPublishedAt = (date: any) =>
   moment(date, "YYYYMMDD").fromNow().replace("a ", "1 ");
 
-export default ({ review, showUser, showMedia }: Props) => {
+export default ({
+  review,
+  showUser,
+  showMedia,
+  onVoteUp,
+  onVoteDown,
+  onEdit,
+}: Props) => {
   const history = useHistory();
+
   return (
     <Card>
       {showMedia && (
@@ -72,6 +84,11 @@ export default ({ review, showUser, showMedia }: Props) => {
         <Typography variant="h6">{review.review.title}</Typography>
         <Typography variant="body2">{review.review.content}</Typography>
       </CardContent>
+      <CardActions>
+        {onEdit && <EditButton onClick={onEdit} />}
+        {onVoteUp && <VoteUpButton onClick={onVoteUp} review={review} />}
+        {onVoteDown && <VoteDownButton onClick={onVoteDown} review={review} />}
+      </CardActions>
     </Card>
   );
 };

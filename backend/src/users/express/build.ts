@@ -1,5 +1,6 @@
 import { IRouter } from "express";
 import { Dependencies } from "./types";
+import { User } from "../models";
 
 export const buildAuthRouter = ({ userLogic, middlewares }: Dependencies) => (
   router: IRouter
@@ -73,14 +74,6 @@ export const buildUsersRouter = ({ userLogic, middlewares }: Dependencies) => (
     }
   });
 
-  router.get(
-    "/users/current",
-    middlewares.isAuthenticated,
-    async (req, res) => {
-      res.status(200).json(req.user);
-    }
-  );
-
   router.get("/users/:username", async (req, res, next) => {
     try {
       const username = req.params.username as string;
@@ -93,15 +86,24 @@ export const buildUsersRouter = ({ userLogic, middlewares }: Dependencies) => (
 
   router.get("/users", async (req, res, next) => {
     try {
-      const username = req.query.username as string;
-      const emailAddress = req.query.emailAddress as string;
+      const username = req.query.username as string | undefined;
+      const emailAddress = req.query.emailAddress as string | undefined;
 
-      const [emailResults, usernameResults] = await Promise.all([
-        userLogic.getUsers({ emailAddress }),
-        userLogic.getUsers({ username }),
-      ]);
+      const users: User[] = [];
 
-      const users = [...emailResults, ...usernameResults];
+      if (emailAddress) {
+        const [user] = await userLogic.getUsers({ emailAddress });
+        if (user) {
+          users.push(user);
+        }
+      }
+
+      if (username) {
+        const [user] = await userLogic.getUsers({ username });
+        if (user) {
+          users.push(user);
+        }
+      }
       return res.status(200).json(users).end();
     } catch (error) {
       return next(error);
