@@ -51,6 +51,8 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
         const authenticatedUser = req.user as User;
         const { listId, tmdbMediaId, tmdbMediaType } = req.body;
 
+        
+
         const [added] = await listLogic.addListItems([
           {
             userId: authenticatedUser.id,

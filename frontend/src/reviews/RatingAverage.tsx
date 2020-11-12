@@ -21,7 +21,7 @@ export default ({ statistics }: { statistics: ReviewStatistics }) => {
         }
       >
         <Typography variant="h2" color="inherit">
-          {numeral(statistics.ratingAverage).format("0.0[0]")}
+          {numeral(statistics.ratingAverage).format("0.0")}
         </Typography>
       </Box>
       <Rating size="small" max={5} value={statistics.ratingAverage} readOnly />

@@ -7,7 +7,10 @@ export async function aggergateListItem(
   listItem: ListItem
 ): Promise<ListItemAggergate> {
   const tmdbData = await this.mediaLogic.requestTmdbData({
-    path: `/${listItem.tmdbMediaType}/${listItem.tmdbMediaId}`,
+    mediaId: {
+      tmdbMediaId: listItem.tmdbMediaId,
+      tmdbMediaType: listItem.tmdbMediaType,
+    },
     query: {
       appendToResponse: "similar",
     },

@@ -135,5 +135,5 @@ export async function resetPassword(
     passwordHash,
   });
 
-  await Credentials.update([updatedPasswordCredential]);
+  await Credentials.update(updatedPasswordCredential);
 }

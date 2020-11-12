@@ -1,5 +1,5 @@
 import { BackendAPI } from "../../backend-api";
-import { TmdbMediaType } from "../../tmdb/types";
+import { TmdbMediaType, MediaId } from "../../tmdb/types";
 import { Review, ReviewVote, ReviewVoteValue } from "./types";
 
 /*
@@ -8,10 +8,8 @@ import { Review, ReviewVote, ReviewVoteValue } from "./types";
 */
 
 export type PostReviewParams = {
-  tmdbMediaId: string;
-  tmdbMediaType: TmdbMediaType;
+  mediaId: MediaId;
   content: string;
-  title: string;
   rating: number;
 };
 

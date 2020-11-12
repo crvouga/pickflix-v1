@@ -1,30 +1,17 @@
+import { isValidId, makeId } from "../../id";
 import { Id } from "../../id/types";
-import { makeId, isValidId } from "../../id";
+import { TmdbMediaId, TmdbMediaType, MediaId } from "../../media/models/types";
 import { UserId } from "../../users/models/make-user";
-import { TmdbMediaType, TmdbMediaId } from "../../media/models/types";
 
 export type ReviewId = Id & { ReviewId: true };
 
 export type Review = {
   id: ReviewId;
   authorId: UserId;
-  title: string;
   content: string;
   createdAt: number;
   rating: number;
-  tmdbMediaId: TmdbMediaId;
-  tmdbMediaType: TmdbMediaType;
-};
-
-export type PartialReview = {
-  id?: ReviewId;
-  authorId: UserId;
-  title: string;
-  content: string;
-  rating: number;
-  createdAt?: number;
-  tmdbMediaId: TmdbMediaId;
-  tmdbMediaType: TmdbMediaType;
+  mediaId: MediaId;
 };
 
 export const MAX_RATING = 5;
@@ -33,23 +20,20 @@ export const RATINGS = [1, 2, 3, 4, 5];
 
 const MIN_CONTENT_LENGTH = 0;
 const MAX_CONTENT_LENGTH = 600;
-const MIN_TITLE_LENGTH = 0;
-const MAX_TITLE_LENGTH = 50;
 
-export const makeReview = (partial: PartialReview): Review => {
-  const id = partial.id || (makeId() as ReviewId);
-  const authorId = partial.authorId;
-  const title = partial.title.trim();
-  const content = partial.content.trim();
-  const rating = partial.rating;
-  const createdAt = partial.createdAt || Date.now();
-  const tmdbMediaId = partial.tmdbMediaId;
-  const tmdbMediaType = partial.tmdbMediaType;
+export type PartialReview = {
+  authorId: UserId;
+  content: string;
+  rating: number;
+  mediaId: MediaId;
+};
 
-  if (!isValidId(id)) {
-    throw new Error("invalid id");
-  }
-
+export const makeReview = ({
+  authorId,
+  content,
+  rating,
+  mediaId,
+}: PartialReview): Review => {
   if (!isValidId(authorId)) {
     throw new Error("invalid author id");
   }
@@ -74,26 +58,29 @@ export const makeReview = (partial: PartialReview): Review => {
     );
   }
 
-  if (title.length < MIN_TITLE_LENGTH) {
-    throw new Error(
-      `Content can not be less than ${MIN_TITLE_LENGTH} characters long.`
-    );
-  }
-
-  if (title.length > MAX_TITLE_LENGTH) {
-    throw new Error(
-      `Title can not be greater than ${MAX_TITLE_LENGTH} characters long.`
-    );
-  }
-
   return Object.freeze({
-    id,
+    id: makeId() as ReviewId,
     authorId,
     content,
-    title,
     rating,
-    createdAt,
-    tmdbMediaId,
-    tmdbMediaType,
+    createdAt: Date.now(),
+    mediaId,
   });
+};
+
+export const updateReview = (
+  review: Review,
+  {
+    rating,
+    content,
+  }: {
+    rating?: number;
+    content?: string;
+  }
+): Review => {
+  return {
+    ...review,
+    ...(rating ? { rating } : {}),
+    ...(content ? { content } : {}),
+  };
 };

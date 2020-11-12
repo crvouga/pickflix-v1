@@ -1,7 +1,8 @@
 export type TmdbMediaId = number;
 export enum TmdbMediaType {
-  movie = 'movie',
-  tv = 'tv',
+  movie = "movie",
+  tv = "tv",
+  person = "person",
 }
 
 export type TmdbMedia = {
@@ -10,7 +11,7 @@ export type TmdbMedia = {
   tmdbData?: any;
 };
 
-export type EntityTypes = 'tmdbMedia';
+export type EntityTypes = "tmdbMedia";
 
 export type Entity = {
   id: string;
@@ -25,5 +26,39 @@ export const tmdbMediaToEntity = ({
   tmdbMediaType,
 }: TmdbMedia): Entity => ({
   id: `${tmdbMediaType}/${tmdbMediaId}`,
-  type: 'tmdbMedia',
+  type: "tmdbMedia",
 });
+
+export type MediaId = {
+  tmdbMediaId: TmdbMediaId;
+  tmdbMediaType: TmdbMediaType;
+};
+
+const castTmdbMediaId = (id: any): number => {
+  return Number(id);
+};
+
+const castTmdbMediaType = (type: string): TmdbMediaType => {
+  if (type === TmdbMediaType.tv || type === TmdbMediaType.movie) {
+    return type;
+  }
+  throw new Error("failed to cast tmdbMediaType");
+};
+
+export const castMediaId = (mediaId: any): MediaId => {
+  if ("tmdbMediaId" in mediaId && "tmdbMediaType" in mediaId) {
+    return {
+      tmdbMediaId: castTmdbMediaId(mediaId.tmdbMediaId),
+      tmdbMediaType: castTmdbMediaType(mediaId.tmdbMediaType),
+    };
+  }
+  throw new Error("failed to cast mediaId");
+};
+
+export const makeMediaIdFake = (overrides?: Partial<MediaId>): MediaId => {
+  return {
+    tmdbMediaId: 550,
+    tmdbMediaType: TmdbMediaType.movie,
+    ...overrides,
+  };
+};

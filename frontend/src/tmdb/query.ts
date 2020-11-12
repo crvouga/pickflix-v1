@@ -5,22 +5,31 @@ import {
   Person,
   MovieReviews,
   TmdbConfiguration,
+  MediaId,
+  MovieDetails,
+  PersonDetailsResponse,
 } from "./types";
+import { useQuery } from "react-query";
+import { getPersonPage } from "../person/query";
 
 export const queryKeys = {
   tmdbConfiguration: () => ["tmdb", "configuration"],
   video: (tmdbMediaId: string) => ["video", tmdbMediaId],
-  movieReviews: (tmdbMediaId: string) => ["movie", tmdbMediaId, "reviews"],
+  movieReviews: ({ mediaId }: { mediaId: MediaId }) => [
+    "movie",
+    mediaId,
+    "reviews",
+  ],
   searchMovies: ({ query }: { query: string }) => ["search", "movie", query],
 };
 
 export const getTmdbMovieReviews = async ({
-  tmdbMediaId,
+  mediaId,
 }: {
-  tmdbMediaId: string;
+  mediaId: MediaId;
 }) => {
   const { data } = await BackendAPI.get<MovieReviews>(
-    `/api/tmdb/movie/${tmdbMediaId}/reviews`
+    `/api/tmdb/movie/${mediaId.tmdbMediaId}/reviews`
   );
   return data;
 };
@@ -84,4 +93,38 @@ export const getSearchMovies = async ({
     }
   );
   return data;
+};
+
+export const getMovie = async ({ mediaId }: { mediaId: MediaId }) => {
+  const { data } = await BackendAPI.get<MovieDetails>(
+    `/api/tmdb/movie/${mediaId.tmdbMediaId}`
+  );
+  return data;
+};
+
+export const getPerson = async ({ mediaId }: { mediaId: MediaId }) => {
+  const { data } = await BackendAPI.get<PersonDetailsResponse>(
+    `/api/tmdb/person/${mediaId.tmdbMediaId}`
+  );
+  return data;
+};
+
+export const getTv = async ({ mediaId }: { mediaId: MediaId }) => {
+  const { data } = await BackendAPI.get<unknown>(
+    `/api/tmdb/tv/${mediaId.tmdbMediaId}`
+  );
+  return data;
+};
+
+export const getMedia = ({ mediaId }: { mediaId: MediaId }) => {
+  switch (mediaId.tmdbMediaType) {
+    case "movie":
+      return getMovie({ mediaId });
+    case "person":
+      return getPerson({ mediaId });
+  }
+};
+
+export const useQueryMovie = ({ mediaId }: { mediaId: MediaId }) => {
+  return useQuery(mediaId, () => getMovie({ mediaId }));
 };

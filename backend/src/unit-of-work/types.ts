@@ -43,6 +43,6 @@ export interface IRepository<T extends Identifiable> {
   get: (_: string[]) => Promise<T[]>;
   add: (_: T[]) => Promise<T[]>;
   remove: (_: Partial<T>[]) => Promise<boolean>;
-  update: (_: Array<Partial<T> & Pick<T, "id">>) => Promise<T[]>;
+  update: (_: Partial<T> & Pick<T, "id">) => Promise<T>;
   count: (_: Partial<T>) => Promise<number>;
 }

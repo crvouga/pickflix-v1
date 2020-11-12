@@ -61,20 +61,16 @@ export class RepositoryHashMap<T extends Identifiable>
     return true;
   }
 
-  async update(entityInfos: Array<Partial<T> & Pick<T, "id">>): Promise<T[]> {
-    const updatedEntities = [];
-    for (const { id, ...entityInfo } of entityInfos) {
-      const entity = this.db[id];
-      if (!entity) {
-        throw new Error("entity does not exists");
-      }
-      const updatedEntity = {
-        ...entity,
-        ...entityInfo,
-      };
-      this.db[id] = updatedEntity;
-      updatedEntities.push(updatedEntity);
+  async update({ id, ...entityInfo }: Partial<T> & Pick<T, "id">): Promise<T> {
+    const entity = this.db[id];
+    if (!entity) {
+      throw new Error("entity does not exists");
     }
-    return updatedEntities;
+    const updated = {
+      ...entity,
+      ...entityInfo,
+    };
+    this.db[id] = updated;
+    return updated;
   }
 }

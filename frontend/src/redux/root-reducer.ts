@@ -7,7 +7,7 @@ import { addListItemForm } from "../lists/redux/add-list-item-form";
 import { editListForm } from "../lists/redux/edit-list-form";
 import { moviePageUi } from "../movie/redux/movie-page-ui";
 import { personPageUi } from "../person/redux/person-page-ui";
-import { reviewForm } from "../reviews/redux/review-form";
+import { reviewForm } from "../reviews/form/review-form";
 import { search } from "../search/redux/search";
 import { snackbar } from "../snackbar/redux/snackbar";
 import { video } from "../video/redux/video";

@@ -57,7 +57,11 @@ export const VoteUpButton = ({
   count?: number;
 } & ButtonProps) => {
   return (
-    <Button startIcon={<VoteUpIcon outlined={outlined} />} {...props}>
+    <Button
+      size="large"
+      startIcon={<VoteUpIcon outlined={outlined} />}
+      {...props}
+    >
       {numeral(count).format("0a")}
     </Button>
   );
@@ -72,7 +76,11 @@ export const VoteDownButton = ({
   count?: number;
 } & ButtonProps) => {
   return (
-    <Button startIcon={<VoteDownIcon outlined={outlined} />} {...props}>
+    <Button
+      size="large"
+      startIcon={<VoteDownIcon outlined={outlined} />}
+      {...props}
+    >
       {numeral(count).format("0a")}
     </Button>
   );

@@ -1,19 +1,18 @@
-import { Box, Typography, Container } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import { getReviewStatistics, queryKeys } from "../../reviews/query";
-import RatingDistributon from "../../reviews/RatingDistributon";
-import { Rating } from "@material-ui/lab";
-import numeral from "numeral";
 import RatingAverage from "../../reviews/RatingAverage";
+import RatingDistributon from "../../reviews/RatingDistributon";
+import { MediaId } from "../../tmdb/types";
+
 type Props = {
-  tmdbMediaId: string;
+  mediaId: MediaId;
 };
 
-export default ({ tmdbMediaId }: Props) => {
-  const query = useQuery(
-    queryKeys.reviewStatistics({ tmdbMediaId, tmdbMediaType: "movie" }),
-    () => getReviewStatistics({ tmdbMediaId, tmdbMediaType: "movie" })
+export default ({ mediaId }: Props) => {
+  const query = useQuery(queryKeys.reviewStatistics({ mediaId }), () =>
+    getReviewStatistics({ mediaId })
   );
 
   if (query.error) {

@@ -26,12 +26,12 @@ export async function verifyEmailAddressAndPassword(
   });
 
   if (await passwordHashCompare(password, passwordCredential.passwordHash)) {
-    await Credentials.update([
+    await Credentials.update(
       makeCredential({
         ...passwordCredential,
         verifiedAt: Date.now(),
-      }),
-    ]);
+      })
+    );
     return user;
   }
 

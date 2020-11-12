@@ -98,7 +98,7 @@ export async function addListItems(
     const [addedListItem] = await ListItems.add([listItem]);
 
     if (list) {
-      await Lists.update([makeList(list)]);
+      await Lists.update(makeList(list));
     }
 
     addedListItems.push(addedListItem);

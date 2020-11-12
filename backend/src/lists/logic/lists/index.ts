@@ -58,7 +58,7 @@ export async function editLists(
         ...listInfo,
       });
 
-      await this.unitOfWork.Lists.update([editedList]);
+      await this.unitOfWork.Lists.update(editedList);
 
       editedLists.push(editedList);
     }

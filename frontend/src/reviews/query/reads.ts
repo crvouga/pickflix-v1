@@ -1,7 +1,7 @@
-import { BackendAPI } from "../../backend-api";
-import { TmdbMediaType } from "../../tmdb/types";
-import { ReviewAggergation, ReviewStatistics } from "./types";
 import { useQuery } from "react-query";
+import { BackendAPI } from "../../backend-api";
+import { MediaId } from "../../tmdb/types";
+import { ReviewAggergation, ReviewStatistics } from "./types";
 
 export const queryKeys = {
   reviewStatistics: (params: GetReviewStatisticsParams) => [
@@ -10,13 +10,11 @@ export const queryKeys = {
     params,
   ],
 
-  currentUserReview: ({
-    tmdbMediaId,
-    tmdbMediaType,
-  }: {
-    tmdbMediaId: string;
-    tmdbMediaType: TmdbMediaType;
-  }) => ["current-user", "reviews", tmdbMediaId, tmdbMediaType],
+  currentUserReview: ({ mediaId }: { mediaId: MediaId }) => [
+    "current-user",
+    "reviews",
+    mediaId,
+  ],
 
   usersReviews: ({ username }: { username: string }) => [
     "user",
@@ -29,17 +27,18 @@ export const queryKeys = {
 
 */
 export type GetReviewStatisticsParams = {
-  tmdbMediaId: string;
-  tmdbMediaType: TmdbMediaType;
+  mediaId: MediaId;
 };
 
-export const getReviewStatistics = async (
-  params: GetReviewStatisticsParams
-) => {
+export const getReviewStatistics = async ({
+  mediaId,
+}: GetReviewStatisticsParams) => {
   const { data } = await BackendAPI.get<ReviewStatistics>(
     "/api/reviews/statistics",
     {
-      params,
+      params: {
+        ...mediaId,
+      },
     }
   );
   return data;
@@ -52,16 +51,23 @@ export const getReviewStatistics = async (
 
 export type GetReviewsParams = {
   authorId?: string;
-  tmdbMediaId?: string;
-  tmdbMediaType?: TmdbMediaType;
+  mediaId?: MediaId;
   userId?: string;
 };
 
 export type GetReviewsData = ReviewAggergation[];
 
-export const getReviews = async (params: GetReviewsParams) => {
+export const getReviews = async ({
+  authorId,
+  userId,
+  mediaId,
+}: GetReviewsParams) => {
   const { data } = await BackendAPI.get<GetReviewsData>("/api/reviews", {
-    params,
+    params: {
+      authorId,
+      userId,
+      ...mediaId,
+    },
   });
   return data;
 };
@@ -69,9 +75,8 @@ export const getReviews = async (params: GetReviewsParams) => {
 export const getReviewsQueryKey = (params: GetReviewsParams) => [
   "reviews",
   params.authorId,
-  params.tmdbMediaId,
-  params.tmdbMediaType,
   params.userId,
+  params.mediaId,
 ];
 
 export const useQueryReviews = (params: GetReviewsParams) => {

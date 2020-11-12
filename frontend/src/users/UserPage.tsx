@@ -27,7 +27,7 @@ import { getUser, queryKeys } from "./query";
 import useCurrentUser from "./useCurrentUser";
 import UserAutoListsList from "./UserAutoListsList";
 import UserListsList from "./UserListsList";
-import UserReviewsList from "./UserReviewsList";
+import UserReviewList from "./UserReviewList";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -142,7 +142,7 @@ export default () => {
           <Grid item xs={12} sm={6}>
             <Box p={2}>
               <Typography variant="h5">Reviews</Typography>
-              <UserReviewsList user={user.user} />
+              <UserReviewList user={user.user} />
             </Box>
           </Grid>
         </Grid>

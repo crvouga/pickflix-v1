@@ -1,14 +1,13 @@
 import { MediaLogic } from "../../media/logic/build";
-import { TmdbMediaId, TmdbMediaType } from "../../media/models/types";
+import { MediaId, TmdbMediaId, TmdbMediaType } from "../../media/models/types";
 import { IUnitOfWork } from "../../unit-of-work/types";
 import { UserId } from "../../users/models/make-user";
 import {
   makeReview,
-  MAX_RATING,
-  MIN_RATING,
   PartialReview,
-  ReviewId,
   RATINGS,
+  ReviewId,
+  updateReview,
 } from "../models/make-review";
 import {
   makeReviewVote,
@@ -38,11 +37,51 @@ export class ReviewLogic {
     this.mediaLogic = mediaLogic;
   }
 
-  async getReviews(
-    reviewInfo:
-      | { authorId: UserId }
-      | { tmdbMediaId: TmdbMediaId; tmdbMediaType: TmdbMediaType }
-  ) {
+  async createOrUpdateReview({
+    authorId,
+    mediaId,
+    rating,
+    content,
+  }: {
+    authorId: UserId;
+    mediaId: MediaId;
+    rating?: number;
+    content?: string;
+  }) {
+    const { Reviews } = this.unitOfWork;
+
+    const [found] = await Reviews.find({
+      authorId,
+      mediaId,
+    });
+
+    if (found) {
+      const updated = await Reviews.update(
+        updateReview(found, {
+          rating,
+          content,
+        })
+      );
+      return updated;
+    }
+
+    if (!rating || !content) {
+      throw new Error("rating, content required");
+    }
+
+    const [added] = await Reviews.add([
+      makeReview({
+        authorId,
+        mediaId,
+        rating,
+        content,
+      }),
+    ]);
+
+    return added;
+  }
+
+  async getReviews(reviewInfo: { authorId: UserId } | { mediaId: MediaId }) {
     return await this.unitOfWork.Reviews.find(reviewInfo);
   }
 
@@ -90,11 +129,10 @@ export class ReviewLogic {
       Users.find({ id: review.authorId }),
       Reviews.count({ authorId: review.authorId }),
       Reviews.count({
-        tmdbMediaType: review.tmdbMediaType,
-        tmdbMediaId: review.tmdbMediaId,
+        mediaId: review.mediaId,
       }),
       this.mediaLogic.requestTmdbData({
-        path: `/${review.tmdbMediaType}/${review.tmdbMediaId}`,
+        mediaId: review.mediaId,
       }),
     ]);
 
@@ -116,8 +154,7 @@ export class ReviewLogic {
   }: {
     userId?: UserId;
     authorId?: UserId;
-    tmdbMediaId?: TmdbMediaId;
-    tmdbMediaType?: TmdbMediaType;
+    mediaId?: MediaId;
   }) {
     const { Reviews } = this.unitOfWork;
 
@@ -142,8 +179,7 @@ export class ReviewLogic {
 
     const found = await Reviews.find({
       authorId: review.authorId,
-      tmdbMediaId: review.tmdbMediaId,
-      tmdbMediaType: review.tmdbMediaType,
+      mediaId: review.mediaId,
     });
 
     if (found.length > 0) {
@@ -168,21 +204,27 @@ export class ReviewLogic {
     await Reviews.remove(reviewInfos);
   }
 
-  async editReview(reviewInfo: {
+  async editReview({
+    id,
+    authorId,
+    ...edits
+  }: {
     id: ReviewId;
     authorId: UserId;
-    content: string;
+    rating?: number;
+    content?: string;
   }) {
     const { Reviews } = this.unitOfWork;
-    const { id, authorId, ...edits } = reviewInfo;
 
     const [existing] = await Reviews.find({ id, authorId });
+
     if (!existing) {
       throw new Error("Can't edit a review that doesn't exists.");
     }
-    const edited = makeReview({ ...existing, ...edits });
-    await Reviews.update([edited]);
-    return edited;
+
+    const updated = await Reviews.update(updateReview(existing, edits));
+
+    return updated;
   }
 
   async castReviewVote(partialReviewVote: PartialReviewVote) {
@@ -201,12 +243,10 @@ export class ReviewLogic {
       userId: reviewVote.userId,
     });
     if (found) {
-      const [updated] = await ReviewVotes.update([
-        {
-          id: found.id,
-          voteValue: reviewVote.voteValue,
-        },
-      ]);
+      const updated = await ReviewVotes.update({
+        id: found.id,
+        voteValue: reviewVote.voteValue,
+      });
       return updated;
     } else {
       const [added] = await ReviewVotes.add([reviewVote]);
@@ -230,13 +270,7 @@ export class ReviewLogic {
     await ReviewVotes.remove([found]);
   }
 
-  async getRatingFrequency({
-    tmdbMediaId,
-    tmdbMediaType,
-  }: {
-    tmdbMediaId: TmdbMediaId;
-    tmdbMediaType: TmdbMediaType;
-  }) {
+  async getRatingFrequency({ mediaId }: { mediaId: MediaId }) {
     const { Reviews } = this.unitOfWork;
 
     const ratingFrequency: {
@@ -246,14 +280,12 @@ export class ReviewLogic {
     for (const rating of RATINGS) {
       ratingFrequency[rating] = await Reviews.count({
         rating,
-        tmdbMediaId,
-        tmdbMediaType,
+        mediaId,
       });
     }
 
     const ratingCount = await Reviews.count({
-      tmdbMediaId,
-      tmdbMediaType,
+      mediaId,
     });
 
     const ratingAverage =

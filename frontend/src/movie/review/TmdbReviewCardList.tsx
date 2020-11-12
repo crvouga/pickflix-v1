@@ -5,10 +5,11 @@ import ErrorBox from "../../common/components/ErrorBox";
 import LoadingBox from "../../common/components/LoadingBox";
 import { getTmdbMovieReviews, queryKeys } from "../../tmdb/query";
 import TmdbReviewCard from "./TmdbReviewCard";
+import { MediaId } from "../../tmdb/types";
 
-export default ({ tmdbMediaId }: { tmdbMediaId: string }) => {
-  const query = useQuery(queryKeys.movieReviews(tmdbMediaId), () =>
-    getTmdbMovieReviews({ tmdbMediaId })
+export default ({ mediaId }: { mediaId: MediaId }) => {
+  const query = useQuery(queryKeys.movieReviews({ mediaId }), () =>
+    getTmdbMovieReviews({ mediaId })
   );
 
   if (query.error) {

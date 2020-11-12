@@ -58,7 +58,7 @@ export class RepositoryFileSystem<T extends Identifiable>
     return true;
   }
 
-  async update(entityInfos: Array<Partial<T> & Pick<T, "id">>): Promise<T[]> {
+  async update(entityInfos: Partial<T> & Pick<T, "id">): Promise<T> {
     this.read();
     const updatedEntities = await this.repositoryHashMap.update(entityInfos);
     this.write();

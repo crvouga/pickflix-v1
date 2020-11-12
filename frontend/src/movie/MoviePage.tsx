@@ -23,6 +23,7 @@ import BackButton from "../navigation/BackButton";
 import { APP_BAR_HEIGHT } from "../navigation/constants";
 import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
 import makeImageUrl from "../tmdb/makeImageUrl";
+import { MediaId } from "../tmdb/types";
 import useVideoState from "../video/useVideoState";
 import VideoPlayer from "../video/VideoPlayer";
 import MovieCredits from "./credits/MovieCredits";
@@ -33,8 +34,8 @@ import useMoviePageUiState from "./redux/useMoviePageUiState";
 import MovieRelated from "./related/MovieRelated";
 import ReviewsAndComments from "./review/ReviewsAndComments";
 import ReviewsSummary from "./review/ReviewsSummary";
-import MovieVideo from "./video/MovieVideo";
 import YourReview from "./review/YourReview";
+import MovieVideo from "./video/MovieVideo";
 
 const ToggleIcon = ({ on }: { on: boolean }) => {
   return on ? <ToggleOnOutlinedIcon /> : <ToggleOffOutlinedIcon />;
@@ -64,6 +65,10 @@ export default () => {
 
   const { tmdbMediaId } = useParams<{ tmdbMediaId: string }>();
   const query = useQueryMovie({ tmdbMediaId });
+  const mediaId: MediaId = {
+    tmdbMediaId: Number(tmdbMediaId),
+    tmdbMediaType: "movie",
+  };
 
   const pageHistory = usePageHistory();
   useEffect(() => {
@@ -161,17 +166,17 @@ export default () => {
         <Grid container>
           <Grid item xs={12} sm={6}>
             <Box paddingBottom={2}>
-              <ReviewsSummary tmdbMediaId={details.id} />
+              <ReviewsSummary mediaId={mediaId} />
             </Box>
           </Grid>
           <Grid item xs={12} sm={6}>
             <Box paddingBottom={2}>
-              <YourReview tmdbMediaId={details.id} tmdbMediaType="movie" />
+              <YourReview mediaId={mediaId} />
             </Box>
           </Grid>
         </Grid>
 
-        <ReviewsAndComments tmdbMediaId={details.id} />
+        <ReviewsAndComments mediaId={mediaId} />
       </Container>
     </React.Fragment>
   );

@@ -2,14 +2,13 @@ import { Box } from "@material-ui/core";
 import React from "react";
 import ErrorBox from "../../common/components/ErrorBox";
 import LoadingBox from "../../common/components/LoadingBox";
-import { useQueryReviews, getReviewsQueryKey } from "../../reviews/query";
+import { getReviewsQueryKey, useQueryReviews } from "../../reviews/query";
 import ReviewCard from "../../reviews/ReviewCard";
-import { TmdbMediaType } from "../../tmdb/types";
 import useReviewVoteValueState from "../../reviews/useReviewVoteValueState";
+import { MediaId } from "../../tmdb/types";
 
 type Props = {
-  tmdbMediaId: string;
-  tmdbMediaType: TmdbMediaType;
+  mediaId: MediaId;
 };
 
 export default (props: Props) => {

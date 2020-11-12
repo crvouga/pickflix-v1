@@ -9,10 +9,10 @@ import { Rating } from "@material-ui/lab";
 import React from "react";
 import SignInButton from "../../auth/SignInButton";
 import useModal from "../../navigation/modals/useModal";
-import useReviewForm from "../../reviews/hooks/useReviewForm";
+import useReviewForm from "../../reviews/form/useReviewForm";
 import { useQueryReviews } from "../../reviews/query";
 import ReviewCard from "../../reviews/ReviewCard";
-import { TmdbMedia } from "../../tmdb/types";
+import { MediaId, TmdbMedia } from "../../tmdb/types";
 import AvatarUser from "../../users/AvatarUser";
 import { UserAggergation } from "../../users/query";
 import { useQueryCurrentUser } from "../../users/useCurrentUser";
@@ -67,18 +67,17 @@ const AddReviewCard = ({
 
 const YourReview = ({
   user,
-  tmdbMediaType,
-  tmdbMediaId,
-}: { user: UserAggergation } & TmdbMedia) => {
+  mediaId,
+}: {
+  user: UserAggergation;
+  mediaId: MediaId;
+}) => {
   const reviewFormState = useReviewForm();
   const reviewFormModal = useModal("ReviewForm");
-  const params = {
+  const query = useQueryReviews({
     authorId: user.user.id,
-    tmdbMediaType,
-    tmdbMediaId,
-  };
-
-  const query = useQueryReviews(params);
+    mediaId,
+  });
 
   if (query.error) {
     return null;
@@ -90,30 +89,33 @@ const YourReview = ({
 
   const reviews = query.data;
 
-  const handleClick = () => {
-    reviewFormState.setTmdbMedia({
-      tmdbMediaType,
-      tmdbMediaId,
-    });
-    reviewFormModal.open();
-  };
-
   if (reviews.length === 0) {
-    return <AddReviewCard user={user} onClick={handleClick} />;
+    return (
+      <AddReviewCard
+        user={user}
+        onClick={() => {
+          reviewFormState.setMediaId(mediaId);
+          reviewFormModal.open();
+        }}
+      />
+    );
   }
+
+  const review = reviews[0];
 
   return (
     <ReviewCard
       showUser
-      review={reviews[0]}
+      review={review}
       onEdit={() => {
-        console.log("EDIT");
+        reviewFormState.setReview(review);
+        reviewFormModal.open();
       }}
     />
   );
 };
 
-export default (props: TmdbMedia) => {
+export default ({ mediaId }: { mediaId: MediaId }) => {
   const query = useQueryCurrentUser();
 
   if (query.error || !query.data) {
@@ -145,7 +147,7 @@ export default (props: TmdbMedia) => {
       <Box paddingBottom={1}>
         <Typography variant="h6">Your Review</Typography>
       </Box>
-      <YourReview {...props} user={query.data} />
+      <YourReview mediaId={mediaId} user={query.data} />
     </Box>
   );
 };

@@ -1,4 +1,4 @@
-import { TmdbMediaType, Movie } from "../../tmdb/types";
+import { TmdbMediaType, Movie, MediaId } from "../../tmdb/types";
 import { User } from "../../users/query";
 
 export type Review = {
@@ -8,8 +8,7 @@ export type Review = {
   content: string;
   rating: number;
   createdAt: number;
-  tmdbMediaType: TmdbMediaType;
-  tmdbMediaId: string;
+  mediaId: MediaId;
 };
 
 export enum ReviewVoteValue {

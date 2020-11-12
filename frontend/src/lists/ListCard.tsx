@@ -10,7 +10,7 @@ export default ({ list }: { list: ListAggergation }) => {
       <CardActionArea>
         <Grid container direction="row">
           <Grid item>
-            <Box width="100px">
+            <Box p={1} width="100px">
               <ListImageBox list={list} width="100%" />
             </Box>
           </Grid>

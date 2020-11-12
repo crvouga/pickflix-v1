@@ -1,13 +1,11 @@
 import {
-  ListItemProps,
   Avatar,
+  CardActionArea,
   ListItem,
   ListItemAvatar,
-  ListItemSecondaryAction,
+  ListItemProps,
   ListItemText,
-  CardActionArea,
 } from "@material-ui/core";
-import LaunchIcon from "@material-ui/icons/Launch";
 import MovieIcon from "@material-ui/icons/Movie";
 import React from "react";
 import { useHistory } from "react-router";

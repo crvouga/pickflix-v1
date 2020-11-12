@@ -2,31 +2,39 @@ import { camelizeKeys, decamelize, decamelizeKeys } from "humps";
 import qs from "qs";
 import config from "../../../configuration";
 import { MediaLogic } from "../build";
+import { MediaId } from "../../models/types";
 
-export async function requestTmdbData(
-  this: MediaLogic,
-  {
-    path,
-    query,
-  }: {
-    path: string;
-    query?: {
-      [key: string]: string;
-    };
-  }
-) {
-  const params = decamelizeKeys({
-    ...query,
-    apiKey: config.TMDB_API_KEY,
-  });
+type Params = (
+  | {
+      mediaId: MediaId;
+    }
+  | {
+      path: string;
+    }
+) & {
+  query?: {
+    [key: string]: string;
+  };
+};
 
+export async function requestTmdbData(this: MediaLogic, params: Params) {
   const url = [
-    decamelize(path),
+    decamelize(
+      "mediaId" in params
+        ? `/${params.mediaId.tmdbMediaType}/${params.mediaId.tmdbMediaId}`
+        : params.path
+    ),
     "?",
-    qs.stringify(params, {
-      arrayFormat: "comma",
-      encode: false,
-    }),
+    qs.stringify(
+      decamelizeKeys({
+        ...params.query,
+        apiKey: config.TMDB_API_KEY,
+      }),
+      {
+        arrayFormat: "comma",
+        encode: false,
+      }
+    ),
   ].join("");
 
   const tmdbResponse = await this.axios({

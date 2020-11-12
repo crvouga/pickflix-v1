@@ -1,10 +1,11 @@
 import { Box, Tab, Tabs, Typography } from "@material-ui/core";
 import React from "react";
+import { MediaId } from "../../tmdb/types";
 import useVideoState from "../../video/useVideoState";
+import useMoviePageUiState from "../redux/useMoviePageUiState";
 import MovieReviewList from "./ReviewCardList";
 import TmdbReviewCardList from "./TmdbReviewCardList";
 import YoutubeCommentList from "./YoutubeCommentList";
-import useMoviePageUiState from "../redux/useMoviePageUiState";
 
 const TabPanel = (props: {
   children?: React.ReactNode;
@@ -20,7 +21,7 @@ const TabPanel = (props: {
   );
 };
 
-export default ({ tmdbMediaId }: { tmdbMediaId: string }) => {
+export default ({ mediaId }: { mediaId: MediaId }) => {
   const videoState = useVideoState();
   const moviePageUiState = useMoviePageUiState();
 
@@ -49,13 +50,13 @@ export default ({ tmdbMediaId }: { tmdbMediaId: string }) => {
       </Box>
 
       <TabPanel value={index} index={0}>
-        <MovieReviewList tmdbMediaId={tmdbMediaId} tmdbMediaType="movie" />
+        <MovieReviewList mediaId={mediaId} />
       </TabPanel>
       <TabPanel value={index} index={1}>
         <YoutubeCommentList videoId={videoState.currentVideo?.key} />
       </TabPanel>
       <TabPanel value={index} index={2}>
-        <TmdbReviewCardList tmdbMediaId={tmdbMediaId} />
+        <TmdbReviewCardList mediaId={mediaId} />
       </TabPanel>
     </React.Fragment>
   );
