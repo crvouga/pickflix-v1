@@ -23,49 +23,57 @@ export const EditButton = (props: ButtonProps) => {
 };
 
 export const VoteDownIcon = ({
-  review,
+  outlined = true,
   ...props
 }: {
-  review: ReviewAggergation;
+  outlined?: boolean;
 } & SvgIconProps) => {
-  return review.reviewVoteValue === ReviewVoteValue.DOWN ? (
-    <ThumbDownIcon {...props} />
-  ) : (
+  return outlined ? (
     <ThumbDownOutlinedIcon {...props} />
+  ) : (
+    <ThumbDownIcon {...props} />
   );
 };
 
 export const VoteUpIcon = ({
-  review,
+  outlined = true,
   ...props
 }: {
-  review: ReviewAggergation;
+  outlined?: boolean;
 } & SvgIconProps) => {
-  return review.reviewVoteValue === ReviewVoteValue.UP ? (
-    <ThumbUpAltIcon {...props} />
-  ) : (
+  return outlined ? (
     <ThumbUpAltOutlinedIcon {...props} />
+  ) : (
+    <ThumbUpAltIcon {...props} />
   );
 };
 
 export const VoteUpButton = ({
-  review,
+  outlined = true,
+  count = 0,
   ...props
-}: { review: ReviewAggergation } & ButtonProps) => {
+}: {
+  outlined?: boolean;
+  count?: number;
+} & ButtonProps) => {
   return (
-    <Button startIcon={<VoteUpIcon review={review} />} {...props}>
-      {numeral(review.reviewUpVoteCount).format("0a")}
+    <Button startIcon={<VoteUpIcon outlined={outlined} />} {...props}>
+      {numeral(count).format("0a")}
     </Button>
   );
 };
 
 export const VoteDownButton = ({
-  review,
+  outlined = true,
+  count = 0,
   ...props
-}: { review: ReviewAggergation } & ButtonProps) => {
+}: {
+  outlined?: boolean;
+  count?: number;
+} & ButtonProps) => {
   return (
-    <Button startIcon={<VoteDownIcon review={review} />} {...props}>
-      {numeral(review.reviewDownVoteCount).format("0a")}
+    <Button startIcon={<VoteDownIcon outlined={outlined} />} {...props}>
+      {numeral(count).format("0a")}
     </Button>
   );
 };

@@ -26,7 +26,6 @@ export type ReviewAggergation = {
   mediaReviewCount: number;
   tmdbData: Movie;
   reviewUpVoteCount: number;
-  reviewDownVoteCount: number;
 };
 
 export type ReviewVote = {

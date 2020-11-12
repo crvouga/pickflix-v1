@@ -24,48 +24,26 @@ export const reviews = ({
 
     async (req, res, next) => {
       try {
-        const userId = req.query.userId as UserId | undefined;
+        const userId = (req.query.userId || req.user?.id) as UserId | undefined;
+
         const authorId = req.query.authorId as UserId | undefined;
+
         const tmdbMediaId = Number(req.query.tmdbMediaId) as
           | TmdbMediaId
           | undefined;
+
         const tmdbMediaType = req.query.tmdbMediaType as
           | TmdbMediaType
           | undefined;
 
-        let reviewInfo;
+        const reviewAggergations = await reviewLogic.getAllAggergations({
+          userId,
+          authorId,
+          tmdbMediaId,
+          tmdbMediaType,
+        });
 
-        if (authorId) {
-          reviewInfo = {
-            authorId,
-          };
-        }
-
-        if (tmdbMediaId && tmdbMediaType) {
-          reviewInfo = {
-            tmdbMediaId,
-            tmdbMediaType,
-          };
-        }
-
-        if (authorId && tmdbMediaId && tmdbMediaType) {
-          reviewInfo = {
-            authorId,
-            tmdbMediaId,
-            tmdbMediaType,
-          };
-        }
-
-        if (reviewInfo) {
-          const reviewAggergations = await reviewLogic.getAllAggergations({
-            userId,
-            ...reviewInfo,
-          });
-
-          res.status(200).json(reviewAggergations).end();
-        } else {
-          res.status(400).json({ message: "invalid query params" }).end();
-        }
+        res.status(200).json(reviewAggergations).end();
       } catch (error) {
         next(error);
       }

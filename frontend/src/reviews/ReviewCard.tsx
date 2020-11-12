@@ -14,7 +14,7 @@ import { useHistory } from "react-router";
 import MovieAvatar from "../movie/components/MovieAvatar";
 import AvatarUser from "../users/AvatarUser";
 import { pluralize } from "../utils";
-import { ReviewAggergation } from "./query/types";
+import { ReviewAggergation, ReviewVoteValue } from "./query/types";
 import { EditButton, VoteDownButton, VoteUpButton } from "./ReviewCardButtons";
 
 type Props = {
@@ -81,13 +81,25 @@ export default ({
             {toPublishedAt(new Date(review.review.createdAt))}
           </Typography>
         </Box>
-        <Typography variant="h6">{review.review.title}</Typography>
-        <Typography variant="body2">{review.review.content}</Typography>
+        {/* <Typography variant="h6">{review.review.title}</Typography> */}
+        <Typography variant="body1">{review.review.content}</Typography>
       </CardContent>
       <CardActions>
         {onEdit && <EditButton onClick={onEdit} />}
-        {onVoteUp && <VoteUpButton onClick={onVoteUp} review={review} />}
-        {onVoteDown && <VoteDownButton onClick={onVoteDown} review={review} />}
+        {onVoteUp && (
+          <VoteUpButton
+            onClick={onVoteUp}
+            outlined={review.reviewVoteValue !== ReviewVoteValue.UP}
+            count={review.reviewUpVoteCount}
+          />
+        )}
+        {onVoteDown && (
+          <VoteDownButton
+            onClick={onVoteDown}
+            outlined={review.reviewVoteValue !== ReviewVoteValue.DOWN}
+            count={review.reviewVoteCount - review.reviewUpVoteCount}
+          />
+        )}
       </CardActions>
     </Card>
   );

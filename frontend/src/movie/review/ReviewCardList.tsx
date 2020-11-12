@@ -14,9 +14,9 @@ type Props = {
 
 export default (props: Props) => {
   const query = useQueryReviews(props);
-  const reviewVoteValueState = useReviewVoteValueState({
-    queryKey: getReviewsQueryKey(props),
-  });
+  const reviewVoteValueState = useReviewVoteValueState(
+    getReviewsQueryKey(props)
+  );
 
   if (query.error) {
     return <ErrorBox />;

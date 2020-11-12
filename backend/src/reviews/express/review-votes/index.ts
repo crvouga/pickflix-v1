@@ -32,7 +32,7 @@ export const reviewVotes = ({ reviewLogic, middlewares }: Dependencies) => (
           reviewId,
           voteValue,
         });
-        console.log({ reviewVote });
+
         res.status(201).json(reviewVote).end();
       } catch (error) {
         next(error);

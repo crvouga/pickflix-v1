@@ -65,11 +65,7 @@ export default ({
         </Typography>
       </Box>
 
-      <Divider />
-
       <ActionBarSection tmdbMediaId={details.id} />
-
-      <Divider />
 
       <Box p={2}>
         <Typography align="center" variant="h6">

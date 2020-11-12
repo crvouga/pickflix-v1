@@ -1,10 +1,9 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
-import LoadingBox from "../common/components/LoadingBox";
-import { useQueryReviews, getReviewsQueryKey } from "../reviews/query";
+import { getReviewsQueryKey, useQueryReviews } from "../reviews/query";
 import ReviewCard from "../reviews/ReviewCard";
-import { User } from "./query";
 import useReviewVoteValueState from "../reviews/useReviewVoteValueState";
+import { User } from "./query";
 
 export default ({ user }: { user: User }) => {
   const query = useQueryReviews({

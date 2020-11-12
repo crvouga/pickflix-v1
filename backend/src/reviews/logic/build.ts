@@ -16,6 +16,13 @@ import {
   ReviewVoteValue,
 } from "../models/make-review-vote";
 
+const omitFalsy = (obj: { [key: string]: any }) => {
+  return Object.keys(obj).reduce(
+    (acc, k) => (Boolean(obj[k]) ? { ...acc, [k]: obj[k] } : acc),
+    {}
+  );
+};
+
 export class ReviewLogic {
   mediaLogic: MediaLogic;
   unitOfWork: IUnitOfWork;
@@ -53,7 +60,6 @@ export class ReviewLogic {
       [reviewVote],
       reviewVoteCount,
       reviewUpVoteCount,
-      reviewDownVoteCount,
     ] = await Promise.all([
       Reviews.find({
         id: reviewId,
@@ -68,10 +74,6 @@ export class ReviewLogic {
       ReviewVotes.count({
         reviewId,
         voteValue: ReviewVoteValue.UP,
-      }),
-      ReviewVotes.count({
-        reviewId,
-        voteValue: ReviewVoteValue.DOWN,
       }),
     ]);
 
@@ -99,13 +101,12 @@ export class ReviewLogic {
     return {
       review,
       reviewVoteCount,
+      reviewUpVoteCount,
       author,
       authorReviewCount,
       mediaReviewCount,
       tmdbData,
       reviewVoteValue: reviewVote?.voteValue || null,
-      reviewUpVoteCount,
-      reviewDownVoteCount,
     };
   }
 
@@ -114,21 +115,13 @@ export class ReviewLogic {
     ...reviewInfo
   }: {
     userId?: UserId;
-  } & (
-    | { authorId: UserId }
-    | {
-        tmdbMediaId: TmdbMediaId;
-        tmdbMediaType: TmdbMediaType;
-      }
-    | {
-        tmdbMediaId: TmdbMediaId;
-        tmdbMediaType: TmdbMediaType;
-        authorId: UserId;
-      }
-  )) {
+    authorId?: UserId;
+    tmdbMediaId?: TmdbMediaId;
+    tmdbMediaType?: TmdbMediaType;
+  }) {
     const { Reviews } = this.unitOfWork;
 
-    const found = await Reviews.find(reviewInfo);
+    const found = await Reviews.find(omitFalsy(reviewInfo));
 
     const aggergations = await Promise.all(
       found.map((review) =>
