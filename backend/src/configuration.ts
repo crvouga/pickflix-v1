@@ -41,7 +41,7 @@ const configuration = Object.freeze({
   PATH_TO_FILE_STORE: path.join(__dirname, "..", "_store"),
 
   // file path to frontend static files
-  PATH_TO_FRONTEND: path.join(__dirname, "..", "..", "frontend", "build"),
+  PATH_TO_FRONTEND_BUILD: path.join(__dirname, "../../frontend/build"),
 
   //
   SESSION_COOKIE_SECRET: process.env.SESSION_COOKIE_SECRET,

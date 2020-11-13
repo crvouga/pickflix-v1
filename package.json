@@ -3,8 +3,9 @@
     "test": "clear && cd backend && npm test",
     "postinstall": "cd backend && npm install",
     "heroku-postbuild": "cd frontend && npm install && npm run build",
-    "heroku-write-env": " heroku config -s -a crvouga-pickflix > .env",
-    "start": "cd backend && npm run start"
+    "heroku-write-env": "heroku config -s -a crvouga-pickflix > .env",
+    "start": "cd backend && npm run start",
+    "heroku-local": "npm run heroku-write-env && npm install && npm run heroku-postbuild && heroku local"
   },
   "name": "pickflix",
   "version": "1.0.0",

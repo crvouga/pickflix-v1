@@ -15,10 +15,10 @@ const buildMiddleware = (dependencies: ExpressAppDependencies) => (
 };
 
 const buildFrontendRouter = () => (app: Application) => {
-  app.use(express.static(configuration.PATH_TO_FRONTEND));
+  app.use(express.static(configuration.PATH_TO_FRONTEND_BUILD));
 
   app.all("*", (req, res) => {
-    res.sendFile(path.resolve(configuration.PATH_TO_FRONTEND, "index.html"));
+    res.sendFile(path.join(configuration.PATH_TO_FRONTEND_BUILD, "index.html"));
   });
 };
 
