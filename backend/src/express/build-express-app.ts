@@ -23,9 +23,15 @@ const buildFrontendRouter = () => (app: Application) => {
 };
 
 //@ts-ignore
-export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  if (err) {
-    res.status(400).json(err).end();
+export const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
+  if (error) {
+    res
+      .status(400)
+      .json({
+        message: "error handler",
+        error,
+      })
+      .end();
   } else {
     next();
   }
