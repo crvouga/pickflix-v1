@@ -22,6 +22,20 @@ const buildFrontendRouter = () => (app: Application) => {
   });
 };
 
+const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
+  if (error) {
+    return res
+      .status(500)
+      .json({
+        message: "There was an error",
+        error,
+      })
+      .end();
+  } else {
+    next();
+  }
+};
+
 export const buildExpressApp = (dependencies: ExpressAppDependencies) => (
   app: Application
 ) => {
@@ -30,6 +44,8 @@ export const buildExpressApp = (dependencies: ExpressAppDependencies) => (
   buildApiRouter(dependencies)(app);
 
   buildFrontendRouter()(app);
+
+  app.use(errorHandler);
 
   return {
     app,
