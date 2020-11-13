@@ -90,18 +90,18 @@ export const buildAuthMiddleware = ({
     })
   );
 
-  if (configuration.NODE_ENV !== "test") {
-    app.use(
-      csrf({
-        cookie: getCSRFCookieConfig(),
-      })
-    );
+  // if (configuration.NODE_ENV !== "test") {
+  //   app.use(
+  //     csrf({
+  //       cookie: getCSRFCookieConfig(),
+  //     })
+  //   );
 
-    app.use((req, res, next) => {
-      res.cookie("XSRF-TOKEN", req.csrfToken());
-      next();
-    });
-  }
+  //   app.use((req, res, next) => {
+  //     res.cookie("XSRF-TOKEN", req.csrfToken());
+  //     next();
+  //   });
+  // }
 
   passport.use(
     new LocalStrategy(

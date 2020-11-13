@@ -17,7 +17,7 @@ const buildMiddleware = (dependencies: ExpressAppDependencies) => (
 const buildFrontendRouter = () => (app: Application) => {
   app.use(express.static(configuration.PATH_TO_FRONTEND));
 
-  app.get("*", (req, res) => {
+  app.all("*", (req, res) => {
     res.sendFile(path.resolve(configuration.PATH_TO_FRONTEND, "index.html"));
   });
 };
@@ -38,9 +38,9 @@ export const buildExpressApp = (dependencies: ExpressAppDependencies) => (
 
   buildApiRouter(dependencies)(app);
 
-  buildFrontendRouter()(app);
-
   app.use(errorHandler);
+
+  buildFrontendRouter()(app);
 
   return {
     app,

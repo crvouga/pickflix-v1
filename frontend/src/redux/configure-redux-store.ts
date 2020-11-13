@@ -16,7 +16,7 @@ export const configureReduxStore = () => {
   const sagaMiddleware = createSagaMiddleware();
 
   const store = configureStore({
-    reducer: rootReducer, //persistedReducer,
+    reducer: persistedReducer,
     middleware: [sagaMiddleware],
   });
 

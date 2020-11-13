@@ -23,6 +23,4 @@ export const buildApiRouter = (dependencies: ExpressAppDependencies) => (
   }
 
   app.use("/api", router);
-
-  return { app, router };
 };
