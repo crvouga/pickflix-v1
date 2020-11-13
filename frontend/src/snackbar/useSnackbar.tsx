@@ -1,14 +1,15 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { snackbar, SnackbarProps } from "./redux/snackbar";
+import { bindActionCreators } from "redux";
 
 export default () => {
   const dispatch = useDispatch();
-
-  const display = (props: SnackbarProps) => {
-    dispatch(snackbar.actions.display(props));
-  };
-
+  const actions = bindActionCreators(snackbar.actions, dispatch);
+  const open = useSelector(snackbar.selectors.open);
+  const props = useSelector(snackbar.selectors.props);
   return {
-    display,
+    ...actions,
+    open,
+    props,
   };
 };

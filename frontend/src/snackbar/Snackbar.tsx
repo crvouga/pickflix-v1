@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { snackbar } from "./redux/snackbar";
 import { APP_BAR_HEIGHT } from "../navigation/constants";
+import useSnackbar from "./useSnackbar";
 
 const Transition = (props: TransitionProps) => (
   <Slide direction="up" {...props} />
@@ -63,10 +64,10 @@ export const ViewListButton = ({ listId }: ViewListButtonProps) => {
 };
 
 export const CloseSnackbarButton = () => {
-  const dispatch = useDispatch();
+  const snackbar = useSnackbar();
 
   const handleClick = () => {
-    dispatch(snackbar.actions.setOpen(false));
+    snackbar.setOpen(false);
   };
 
   return (
@@ -79,20 +80,16 @@ export const CloseSnackbarButton = () => {
 export default () => {
   const classesSnackbar = useStylesSnackbar();
   const classesSnackbarContent = useStylesSnackbarContent();
-
-  const dispatch = useDispatch();
-
-  const isOpen = useSelector(snackbar.selectors.open);
-  const snackbarProps = useSelector(snackbar.selectors.props);
+  const snackbar = useSnackbar();
 
   const handleClick = () => {
-    dispatch(snackbar.actions.setOpen(false));
+    snackbar.setOpen(false);
   };
 
   return (
     <Snackbar
       onClick={handleClick}
-      open={isOpen}
+      open={snackbar.open}
       classes={classesSnackbar}
       TransitionComponent={Transition}
       ContentProps={{
@@ -103,10 +100,10 @@ export default () => {
         vertical: "bottom",
         horizontal: "center",
       }}
-      {...snackbarProps}
+      {...snackbar.props}
       action={
-        React.isValidElement(snackbarProps.action)
-          ? snackbarProps.action
+        React.isValidElement(snackbar.props.action)
+          ? snackbar.props.action
           : undefined
       }
     />

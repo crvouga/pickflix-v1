@@ -1,5 +1,5 @@
 import { MediaLogic } from "../../media/logic/build";
-import { MediaId, TmdbMediaId, TmdbMediaType } from "../../media/models/types";
+import { MediaId } from "../../media/models/types";
 import { IUnitOfWork } from "../../unit-of-work/types";
 import { UserId } from "../../users/models/make-user";
 import {
@@ -158,7 +158,9 @@ export class ReviewLogic {
   }) {
     const { Reviews } = this.unitOfWork;
 
-    const found = await Reviews.find(omitFalsy(reviewInfo));
+    const found = await Reviews.find(omitFalsy(reviewInfo), {
+      orderBy: [["createdAt", "descend"]],
+    });
 
     const aggergations = await Promise.all(
       found.map((review) =>

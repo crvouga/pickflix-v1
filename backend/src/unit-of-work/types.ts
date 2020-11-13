@@ -30,9 +30,7 @@ export interface Identifiable {
   id: string;
 }
 
-type OrderByDirection = "ascend" | "descend";
-
-type OrderBy<T> = [keyof T, OrderByDirection][];
+type OrderBy<T> = [keyof T, "ascend" | "descend"][];
 
 export type FindOptions<T> = {
   orderBy?: OrderBy<T>;
