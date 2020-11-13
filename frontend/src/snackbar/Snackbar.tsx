@@ -12,18 +12,28 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { snackbar } from "./redux/snackbar";
+import { APP_BAR_HEIGHT } from "../navigation/constants";
 
 const Transition = (props: TransitionProps) => (
   <Slide direction="up" {...props} />
 );
 
-const useStylesSnackbar = makeStyles((theme) => ({}));
+const useStylesSnackbar = makeStyles((theme) => ({
+  root: {
+    [theme.breakpoints.down("xs")]: {
+      zIndex: theme.zIndex.appBar - 1,
+      bottom: theme.mixins.toolbar.minHeight, //bottom nav bar
+    },
+  },
+}));
 
 const useStylesSnackbarContent = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
     color: theme.palette.text.primary,
     fontWeight: "bold",
+
+    transform: `translateY(-${APP_BAR_HEIGHT}px)`,
   },
 }));
 

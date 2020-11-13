@@ -25,7 +25,7 @@ const buildFrontendRouter = () => (app: Application) => {
 const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
   if (error) {
     return res
-      .status(500)
+      .status(400)
       .json({
         message: "There was an error",
         error,
