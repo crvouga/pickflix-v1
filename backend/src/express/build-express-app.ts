@@ -17,24 +17,9 @@ const buildMiddleware = (dependencies: ExpressAppDependencies) => (
 const buildFrontendRouter = () => (app: Application) => {
   app.use(express.static(configuration.PATH_TO_FRONTEND_BUILD));
 
-  app.all("*", (req, res) => {
+  app.get("*", (req, res) => {
     res.sendFile(path.join(configuration.PATH_TO_FRONTEND_BUILD, "index.html"));
   });
-};
-
-//@ts-ignore
-export const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
-  if (error) {
-    res
-      .status(400)
-      .json({
-        message: "error handler",
-        error,
-      })
-      .end();
-  } else {
-    next();
-  }
 };
 
 export const buildExpressApp = (dependencies: ExpressAppDependencies) => (
@@ -43,8 +28,6 @@ export const buildExpressApp = (dependencies: ExpressAppDependencies) => (
   buildMiddleware(dependencies)(app);
 
   buildApiRouter(dependencies)(app);
-
-  app.use(errorHandler);
 
   buildFrontendRouter()(app);
 
