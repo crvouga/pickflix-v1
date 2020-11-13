@@ -83,6 +83,13 @@ export const getSearchMovies = async ({
   query: string;
   page: number;
 }) => {
+  if (query.length === 0) {
+    return {
+      page: 1,
+      totalResults: 0,
+      results: [],
+    };
+  }
   const { data } = await BackendAPI.get<Paginated<Movie>>(
     "/api/tmdb/search/movie",
     {
@@ -99,7 +106,12 @@ export const getMovie = async ({ mediaId }: { mediaId: MediaId }) => {
   const { data } = await BackendAPI.get<MovieDetails>(
     `/api/tmdb/movie/${mediaId.tmdbMediaId}`
   );
+
   return data;
+};
+
+export const useQueryMovie = ({ mediaId }: { mediaId: MediaId }) => {
+  return useQuery([mediaId], () => getMovie({ mediaId }), {});
 };
 
 export const getPerson = async ({ mediaId }: { mediaId: MediaId }) => {
@@ -125,6 +137,14 @@ export const getMedia = ({ mediaId }: { mediaId: MediaId }) => {
   }
 };
 
-export const useQueryMovie = ({ mediaId }: { mediaId: MediaId }) => {
-  return useQuery(mediaId, () => getMovie({ mediaId }));
+export const useQueryMovieSearch = ({
+  text,
+  page = 1,
+}: {
+  text: string;
+  page?: number;
+}) => {
+  return useQuery(["movie", "search", text, , page], () =>
+    getSearchMovies({ query: text, page })
+  );
 };

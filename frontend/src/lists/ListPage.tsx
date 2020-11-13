@@ -12,7 +12,6 @@ import {
 import DeleteIcon from "@material-ui/icons/DeleteForeverOutlined";
 import EditIcon from "@material-ui/icons/EditOutlined";
 import React from "react";
-import { useQuery } from "react-query";
 import { useHistory, useParams } from "react-router";
 import useBoolean from "../common/hooks/useBoolean";
 import ErrorPage from "../common/page/ErrorPage";
@@ -20,19 +19,20 @@ import LoadingPage from "../common/page/LoadingPage";
 import BackButton from "../navigation/BackButton";
 import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
 import AvatarUser from "../users/AvatarUser";
-import { User } from "../users/query";
-import useCurrentUser from "../users/useCurrentUser";
+import { UserAggergation } from "../users/query";
+import { useQueryCurrentUser } from "../users/useCurrentUser";
 import DeleteListFormModal from "./DeleteListFormModal";
 import EditListFormModal from "./EditListFormModal";
+import { useQueryList } from "./hooks/query";
 import ListCardImage from "./ListCardImage";
 import ListItemsSection from "./ListItemsSection";
-import { getList, ListAggergation, queryKeys } from "./query";
+import { ListAggergation } from "./query";
 
 const ListPage = ({
   currentUser,
   list,
 }: {
-  currentUser: User | null;
+  currentUser: UserAggergation | null;
   list: ListAggergation;
 }) => {
   const history = useHistory();
@@ -40,7 +40,7 @@ const ListPage = ({
   const isEditListModalOpen = useBoolean(false);
   const isDeleteListModalOpen = useBoolean(false);
 
-  const isCurrentUser = currentUser && currentUser.id === list.owner.id;
+  const isCurrentUser = currentUser && currentUser.user.id === list.owner.id;
 
   return (
     <React.Fragment>
@@ -129,19 +129,18 @@ const ListPage = ({
 export default () => {
   const { listId } = useParams<{ listId: string }>();
 
-  const query = useQuery(queryKeys.list({ listId }), () => getList({ listId }));
-
-  const currentUser = useCurrentUser();
+  const query = useQueryList({ listId });
+  const queryCurrentUser = useQueryCurrentUser();
 
   if (query.error) {
     return <ErrorPage />;
   }
 
-  if (!query.data || currentUser === "loading") {
+  if (!query.data || queryCurrentUser.data === undefined) {
     return <LoadingPage />;
   }
 
   const list = query.data;
-
+  const currentUser = queryCurrentUser.data;
   return <ListPage currentUser={currentUser} list={list} />;
 };

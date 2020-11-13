@@ -1,11 +1,7 @@
 import { Box, makeStyles, Typography } from "@material-ui/core";
-import clsx from "clsx";
 import React from "react";
-import { chownSync } from "fs";
 import { ReviewStatistics } from "./query";
-
-//SOURCE: https://github.com/mui-org/material-ui/blob/master/packages/material-ui-lab/src/Rating/Rating.js
-const RATING_COLOR = "#ffb400";
+import { RATING_COLOR } from "./Rating";
 
 const useStyles = makeStyles((theme) => ({
   borderRadius: {},

@@ -1,11 +1,12 @@
 import { Dialog, makeStyles, useMediaQuery, useTheme } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import useModal from "../../navigation/modals/useModal";
 import ReviewForm from "./ReviewForm";
+import useReviewForm from "./useReviewForm";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: "transparent",
     [theme.breakpoints.up("sm")]: {
       marginTop: theme.spacing(6),
       marginBottom: "auto",
@@ -16,11 +17,21 @@ const useStylesDialog = makeStyles((theme) => ({
 }));
 
 export default () => {
+  const reviewForm = useReviewForm();
   const reviewFormModal = useModal("ReviewForm");
 
-  const handleCancel = () => {
+  const handleClose = () => {
     reviewFormModal.close();
   };
+
+  useEffect(() => {
+    const unlisten = reviewForm.onSubmitSuccess(() => {
+      reviewFormModal.close();
+    });
+    return () => {
+      unlisten();
+    };
+  }, []);
 
   const classesDialog = useStylesDialog();
   const theme = useTheme();
@@ -31,10 +42,10 @@ export default () => {
       fullScreen={isMobile}
       classes={classesDialog}
       open={reviewFormModal.isOpen}
-      onClose={handleCancel}
+      onClose={handleClose}
       transitionDuration={0}
     >
-      <ReviewForm />
+      <ReviewForm onCancel={handleClose} />
     </Dialog>
   );
 };

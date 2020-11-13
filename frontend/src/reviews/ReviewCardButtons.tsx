@@ -2,6 +2,8 @@ import {
   Box,
   Button,
   ButtonProps,
+  IconButton,
+  IconButtonProps,
   makeStyles,
   SvgIconProps,
 } from "@material-ui/core";
@@ -12,13 +14,12 @@ import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import numeral from "numeral";
 import React from "react";
-import { ReviewAggergation, ReviewVoteValue } from "./query";
 
-export const EditButton = (props: ButtonProps) => {
+export const EditButton = (props: IconButtonProps) => {
   return (
-    <Button startIcon={<EditIcon />} {...props}>
-      Edit
-    </Button>
+    <IconButton {...props}>
+      <EditIcon />
+    </IconButton>
   );
 };
 

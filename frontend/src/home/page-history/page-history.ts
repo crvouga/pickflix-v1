@@ -55,6 +55,9 @@ const slice = (state: AppState) => state.pageHistory;
 const selectors = {
   slice,
   entities: createSelector([slice], (slice) => slice.entities),
+  movies: createSelector([slice], (slice) =>
+    slice.entities.filter((_) => _.mediaType === "movie")
+  ),
 };
 
 /* 

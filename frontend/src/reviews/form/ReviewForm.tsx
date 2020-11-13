@@ -1,14 +1,16 @@
 import {
-  AppBar,
   Box,
   Button,
-  Hidden,
+  Card,
+  CardActions,
+  CardContent,
   TextField,
-  Typography,
-  withStyles,
+  Toolbar,
+  CardHeader,
+  IconButton,
 } from "@material-ui/core";
-import MuiRating from "@material-ui/lab/Rating";
-import React from "react";
+import Rating from "@material-ui/lab/Rating";
+import React, { useState } from "react";
 import ListItemSkeleton from "../../common/components/ListItemSkeleton";
 import MovieListItem from "../../movie/components/MovieListItem";
 import { useQueryMovie } from "../../tmdb/query";
@@ -16,15 +18,11 @@ import { MediaId } from "../../tmdb/types";
 import { useQueryCurrentUser } from "../../users/useCurrentUser";
 import UserListItem from "../../users/UserListItem";
 import useReviewForm from "./useReviewForm";
-
-const Rating = withStyles({
-  root: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
-})(MuiRating);
-
-const CurrentUserInfo = () => {
+import SendIcon from "@material-ui/icons/Send";
+import CancelIcon from "@material-ui/icons/Cancel";
+import { Autocomplete } from "@material-ui/lab";
+import ReviewFormMedia from "./ReviewFormMedia";
+const ReviewFormAuthor = () => {
   const query = useQueryCurrentUser();
 
   if (query.error) return null;
@@ -34,91 +32,110 @@ const CurrentUserInfo = () => {
     <UserListItem
       user={query.data.user}
       ListItemTextProps={{ secondary: "Public Post" }}
-      onClick={() => {}}
+      disabled
     />
   );
 };
 
-const MediaInfo = ({ mediaId }: { mediaId: MediaId }) => {
-  const query = useQueryMovie({ mediaId });
-  if (query.error) return null;
-  if (!query.data) return <ListItemSkeleton />;
-  return <MovieListItem movie={query.data} onClick={() => {}} />;
+const ReviewFormRating = () => {
+  const reviewForm = useReviewForm();
+  const [rating, setRating] = useState(0);
+  return (
+    <Rating
+      name="review-form-rating"
+      value={reviewForm.review.rating || 0}
+      size="large"
+      onChangeActive={(e, value) => {
+        if (value > 0) {
+          setRating(value);
+        }
+      }}
+      onClick={() => {
+        reviewForm.setReview({
+          ...reviewForm.review,
+          rating,
+        });
+      }}
+      onChange={(e, value) => {
+        //not working for some reason
+      }}
+    />
+  );
 };
 
-export default () => {
+const ReviewFormContent = () => {
+  const reviewForm = useReviewForm();
+
+  return (
+    <TextField
+      variant="outlined"
+      defaultValue={reviewForm.review.content}
+      fullWidth
+      multiline
+      rows={6}
+      rowsMax={6}
+      onChange={(event) => {
+        const content = event.target.value || "";
+
+        reviewForm.setReview({
+          ...reviewForm.review,
+          content,
+        });
+      }}
+      label="Review"
+    />
+  );
+};
+
+const ReviewFormSubmitButton = () => {
   const reviewForm = useReviewForm();
 
   const handleSubmit = () => {
     reviewForm.submit();
   };
-
-  const handleClose = () => {};
   return (
-    <React.Fragment>
-      <AppBar color="default" position="sticky">
-        <Box display="flex">
-          <Box p={2} flex={1}>
-            <Typography variant="h6">Write a review</Typography>
-          </Box>
-          <Hidden smUp>
-            <Button size="large" onClick={handleClose}>
-              Cancel
-            </Button>
-          </Hidden>
+    <Toolbar>
+      <Button
+        disabled={reviewForm.disabled}
+        variant="contained"
+        color="primary"
+        onClick={handleSubmit}
+        startIcon={<SendIcon />}
+        style={{ color: "white" }}
+      >
+        Send
+      </Button>
+    </Toolbar>
+  );
+};
+
+export default ({ onCancel }: { onCancel?: () => void }) => {
+  const reviewForm = useReviewForm();
+
+  return (
+    <Card>
+      <CardHeader titleTypographyProps={{ variant: "h6" }} title="Review" />
+
+      <ReviewFormMedia />
+
+      <ReviewFormAuthor />
+
+      <CardContent>
+        <Box paddingBottom={2}>
+          <ReviewFormRating />
         </Box>
-      </AppBar>
-      <Box p={2}>
-        {reviewForm.mediaId && <MediaInfo mediaId={reviewForm.mediaId} />}
-
-        <CurrentUserInfo />
-
-        <Box paddingY={2} display="flex" justifyContent="center">
-          <Rating
-            name="review-form-rating"
-            value={reviewForm.rating}
-            size="large"
-            onChangeActive={(e, value) => {
-              if (value > 0) {
-                reviewForm.setRating(value);
-              }
-            }}
-            onChange={(e, value) => {
-              if (value) {
-                reviewForm.setRating(value);
-              }
-            }}
-          />
+        <Box>
+          <ReviewFormContent />
         </Box>
-
-        <Box paddingBottom={1}>
-          <TextField
-            variant="outlined"
-            defaultValue={reviewForm.content}
-            style={{ fontWeight: "bold", fontSize: "1.25em" }}
-            fullWidth
-            multiline
-            rows={6}
-            rowsMax={6}
-            onChange={(e) => {
-              reviewForm.setContent(e.target.value || "");
-            }}
-            label="Write Review Here"
-          />
-        </Box>
-
-        <Box paddingBottom={1}>
-          <Button
-            disabled={reviewForm.disabled}
-            variant="contained"
-            color="primary"
-            onClick={handleSubmit}
-            fullWidth
-          >
-            Submit
+      </CardContent>
+      <CardActions>
+        {onCancel && (
+          <Button size="large" onClick={onCancel}>
+            Cancel
           </Button>
-        </Box>
-      </Box>
-    </React.Fragment>
+        )}
+        <ReviewFormSubmitButton />
+      </CardActions>
+    </Card>
   );
 };

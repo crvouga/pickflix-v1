@@ -4,10 +4,13 @@ import { Entity, pageHistory } from "./page-history";
 
 const usePageHistoryState = () => {
   const slice = useSelector(pageHistory.selectors.slice);
+  const movies = useSelector(pageHistory.selectors.movies);
   const dispatch = useDispatch();
+  const actions = bindActionCreators(pageHistory.actions, dispatch);
   return {
+    ...actions,
     ...slice,
-    ...bindActionCreators(pageHistory.actions, dispatch),
+    movies,
   };
 };
 

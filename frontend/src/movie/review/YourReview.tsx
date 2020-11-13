@@ -72,7 +72,7 @@ const YourReview = ({
   user: UserAggergation;
   mediaId: MediaId;
 }) => {
-  const reviewFormState = useReviewForm();
+  const reviewForm = useReviewForm();
   const reviewFormModal = useModal("ReviewForm");
   const query = useQueryReviews({
     authorId: user.user.id,
@@ -94,7 +94,9 @@ const YourReview = ({
       <AddReviewCard
         user={user}
         onClick={() => {
-          reviewFormState.setMediaId(mediaId);
+          reviewForm.setReview({
+            mediaId,
+          });
           reviewFormModal.open();
         }}
       />
@@ -108,7 +110,7 @@ const YourReview = ({
       showUser
       review={review}
       onEdit={() => {
-        reviewFormState.setReview(review);
+        reviewForm.setReview(review.review);
         reviewFormModal.open();
       }}
     />

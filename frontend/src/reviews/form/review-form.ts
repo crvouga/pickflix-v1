@@ -1,6 +1,7 @@
 import { createAction, createReducer, createSelector } from "@reduxjs/toolkit";
 import { AppState } from "../../redux/types";
-import { TmdbMedia, TmdbMediaType, MediaId } from "../../tmdb/types";
+import { MediaId } from "../../tmdb/types";
+import { Review } from "../query";
 
 const name = "reviewForm";
 
@@ -9,9 +10,7 @@ const name = "reviewForm";
 */
 
 export type ReviewFormState = {
-  mediaId?: MediaId;
-  rating: number;
-  content: string;
+  review: Partial<Review> & Pick<Review, "rating" | "content">;
 };
 
 /* 
@@ -19,9 +18,11 @@ export type ReviewFormState = {
 */
 
 const initialState: ReviewFormState = {
-  rating: 0,
-  content: "",
-  mediaId: undefined,
+  review: {
+    rating: 0,
+    content: "",
+    mediaId: undefined,
+  },
 };
 
 /* 
@@ -29,8 +30,15 @@ const initialState: ReviewFormState = {
 */
 
 const slice = (state: AppState) => state.reviewForm;
+const review = createSelector([slice], (slice) => slice.review);
+const disabled = createSelector(
+  [review],
+  (review) => !(0 <= review.rating && review.rating <= 5) && !review.mediaId
+);
 const selectors = {
   slice,
+  review,
+  disabled,
 };
 
 /* 
@@ -38,9 +46,8 @@ const selectors = {
 */
 
 const actions = {
-  setRating: createAction<number>(name + "/SET_RATING"),
-  setContent: createAction<string>(name + "/SET_CONTENT"),
-  setMediaId: createAction<MediaId>(name + "/SET_MEDIA"),
+  setReview: createAction<Partial<Review>>(name + "/SET_REVIEW"),
+  reset: createAction(name + "/SET_RESET"),
 };
 
 /* 
@@ -48,14 +55,11 @@ const actions = {
 */
 
 const reducer = createReducer(initialState, {
-  [actions.setRating.toString()]: (state, action) => {
-    state.rating = action.payload;
+  [actions.setReview.toString()]: (state, action) => {
+    state.review = action.payload;
   },
-  [actions.setContent.toString()]: (state, action) => {
-    state.content = action.payload;
-  },
-  [actions.setMediaId.toString()]: (state, action) => {
-    state.mediaId = action.payload;
+  [actions.reset.toString()]: (state, action) => {
+    return initialState;
   },
 });
 

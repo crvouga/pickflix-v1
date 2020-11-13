@@ -21,10 +21,11 @@ import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
 import useModal from "../navigation/modals/useModal";
 import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
+import useReviewForm from "../reviews/form/useReviewForm";
 import AvatarUser from "./AvatarUser";
 import OptionsDialog from "./OptionsDialog";
 import { getUser, queryKeys } from "./query";
-import useCurrentUser from "./useCurrentUser";
+import { useQueryCurrentUser } from "./useCurrentUser";
 import UserAutoListsList from "./UserAutoListsList";
 import UserListsList from "./UserListsList";
 import UserReviewList from "./UserReviewList";
@@ -43,22 +44,30 @@ export default () => {
   const history = useHistory();
   const isDialogOpen = useBoolean(false);
   const addListModal = useModal("AddList");
-  const reviewModal = useModal("ReviewForm");
-  const currentUser = useCurrentUser();
+  const reviewFormModal = useModal("ReviewForm");
+  const reviewForm = useReviewForm();
+  const queryCurrentUser = useQueryCurrentUser();
   const query = useQuery(queryKeys.user({ username }), () =>
     getUser({ username })
   );
 
-  if (query.error) {
+  const handleClickReview = () => {
+    reviewForm.reset();
+    reviewFormModal.open();
+  };
+
+  if (query.error || queryCurrentUser.error) {
     return <ErrorPage />;
   }
 
-  if (!query.data || currentUser === "loading") {
+  if (query.data === undefined || queryCurrentUser.data === undefined) {
     return <LoadingPage />;
   }
 
   const user = query.data;
-  const isCurrentUser = currentUser !== null && user.user.id === currentUser.id;
+  const currentUser = queryCurrentUser.data;
+  const isCurrentUser =
+    currentUser !== null && user.user.id === currentUser.user.id;
 
   return (
     <React.Fragment>
@@ -109,7 +118,7 @@ export default () => {
               <IconButton onClick={addListModal.open}>
                 <PlaylistAddIcon />
               </IconButton>
-              <IconButton onClick={reviewModal.open}>
+              <IconButton onClick={handleClickReview}>
                 <RateReviewOutlinedIcon />
               </IconButton>
             </Toolbar>

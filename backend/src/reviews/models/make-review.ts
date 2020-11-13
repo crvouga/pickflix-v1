@@ -80,7 +80,7 @@ export const updateReview = (
 ): Review => {
   return {
     ...review,
-    ...(rating ? { rating } : {}),
-    ...(content ? { content } : {}),
+    ...(rating !== undefined ? { rating } : {}),
+    ...(content !== undefined ? { content } : {}),
   };
 };
