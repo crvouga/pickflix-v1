@@ -1,4 +1,4 @@
-# https://crvouga-pickflix.herokuapp.com/
+# https://www.pickflix.org/
 
 # Pickflix 🎬🎥🍿
 
