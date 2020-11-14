@@ -4,6 +4,7 @@ import LabeledIconButton from "../../common/components/LabeledIconButton";
 import AutoListToggleListItemButton from "../../lists/auto-lists/AutoListToggleListItemButton";
 import { AutoListKeys } from "../../lists/query";
 import useActions from "./useActions";
+import { MediaId, TmdbMediaType } from "../../tmdb/types";
 
 type Props = {
   tmdbMediaId: string;
@@ -20,22 +21,25 @@ export default ({ tmdbMediaId }: Props) => {
   const classes = useStyles();
   const movieActions = useActions({
     tmdbMediaId: tmdbMediaId,
-    tmdbMediaType: "movie",
+    tmdbMediaType: TmdbMediaType.movie,
   });
 
   const actionBarItems = [movieActions.addListItem];
+
+  const mediaId = {
+    tmdbMediaId: Number(tmdbMediaId),
+    tmdbMediaType: TmdbMediaType.movie,
+  };
 
   return (
     <Box display="flex" justifyContent="space-between" flexWrap="nowrap">
       <AutoListToggleListItemButton
         autoListKey={AutoListKeys.Liked}
-        tmdbMediaId={tmdbMediaId}
-        tmdbMediaType="movie"
+        mediaId={mediaId}
       />
       <AutoListToggleListItemButton
         autoListKey={AutoListKeys.WatchNext}
-        tmdbMediaId={tmdbMediaId}
-        tmdbMediaType="movie"
+        mediaId={mediaId}
       />
 
       {actionBarItems.map(({ icon, label, onClick }) => (

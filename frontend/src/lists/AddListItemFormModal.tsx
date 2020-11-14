@@ -42,7 +42,10 @@ export default ({ currentUser }: { currentUser: User }) => {
 
     if (tmdbMedia) {
       await addListItemForm.submit({
-        ...tmdbMedia,
+        mediaId: {
+          tmdbMediaId: Number(tmdbMedia.tmdbMediaId),
+          tmdbMediaType: tmdbMedia.tmdbMediaType,
+        },
         listId: list.list.id,
       });
       handleClose();

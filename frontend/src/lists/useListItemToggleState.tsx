@@ -1,5 +1,5 @@
 import { useQuery, useQueryCache } from "react-query";
-import { TmdbMediaType } from "../tmdb/types";
+import { TmdbMediaType, MediaId } from "../tmdb/types";
 import {
   deleteListItems,
   getListItems,
@@ -7,19 +7,18 @@ import {
   queryKeys,
 } from "./query";
 import { useState, useEffect } from "react";
+import { SimpleEventTarget } from "../utils";
 
-export default (params: {
-  listId: string;
-  tmdbMediaId: string;
-  tmdbMediaType: TmdbMediaType;
-}) => {
+const events = new SimpleEventTarget<"added" | "removed">();
+
+export default (params: { listId: string; mediaId: MediaId }) => {
   const queryCache = useQueryCache();
   const queryKey = queryKeys.listItems(params);
   const query = useQuery(queryKey, () => getListItems(params));
-  const [isIn, setIsIn] = useState(false);
+  const [isAdded, setIsAdded] = useState(false);
 
   useEffect(() => {
-    setIsIn(Boolean(query.data && query.data.length > 0));
+    setIsAdded(Boolean(query.data && query.data.length > 0));
   }, [query.data]);
 
   const toggle = async () => {
@@ -28,25 +27,29 @@ export default (params: {
     }
 
     try {
-      if (query.isFetched && isIn) {
-        setIsIn(false);
+      if (query.isFetched && isAdded) {
+        setIsAdded(false);
         await deleteListItems([params]);
-        return false;
+        events.dispatch("removed");
       } else {
-        setIsIn(true);
+        setIsAdded(true);
         await postListItem(params);
+        events.dispatch("added");
         return true;
       }
     } catch (error) {
       throw error;
     } finally {
-      queryCache.invalidateQueries(queryKey);
+      queryCache.invalidateQueries((query) =>
+        query.queryKey.includes(params.listId)
+      );
     }
   };
 
   return {
     ...query,
-    isIn,
     toggle,
+    isAdded,
+    events,
   };
 };

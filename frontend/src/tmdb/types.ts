@@ -3,7 +3,11 @@ export type Paginated<Result> = {
   totalPages: number;
   results: Result[];
 };
-export type TmdbMediaType = "movie" | "person";
+export enum TmdbMediaType {
+  movie = "movie",
+  person = "person",
+}
+
 export type MediaId = {
   tmdbMediaId: number;
   tmdbMediaType: TmdbMediaType;

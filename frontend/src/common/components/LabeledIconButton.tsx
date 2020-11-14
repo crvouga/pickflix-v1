@@ -17,12 +17,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-type Props = ButtonBaseProps & {
+export type LabeledIconButtonProps = ButtonBaseProps & {
   icon: ReactNode;
   label: string;
 };
 
-export default ({ label, icon, ...props }: Props) => {
+export default ({ label, icon, ...props }: LabeledIconButtonProps) => {
   const classes = useStyles();
   return (
     <ButtonBase {...props} className={clsx(classes.root, props.className)}>

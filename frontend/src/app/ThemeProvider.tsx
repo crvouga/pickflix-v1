@@ -46,9 +46,9 @@ const CssBaseline = withStyles((theme) => ({
     },
     "*::-webkit-scrollbar-thumb": {
       borderRadius: theme.spacing(2),
-      backgroundColor: theme.palette.background.paper,
+      backgroundColor: theme.palette.grey[800], //theme.palette.background.paper,
       "&:hover": {
-        backgroundColor: theme.palette.action.hover,
+        backgroundColor: theme.palette.grey[900],
       },
     },
     "::-webkit-scrollbar-corner": {

@@ -5,9 +5,12 @@ import createSagaMiddleware from "redux-saga";
 import { rootReducer } from "./root-reducer";
 import { rootSaga } from "./root-saga";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 const persistConfig = {
   key: "root",
   storage: localforage,
+  whitelist: isProduction ? undefined : [],
 };
 
 export const configureReduxStore = () => {

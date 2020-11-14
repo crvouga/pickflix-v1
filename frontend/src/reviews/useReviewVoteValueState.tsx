@@ -104,7 +104,6 @@ export default (queryKey: QueryKey) => {
     } catch (error) {
       queryCache.setQueryData(queryKey, previous);
     } finally {
-      queryCache.invalidateQueries(queryKey);
     }
   };
 

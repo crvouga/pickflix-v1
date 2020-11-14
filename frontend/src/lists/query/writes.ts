@@ -1,5 +1,5 @@
 import { BackendAPI } from "../../backend-api";
-import { TmdbMediaType } from "../../tmdb/types";
+import { TmdbMediaType, MediaId } from "../../tmdb/types";
 import { AutoListKeys, List, ListItem } from "./types";
 
 /*
@@ -63,19 +63,13 @@ export const deleteAutoListListItem = async ({
 
 export type PostListItemParams = {
   listId: string;
-  tmdbMediaId: string;
-  tmdbMediaType: TmdbMediaType;
+  mediaId: MediaId;
 };
 
-export const postListItem = async ({
-  listId,
-  tmdbMediaId,
-  tmdbMediaType,
-}: PostListItemParams) => {
+export const postListItem = async ({ listId, mediaId }: PostListItemParams) => {
   const { data } = await BackendAPI.post<ListItem>(`/api/list-items`, {
     listId,
-    tmdbMediaId,
-    tmdbMediaType,
+    ...mediaId,
   });
   return data;
 };
@@ -103,21 +97,20 @@ export const postList = async ({ title, description }: PostListParams) => {
 
 */
 
-export type DeleteListItemParams =
-  | {
-      id: string;
-    }
-  | {
-      listId: string;
-      tmdbMediaId: string;
-      tmdbMediaType: TmdbMediaType;
-    };
+export type DeleteListItemParams = {
+  id?: string;
+  listId?: string;
+  mediaId?: MediaId;
+};
 
 export type DeleteListItemsParams = DeleteListItemParams[];
 
 export const deleteListItems = async (params: DeleteListItemsParams) => {
   return await BackendAPI.delete<void>(`/api/list-items`, {
-    data: params,
+    data: params.map((param) => ({
+      ...param,
+      ...("mediaId" in param ? param.mediaId : {}),
+    })),
   });
 };
 

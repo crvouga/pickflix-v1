@@ -23,7 +23,7 @@ import BackButton from "../navigation/BackButton";
 import { APP_BAR_HEIGHT } from "../navigation/constants";
 import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
 import makeImageUrl from "../tmdb/makeImageUrl";
-import { MediaId } from "../tmdb/types";
+import { MediaId, TmdbMediaType } from "../tmdb/types";
 import useVideoState from "../video/useVideoState";
 import VideoPlayer from "../video/VideoPlayer";
 import MovieCredits from "./credits/MovieCredits";
@@ -65,9 +65,9 @@ export default () => {
 
   const { tmdbMediaId } = useParams<{ tmdbMediaId: string }>();
   const query = useQueryMovie({ tmdbMediaId });
-  const mediaId: MediaId = {
+  const mediaId = {
     tmdbMediaId: Number(tmdbMediaId),
-    tmdbMediaType: "movie",
+    tmdbMediaType: TmdbMediaType.movie,
   };
 
   const pageHistory = usePageHistory();
@@ -124,15 +124,17 @@ export default () => {
         </AppBar>
       </Hidden>
 
-      <Container
-        disableGutters
-        maxWidth="md"
-        className={clsx({
-          [classes.sticky]: moviePageUiState.isVideoPlayerSticky && isMobile,
-        })}
-      >
-        <VideoPlayer />
-      </Container>
+      {videos.results.length > 0 && (
+        <Container
+          disableGutters
+          maxWidth="md"
+          className={clsx({
+            [classes.sticky]: moviePageUiState.isVideoPlayerSticky && isMobile,
+          })}
+        >
+          <VideoPlayer />
+        </Container>
+      )}
 
       <Container disableGutters maxWidth="md">
         <Grid container direction="row-reverse">

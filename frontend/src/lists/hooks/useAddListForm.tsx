@@ -11,6 +11,7 @@ import {
   postListItem,
 } from "../query";
 import { addListForm } from "../redux/add-list-form";
+import { TmdbMediaType } from "../../tmdb/types";
 
 const useAddListFormState = () => {
   const dispatch = useDispatch();
@@ -50,7 +51,10 @@ export default () => {
 
       if (itemInfos[0]) {
         await postListItem({
-          ...itemInfos[0],
+          mediaId: {
+            tmdbMediaId: Number(itemInfos[0].tmdbMediaId),
+            tmdbMediaType: itemInfos[0].tmdbMediaType as TmdbMediaType,
+          },
           listId: list.id,
         });
       }

@@ -1,5 +1,5 @@
 import { BackendAPI } from "../../backend-api";
-import { TmdbMediaType } from "../../tmdb/types";
+import { TmdbMediaType, MediaId } from "../../tmdb/types";
 import {
   AutoListAggergation,
   AutoListAggergationByKey,
@@ -81,14 +81,25 @@ export const getList = async ({ listId }: { listId: string }) => {
 };
 
 type GetListItemsParams =
-  | { listId: string }
-  | { listId: string; tmdbMediaId: string; tmdbMediaType: TmdbMediaType };
+  | {
+      listId: string;
+    }
+  | {
+      listId: string;
+      mediaId: MediaId;
+    };
 
 export const getListItems = async (params: GetListItemsParams) => {
   const { data } = await BackendAPI.get<ListItemAggergation[]>(
     `/api/list-items`,
     {
-      params,
+      params:
+        "mediaId" in params
+          ? {
+              ...params.mediaId,
+              listId: params.listId,
+            }
+          : params,
     }
   );
   return data;

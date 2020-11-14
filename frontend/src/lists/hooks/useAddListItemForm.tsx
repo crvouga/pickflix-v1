@@ -27,6 +27,10 @@ export default () => {
   const addListItemFormState = useAddListItemFormState();
 
   const submit = async (params: PostListItemParams) => {
+    if (!params.listId) {
+      return;
+    }
+
     try {
       await postListItem(params);
       snackbar.display({

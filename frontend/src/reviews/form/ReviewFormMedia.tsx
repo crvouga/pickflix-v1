@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import ListItemSkeleton from "../../common/components/ListItemSkeleton";
 import MovieListItem from "../../movie/components/MovieListItem";
 import { useQueryMovie, useQueryMovieSearch } from "../../tmdb/query";
-import { MediaId } from "../../tmdb/types";
+import { MediaId, TmdbMediaType } from "../../tmdb/types";
 import useReviewForm from "./useReviewForm";
 import { TextField, CircularProgress, Box } from "@material-ui/core";
 import { useDebounce } from "use-debounce/lib";
@@ -47,7 +47,7 @@ const MediaSearch = () => {
             ...reviewForm.review,
             mediaId: {
               tmdbMediaId: Number(option.id),
-              tmdbMediaType: "movie",
+              tmdbMediaType: TmdbMediaType.movie,
             },
           });
         }

@@ -7,6 +7,32 @@ import { fade } from "@material-ui/core/styles/colorManipulator";
 
 */
 
+const noop = () => {};
+
+export class SimpleEventTarget<EventType extends string> {
+  eventTarget: EventTarget;
+  constructor() {
+    this.eventTarget = new EventTarget();
+  }
+  dispatch(eventType: EventType) {
+    this.eventTarget.dispatchEvent(new Event(eventType));
+  }
+  on(eventType: EventType, callback: () => void) {
+    this.eventTarget.addEventListener(eventType, callback);
+
+    const unlisten = (callback?: () => void) => {
+      this.eventTarget.removeEventListener(eventType, callback || noop);
+    };
+
+    return unlisten;
+  }
+}
+
+/* 
+
+
+*/
+
 export const closeDialog = (props: DialogProps) => {
   if (props.onClose) {
     props.onClose({}, "backdropClick");
