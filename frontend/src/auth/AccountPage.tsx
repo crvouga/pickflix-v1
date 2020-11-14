@@ -1,5 +1,5 @@
 import React from "react";
-import AuthWizard from "../auth-form/AuthWizard";
+import AuthWizard from "./auth-form/AuthWizard";
 import LoadingBox from "../common/components/LoadingBox";
 import useCurrentUser from "../users/useCurrentUser";
 import AccountPageAuthenticated from "./AccountPage.Authenticated";

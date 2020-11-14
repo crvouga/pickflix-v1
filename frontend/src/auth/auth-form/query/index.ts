@@ -1,4 +1,4 @@
-import { BackendAPI } from "../../backend-api";
+import { BackendAPI } from "../../../backend-api";
 
 export const queryKeys = {};
 

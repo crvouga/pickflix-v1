@@ -1,9 +1,9 @@
 import React from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router";
-import ErrorBox from "../common/components/ErrorBox";
-import LoadingBox from "../common/components/LoadingBox";
-import { getUsers, queryKeys } from "../users/query";
+import ErrorBox from "../../common/components/ErrorBox";
+import LoadingBox from "../../common/components/LoadingBox";
+import { getUsers, queryKeys } from "../../users/query";
 import CreateAccount from "./CreateAccount";
 import Email from "./Email";
 import Password from "./Password";

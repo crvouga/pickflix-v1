@@ -1,7 +1,7 @@
 import { Box, Paper } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router";
-import PickflixLogo from "../common/PickflixLogo";
+import PickflixLogo from "../../common/PickflixLogo";
 import AuthWizardStep from "./AuthWizardStep";
 
 export default () => {

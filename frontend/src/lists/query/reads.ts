@@ -63,16 +63,6 @@ export const getAutoLists = async () => {
   return data;
 };
 
-export const getListsOrAutoLists = async ({ id }: { id: string }) => {
-  const { data } = await BackendAPI.get<ListAggergation | AutoListAggergation>(
-    `/api/lists`,
-    {
-      params: { id },
-    }
-  );
-  return data;
-};
-
 export const getList = async ({ listId }: { listId: string }) => {
   const { data } = await BackendAPI.get<ListAggergation>(
     `/api/lists/${listId}`

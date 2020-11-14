@@ -9,7 +9,7 @@ import React, { useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { useHistory } from "react-router";
 import { useDebounce } from "use-debounce/lib";
-import { getUsers } from "../users/query";
+import { getUsers } from "../../users/query";
 
 //copyed from server
 const USERNAME_REGEXP = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;

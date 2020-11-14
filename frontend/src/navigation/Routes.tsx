@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router";
-import AuthPage from "../auth-form/AuthPage";
+import AuthPage from "../auth/auth-form/AuthPage";
 import DiscoverMoviePage from "../discover/DiscoverMoviePage";
 import ListPage from "../lists/ListPage";
 import MoviePage from "../movie/MoviePage";
