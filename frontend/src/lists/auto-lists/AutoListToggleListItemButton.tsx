@@ -44,35 +44,25 @@ const Sub = ({
   const listItemState = useListItemToggleState({
     mediaId,
     listId,
+    onRemoved: () => {
+      snackbar.display({
+        message: `Removed from ${toAutoListName(autoListKey)}`,
+      });
+    },
+    onAdded: () => {
+      snackbar.display({
+        message: `Added to ${toAutoListName(autoListKey)}`,
+        action: <SeeListButton listId={listId} />,
+      });
+    },
   });
-
-  const handleClick = () => {
-    listItemState.toggle();
-  };
-
-  useEffect(() => {
-    const unlistens = [
-      listItemState.events.on("removed", () => {
-        snackbar.display({
-          message: `Removed from ${toAutoListName(autoListKey)}`,
-        });
-      }),
-      listItemState.events.on("added", () => {
-        snackbar.display({
-          message: `Added to ${toAutoListName(autoListKey)}`,
-          action: <SeeListButton listId={listId} />,
-        });
-      }),
-    ];
-    return () => {
-      unlistens.forEach((unlisten) => unlisten());
-    };
-  }, []);
 
   return (
     <LabeledIconButton
       label={toAutoListName(autoListKey)}
-      onClick={handleClick}
+      onClick={() => {
+        listItemState.toggle();
+      }}
       icon={
         <AutoListIcon
           autoListKey={autoListKey}
@@ -98,7 +88,12 @@ export default ({
   const listId = autoList?.list.id;
 
   if (!listId) {
-    return null;
+    return (
+      <LabeledIconButton
+        label={toAutoListName(autoListKey)}
+        icon={<AutoListIcon autoListKey={autoListKey} />}
+      />
+    );
   }
 
   return <Sub listId={listId} mediaId={mediaId} autoListKey={autoListKey} />;

@@ -1,4 +1,4 @@
-import { TmdbMediaType } from "../../../media/models/types";
+import { makeMediaIdFake } from "../../../media/models/types";
 import { makeUserFake } from "../../../users/models/make-user.fake";
 import { buildListLogicFake } from "../build.fake";
 
@@ -15,25 +15,19 @@ describe("getting list items", () => {
       [1, 2, 3, 4, 5].map((n) => ({
         userId: user.id,
         listId: list.id,
-        tmdbMediaId: n,
-        tmdbMediaType: TmdbMediaType.movie,
+        mediaId: makeMediaIdFake({
+          tmdbMediaId: n,
+        }),
       }))
     );
 
-    const aggergatedListItems = await listLogic.getListItemAggergations({
+    const listItemAggergates = await listLogic.getListItemAggergations({
       listId: list.id,
     });
 
-    expect(aggergatedListItems).toEqual(
-      expect.arrayContaining(
-        listItems.map((listItem) =>
-          expect.objectContaining({
-            listItem,
-            tmdbData: expect.any(Object),
-          })
-        )
-      )
-    );
+    for (const listItemAggergate of listItemAggergates) {
+      expect(listItems).toContainEqual(listItemAggergate.listItem);
+    }
   });
   it("rejects if duplicate list items", async () => {
     const { listLogic } = buildListLogicFake();
@@ -47,26 +41,25 @@ describe("getting list items", () => {
       },
     ]);
 
+    const mediaId = makeMediaIdFake();
+
     expect.assertions(1);
     try {
       await listLogic.addListItems([
         {
           userId: currentUser.id,
           listId: list.id,
-          tmdbMediaId: 550,
-          tmdbMediaType: TmdbMediaType.movie,
+          mediaId,
         },
         {
           userId: currentUser.id,
-          tmdbMediaId: 550,
           listId: list.id,
-          tmdbMediaType: TmdbMediaType.movie,
+          mediaId,
         },
         {
           userId: currentUser.id,
-          tmdbMediaId: 550,
-          tmdbMediaType: TmdbMediaType.movie,
           listId: list.id,
+          mediaId,
         },
       ]);
       expect(true).toBeTruthy();
@@ -87,18 +80,24 @@ describe("getting list items", () => {
       },
     ]);
 
+    const mediaId1 = makeMediaIdFake({
+      tmdbMediaId: 550,
+    });
+    const mediaId2 = makeMediaIdFake({
+      tmdbMediaId: 123123,
+    });
+
     await listLogic.addListItems([
       {
         userId: currentUser.id,
         listId: list.id,
-        tmdbMediaId: 550,
-        tmdbMediaType: TmdbMediaType.movie,
+        mediaId: mediaId1,
       },
       {
         userId: currentUser.id,
-        tmdbMediaId: 123123,
+
         listId: list.id,
-        tmdbMediaType: TmdbMediaType.movie,
+        mediaId: mediaId2,
       },
     ]);
 
@@ -106,8 +105,7 @@ describe("getting list items", () => {
     await listLogic.removeListItems([
       {
         listId: list.id,
-        tmdbMediaId: 550,
-        tmdbMediaType: TmdbMediaType.movie,
+        mediaId: mediaId1,
       },
     ]);
     const after = await listLogic.getListItemAggergations({ listId: list.id });
@@ -117,15 +115,13 @@ describe("getting list items", () => {
     expect(
       await listLogic.getListItemAggergations({
         listId: list.id,
-        tmdbMediaId: 550,
-        tmdbMediaType: TmdbMediaType.movie,
+        mediaId: mediaId1,
       })
     ).toHaveLength(0);
     expect(
       await listLogic.getListItemAggergations({
-        tmdbMediaId: 123123,
         listId: list.id,
-        tmdbMediaType: TmdbMediaType.movie,
+        mediaId: mediaId2,
       })
     ).toHaveLength(1);
   });

@@ -7,10 +7,7 @@ export async function aggergateListItem(
   listItem: ListItem
 ): Promise<ListItemAggergate> {
   const tmdbData = await this.mediaLogic.requestTmdbData({
-    mediaId: {
-      tmdbMediaId: listItem.tmdbMediaId,
-      tmdbMediaType: listItem.tmdbMediaType,
-    },
+    mediaId: listItem.mediaId,
     query: {
       appendToResponse: "similar",
     },
@@ -35,7 +32,9 @@ export async function aggergateList<T extends List | AutoList>(
     this.getListItemAggergations({
       listId: list.id,
     }),
-    Users.find({ id: list.ownerId }),
+    Users.find({
+      id: list.ownerId,
+    }),
   ]);
 
   return {

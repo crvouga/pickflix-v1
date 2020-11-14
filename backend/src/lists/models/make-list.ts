@@ -4,6 +4,13 @@ import { UserId } from "../../users/models/make-user";
 
 export type ListId = Id & { ListId: true };
 
+export const castListId = (listId: any) => {
+  if (isValidId(listId)) {
+    return listId as ListId;
+  }
+  throw new Error("invalid listId");
+};
+
 export type List = {
   type: "list";
   id: ListId;

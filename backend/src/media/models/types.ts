@@ -46,7 +46,7 @@ const castTmdbMediaType = (type: string): TmdbMediaType => {
 };
 
 export const castMediaId = (mediaId: any): MediaId => {
-  if ("tmdbMediaId" in mediaId && "tmdbMediaType" in mediaId) {
+  if (mediaId && "tmdbMediaId" in mediaId && "tmdbMediaType" in mediaId) {
     return {
       tmdbMediaId: castTmdbMediaId(mediaId.tmdbMediaId),
       tmdbMediaType: castTmdbMediaType(mediaId.tmdbMediaType),

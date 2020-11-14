@@ -1,10 +1,9 @@
-import { innerJoin } from "ramda";
 import { QueryCache } from "react-query";
 import { queryKeys } from "./reads";
-import { ListAggergation, ListItem } from "./types";
+import { ListAggergation } from "./types";
 import {
+  DeleteListItemParams,
   deleteListItems,
-  DeleteListItemsParams,
   patchList,
   PatchListParams,
   postList,
@@ -57,27 +56,11 @@ export const editListMutation = (queryCache: QueryCache) => async (
 */
 
 export const deleteListItemsMutation = (queryCache: QueryCache) => async (
-  params: DeleteListItemsParams
+  params: DeleteListItemParams[]
 ) => {
-  // const key = queryKeys.listItems(listId);
-  // const previousListItems = queryCache.getQueryData<ListItem[]>(key);
-
-  // if (!previousListItems) {
-  //   throw new Error("no list items to delete");
-  // }
-
-  // const optimistic = innerJoin(
-  //   (listItem, id) => listItem.id !== id,
-  //   previousListItems,
-  //   listItemIds
-  // );
-
-  // queryCache.setQueryData(key, optimistic);
-
   try {
     await deleteListItems(params);
   } catch (error) {
-    // queryCache.setQueryData(key, previousListItems);
     throw error;
   } finally {
     const ids = params.map((param) =>

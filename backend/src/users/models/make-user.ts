@@ -16,6 +16,69 @@ const USERNAME_REGEXP = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
 const MAX_USERNAME_LENGTH = 100;
 const MIN_USERNAME_LENGTH = 2;
 
+export const castUserId = (userId: any) => {
+  if (isValidId(userId)) {
+    return userId as UserId;
+  }
+  throw new Error("invalid userId");
+};
+
+export const castUsername = (username: any) => {
+  if (typeof username !== "string") {
+    throw new Error("username must be a string");
+  }
+
+  if (username.length < MIN_USERNAME_LENGTH) {
+    throw new Error("username too short");
+  }
+
+  if (username.length > MAX_USERNAME_LENGTH) {
+    throw new Error("username too long");
+  }
+
+  if (!USERNAME_REGEXP.test(username)) {
+    throw new Error("invalid username");
+  }
+  return username;
+};
+
+export const castEmailAddress = (emailAddress: any) => {
+  if (typeof emailAddress !== "string") {
+    throw new Error("emailAdress must be a string");
+  }
+
+  if (!EmailValidator.validate(emailAddress)) {
+    throw new Error("invalid emailAddress");
+  }
+
+  return emailAddress;
+};
+
+export const castDisplayName = (displayName: any) => {
+  if (typeof displayName !== "string") {
+    throw new Error("displayName must be a string");
+  }
+  return displayName;
+};
+
+export const castUser = (user: any) => {
+  if (
+    "id" in user &&
+    "username" in user &&
+    "emailAddress" in user &&
+    "displayName" in user
+  ) {
+    return {
+      type: "user",
+      id: castUserId(user.id),
+      username: castUsername(user.username),
+      emailAddress: castEmailAddress(user.emailAddress),
+      displayName: castDisplayName(user.displayName),
+    } as User;
+  }
+  throw new Error("invalid user");
+};
+
 export const makeUser = (partial: {
   id?: UserId;
   username: string;
@@ -27,53 +90,10 @@ export const makeUser = (partial: {
   const username = partial.username.trim();
   const displayName = (partial.displayName || "").trim();
 
-  const errors = [];
-
-  if (!EmailValidator.validate(emailAddress)) {
-    errors.push({ key: "email", message: "Invalid email address." });
-  }
-
-  if (!isValidId(id)) {
-    errors.push({ key: "id", message: "Invalid user id." });
-  }
-
-  // if (displayName.length === 0) {
-  //   errors.push({
-  //     key: "displayName",
-  //     message: "Display name can not be empty.",
-  //   });
-  // }
-
-  if (username.length < MIN_USERNAME_LENGTH) {
-    errors.push({
-      key: "username",
-      message: `Username can NOT be less than ${MIN_USERNAME_LENGTH} characters long.`,
-    });
-  }
-
-  if (username.length > MAX_USERNAME_LENGTH) {
-    errors.push({
-      key: "username",
-      message: `Usernane can NOT be more than ${MAX_USERNAME_LENGTH} characters long.`,
-    });
-  }
-
-  if (!USERNAME_REGEXP.test(username)) {
-    errors.push({
-      key: "username",
-      message: `Invalid username`,
-    });
-  }
-
-  if (errors.length > 0) {
-    throw errors;
-  }
-
-  return Object.freeze({
-    type: "user",
+  return castUser({
     id,
-    username,
     emailAddress,
+    username,
     displayName,
   });
 };

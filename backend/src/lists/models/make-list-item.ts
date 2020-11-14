@@ -2,6 +2,7 @@ import {
   TmdbMediaId,
   TmdbMediaType,
   TmdbMedia,
+  MediaId,
 } from "../../media/models/types";
 import { UserId } from "../../users/models/make-user";
 import { Id } from "../../id/types";
@@ -10,20 +11,27 @@ import { makeId, isValidId } from "../../id";
 
 export type ListItemId = Id & { ListItemId: true };
 
+export const castListItemId = (listItemId: any) => {
+  if (isValidId(listItemId)) {
+    return listItemId as ListItemId;
+  }
+  throw new Error("invalid listItemId");
+};
+
 export type ListItem = {
   type: "listItem";
   id: ListItemId;
   userId: UserId;
   listId: ListId;
   createdAt: number;
-} & TmdbMedia;
+  mediaId: MediaId;
+};
 
 export type PartialListItem = {
   id?: ListItemId;
   userId: UserId;
   listId: ListId;
-  tmdbMediaId: TmdbMediaId;
-  tmdbMediaType: TmdbMediaType;
+  mediaId: MediaId;
   createdAt?: number;
 };
 
@@ -33,8 +41,7 @@ export const makeListItem = (partial: PartialListItem): ListItem => {
     createdAt = Date.now(),
     userId,
     listId,
-    tmdbMediaId,
-    tmdbMediaType,
+    mediaId,
   } = partial;
 
   if (!isValidId(id)) {
@@ -54,8 +61,7 @@ export const makeListItem = (partial: PartialListItem): ListItem => {
     id,
     userId,
     listId,
-    tmdbMediaId,
-    tmdbMediaType,
+    mediaId,
     createdAt,
   });
 };

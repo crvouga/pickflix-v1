@@ -2,60 +2,6 @@ import { BackendAPI } from "../../backend-api";
 import { TmdbMediaType, MediaId } from "../../tmdb/types";
 import { AutoListKeys, List, ListItem } from "./types";
 
-/*
-
-
-*/
-
-export type PostAutoListListItemParams = {
-  autoListKey: AutoListKeys;
-  tmdbMediaId: string;
-  tmdbMediaType: TmdbMediaType;
-};
-
-export const postAutoListListItem = async ({
-  autoListKey,
-  tmdbMediaId,
-  tmdbMediaType,
-}: PostAutoListListItemParams) => {
-  const { data } = await BackendAPI.post<ListItem>(
-    `/api/auto-lists/${autoListKey}/list-items`,
-    {
-      tmdbMediaId,
-      tmdbMediaType,
-    }
-  );
-  return data;
-};
-
-/* 
-
-
-*/
-
-export type DeleteAutoListListItemParams = {
-  autoListKey: AutoListKeys;
-  tmdbMediaId: string;
-  tmdbMediaType: TmdbMediaType;
-};
-
-export const deleteAutoListListItem = async ({
-  autoListKey,
-  tmdbMediaId,
-  tmdbMediaType,
-}: PostAutoListListItemParams) => {
-  const { data } = await BackendAPI.delete<{}>(
-    `/api/auto-lists/${autoListKey}/list-items`,
-    {
-      params: {
-        tmdbMediaId,
-        tmdbMediaType,
-      },
-    }
-  );
-  return data;
-};
-
 /* 
 
 
@@ -69,7 +15,7 @@ export type PostListItemParams = {
 export const postListItem = async ({ listId, mediaId }: PostListItemParams) => {
   const { data } = await BackendAPI.post<ListItem>(`/api/list-items`, {
     listId,
-    ...mediaId,
+    mediaId,
   });
   return data;
 };
@@ -97,20 +43,18 @@ export const postList = async ({ title, description }: PostListParams) => {
 
 */
 
-export type DeleteListItemParams = {
-  id?: string;
-  listId?: string;
-  mediaId?: MediaId;
-};
+export type DeleteListItemParams =
+  | {
+      id: string;
+    }
+  | {
+      listId: string;
+      mediaId: MediaId;
+    };
 
-export type DeleteListItemsParams = DeleteListItemParams[];
-
-export const deleteListItems = async (params: DeleteListItemsParams) => {
+export const deleteListItems = async (params: DeleteListItemParams[]) => {
   return await BackendAPI.delete<void>(`/api/list-items`, {
-    data: params.map((param) => ({
-      ...param,
-      ...("mediaId" in param ? param.mediaId : {}),
-    })),
+    data: params,
   });
 };
 

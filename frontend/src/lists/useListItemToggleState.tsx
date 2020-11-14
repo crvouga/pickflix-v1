@@ -7,14 +7,18 @@ import {
   queryKeys,
 } from "./query";
 import { useState, useEffect } from "react";
-import { SimpleEventTarget } from "../utils";
 
-const events = new SimpleEventTarget<"added" | "removed">();
+type Props = {
+  listId: string;
+  mediaId: MediaId;
+  onAdded: () => void;
+  onRemoved: () => void;
+};
 
-export default (params: { listId: string; mediaId: MediaId }) => {
+export default ({ listId, mediaId, onAdded, onRemoved }: Props) => {
   const queryCache = useQueryCache();
-  const queryKey = queryKeys.listItems(params);
-  const query = useQuery(queryKey, () => getListItems(params));
+  const queryKey = queryKeys.listItems({ listId, mediaId });
+  const query = useQuery(queryKey, () => getListItems({ listId, mediaId }));
   const [isAdded, setIsAdded] = useState(false);
 
   useEffect(() => {
@@ -27,29 +31,26 @@ export default (params: { listId: string; mediaId: MediaId }) => {
     }
 
     try {
-      if (query.isFetched && isAdded) {
+      if (isAdded) {
         setIsAdded(false);
-        await deleteListItems([params]);
-        events.dispatch("removed");
+        await deleteListItems([{ listId, mediaId }]);
+        onRemoved();
       } else {
         setIsAdded(true);
-        await postListItem(params);
-        events.dispatch("added");
+        await postListItem({ listId, mediaId });
+        onAdded();
         return true;
       }
     } catch (error) {
       throw error;
     } finally {
-      queryCache.invalidateQueries((query) =>
-        query.queryKey.includes(params.listId)
-      );
+      queryCache.invalidateQueries((query) => query.queryKey.includes(listId));
     }
   };
 
   return {
-    ...query,
+    query,
     toggle,
     isAdded,
-    events,
   };
 };

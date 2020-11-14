@@ -1,4 +1,4 @@
-import { TmdbMediaType } from "../../../media/models/types";
+import { TmdbMediaType, makeMediaIdFake } from "../../../media/models/types";
 import { makeUserFake } from "../../../users/models/make-user.fake";
 import { buildListLogicFake } from "../build.fake";
 
@@ -19,12 +19,13 @@ describe("list logic", () => {
 
     const before = await listLogic.getListAggergations({ ownerId: user.id });
 
+    const mediaId = makeMediaIdFake();
+
     await listLogic.addListItems([
       {
         userId: user.id,
         listId: list2.id,
-        tmdbMediaId: 550,
-        tmdbMediaType: TmdbMediaType.movie,
+        mediaId,
       },
     ]);
 
@@ -69,12 +70,12 @@ describe("list logic", () => {
         title: "my list",
       },
     ]);
+    const mediaId = makeMediaIdFake();
     const [listItem] = await listLogic.addListItems([
       {
         userId: user.id,
         listId: list.id,
-        tmdbMediaId: 550,
-        tmdbMediaType: TmdbMediaType.movie,
+        mediaId,
       },
     ]);
 
@@ -86,21 +87,6 @@ describe("list logic", () => {
     });
 
     expect(aggergatedList1).toStrictEqual(aggergatedList2);
-
-    expect(aggergatedList1).toEqual(
-      expect.objectContaining({
-        list: {
-          id: list.id,
-        },
-        listItemCount: expect.any(Number),
-        listItems: expect.arrayContaining([
-          expect.objectContaining({
-            listItem,
-            tmdbData: expect.any(Object),
-          }),
-        ]),
-      })
-    );
   });
 
   it("rejects invalid edits", async () => {

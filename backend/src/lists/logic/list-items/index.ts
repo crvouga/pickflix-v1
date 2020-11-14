@@ -1,4 +1,8 @@
-import { TmdbMediaId, TmdbMediaType } from "../../../media/models/types";
+import {
+  MediaId,
+  TmdbMediaId,
+  TmdbMediaType,
+} from "../../../media/models/types";
 import { ListId, ListItem, makeList, makeListItem } from "../../models";
 import { ListItemId, PartialListItem } from "../../models/make-list-item";
 import { ListLogic } from "../build";
@@ -11,8 +15,7 @@ export async function removeListItems(
       }
     | {
         listId: ListId;
-        tmdbMediaId: TmdbMediaId;
-        tmdbMediaType: TmdbMediaType;
+        mediaId: MediaId;
       }
   )[]
 ) {
@@ -29,8 +32,7 @@ export async function getListItemAggergations(
       }
     | {
         listId: ListId;
-        tmdbMediaId: TmdbMediaId;
-        tmdbMediaType: TmdbMediaType;
+        mediaId: MediaId;
       }
 ) {
   const { ListItems } = this.unitOfWork;
@@ -82,8 +84,7 @@ export async function addListItems(
       }),
       ListItems.find({
         listId: listItem.listId,
-        tmdbMediaId: listItem.tmdbMediaId,
-        tmdbMediaType: listItem.tmdbMediaType,
+        mediaId: listItem.mediaId,
       }),
     ]);
 

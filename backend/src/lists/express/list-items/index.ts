@@ -1,35 +1,38 @@
 import express from "express";
 import {
+  castMediaId,
   TmdbMediaId,
   TmdbMediaType,
-  TmdbMedia,
+  MediaId,
 } from "../../../media/models/types";
-import { User } from "../../../users/models";
-import { ListId, ListItemId } from "../../models";
+import { castListId, ListId, ListItemId, castListItemId } from "../../models";
 import { Dependencies } from "../types";
-import { composeP } from "ramda";
+import { castUser } from "../../../users/models";
 
 export const listItems = ({ listLogic, middlewares }: Dependencies) => (
   router: express.IRouter
 ) => {
   router.get("/list-items", async (req, res) => {
     try {
-      const listId = req.query.listId as ListId | undefined;
-      const tmdbMediaId = Number(req.query.tmdbMediaId) as
-        | TmdbMediaId
-        | undefined;
-      const tmdbMediaType = req.query.tmdbMediaType as
-        | TmdbMediaType
-        | undefined;
+      const listId =
+        "listId" in req.query ? castListId(req.query.listId) : undefined;
 
-      if (listId && tmdbMediaId && tmdbMediaType) {
+      const mediaId =
+        "tmdbMediaId" in req.query && "tmdbMediaType" in req.query
+          ? castMediaId({
+              tmdbMediaId: req.query.tmdbMediaId,
+              tmdbMediaType: req.query.tmdbMediaType,
+            })
+          : undefined;
+
+      if (listId && mediaId) {
         const listItems = await listLogic.getListItemAggergations({
           listId,
-          tmdbMediaId,
-          tmdbMediaType,
+          mediaId,
         });
         return res.status(200).json(listItems).end();
       }
+
       if (listId) {
         const listItems = await listLogic.getListItemAggergations({
           listId,
@@ -45,15 +48,15 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
 
   router.post("/list-items", middlewares.isAuthenticated, async (req, res) => {
     try {
-      const authenticatedUser = req.user as User;
-      const { listId, tmdbMediaId, tmdbMediaType } = req.body;
+      const user = castUser(req.user);
+      const listId = castListId(req.body.listId);
+      const mediaId = castMediaId(req.body.mediaId);
 
       const [added] = await listLogic.addListItems([
         {
-          userId: authenticatedUser.id,
+          userId: user.id,
           listId,
-          tmdbMediaId,
-          tmdbMediaType,
+          mediaId,
         },
       ]);
 
@@ -63,19 +66,33 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
     }
   });
 
+  const castListItemInfo = (
+    listItemInfo: any
+  ): { id: ListItemId } | { listId: ListId; mediaId: MediaId } => {
+    if (listItemInfo && "id" in listItemInfo) {
+      return {
+        id: castListItemId(listItemInfo.id),
+      };
+    }
+    if (listItemInfo && "listId" in listItemInfo && "mediaId" in listItemInfo) {
+      return {
+        listId: castListId(listItemInfo.listId),
+        mediaId: castMediaId(listItemInfo.mediaId),
+      };
+    }
+    throw new Error("failed to cast listItemInfo");
+  };
+
   router.delete(
     "/list-items",
     middlewares.isAuthenticated,
     async (req, res) => {
       try {
-        const listItemInfos = req.body as (
-          | { id: ListItemId }
-          | {
-              listId: ListId;
-              tmdbMediaId: TmdbMediaId;
-              tmdbMediaType: TmdbMediaType;
-            }
-        )[];
+        if (!Array.isArray(req.body)) {
+          throw new Error("request body must be an array");
+        }
+
+        const listItemInfos = req.body.map(castListItemInfo);
 
         await listLogic.removeListItems(listItemInfos);
 

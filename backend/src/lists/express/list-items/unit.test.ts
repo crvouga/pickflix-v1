@@ -1,8 +1,8 @@
 import supertest from "supertest";
 import { buildExpressAppFake } from "../../../express/build.fake";
-import { TmdbMediaId, TmdbMediaType } from "../../../media/models/types";
+import { makeMediaIdFake } from "../../../media/models/types";
 
-describe("GET /lists/{list-id}/list-items", () => {
+describe("get list items", () => {
   it("gets items", async (done) => {
     const { app, listLogic, user } = await buildExpressAppFake();
 
@@ -13,35 +13,33 @@ describe("GET /lists/{list-id}/list-items", () => {
       },
     ]);
 
+    const mediaId = makeMediaIdFake();
+
     const listItems = await listLogic.addListItems([
       {
         userId: user.id,
-        tmdbMediaId: 550,
-        tmdbMediaType: TmdbMediaType.movie,
         listId: list.id,
+        mediaId,
       },
     ]);
 
-    await supertest(app)
+    const response = await supertest(app)
       .get(`/api/list-items`)
       .query({ listId: list.id })
-      .expect(200)
-      .then((response) => {
-        expect(response.body).toEqual(
-          expect.arrayContaining(
-            listItems.map((listItem) => expect.objectContaining({ listItem }))
-          )
-        );
-      });
+      .expect(200);
+
+    for (const listItemAggergate of response.body) {
+      expect(listItems).toContainEqual(listItemAggergate.listItem);
+    }
+
     done();
   });
 });
 
-describe("POST /lists/{list-id}/list-items", () => {
+describe("posting list items", () => {
   it("adds item to list", async (done) => {
     const { user, listLogic, app } = await buildExpressAppFake();
 
-    const agent = supertest(app);
     const [list] = await listLogic.addLists([
       {
         ownerId: user.id,
@@ -50,19 +48,19 @@ describe("POST /lists/{list-id}/list-items", () => {
       },
     ]);
 
-    const listItemInfo = {
-      listId: list.id,
-      tmdbMediaId: 42,
-      tmdbMediaType: "movie",
-    };
-
-    await agent.post(`/api/list-items`).send(listItemInfo).expect(201);
+    await supertest(app)
+      .post(`/api/list-items`)
+      .send({
+        listId: list.id,
+        mediaId: makeMediaIdFake(),
+      })
+      .expect(201);
 
     done();
   });
 });
 
-describe("DELETE /lists/{list-id}/list-items/{list-item-id}", () => {
+describe("delete list items", () => {
   it("deletes list item", async (done) => {
     const { app, listLogic, user } = await buildExpressAppFake();
 
@@ -73,13 +71,12 @@ describe("DELETE /lists/{list-id}/list-items/{list-item-id}", () => {
         description: "some cool movies",
       },
     ]);
-
+    const mediaId = makeMediaIdFake();
     const [listItem] = await listLogic.addListItems([
       {
         userId: user.id,
         listId: list.id,
-        tmdbMediaId: 42,
-        tmdbMediaType: TmdbMediaType.movie,
+        mediaId,
       },
     ]);
 
