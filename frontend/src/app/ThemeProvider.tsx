@@ -1,15 +1,18 @@
+import {
+  createMuiTheme,
+  CssBaseline as MuiCssBaseline,
+  ThemeProvider,
+  withStyles,
+} from "@material-ui/core";
+import "fontsource-roboto";
 import React from "react";
-import { createMuiTheme, ThemeProvider, CssBaseline } from "@material-ui/core";
 import { palette } from "../tmdb/attribution";
 
-import "fontsource-roboto";
-
 export const theme = createMuiTheme({
-  props: {
-    MuiTypography: {
-      style: { fontWeight: "bold" },
-    },
+  typography: {
+    fontWeightRegular: "bold",
   },
+
   palette: {
     type: "dark",
     primary: {
@@ -24,17 +27,35 @@ export const theme = createMuiTheme({
       default: "#101010",
     },
   },
-  overrides: {
-    MuiCssBaseline: {
-      "@global": {
-        html: {
-          //prevent double-tap zoom
-          touchAction: "manipulation",
-        },
+  overrides: {},
+});
+
+const CssBaseline = withStyles((theme) => ({
+  "@global": {
+    html: {
+      //prevent double-tap zoom
+      touchAction: "manipulation",
+    },
+    "*::-webkit-scrollbar": {
+      width: theme.spacing(2),
+      backgroundColor: theme.palette.background.default,
+    },
+    "*::-webkit-scrollbar-track": {
+      borderRadius: theme.spacing(2),
+      backgroundColor: theme.palette.background.default,
+    },
+    "*::-webkit-scrollbar-thumb": {
+      borderRadius: theme.spacing(2),
+      backgroundColor: theme.palette.background.paper,
+      "&:hover": {
+        backgroundColor: theme.palette.action.hover,
       },
     },
+    "::-webkit-scrollbar-corner": {
+      background: theme.palette.background.default,
+    },
   },
-});
+}))(MuiCssBaseline);
 
 export default ({ children }: React.PropsWithChildren<{}>) => {
   return (
