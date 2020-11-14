@@ -70,7 +70,7 @@ const ListPage = ({
 
       <Box paddingBottom={2}>
         <Paper>
-          <Container maxWidth="md">
+          <Container maxWidth="md" disableGutters>
             <Box
               width="100%"
               display="flex"

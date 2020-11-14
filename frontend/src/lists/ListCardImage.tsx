@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
 const useStylesPosterBox = makeStyles((theme) => ({
   poster: {
     backgroundSize: "cover",
+    backgroundPosition: "center",
     backgroundImage: ({ posterSrc }: { posterSrc: string }) =>
       `url(${posterSrc})`,
   },
