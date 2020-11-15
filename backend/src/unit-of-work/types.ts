@@ -31,7 +31,7 @@ export interface Identifiable {
 }
 
 export type PaginationOptions = {
-  pageNumber: number;
+  page: number;
   pageSize: number;
 };
 

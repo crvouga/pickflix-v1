@@ -1,7 +1,8 @@
 import { useQuery } from "react-query";
-import { BackendAPI, PaginationResponse } from "../../backend-api";
+import { BackendAPI } from "../../backend-api";
 import { MediaId } from "../../tmdb/types";
 import { ReviewAggergation, ReviewStatistics } from "./types";
+import { Paginated } from "../../common/types";
 
 export const queryKeys = {
   reviewStatistics: (params: GetReviewStatisticsParams) => [
@@ -55,7 +56,7 @@ export type GetReviewsParams = {
   userId?: string;
 };
 
-export type GetReviewsResponseData = PaginationResponse<ReviewAggergation>;
+export type GetReviewsResponseData = Paginated<ReviewAggergation>;
 
 export const getReviews = async ({
   authorId,

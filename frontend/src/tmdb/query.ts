@@ -1,16 +1,15 @@
+import { useQuery } from "react-query";
 import { BackendAPI } from "../backend-api";
 import {
-  Paginated,
-  Movie,
-  Person,
-  MovieReviews,
-  TmdbConfiguration,
   MediaId,
+  Movie,
   MovieDetails,
+  MovieReviews,
+  Person,
   PersonDetailsResponse,
+  TmdbConfiguration,
 } from "./types";
-import { useQuery } from "react-query";
-import { getPersonPage } from "../person/query";
+import { Paginated } from "../common/types";
 
 export const queryKeys = {
   tmdbConfiguration: () => ["tmdb", "configuration"],

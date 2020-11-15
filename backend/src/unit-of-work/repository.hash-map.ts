@@ -32,8 +32,8 @@ export class RepositoryHashMap<T extends Identifiable>
     let endIndex: number | undefined = undefined;
 
     if (options?.pagination) {
-      const { pageSize, pageNumber } = options.pagination;
-      startIndex = pageSize * (Math.max(pageNumber, 1) - 1);
+      const { pageSize, page } = options.pagination;
+      startIndex = pageSize * (Math.max(page, 1) - 1);
       endIndex = startIndex + pageSize;
     }
 

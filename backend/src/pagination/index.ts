@@ -2,8 +2,9 @@ import { PaginationOptions } from "../unit-of-work/types";
 
 export const DEFAULT_PAGE_SIZE = 20;
 
-export const castPositiveNumber = (number: any) => {
-  if (typeof number === "number" && number > 0) {
+export const castPositiveNumber = (anything: any) => {
+  const number = Number(anything);
+  if (number > 0) {
     return number;
   }
   throw new Error("invalid positive number");
@@ -18,31 +19,32 @@ export const castArray = (array: any) => {
 
 export const makePaginationOptions = ({
   pageSize,
-  pageNumber,
+  page,
 }: {
   pageSize?: any;
-  pageNumber?: any;
+  page?: any;
 }): PaginationOptions => {
   return {
-    pageNumber: castPositiveNumber(pageNumber ?? 1),
+    page: castPositiveNumber(page ?? 1),
     pageSize: castPositiveNumber(pageSize ?? DEFAULT_PAGE_SIZE),
   };
 };
 
-type PaginationResponse<T> = {
-  results: T[];
-  pageNumber: number;
+type Paginated<Result> = {
+  page: number;
+  totalPages?: number;
+  results: Result[];
 };
 
 export const makePaginationResponse = <T>({
   results,
-  pageNumber,
+  page,
 }: {
   results: T[];
-  pageNumber: number;
-}): PaginationResponse<T> => {
+  page: number;
+}): Paginated<T> => {
   return {
     results: castArray(results),
-    pageNumber: castPositiveNumber(pageNumber),
+    page: castPositiveNumber(page),
   };
 };

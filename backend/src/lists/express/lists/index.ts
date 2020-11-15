@@ -15,7 +15,7 @@ export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
     try {
       const username = req.params.username as string;
       const paginationOptions = makePaginationOptions({
-        pageNumber: req.query.pageNumber,
+        page: req.query.page,
       });
 
       const user = await userLogic.getUser({ username });

@@ -30,7 +30,7 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
           : undefined;
 
       const paginationOptions = makePaginationOptions({
-        pageNumber: req.query.pageNumber,
+        page: req.query.page,
       });
 
       const listItems = await listLogic.getListItemAggergations(

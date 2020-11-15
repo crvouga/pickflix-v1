@@ -3,7 +3,7 @@ import React from "react";
 import { QueryKey } from "react-query";
 import LoadingBox from "../../common/components/LoadingBox";
 import useInfiniteQueryPagination from "../../common/hooks/useInfiniteQueryPagination";
-import { Paginated } from "../../tmdb/types";
+import { Paginated } from "../../common/types";
 import MoviePosterGrid, {
   MoviePosterGridSkeleton,
 } from "../components/MoviePosterGrid";

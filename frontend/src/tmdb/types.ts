@@ -1,8 +1,5 @@
-export type Paginated<Result> = {
-  page: number;
-  totalPages: number;
-  results: Result[];
-};
+import { Paginated } from "../common/types";
+
 export enum TmdbMediaType {
   movie = "movie",
   person = "person",

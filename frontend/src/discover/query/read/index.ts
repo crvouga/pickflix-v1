@@ -2,6 +2,7 @@ import { AxiosRequestConfig } from "axios";
 import { BackendAPI } from "../../../backend-api";
 import { Movie, Person } from "../../../tmdb/types";
 import { DiscoverMovieQueryParams, DiscoverMovieResponse } from "../types";
+import { Paginated } from "../../../common/types";
 
 type Certification = {
   certification: string;
@@ -41,13 +42,6 @@ export const getDiscoverMovie = async (params: DiscoverMovieQueryParams) => {
 type SearchParams = {
   query: string;
   page?: number;
-};
-
-type Paginated<Result> = {
-  page: number;
-  totalPages: number;
-  totalResults: number;
-  results: Result[];
 };
 
 type PersonResult = {

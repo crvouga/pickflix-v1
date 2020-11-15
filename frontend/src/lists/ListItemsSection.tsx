@@ -2,17 +2,21 @@ import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import ErrorBox from "../common/components/ErrorBox";
 import LoadingBox from "../common/components/LoadingBox";
+import useInfiniteQueryPagination from "../common/hooks/useInfiniteQueryPagination";
 import MoviePosterGrid from "../movie/components/MoviePosterGrid";
 import { getListItems, queryKeys } from "./query";
-import { useQuery } from "react-query";
 
 type Props = {
   listId: string;
 };
 
 export default ({ listId }: Props) => {
-  const query = useQuery(queryKeys.listItems({ listId }), () =>
-    getListItems({ listId })
+  const {
+    fetchMoreRef,
+    ...query
+  } = useInfiniteQueryPagination(
+    queryKeys.listItems({ listId }),
+    ({ lastPage }) => getListItems({ listId, page: lastPage })
   );
 
   if (query.error) {
@@ -23,9 +27,9 @@ export default ({ listId }: Props) => {
     return <LoadingBox />;
   }
 
-  const listItems = query.data;
+  const listItems = query.data.flatMap((_) => _.results);
 
-  if (listItems.results.length === 0) {
+  if (listItems.length === 0) {
     return (
       <Box
         display="flex"
@@ -41,8 +45,13 @@ export default ({ listId }: Props) => {
   }
 
   return (
-    <MoviePosterGrid
-      movies={listItems.results.map((listItem) => listItem.tmdbData)}
-    />
+    <React.Fragment>
+      <MoviePosterGrid
+        movies={listItems.map((listItem) => listItem.tmdbData)}
+      />
+
+      {query.canFetchMore && <LoadingBox m={6} />}
+      <div ref={fetchMoreRef} />
+    </React.Fragment>
   );
 };

@@ -45,7 +45,7 @@ export const reviews = ({
           : undefined;
 
       const paginationOptions = makePaginationOptions({
-        pageNumber: req.query.pageNumber,
+        page: req.query.page,
       });
 
       const reviewAggergations = await reviewLogic.getAllAggergations(

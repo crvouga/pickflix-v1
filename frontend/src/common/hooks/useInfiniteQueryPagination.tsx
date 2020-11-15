@@ -7,27 +7,25 @@ import {
   QueryFunction,
   InfiniteQueryConfig,
 } from "react-query";
-
-type Paginated<Result> = {
-  page: number;
-  totalPages: number;
-  results: Result[];
-};
+import { Paginated } from "../types";
 
 export default <Result,>(
   queryKey: QueryKey,
-  queryFn: QueryFunction<Paginated<Result>>,
+  queryFn: ({ lastPage }: { lastPage: number }) => Promise<Paginated<Result>>,
   queryConfig?: InfiniteQueryConfig<Paginated<Result>>
 ) => {
   const query = useInfiniteQuery(
     queryKey,
     (...args) => {
-      const lastPage = (last(args) || 1) as number;
+      const lastPage = Number(last(args) ?? 1);
       return queryFn({ lastPage });
     },
     {
       getFetchMore: (lastPage, allPages) => {
-        if (lastPage.page < lastPage.totalPages) {
+        if (
+          lastPage.page < lastPage.totalPages ||
+          lastPage.results.length > 0
+        ) {
           return lastPage.page + 1;
         }
       },

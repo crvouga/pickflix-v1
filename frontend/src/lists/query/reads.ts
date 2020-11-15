@@ -1,5 +1,5 @@
-import { BackendAPI, PaginationResponse } from "../../backend-api";
-import { TmdbMediaType, MediaId } from "../../tmdb/types";
+import { BackendAPI } from "../../backend-api";
+import { MediaId } from "../../tmdb/types";
 import {
   AutoListAggergation,
   AutoListAggergationByKey,
@@ -7,6 +7,7 @@ import {
   ListAggergation,
   ListItemAggergation,
 } from "./types";
+import { Paginated } from "../../common/types";
 
 export const queryKeys = {
   lists: () => ["current-user", "lists"],
@@ -44,7 +45,7 @@ export const queryKeys = {
 };
 
 export const getLists = async () => {
-  const { data } = await BackendAPI.get<PaginationResponse<ListAggergation>>(
+  const { data } = await BackendAPI.get<Paginated<ListAggergation>>(
     "/api/lists"
   );
   return data;
@@ -64,39 +65,28 @@ export const getList = async ({ listId }: { listId: string }) => {
   return data;
 };
 
-type GetListItemsParams =
-  | {
-      listId: string;
-    }
-  | {
-      listId: string;
-      mediaId: MediaId;
-    };
+type GetListItemsParams = {
+  listId: string;
+  mediaId?: MediaId;
+  page?: number;
+};
 
 export const getListItems = async (params: GetListItemsParams) => {
-  const { data } = await BackendAPI.get<
-    PaginationResponse<ListItemAggergation>
-  >(
+  const { data } = await BackendAPI.get<Paginated<ListItemAggergation>>(
     `/api/list-items`,
-    "mediaId" in params
-      ? {
-          params: {
-            listId: params.listId,
-            tmdbMediaId: params.mediaId.tmdbMediaId,
-            tmdbMediaType: params.mediaId.tmdbMediaType,
-          },
-        }
-      : {
-          params: {
-            listId: params.listId,
-          },
-        }
+    {
+      params: {
+        listId: params.listId,
+        page: params.page,
+        ...(params.mediaId ? params.mediaId : {}),
+      },
+    }
   );
   return data;
 };
 
 export const getUsersLists = async ({ username }: { username: string }) => {
-  const { data } = await BackendAPI.get<PaginationResponse<ListAggergation>>(
+  const { data } = await BackendAPI.get<Paginated<ListAggergation>>(
     `/api/users/${username}/lists`
   );
   return data;

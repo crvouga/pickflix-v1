@@ -1,12 +1,6 @@
 import { AxiosRequestConfig } from "axios";
 import { BackendAPI } from "../../../backend-api";
-
-export type Paginated<T> = {
-  page: number;
-  totalPages: number;
-  totalResults: number;
-  results: T[];
-};
+import { Paginated, makeEmptyPaginatedResponse } from "../../../common/types";
 
 export type PersonResult = {
   mediaType: "person";
@@ -43,12 +37,7 @@ export const getSearchMulti = async (
   config?: AxiosRequestConfig
 ) => {
   if (params.query.length === 0) {
-    return {
-      page: 1,
-      totalPages: 1,
-      totalResults: 0,
-      results: [],
-    };
+    return makeEmptyPaginatedResponse<SearchResult>();
   }
 
   const { data } = await BackendAPI.get<Paginated<SearchResult>>(
