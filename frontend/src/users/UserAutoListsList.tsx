@@ -37,7 +37,7 @@ export default ({
     return (
       <React.Fragment>
         {range(0, user.autoListCount).map((n) => (
-          <Box key={n} paddingY={1}>
+          <Box width="100%" height="100px" key={n} paddingY={1}>
             <ListCardSkeleton />
           </Box>
         ))}
@@ -51,6 +51,8 @@ export default ({
     <React.Fragment>
       {Object.entries(autoListsByKey).map(([autoListKey, autoList]) => (
         <Box
+          width="100%"
+          height="100px"
           key={autoListKey}
           paddingY={1}
           onClick={() => handleClick(autoList)}

@@ -2,12 +2,18 @@ import { Box } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import React from "react";
 
-export default ({ avatar = true }: { avatar?: boolean }) => {
+export default ({
+  avatar = true,
+  avatarShape = "circle",
+}: {
+  avatar?: boolean;
+  avatarShape?: "rect" | "circle";
+}) => {
   return (
     <Box paddingX={2} paddingY={1} display="flex" flexDirection="row">
       {avatar && (
         <Box marginRight={2} display="flex" alignItems="center">
-          <Skeleton variant="circle" width={40} height={40} />
+          <Skeleton variant={avatarShape} width={40} height={40} />
         </Box>
       )}
       <Box marginY={1}>

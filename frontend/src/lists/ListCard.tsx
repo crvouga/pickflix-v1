@@ -11,7 +11,7 @@ export const ListCardSkeleton = () => {
       <CardActionArea>
         <Grid container direction="row">
           <Grid item>
-            <Box width="100px" paddingTop="100%" position="relative">
+            <Box width="90px" paddingTop="100%" position="relative">
               <Box
                 p={1}
                 position="absolute"
@@ -42,7 +42,7 @@ export default ({ list }: { list: ListAggergation }) => {
       <CardActionArea>
         <Grid container direction="row">
           <Grid item>
-            <Box p={1} width="100px">
+            <Box p={1} width="90px">
               <ListImageBox list={list} width="100%" />
             </Box>
           </Grid>

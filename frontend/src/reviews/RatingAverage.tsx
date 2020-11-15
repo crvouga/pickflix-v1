@@ -5,7 +5,7 @@ import React from "react";
 import { pluralize } from "../utils";
 import { ReviewStatistics } from "./query";
 
-export default ({ statistics }: { statistics: ReviewStatistics }) => {
+export default ({ statistics }: { statistics?: ReviewStatistics }) => {
   return (
     <Box
       marginX={2}
@@ -17,16 +17,23 @@ export default ({ statistics }: { statistics: ReviewStatistics }) => {
     >
       <Box
         color={
-          statistics.ratingCount === 0 ? "action.disabled" : "text.primary"
+          !statistics || statistics.ratingCount === 0
+            ? "action.disabled"
+            : "text.primary"
         }
       >
         <Typography variant="h2" color="inherit">
-          {numeral(statistics.ratingAverage).format("0.0")}
+          {statistics ? numeral(statistics.ratingAverage).format("0.0") : 0}
         </Typography>
       </Box>
-      <Rating size="small" max={5} value={statistics.ratingAverage} readOnly />
+      <Rating
+        size="small"
+        max={5}
+        value={statistics?.ratingAverage ?? 0}
+        readOnly
+      />
       <Typography variant="subtitle1" color="textSecondary">
-        {pluralize(statistics.ratingCount, "review")}
+        {pluralize(statistics?.ratingCount ?? 0, "review")}
       </Typography>
     </Box>
   );

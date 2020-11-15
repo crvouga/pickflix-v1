@@ -3,7 +3,7 @@ import React from "react";
 import ErrorBox from "../../common/components/ErrorBox";
 import LoadingBox from "../../common/components/LoadingBox";
 import { getReviewsQueryKey, useQueryReviews } from "../../reviews/query";
-import ReviewCard from "../../reviews/ReviewCard";
+import ReviewCard, { ReviewCardSkeleton } from "../../reviews/ReviewCard";
 import useReviewVoteValueState from "../../reviews/useReviewVoteValueState";
 import { MediaId } from "../../tmdb/types";
 
@@ -22,7 +22,15 @@ export default (props: Props) => {
   }
 
   if (!query.data) {
-    return <LoadingBox p={6} />;
+    return (
+      <React.Fragment>
+        {[...Array(3)].map((_, index) => (
+          <Box paddingX={2} paddingY={1} key={index}>
+            <ReviewCardSkeleton showUser iconButtonCount={2} />
+          </Box>
+        ))}
+      </React.Fragment>
+    );
   }
 
   const reviews = query.data;

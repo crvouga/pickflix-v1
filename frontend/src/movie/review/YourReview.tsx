@@ -11,7 +11,7 @@ import SignInButton from "../../auth/SignInButton";
 import useModal from "../../navigation/modals/useModal";
 import useReviewForm from "../../reviews/form/useReviewForm";
 import { useQueryReviews } from "../../reviews/query";
-import ReviewCard from "../../reviews/ReviewCard";
+import ReviewCard, { ReviewCardSkeleton } from "../../reviews/ReviewCard";
 import { MediaId } from "../../tmdb/types";
 import AvatarUser from "../../users/AvatarUser";
 import { UserAggergation } from "../../users/query";
@@ -84,7 +84,7 @@ const YourReview = ({
   }
 
   if (!query.data) {
-    return null;
+    return <ReviewCardSkeleton showUser iconButtonCount={1} />;
   }
 
   const reviews = query.data.results;

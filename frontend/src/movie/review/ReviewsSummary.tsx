@@ -19,10 +19,6 @@ export default ({ mediaId }: Props) => {
     return null;
   }
 
-  if (!query.data) {
-    return null;
-  }
-
   const statistics = query.data;
 
   return (

@@ -151,7 +151,7 @@ export default () => {
           <Grid item xs={12} sm={6}>
             <Box p={2}>
               <Typography variant="h5">Reviews</Typography>
-              <UserReviewList user={user.user} />
+              <UserReviewList user={user} />
             </Box>
           </Grid>
         </Grid>

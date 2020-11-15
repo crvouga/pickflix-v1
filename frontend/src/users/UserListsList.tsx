@@ -32,7 +32,7 @@ export default ({
     return (
       <React.Fragment>
         {range(0, user.listCount).map((n) => (
-          <Box key={n} paddingY={1}>
+          <Box width="100%" height="100px" key={n} paddingY={1}>
             <ListCardSkeleton />
           </Box>
         ))}
@@ -53,7 +53,13 @@ export default ({
   return (
     <React.Fragment>
       {lists.map((list) => (
-        <Box key={list.list.id} paddingY={1} onClick={() => handleClick(list)}>
+        <Box
+          width="100%"
+          height="100px"
+          key={list.list.id}
+          paddingY={1}
+          onClick={() => handleClick(list)}
+        >
           <ListCard list={list} />
         </Box>
       ))}

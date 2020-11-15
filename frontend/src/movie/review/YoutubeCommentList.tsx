@@ -7,6 +7,7 @@ import {
   getYoutubeVideoCommentThreadList,
   queryKeys,
 } from "../../youtube/query";
+import { ReviewCardSkeleton } from "../../reviews/ReviewCard";
 
 export default ({ videoId }: { videoId?: string }) => {
   const query = useQuery(queryKeys.youtubeCommentThread({ videoId }), () =>
@@ -18,7 +19,15 @@ export default ({ videoId }: { videoId?: string }) => {
   }
 
   if (!query.data) {
-    return <LoadingBox p={6} />;
+    return (
+      <React.Fragment>
+        {[...Array(3)].map((_, index) => (
+          <Box key={index} paddingX={2} paddingY={1}>
+            <ReviewCardSkeleton showUser iconButtonCount={1} />
+          </Box>
+        ))}
+      </React.Fragment>
+    );
   }
 
   const commentThreadList = query.data;

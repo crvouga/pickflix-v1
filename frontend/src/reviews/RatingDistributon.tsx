@@ -32,7 +32,7 @@ export const RatingFrequencyBucket = (props: { percentage: number }) => {
   );
 };
 
-export default ({ statistics }: { statistics: ReviewStatistics }) => {
+export default ({ statistics }: { statistics?: ReviewStatistics }) => {
   return (
     <Box>
       {[5, 4, 3, 2, 1].map((rating) => (
@@ -48,8 +48,10 @@ export default ({ statistics }: { statistics: ReviewStatistics }) => {
           <Box flex={1}>
             <RatingFrequencyBucket
               percentage={
-                (statistics.ratingFrequency[rating] || 0) /
-                Math.max(statistics.ratingCount, 1)
+                statistics
+                  ? (statistics.ratingFrequency[rating] || 0) /
+                    Math.max(statistics.ratingCount, 1)
+                  : 0
               }
             />
           </Box>

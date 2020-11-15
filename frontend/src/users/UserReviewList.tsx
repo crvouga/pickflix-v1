@@ -1,18 +1,19 @@
 import { Box, Typography } from "@material-ui/core";
+import { range } from "ramda";
 import React from "react";
 import { getReviewsQueryKey, useQueryReviews } from "../reviews/query";
-import ReviewCard from "../reviews/ReviewCard";
+import ReviewCard, { ReviewCardSkeleton } from "../reviews/ReviewCard";
 import useReviewVoteValueState from "../reviews/useReviewVoteValueState";
-import { User } from "./query";
+import { UserAggergation } from "./query";
 
-export default ({ user }: { user: User }) => {
+export default ({ user }: { user: UserAggergation }) => {
   const query = useQueryReviews({
-    authorId: user.id,
+    authorId: user.user.id,
   });
 
   const reviewVoteState = useReviewVoteValueState(
     getReviewsQueryKey({
-      authorId: user.id,
+      authorId: user.user.id,
     })
   );
 
@@ -21,7 +22,15 @@ export default ({ user }: { user: User }) => {
   }
 
   if (!query.data) {
-    return null;
+    return (
+      <React.Fragment>
+        {[...Array(Math.min(20, user.reviewCount))].map((n) => (
+          <Box key={n} paddingY={1}>
+            <ReviewCardSkeleton showMedia iconButtonCount={2} />
+          </Box>
+        ))}
+      </React.Fragment>
+    );
   }
 
   const reviews = query.data.results;
@@ -39,7 +48,7 @@ export default ({ user }: { user: User }) => {
   return (
     <Box>
       {reviews.map((review) => (
-        <Box key={review.review.id} paddingY={1} paddingBottom={2}>
+        <Box key={review.review.id} paddingY={1}>
           <ReviewCard
             showMedia
             review={review}
