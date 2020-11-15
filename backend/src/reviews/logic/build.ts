@@ -45,7 +45,7 @@ export class ReviewLogic {
   }: {
     authorId: UserId;
     mediaId: MediaId;
-    rating?: number;
+    rating: number;
     content?: string;
   }) {
     const { Reviews } = this.unitOfWork;
@@ -63,10 +63,6 @@ export class ReviewLogic {
         })
       );
       return updated;
-    }
-
-    if (!rating || !content) {
-      throw new Error("rating, content required");
     }
 
     const [added] = await Reviews.add([

@@ -5,8 +5,12 @@ import {
   TmdbMediaId,
   TmdbMediaType,
 } from "../../../media/models/types";
-import { User, UserId } from "../../../users/models/make-user";
-import { ReviewId } from "../../models/make-review";
+import { User, UserId, castUser } from "../../../users/models/make-user";
+import {
+  ReviewId,
+  castReviewContent,
+  castReviewRating,
+} from "../../models/make-review";
 import { Dependencies } from "../types";
 
 export const reviews = ({
@@ -66,20 +70,17 @@ export const reviews = ({
     middlewares.isAuthenticated,
     async (req, res, next) => {
       try {
-        const currentUser = req.user as User;
-        const authorId = currentUser.id;
+        const authorId = castUser(req.user).id;
 
         //
-        const content = req.body.content as string | undefined;
-        const rating = req.body.rating as number | undefined;
-        const mediaId = req.body.mediaId as MediaId | undefined;
+        const content =
+          "content" in req.body
+            ? castReviewContent(req.body.content)
+            : undefined;
 
-        if (!mediaId) {
-          return res
-            .status(400)
-            .json({ message: "mediaId required in body" })
-            .end();
-        }
+        const rating = castReviewRating(req.body.rating);
+
+        const mediaId = castMediaId(req.body.mediaId);
 
         const review = await reviewLogic.createOrUpdateReview({
           authorId,

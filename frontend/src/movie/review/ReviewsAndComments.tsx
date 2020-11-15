@@ -89,7 +89,11 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
         </Tabs>
       </Box>
       {moviePageUi.reviewCommentsTabOrder.map((tabValue, index) => (
-        <TabPanel value={moviePageUi.reviewCommentsTabIndex} index={index}>
+        <TabPanel
+          key={tabValue}
+          value={moviePageUi.reviewCommentsTabIndex}
+          index={index}
+        >
           {tabValueToTabComponent(tabValue)}
         </TabPanel>
       ))}

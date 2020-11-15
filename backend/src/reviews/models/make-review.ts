@@ -1,6 +1,6 @@
 import { isValidId, makeId } from "../../id";
 import { Id } from "../../id/types";
-import { TmdbMediaId, TmdbMediaType, MediaId } from "../../media/models/types";
+import { MediaId, castMediaId } from "../../media/models/types";
 import { UserId } from "../../users/models/make-user";
 
 export type ReviewId = Id & { ReviewId: true };
@@ -8,7 +8,7 @@ export type ReviewId = Id & { ReviewId: true };
 export type Review = {
   id: ReviewId;
   authorId: UserId;
-  content: string;
+  content?: string;
   createdAt: number;
   rating: number;
   mediaId: MediaId;
@@ -23,10 +23,45 @@ const MAX_CONTENT_LENGTH = 600;
 
 export type PartialReview = {
   authorId: UserId;
-  content: string;
+  content?: string;
   rating: number;
   mediaId: MediaId;
 };
+
+export const castReviewContent = (content: any) => {
+  if (typeof content !== "string") {
+    throw new Error("content must be a string");
+  }
+  if (content.length > MAX_CONTENT_LENGTH) {
+    throw new Error("content too long");
+  }
+  if (content.length < MIN_CONTENT_LENGTH) {
+    throw new Error("content too short");
+  }
+  return content;
+};
+
+export const castReviewRating = (rating: any) => {
+  if (typeof rating !== "number") {
+    throw new Error("rating must be a number");
+  }
+  if (rating > MAX_RATING) {
+    throw new Error("rating too big");
+  }
+  if (rating < MIN_RATING) {
+    throw new Error("rating too small");
+  }
+  return rating;
+};
+
+export const castAuthorId = (authorId: any) => {
+  if (!isValidId(authorId)) {
+    throw new Error("invalid author id");
+  }
+  return authorId as UserId;
+};
+
+const makeReviewId = () => makeId() as ReviewId;
 
 export const makeReview = ({
   authorId,
@@ -34,37 +69,13 @@ export const makeReview = ({
   rating,
   mediaId,
 }: PartialReview): Review => {
-  if (!isValidId(authorId)) {
-    throw new Error("invalid author id");
-  }
-
-  if (rating > MAX_RATING) {
-    throw new Error(`Rating can not be greater than ${MAX_RATING}`);
-  }
-
-  if (rating < MIN_RATING) {
-    throw new Error(`Rating can not be less than ${MIN_RATING}`);
-  }
-
-  if (content.length < MIN_CONTENT_LENGTH) {
-    throw new Error(
-      `Content can not be less than ${MIN_CONTENT_LENGTH} characters long.`
-    );
-  }
-
-  if (content.length > MAX_CONTENT_LENGTH) {
-    throw new Error(
-      `Content can not be greater than ${MAX_CONTENT_LENGTH} characters long.`
-    );
-  }
-
   return Object.freeze({
-    id: makeId() as ReviewId,
-    authorId,
-    content,
-    rating,
+    id: makeReviewId(),
+    authorId: castAuthorId(authorId),
+    content: castReviewContent(content || ""),
+    rating: castReviewRating(rating),
+    mediaId: castMediaId(mediaId),
     createdAt: Date.now(),
-    mediaId,
   });
 };
 
@@ -80,7 +91,7 @@ export const updateReview = (
 ): Review => {
   return {
     ...review,
-    ...(rating !== undefined ? { rating } : {}),
-    ...(content !== undefined ? { content } : {}),
+    ...(rating !== undefined ? { rating: castReviewRating(rating) } : {}),
+    ...(content !== undefined ? { content: castReviewContent(content) } : {}),
   };
 };
