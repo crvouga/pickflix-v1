@@ -21,7 +21,7 @@ export default ({ autoList }: Props) => {
               alignItems="center"
             >
               <AutoListIcon
-                style={{ width: "50px", height: "50px" }}
+                style={{ width: "55px", height: "55px" }}
                 autoListKey={autoList.list.key}
               />
             </Box>

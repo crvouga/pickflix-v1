@@ -3,7 +3,9 @@ import React from "react";
 import ErrorBox from "../common/components/ErrorBox";
 import LoadingBox from "../common/components/LoadingBox";
 import useInfiniteQueryPagination from "../common/hooks/useInfiniteQueryPagination";
-import MoviePosterGrid from "../movie/components/MoviePosterGrid";
+import MoviePosterGrid, {
+  MoviePosterGridSkeleton,
+} from "../movie/components/MoviePosterGrid";
 import { getListItems, queryKeys } from "./query";
 
 type Props = {
@@ -25,7 +27,7 @@ export default ({ listId }: Props) => {
   }
 
   if (!query.data) {
-    return <LoadingBox m={6} />;
+    return <MoviePosterGridSkeleton posterCount={8} />;
   }
 
   const listItems = ensureArray(query.data).flatMap((_) => _.results);
@@ -47,12 +49,14 @@ export default ({ listId }: Props) => {
 
   return (
     <React.Fragment>
-      <MoviePosterGrid
-        movies={listItems.map((listItem) => listItem.tmdbData)}
-      />
+      <Box p={1}>
+        <MoviePosterGrid
+          movies={listItems.map((listItem) => listItem.tmdbData)}
+        />
 
-      {query.canFetchMore && <LoadingBox m={6} />}
-      <div ref={fetchMoreRef} />
+        {query.canFetchMore && <LoadingBox m={6} />}
+        <div ref={fetchMoreRef} />
+      </Box>
     </React.Fragment>
   );
 };
