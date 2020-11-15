@@ -6,6 +6,7 @@ import { postReview, useQueryReviews } from "../query";
 import { reviewForm } from "./review-form";
 import { useEffect } from "react";
 import { SimpleEventTarget } from "../../utils";
+import { MediaId } from "../../tmdb/types";
 
 const useReviewFormState = () => {
   const slice = useSelector(reviewForm.selectors.slice);
@@ -21,27 +22,29 @@ const useReviewFormState = () => {
   };
 };
 
-const eventTarget = new SimpleEventTarget<"submitSuccess" | "submitError">();
+const eventTarget = new SimpleEventTarget<
+  "submit" | "submitSuccess" | "submitError"
+>();
 
 export default () => {
   const reviewFormState = useReviewFormState();
   const queryCache = useQueryCache();
   const snackbar = useSnackbar();
 
-  const queryReview = useQueryReviews({
-    mediaId: reviewFormState.review.mediaId,
-  });
-
-  const submit = async () => {
-    if (!reviewFormState.review.mediaId || reviewFormState.disabled) {
-      return;
-    }
-
+  const submit = async ({
+    mediaId,
+    rating,
+    content,
+  }: {
+    mediaId: MediaId;
+    rating: number;
+    content: string;
+  }) => {
     try {
       await postReview({
-        content: reviewFormState.review.content,
-        rating: reviewFormState.review.rating,
-        mediaId: reviewFormState.review.mediaId,
+        content,
+        rating,
+        mediaId,
       });
 
       snackbar.display({

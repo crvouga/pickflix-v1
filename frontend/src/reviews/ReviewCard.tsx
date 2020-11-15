@@ -78,12 +78,15 @@ export default ({
               size="small"
             />
           </Box>
+
           <Typography variant="subtitle2" color="textSecondary">
             {toPublishedAt(new Date(review.review.createdAt))}
           </Typography>
         </Box>
-        {/* <Typography variant="h6">{review.review.title}</Typography> */}
-        <Typography variant="body1">{review.review.content}</Typography>
+
+        <Typography style={{ wordBreak: "break-word" }} variant="body1">
+          {review.review.content}
+        </Typography>
       </CardContent>
       <CardActions>
         {onEdit && <EditButton onClick={onEdit} />}
