@@ -1,11 +1,16 @@
 import { Box, Tab, Tabs, Typography } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { MediaId } from "../../tmdb/types";
 import useVideoState from "../../video/useVideoState";
-import useMoviePageUiState from "../redux/useMoviePageUiState";
+import useMoviePageUi from "../redux/useMoviePageUi";
 import MovieReviewList from "./ReviewCardList";
 import TmdbReviewCardList from "./TmdbReviewCardList";
 import YoutubeCommentList from "./YoutubeCommentList";
+import {
+  reviewCommentsTabOrder,
+  ReviewCommentsTabValue,
+} from "../redux/movie-page-ui";
+import useReviewForm from "../../reviews/form/useReviewForm";
 
 const TabPanel = (props: {
   children?: React.ReactNode;
@@ -23,11 +28,46 @@ const TabPanel = (props: {
 
 export default ({ mediaId }: { mediaId: MediaId }) => {
   const videoState = useVideoState();
-  const moviePageUiState = useMoviePageUiState();
+  const moviePageUi = useMoviePageUi();
+  const reviewForm = useReviewForm();
 
-  const index = moviePageUiState.reviewCommentsTabIndex;
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    moviePageUiState.setReviewCommentsTabIndex(newValue);
+  useEffect(() => {
+    const unlisten = reviewForm.eventTarget.on("submitSuccess", () => {
+      moviePageUi.setReviewCommentsTabValue("pickflix");
+    });
+    return () => {
+      unlisten();
+    };
+  }, []);
+
+  const handleChange = (event: React.ChangeEvent<{}>, newIndex: number) => {
+    if (moviePageUi.reviewCommentsTabOrder[newIndex]) {
+      moviePageUi.setReviewCommentsTabValue(
+        moviePageUi.reviewCommentsTabOrder[newIndex]
+      );
+    }
+  };
+
+  const tabValueToLabel = (tabValue: ReviewCommentsTabValue) => {
+    switch (tabValue) {
+      case "pickflix":
+        return "Pickflix";
+      case "tmdb":
+        return "TMDb";
+      case "youtube":
+        return "Youtube";
+    }
+  };
+
+  const tabValueToTabComponent = (tabValue: ReviewCommentsTabValue) => {
+    switch (tabValue) {
+      case "pickflix":
+        return <MovieReviewList mediaId={mediaId} />;
+      case "tmdb":
+        return <TmdbReviewCardList mediaId={mediaId} />;
+      case "youtube":
+        return <YoutubeCommentList videoId={videoState.currentVideo?.key} />;
+    }
   };
 
   return (
@@ -37,27 +77,22 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
       </Box>
       <Box paddingBottom={2}>
         <Tabs
-          value={index}
+          value={moviePageUi.reviewCommentsTabIndex}
           onChange={handleChange}
           indicatorColor="primary"
           textColor="primary"
           variant="fullWidth"
         >
-          <Tab label="Pickflix" />
-          <Tab label="Youtube" />
-          <Tab label="TMDb" />
+          {moviePageUi.reviewCommentsTabOrder.map((tabValue) => (
+            <Tab key={tabValue} label={tabValueToLabel(tabValue)} />
+          ))}
         </Tabs>
       </Box>
-
-      <TabPanel value={index} index={0}>
-        <MovieReviewList mediaId={mediaId} />
-      </TabPanel>
-      <TabPanel value={index} index={1}>
-        <YoutubeCommentList videoId={videoState.currentVideo?.key} />
-      </TabPanel>
-      <TabPanel value={index} index={2}>
-        <TmdbReviewCardList mediaId={mediaId} />
-      </TabPanel>
+      {moviePageUi.reviewCommentsTabOrder.map((tabValue, index) => (
+        <TabPanel value={moviePageUi.reviewCommentsTabIndex} index={index}>
+          {tabValueToTabComponent(tabValue)}
+        </TabPanel>
+      ))}
     </React.Fragment>
   );
 };

@@ -25,7 +25,7 @@ export default () => {
   };
 
   useEffect(() => {
-    const unlisten = reviewForm.onSubmitSuccess(() => {
+    const unlisten = reviewForm.eventTarget.on("submitSuccess", () => {
       reviewFormModal.close();
     });
     return () => {

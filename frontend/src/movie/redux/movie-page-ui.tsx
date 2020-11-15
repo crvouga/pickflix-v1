@@ -7,14 +7,21 @@ const name = "moviePageUi";
 
 */
 
-export type MoviePageUiState = {
+export type ReviewCommentsTabValue = "pickflix" | "youtube" | "tmdb";
+export const reviewCommentsTabOrder: ["pickflix", "youtube", "tmdb"] = [
+  "pickflix",
+  "youtube",
+  "tmdb",
+];
+
+export type moviePageUi = {
   isVideoPlayerSticky: boolean;
-  reviewCommentsTabIndex: number;
+  reviewCommentsTabValue: ReviewCommentsTabValue;
 };
 
-const initialState: MoviePageUiState = {
+const initialState: moviePageUi = {
   isVideoPlayerSticky: true,
-  reviewCommentsTabIndex: 0,
+  reviewCommentsTabValue: "youtube",
 };
 
 /* 
@@ -31,8 +38,8 @@ const selectors = {
 */
 
 const actions = {
-  setReviewCommentsTabIndex: createAction<number>(
-    name + "/SET_REVIEW_COMMENTS_TAB_INDEX"
+  setReviewCommentsTabValue: createAction<ReviewCommentsTabValue>(
+    name + "/SET_REVIEW_COMMENTS_TAB_VALUE"
   ),
   setIsVideoPlayerSticky: createAction<boolean>(
     name + "/SET_IS_VIDEO_PLAYER_STICKY"
@@ -47,8 +54,8 @@ const reducer = createReducer(initialState, {
   [actions.setIsVideoPlayerSticky.toString()]: (state, action) => {
     state.isVideoPlayerSticky = action.payload;
   },
-  [actions.setReviewCommentsTabIndex.toString()]: (state, action) => {
-    state.reviewCommentsTabIndex = action.payload;
+  [actions.setReviewCommentsTabValue.toString()]: (state, action) => {
+    state.reviewCommentsTabValue = action.payload;
   },
 });
 

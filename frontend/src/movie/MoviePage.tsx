@@ -30,7 +30,7 @@ import MovieCredits from "./credits/MovieCredits";
 import MovieCollection from "./MovieCollection";
 import MovieDetails from "./MovieDetails";
 import { useQueryMovie } from "./query";
-import useMoviePageUiState from "./redux/useMoviePageUiState";
+import useMoviePageUi from "./redux/useMoviePageUi";
 import MovieRelated from "./related/MovieRelated";
 import ReviewsAndComments from "./review/ReviewsAndComments";
 import ReviewsSummary from "./review/ReviewsSummary";
@@ -51,17 +51,17 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const classes = useStyles();
 
-  const moviePageUiState = useMoviePageUiState();
+  const moviePageUi = useMoviePageUi();
   const videoState = useVideoState();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   useEffect(() => {
-    videoState.setIsPlaying(moviePageUiState.isVideoPlayerSticky);
-    if (moviePageUiState.isVideoPlayerSticky && videoState.light) {
+    videoState.setIsPlaying(moviePageUi.isVideoPlayerSticky);
+    if (moviePageUi.isVideoPlayerSticky && videoState.light) {
       videoState.setLight(undefined);
     }
-  }, [moviePageUiState.isVideoPlayerSticky]);
+  }, [moviePageUi.isVideoPlayerSticky]);
 
   const { tmdbMediaId } = useParams<{ tmdbMediaId: string }>();
   const query = useQueryMovie({ tmdbMediaId });
@@ -115,10 +115,10 @@ export default () => {
 
             <IconButton
               onClick={() => {
-                moviePageUiState.toggleIsVideoPlayerSticky();
+                moviePageUi.toggleIsVideoPlayerSticky();
               }}
             >
-              <ToggleIcon on={moviePageUiState.isVideoPlayerSticky} />
+              <ToggleIcon on={moviePageUi.isVideoPlayerSticky} />
             </IconButton>
           </Toolbar>
         </AppBar>
@@ -129,7 +129,7 @@ export default () => {
           disableGutters
           maxWidth="md"
           className={clsx({
-            [classes.sticky]: moviePageUiState.isVideoPlayerSticky && isMobile,
+            [classes.sticky]: moviePageUi.isVideoPlayerSticky && isMobile,
           })}
         >
           <VideoPlayer />

@@ -5,6 +5,7 @@ import useSnackbar from "../../snackbar/useSnackbar";
 import { postReview, useQueryReviews } from "../query";
 import { reviewForm } from "./review-form";
 import { useEffect } from "react";
+import { SimpleEventTarget } from "../../utils";
 
 const useReviewFormState = () => {
   const slice = useSelector(reviewForm.selectors.slice);
@@ -20,24 +21,7 @@ const useReviewFormState = () => {
   };
 };
 
-class ReviewFormEventTarget extends EventTarget {
-  submitSuccess() {
-    this.dispatchEvent(new Event("submitSuccess"));
-  }
-  submitError() {
-    this.dispatchEvent(new Event("submitError"));
-  }
-}
-const noop = () => {};
-
-const eventTarget = new ReviewFormEventTarget();
-
-const onSubmitSuccess = (callback: () => void) => {
-  eventTarget.addEventListener("submitSuccess", callback);
-  return (callback?: () => void) => {
-    eventTarget.removeEventListener("submitSuccess", callback || noop);
-  };
-};
+const eventTarget = new SimpleEventTarget<"submitSuccess" | "submitError">();
 
 export default () => {
   const reviewFormState = useReviewFormState();
@@ -64,9 +48,9 @@ export default () => {
         message: "Review posted",
       });
 
-      eventTarget.submitSuccess();
+      eventTarget.dispatch("submitSuccess");
     } catch (error) {
-      eventTarget.submitError();
+      eventTarget.dispatch("submitError");
       throw error;
     } finally {
       queryCache.invalidateQueries((query) =>
@@ -78,6 +62,6 @@ export default () => {
   return {
     ...reviewFormState,
     submit,
-    onSubmitSuccess,
+    eventTarget,
   };
 };

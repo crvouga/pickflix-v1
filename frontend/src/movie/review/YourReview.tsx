@@ -12,7 +12,7 @@ import useModal from "../../navigation/modals/useModal";
 import useReviewForm from "../../reviews/form/useReviewForm";
 import { useQueryReviews } from "../../reviews/query";
 import ReviewCard from "../../reviews/ReviewCard";
-import { MediaId, TmdbMedia } from "../../tmdb/types";
+import { MediaId } from "../../tmdb/types";
 import AvatarUser from "../../users/AvatarUser";
 import { UserAggergation } from "../../users/query";
 import { useQueryCurrentUser } from "../../users/useCurrentUser";
