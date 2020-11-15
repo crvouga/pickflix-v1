@@ -29,7 +29,7 @@ export default (props: Props) => {
 
   return (
     <React.Fragment>
-      {reviews.map((review) => (
+      {reviews.results.map((review) => (
         <Box paddingX={2} paddingY={1} key={review.review.id}>
           <ReviewCard
             showUser

@@ -1,4 +1,4 @@
-import express from "express";
+import express, { query } from "express";
 import {
   castMediaId,
   TmdbMediaId,
@@ -8,6 +8,10 @@ import {
 import { castListId, ListId, ListItemId, castListItemId } from "../../models";
 import { Dependencies } from "../types";
 import { castUser } from "../../../users/models";
+import {
+  makePaginationOptions,
+  makePaginationResponse,
+} from "../../../pagination";
 
 export const listItems = ({ listLogic, middlewares }: Dependencies) => (
   router: express.IRouter
@@ -25,22 +29,27 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
             })
           : undefined;
 
-      if (listId && mediaId) {
-        const listItems = await listLogic.getListItemAggergations({
+      const paginationOptions = makePaginationOptions({
+        pageNumber: req.query.pageNumber,
+      });
+
+      const listItems = await listLogic.getListItemAggergations(
+        {
           listId,
           mediaId,
-        });
-        return res.status(200).json(listItems).end();
-      }
+        },
+        paginationOptions
+      );
 
-      if (listId) {
-        const listItems = await listLogic.getListItemAggergations({
-          listId,
-        });
-        return res.status(200).json(listItems).end();
-      }
-
-      return res.status(400).json({ message: "invalid query" }).end();
+      return res
+        .status(200)
+        .json(
+          makePaginationResponse({
+            ...paginationOptions,
+            results: listItems,
+          })
+        )
+        .end();
     } catch (error) {
       res.status(400).json({ error }).end();
     }

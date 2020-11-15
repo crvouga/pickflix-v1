@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { BackendAPI } from "../../backend-api";
+import { BackendAPI, PaginationResponse } from "../../backend-api";
 import { MediaId } from "../../tmdb/types";
 import { ReviewAggergation, ReviewStatistics } from "./types";
 
@@ -55,20 +55,23 @@ export type GetReviewsParams = {
   userId?: string;
 };
 
-export type GetReviewsData = ReviewAggergation[];
+export type GetReviewsResponseData = PaginationResponse<ReviewAggergation>;
 
 export const getReviews = async ({
   authorId,
   userId,
   mediaId,
 }: GetReviewsParams) => {
-  const { data } = await BackendAPI.get<GetReviewsData>("/api/reviews", {
-    params: {
-      authorId,
-      userId,
-      ...mediaId,
-    },
-  });
+  const { data } = await BackendAPI.get<GetReviewsResponseData>(
+    "/api/reviews",
+    {
+      params: {
+        authorId,
+        userId,
+        ...mediaId,
+      },
+    }
+  );
   return data;
 };
 

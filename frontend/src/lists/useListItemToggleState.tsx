@@ -22,7 +22,7 @@ export default ({ listId, mediaId, onAdded, onRemoved }: Props) => {
   const [isAdded, setIsAdded] = useState(false);
 
   useEffect(() => {
-    setIsAdded(Boolean(query.data && query.data.length > 0));
+    setIsAdded(Boolean(query.data && query.data.results.length > 0));
   }, [query.data]);
 
   const toggle = async () => {

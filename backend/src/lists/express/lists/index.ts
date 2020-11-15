@@ -3,6 +3,10 @@ import { pick } from "ramda";
 import { User } from "../../../users/models";
 import { ListId } from "../../models";
 import { Dependencies } from "../types";
+import {
+  makePaginationOptions,
+  makePaginationResponse,
+} from "../../../pagination";
 
 export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
   router: IRouter
@@ -10,16 +14,30 @@ export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
   router.get("/users/:username/lists", async (req, res, next) => {
     try {
       const username = req.params.username as string;
+      const paginationOptions = makePaginationOptions({
+        pageNumber: req.query.pageNumber,
+      });
 
       const user = await userLogic.getUser({ username });
 
-      const listAggergations = await listLogic.getListAggergations({
-        ownerId: user.id,
-      });
+      const listAggergations = await listLogic.getListAggergations(
+        {
+          ownerId: user.id,
+        },
+        paginationOptions
+      );
 
-      res.status(200).json(listAggergations).end();
+      res
+        .status(200)
+        .json(
+          makePaginationResponse({
+            ...paginationOptions,
+            results: listAggergations,
+          })
+        )
+        .end();
     } catch (error) {
-      next(error);
+      res.status(400).json({ error }).end();
     }
   });
 

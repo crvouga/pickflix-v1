@@ -1,6 +1,6 @@
 import { MediaLogic } from "../../media/logic/build";
 import { MediaId } from "../../media/models/types";
-import { IUnitOfWork } from "../../unit-of-work/types";
+import { IUnitOfWork, PaginationOptions } from "../../unit-of-work/types";
 import { UserId } from "../../users/models/make-user";
 import {
   makeReview,
@@ -14,13 +14,7 @@ import {
   PartialReviewVote,
   ReviewVoteValue,
 } from "../models/make-review-vote";
-
-const omitFalsy = (obj: { [key: string]: any }) => {
-  return Object.keys(obj).reduce(
-    (acc, k) => (Boolean(obj[k]) ? { ...acc, [k]: obj[k] } : acc),
-    {}
-  );
-};
+import { omitFalsyValues } from "../../utils";
 
 export class ReviewLogic {
   mediaLogic: MediaLogic;
@@ -144,18 +138,22 @@ export class ReviewLogic {
     };
   }
 
-  async getAllAggergations({
-    userId,
-    ...reviewInfo
-  }: {
-    userId?: UserId;
-    authorId?: UserId;
-    mediaId?: MediaId;
-  }) {
+  async getAllAggergations(
+    {
+      userId,
+      ...reviewInfo
+    }: {
+      userId?: UserId;
+      authorId?: UserId;
+      mediaId?: MediaId;
+    },
+    pagination?: PaginationOptions
+  ) {
     const { Reviews } = this.unitOfWork;
 
-    const found = await Reviews.find(omitFalsy(reviewInfo), {
+    const found = await Reviews.find(omitFalsyValues(reviewInfo), {
       orderBy: [["createdAt", "descend"]],
+      pagination,
     });
 
     const aggergations = await Promise.all(

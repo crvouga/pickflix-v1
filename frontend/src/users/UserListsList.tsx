@@ -29,7 +29,7 @@ export default ({
     return <LoadingBox />;
   }
 
-  const lists = query.data;
+  const lists = query.data.results;
 
   if (lists.length === 0) {
     return (

@@ -24,7 +24,7 @@ export default ({ user }: { user: User }) => {
     return null;
   }
 
-  const reviews = query.data;
+  const reviews = query.data.results;
 
   if (reviews.length === 0) {
     return (

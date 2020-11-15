@@ -6,6 +6,8 @@ import {
 import { ListId, ListItem, makeList, makeListItem } from "../../models";
 import { ListItemId, PartialListItem } from "../../models/make-list-item";
 import { ListLogic } from "../build";
+import { PaginationOptions } from "../../../unit-of-work/types";
+import { omitFalsyValues } from "../../../utils";
 
 export async function removeListItems(
   this: ListLogic,
@@ -26,19 +28,17 @@ export async function removeListItems(
 
 export async function getListItemAggergations(
   this: ListLogic,
-  listItemInfo:
-    | {
-        listId: ListId;
-      }
-    | {
-        listId: ListId;
-        mediaId: MediaId;
-      }
+  listItemInfo: {
+    listId?: ListId;
+    mediaId?: MediaId;
+  },
+  paginationOptions?: PaginationOptions
 ) {
   const { ListItems } = this.unitOfWork;
 
-  const listItems = await ListItems.find(listItemInfo, {
+  const listItems = await ListItems.find(omitFalsyValues(listItemInfo), {
     orderBy: [["createdAt", "descend"]],
+    pagination: paginationOptions,
   });
 
   const aggergatedListItems = await Promise.all(

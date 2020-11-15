@@ -30,10 +30,16 @@ export interface Identifiable {
   id: string;
 }
 
-type OrderBy<T> = [keyof T, "ascend" | "descend"][];
+export type PaginationOptions = {
+  pageNumber: number;
+  pageSize: number;
+};
+
+export type OrderByOptions<T> = [keyof T, "ascend" | "descend"][];
 
 export type FindOptions<T> = {
-  orderBy?: OrderBy<T>;
+  orderBy?: OrderByOptions<T>;
+  pagination?: PaginationOptions;
 };
 
 export interface IRepository<T extends Identifiable> {

@@ -1,6 +1,7 @@
 import { UserId } from "../../../users/models/make-user";
 import { List, ListId, makeList, PartialList } from "../../models";
 import { ListLogic } from "../build";
+import { PaginationOptions } from "../../../unit-of-work/types";
 
 export async function addLists(
   this: ListLogic,
@@ -18,7 +19,8 @@ export async function addLists(
 
 export async function getListAggergations(
   this: ListLogic,
-  listInfo: { id: ListId } | { ownerId: UserId }
+  listInfo: { id: ListId } | { ownerId: UserId },
+  pagination?: PaginationOptions
 ) {
   const {
     unitOfWork: { Lists },
@@ -26,6 +28,7 @@ export async function getListAggergations(
 
   const lists = await Lists.find(listInfo, {
     orderBy: [["updatedAt", "descend"]],
+    pagination,
   });
 
   const aggergatedLists = await Promise.all(

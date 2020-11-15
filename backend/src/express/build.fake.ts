@@ -6,14 +6,18 @@ import { buildUserLogicFake } from "../users/logic/user-logic.fake";
 import { makeUserFake } from "../users/models/make-user.fake";
 import { buildExpressApp } from "./build-express-app";
 import { ExpressAppDependencies } from "./types";
+import { UnitOfWorkHashMap } from "../unit-of-work/unit-of-work.fake";
 
 export const buildExpressAppFake = async () => {
-  const { userLogic } = buildUserLogicFake();
-  const { listLogic } = buildListLogicFake();
+  const unitOfWork = new UnitOfWorkHashMap();
+  const { userLogic } = buildUserLogicFake({ unitOfWork });
+  const { listLogic } = buildListLogicFake({ unitOfWork });
+  const { reviewLogic } = buildReviewLogicFake({ unitOfWork });
   const { mediaLogic } = buildMediaLogicFake();
-  const { reviewLogic } = buildReviewLogicFake();
 
   const user = makeUserFake();
+
+  await unitOfWork.Users.add([user]);
 
   //@ts-ignore
   const stub: Handler = (req, res, next) => {

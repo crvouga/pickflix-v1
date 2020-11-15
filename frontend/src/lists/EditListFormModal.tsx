@@ -145,7 +145,7 @@ export default ({ listId, ...DialogProps }: Props) => {
                 }`}
               />
             </ListItem>
-            {listItems.map((listItem) => (
+            {listItems.results.map((listItem) => (
               <ListItem
                 divider
                 key={listItem.listItem.id}

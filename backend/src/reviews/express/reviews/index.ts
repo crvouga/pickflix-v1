@@ -5,13 +5,17 @@ import {
   TmdbMediaId,
   TmdbMediaType,
 } from "../../../media/models/types";
-import { User, UserId, castUser } from "../../../users/models/make-user";
+import { castUser, UserId } from "../../../users/models/make-user";
 import {
-  ReviewId,
   castReviewContent,
   castReviewRating,
+  ReviewId,
 } from "../../models/make-review";
 import { Dependencies } from "../types";
+import {
+  makePaginationOptions,
+  makePaginationResponse,
+} from "../../../pagination";
 
 export const reviews = ({
   reviewLogic,
@@ -27,6 +31,7 @@ export const reviews = ({
       const tmdbMediaId = Number(req.query.tmdbMediaId) as
         | TmdbMediaId
         | undefined;
+
       const tmdbMediaType = req.query.tmdbMediaType as
         | TmdbMediaType
         | undefined;
@@ -39,13 +44,28 @@ export const reviews = ({
             }
           : undefined;
 
-      const reviewAggergations = await reviewLogic.getAllAggergations({
-        userId,
-        authorId,
-        mediaId,
+      const paginationOptions = makePaginationOptions({
+        pageNumber: req.query.pageNumber,
       });
 
-      res.status(200).json(reviewAggergations).end();
+      const reviewAggergations = await reviewLogic.getAllAggergations(
+        {
+          userId,
+          authorId,
+          mediaId,
+        },
+        paginationOptions
+      );
+
+      res
+        .status(200)
+        .json(
+          makePaginationResponse({
+            ...paginationOptions,
+            results: reviewAggergations,
+          })
+        )
+        .end();
     } catch (error) {
       next(error);
     }

@@ -1,4 +1,4 @@
-import { BackendAPI } from "../../backend-api";
+import { BackendAPI, PaginationResponse } from "../../backend-api";
 import { TmdbMediaType, MediaId } from "../../tmdb/types";
 import {
   AutoListAggergation,
@@ -44,7 +44,9 @@ export const queryKeys = {
 };
 
 export const getLists = async () => {
-  const { data } = await BackendAPI.get<ListAggergation[]>("/api/lists");
+  const { data } = await BackendAPI.get<PaginationResponse<ListAggergation>>(
+    "/api/lists"
+  );
   return data;
 };
 
@@ -72,7 +74,9 @@ type GetListItemsParams =
     };
 
 export const getListItems = async (params: GetListItemsParams) => {
-  const { data } = await BackendAPI.get<ListItemAggergation[]>(
+  const { data } = await BackendAPI.get<
+    PaginationResponse<ListItemAggergation>
+  >(
     `/api/list-items`,
     "mediaId" in params
       ? {
@@ -92,7 +96,7 @@ export const getListItems = async (params: GetListItemsParams) => {
 };
 
 export const getUsersLists = async ({ username }: { username: string }) => {
-  const { data } = await BackendAPI.get<ListAggergation[]>(
+  const { data } = await BackendAPI.get<PaginationResponse<ListAggergation>>(
     `/api/users/${username}/lists`
   );
   return data;

@@ -4,11 +4,10 @@ import { UnitOfWorkHashMap } from "../../unit-of-work/unit-of-work.fake";
 import { UserLogic } from "./user-logic";
 
 export const buildUserLogicFake = ({
+  unitOfWork = new UnitOfWorkHashMap(),
   eventEmitter = new EventEmitter(),
 } = {}) => {
   const emailService = new EmailServiceStub();
-
-  const unitOfWork = new UnitOfWorkHashMap();
 
   const userLogic = new UserLogic({
     unitOfWork,

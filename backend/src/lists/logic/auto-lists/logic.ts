@@ -8,6 +8,8 @@ import {
 } from "../../models";
 import { ListAggergate } from "../../models/types";
 import { ListLogic } from "../build";
+import { DEFAULT_PAGE_SIZE } from "../../../pagination";
+import { PaginationOptions } from "../../../unit-of-work/types";
 
 export async function initializeAutoLists(
   this: ListLogic,

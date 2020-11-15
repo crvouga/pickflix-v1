@@ -25,7 +25,7 @@ export default ({ listId }: Props) => {
 
   const listItems = query.data;
 
-  if (listItems.length === 0) {
+  if (listItems.results.length === 0) {
     return (
       <Box
         display="flex"
@@ -41,6 +41,8 @@ export default ({ listId }: Props) => {
   }
 
   return (
-    <MoviePosterGrid movies={listItems.map((listItem) => listItem.tmdbData)} />
+    <MoviePosterGrid
+      movies={listItems.results.map((listItem) => listItem.tmdbData)}
+    />
   );
 };

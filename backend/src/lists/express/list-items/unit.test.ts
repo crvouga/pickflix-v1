@@ -28,7 +28,8 @@ describe("get list items", () => {
       .query({ listId: list.id })
       .expect(200);
 
-    for (const listItemAggergate of response.body) {
+    expect.assertions(listItems.length);
+    for (const listItemAggergate of response.body?.results ?? []) {
       expect(listItems).toContainEqual(listItemAggergate.listItem);
     }
 

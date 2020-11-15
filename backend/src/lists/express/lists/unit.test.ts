@@ -22,6 +22,33 @@ describe("DELETE /lists", () => {
 });
 
 describe("GET /lists", () => {
+  it("gets lists", async () => {
+    const { listLogic, user, app } = await buildExpressAppFake();
+
+    const lists = await listLogic.addLists(
+      [1, 2, 3, 4, 5].map((n) => ({
+        ownerId: user.id,
+        title: "my list",
+        description: "my description",
+      }))
+    );
+
+    const response = await supertest(app)
+      .get(`/api/users/${user.username}/lists`)
+      .expect(200);
+
+    const results = response.body?.results ?? [];
+
+    expect(results).not.toHaveLength(0);
+
+    for (const list of lists) {
+      expect(results).toContainEqual(
+        expect.objectContaining({
+          list: list,
+        })
+      );
+    }
+  });
   it("sends a list with items", async (done) => {
     const { listLogic, user, app } = await buildExpressAppFake();
 

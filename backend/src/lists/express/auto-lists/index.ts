@@ -1,13 +1,13 @@
-import { IRouter, Handler } from "express";
-import { Dependencies } from "../types";
-import { AutoListKeys, ListId } from "../../models";
+import { IRouter } from "express";
 import {
+  castMediaId,
+  MediaId,
   TmdbMediaId,
   TmdbMediaType,
-  MediaId,
-  castMediaId,
 } from "../../../media/models/types";
-import { User, castUsername, castUser } from "../../../users/models";
+import { castUser, castUsername, User } from "../../../users/models";
+import { AutoListKeys, ListId } from "../../models";
+import { Dependencies } from "../types";
 
 export const autoLists = ({
   listLogic,

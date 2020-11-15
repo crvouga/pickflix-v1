@@ -1,41 +1,53 @@
-import {
-  whereEq,
-  innerJoin,
-  ascend,
-  descend,
-  sortWith,
-  filter,
-  reject,
-  pickBy,
-  not,
-  isNil,
-} from "ramda";
-import { Identifiable, IRepository, FindOptions } from "./types";
+import * as R from "ramda";
+import { pipe } from "remeda";
+import { FindOptions, Identifiable, IRepository } from "./types";
 
 export class RepositoryHashMap<T extends Identifiable>
   implements IRepository<T> {
-  db: { [id: string]: T };
+  db: {
+    [id: string]: T;
+  };
 
   constructor() {
     this.db = {};
   }
 
   async find(entityInfo: Partial<T>, options?: FindOptions<T>): Promise<T[]> {
-    const comparators =
-      options?.orderBy?.map(([key, direction]) =>
-        direction === "ascend"
-          ? ascend<T>((entity) => entity[key])
-          : descend<T>((entity) => entity[key])
-      ) || [];
+    const comparators: ((a: T, b: T) => number)[] = [];
 
-    return sortWith(
-      comparators,
-      Object.values(this.db).filter(whereEq(entityInfo))
+    if (options?.orderBy) {
+      for (const [key, direction] of options.orderBy) {
+        switch (direction) {
+          case "ascend":
+            comparators.push(R.ascend<T>((_) => _[key]));
+            break;
+          case "descend":
+            comparators.push(R.descend<T>((_) => _[key]));
+            break;
+        }
+      }
+    }
+
+    let startIndex: number | undefined = undefined;
+    let endIndex: number | undefined = undefined;
+
+    if (options?.pagination) {
+      const { pageSize, pageNumber } = options.pagination;
+      startIndex = pageSize * (Math.max(pageNumber, 1) - 1);
+      endIndex = startIndex + pageSize;
+    }
+
+    return pipe(
+      this.db,
+      (db) => Object.values(db),
+      (rows) => rows.filter(R.whereEq(entityInfo)),
+      (rows) => R.sortWith(comparators, rows),
+      (rows) => rows.slice(startIndex, endIndex)
     );
   }
 
   async get(entityIds: string[]): Promise<T[]> {
-    return innerJoin(
+    return R.innerJoin(
       (value, entityId) => value.id === entityId,
       Object.values(this.db),
       entityIds
@@ -56,7 +68,7 @@ export class RepositoryHashMap<T extends Identifiable>
 
   async remove(entityInfos: Partial<T>[]): Promise<boolean> {
     for (const entityInfo of entityInfos) {
-      this.db = reject(whereEq(entityInfo), this.db);
+      this.db = R.reject(R.whereEq(entityInfo), this.db);
     }
     return true;
   }

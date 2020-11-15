@@ -1,12 +1,12 @@
 import { QueryKey, useQueryCache } from "react-query";
+import useSnackbar from "../snackbar/useSnackbar";
 import {
   deleteReviewVote,
-  GetReviewsData,
+  GetReviewsResponseData,
   postReviewVote,
   ReviewAggergation,
   ReviewVoteValue,
 } from "./query";
-import useSnackbar from "../snackbar/useSnackbar";
 
 const updateReviewVoteValue = (
   nextVoteValue: ReviewVoteValue | null,
@@ -46,29 +46,32 @@ const updateReviewVoteValue = (
 const optimisticUpdate = (
   reviewId: string,
   nextVoteValue: ReviewVoteValue | null,
-  previous: ReviewAggergation[]
-) => {
+  previous: GetReviewsResponseData
+): GetReviewsResponseData => {
   if (!previous) {
     return previous;
   }
-  const index = previous.findIndex((_) => _.review.id === reviewId);
+  const index = previous.results.findIndex((_) => _.review.id === reviewId);
 
   if (index === -1) {
     return previous;
   }
 
-  return [
-    ...previous.slice(0, index),
-    updateReviewVoteValue(nextVoteValue, previous[index]),
-    ...previous.slice(index + 1),
-  ];
+  return {
+    ...previous,
+    results: [
+      ...previous.results.slice(0, index),
+      updateReviewVoteValue(nextVoteValue, previous.results[index]),
+      ...previous.results.slice(index + 1),
+    ],
+  };
 };
 
 export default (queryKey: QueryKey) => {
   const snackbar = useSnackbar();
   const queryCache = useQueryCache();
 
-  const previous = queryCache.getQueryData<GetReviewsData>(queryKey);
+  const previous = queryCache.getQueryData<GetReviewsResponseData>(queryKey);
 
   const toggleVoteValue = async (
     review: ReviewAggergation,

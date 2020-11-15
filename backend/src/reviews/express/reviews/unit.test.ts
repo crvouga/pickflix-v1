@@ -1,10 +1,6 @@
 import supertest from "supertest";
 import { buildExpressAppFake } from "../../../express/build.fake";
-import {
-  TmdbMediaId,
-  TmdbMediaType,
-  makeMediaIdFake,
-} from "../../../media/models/types";
+import { makeMediaIdFake } from "../../../media/models/types";
 
 describe("/api/reviews", () => {
   it("POST then GET", async () => {
@@ -31,9 +27,11 @@ describe("/api/reviews", () => {
         ...mediaId,
       });
 
-    expect(before.body).toHaveLength(0);
-    expect(after.body).toHaveLength(1);
-    expect(after.body[0].review).toEqual(expect.objectContaining(posted.body));
+    expect(before.body.results).toHaveLength(0);
+    expect(after.body.results).toHaveLength(1);
+    expect(after.body.results[0].review).toEqual(
+      expect.objectContaining(posted.body)
+    );
   });
 
   it("POST /reviews", async (done) => {
