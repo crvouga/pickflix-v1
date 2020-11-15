@@ -23,12 +23,12 @@ import useModal from "../navigation/modals/useModal";
 import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
 import useReviewForm from "../reviews/form/useReviewForm";
 import AvatarUser from "./AvatarUser";
+import ListAutoLists from "./ListAutoLists";
+import ListLists from "./ListLists";
+import ListReviews from "./ListReviews";
 import OptionsDialog from "./OptionsDialog";
 import { getUser, queryKeys } from "./query";
 import { useQueryCurrentUser } from "./useCurrentUser";
-import UserAutoListsList from "./UserAutoListsList";
-import UserListsList from "./UserListsList";
-import UserReviewList from "./UserReviewList";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -131,7 +131,7 @@ export default () => {
           <Grid item xs={12} sm={6}>
             <Box p={2}>
               <Typography variant="h5">Auto Lists</Typography>
-              <UserAutoListsList
+              <ListAutoLists
                 onClick={(autoList) => {
                   history.push(`/auto-list/${autoList.list.id}`);
                 }}
@@ -140,7 +140,7 @@ export default () => {
             </Box>
             <Box p={2}>
               <Typography variant="h5">Lists</Typography>
-              <UserListsList
+              <ListLists
                 onClick={(list) => {
                   history.push(`/list/${list.list.id}`);
                 }}
@@ -151,7 +151,7 @@ export default () => {
           <Grid item xs={12} sm={6}>
             <Box p={2}>
               <Typography variant="h5">Reviews</Typography>
-              <UserReviewList user={user} />
+              <ListReviews user={user} />
             </Box>
           </Grid>
         </Grid>

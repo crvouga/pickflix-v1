@@ -7,7 +7,7 @@ import {
   CardHeader,
   Typography,
 } from "@material-ui/core";
-import { Rating, Skeleton } from "@material-ui/lab";
+import { Rating } from "@material-ui/lab";
 import moment from "moment";
 import React from "react";
 import { useHistory } from "react-router";
@@ -15,8 +15,12 @@ import MovieAvatar from "../movie/components/MovieAvatar";
 import AvatarUser from "../users/AvatarUser";
 import { pluralize } from "../utils";
 import { ReviewAggergation, ReviewVoteValue } from "./query/types";
-import { EditButton, VoteDownButton, VoteUpButton } from "./ReviewCardButtons";
-import ListItemSkeleton from "../common/components/ListItemSkeleton";
+import {
+  DeleteButton,
+  EditButton,
+  VoteDownButton,
+  VoteUpButton,
+} from "./ReviewCardButtons";
 
 type Props = {
   review: ReviewAggergation;
@@ -25,6 +29,7 @@ type Props = {
   onVoteUp?: () => void;
   onVoteDown?: () => void;
   onEdit?: () => void;
+  onDelete?: () => void;
 };
 
 const toPublishedAt = (date: any) =>
@@ -37,6 +42,7 @@ export default ({
   onVoteUp,
   onVoteDown,
   onEdit,
+  onDelete,
 }: Props) => {
   const history = useHistory();
 
@@ -90,6 +96,7 @@ export default ({
       </CardContent>
       <CardActions>
         {onEdit && <EditButton onClick={onEdit} />}
+        {onDelete && <DeleteButton onClick={onDelete} />}
         {onVoteUp && (
           <VoteUpButton
             onClick={onVoteUp}
@@ -104,51 +111,6 @@ export default ({
             count={review.reviewVoteCount - review.reviewUpVoteCount}
           />
         )}
-      </CardActions>
-    </Card>
-  );
-};
-
-const ICON_BUTTON_DIAMETER = "32px";
-
-const IconButtonSkeleton = () => {
-  return (
-    <Box p={1}>
-      <Skeleton
-        variant="circle"
-        width={ICON_BUTTON_DIAMETER}
-        height={ICON_BUTTON_DIAMETER}
-      />
-    </Box>
-  );
-};
-
-export const ReviewCardSkeleton = ({
-  showUser = false,
-  showMedia = false,
-  iconButtonCount = 0,
-}: {
-  showUser?: boolean;
-  showMedia?: boolean;
-  iconButtonCount?: number;
-}) => {
-  return (
-    <Card>
-      {showMedia && <ListItemSkeleton avatarShape="rect" />}
-      {showUser && <ListItemSkeleton />}
-      <CardContent>
-        <Box display="flex" alignItems="center" paddingBottom={1}>
-          <Skeleton variant="rect" width="8em" height="1em" />
-        </Box>
-
-        <Box width="100%" maxWidth="240px">
-          <Skeleton variant="text" width="100%" height="3em" />
-        </Box>
-      </CardContent>
-      <CardActions>
-        {[...Array(iconButtonCount)].map((_, index) => (
-          <IconButtonSkeleton key={index} />
-        ))}
       </CardActions>
     </Card>
   );

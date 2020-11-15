@@ -9,9 +9,10 @@ export type Review = {
   id: ReviewId;
   authorId: UserId;
   content?: string;
-  createdAt: number;
   rating: number;
   mediaId: MediaId;
+  createdAt: number;
+  updatedAt: number;
 };
 
 export const MAX_RATING = 5;
@@ -76,6 +77,7 @@ export const makeReview = ({
     rating: castReviewRating(rating),
     mediaId: castMediaId(mediaId),
     createdAt: Date.now(),
+    updatedAt: Date.now(),
   });
 };
 
@@ -93,5 +95,6 @@ export const updateReview = (
     ...review,
     ...(rating !== undefined ? { rating: castReviewRating(rating) } : {}),
     ...(content !== undefined ? { content: castReviewContent(content) } : {}),
+    updatedAt: Date.now(),
   };
 };

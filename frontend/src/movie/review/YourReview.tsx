@@ -1,69 +1,15 @@
-import {
-  Box,
-  Card,
-  CardActionArea,
-  CardContent,
-  Typography,
-} from "@material-ui/core";
-import { Rating } from "@material-ui/lab";
+import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import SignInButton from "../../auth/SignInButton";
 import useModal from "../../navigation/modals/useModal";
 import useReviewForm from "../../reviews/form/useReviewForm";
 import { useQueryReviews } from "../../reviews/query";
-import ReviewCard, { ReviewCardSkeleton } from "../../reviews/ReviewCard";
+import ReviewCard from "../../reviews/ReviewCard";
+import ReviewCardCallToAction from "../../reviews/ReviewCardCallToAction";
+import ReviewCardSkeleton from "../../reviews/ReviewCardSkeleton";
 import { MediaId } from "../../tmdb/types";
-import AvatarUser from "../../users/AvatarUser";
 import { UserAggergation } from "../../users/query";
 import { useQueryCurrentUser } from "../../users/useCurrentUser";
-import { pluralize } from "../../utils";
-
-const AddReviewCard = ({
-  user,
-  onClick,
-}: {
-  user: UserAggergation;
-  onClick?: () => void;
-}) => {
-  return (
-    <Card>
-      <CardActionArea onClick={onClick}>
-        <CardContent>
-          <Box
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <Box paddingBottom={1}>
-              <AvatarUser
-                style={{ width: "48px", height: "48px", fontSize: "2em" }}
-                user={user.user}
-              />
-            </Box>
-            <Typography align="center" color="textSecondary">
-              {`${user.user.username} · ${pluralize(
-                user.reviewCount,
-                "review"
-              )}`}
-            </Typography>
-            <Typography variant="h6" align="center">
-              Leave a review
-            </Typography>
-            <Typography
-              variant="subtitle1"
-              align="center"
-              color="textSecondary"
-            >
-              Help people decide if they should watch this movie
-            </Typography>
-            <Rating disabled name="rating" size="large" max={5} />
-          </Box>
-        </CardContent>
-      </CardActionArea>
-    </Card>
-  );
-};
 
 const YourReview = ({
   user,
@@ -91,8 +37,10 @@ const YourReview = ({
 
   if (reviews.length === 0) {
     return (
-      <AddReviewCard
+      <ReviewCardCallToAction
         user={user}
+        title="Leave a review"
+        subtitle="Help people decide if they should watch this movie"
         onClick={() => {
           reviewForm.setReview({
             mediaId,

@@ -14,11 +14,19 @@ import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import numeral from "numeral";
 import React from "react";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 
 export const EditButton = (props: IconButtonProps) => {
   return (
     <IconButton {...props}>
       <EditIcon />
+    </IconButton>
+  );
+};
+export const DeleteButton = (props: IconButtonProps) => {
+  return (
+    <IconButton {...props}>
+      <DeleteForeverIcon />
     </IconButton>
   );
 };

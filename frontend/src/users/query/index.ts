@@ -58,5 +58,6 @@ export const getUsers = async ({
 
 export const getCurrentUser = async () => {
   const { data } = await BackendAPI.get<UserAggergation | null>("/api/auth");
+
   return data;
 };

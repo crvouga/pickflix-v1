@@ -1,13 +1,12 @@
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
-import LoadingBox from "../../common/components/LoadingBox";
+import ReviewCardSkeleton from "../../reviews/ReviewCardSkeleton";
 import CommentThreadList from "../../youtube/CommentThreadList";
 import {
   getYoutubeVideoCommentThreadList,
   queryKeys,
 } from "../../youtube/query";
-import { ReviewCardSkeleton } from "../../reviews/ReviewCard";
 
 export default ({ videoId }: { videoId?: string }) => {
   const query = useQuery(queryKeys.youtubeCommentThread({ videoId }), () =>

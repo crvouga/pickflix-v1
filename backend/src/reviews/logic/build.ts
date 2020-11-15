@@ -152,7 +152,7 @@ export class ReviewLogic {
     const { Reviews } = this.unitOfWork;
 
     const found = await Reviews.find(omitFalsyValues(reviewInfo), {
-      orderBy: [["createdAt", "descend"]],
+      orderBy: [["updatedAt", "descend"]],
       pagination,
     });
 

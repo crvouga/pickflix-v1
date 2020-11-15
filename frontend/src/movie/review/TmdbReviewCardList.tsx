@@ -1,12 +1,11 @@
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import ErrorBox from "../../common/components/ErrorBox";
-import LoadingBox from "../../common/components/LoadingBox";
+import ReviewCardSkeleton from "../../reviews/ReviewCardSkeleton";
 import { getTmdbMovieReviews, queryKeys } from "../../tmdb/query";
-import TmdbReviewCard from "./TmdbReviewCard";
 import { MediaId } from "../../tmdb/types";
-import { ReviewCardSkeleton } from "../../reviews/ReviewCard";
+import TmdbReviewCard from "./TmdbReviewCard";
 
 export default ({ mediaId }: { mediaId: MediaId }) => {
   const query = useQuery(queryKeys.movieReviews({ mediaId }), () =>

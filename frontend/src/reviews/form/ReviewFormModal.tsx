@@ -1,8 +1,15 @@
-import { Dialog, makeStyles, useMediaQuery, useTheme } from "@material-ui/core";
+import {
+  Dialog,
+  makeStyles,
+  useMediaQuery,
+  useTheme,
+  Slide,
+} from "@material-ui/core";
 import React, { useEffect } from "react";
 import useModal from "../../navigation/modals/useModal";
 import ReviewForm from "./ReviewForm";
 import useReviewForm from "./useReviewForm";
+import { TransitionProps } from "@material-ui/core/transitions";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
@@ -15,6 +22,10 @@ const useStylesDialog = makeStyles((theme) => ({
     },
   },
 }));
+
+const SlideUp = (props: TransitionProps) => {
+  return <Slide direction="up" {...props} />;
+};
 
 export default () => {
   const reviewForm = useReviewForm();
@@ -39,11 +50,12 @@ export default () => {
 
   return (
     <Dialog
+      TransitionComponent={SlideUp}
       fullScreen={isMobile}
       classes={classesDialog}
       open={reviewFormModal.isOpen}
       onClose={handleClose}
-      transitionDuration={0}
+      keepMounted
     >
       <ReviewForm onCancel={handleClose} />
     </Dialog>

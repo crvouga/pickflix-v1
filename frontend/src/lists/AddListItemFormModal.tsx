@@ -1,13 +1,25 @@
-import { AppBar, Box, Button, Hidden, Typography } from "@material-ui/core";
+import {
+  AppBar,
+  Box,
+  Button,
+  Hidden,
+  Slide,
+  Typography,
+} from "@material-ui/core";
+import { TransitionProps } from "@material-ui/core/transitions";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import React from "react";
 import ResponsiveDialog from "../common/components/ResponsiveDialog";
 import useModal from "../navigation/modals/useModal";
+import ListLists from "../users/ListLists";
 import { UserAggergation } from "../users/query";
-import UserListsList from "../users/UserListsList";
 import useAddListForm from "./hooks/useAddListForm";
 import useAddListItemForm from "./hooks/useAddListItemForm";
 import { ListAggergation } from "./query/types";
+
+const SlideUp = (props: TransitionProps) => {
+  return <Slide direction="up" {...props} />;
+};
 
 export default ({ currentUser }: { currentUser: UserAggergation }) => {
   const addListItemModal = useModal("AddListItem");
@@ -43,7 +55,11 @@ export default ({ currentUser }: { currentUser: UserAggergation }) => {
   };
 
   return (
-    <ResponsiveDialog open={addListItemModal.isOpen} onClose={handleClose}>
+    <ResponsiveDialog
+      TransitionComponent={SlideUp}
+      open={addListItemModal.isOpen}
+      onClose={handleClose}
+    >
       <AppBar color="default" position="sticky">
         <Box display="flex" padding={2} alignItems="center">
           <Box flex={1}>
@@ -68,7 +84,7 @@ export default ({ currentUser }: { currentUser: UserAggergation }) => {
       </Box>
 
       <Box p={1}>
-        <UserListsList onClick={handleClick} user={currentUser} />
+        <ListLists onClick={handleClick} user={currentUser} />
       </Box>
     </ResponsiveDialog>
   );
