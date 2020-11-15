@@ -1,10 +1,10 @@
-import { BoxProps, makeStyles, useTheme } from "@material-ui/core";
+import { BoxProps, makeStyles } from "@material-ui/core";
 import MovieIcon from "@material-ui/icons/Movie";
+import { Skeleton } from "@material-ui/lab";
 import React from "react";
 import AspectRatio from "../common/components/AspectRatio";
 import makeImageUrl from "../tmdb/makeImageUrl";
 import { ListAggergation } from "./query/types";
-import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
   borderRadius: {
@@ -63,6 +63,18 @@ const MovieIconBox = (props: BoxProps) => {
       {...props}
     >
       <MovieIcon className={classesMovieIconBox.icon} />
+    </AspectRatio>
+  );
+};
+
+export const ListImageBoxSkeleton = (props: BoxProps) => {
+  return (
+    <AspectRatio
+      ratio={[1, 1]}
+      ContentProps={{ width: "100%", height: "100%" }}
+      {...props}
+    >
+      <Skeleton width="100%" height="100%" />
     </AspectRatio>
   );
 };

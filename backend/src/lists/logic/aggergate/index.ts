@@ -29,9 +29,15 @@ export async function aggergateList<T extends List | AutoList>(
     ListItems.count({
       listId: list.id,
     }),
-    this.getListItemAggergations({
-      listId: list.id,
-    }),
+    this.getListItemAggergations(
+      {
+        listId: list.id,
+      },
+      {
+        page: 1,
+        pageSize: 4,
+      }
+    ),
     Users.find({
       id: list.ownerId,
     }),

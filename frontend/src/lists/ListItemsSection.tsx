@@ -9,6 +9,7 @@ import { getListItems, queryKeys } from "./query";
 type Props = {
   listId: string;
 };
+const ensureArray = <T,>(x: T | T[]) => (Array.isArray(x) ? x : [x]);
 
 export default ({ listId }: Props) => {
   const {
@@ -27,7 +28,7 @@ export default ({ listId }: Props) => {
     return <LoadingBox />;
   }
 
-  const listItems = query.data.flatMap((_) => _.results);
+  const listItems = ensureArray(query.data).flatMap((_) => _.results);
 
   if (listItems.length === 0) {
     return (

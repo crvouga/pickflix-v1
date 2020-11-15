@@ -2,7 +2,7 @@ import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import LoadingBox from "../common/components/LoadingBox";
-import ListCard from "../lists/ListCard";
+import ListCard, { ListCardSkeleton } from "../lists/ListCard";
 import { getUsersLists, ListAggergation, queryKeys } from "../lists/query";
 import { User } from "./query";
 
@@ -26,7 +26,15 @@ export default ({
   }
 
   if (!query.data) {
-    return <LoadingBox />;
+    return (
+      <React.Fragment>
+        {[1, 2, 3].map((n) => (
+          <Box key={n} paddingY={1}>
+            <ListCardSkeleton />
+          </Box>
+        ))}
+      </React.Fragment>
+    );
   }
 
   const lists = query.data.results;

@@ -9,6 +9,7 @@ import {
   queryKeys,
 } from "../lists/query";
 import { User } from "./query";
+import { ListCardSkeleton } from "../lists/ListCard";
 
 export default ({
   user,
@@ -33,7 +34,15 @@ export default ({
   }
 
   if (!query.data) {
-    return <LoadingBox />;
+    return (
+      <React.Fragment>
+        {[1, 2].map((n) => (
+          <Box key={n} paddingY={1}>
+            <ListCardSkeleton />
+          </Box>
+        ))}
+      </React.Fragment>
+    );
   }
 
   const autoListsByKey = query.data;
