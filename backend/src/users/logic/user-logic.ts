@@ -77,18 +77,21 @@ export class UserLogic {
   async getUserAggergation(
     info: { username: string } | { id: UserId } | { emailAddress: string }
   ) {
-    const { Reviews, Lists } = this.unitOfWork;
+    const { AutoLists, Reviews, Lists } = this.unitOfWork;
+
     const user = await this.getUser(info);
 
-    const [reviewCount, listCount] = await Promise.all([
+    const [reviewCount, listCount, autoListCount] = await Promise.all([
       Reviews.count({ authorId: user.id }),
       Lists.count({ ownerId: user.id }),
+      AutoLists.count({ ownerId: user.id }),
     ]);
 
     return {
       user,
       reviewCount,
       listCount,
+      autoListCount,
     };
   }
 

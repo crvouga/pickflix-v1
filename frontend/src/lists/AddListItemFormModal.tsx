@@ -1,25 +1,15 @@
-import {
-  AppBar,
-  Box,
-  Button,
-  ListItem,
-  ListItemText,
-  Typography,
-  Hidden,
-  ButtonBase,
-} from "@material-ui/core";
+import { AppBar, Box, Button, Hidden, Typography } from "@material-ui/core";
+import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import React from "react";
-import { User } from "../users/query";
 import ResponsiveDialog from "../common/components/ResponsiveDialog";
 import useModal from "../navigation/modals/useModal";
+import { UserAggergation } from "../users/query";
+import UserListsList from "../users/UserListsList";
 import useAddListForm from "./hooks/useAddListForm";
 import useAddListItemForm from "./hooks/useAddListItemForm";
 import { ListAggergation } from "./query/types";
-import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
-import LabeledIconButton from "../common/components/LabeledIconButton";
-import UserListsList from "../users/UserListsList";
 
-export default ({ currentUser }: { currentUser: User }) => {
+export default ({ currentUser }: { currentUser: UserAggergation }) => {
   const addListItemModal = useModal("AddListItem");
   const addListItemForm = useAddListItemForm();
 

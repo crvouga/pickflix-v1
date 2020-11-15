@@ -135,7 +135,7 @@ export default () => {
                 onClick={(autoList) => {
                   history.push(`/auto-list/${autoList.list.id}`);
                 }}
-                user={user.user}
+                user={user}
               />
             </Box>
             <Box p={2}>
@@ -144,7 +144,7 @@ export default () => {
                 onClick={(list) => {
                   history.push(`/list/${list.list.id}`);
                 }}
-                user={user.user}
+                user={user}
               />
             </Box>
           </Grid>

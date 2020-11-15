@@ -4,14 +4,15 @@ import { useQuery } from "react-query";
 import LoadingBox from "../common/components/LoadingBox";
 import ListCard, { ListCardSkeleton } from "../lists/ListCard";
 import { getUsersLists, ListAggergation, queryKeys } from "../lists/query";
-import { User } from "./query";
+import { User, UserAggergation } from "./query";
+import { range } from "ramda";
 
 export default ({
   user,
   onClick,
 }: {
   onClick?: (list: ListAggergation) => void;
-  user: User;
+  user: UserAggergation;
 }) => {
   const handleClick = (list: ListAggergation) => {
     if (onClick) {
@@ -19,7 +20,9 @@ export default ({
     }
   };
 
-  const query = useQuery(queryKeys.userLists(user), () => getUsersLists(user));
+  const query = useQuery(queryKeys.userLists(user.user), () =>
+    getUsersLists(user.user)
+  );
 
   if (query.error) {
     return null;
@@ -28,7 +31,7 @@ export default ({
   if (!query.data) {
     return (
       <React.Fragment>
-        {[1, 2, 3].map((n) => (
+        {range(0, user.listCount).map((n) => (
           <Box key={n} paddingY={1}>
             <ListCardSkeleton />
           </Box>

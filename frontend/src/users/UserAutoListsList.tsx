@@ -1,22 +1,22 @@
 import { Box } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
-import LoadingBox from "../common/components/LoadingBox";
 import AutoListCard from "../lists/auto-lists/AutoListCard";
+import { ListCardSkeleton } from "../lists/ListCard";
 import {
   AutoListAggergation,
   getUsersAutoLists,
   queryKeys,
 } from "../lists/query";
-import { User } from "./query";
-import { ListCardSkeleton } from "../lists/ListCard";
+import { UserAggergation } from "./query";
+import { range } from "ramda";
 
 export default ({
   user,
   onClick,
 }: {
   onClick?: (list: AutoListAggergation) => void;
-  user: User;
+  user: UserAggergation;
 }) => {
   const handleClick = (list: AutoListAggergation) => {
     if (onClick) {
@@ -25,8 +25,8 @@ export default ({
   };
 
   const query = useQuery(
-    queryKeys.userAutoLists({ username: user.username }),
-    () => getUsersAutoLists({ username: user.username })
+    queryKeys.userAutoLists({ username: user.user.username }),
+    () => getUsersAutoLists({ username: user.user.username })
   );
 
   if (query.error) {
@@ -36,7 +36,7 @@ export default ({
   if (!query.data) {
     return (
       <React.Fragment>
-        {[1, 2].map((n) => (
+        {range(0, user.autoListCount).map((n) => (
           <Box key={n} paddingY={1}>
             <ListCardSkeleton />
           </Box>

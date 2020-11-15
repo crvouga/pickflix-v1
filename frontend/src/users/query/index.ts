@@ -12,6 +12,7 @@ export type UserAggergation = {
   user: User;
   reviewCount: number;
   listCount: number;
+  autoListCount: number;
 };
 
 export const queryKeys = {

@@ -4,14 +4,14 @@ import AddListFormModal from "../../lists/AddListFormModal";
 import AddListItemFormModal from "../../lists/AddListItemFormModal";
 import ReviewFormModal from "../../reviews/form/ReviewFormModal";
 import SearchModal from "../../search/SearchDialog";
-import useCurrentUser from "../../users/useCurrentUser";
+import { useQueryCurrentUser } from "../../users/useCurrentUser";
 
 export default () => {
-  const currentUser = useCurrentUser();
+  const query = useQueryCurrentUser();
   return (
     <React.Fragment>
-      {currentUser !== "loading" && currentUser !== null && (
-        <AddListItemFormModal currentUser={currentUser} />
+      {!query.error && query.data && (
+        <AddListItemFormModal currentUser={query.data} />
       )}
       <AddListFormModal />
       <SearchModal />

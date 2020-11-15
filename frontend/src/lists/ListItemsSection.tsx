@@ -25,7 +25,7 @@ export default ({ listId }: Props) => {
   }
 
   if (!query.data) {
-    return <LoadingBox />;
+    return <LoadingBox m={6} />;
   }
 
   const listItems = ensureArray(query.data).flatMap((_) => _.results);
