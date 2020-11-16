@@ -10,6 +10,7 @@ import useModal from "../../navigation/modals/useModal";
 import ReviewForm from "./ReviewForm";
 import useReviewForm from "./useReviewForm";
 import { TransitionProps } from "@material-ui/core/transitions";
+import { SlideUp } from "../../common/components/TransitionComponents";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
@@ -22,10 +23,6 @@ const useStylesDialog = makeStyles((theme) => ({
     },
   },
 }));
-
-const SlideUp = (props: TransitionProps) => {
-  return <Slide direction="up" {...props} />;
-};
 
 export default () => {
   const reviewForm = useReviewForm();
