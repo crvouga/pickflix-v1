@@ -26,7 +26,7 @@ import AvatarUser from "./AvatarUser";
 import ListAutoLists from "./ListAutoLists";
 import ListLists from "./ListLists";
 import ListReviews from "./ListReviews";
-import OptionsDialog from "./OptionsDialog";
+import UserOptionsListModal from "./UserOptionsListModal";
 import { getUser, queryKeys } from "./query";
 import { useQueryCurrentUser } from "./useCurrentUser";
 
@@ -71,7 +71,7 @@ export default () => {
 
   return (
     <React.Fragment>
-      <OptionsDialog
+      <UserOptionsListModal
         open={isDialogOpen.value}
         onClose={isDialogOpen.setFalse}
       />

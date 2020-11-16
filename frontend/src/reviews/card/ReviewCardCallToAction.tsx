@@ -5,12 +5,9 @@ import {
   CardContent,
   Typography,
 } from "@material-ui/core";
+import RateReviewOutlinedIcon from "@material-ui/icons/RateReviewOutlined";
 import { Rating } from "@material-ui/lab";
 import React from "react";
-import AvatarUser from "../../users/AvatarUser";
-import { UserAggergation } from "../../users/query";
-import { pluralize } from "../../utils";
-import RateReviewOutlinedIcon from "@material-ui/icons/RateReviewOutlined";
 
 type Props = {
   onClick?: () => void;

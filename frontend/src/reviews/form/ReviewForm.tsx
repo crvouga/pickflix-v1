@@ -196,7 +196,10 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
             <ReviewFormRating />
           </Box>
           <Box>
-            <ReviewFormContent inputRef={refContent} />
+            <ReviewFormContent
+              defaultValue={reviewForm.review.content || ""}
+              inputRef={refContent}
+            />
           </Box>
         </CardContent>
 

@@ -55,7 +55,6 @@ export default () => {
       classes={classesDialog}
       open={reviewFormModal.isOpen}
       onClose={handleClose}
-      keepMounted
     >
       <ReviewForm onCancel={handleClose} />
     </Dialog>

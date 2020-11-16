@@ -11,6 +11,7 @@ import { MediaId } from "../../tmdb/types";
 import { UserAggergation } from "../../users/query";
 import { useQueryCurrentUser } from "../../users/useCurrentUser";
 import useReviewActions from "../../reviews/card/useReviewActions";
+import SignInCallToAction from "../../auth/SignInCallToAction";
 
 const YourReview = ({
   user,
@@ -74,20 +75,7 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
         <Box paddingBottom={1}>
           <Typography variant="h6">Your Review</Typography>
         </Box>
-        <Box
-          width="100%"
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-        >
-          <Typography align="center">You are not signed in.</Typography>
-          <Box paddingBottom={1}>
-            <Typography align="center">
-              If you sign in you can leave a review!
-            </Typography>
-          </Box>
-          <SignInButton />
-        </Box>
+        <SignInCallToAction subtitle="Signing in allows you to write reviews!" />
       </Box>
     );
   }
