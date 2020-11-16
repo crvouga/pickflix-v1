@@ -10,8 +10,8 @@ import {
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import React, { useEffect, useRef } from "react";
-import useModal from "../navigation/modals/useModal";
-import useAddListForm from "./hooks/useAddListForm";
+import useModal from "../../navigation/modals/useModal";
+import useAddListForm from "./useAddListForm";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {

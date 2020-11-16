@@ -3,7 +3,7 @@ import PeopleOutlineIcon from "@material-ui/icons/PeopleOutline";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
 import React from "react";
-import useAddListItemForm from "../../lists/hooks/useAddListItemForm";
+import useAddListItemForm from "../../lists/list-items-form/useAddListItemForm";
 import useModal from "../../navigation/modals/useModal";
 import { TmdbMediaType } from "../../tmdb/types";
 

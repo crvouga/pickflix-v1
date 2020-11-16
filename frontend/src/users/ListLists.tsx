@@ -1,11 +1,10 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
-import LoadingBox from "../common/components/LoadingBox";
-import ListCard, { ListCardSkeleton } from "../lists/ListCard";
+import ListCard from "../lists/card/ListCard";
+import ListCardSkeleton from "../lists/card/ListCardSkeleton";
 import { getUsersLists, ListAggergation, queryKeys } from "../lists/query";
-import { User, UserAggergation } from "./query";
-import { range } from "ramda";
+import { UserAggergation } from "./query";
 
 export default ({
   user,
@@ -31,8 +30,8 @@ export default ({
   if (!query.data) {
     return (
       <React.Fragment>
-        {range(0, user.listCount).map((n) => (
-          <Box width="100%" height="100px" key={n} paddingY={1}>
+        {[...Array(user.reviewCount)].map((_, index) => (
+          <Box key={index} width="100%" height="100px" paddingY={1}>
             <ListCardSkeleton />
           </Box>
         ))}

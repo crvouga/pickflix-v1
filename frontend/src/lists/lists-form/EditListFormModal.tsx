@@ -21,12 +21,12 @@ import CheckOutlinedIcon from "@material-ui/icons/CheckOutlined";
 import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import React, { useRef, useEffect } from "react";
-import ErrorBox from "../common/components/ErrorBox";
-import makeImageUrl from "../tmdb/makeImageUrl";
-import { useQueryList, useQueryListItems } from "./hooks/query";
-import useEditListForm from "./hooks/useEditListForm";
+import ErrorBox from "../../common/components/ErrorBox";
+import makeImageUrl from "../../tmdb/makeImageUrl";
+import { useQueryList, useQueryListItems } from "../query/hooks";
+import useEditListForm from "./useEditListForm";
 import { Alert } from "@material-ui/lab";
-import ResponsiveDialog from "../common/components/ResponsiveDialog";
+import ResponsiveDialog from "../../common/components/ResponsiveDialog";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {

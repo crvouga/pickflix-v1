@@ -1,15 +1,15 @@
 import { Box } from "@material-ui/core";
+import { range } from "ramda";
 import React from "react";
 import { useQuery } from "react-query";
 import AutoListCard from "../lists/auto-lists/AutoListCard";
-import { ListCardSkeleton } from "../lists/ListCard";
+import ListCardSkeleton from "../lists/card/ListCardSkeleton";
 import {
   AutoListAggergation,
   getUsersAutoLists,
   queryKeys,
 } from "../lists/query";
 import { UserAggergation } from "./query";
-import { range } from "ramda";
 
 export default ({
   user,

@@ -1,8 +1,8 @@
 import { DiscoverActiveTags } from "../discover/redux/discover-active-tags";
 import { DiscoverTagsState } from "../discover/redux/discover-tags";
-import { AddListFormState } from "../lists/redux/add-list-form";
-import { AddListItemFormState } from "../lists/redux/add-list-item-form";
-import { EditListFormState } from "../lists/redux/edit-list-form";
+import { AddListFormState } from "../lists/lists-form/add-list-form";
+import { AddListItemFormState } from "../lists/list-items-form/add-list-item-form";
+import { EditListFormState } from "../lists/lists-form/edit-list-form";
 import { PageHistoryState } from "../home/page-history/page-history";
 import { PersonPageUiState } from "../person/redux/person-page-ui";
 import { SearchState } from "../search/redux/search";

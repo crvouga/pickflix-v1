@@ -9,14 +9,14 @@ import {
 import { TransitionProps } from "@material-ui/core/transitions";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import React from "react";
-import ResponsiveDialog from "../common/components/ResponsiveDialog";
-import useModal from "../navigation/modals/useModal";
-import ListLists from "../users/ListLists";
-import { UserAggergation } from "../users/query";
-import useAddListForm from "./hooks/useAddListForm";
-import useAddListItemForm from "./hooks/useAddListItemForm";
-import { ListAggergation } from "./query/types";
-import { SlideUp } from "../common/components/TransitionComponents";
+import ResponsiveDialog from "../../common/components/ResponsiveDialog";
+import useModal from "../../navigation/modals/useModal";
+import ListLists from "../../users/ListLists";
+import { UserAggergation } from "../../users/query";
+import useAddListForm from "../lists-form/useAddListForm";
+import useAddListItemForm from "./useAddListItemForm";
+import { ListAggergation } from "../query/types";
+import { SlideUp } from "../../common/components/TransitionComponents";
 
 export default ({ currentUser }: { currentUser: UserAggergation }) => {
   const addListItemModal = useModal("AddListItem");

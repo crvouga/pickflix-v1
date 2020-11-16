@@ -21,10 +21,10 @@ import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
 import AvatarUser from "../users/AvatarUser";
 import { UserAggergation } from "../users/query";
 import { useQueryCurrentUser } from "../users/useCurrentUser";
-import DeleteListFormModal from "./DeleteListFormModal";
-import EditListFormModal from "./EditListFormModal";
-import { useQueryList } from "./hooks/query";
-import ListCardImage from "./ListCardImage";
+import DeleteListFormModal from "./lists-form/DeleteListFormModal";
+import EditListFormModal from "./lists-form/EditListFormModal";
+import { useQueryList } from "./query/hooks";
+import ListCardImage from "./card/ListCardImage";
 import ListItemsSection from "./ListItemsSection";
 import { ListAggergation } from "./query";
 

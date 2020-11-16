@@ -1,26 +1,8 @@
 import React from "react";
-import { useQueryCache } from "react-query";
-import { useDispatch, useSelector } from "react-redux";
-import { bindActionCreators } from "redux";
 import { ViewListButton } from "../../snackbar/Snackbar";
 import useSnackbar from "../../snackbar/useSnackbar";
-import {
-  addListItemMutation,
-  queryKeys,
-  postListItem,
-  PostListItemParams,
-} from "../query";
-import { List as IList } from "../query/types";
-import { addListItemForm } from "../redux/add-list-item-form";
-
-const useAddListItemFormState = () => {
-  const dispatch = useDispatch();
-  const slice = useSelector(addListItemForm.selectors.slice);
-  return {
-    ...slice,
-    ...bindActionCreators(addListItemForm.actions, dispatch),
-  };
-};
+import { postListItem, PostListItemParams } from "../query";
+import { useAddListItemFormState } from "./add-list-item-form";
 
 export default () => {
   const snackbar = useSnackbar();

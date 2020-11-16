@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { getList, getLists, getListItems, queryKeys } from "../query";
+import { getList, getLists, getListItems, queryKeys } from ".";
 
 export const useQueryLists = () => {
   return useQuery(queryKeys.lists(), () => getLists());

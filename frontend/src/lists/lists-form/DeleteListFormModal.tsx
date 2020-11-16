@@ -6,7 +6,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import React from "react";
-import useDeleteListForm from "./hooks/useDeleteListForm";
+import useDeleteListForm from "./useDeleteListForm";
 
 const useStylesDialog = makeStyles({
   paper: {

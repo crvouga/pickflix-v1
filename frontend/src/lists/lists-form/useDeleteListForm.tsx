@@ -1,9 +1,8 @@
 import { useQueryCache } from "react-query";
-import useSnackbar from "../../snackbar/useSnackbar";
-
 import { useHistory } from "react-router";
+import useSnackbar from "../../snackbar/useSnackbar";
+import { deleteList, queryKeys } from "../query";
 import { ListAggergation } from "../query/types";
-import { queryKeys, deleteList } from "../query";
 
 export default () => {
   const queryCache = useQueryCache();

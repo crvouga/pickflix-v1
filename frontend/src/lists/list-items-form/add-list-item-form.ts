@@ -1,6 +1,12 @@
-import { createAction, createReducer, createSelector } from "@reduxjs/toolkit";
+import {
+  createAction,
+  createReducer,
+  createSelector,
+  bindActionCreators,
+} from "@reduxjs/toolkit";
 import { AppState } from "../../redux/types";
 import { TmdbMediaType } from "../../tmdb/types";
+import { useDispatch, useSelector } from "react-redux";
 
 const name = "addListItemForm";
 
@@ -63,4 +69,14 @@ export const addListItemForm = {
   actions,
   reducer,
   selectors,
+};
+
+export const useAddListItemFormState = () => {
+  const slice = useSelector(addListItemForm.selectors.slice);
+  const dispatch = useDispatch();
+  const actions = bindActionCreators(addListItemForm.actions, dispatch);
+  return {
+    ...slice,
+    ...actions,
+  };
 };
