@@ -38,8 +38,7 @@ const YourReview = ({
   if (reviews.length === 0) {
     return (
       <ReviewCardCallToAction
-        user={user}
-        title="Leave a review"
+        title="Write a review"
         subtitle="Help people decide if they should watch this movie"
         onClick={() => {
           reviewActions.onEdit({

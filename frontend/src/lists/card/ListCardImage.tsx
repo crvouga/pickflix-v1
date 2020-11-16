@@ -1,6 +1,7 @@
 import { BoxProps, makeStyles } from "@material-ui/core";
 import MovieIcon from "@material-ui/icons/Movie";
 import { Skeleton } from "@material-ui/lab";
+import clsx from "clsx";
 import React from "react";
 import AspectRatio from "../../common/components/AspectRatio";
 import makeImageUrl from "../../tmdb/makeImageUrl";
@@ -8,7 +9,7 @@ import { ListAggergation } from "../query/types";
 
 const useStyles = makeStyles((theme) => ({
   borderRadius: {
-    borderRadius: theme.spacing(1),
+    borderRadius: theme.spacing(1 / 2),
   },
 }));
 
@@ -23,6 +24,7 @@ const useStylesPosterBox = makeStyles((theme) => ({
 
 const PosterBox = ({
   posterPath,
+  className,
   ...props
 }: { posterPath?: string } & BoxProps) => {
   const classesPosterBox = useStylesPosterBox({
@@ -32,7 +34,7 @@ const PosterBox = ({
   return (
     <AspectRatio
       ratio={[1, 1]}
-      className={classesPosterBox.poster}
+      className={clsx(classesPosterBox.poster, className)}
       {...props}
     />
   );
@@ -52,13 +54,17 @@ const useStylesMovieIconBox = makeStyles((theme) => ({
   },
 }));
 
-const MovieIconBox = (props: BoxProps) => {
+export const MovieIconBox = (props: BoxProps) => {
+  const classes = useStyles();
   const classesMovieIconBox = useStylesMovieIconBox();
   return (
     <AspectRatio
       ratio={[1, 1]}
       ContentProps={{
-        className: classesMovieIconBox.iconContainer,
+        className: clsx(
+          classes.borderRadius,
+          classesMovieIconBox.iconContainer
+        ),
       }}
       {...props}
     >
@@ -83,11 +89,17 @@ export default ({ list, ...props }: { list: ListAggergation } & BoxProps) => {
   const classes = useStyles();
 
   if (list.listItemCount === 0) {
-    return <MovieIconBox />;
+    return <MovieIconBox className={classes.borderRadius} {...props} />;
   }
 
   if (list.listItemCount < 4) {
-    return <PosterBox posterPath={list.listItems[0].tmdbData.posterPath} />;
+    return (
+      <PosterBox
+        className={classes.borderRadius}
+        posterPath={list.listItems[0].tmdbData.posterPath}
+        {...props}
+      />
+    );
   }
 
   return (
@@ -99,6 +111,7 @@ export default ({ list, ...props }: { list: ListAggergation } & BoxProps) => {
         display: "flex",
         flexDirection: "row",
         flexWrap: "wrap",
+        className: classes.borderRadius,
       }}
       {...props}
     >

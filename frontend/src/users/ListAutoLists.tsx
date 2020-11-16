@@ -1,5 +1,4 @@
 import { Box } from "@material-ui/core";
-import { range } from "ramda";
 import React from "react";
 import { useQuery } from "react-query";
 import AutoListCard from "../lists/auto-lists/AutoListCard";
@@ -36,8 +35,8 @@ export default ({
   if (!query.data) {
     return (
       <React.Fragment>
-        {range(0, user.autoListCount).map((n) => (
-          <Box width="100%" height="100px" key={n} paddingY={1}>
+        {[...Array(user.autoListCount)].map((_, index) => (
+          <Box width="100%" height="100px" key={index} paddingY={1}>
             <ListCardSkeleton />
           </Box>
         ))}

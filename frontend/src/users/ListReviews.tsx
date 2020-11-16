@@ -77,23 +77,22 @@ export const ListReviews = ({
 
 export const ListReviewsCurrentUser = ({
   reviews,
-  currentUser,
 }: {
   reviews: ReviewAggergation[];
-  currentUser: UserAggergation;
 }) => {
   const reviewActions = useReviewActions();
 
   if (reviews.length === 0) {
     return (
-      <ReviewCardCallToAction
-        user={currentUser}
-        title="Write a review"
-        subtitle=""
-        onClick={() => {
-          reviewActions.onEdit({});
-        }}
-      />
+      <Box paddingY={1}>
+        <ReviewCardCallToAction
+          title="Write a review"
+          subtitle=""
+          onClick={() => {
+            reviewActions.onEdit({});
+          }}
+        />
+      </Box>
     );
   }
 
@@ -135,9 +134,7 @@ export default ({ user }: { user: UserAggergation }) => {
   const reviews = query.data.results;
 
   if (currentUser !== null && currentUser.user.id === user.user.id) {
-    return (
-      <ListReviewsCurrentUser reviews={reviews} currentUser={currentUser} />
-    );
+    return <ListReviewsCurrentUser reviews={reviews} />;
   }
 
   return <ListReviews reviews={reviews} user={user} />;

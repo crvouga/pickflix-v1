@@ -5,6 +5,10 @@ import ListCard from "../lists/card/ListCard";
 import ListCardSkeleton from "../lists/card/ListCardSkeleton";
 import { getUsersLists, ListAggergation, queryKeys } from "../lists/query";
 import { UserAggergation } from "./query";
+import { useQueryCurrentUser } from "./useCurrentUser";
+import ListCardCallToAction from "../lists/card/ListCardCallToAction";
+import useAddListForm from "../lists/lists-form/useAddListForm";
+import useModal from "../navigation/modals/useModal";
 
 export default ({
   user,
@@ -13,12 +17,14 @@ export default ({
   onClick?: (list: ListAggergation) => void;
   user: UserAggergation;
 }) => {
+  const addListFormModal = useModal("AddList");
   const handleClick = (list: ListAggergation) => {
     if (onClick) {
       onClick(list);
     }
   };
 
+  const queryCurrentUser = useQueryCurrentUser();
   const query = useQuery(queryKeys.userLists(user.user), () =>
     getUsersLists(user.user)
   );
@@ -27,10 +33,10 @@ export default ({
     return null;
   }
 
-  if (!query.data) {
+  if (query.data === undefined || queryCurrentUser.data === undefined) {
     return (
       <React.Fragment>
-        {[...Array(user.reviewCount)].map((_, index) => (
+        {[...Array(user.listCount)].map((_, index) => (
           <Box key={index} width="100%" height="100px" paddingY={1}>
             <ListCardSkeleton />
           </Box>
@@ -39,9 +45,21 @@ export default ({
     );
   }
 
+  const currentUser = queryCurrentUser.data;
   const lists = query.data.results;
 
   if (lists.length === 0) {
+    if (currentUser && user.user.id === currentUser.user.id) {
+      return (
+        <Box width="100%" paddingY={1}>
+          <ListCardCallToAction
+            onClick={addListFormModal.open}
+            title="Make a list"
+            subtitle="Keep track of movie you like or want to watch"
+          />
+        </Box>
+      );
+    }
     return (
       <Box m={6} display="flex" justifyContent="center" alignItems="center">
         <Typography color="textSecondary">No lists</Typography>
@@ -53,9 +71,9 @@ export default ({
     <React.Fragment>
       {lists.map((list) => (
         <Box
+          key={list.list.id}
           width="100%"
           height="100px"
-          key={list.list.id}
           paddingY={1}
           onClick={() => handleClick(list)}
         >
