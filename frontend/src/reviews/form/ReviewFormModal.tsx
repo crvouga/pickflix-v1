@@ -28,10 +28,6 @@ export default () => {
   const reviewForm = useReviewForm();
   const reviewFormModal = useModal("ReviewForm");
 
-  const handleClose = () => {
-    reviewFormModal.close();
-  };
-
   useEffect(() => {
     const unlisten = reviewForm.eventTarget.on("submitSuccess", () => {
       reviewFormModal.close();
@@ -51,9 +47,9 @@ export default () => {
       fullScreen={isMobile}
       classes={classesDialog}
       open={reviewFormModal.isOpen}
-      onClose={handleClose}
+      onClose={reviewFormModal.close}
     >
-      <ReviewForm onCancel={handleClose} />
+      <ReviewForm onCancel={reviewFormModal.close} />
     </Dialog>
   );
 };

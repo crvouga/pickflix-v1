@@ -77,9 +77,16 @@ export const ListReviews = ({
 
 export const ListReviewsCurrentUser = ({
   reviews,
+  currentUser,
 }: {
   reviews: ReviewAggergation[];
+  currentUser: UserAggergation;
 }) => {
+  const reviewVoteValue = useReviewVoteValue(
+    getReviewsQueryKey({
+      authorId: currentUser.user.id,
+    })
+  );
   const reviewActions = useReviewActions();
 
   if (reviews.length === 0) {
@@ -109,6 +116,12 @@ export const ListReviewsCurrentUser = ({
             onDelete={() => {
               reviewActions.onDelete(review.review.id);
             }}
+            onVoteDown={() => {
+              reviewVoteValue.voteDown(review);
+            }}
+            onVoteUp={() => {
+              reviewVoteValue.voteUp(review);
+            }}
           />
         </Box>
       ))}
@@ -134,7 +147,9 @@ export default ({ user }: { user: UserAggergation }) => {
   const reviews = query.data.results;
 
   if (currentUser !== null && currentUser.user.id === user.user.id) {
-    return <ListReviewsCurrentUser reviews={reviews} />;
+    return (
+      <ListReviewsCurrentUser reviews={reviews} currentUser={currentUser} />
+    );
   }
 
   return <ListReviews reviews={reviews} user={user} />;

@@ -84,15 +84,21 @@ const ReviewFormContent = (props: TextFieldProps) => {
 
 const ReviewFormSubmitButton = (props: ButtonProps) => {
   return (
-    <Button
-      variant="outlined"
-      color="primary"
-      size="large"
-      startIcon={<ArrowUpwardIcon />}
-      {...props}
+    <Box
+      color={props.disabled ? "action.disabled" : "text.primary"}
+      fontWeight="bold"
     >
-      Post
-    </Button>
+      <Button
+        variant="contained"
+        color="primary"
+        size="large"
+        startIcon={<ArrowUpwardIcon />}
+        style={{ color: "inherit", fontWeight: "inherit" }}
+        {...props}
+      >
+        Post
+      </Button>
+    </Box>
   );
 };
 

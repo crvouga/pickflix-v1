@@ -20,8 +20,8 @@ export class SimpleEventTarget<EventType extends string> {
   on(eventType: EventType, callback: () => void) {
     this.eventTarget.addEventListener(eventType, callback);
 
-    const unlisten = (callback?: () => void) => {
-      this.eventTarget.removeEventListener(eventType, callback || noop);
+    const unlisten = () => {
+      this.eventTarget.removeEventListener(eventType, callback);
     };
 
     return unlisten;
