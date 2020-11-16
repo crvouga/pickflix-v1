@@ -153,6 +153,12 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
   };
 
   useEffect(() => {
+    if (refContent.current) {
+      refContent.current.value = reviewForm.review.content || "";
+    }
+  }, [reviewForm.review.content, refContent.current]);
+
+  useEffect(() => {
     const unlistenSubmit = reviewForm.eventTarget.on("submitSuccess", () => {
       snackbar.display({
         message: "Review posted",
@@ -163,6 +169,9 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
     };
   }, []);
 
+  const disabled =
+    !Boolean(reviewForm.review.mediaId) || !Boolean(reviewForm.review.rating);
+
   return (
     <React.Fragment>
       <LoadingDialog />
@@ -171,7 +180,10 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
           <Box display="flex" p={2}>
             {onCancel && <ReviewCancelButton onClick={onCancel} />}
             <Box flex={1}></Box>
-            <ReviewFormSubmitButton onClick={handleSubmit} />
+            <ReviewFormSubmitButton
+              disabled={disabled}
+              onClick={handleSubmit}
+            />
           </Box>
         </Hidden>
 
@@ -184,17 +196,17 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
             <ReviewFormRating />
           </Box>
           <Box>
-            <ReviewFormContent
-              defaultValue={reviewForm.review.content}
-              inputRef={refContent}
-            />
+            <ReviewFormContent inputRef={refContent} />
           </Box>
         </CardContent>
 
         <Hidden xsDown>
           <Box display="flex" flexDirection="row-reverse" p={2}>
             <Box marginRight={2}>
-              <ReviewFormSubmitButton onClick={handleSubmit} />
+              <ReviewFormSubmitButton
+                disabled={disabled}
+                onClick={handleSubmit}
+              />
             </Box>
 
             {onCancel && (
