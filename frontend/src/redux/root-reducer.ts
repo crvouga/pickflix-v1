@@ -7,6 +7,7 @@ import { addListItemForm } from "../lists/redux/add-list-item-form";
 import { editListForm } from "../lists/redux/edit-list-form";
 import { moviePageUi } from "../movie/redux/movie-page-ui";
 import { personPageUi } from "../person/redux/person-page-ui";
+import { deleteReviewForm } from "../reviews/form/delete-review-form";
 import { reviewForm } from "../reviews/form/review-form";
 import { search } from "../search/redux/search";
 import { snackbar } from "../snackbar/redux/snackbar";
@@ -14,15 +15,16 @@ import { video } from "../video/redux/video";
 import { AppState } from "./types";
 
 const reducers: { [key in keyof AppState]: Reducer } = {
-  reviewForm: reviewForm.reducer,
-  editListForm: editListForm.reducer,
   addListForm: addListForm.reducer,
   addListItemForm: addListItemForm.reducer,
-  discoverTags: discoverTags.reducer,
+  deleteReviewForm: deleteReviewForm.reducer,
   discoverActiveTags: discoverActiveTags.reducer,
+  discoverTags: discoverTags.reducer,
+  editListForm: editListForm.reducer,
+  moviePageUi: moviePageUi.reducer,
   pageHistory: pageHistory.reducer,
   personPageUi: personPageUi.reducer,
-  moviePageUi: moviePageUi.reducer,
+  reviewForm: reviewForm.reducer,
   search: search.reducer,
   snackbar: snackbar.reducer,
   video: video.reducer,

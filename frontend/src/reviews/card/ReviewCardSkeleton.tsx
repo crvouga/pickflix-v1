@@ -1,10 +1,10 @@
 import { Box, Card, CardActions, CardContent } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import React from "react";
-import ListItemSkeleton from "../common/components/ListItemSkeleton";
+import ListItemSkeleton from "../../common/components/ListItemSkeleton";
 
 type Props = {
-  showUser?: boolean;
+  showAuthor?: boolean;
   showMedia?: boolean;
   iconButtonCount?: number;
 };
@@ -24,14 +24,14 @@ const IconButtonSkeleton = () => {
 };
 
 export default ({
-  showUser = false,
+  showAuthor = false,
   showMedia = false,
   iconButtonCount = 0,
 }: Props) => {
   return (
     <Card>
       {showMedia && <ListItemSkeleton avatarShape="rect" />}
-      {showUser && <ListItemSkeleton />}
+      {showAuthor && <ListItemSkeleton />}
       <CardContent>
         <Box display="flex" alignItems="center" paddingBottom={1}>
           <Skeleton variant="rect" width="8em" height="1em" />

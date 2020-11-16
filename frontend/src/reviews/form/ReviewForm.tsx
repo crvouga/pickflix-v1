@@ -1,23 +1,32 @@
 import {
+  AppBar,
   Box,
   Button,
   ButtonProps,
   Card,
-  CardActions,
   CardContent,
-  CardHeader,
+  CircularProgress,
+  Dialog,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
   TextField,
   TextFieldProps,
+  Toolbar,
+  Hidden,
 } from "@material-ui/core";
-import SendIcon from "@material-ui/icons/Send";
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import Rating from "@material-ui/lab/Rating";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ListItemSkeleton from "../../common/components/ListItemSkeleton";
+import useBoolean from "../../common/hooks/useBoolean";
 import { useQueryCurrentUser } from "../../users/useCurrentUser";
 import UserListItem from "../../users/UserListItem";
 import ReviewFormMedia from "./ReviewFormMedia";
 import useReviewForm from "./useReviewForm";
-
+import CloseIcon from "@material-ui/icons/Close";
+import useSnackbar from "../../snackbar/useSnackbar";
 const ReviewFormAuthor = () => {
   const query = useQueryCurrentUser();
 
@@ -60,7 +69,6 @@ const ReviewFormRating = () => {
 };
 
 const ReviewFormContent = (props: TextFieldProps) => {
-  console.log("RENDER");
   return (
     <TextField
       variant="outlined"
@@ -77,20 +85,61 @@ const ReviewFormContent = (props: TextFieldProps) => {
 const ReviewFormSubmitButton = (props: ButtonProps) => {
   return (
     <Button
-      variant="contained"
+      variant="outlined"
       color="primary"
       size="large"
-      startIcon={<SendIcon />}
-      style={{ color: "white" }}
+      startIcon={<ArrowUpwardIcon />}
       {...props}
     >
-      Send
+      Post
     </Button>
+  );
+};
+
+const ReviewCancelButton = (props: ButtonProps) => {
+  return (
+    <Button variant="text" size="large" startIcon={<CloseIcon />} {...props}>
+      Cancel
+    </Button>
+  );
+};
+
+const LoadingDialog = () => {
+  const reviewForm = useReviewForm();
+  const isLoadingDialogOpen = useBoolean(false);
+
+  useEffect(() => {
+    const unlistenSubmit = reviewForm.eventTarget.on("submit", () => {
+      isLoadingDialogOpen.setTrue();
+    });
+    const unlistenSubmitSuccess = reviewForm.eventTarget.on(
+      "submitSuccess",
+      () => {
+        isLoadingDialogOpen.setFalse();
+      }
+    );
+    return () => {
+      unlistenSubmit();
+      unlistenSubmitSuccess();
+    };
+  }, []);
+  return (
+    <Dialog open={isLoadingDialogOpen.value}>
+      <List>
+        <ListItem>
+          <ListItemIcon>
+            <CircularProgress disableShrink />
+          </ListItemIcon>
+          <ListItemText primary="Posting" />
+        </ListItem>
+      </List>
+    </Dialog>
   );
 };
 
 export default ({ onCancel }: { onCancel?: () => void }) => {
   const reviewForm = useReviewForm();
+  const snackbar = useSnackbar();
   const refContent = useRef<HTMLInputElement>();
 
   const handleSubmit = () => {
@@ -103,36 +152,59 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
     }
   };
 
+  useEffect(() => {
+    const unlistenSubmit = reviewForm.eventTarget.on("submitSuccess", () => {
+      snackbar.display({
+        message: "Review posted",
+      });
+    });
+    return () => {
+      unlistenSubmit();
+    };
+  }, []);
+
   return (
-    <Card>
-      <ReviewFormMedia />
-
-      <ReviewFormAuthor />
-
-      <CardContent>
-        <Box paddingBottom={2}>
-          <ReviewFormRating />
-        </Box>
-        <Box>
-          <ReviewFormContent
-            defaultValue={reviewForm.review.content}
-            inputRef={refContent}
-          />
-        </Box>
-      </CardContent>
-      <Box display="flex" flexDirection="row-reverse" p={2}>
-        <Box paddingX={2}>
-          <ReviewFormSubmitButton onClick={handleSubmit} />
-        </Box>
-
-        {onCancel && (
-          <Box paddingX={2}>
-            <Button size="large" onClick={onCancel}>
-              Cancel
-            </Button>
+    <React.Fragment>
+      <LoadingDialog />
+      <Card>
+        <Hidden smUp>
+          <Box display="flex" p={2}>
+            {onCancel && <ReviewCancelButton onClick={onCancel} />}
+            <Box flex={1}></Box>
+            <ReviewFormSubmitButton onClick={handleSubmit} />
           </Box>
-        )}
-      </Box>
-    </Card>
+        </Hidden>
+
+        <ReviewFormMedia />
+
+        <ReviewFormAuthor />
+
+        <CardContent>
+          <Box paddingBottom={2}>
+            <ReviewFormRating />
+          </Box>
+          <Box>
+            <ReviewFormContent
+              defaultValue={reviewForm.review.content}
+              inputRef={refContent}
+            />
+          </Box>
+        </CardContent>
+
+        <Hidden xsDown>
+          <Box display="flex" flexDirection="row-reverse" p={2}>
+            <Box marginRight={2}>
+              <ReviewFormSubmitButton onClick={handleSubmit} />
+            </Box>
+
+            {onCancel && (
+              <Box marginRight={2}>
+                <ReviewCancelButton onClick={onCancel} />
+              </Box>
+            )}
+          </Box>
+        </Hidden>
+      </Card>
+    </React.Fragment>
   );
 };

@@ -10,9 +10,13 @@ import {
   IconButton,
   Typography,
   CardActions,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
 } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import YouTubeIcon from "@material-ui/icons/YouTube";
 import moment from "moment";
@@ -21,6 +25,34 @@ import React from "react";
 import useBoolean from "../common/hooks/useBoolean";
 import { youtubeCommentTextToMarkdown } from "./query";
 import { YoutubeComment } from "./query/types";
+import LaunchIcon from "@material-ui/icons/Launch";
+import CloseIcon from "@material-ui/icons/Close";
+import ResponsiveDialogDrawer from "../common/components/ResponsiveDialogDrawer";
+
+const YoutubeCommentOptionsList = ({
+  onSeeChannel,
+  onCancel,
+}: {
+  onSeeChannel: () => void;
+  onCancel: () => void;
+}) => {
+  return (
+    <List>
+      <ListItem button onClick={onSeeChannel}>
+        <ListItemIcon>
+          <LaunchIcon />
+        </ListItemIcon>
+        <ListItemText primary="Go to YouTube channel" />
+      </ListItem>
+      <ListItem button onClick={onCancel}>
+        <ListItemIcon>
+          <CloseIcon />
+        </ListItemIcon>
+        <ListItemText primary="Cancel" />
+      </ListItem>
+    </List>
+  );
+};
 
 type Props = {
   comment: YoutubeComment;
@@ -30,6 +62,7 @@ export default ({ comment }: Props) => {
   const isDialogOpen = useBoolean(false);
   const { snippet } = comment;
   const {
+    authorChannelUrl,
     authorDisplayName,
     authorProfileImageUrl,
     textDisplay,
@@ -48,24 +81,20 @@ export default ({ comment }: Props) => {
 
   return (
     <React.Fragment>
-      <Dialog open={isDialogOpen.value} onClose={isDialogOpen.setFalse}>
-        <ButtonGroup variant="text" orientation="vertical">
-          <Button
-            onClick={() => {
-              window.location.href = comment.snippet.authorChannelUrl;
-            }}
-          >
-            Go To Youtube Channel
-          </Button>
-          <Button
-            onClick={() => {
-              isDialogOpen.setFalse();
-            }}
-          >
-            Cancel
-          </Button>
-        </ButtonGroup>
-      </Dialog>
+      <ResponsiveDialogDrawer
+        open={isDialogOpen.value}
+        onClose={isDialogOpen.setFalse}
+      >
+        <YoutubeCommentOptionsList
+          onSeeChannel={() => {
+            window.location.href = authorChannelUrl;
+            isDialogOpen.setFalse();
+          }}
+          onCancel={() => {
+            isDialogOpen.setFalse();
+          }}
+        />
+      </ResponsiveDialogDrawer>
       <Card>
         <CardHeader
           avatar={
@@ -75,7 +104,7 @@ export default ({ comment }: Props) => {
           subheader="YouTube User"
           action={
             <IconButton onClick={isDialogOpen.setTrue}>
-              <MoreVertIcon />
+              <MoreHorizIcon />
             </IconButton>
           }
         />

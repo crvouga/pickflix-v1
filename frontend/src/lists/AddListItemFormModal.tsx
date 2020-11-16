@@ -16,10 +16,7 @@ import { UserAggergation } from "../users/query";
 import useAddListForm from "./hooks/useAddListForm";
 import useAddListItemForm from "./hooks/useAddListItemForm";
 import { ListAggergation } from "./query/types";
-
-const SlideUp = (props: TransitionProps) => {
-  return <Slide direction="up" {...props} />;
-};
+import { SlideUp } from "../common/components/TransitionComponents";
 
 export default ({ currentUser }: { currentUser: UserAggergation }) => {
   const addListItemModal = useModal("AddListItem");

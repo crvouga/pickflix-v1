@@ -2,7 +2,7 @@ import { Box } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import ErrorBox from "../../common/components/ErrorBox";
-import ReviewCardSkeleton from "../../reviews/ReviewCardSkeleton";
+import ReviewCardSkeleton from "../../reviews/card/ReviewCardSkeleton";
 import { getTmdbMovieReviews, queryKeys } from "../../tmdb/query";
 import { MediaId } from "../../tmdb/types";
 import TmdbReviewCard from "./TmdbReviewCard";
@@ -21,7 +21,7 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
       <React.Fragment>
         {[...Array(3)].map((_, index) => (
           <Box key={index} paddingX={2} paddingY={1}>
-            <ReviewCardSkeleton showUser />
+            <ReviewCardSkeleton showAuthor />
           </Box>
         ))}
       </React.Fragment>

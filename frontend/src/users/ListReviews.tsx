@@ -8,12 +8,13 @@ import {
   ReviewAggergation,
   useQueryReviews,
 } from "../reviews/query";
-import ReviewCard from "../reviews/ReviewCard";
-import ReviewCardCallToAction from "../reviews/ReviewCardCallToAction";
-import ReviewCardSkeleton from "../reviews/ReviewCardSkeleton";
-import useReviewVoteValueState from "../reviews/useReviewVoteValueState";
+import ReviewCard from "../reviews/card/ReviewCard";
+import ReviewCardCallToAction from "../reviews/card/ReviewCardCallToAction";
+import ReviewCardSkeleton from "../reviews/card/ReviewCardSkeleton";
+import useReviewVoteValue from "../reviews/card/useReviewVoteValue";
 import { UserAggergation } from "./query";
 import { useQueryCurrentUser } from "./useCurrentUser";
+import useReviewActions from "../reviews/card/useReviewActions";
 
 const ListReviewsSkeleton = ({
   reviewCardCount,
@@ -22,8 +23,8 @@ const ListReviewsSkeleton = ({
 }) => {
   return (
     <React.Fragment>
-      {[...Array(Math.min(20, reviewCardCount))].map((n) => (
-        <Box key={n} paddingY={1}>
+      {[...Array(Math.min(20, reviewCardCount))].map((_, index) => (
+        <Box key={index} paddingY={1}>
           <ReviewCardSkeleton showMedia iconButtonCount={1} />
         </Box>
       ))}
@@ -38,7 +39,7 @@ export const ListReviews = ({
   reviews: ReviewAggergation[];
   user: UserAggergation;
 }) => {
-  const reviewVoteState = useReviewVoteValueState(
+  const reviewVoteValue = useReviewVoteValue(
     getReviewsQueryKey({
       authorId: user.user.id,
     })
@@ -62,10 +63,10 @@ export const ListReviews = ({
             showMedia
             review={review}
             onVoteDown={() => {
-              reviewVoteState.voteDown(review);
+              reviewVoteValue.voteDown(review);
             }}
             onVoteUp={() => {
-              reviewVoteState.voteUp(review);
+              reviewVoteValue.voteUp(review);
             }}
           />
         </Box>
@@ -81,8 +82,7 @@ export const ListReviewsCurrentUser = ({
   reviews: ReviewAggergation[];
   currentUser: UserAggergation;
 }) => {
-  const reviewForm = useReviewForm();
-  const reviewFormModal = useModal("ReviewForm");
+  const reviewActions = useReviewActions();
 
   if (reviews.length === 0) {
     return (
@@ -91,7 +91,7 @@ export const ListReviewsCurrentUser = ({
         title="Write a review"
         subtitle=""
         onClick={() => {
-          reviewFormModal.open();
+          reviewActions.onEdit({});
         }}
       />
     );
@@ -105,11 +105,10 @@ export const ListReviewsCurrentUser = ({
             showMedia
             review={review}
             onEdit={() => {
-              reviewForm.setReview(review.review);
-              reviewFormModal.open();
+              reviewActions.onEdit(review.review);
             }}
             onDelete={() => {
-              console.log("DELETE");
+              reviewActions.onDelete(review.review.id);
             }}
           />
         </Box>

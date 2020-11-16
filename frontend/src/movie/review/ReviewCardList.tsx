@@ -2,9 +2,9 @@ import { Box } from "@material-ui/core";
 import React from "react";
 import ErrorBox from "../../common/components/ErrorBox";
 import { getReviewsQueryKey, useQueryReviews } from "../../reviews/query";
-import ReviewCard from "../../reviews/ReviewCard";
-import ReviewCardSkeleton from "../../reviews/ReviewCardSkeleton";
-import useReviewVoteValueState from "../../reviews/useReviewVoteValueState";
+import ReviewCard from "../../reviews/card/ReviewCard";
+import ReviewCardSkeleton from "../../reviews/card/ReviewCardSkeleton";
+import useReviewVoteValue from "../../reviews/card/useReviewVoteValue";
 import { MediaId } from "../../tmdb/types";
 
 type Props = {
@@ -13,9 +13,7 @@ type Props = {
 
 export default (props: Props) => {
   const query = useQueryReviews(props);
-  const reviewVoteValueState = useReviewVoteValueState(
-    getReviewsQueryKey(props)
-  );
+  const reviewVoteValue = useReviewVoteValue(getReviewsQueryKey(props));
 
   if (query.error) {
     return <ErrorBox />;
@@ -26,7 +24,7 @@ export default (props: Props) => {
       <React.Fragment>
         {[...Array(3)].map((_, index) => (
           <Box paddingX={2} paddingY={1} key={index}>
-            <ReviewCardSkeleton showUser iconButtonCount={2} />
+            <ReviewCardSkeleton showAuthor iconButtonCount={2} />
           </Box>
         ))}
       </React.Fragment>
@@ -40,13 +38,13 @@ export default (props: Props) => {
       {reviews.results.map((review) => (
         <Box paddingX={2} paddingY={1} key={review.review.id}>
           <ReviewCard
-            showUser
+            showAuthor
             review={review}
             onVoteDown={() => {
-              reviewVoteValueState.voteDown(review);
+              reviewVoteValue.voteDown(review);
             }}
             onVoteUp={() => {
-              reviewVoteValueState.voteUp(review);
+              reviewVoteValue.voteUp(review);
             }}
           />
         </Box>

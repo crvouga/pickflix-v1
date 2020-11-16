@@ -7,9 +7,9 @@ import {
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import React from "react";
-import AvatarUser from "../users/AvatarUser";
-import { UserAggergation } from "../users/query";
-import { pluralize } from "../utils";
+import AvatarUser from "../../users/AvatarUser";
+import { UserAggergation } from "../../users/query";
+import { pluralize } from "../../utils";
 
 type Props = {
   user: UserAggergation;

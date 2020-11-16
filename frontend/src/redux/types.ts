@@ -10,8 +10,10 @@ import { SnackbarState } from "../snackbar/redux/snackbar";
 import { VideoState } from "../video/redux/video";
 import { ReviewFormState } from "../reviews/form/review-form";
 import { moviePageUi } from "../movie/redux/movie-page-ui";
+import { DeleteReviewFormState } from "../reviews/form/delete-review-form";
 
 export type AppState = {
+  deleteReviewForm: DeleteReviewFormState;
   reviewForm: ReviewFormState;
   editListForm: EditListFormState;
   addListItemForm: AddListItemFormState;

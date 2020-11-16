@@ -2,11 +2,13 @@ import {
   Box,
   Button,
   ButtonProps,
+  CardActions,
   IconButton,
   IconButtonProps,
   makeStyles,
   SvgIconProps,
 } from "@material-ui/core";
+import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
 import EditIcon from "@material-ui/icons/Edit";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import ThumbDownOutlinedIcon from "@material-ui/icons/ThumbDownOutlined";
@@ -14,7 +16,7 @@ import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import numeral from "numeral";
 import React from "react";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
+import { ReviewAggergation, ReviewVoteValue } from "../query/types";
 
 export const EditButton = (props: IconButtonProps) => {
   return (
@@ -23,6 +25,7 @@ export const EditButton = (props: IconButtonProps) => {
     </IconButton>
   );
 };
+
 export const DeleteButton = (props: IconButtonProps) => {
   return (
     <IconButton {...props}>
@@ -118,5 +121,34 @@ export const ReviewVoteBar = (props: { percentage: number }) => {
     <Box className={classes.bucket}>
       <Box className={classes.bucketFill} />
     </Box>
+  );
+};
+
+export default ({
+  review,
+  onVoteUp,
+  onVoteDown,
+}: {
+  review: ReviewAggergation;
+  onVoteUp?: () => void;
+  onVoteDown?: () => void;
+}) => {
+  return (
+    <CardActions>
+      {onVoteUp && (
+        <VoteUpButton
+          onClick={onVoteUp}
+          outlined={review.reviewVoteValue !== ReviewVoteValue.UP}
+          count={review.reviewUpVoteCount}
+        />
+      )}
+      {onVoteDown && (
+        <VoteDownButton
+          onClick={onVoteDown}
+          outlined={review.reviewVoteValue !== ReviewVoteValue.DOWN}
+          count={review.reviewVoteCount - review.reviewUpVoteCount}
+        />
+      )}
+    </CardActions>
   );
 };

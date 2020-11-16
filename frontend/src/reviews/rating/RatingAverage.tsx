@@ -2,8 +2,8 @@ import { Box, Typography } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import numeral from "numeral";
 import React from "react";
-import { pluralize } from "../utils";
-import { ReviewStatistics } from "./query";
+import { pluralize } from "../../utils";
+import { ReviewStatistics } from "../query";
 
 export default ({ statistics }: { statistics?: ReviewStatistics }) => {
   return (

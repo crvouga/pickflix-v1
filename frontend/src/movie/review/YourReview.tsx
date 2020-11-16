@@ -4,12 +4,13 @@ import SignInButton from "../../auth/SignInButton";
 import useModal from "../../navigation/modals/useModal";
 import useReviewForm from "../../reviews/form/useReviewForm";
 import { useQueryReviews } from "../../reviews/query";
-import ReviewCard from "../../reviews/ReviewCard";
-import ReviewCardCallToAction from "../../reviews/ReviewCardCallToAction";
-import ReviewCardSkeleton from "../../reviews/ReviewCardSkeleton";
+import ReviewCard from "../../reviews/card/ReviewCard";
+import ReviewCardCallToAction from "../../reviews/card/ReviewCardCallToAction";
+import ReviewCardSkeleton from "../../reviews/card/ReviewCardSkeleton";
 import { MediaId } from "../../tmdb/types";
 import { UserAggergation } from "../../users/query";
 import { useQueryCurrentUser } from "../../users/useCurrentUser";
+import useReviewActions from "../../reviews/card/useReviewActions";
 
 const YourReview = ({
   user,
@@ -18,8 +19,7 @@ const YourReview = ({
   user: UserAggergation;
   mediaId: MediaId;
 }) => {
-  const reviewForm = useReviewForm();
-  const reviewFormModal = useModal("ReviewForm");
+  const reviewActions = useReviewActions();
   const query = useQueryReviews({
     authorId: user.user.id,
     mediaId,
@@ -30,7 +30,7 @@ const YourReview = ({
   }
 
   if (!query.data) {
-    return <ReviewCardSkeleton showUser iconButtonCount={1} />;
+    return <ReviewCardSkeleton showAuthor iconButtonCount={1} />;
   }
 
   const reviews = query.data.results;
@@ -42,10 +42,9 @@ const YourReview = ({
         title="Leave a review"
         subtitle="Help people decide if they should watch this movie"
         onClick={() => {
-          reviewForm.setReview({
+          reviewActions.onEdit({
             mediaId,
           });
-          reviewFormModal.open();
         }}
       />
     );
@@ -55,11 +54,13 @@ const YourReview = ({
 
   return (
     <ReviewCard
-      showUser
+      showAuthor
       review={review}
       onEdit={() => {
-        reviewForm.setReview(review.review);
-        reviewFormModal.open();
+        reviewActions.onEdit(review.review);
+      }}
+      onDelete={() => {
+        reviewActions.onDelete(review.review.id);
       }}
     />
   );

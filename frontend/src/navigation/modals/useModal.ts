@@ -4,6 +4,7 @@ export type ModalName =
   | "AddListItem"
   | "AddList"
   | "ReviewForm"
+  | "DeleteReviewForm"
   | "DiscoverSort"
   | "DiscoverSearch"
   | "DiscoverTune"

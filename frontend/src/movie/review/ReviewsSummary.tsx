@@ -2,8 +2,8 @@ import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import { getReviewStatistics, queryKeys } from "../../reviews/query";
-import RatingAverage from "../../reviews/RatingAverage";
-import RatingDistributon from "../../reviews/RatingDistributon";
+import RatingAverage from "../../reviews/rating/RatingAverage";
+import RatingDistributon from "../../reviews/rating/RatingDistributon";
 import { MediaId } from "../../tmdb/types";
 
 type Props = {

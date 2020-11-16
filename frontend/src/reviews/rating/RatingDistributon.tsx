@@ -1,6 +1,6 @@
 import { Box, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
-import { ReviewStatistics } from "./query";
+import { ReviewStatistics } from "../query";
 import { RATING_COLOR } from "./Rating";
 
 const useStyles = makeStyles((theme) => ({

@@ -1,7 +1,13 @@
-import { createAction, createReducer, createSelector } from "@reduxjs/toolkit";
+import {
+  createAction,
+  createReducer,
+  createSelector,
+  bindActionCreators,
+} from "@reduxjs/toolkit";
 import { AppState } from "../../redux/types";
 import { MediaId } from "../../tmdb/types";
 import { Review } from "../query";
+import { useSelector, useDispatch } from "react-redux";
 
 const name = "reviewForm";
 
@@ -71,4 +77,18 @@ export const reviewForm = {
   actions,
   reducer,
   selectors,
+};
+
+export const useReviewFormState = () => {
+  const slice = useSelector(reviewForm.selectors.slice);
+  const dispatch = useDispatch();
+  const actions = bindActionCreators(reviewForm.actions, dispatch);
+  const review = useSelector(reviewForm.selectors.review);
+  const disabled = useSelector(reviewForm.selectors.disabled);
+  return {
+    ...actions,
+    ...slice,
+    review,
+    disabled,
+  };
 };

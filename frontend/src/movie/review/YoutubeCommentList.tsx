@@ -1,7 +1,7 @@
 import { Box } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
-import ReviewCardSkeleton from "../../reviews/ReviewCardSkeleton";
+import ReviewCardSkeleton from "../../reviews/card/ReviewCardSkeleton";
 import CommentThreadList from "../../youtube/CommentThreadList";
 import {
   getYoutubeVideoCommentThreadList,
@@ -22,7 +22,7 @@ export default ({ videoId }: { videoId?: string }) => {
       <React.Fragment>
         {[...Array(3)].map((_, index) => (
           <Box key={index} paddingX={2} paddingY={1}>
-            <ReviewCardSkeleton showUser iconButtonCount={1} />
+            <ReviewCardSkeleton showAuthor iconButtonCount={1} />
           </Box>
         ))}
       </React.Fragment>

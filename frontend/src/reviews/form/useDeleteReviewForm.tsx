@@ -1,32 +1,21 @@
 import { useQueryCache } from "react-query";
-import { MediaId } from "../../tmdb/types";
 import { SimpleEventTarget } from "../../utils";
-import { postReview } from "../query";
-import { useReviewFormState } from "./review-form";
+import { deleteReview } from "../query";
+import { useDeleteReviewFormState } from "./delete-review-form";
 
 const eventTarget = new SimpleEventTarget<
   "submit" | "submitSuccess" | "submitError"
 >();
 
 export default () => {
-  const reviewFormState = useReviewFormState();
+  const deleteFormState = useDeleteReviewFormState();
   const queryCache = useQueryCache();
 
-  const submit = async ({
-    mediaId,
-    rating,
-    content,
-  }: {
-    mediaId: MediaId;
-    rating: number;
-    content: string;
-  }) => {
+  const submit = async ({ reviewId }: { reviewId: string }) => {
     eventTarget.dispatch("submit");
     try {
-      await postReview({
-        content,
-        rating,
-        mediaId,
+      await deleteReview({
+        reviewId,
       });
       eventTarget.dispatch("submitSuccess");
     } catch (error) {
@@ -40,7 +29,7 @@ export default () => {
   };
 
   return {
-    ...reviewFormState,
+    ...deleteFormState,
     submit,
     eventTarget,
   };

@@ -1,12 +1,12 @@
 import { QueryKey, useQueryCache } from "react-query";
-import useSnackbar from "../snackbar/useSnackbar";
+import useSnackbar from "../../snackbar/useSnackbar";
 import {
   deleteReviewVote,
   GetReviewsResponseData,
   postReviewVote,
   ReviewAggergation,
   ReviewVoteValue,
-} from "./query";
+} from "../query";
 
 const updateReviewVoteValue = (
   nextVoteValue: ReviewVoteValue | null,
