@@ -1,12 +1,15 @@
 import { useQueryCache } from "react-query";
 import { MediaId } from "../../tmdb/types";
-import { SimpleEventTarget } from "../../utils";
+import { createEventEmitter } from "../../utils";
 import { postReview } from "../query";
 import { useReviewFormState } from "./review-form";
 
-const eventTarget = new SimpleEventTarget<
-  "submit" | "submitSuccess" | "submitError"
->();
+const eventEmitter = createEventEmitter<{
+  submit: undefined;
+  submitSuccess: undefined;
+  submitError: undefined;
+  submitSettled: undefined;
+}>();
 
 export default () => {
   const reviewFormState = useReviewFormState();
@@ -21,18 +24,20 @@ export default () => {
     rating: number;
     content: string;
   }) => {
-    eventTarget.dispatch("submit");
+    eventEmitter.emit("submit");
+
     try {
       await postReview({
         content,
         rating,
         mediaId,
       });
-      eventTarget.dispatch("submitSuccess");
+      eventEmitter.emit("submitSuccess");
     } catch (error) {
-      eventTarget.dispatch("submitError");
+      eventEmitter.emit("submitError");
       throw error;
     } finally {
+      eventEmitter.emit("submitSettled");
       queryCache.invalidateQueries((query) =>
         query.queryKey.includes("reviews")
       );
@@ -42,6 +47,6 @@ export default () => {
   return {
     ...reviewFormState,
     submit,
-    eventTarget,
+    eventEmitter,
   };
 };

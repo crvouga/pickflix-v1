@@ -1,13 +1,13 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
-import ListCard from "../lists/card/ListCard";
-import ListCardSkeleton from "../lists/card/ListCardSkeleton";
+import ListCard from "../lists/lists/card/ListCard";
+import ListCardSkeleton from "../lists/lists/card/ListCardSkeleton";
 import { getUsersLists, ListAggergation, queryKeys } from "../lists/query";
 import { UserAggergation } from "./query";
 import { useQueryCurrentUser } from "./useCurrentUser";
-import ListCardCallToAction from "../lists/card/ListCardCallToAction";
-import useAddListForm from "../lists/lists-form/useAddListForm";
+import ListCardCallToAction from "../lists/lists/card/ListCardCallToAction";
+import useCreateListForm from "../lists/forms/create-list-form/useCreateListForm";
 import useModal from "../navigation/modals/useModal";
 
 export default ({
@@ -17,7 +17,7 @@ export default ({
   onClick?: (list: ListAggergation) => void;
   user: UserAggergation;
 }) => {
-  const addListFormModal = useModal("AddList");
+  const createListFormModal = useModal("CreateListForm");
   const handleClick = (list: ListAggergation) => {
     if (onClick) {
       onClick(list);
@@ -53,7 +53,7 @@ export default ({
       return (
         <Box width="100%" paddingY={1}>
           <ListCardCallToAction
-            onClick={addListFormModal.open}
+            onClick={createListFormModal.open}
             title="Make a list"
             subtitle="Keep track of movie you like or want to watch"
           />

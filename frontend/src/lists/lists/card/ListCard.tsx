@@ -1,9 +1,8 @@
 import { Box, Card, CardActionArea, Grid, Typography } from "@material-ui/core";
 import React from "react";
-import ChipUser from "../../users/ChipUser";
-import ListImageBox, { ListImageBoxSkeleton } from "./ListCardImage";
-import { ListAggergation } from "../query/types";
-import { Skeleton } from "@material-ui/lab";
+import ChipUser from "../../../users/ChipUser";
+import { ListAggergation } from "../../query/types";
+import ListImageBox from "./ListCardImage";
 
 export default ({ list }: { list: ListAggergation }) => {
   return (
@@ -27,7 +26,12 @@ export default ({ list }: { list: ListAggergation }) => {
                   </Typography>
                 </Box>
                 <Box>
-                  <ChipUser noLink size="small" user={list.owner} />
+                  <ChipUser
+                    clickable={false}
+                    onClick={() => {}}
+                    size="small"
+                    user={list.owner}
+                  />
                 </Box>
               </Box>
             </Box>

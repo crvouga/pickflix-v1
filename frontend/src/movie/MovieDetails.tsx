@@ -1,7 +1,7 @@
 import { Box, Divider, Typography } from "@material-ui/core";
 import React from "react";
 import ReadMoreTypography from "../common/components/ReadMoreTypography";
-import { MovieDetails, MovieReleaseDates } from "../tmdb/types";
+import { MovieDetails, MovieReleaseDates, TmdbMediaType } from "../tmdb/types";
 import ActionBarSection from "./action-bar/ActionBarSection";
 import {
   SMALL_DOT,
@@ -65,7 +65,12 @@ export default ({
         </Typography>
       </Box>
 
-      <ActionBarSection tmdbMediaId={details.id} />
+      <ActionBarSection
+        mediaId={{
+          tmdbMediaId: Number(details.id),
+          tmdbMediaType: TmdbMediaType.movie,
+        }}
+      />
 
       <Box p={2}>
         <Typography align="center" variant="h6">

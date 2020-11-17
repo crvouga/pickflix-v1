@@ -1,15 +1,17 @@
 import { useHistory, useLocation } from "react-router";
 
 export type ModalName =
-  | "AddListItem"
-  | "AddList"
+  | "AddListItemForm"
+  | "DeleteListItemsForm"
+  | "CreateListForm"
   | "ReviewForm"
   | "DeleteReviewForm"
+  | "EditListForm"
+  | "DeleteListForm"
   | "DiscoverSort"
   | "DiscoverSearch"
   | "DiscoverTune"
-  | "Search"
-  | "Account";
+  | "Search";
 
 export default (modalName: ModalName) => {
   const history = useHistory();

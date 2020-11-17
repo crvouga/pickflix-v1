@@ -2,9 +2,11 @@ import { combineReducers, Reducer } from "@reduxjs/toolkit";
 import { discoverActiveTags } from "../discover/redux/discover-active-tags";
 import { discoverTags } from "../discover/redux/discover-tags";
 import { pageHistory } from "../home/page-history/page-history";
-import { addListForm } from "../lists/lists-form/add-list-form";
-import { addListItemForm } from "../lists/list-items-form/add-list-item-form";
-import { editListForm } from "../lists/lists-form/edit-list-form";
+import { addListItemForm } from "../lists/forms/add-list-item-form/add-list-item-form";
+import { createListForm } from "../lists/forms/create-list-form/create-list-form";
+import { deleteListForm } from "../lists/forms/delete-list-form/delete-list-form";
+import { editListForm } from "../lists/forms/edit-list-form/edit-list-form";
+import { removeListItemsForm } from "../lists/forms/remove-list-items-form/remove-list-items-form";
 import { moviePageUi } from "../movie/redux/movie-page-ui";
 import { personPageUi } from "../person/redux/person-page-ui";
 import { deleteReviewForm } from "../reviews/form/delete-review-form";
@@ -15,8 +17,10 @@ import { video } from "../video/redux/video";
 import { AppState } from "./types";
 
 const reducers: { [key in keyof AppState]: Reducer } = {
-  addListForm: addListForm.reducer,
+  deleteListForm: deleteListForm.reducer,
+  createListForm: createListForm.reducer,
   addListItemForm: addListItemForm.reducer,
+  removeListItemsForm: removeListItemsForm.reducer,
   deleteReviewForm: deleteReviewForm.reducer,
   discoverActiveTags: discoverActiveTags.reducer,
   discoverTags: discoverTags.reducer,

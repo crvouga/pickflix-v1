@@ -26,9 +26,9 @@ import AvatarUser from "./AvatarUser";
 import ListAutoLists from "./ListAutoLists";
 import ListLists from "./ListLists";
 import ListReviews from "./ListReviews";
-import UserOptionsListModal from "./UserOptionsListModal";
 import { getUser, queryKeys } from "./query";
 import { useQueryCurrentUser } from "./useCurrentUser";
+import UserOptionsListModal from "./UserOptionsListModal";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -43,7 +43,7 @@ export default () => {
   const classes = useStyles();
   const history = useHistory();
   const isDialogOpen = useBoolean(false);
-  const addListModal = useModal("AddList");
+  const createListFormModal = useModal("CreateListForm");
   const reviewFormModal = useModal("ReviewForm");
   const reviewForm = useReviewForm();
   const queryCurrentUser = useQueryCurrentUser();
@@ -115,7 +115,7 @@ export default () => {
               <IconButton onClick={isDialogOpen.setTrue}>
                 <SettingsIcon />
               </IconButton>
-              <IconButton onClick={addListModal.open}>
+              <IconButton onClick={createListFormModal.open}>
                 <PlaylistAddIcon />
               </IconButton>
               <IconButton onClick={handleClickReview}>

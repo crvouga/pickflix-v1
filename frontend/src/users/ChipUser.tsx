@@ -4,21 +4,18 @@ import { useHistory } from "react-router";
 import AvatarUser from "./AvatarUser";
 import { User } from "./query";
 
-type Props = {
+type Props = ChipProps & {
   user: User;
-  noLink?: boolean;
-} & ChipProps;
+};
 
-export default ({ user, noLink = false, ...props }: Props) => {
+export default ({ user, ...props }: Props) => {
   const history = useHistory();
 
   return (
     <Chip
-      clickable={!noLink}
+      clickable
       onClick={() => {
-        if (!noLink) {
-          history.push(`/user/${user.username}`);
-        }
+        history.push(`/user/${user.username}`);
       }}
       variant="outlined"
       avatar={<AvatarUser user={user} />}

@@ -8,6 +8,7 @@ import {
   ListItemAggergation,
 } from "./types";
 import { Paginated } from "../../common/types";
+import { useQuery } from "react-query";
 
 export const queryKeys = {
   lists: () => ["current-user", "lists"],
@@ -21,7 +22,11 @@ export const queryKeys = {
   list: ({ listId }: { listId: string }) => ["lists", listId],
   listsOrAutoLists: ({ id }: { id: string }) => ["lists", "autoLists", id],
 
-  listItems: (params: GetListItemsParams) => ["list-items", params],
+  listItems: (params: GetListItemsParams) => [
+    "list-items",
+    params.listId,
+    params.mediaId,
+  ],
 
   userLists: ({ username }: { username: string }) => [
     "users",
@@ -66,7 +71,7 @@ export const getList = async ({ listId }: { listId: string }) => {
 };
 
 type GetListItemsParams = {
-  listId: string;
+  listId?: string;
   mediaId?: MediaId;
   page?: number;
 };
@@ -117,4 +122,21 @@ export const getUsersAutoLists = async ({ username }: { username: string }) => {
     `/api/users/${username}/auto-lists`
   );
   return data;
+};
+
+/* 
+
+
+*/
+
+export const useQueryLists = () => {
+  return useQuery(queryKeys.lists(), () => getLists());
+};
+
+export const useQueryList = ({ listId }: { listId: string }) => {
+  return useQuery(queryKeys.list({ listId }), () => getList({ listId }));
+};
+
+export const useQueryListItems = (params: GetListItemsParams) => {
+  return useQuery(queryKeys.listItems(params), () => getListItems(params));
 };

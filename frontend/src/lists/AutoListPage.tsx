@@ -7,55 +7,55 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
+import { useQuery } from "react-query";
 import { useParams } from "react-router";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
 import BackButton from "../navigation/BackButton";
 import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
-import { useQueryCurrentUser } from "../users/useCurrentUser";
+import AutoListSection from "./auto-lists/AutoListSection";
 import ListItemsSection from "./list-items/ListItemsSection";
-import ListSection from "./lists/ListSection";
-import { useQueryList } from "./query";
+import { getAutoList, queryKeys, toAutoListName } from "./query";
 
 export default () => {
-  const { listId } = useParams<{ listId: string }>();
-  const query = useQueryList({ listId });
-  const queryCurrentUser = useQueryCurrentUser();
+  const { autoListId } = useParams<{ autoListId: string }>();
+
+  const query = useQuery(queryKeys.autoList({ autoListId }), () =>
+    getAutoList({ autoListId })
+  );
 
   if (query.error) {
     return <ErrorPage />;
   }
 
-  if (!query.data || queryCurrentUser.data === undefined) {
+  if (!query.data) {
     return <LoadingPage />;
   }
 
-  const list = query.data;
-  const currentUser = queryCurrentUser.data;
+  const autoList = query.data;
 
   return (
     <React.Fragment>
       <ResponsiveNavigation />
-
       <Hidden smUp>
         <AppBar position="sticky" color="default">
           <Toolbar>
             <BackButton />
             <Typography variant="h6" noWrap>
-              {list.list.title}
+              {toAutoListName(autoList.list.key)}
             </Typography>
           </Toolbar>
         </AppBar>
       </Hidden>
 
       <Paper>
-        <Container disableGutters maxWidth="md">
-          <ListSection list={list} currentUser={currentUser} />
+        <Container maxWidth="md">
+          <AutoListSection autoList={autoList} />
         </Container>
       </Paper>
 
       <Container disableGutters maxWidth="md">
-        <ListItemsSection listId={list.list.id} />
+        <ListItemsSection listId={autoList.list.id} />
       </Container>
     </React.Fragment>
   );

@@ -1,27 +1,31 @@
 import { useQueryCache } from "react-query";
-import { SimpleEventTarget } from "../../utils";
+import { createEventEmitter } from "../../utils";
 import { deleteReview } from "../query";
 import { useDeleteReviewFormState } from "./delete-review-form";
 
-const eventTarget = new SimpleEventTarget<
-  "submit" | "submitSuccess" | "submitError"
->();
+const eventEmitter = createEventEmitter<{
+  submit: undefined;
+  submitSuccess: undefined;
+  submitError: undefined;
+  submitSettled: undefined;
+}>();
 
 export default () => {
   const deleteFormState = useDeleteReviewFormState();
   const queryCache = useQueryCache();
 
   const submit = async ({ reviewId }: { reviewId: string }) => {
-    eventTarget.dispatch("submit");
+    eventEmitter.emit("submit");
     try {
       await deleteReview({
         reviewId,
       });
-      eventTarget.dispatch("submitSuccess");
+      eventEmitter.emit("submitSuccess");
     } catch (error) {
-      eventTarget.dispatch("submitError");
+      eventEmitter.emit("submitError");
       throw error;
     } finally {
+      eventEmitter.emit("submitSettled");
       queryCache.invalidateQueries((query) =>
         query.queryKey.includes("reviews")
       );
@@ -31,6 +35,6 @@ export default () => {
   return {
     ...deleteFormState,
     submit,
-    eventTarget,
+    eventEmitter,
   };
 };

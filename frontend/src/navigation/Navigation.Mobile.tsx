@@ -12,7 +12,6 @@ import {
   ProfilePageIcon,
   SearchPageIcon,
 } from "./PageIcons";
-import { APP_BAR_HEIGHT } from "./constants";
 
 export const BOTTOM_NAVIGATION_BAR_HEIGHT = 56;
 

@@ -1,5 +1,5 @@
 import { createAction, createReducer, createSelector } from "@reduxjs/toolkit";
-import { AppState } from "../../redux/types";
+import { AppState } from "../../../redux/types";
 
 const name = "editListForm";
 

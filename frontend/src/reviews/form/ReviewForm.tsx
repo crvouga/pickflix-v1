@@ -1,5 +1,4 @@
 import {
-  AppBar,
   Box,
   Button,
   ButtonProps,
@@ -7,26 +6,26 @@ import {
   CardContent,
   CircularProgress,
   Dialog,
+  Hidden,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   TextField,
   TextFieldProps,
-  Toolbar,
-  Hidden,
 } from "@material-ui/core";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import CloseIcon from "@material-ui/icons/Close";
 import Rating from "@material-ui/lab/Rating";
 import React, { useEffect, useRef, useState } from "react";
 import ListItemSkeleton from "../../common/components/ListItemSkeleton";
 import useBoolean from "../../common/hooks/useBoolean";
+import useSnackbar from "../../snackbar/useSnackbar";
 import { useQueryCurrentUser } from "../../users/useCurrentUser";
 import UserListItem from "../../users/UserListItem";
+import { useListener } from "../../utils";
 import ReviewFormMedia from "./ReviewFormMedia";
 import useReviewForm from "./useReviewForm";
-import CloseIcon from "@material-ui/icons/Close";
-import useSnackbar from "../../snackbar/useSnackbar";
 const ReviewFormAuthor = () => {
   const query = useQueryCurrentUser();
 
@@ -112,25 +111,13 @@ const ReviewCancelButton = (props: ButtonProps) => {
 
 const LoadingDialog = () => {
   const reviewForm = useReviewForm();
-  const isLoadingDialogOpen = useBoolean(false);
+  const isLoading = useBoolean(false);
 
-  useEffect(() => {
-    const unlistenSubmit = reviewForm.eventTarget.on("submit", () => {
-      isLoadingDialogOpen.setTrue();
-    });
-    const unlistenSubmitSuccess = reviewForm.eventTarget.on(
-      "submitSuccess",
-      () => {
-        isLoadingDialogOpen.setFalse();
-      }
-    );
-    return () => {
-      unlistenSubmit();
-      unlistenSubmitSuccess();
-    };
-  }, []);
+  useListener(reviewForm.eventEmitter, "submit", isLoading.setTrue);
+  useListener(reviewForm.eventEmitter, "submitSettled", isLoading.setFalse);
+
   return (
-    <Dialog open={isLoadingDialogOpen.value}>
+    <Dialog open={isLoading.value}>
       <List>
         <ListItem>
           <ListItemIcon>
@@ -164,16 +151,11 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
     }
   }, [reviewForm.review.content, refContent.current]);
 
-  useEffect(() => {
-    const unlistenSubmit = reviewForm.eventTarget.on("submitSuccess", () => {
-      snackbar.display({
-        message: "Review posted",
-      });
+  useListener(reviewForm.eventEmitter, "submitSuccess", () => {
+    snackbar.display({
+      message: "Review posted",
     });
-    return () => {
-      unlistenSubmit();
-    };
-  }, []);
+  });
 
   const disabled =
     !Boolean(reviewForm.review.mediaId) || !Boolean(reviewForm.review.rating);

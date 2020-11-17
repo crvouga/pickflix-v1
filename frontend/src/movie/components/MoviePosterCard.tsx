@@ -54,7 +54,7 @@ export type Movie = {
 
 type Props = {
   movie: Movie;
-  noLink?: boolean;
+  onClick?: () => void;
   sizeIndex?: number;
   disabled?: boolean;
 };
@@ -64,19 +64,21 @@ export const MOVIE_POSTER_ASPECT_RATIO: [number, number] = [18, 24];
 export default (props: Props) => {
   const {
     movie: { id, posterPath, title },
+    onClick,
     sizeIndex = 5,
     disabled = false,
-    noLink = false,
   } = props;
 
   const classes = useStyles();
 
   const history = useHistory();
-  const handleClick = () => {
-    if (id && !noLink) {
-      history.push(`/movie/${id}`);
-    }
-  };
+  const handleClick = onClick
+    ? onClick
+    : id
+    ? () => {
+        history.push(`/movie/${id}`);
+      }
+    : undefined;
 
   const highQuality = makeImageUrl(sizeIndex, { posterPath });
   const lowQuality = makeImageUrl(0, { posterPath });
@@ -86,12 +88,8 @@ export default (props: Props) => {
   });
 
   return (
-    <Card
-      className={classes.borderRadius}
-      onClick={handleClick}
-      ref={lazyImage.ref}
-    >
-      <CardActionArea disabled={disabled || noLink}>
+    <Card className={classes.borderRadius} ref={lazyImage.ref}>
+      <CardActionArea disabled={disabled} onClick={handleClick}>
         <AspectRatio
           ratio={MOVIE_POSTER_ASPECT_RATIO}
           ContainerProps={{

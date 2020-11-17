@@ -1,16 +1,10 @@
-import {
-  Dialog,
-  makeStyles,
-  useMediaQuery,
-  useTheme,
-  Slide,
-} from "@material-ui/core";
-import React, { useEffect } from "react";
+import { Dialog, makeStyles, useMediaQuery, useTheme } from "@material-ui/core";
+import React from "react";
+import { SlideUp } from "../../common/components/TransitionComponents";
 import useModal from "../../navigation/modals/useModal";
+import { useListener } from "../../utils";
 import ReviewForm from "./ReviewForm";
 import useReviewForm from "./useReviewForm";
-import { TransitionProps } from "@material-ui/core/transitions";
-import { SlideUp } from "../../common/components/TransitionComponents";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
@@ -28,14 +22,9 @@ export default () => {
   const reviewForm = useReviewForm();
   const reviewFormModal = useModal("ReviewForm");
 
-  useEffect(() => {
-    const unlisten = reviewForm.eventTarget.on("submitSuccess", () => {
-      reviewFormModal.close();
-    });
-    return () => {
-      unlisten();
-    };
-  }, []);
+  useListener(reviewForm.eventEmitter, "submitSuccess", () => {
+    reviewFormModal.close();
+  });
 
   const classesDialog = useStylesDialog();
   const theme = useTheme();

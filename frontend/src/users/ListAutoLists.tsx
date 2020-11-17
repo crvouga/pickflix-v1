@@ -2,7 +2,7 @@ import { Box } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import AutoListCard from "../lists/auto-lists/AutoListCard";
-import ListCardSkeleton from "../lists/card/ListCardSkeleton";
+import ListCardSkeleton from "../lists/lists/card/ListCardSkeleton";
 import {
   AutoListAggergation,
   getUsersAutoLists,

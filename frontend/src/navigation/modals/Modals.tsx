@@ -1,11 +1,12 @@
 import React from "react";
-import AccountModal from "../../auth/AccountModal";
-import AddListFormModal from "../../lists/lists-form/AddListFormModal";
-import AddListItemFormModal from "../../lists/list-items-form/AddListItemFormModal";
+import AddListItemFormModal from "../../lists/forms/add-list-item-form/AddListItemFormModal";
+import CreateListFormModal from "../../lists/forms/create-list-form/CreateListFormModal";
+import DeleteListFormModal from "../../lists/forms/delete-list-form/DeleteListFormModal";
+import DeleteListItemFormModal from "../../lists/forms/remove-list-items-form/RemoveListItemFormModal";
+import DeleteReviewFormModal from "../../reviews/form/DeleteReviewFormModal";
 import ReviewFormModal from "../../reviews/form/ReviewFormModal";
 import SearchModal from "../../search/SearchDialog";
 import { useQueryCurrentUser } from "../../users/useCurrentUser";
-import DeleteReviewFormModal from "../../reviews/form/DeleteReviewFormModal";
 
 export default () => {
   const query = useQueryCurrentUser();
@@ -14,11 +15,13 @@ export default () => {
       {!query.error && query.data && (
         <AddListItemFormModal currentUser={query.data} />
       )}
-      <AddListFormModal />
-      <SearchModal />
-      <AccountModal />
+      <CreateListFormModal />
+      <DeleteListFormModal />
+      <DeleteListItemFormModal />
       <DeleteReviewFormModal />
       <ReviewFormModal />
+
+      <SearchModal />
     </React.Fragment>
   );
 };

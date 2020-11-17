@@ -1,16 +1,14 @@
 import { Box, Tab, Tabs, Typography } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React from "react";
+import useReviewForm from "../../reviews/form/useReviewForm";
 import { MediaId } from "../../tmdb/types";
+import { useListener } from "../../utils";
 import useVideoState from "../../video/useVideoState";
+import { ReviewCommentsTabValue } from "../redux/movie-page-ui";
 import useMoviePageUi from "../redux/useMoviePageUi";
 import MovieReviewList from "./ReviewCardList";
 import TmdbReviewCardList from "./TmdbReviewCardList";
 import YoutubeCommentList from "./YoutubeCommentList";
-import {
-  reviewCommentsTabOrder,
-  ReviewCommentsTabValue,
-} from "../redux/movie-page-ui";
-import useReviewForm from "../../reviews/form/useReviewForm";
 
 const TabPanel = (props: {
   children?: React.ReactNode;
@@ -31,14 +29,9 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
   const moviePageUi = useMoviePageUi();
   const reviewForm = useReviewForm();
 
-  useEffect(() => {
-    const unlisten = reviewForm.eventTarget.on("submitSuccess", () => {
-      moviePageUi.setReviewCommentsTabValue("pickflix");
-    });
-    return () => {
-      unlisten();
-    };
-  }, []);
+  useListener(reviewForm.eventEmitter, "submitSuccess", () => {
+    moviePageUi.setReviewCommentsTabValue("pickflix");
+  });
 
   const handleChange = (event: React.ChangeEvent<{}>, newIndex: number) => {
     if (moviePageUi.reviewCommentsTabOrder[newIndex]) {

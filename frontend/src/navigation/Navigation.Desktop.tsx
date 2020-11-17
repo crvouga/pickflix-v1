@@ -13,8 +13,6 @@ import useModal from "./modals/useModal";
 import { DiscoverPageIcon, HomePageIcon, ProfilePageIcon } from "./PageIcons";
 import { SearchBox } from "./Search";
 
-export const APP_BAR_HEIGHT = "56px";
-
 const useStyles = makeStyles((theme) => ({
   toolbar: {
     justifyContent: "space-between",

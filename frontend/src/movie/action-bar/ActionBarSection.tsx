@@ -1,36 +1,11 @@
-import { Box, makeStyles } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import React from "react";
-import LabeledIconButton from "../../common/components/LabeledIconButton";
 import AutoListToggleListItemButton from "../../lists/auto-lists/AutoListToggleListItemButton";
+import AddListItemButton from "../../lists/forms/add-list-item-form/AddListItemButton";
 import { AutoListKeys } from "../../lists/query";
-import useActions from "./useActions";
-import { MediaId, TmdbMediaType } from "../../tmdb/types";
+import { MediaId } from "../../tmdb/types";
 
-type Props = {
-  tmdbMediaId: string;
-};
-
-const useStyles = makeStyles((theme) => ({
-  button: {
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(2),
-  },
-}));
-
-export default ({ tmdbMediaId }: Props) => {
-  const classes = useStyles();
-  const movieActions = useActions({
-    tmdbMediaId: tmdbMediaId,
-    tmdbMediaType: TmdbMediaType.movie,
-  });
-
-  const actionBarItems = [movieActions.addListItem];
-
-  const mediaId = {
-    tmdbMediaId: Number(tmdbMediaId),
-    tmdbMediaType: TmdbMediaType.movie,
-  };
-
+export default ({ mediaId }: { mediaId: MediaId }) => {
   return (
     <Box display="flex" justifyContent="space-between" flexWrap="nowrap">
       <AutoListToggleListItemButton
@@ -41,16 +16,7 @@ export default ({ tmdbMediaId }: Props) => {
         autoListKey={AutoListKeys.WatchNext}
         mediaId={mediaId}
       />
-
-      {actionBarItems.map(({ icon, label, onClick }) => (
-        <LabeledIconButton
-          className={classes.button}
-          key={label}
-          icon={icon}
-          label={label}
-          onClick={onClick}
-        />
-      ))}
+      <AddListItemButton mediaId={mediaId} />
     </Box>
   );
 };

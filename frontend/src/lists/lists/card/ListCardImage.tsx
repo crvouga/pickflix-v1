@@ -3,9 +3,9 @@ import MovieIcon from "@material-ui/icons/Movie";
 import { Skeleton } from "@material-ui/lab";
 import clsx from "clsx";
 import React from "react";
-import AspectRatio from "../../common/components/AspectRatio";
-import makeImageUrl from "../../tmdb/makeImageUrl";
-import { ListAggergation } from "../query/types";
+import AspectRatio from "../../../common/components/AspectRatio";
+import makeImageUrl from "../../../tmdb/makeImageUrl";
+import { ListAggergation } from "../../query/types";
 
 const useStyles = makeStyles((theme) => ({
   borderRadius: {

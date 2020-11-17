@@ -11,7 +11,7 @@ import Modals from "./modals/Modals";
 import HomePage from "../home/HomePage";
 import SearchPage from "../search/SearchPage.Mobile";
 import UserPage from "../users/UserPage";
-import AutoListPage from "../lists/auto-lists/AutoListPage";
+import AutoListPage from "../lists/AutoListPage";
 import { BottomNavigationGutter } from "./Navigation.Mobile";
 
 export default () => {

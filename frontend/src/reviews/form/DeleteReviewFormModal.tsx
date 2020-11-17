@@ -1,39 +1,29 @@
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogTitle,
   List,
   ListItem,
   ListItemIcon,
-  CircularProgress,
   ListItemText,
 } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React from "react";
 import { ZoomIn } from "../../common/components/TransitionComponents";
+import useBoolean from "../../common/hooks/useBoolean";
 import useModal from "../../navigation/modals/useModal";
 import useSnackbar from "../../snackbar/useSnackbar";
+import { useListener } from "../../utils";
 import useDeleteReviewForm from "./useDeleteReviewForm";
-import useBoolean from "../../common/hooks/useBoolean";
 
 const LoadingDialog = () => {
   const deleteReviewForm = useDeleteReviewForm();
   const open = useBoolean(false);
-  useEffect(() => {
-    const unlistenSubmit = deleteReviewForm.eventTarget.on("submit", () => {
-      open.setTrue();
-    });
-    const unlistenSubmitSuccess = deleteReviewForm.eventTarget.on(
-      "submitSuccess",
-      () => {
-        open.setFalse();
-      }
-    );
-    return () => {
-      unlistenSubmit();
-      unlistenSubmitSuccess();
-    };
-  }, []);
+
+  useListener(deleteReviewForm.eventEmitter, "submit", open.setTrue);
+  useListener(deleteReviewForm.eventEmitter, "submitSettled", open.setFalse);
+
   return (
     <Dialog open={open.value}>
       <List>
@@ -53,17 +43,12 @@ export default () => {
   const deleteReviewFormModal = useModal("DeleteReviewForm");
   const snackbar = useSnackbar();
 
-  useEffect(() => {
-    const unlisten = deleteReviewForm.eventTarget.on("submitSuccess", () => {
-      deleteReviewFormModal.close();
-      snackbar.display({
-        message: "Deleted review",
-      });
+  useListener(deleteReviewForm.eventEmitter, "submitSuccess", () => {
+    deleteReviewFormModal.close();
+    snackbar.display({
+      message: "Deleted review",
     });
-    return () => {
-      unlisten();
-    };
-  }, []);
+  });
 
   const handleCancel = () => {
     deleteReviewForm.setReviewId(undefined);

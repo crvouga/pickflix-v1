@@ -4,8 +4,8 @@ import {
   createSelector,
   bindActionCreators,
 } from "@reduxjs/toolkit";
-import { AppState } from "../../redux/types";
-import { TmdbMediaType } from "../../tmdb/types";
+import { AppState } from "../../../redux/types";
+import { TmdbMediaType, MediaId } from "../../../tmdb/types";
 import { useDispatch, useSelector } from "react-redux";
 
 const name = "addListItemForm";
@@ -14,13 +14,9 @@ const name = "addListItemForm";
 
 */
 
-export type ItemInfo = {
-  tmdbMediaType: TmdbMediaType;
-  tmdbMediaId: string;
-};
-
 export type AddListItemFormState = {
-  itemInfos: ItemInfo[];
+  listId?: string;
+  mediaId?: MediaId;
 };
 
 /* 
@@ -28,7 +24,8 @@ export type AddListItemFormState = {
 */
 
 const initialState: AddListItemFormState = {
-  itemInfos: [],
+  listId: undefined,
+  mediaId: undefined,
 };
 
 /* 
@@ -38,7 +35,6 @@ const initialState: AddListItemFormState = {
 const slice = (state: AppState) => state.addListItemForm;
 const selectors = {
   slice,
-  itemInfos: createSelector([slice], (slice) => slice.itemInfos),
 };
 
 /* 
@@ -46,8 +42,8 @@ const selectors = {
 */
 
 const actions = {
-  setItemInfos: createAction<ItemInfo[]>(name + "/SET_LIST_ITEM_INFOS"),
-  reset: createAction(name + "/RESET"),
+  setListId: createAction<string | undefined>(name + "/SET_LIST_ID"),
+  setMediaId: createAction<MediaId | undefined>(name + "/SET_MEDIA_ID"),
 };
 
 /* 
@@ -55,9 +51,11 @@ const actions = {
 */
 
 const reducer = createReducer(initialState, {
-  [actions.reset.toString()]: () => initialState,
-  [actions.setItemInfos.toString()]: (state, action) => {
-    state.itemInfos = action.payload;
+  [actions.setListId.toString()]: (state, action) => {
+    state.listId = action.payload;
+  },
+  [actions.setMediaId.toString()]: (state, action) => {
+    state.mediaId = action.payload;
   },
 });
 
