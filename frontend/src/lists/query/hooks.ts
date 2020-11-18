@@ -19,6 +19,7 @@ import {
   ListAggergation,
   postList,
 } from "./lists";
+import { useState } from "react";
 
 /* 
 
@@ -88,25 +89,30 @@ const optimisticUpdateDeleteListItems = (
 
 export const useDeleteListItemsMutation = () => {
   const queryCache = useQueryCache();
-  return useMutation(deleteListItems, {
-    onMutate: (deleteListItemParams) => {
-      const listId = deleteListItemParams[0].listId;
-      const queryKey = makeGetListItemsQueryKey({ listId });
 
-      const previous = queryCache.getQueryData<GetListItemsData>(queryKey);
+  return async (params: DeleteListItemParams) => {
+    const listId = params[0].listId;
 
-      if (previous) {
-        queryCache.setQueryData(
-          queryKey,
-          optimisticUpdateDeleteListItems(previous, deleteListItemParams)
-        );
-      }
+    const queryKey = makeGetListItemsQueryKey({ listId });
 
-      return () => {};
-    },
+    const previous = queryCache.getQueryData<GetListItemsData>(queryKey);
 
-    onSettled: () => {},
-  });
+    if (previous) {
+      queryCache.setQueryData(
+        queryKey,
+        optimisticUpdateDeleteListItems(previous, params)
+      );
+    }
+
+    try {
+      await deleteListItems(params);
+    } catch (error) {
+      queryCache.setQueryData(queryKey, previous);
+      throw error;
+    } finally {
+      queryCache.invalidateQueries((query) => query.queryKey.includes(listId));
+    }
+  };
 };
 
 /* 
@@ -118,12 +124,11 @@ export const useAddListItemMutation = () => {
   const queryCache = useQueryCache();
   return useMutation(postListItem, {
     onMutate: (params) => {
-      const queryKey = makeGetListItemsQueryKey({
-        listId: params.listId,
-        mediaId: params.mediaId,
-      });
-      queryCache.invalidateQueries(queryKey);
       return () => {};
+    },
+    onSettled: (listItem) => {
+      const queryKey = makeGetListsQueryKey({});
+      queryCache.invalidateQueries(queryKey);
     },
   });
 };
@@ -162,17 +167,22 @@ const optimisticUpdateDeleteList = (
 
 export const useDeleteListMutation = () => {
   const queryCache = useQueryCache();
-  return useMutation(deleteList, {
-    onMutate: (params) => {
-      const queryKey = makeGetListsQueryKey({});
-      const data = queryCache.getQueryData<GetListsData>(queryKey);
-      if (data) {
-        queryCache.setQueryData(
-          queryKey,
-          optimisticUpdateDeleteList(data, params)
-        );
-      }
-      return () => {};
-    },
-  });
+  return async (params: DeleteListParams) => {
+    const queryKey = makeGetListsQueryKey({});
+    const previous = queryCache.getQueryData<GetListsData>(queryKey);
+    if (previous) {
+      queryCache.setQueryData(
+        queryKey,
+        optimisticUpdateDeleteList(previous, params)
+      );
+    }
+    try {
+      await deleteList(params);
+    } catch (error) {
+      queryCache.setQueryData(queryKey, previous);
+      throw error;
+    } finally {
+      queryCache.invalidateQueries(queryKey);
+    }
+  };
 };

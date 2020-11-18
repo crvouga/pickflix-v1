@@ -28,7 +28,7 @@ const eventEmitter = createEventEmitter<{
 
 export default () => {
   const formState = useRemoveListItemsFormState();
-  const [mutate] = useDeleteListItemsMutation();
+  const mutate = useDeleteListItemsMutation();
   const { listId, listItemIds } = formState;
 
   const submit = async () => {

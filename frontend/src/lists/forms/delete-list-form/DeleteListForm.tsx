@@ -35,8 +35,14 @@ const LoadingDialog = () => {
 };
 
 export default ({ onCancel }: { onCancel?: () => void }) => {
-  const { submit, eventEmitter } = useDeleteListForm();
+  const { listId, submit, eventEmitter } = useDeleteListForm();
   const history = useHistory();
+
+  const handleSubmit = () => {
+    if (listId) {
+      submit({ listId });
+    }
+  };
 
   useListener(eventEmitter, "submitSuccess", () => {
     history.push("/user");
@@ -49,7 +55,7 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
         <Typography>Delete list?</Typography>
       </Box>
       <Box p={2} paddingTop={0} display="flex" flexDirection="row-reverse">
-        <Button onClick={submit}>Delete</Button>
+        <Button onClick={handleSubmit}>Delete</Button>
         {onCancel && <Button onClick={onCancel}>Cancel</Button>}
       </Box>
     </React.Fragment>

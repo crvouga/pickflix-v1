@@ -9,18 +9,14 @@ import { UserAggergation } from "../../../users/query";
 import useCreateListForm from "../create-list-form/useCreateListForm";
 import useAddListItemForm from "./useAddListItemForm";
 import { ListAggergation } from "../../query";
+import { useListener } from "../../../utils";
+import useSnackbar from "../../../snackbar/useSnackbar";
+import { ViewListButton } from "../../../snackbar/Snackbar";
 
-export default ({ currentUser }: { currentUser: UserAggergation }) => {
-  const addListItemModal = useModal("AddListItemForm");
-  const addListItemForm = useAddListItemForm();
-
+const CreateNewListButton = () => {
   const createListFormModal = useModal("CreateListForm");
   const createListForm = useCreateListForm();
-
-  const handleClose = () => {
-    addListItemModal.close();
-  };
-
+  const addListItemForm = useAddListItemForm();
   const handleClickCreateList = () => {
     if (addListItemForm.mediaId) {
       createListForm.setMediaIds([addListItemForm.mediaId]);
@@ -28,9 +24,42 @@ export default ({ currentUser }: { currentUser: UserAggergation }) => {
     createListFormModal.open();
   };
 
+  return (
+    <Button
+      onClick={handleClickCreateList}
+      size="large"
+      fullWidth
+      startIcon={<PlaylistAddIcon />}
+    >
+      Create New
+    </Button>
+  );
+};
+
+export default ({ currentUser }: { currentUser: UserAggergation }) => {
+  const addListItemModal = useModal("AddListItemForm");
+  const addListItemForm = useAddListItemForm();
+  const snackbar = useSnackbar();
+
+  const handleClose = () => {
+    addListItemModal.close();
+  };
+
+  useListener(addListItemForm.eventEmitter, "submitSuccess", (list) => {
+    snackbar.display({
+      message: `Added to "${list.title}"`,
+      action: <ViewListButton listId={list.id} />,
+    });
+    addListItemModal.close();
+  });
+
   const handleClickList = (list: ListAggergation) => {
-    addListItemForm.setListId(list.list.id);
-    addListItemForm.submit();
+    if (addListItemForm.mediaId) {
+      addListItemForm.submit({
+        list: list.list,
+        mediaId: addListItemForm.mediaId,
+      });
+    }
   };
 
   return (
@@ -53,14 +82,7 @@ export default ({ currentUser }: { currentUser: UserAggergation }) => {
       </AppBar>
 
       <Box p={1}>
-        <Button
-          onClick={handleClickCreateList}
-          size="large"
-          fullWidth
-          startIcon={<PlaylistAddIcon />}
-        >
-          Create New
-        </Button>
+        <CreateNewListButton />
       </Box>
 
       <Box p={1}>

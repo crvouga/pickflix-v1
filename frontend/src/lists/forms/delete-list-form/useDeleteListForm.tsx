@@ -10,20 +10,13 @@ const eventEmitter = createEventEmitter<{
 }>();
 
 export default () => {
-  const state = useDeleteListFormState();
-  const [deleteListMutation] = useDeleteListMutation();
-  const { listId } = state;
+  const formState = useDeleteListFormState();
+  const mutate = useDeleteListMutation();
 
-  const submit = async () => {
-    if (!listId) {
-      return;
-    }
-
+  const submit = async ({ listId }: { listId: string }) => {
+    eventEmitter.emit("submit");
     try {
-      eventEmitter.emit("submit");
-
-      await deleteListMutation({ listId });
-
+      await mutate({ listId });
       eventEmitter.emit("submitSuccess");
     } catch (error) {
       eventEmitter.emit("submitError");
@@ -34,7 +27,7 @@ export default () => {
   };
 
   return {
-    ...state,
+    ...formState,
     eventEmitter,
     submit,
   };
