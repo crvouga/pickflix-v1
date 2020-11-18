@@ -5,9 +5,7 @@ const getUnitOfWork = () => {
   switch (configuration.NODE_ENV) {
     case "development":
       return new UnitOfWorkFileSystem();
-    case "test":
-      return new UnitOfWorkHashMap();
-    case "production":
+    default:
       return new UnitOfWorkHashMap();
   }
 };
