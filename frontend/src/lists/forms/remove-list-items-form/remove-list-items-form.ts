@@ -77,10 +77,14 @@ export const useRemoveListItemsFormState = () => {
 
   const dispatch = useDispatch();
   const actions = bindActionCreators(removeListItemsForm.actions, dispatch);
-  const { listItemIds } = slice;
-  const { setListItemIds } = actions;
+  const { listItemIds, isSelecting } = slice;
+  const { setListItemIds, setIsSelecting } = actions;
 
-  const toggle = (listItemId: string) => {
+  const toggleIsSelecting = () => {
+    setIsSelecting(!isSelecting);
+  };
+
+  const toggleDeletion = (listItemId: string) => {
     if (listItemId in listItemIds) {
       const { [listItemId]: _, ...restOfIds } = listItemIds;
       setListItemIds(restOfIds);
@@ -95,6 +99,7 @@ export const useRemoveListItemsFormState = () => {
   return {
     ...slice,
     ...actions,
-    toggle,
+    toggleDeletion,
+    toggleIsSelecting,
   };
 };

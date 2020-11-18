@@ -8,6 +8,8 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
+  DialogTitle,
+  DialogActions,
 } from "@material-ui/core";
 import React from "react";
 import useBoolean from "../../../common/hooks/useBoolean";
@@ -51,28 +53,23 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
 
   return (
     <React.Fragment>
-      <Box p={2}>
-        <Typography variant="h6" align="center">
-          {title}
-        </Typography>
-      </Box>
+      <DialogTitle>{title}</DialogTitle>
 
-      <Box p={2} paddingTop={0} display="flex" flexDirection="row-reverse">
+      <DialogActions>
+        {onCancel && (
+          <Button size="large" onClick={onCancel}>
+            Cancel
+          </Button>
+        )}
         <Button
           size="large"
-          color="primary"
           onClick={() => {
             submit();
           }}
         >
           Remove
         </Button>
-        {onCancel && (
-          <Button size="large" onClick={onCancel}>
-            Cancel
-          </Button>
-        )}
-      </Box>
+      </DialogActions>
 
       {/* <LoadingDialog /> */}
     </React.Fragment>

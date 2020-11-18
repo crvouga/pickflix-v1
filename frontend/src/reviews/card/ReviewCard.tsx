@@ -15,7 +15,7 @@ import React from "react";
 import { useHistory } from "react-router";
 import useBoolean from "../../common/hooks/useBoolean";
 import MovieAvatar from "../../movie/components/MovieAvatar";
-import AvatarUser from "../../users/AvatarUser";
+import AvatarUser from "../../users/components/AvatarUser";
 import { pluralize } from "../../utils";
 import { ReviewAggergation } from "../query/types";
 import ReviewCardActions from "./ReviewCardActions";

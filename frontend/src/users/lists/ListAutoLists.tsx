@@ -1,9 +1,9 @@
 import { Box } from "@material-ui/core";
 import React from "react";
-import AutoListCard from "../lists/auto-lists/AutoListCard";
-import ListCardSkeleton from "../lists/lists/card/ListCardSkeleton";
-import { AutoListAggergation, useQueryAutoLists } from "../lists/query";
-import { UserAggergation } from "./query";
+import AutoListCard from "../../lists/auto-lists/AutoListCard";
+import ListCardSkeleton from "../../lists/lists/card/ListCardSkeleton";
+import { AutoListAggergation, useQueryAutoLists } from "../../lists/query";
+import { UserAggergation } from "../query";
 
 export default ({
   user,

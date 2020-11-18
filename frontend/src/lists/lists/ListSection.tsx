@@ -1,6 +1,6 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
-import ChipUser from "../../users/ChipUser";
+import ChipUser from "../../users/components/ChipUser";
 import { UserAggergation } from "../../users/query";
 import { pluralize } from "../../utils";
 import { ListAggergation } from "../query";

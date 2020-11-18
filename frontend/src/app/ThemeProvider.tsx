@@ -35,9 +35,10 @@ const CssBaseline = withStyles((theme) => ({
     html: {
       //prevent double-tap zoom
       touchAction: "manipulation",
+      scrollbarColor: `${theme.palette.grey[800]} ${theme.palette.background.default}`,
     },
     "*::-webkit-scrollbar": {
-      width: theme.spacing(2),
+      // width: theme.spacing(2),
       backgroundColor: theme.palette.background.default,
     },
     "*::-webkit-scrollbar-track": {

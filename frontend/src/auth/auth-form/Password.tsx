@@ -10,7 +10,7 @@ import {
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import React, { useRef, useState } from "react";
-import AvatarUser from "../../users/AvatarUser";
+import AvatarUser from "../../users/components/AvatarUser";
 import { User } from "../../users/query";
 import { useAuth } from "../useAuth";
 import { useHistory } from "react-router";

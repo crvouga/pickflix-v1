@@ -1,20 +1,20 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
-import ErrorBox from "../common/components/ErrorBox";
-import useModal from "../navigation/modals/useModal";
-import useReviewForm from "../reviews/form/useReviewForm";
+import ErrorBox from "../../common/components/ErrorBox";
+import useModal from "../../navigation/modals/useModal";
+import useReviewForm from "../../reviews/form/useReviewForm";
 import {
   getReviewsQueryKey,
   ReviewAggergation,
   useQueryReviews,
-} from "../reviews/query";
-import ReviewCard from "../reviews/card/ReviewCard";
-import ReviewCardCallToAction from "../reviews/card/ReviewCardCallToAction";
-import ReviewCardSkeleton from "../reviews/card/ReviewCardSkeleton";
-import useReviewVoteValue from "../reviews/card/useReviewVoteValue";
-import { UserAggergation } from "./query";
-import { useQueryCurrentUser } from "./useCurrentUser";
-import useReviewActions from "../reviews/card/useReviewActions";
+} from "../../reviews/query";
+import ReviewCard from "../../reviews/card/ReviewCard";
+import ReviewCardCallToAction from "../../reviews/card/ReviewCardCallToAction";
+import ReviewCardSkeleton from "../../reviews/card/ReviewCardSkeleton";
+import useReviewVoteValue from "../../reviews/card/useReviewVoteValue";
+import { UserAggergation } from "../query";
+import { useQueryCurrentUser } from "../query/hooks";
+import useReviewActions from "../../reviews/card/useReviewActions";
 
 const ListReviewsSkeleton = ({
   reviewCardCount,

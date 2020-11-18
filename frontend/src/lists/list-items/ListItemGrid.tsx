@@ -30,7 +30,7 @@ export default ({
 }) => {
   const classes = useStyles();
 
-  const { listItemIds, isSelecting, toggle } = useDeleteListItemsForm();
+  const { listItemIds, isSelecting, toggleDeletion } = useDeleteListItemsForm();
 
   const { fetchMoreRef, ...query } = useQueryListItems({
     listId,
@@ -63,7 +63,7 @@ export default ({
             onClick={
               isSelecting
                 ? () => {
-                    toggle(listItem.listItem.id);
+                    toggleDeletion(listItem.listItem.id);
                   }
                 : undefined
             }

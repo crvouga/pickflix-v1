@@ -22,12 +22,12 @@ import LoadingPage from "../common/page/LoadingPage";
 import useModal from "../navigation/modals/useModal";
 import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
 import useReviewForm from "../reviews/form/useReviewForm";
-import AvatarUser from "./AvatarUser";
-import ListAutoLists from "./ListAutoLists";
-import ListLists from "./ListLists";
-import ListReviews from "./ListReviews";
+import AvatarUser from "./components/AvatarUser";
+import ListAutoLists from "./lists/ListAutoLists";
+import ListLists from "./lists/ListLists";
+import ListReviews from "./reviews/ListReviews";
 import { getUser, queryKeys } from "./query";
-import { useQueryCurrentUser } from "./useCurrentUser";
+import { useQueryCurrentUser } from "./query/hooks";
 import UserOptionsListModal from "./UserOptionsListModal";
 
 const useStyles = makeStyles((theme) => ({

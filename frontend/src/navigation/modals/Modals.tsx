@@ -6,7 +6,7 @@ import DeleteListItemFormModal from "../../lists/forms/remove-list-items-form/Re
 import DeleteReviewFormModal from "../../reviews/form/DeleteReviewFormModal";
 import ReviewFormModal from "../../reviews/form/ReviewFormModal";
 import SearchModal from "../../search/SearchDialog";
-import { useQueryCurrentUser } from "../../users/useCurrentUser";
+import { useQueryCurrentUser } from "../../users/query/hooks";
 
 export default () => {
   const query = useQueryCurrentUser();

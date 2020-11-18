@@ -12,7 +12,7 @@ import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
 import BackButton from "../navigation/BackButton";
 import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
-import { useQueryCurrentUser } from "../users/useCurrentUser";
+import { useQueryCurrentUser } from "../users/query/hooks";
 import ListItemsSection from "./list-items/ListItemsSection";
 import ListSection from "./lists/ListSection";
 import { useQueryLists } from "./query";

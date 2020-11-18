@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     zIndex: theme.zIndex.appBar,
     position: "sticky",
     top: APP_BAR_HEIGHT,
-    backgroundColor: theme.palette.background.default,
+    // backgroundColor: theme.palette.background.default,
   },
 }));
 

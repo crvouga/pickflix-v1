@@ -1,4 +1,4 @@
-import { Box, Chip } from "@material-ui/core";
+import { Box, Chip, Grow, Zoom } from "@material-ui/core";
 import RemoveIcon from "@material-ui/icons/Remove";
 import React, { useEffect } from "react";
 import useModal from "../../navigation/modals/useModal";
@@ -10,6 +10,7 @@ export const ListItemActionBar = ({ listId }: { listId: string }) => {
     isSelecting,
     setListItemIds,
     listItemIds,
+    toggleIsSelecting,
     setIsSelecting,
     eventEmitter,
     setListId,
@@ -27,18 +28,22 @@ export const ListItemActionBar = ({ listId }: { listId: string }) => {
     setListItemIds({});
   });
 
-  if (isSelecting) {
-    return (
-      <React.Fragment>
-        <Chip
-          clickable
-          onClick={() => {
+  return (
+    <React.Fragment>
+      <Chip
+        clickable
+        onClick={() => {
+          if (isSelecting) {
             setListItemIds({});
             setIsSelecting(false);
-          }}
-          label="Cancel"
-        />
-        <Box flex={1}></Box>
+          } else {
+            setIsSelecting(true);
+          }
+        }}
+        label={isSelecting ? "Cancel" : "Select"}
+      />
+      <Box flex={1}></Box>
+      <Zoom in={isSelecting}>
         <Chip
           clickable
           disabled={seletectedCount === 0}
@@ -48,19 +53,7 @@ export const ListItemActionBar = ({ listId }: { listId: string }) => {
             deleteListItemsFormModal.open();
           }}
         />
-      </React.Fragment>
-    );
-  }
-
-  return (
-    <React.Fragment>
-      <Chip
-        clickable
-        onClick={() => {
-          setIsSelecting(true);
-        }}
-        label="Select"
-      />
+      </Zoom>
     </React.Fragment>
   );
 };

@@ -4,7 +4,7 @@ import React from "react";
 import ResponsiveDialog from "../../../common/components/ResponsiveDialog";
 import { SlideUp } from "../../../common/components/TransitionComponents";
 import useModal from "../../../navigation/modals/useModal";
-import ListLists from "../../../users/ListLists";
+import ListLists from "../../../users/lists/ListLists";
 import { UserAggergation } from "../../../users/query";
 import useCreateListForm from "../create-list-form/useCreateListForm";
 import useAddListItemForm from "./useAddListItemForm";

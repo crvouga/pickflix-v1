@@ -1,12 +1,18 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
-import ListCard from "../lists/lists/card/ListCard";
-import ListCardCallToAction from "../lists/lists/card/ListCardCallToAction";
-import ListCardSkeleton from "../lists/lists/card/ListCardSkeleton";
-import { ListAggergation, useQueryLists } from "../lists/query";
-import useModal from "../navigation/modals/useModal";
-import { UserAggergation } from "./query";
-import { useQueryCurrentUser } from "./useCurrentUser";
+import ListCard from "../../lists/lists/card/ListCard";
+import ListCardCallToAction from "../../lists/lists/card/ListCardCallToAction";
+import ListCardSkeleton from "../../lists/lists/card/ListCardSkeleton";
+import { ListAggergation, useQueryLists } from "../../lists/query";
+import useModal from "../../navigation/modals/useModal";
+import { UserAggergation } from "../query";
+import { useQueryCurrentUser } from "../query/hooks";
+
+/*
+
+
+
+*/
 
 const ListCardListSkeleton = ({ count }: { count: number }) => {
   return (
@@ -54,6 +60,12 @@ const ListCardList = ({
   );
 };
 
+/*
+
+
+
+*/
+
 const ListListsCurrentUser = ({
   currentUser,
   onClick,
@@ -87,6 +99,12 @@ const ListListsCurrentUser = ({
   return <ListCardList onClick={onClick} lists={query.data[0].results} />;
 };
 
+/*
+
+
+
+*/
+
 const ListListsUser = ({
   user,
   onClick,
@@ -110,6 +128,12 @@ const ListListsUser = ({
   return <ListCardList onClick={onClick} lists={query.data[0].results} />;
 };
 
+/* 
+
+
+
+*/
+
 export default ({
   user,
   onClick,
@@ -128,8 +152,9 @@ export default ({
 
   const currentUser = query.data;
 
-  if (currentUser) {
+  if (currentUser && user.user.id === currentUser.user.id) {
     return <ListListsCurrentUser currentUser={currentUser} onClick={onClick} />;
   }
+
   return <ListListsUser user={user} onClick={onClick} />;
 };

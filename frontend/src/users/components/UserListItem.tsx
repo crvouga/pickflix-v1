@@ -9,7 +9,7 @@ import {
 import React from "react";
 import { useHistory } from "react-router";
 import AvatarUser from "./AvatarUser";
-import { User } from "./query";
+import { User } from "../query";
 
 type Props = Omit<ListItemProps, "button"> & {
   user: User;
