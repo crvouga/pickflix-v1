@@ -1,7 +1,7 @@
-import { ReviewAggergation, Review } from "../query";
-import useReviewForm from "../form/useReviewForm";
-import useDeleteReviewForm from "../form/useDeleteReviewForm";
 import useModal from "../../navigation/modals/useModal";
+import useDeleteReviewForm from "../form/delete-review/useDeleteReviewForm";
+import useReviewForm from "../form/review-form/useReviewForm";
+import { Review } from "../query";
 
 export default () => {
   const reviewForm = useReviewForm();

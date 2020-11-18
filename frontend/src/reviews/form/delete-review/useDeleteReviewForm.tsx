@@ -1,6 +1,6 @@
 import { useQueryCache } from "react-query";
-import { createEventEmitter } from "../../utils";
-import { deleteReview } from "../query";
+import { createEventEmitter } from "../../../utils";
+import { deleteReview } from "../../query";
 import { useDeleteReviewFormState } from "./delete-review-form";
 
 const eventEmitter = createEventEmitter<{

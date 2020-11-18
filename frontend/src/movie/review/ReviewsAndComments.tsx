@@ -1,6 +1,6 @@
 import { Box, Tab, Tabs, Typography } from "@material-ui/core";
 import React from "react";
-import useReviewForm from "../../reviews/form/useReviewForm";
+import useReviewForm from "../../reviews/form/review-form/useReviewForm";
 import { MediaId } from "../../tmdb/types";
 import { useListener } from "../../utils";
 import useVideoState from "../../video/useVideoState";

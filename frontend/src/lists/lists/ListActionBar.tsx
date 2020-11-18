@@ -4,26 +4,46 @@ import EditIcon from "@material-ui/icons/EditOutlined";
 import React from "react";
 import useModal from "../../navigation/modals/useModal";
 import useDeleteListForm from "../forms/delete-list-form/useDeleteListForm";
+import useEditListForm from "../forms/edit-list-form/useEditListForm";
+import { List } from "../query";
 
-export default ({ listId }: { listId: string }) => {
+const EditListButton = ({ list }: { list: List }) => {
   const editListFormModal = useModal("EditListForm");
+  const editListForm = useEditListForm();
+  return (
+    <IconButton
+      onClick={() => {
+        editListForm.setListId(list.id);
+        editListForm.setDescription(list.description);
+        editListForm.setTitle(list.title);
+        editListFormModal.open();
+      }}
+    >
+      <EditIcon />
+    </IconButton>
+  );
+};
+
+const DeleteListButton = ({ list }: { list: List }) => {
   const deleteListFormModal = useModal("DeleteListForm");
   const deleteListForm = useDeleteListForm();
+  return (
+    <IconButton
+      onClick={() => {
+        deleteListForm.setListId(list.id);
+        deleteListFormModal.open();
+      }}
+    >
+      <DeleteIcon />
+    </IconButton>
+  );
+};
 
+export default ({ list }: { list: List }) => {
   return (
     <Toolbar>
-      <IconButton onClick={editListFormModal.open}>
-        <EditIcon />
-      </IconButton>
-
-      <IconButton
-        onClick={() => {
-          deleteListForm.setListId(listId);
-          deleteListFormModal.open();
-        }}
-      >
-        <DeleteIcon />
-      </IconButton>
+      <EditListButton list={list} />
+      <DeleteListButton list={list} />
     </Toolbar>
   );
 };

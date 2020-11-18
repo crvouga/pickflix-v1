@@ -3,12 +3,12 @@ import {
   TmdbMediaId,
   TmdbMediaType,
 } from "../../../media/models/types";
-import { ListId, ListItem, makeList, makeListItem } from "../../models";
+import { PaginationOptions } from "../../../unit-of-work/types";
+import { UserId } from "../../../users/models";
+import { removeNullOrUndefinedEntries } from "../../../utils";
+import { ListId, ListItem, makeListItem, updateList } from "../../models";
 import { ListItemId, PartialListItem } from "../../models/make-list-item";
 import { ListLogic } from "../build";
-import { PaginationOptions } from "../../../unit-of-work/types";
-import { omitFalsyValues } from "../../../utils";
-import { UserId } from "../../../users/models";
 
 export async function removeListItems(
   this: ListLogic,
@@ -38,10 +38,13 @@ export async function getListItemAggergations(
 ) {
   const { ListItems } = this.unitOfWork;
 
-  const listItems = await ListItems.find(omitFalsyValues(listItemInfo), {
-    orderBy: [["createdAt", "descend"]],
-    pagination: paginationOptions,
-  });
+  const listItems = await ListItems.find(
+    removeNullOrUndefinedEntries(listItemInfo),
+    {
+      orderBy: [["createdAt", "descend"]],
+      pagination: paginationOptions,
+    }
+  );
 
   const aggergatedListItems = await Promise.all(
     listItems.map((listItem) => this.aggergateListItem(listItem))
@@ -101,7 +104,7 @@ export async function addListItems(
     const [addedListItem] = await ListItems.add([listItem]);
 
     if (list) {
-      await Lists.update(makeList(list));
+      await Lists.update(updateList(list, {}));
     }
 
     addedListItems.push(addedListItem);

@@ -3,12 +3,14 @@ import {
   createReducer,
   bindActionCreators,
 } from "@reduxjs/toolkit";
-import { AppState } from "../../redux/types";
+import { AppState } from "../../../redux/types";
 import { useSelector, useDispatch } from "react-redux";
+import { createPayloadReducer } from "../../../redux/utils";
 
 const name = "deleteReviewForm";
 
 /* 
+
 
 */
 
@@ -18,13 +20,13 @@ export type DeleteReviewFormState = {
 
 /* 
 
+
 */
 
-const initialState: DeleteReviewFormState = {
-  reviewId: undefined,
-};
+const initialState: DeleteReviewFormState = {};
 
 /* 
+
 
 */
 
@@ -35,6 +37,7 @@ const selectors = {
 
 /* 
 
+
 */
 
 const actions = {
@@ -43,15 +46,15 @@ const actions = {
 
 /* 
 
+
 */
 
 const reducer = createReducer(initialState, {
-  [actions.setReviewId.toString()]: (state, action) => {
-    state.reviewId = action.payload;
-  },
+  [actions.setReviewId.toString()]: createPayloadReducer("reviewId"),
 });
 
 /* 
+
 
 */
 
@@ -60,6 +63,11 @@ export const deleteReviewForm = {
   reducer,
   selectors,
 };
+
+/* 
+
+
+*/
 
 export const useDeleteReviewFormState = () => {
   const slice = useSelector(deleteReviewForm.selectors.slice);

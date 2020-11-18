@@ -2,7 +2,7 @@ import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import ErrorBox from "../../common/components/ErrorBox";
 import useModal from "../../navigation/modals/useModal";
-import useReviewForm from "../../reviews/form/useReviewForm";
+import useReviewForm from "../../reviews/form/review-form/useReviewForm";
 import {
   getReviewsQueryKey,
   ReviewAggergation,

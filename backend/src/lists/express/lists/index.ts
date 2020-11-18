@@ -1,12 +1,18 @@
 import { IRouter } from "express";
-import { pick } from "ramda";
-import { User, castUsername, castUserId } from "../../../users/models";
-import { ListId, castListId } from "../../models";
-import { Dependencies } from "../types";
 import {
   makePaginationOptions,
   makePaginationResponse,
 } from "../../../pagination";
+import { castUserId, User } from "../../../users/models";
+import { removeNullOrUndefinedEntries } from "../../../utils";
+import {
+  castListDescription,
+  castListId,
+  castListTitle,
+  ListId,
+} from "../../models";
+import { Dependencies } from "../types";
+import { isNullOrUndefined } from "util";
 
 export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
   router: IRouter
@@ -54,30 +60,46 @@ export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
     middlewares.isAuthenticated,
     async (req, res, next) => {
       try {
-        const listId = req.params.listId as ListId;
+        const listId = castListId(req.params.listId);
 
-        const edits = pick(["title", "description"], req.body);
+        const title = isNullOrUndefined(req.body.title)
+          ? undefined
+          : castListTitle(req.body.title);
+
+        const description = isNullOrUndefined(req.body.description)
+          ? undefined
+          : castListDescription(req.body.description);
+
+        const edits = removeNullOrUndefinedEntries({
+          title,
+          description,
+        });
 
         const [editedList] = await listLogic.editLists([
-          { id: listId, ...edits },
+          {
+            id: listId,
+            ...edits,
+          },
         ]);
 
-        res.json(editedList).end();
+        res.status(204).json(editedList).end();
       } catch (error) {
-        next(error);
+        res.status(400).json({ error, message: "failed to patch list" }).end();
       }
     }
   );
 
   router.post("/lists", middlewares.isAuthenticated, async (req, res, next) => {
     try {
-      const user = req.user as User;
-      const title = req.body.title as string;
-      const description = req.body.description as string;
+      const ownerId = castUserId(req.user?.id);
+
+      const title = castListTitle(req.body.title || "");
+
+      const description = castListDescription(req.body.description || "");
 
       const [list] = await listLogic.addLists([
         {
-          ownerId: user.id,
+          ownerId: ownerId,
           title,
           description,
         },
@@ -85,19 +107,19 @@ export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
 
       res.status(201).json(list);
     } catch (error) {
-      next(error);
+      res.status(400).json({ error, message: "failed to post list" }).end();
     }
   });
 
   router.delete("/lists/:listId", async (req, res, next) => {
     try {
-      const listId = req.params.listId as ListId;
+      const listId = castListId(req.params.listId);
 
       await listLogic.removeLists([{ id: listId }]);
 
       res.status(204).end();
     } catch (error) {
-      next(error);
+      res.status(400).json({ error, message: "failed to delete list" }).end();
     }
   });
 };

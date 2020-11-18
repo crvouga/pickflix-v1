@@ -46,7 +46,7 @@ export default ({
         </Box>
         <ChipUser user={list.owner} />
       </Box>
-      {isCurrentUser && <ListActionBar listId={list.list.id} />}
+      {isCurrentUser && <ListActionBar list={list.list} />}
     </React.Fragment>
   );
 };

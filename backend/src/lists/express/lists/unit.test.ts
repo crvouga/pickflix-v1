@@ -83,27 +83,27 @@ describe("GET /lists", () => {
 });
 
 describe("PATCH /lists", () => {
-  it("sends back error list", async (done) => {
+  it("fails", async (done) => {
     const { user, listLogic, app } = await buildExpressAppFake();
-    const [created] = await listLogic.addLists([
+    const [added] = await listLogic.addLists([
       {
         ownerId: user.id,
         title: "my movies",
       },
     ]);
 
-    const edits = {
+    const invalidEdit = {
       title: "",
     };
 
     await supertest(app)
-      .patch(`/api/lists/${created.id}`)
-      .send(edits)
+      .patch(`/api/lists/${added.id}`)
+      .send(invalidEdit)
       .expect(400);
 
     done();
   });
-  it("sends back edited list", async (done) => {
+  it("succeeds", async (done) => {
     const { user, listLogic, app } = await buildExpressAppFake();
     const [created] = await listLogic.addLists([
       {
@@ -119,10 +119,8 @@ describe("PATCH /lists", () => {
     await supertest(app)
       .patch(`/api/lists/${created.id}`)
       .send(edits)
-      .expect(200)
-      .then((response) => {
-        expect(response.body).toMatchObject(edits);
-      });
+      .expect(204);
+
     done();
   });
 });

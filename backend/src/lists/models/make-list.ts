@@ -1,6 +1,10 @@
 import { isValidId, makeId } from "../../id";
 import { Id } from "../../id/types";
-import { UserId } from "../../users/models/make-user";
+import { castUserId, UserId } from "../../users/models/make-user";
+
+const MIN_LENGTH_TITLE = 1;
+const MAX_LENGTH_TITLE = 100;
+const MAX_LENGTH_DESCRIPTION = 500;
 
 export type ListId = Id & { ListId: true };
 
@@ -9,6 +13,27 @@ export const castListId = (listId: any) => {
     return listId as ListId;
   }
   throw new Error("invalid listId");
+};
+
+export const castListDescription = (description: any) => {
+  if (
+    typeof description === "string" &&
+    description.trim().length <= MAX_LENGTH_DESCRIPTION
+  ) {
+    return description.trim();
+  }
+  throw new Error("invalid list description");
+};
+
+export const castListTitle = (title: any) => {
+  if (
+    typeof title === "string" &&
+    MIN_LENGTH_TITLE <= title.trim().length &&
+    title.trim().length <= MAX_LENGTH_TITLE
+  ) {
+    return title.trim();
+  }
+  throw new Error("invalid list title");
 };
 
 export type List = {
@@ -24,60 +49,41 @@ export type List = {
 export type PartialList = {
   title: string;
   description?: string;
-  createdAt?: number;
   ownerId: UserId;
-  id?: ListId;
 };
 
-const MAX_LENGTH_TITLE = 100;
-const MAX_LENGTH_DESCRIPTION = 500;
-
-export const makeList = (partial: PartialList): List => {
-  const id = partial.id || (makeId() as ListId);
-  const ownerId = partial.ownerId;
-  const title = partial.title.trim();
-  const description = (partial.description || "").trim();
-  const createdAt = partial.createdAt || Date.now();
-
-  const errors = [];
-
-  if (!isValidId(ownerId)) {
-    errors.push({ key: "ownerId", message: "Invalid ownerId." });
-  }
-
-  if (!isValidId(id)) {
-    errors.push({ key: "listId", message: `Invalid list id.` });
-  }
-
-  if (title?.length === 0) {
-    errors.push({ key: "title", message: "Title can NOT be empty." });
-  }
-
-  if (title?.length > MAX_LENGTH_TITLE) {
-    errors.push({
-      key: "title",
-      message: `Title can NOT be more than ${MAX_LENGTH_TITLE} characters long.`,
-    });
-  }
-
-  if (description?.length > MAX_LENGTH_DESCRIPTION) {
-    errors.push({
-      key: "description",
-      message: `Description can NOT be more than ${MAX_LENGTH_TITLE} characters long.`,
-    });
-  }
-
-  if (errors.length > 0) {
-    throw errors;
-  }
-
+export const makeList = ({
+  ownerId,
+  description,
+  title,
+}: PartialList): List => {
   return Object.freeze({
     type: "list",
-    id,
-    ownerId,
-    title,
-    description,
-    createdAt,
+    id: castListId(makeId()),
+    ownerId: castUserId(ownerId),
+    title: castListTitle(title),
+    description: castListDescription(description || ""),
+    createdAt: Date.now(),
     updatedAt: Date.now(),
   });
+};
+
+export const updateList = (
+  list: List,
+  {
+    title,
+    description,
+  }: {
+    title?: string;
+    description?: string;
+  }
+): List => {
+  return {
+    ...list,
+    ...(title !== undefined ? { title: castListTitle(title) } : {}),
+    ...(description !== undefined
+      ? { description: castListDescription(description) }
+      : {}),
+    updatedAt: Date.now(),
+  };
 };

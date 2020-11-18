@@ -18,6 +18,8 @@ import {
   GetListsParams,
   ListAggergation,
   postList,
+  PatchListParams,
+  patchList,
 } from "./lists";
 import { useState } from "react";
 
@@ -183,6 +185,58 @@ export const useDeleteListMutation = () => {
       throw error;
     } finally {
       queryCache.invalidateQueries(queryKey);
+    }
+  };
+};
+
+/* 
+
+
+*/
+
+const optimisticUpdateEditList = (
+  previous: GetListsData,
+  { listId, title, description }: PatchListParams
+) => {
+  return previous.map((page) => ({
+    ...page,
+    results: page.results.map((result) => ({
+      ...result,
+      list:
+        result.list.id === listId
+          ? {
+              ...result.list,
+              title,
+              description,
+            }
+          : result.list,
+    })),
+  }));
+};
+
+export const useEditListMutation = () => {
+  const queryCache = useQueryCache();
+  return async (params: PatchListParams) => {
+    const queryKey = makeGetListsQueryKey({
+      id: params.listId,
+    });
+
+    const previous = queryCache.getQueryData<GetListsData>(queryKey);
+    if (previous) {
+      queryCache.setQueryData(
+        queryKey,
+        optimisticUpdateEditList(previous, params)
+      );
+    }
+    try {
+      await patchList(params);
+    } catch (error) {
+      queryCache.setQueryData(queryKey, previous);
+      throw error;
+    } finally {
+      queryCache.invalidateQueries((query) =>
+        query.queryKey.includes(params.listId)
+      );
     }
   };
 };

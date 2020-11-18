@@ -10,7 +10,7 @@ import { ListAggergate } from "../../models/types";
 import { ListLogic } from "../build";
 import { DEFAULT_PAGE_SIZE } from "../../../pagination";
 import { PaginationOptions } from "../../../unit-of-work/types";
-import { omitFalsyValues } from "../../../utils";
+import { removeNullOrUndefinedEntries } from "../../../utils";
 
 export async function initializeAutoLists(
   this: ListLogic,
@@ -50,7 +50,9 @@ export async function getAutoListAggergations(
 ) {
   const { AutoLists } = this.unitOfWork;
 
-  const lists = await AutoLists.find(omitFalsyValues(autoListInfo));
+  const lists = await AutoLists.find(
+    removeNullOrUndefinedEntries(autoListInfo)
+  );
 
   const aggergatedLists = await Promise.all(
     lists.map((list) => this.aggergateList(list))

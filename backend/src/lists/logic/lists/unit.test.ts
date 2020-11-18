@@ -61,7 +61,7 @@ describe("list logic", () => {
       expect.arrayContaining([expect.objectContaining(list2)])
     );
   });
-  it("gets aggergated lists by ownerId or listId", async () => {
+  it("gets same list by ownerId or listId", async () => {
     const { listLogic } = buildListLogicFake();
     const user = makeUserFake();
     const [list] = await listLogic.addLists([
@@ -70,8 +70,9 @@ describe("list logic", () => {
         title: "my list",
       },
     ]);
+
     const mediaId = makeMediaIdFake();
-    const [listItem] = await listLogic.addListItems([
+    await listLogic.addListItems([
       {
         userId: user.id,
         listId: list.id,
@@ -82,6 +83,7 @@ describe("list logic", () => {
     const [aggergatedList1] = await listLogic.getListAggergations({
       id: list.id,
     });
+
     const [aggergatedList2] = await listLogic.getListAggergations({
       ownerId: user.id,
     });

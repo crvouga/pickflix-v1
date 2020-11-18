@@ -14,7 +14,7 @@ import {
   PartialReviewVote,
   ReviewVoteValue,
 } from "../models/make-review-vote";
-import { omitFalsyValues } from "../../utils";
+import { removeNullOrUndefinedEntries } from "../../utils";
 
 export class ReviewLogic {
   mediaLogic: MediaLogic;
@@ -151,7 +151,7 @@ export class ReviewLogic {
   ) {
     const { Reviews } = this.unitOfWork;
 
-    const found = await Reviews.find(omitFalsyValues(reviewInfo), {
+    const found = await Reviews.find(removeNullOrUndefinedEntries(reviewInfo), {
       orderBy: [["updatedAt", "descend"]],
       pagination,
     });

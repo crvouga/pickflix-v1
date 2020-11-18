@@ -1,8 +1,8 @@
 import { Dialog, makeStyles, useMediaQuery, useTheme } from "@material-ui/core";
 import React from "react";
-import { SlideUp } from "../../common/components/TransitionComponents";
-import useModal from "../../navigation/modals/useModal";
-import { useListener } from "../../utils";
+import { SlideUp } from "../../../common/components/TransitionComponents";
+import useModal from "../../../navigation/modals/useModal";
+import { useListener } from "../../../utils";
 import ReviewForm from "./ReviewForm";
 import useReviewForm from "./useReviewForm";
 

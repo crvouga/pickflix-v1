@@ -1,71 +1,34 @@
-import { useState } from "react";
-import { useQueryCache } from "react-query";
-import useSnackbar from "../../../snackbar/useSnackbar";
-import { ListItem } from "../../query";
+import { createEventEmitter } from "../../../utils";
+import { PatchListParams, useEditListMutation } from "../../query";
+import { useEditListFormState } from "./edit-list-form";
 
-const useEditListFormState = () => {
-  const [errors, setErrors] = useState<{ message: string }[]>([]);
-  const [deletions, setDeletions] = useState<{ [id: string]: string }>({});
-  const reset = () => {
-    setErrors([]);
-    setDeletions({});
-  };
-  return {
-    deletions,
-    setDeletions,
-    errors,
-    setErrors,
-    reset,
-  };
-};
+const eventEmitter = createEventEmitter<{
+  submit: undefined;
+  submitSuccess: undefined;
+  submitError: undefined;
+  submitSettled: undefined;
+}>();
 
 export default () => {
-  const queryCache = useQueryCache();
-  const snackbar = useSnackbar();
-  const editListFormState = useEditListFormState();
+  const formState = useEditListFormState();
+  const mutate = useEditListMutation();
 
-  const submit = async ({
-    listId,
-    title,
-    description,
-    listItemIds,
-  }: {
-    listId: string;
-    title: string;
-    description: string;
-    listItemIds: string[];
-  }) => {
+  const submit = async (params: PatchListParams) => {
+    eventEmitter.emit("submit");
     try {
-      // await Promise.all([
-      //   editListMutation(queryCache)({
-      //     listId,
-      //     title,
-      //     description,
-      //   }),
-      //   deleteListItemsMutation(queryCache)(listItemIds.map((id) => ({ id }))),
-      // ]);
-
-      snackbar.display({ message: "Saved Changes" });
+      await mutate(params);
+      eventEmitter.emit("submitSuccess");
     } catch (error) {
-      const errors = error?.response?.data?.errors || [];
-      if (errors.length > 0) {
-        editListFormState.setErrors(errors);
-      }
+      eventEmitter.emit("submitError");
       throw error;
+    } finally {
+      eventEmitter.emit("submitSettled");
     }
   };
 
-  const toggleDeletion = (listItem: ListItem) => {
-    const { [listItem.id]: id, ...ids } = editListFormState.deletions;
-    editListFormState.setDeletions({
-      ...ids,
-      ...(id ? {} : { [listItem.id]: listItem.id }),
-    });
-  };
-
   return {
-    ...editListFormState,
-    toggleDeletion,
+    ...formState,
     submit,
+    eventEmitter,
   };
 };

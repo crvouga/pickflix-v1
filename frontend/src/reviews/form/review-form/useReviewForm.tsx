@@ -1,7 +1,7 @@
 import { useQueryCache } from "react-query";
-import { MediaId } from "../../tmdb/types";
-import { createEventEmitter } from "../../utils";
-import { postReview } from "../query";
+import { MediaId } from "../../../tmdb/types";
+import { createEventEmitter } from "../../../utils";
+import { postReview } from "../../query";
 import { useReviewFormState } from "./review-form";
 
 const eventEmitter = createEventEmitter<{
@@ -12,7 +12,7 @@ const eventEmitter = createEventEmitter<{
 }>();
 
 export default () => {
-  const reviewFormState = useReviewFormState();
+  const formState = useReviewFormState();
   const queryCache = useQueryCache();
 
   const submit = async ({
@@ -45,7 +45,7 @@ export default () => {
   };
 
   return {
-    ...reviewFormState,
+    ...formState,
     submit,
     eventEmitter,
   };

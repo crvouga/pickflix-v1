@@ -1,55 +1,76 @@
-import { createAction, createReducer, createSelector } from "@reduxjs/toolkit";
+import {
+  bindActionCreators,
+  createAction,
+  createReducer,
+} from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../../redux/types";
+import { createPayloadReducer } from "../../../redux/utils";
 
 const name = "editListForm";
 
-type Deletions = { [id: string]: string };
+/* 
+
+
+*/
 
 export type EditListFormState = {
-  title: string;
-  description: string;
-  deletions: Deletions;
+  title?: string;
+  description?: string;
+  listId?: string;
 };
 
-const initialState = {
-  title: "",
-  description: "",
-  deletions: {},
-};
+const initialState: EditListFormState = {};
+
+/* 
+
+
+*/
 
 const actions = {
-  setTitle: createAction<string>(name + "/SET_TITLE"),
-  setDescription: createAction<string>(name + "/SET_DESCRIPTION"),
-  setDeletions: createAction<Deletions>(name + "/SET_DELETIONS"),
-  reset: createAction(name + "/RESET"),
+  setTitle: createAction<string | undefined>(name + "/SET_TITLE"),
+  setDescription: createAction<string | undefined>(name + "/SET_DESCRIPTION"),
+  setListId: createAction<string | undefined>(name + "/SET_LIST_ID"),
 };
+
+/* 
+
+
+*/
 
 const slice = (state: AppState) => state.editListForm;
-
 const selectors = {
   slice,
-  title: createSelector([slice], (slice) => slice.title),
-  description: createSelector([slice], (slice) => slice.description),
-  deletions: createSelector([slice], (slice) => slice.deletions),
 };
 
+/* 
+
+
+*/
+
 const reducer = createReducer(initialState, {
-  [actions.setTitle.toString()]: (state, action) => {
-    state.title = action.payload;
-  },
-  [actions.setDescription.toString()]: (state, action) => {
-    state.description = action.payload;
-  },
-  [actions.setDeletions.toString()]: (state, action) => {
-    state.deletions = action.payload;
-  },
-  [actions.reset.toString()]: (state, action) => {
-    return initialState;
-  },
+  [actions.setListId.toString()]: createPayloadReducer("listId"),
+  [actions.setTitle.toString()]: createPayloadReducer("title"),
+  [actions.setDescription.toString()]: createPayloadReducer("description"),
 });
 
 export const editListForm = {
   reducer,
   selectors,
   actions,
+};
+
+/*
+
+
+*/
+
+export const useEditListFormState = () => {
+  const dispatch = useDispatch();
+  const actions = bindActionCreators(editListForm.actions, dispatch);
+  const slice = useSelector(editListForm.selectors.slice);
+  return {
+    ...actions,
+    ...slice,
+  };
 };

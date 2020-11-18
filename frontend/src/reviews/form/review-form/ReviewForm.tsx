@@ -18,12 +18,12 @@ import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import CloseIcon from "@material-ui/icons/Close";
 import Rating from "@material-ui/lab/Rating";
 import React, { useEffect, useRef, useState } from "react";
-import ListItemSkeleton from "../../common/components/ListItemSkeleton";
-import useBoolean from "../../common/hooks/useBoolean";
-import useSnackbar from "../../snackbar/useSnackbar";
-import { useQueryCurrentUser } from "../../users/query/hooks";
-import UserListItem from "../../users/components/UserListItem";
-import { useListener } from "../../utils";
+import ListItemSkeleton from "../../../common/components/ListItemSkeleton";
+import useBoolean from "../../../common/hooks/useBoolean";
+import useSnackbar from "../../../snackbar/useSnackbar";
+import { useQueryCurrentUser } from "../../../users/query/hooks";
+import UserListItem from "../../../users/components/UserListItem";
+import { useListener } from "../../../utils";
 import ReviewFormMedia from "./ReviewFormMedia";
 import useReviewForm from "./useReviewForm";
 const ReviewFormAuthor = () => {
@@ -136,11 +136,13 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
   const refContent = useRef<HTMLInputElement>();
 
   const handleSubmit = () => {
-    if (reviewForm.review.mediaId) {
+    const { review } = reviewForm;
+    const { mediaId, rating } = review;
+    if (mediaId && rating) {
       reviewForm.submit({
         content: refContent.current?.value || "",
-        rating: reviewForm.review.rating,
-        mediaId: reviewForm.review.mediaId,
+        rating,
+        mediaId,
       });
     }
   };

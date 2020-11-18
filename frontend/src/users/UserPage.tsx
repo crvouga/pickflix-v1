@@ -21,7 +21,7 @@ import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
 import useModal from "../navigation/modals/useModal";
 import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
-import useReviewForm from "../reviews/form/useReviewForm";
+import useReviewForm from "../reviews/form/review-form/useReviewForm";
 import AvatarUser from "./components/AvatarUser";
 import ListAutoLists from "./lists/ListAutoLists";
 import ListLists from "./lists/ListLists";
@@ -52,7 +52,7 @@ export default () => {
   );
 
   const handleClickReview = () => {
-    reviewForm.reset();
+    reviewForm.setReview({});
     reviewFormModal.open();
   };
 

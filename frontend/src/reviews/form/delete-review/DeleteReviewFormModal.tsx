@@ -10,11 +10,11 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import React from "react";
-import { ZoomIn } from "../../common/components/TransitionComponents";
-import useBoolean from "../../common/hooks/useBoolean";
-import useModal from "../../navigation/modals/useModal";
-import useSnackbar from "../../snackbar/useSnackbar";
-import { useListener } from "../../utils";
+import { ZoomIn } from "../../../common/components/TransitionComponents";
+import useBoolean from "../../../common/hooks/useBoolean";
+import useModal from "../../../navigation/modals/useModal";
+import useSnackbar from "../../../snackbar/useSnackbar";
+import { useListener } from "../../../utils";
 import useDeleteReviewForm from "./useDeleteReviewForm";
 
 const LoadingDialog = () => {

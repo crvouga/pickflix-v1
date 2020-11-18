@@ -1,18 +1,16 @@
 import { UserId } from "../../../users/models/make-user";
-import { List, ListId, makeList, PartialList } from "../../models";
+import { List, ListId, makeList, PartialList, updateList } from "../../models";
 import { ListLogic } from "../build";
 import { PaginationOptions } from "../../../unit-of-work/types";
-import { omitFalsyValues } from "../../../utils";
+import { removeNullOrUndefinedEntries } from "../../../utils";
 
 export async function addLists(
   this: ListLogic,
   listInfos: PartialList[]
 ): Promise<List[]> {
-  const {
-    unitOfWork: { Lists },
-  } = this;
+  const { Lists } = this.unitOfWork;
+  const lists = listInfos.map(makeList);
 
-  const lists = listInfos.map((listInfo) => makeList(listInfo));
   const added = await Lists.add(lists);
 
   return added;
@@ -25,7 +23,7 @@ export async function getListAggergations(
 ) {
   const { Lists } = this.unitOfWork;
 
-  const lists = await Lists.find(omitFalsyValues(listInfo), {
+  const lists = await Lists.find(removeNullOrUndefinedEntries(listInfo), {
     orderBy: [["updatedAt", "descend"]],
     pagination,
   });
@@ -39,37 +37,35 @@ export async function getListAggergations(
 
 export async function editLists(
   this: ListLogic,
-  listInfos: Array<Partial<List> & Pick<List, "id">>
+  listInfos: (Partial<List> & Pick<List, "id">)[]
 ): Promise<List[]> {
+  const { Lists, begin, commit, rollback } = this.unitOfWork;
   try {
-    await this.unitOfWork.begin();
+    await begin();
 
     const editedLists = [];
 
-    for (const { id, ...listInfo } of listInfos) {
-      const foundLists = await this.unitOfWork.Lists.find({ id });
+    for (const { id, ...edits } of listInfos) {
+      const foundLists = await Lists.find({ id });
 
       if (foundLists.length === 0) {
         throw new Error("try to edit list that does not exists");
       }
 
-      const existingList = foundLists[0];
+      const existing = foundLists[0];
 
-      const editedList = makeList({
-        ...existingList,
-        ...listInfo,
-      });
+      const editedList = updateList(existing, edits);
 
-      await this.unitOfWork.Lists.update(editedList);
+      await Lists.update(editedList);
 
       editedLists.push(editedList);
     }
 
-    await this.unitOfWork.commit();
+    await commit();
 
     return editedLists;
   } catch (error) {
-    await this.unitOfWork.rollback();
+    await rollback();
     throw error;
   }
 }

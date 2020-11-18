@@ -56,8 +56,12 @@ export default () => {
       <LoadingDialog />
       <DialogTitle>Delete list?</DialogTitle>
       <DialogActions>
-        <Button onClick={close}>Cancel</Button>
-        <Button onClick={handleSubmit}>Delete</Button>
+        <Button size="large" onClick={close}>
+          Cancel
+        </Button>
+        <Button size="large" onClick={handleSubmit}>
+          Delete
+        </Button>
       </DialogActions>
     </Dialog>
   );

@@ -2,7 +2,7 @@ import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import SignInButton from "../../auth/SignInButton";
 import useModal from "../../navigation/modals/useModal";
-import useReviewForm from "../../reviews/form/useReviewForm";
+import useReviewForm from "../../reviews/form/review-form/useReviewForm";
 import { useQueryReviews } from "../../reviews/query";
 import ReviewCard from "../../reviews/card/ReviewCard";
 import ReviewCardCallToAction from "../../reviews/card/ReviewCardCallToAction";
