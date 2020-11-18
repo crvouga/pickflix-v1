@@ -1,12 +1,11 @@
 import {
+  bindActionCreators,
   createAction,
   createReducer,
-  createSelector,
-  bindActionCreators,
 } from "@reduxjs/toolkit";
-import { AppState } from "../../../redux/types";
-import { TmdbMediaType, MediaId } from "../../../tmdb/types";
 import { useDispatch, useSelector } from "react-redux";
+import { AppState } from "../../../redux/types";
+import { MediaId } from "../../../tmdb/types";
 
 const name = "addListItemForm";
 

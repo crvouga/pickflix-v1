@@ -15,7 +15,7 @@ import React from "react";
 import useBoolean from "../../../common/hooks/useBoolean";
 import { pluralize, useListener } from "../../../utils";
 import useDeleteListItemsForm from "./useRemoveListItemsForm";
-import useSnackbar from "../../../snackbar/useSnackbar";
+import { useSnackbar } from "../../../snackbar/redux/snackbar";
 
 const LoadingDialog = () => {
   const { eventEmitter } = useDeleteListItemsForm();

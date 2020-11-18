@@ -4,16 +4,13 @@ import {
   makeStyles,
   Slide,
   Snackbar,
-  Theme,
 } from "@material-ui/core";
 import { TransitionProps } from "@material-ui/core/transitions";
 import CloseIcon from "@material-ui/icons/Close";
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import { snackbar } from "./redux/snackbar";
 import { APP_BAR_HEIGHT } from "../navigation/constants";
-import useSnackbar from "./useSnackbar";
+import { useSnackbar } from "./redux/snackbar";
 
 const Transition = (props: TransitionProps) => (
   <Slide direction="up" {...props} />
@@ -43,11 +40,11 @@ type ViewListButtonProps = {
 };
 
 export const ViewListButton = ({ listId }: ViewListButtonProps) => {
-  const dispatch = useDispatch();
+  const snackbar = useSnackbar();
   const history = useHistory();
 
   const handleClick = () => {
-    dispatch(snackbar.actions.setOpen(false));
+    snackbar.setIsOpen(false);
     history.push(`/list/${listId}`);
   };
 
@@ -67,7 +64,7 @@ export const CloseSnackbarButton = () => {
   const snackbar = useSnackbar();
 
   const handleClick = () => {
-    snackbar.setOpen(false);
+    snackbar.setIsOpen(false);
   };
 
   return (
@@ -83,13 +80,13 @@ export default () => {
   const snackbar = useSnackbar();
 
   const handleClick = () => {
-    snackbar.setOpen(false);
+    snackbar.setIsOpen(false);
   };
 
   return (
     <Snackbar
       onClick={handleClick}
-      open={snackbar.open}
+      open={snackbar.isOpen}
       classes={classesSnackbar}
       TransitionComponent={Transition}
       ContentProps={{

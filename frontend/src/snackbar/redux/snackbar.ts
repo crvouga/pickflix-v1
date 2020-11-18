@@ -1,4 +1,8 @@
-import { createAction, createReducer } from "@reduxjs/toolkit";
+import { createAction, createReducer, createSelector } from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
+import { bindActionCreators } from "redux";
+import { AppState } from "../../redux/types";
+import { createPayloadReducer } from "../../redux/utils";
 
 const name = "snackbar";
 
@@ -13,7 +17,7 @@ export type SnackbarProps = {
 
 export type SnackbarState = {
   props: SnackbarProps;
-  open: boolean;
+  isOpen: boolean;
 };
 
 /*
@@ -25,7 +29,7 @@ const initialState: SnackbarState = {
     message: "",
     action: null,
   },
-  open: false,
+  isOpen: false,
 };
 
 /*
@@ -33,7 +37,7 @@ const initialState: SnackbarState = {
 */
 
 const actions = {
-  setOpen: createAction<boolean>(name + "/SET_OPEN"),
+  setIsOpen: createAction<boolean>(name + "/SET_IS_OPEN"),
   setProps: createAction<SnackbarProps>(name + "/SET_PROPS"),
   display: createAction<SnackbarProps>(name + "/DISPLAY"),
 };
@@ -43,28 +47,39 @@ const actions = {
 */
 
 const reducer = createReducer(initialState, {
-  [actions.setOpen.toString()]: (state, action) => {
-    state.open = action.payload;
-  },
-  [actions.setProps.toString()]: (state, action) => {
-    state.props = action.payload;
-  },
+  [actions.setIsOpen.toString()]: createPayloadReducer("isOpen"),
+  [actions.setProps.toString()]: createPayloadReducer("props"),
 });
 
 /*
 
 */
 
+const slice = (state: AppState) => state.snackbar;
 const selectors = {
-  open: (state: { [name]: SnackbarState }) => state[name].open || false,
-  props: (state: { [name]: SnackbarState }) => state[name].props || {},
+  slice,
+  isOpen: createSelector([slice], (slice) => slice.isOpen),
 };
 
 /* 
 
+
 */
+
 export const snackbar = {
   actions,
   selectors,
   reducer,
+};
+
+export const useSnackbar = () => {
+  const dispatch = useDispatch();
+  const actions = bindActionCreators(snackbar.actions, dispatch);
+  const slice = useSelector(snackbar.selectors.slice);
+  const isOpen = useSelector(snackbar.selectors.isOpen);
+  return {
+    ...actions,
+    ...slice,
+    isOpen,
+  };
 };

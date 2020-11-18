@@ -1,6 +1,6 @@
 import { useQuery, useQueryCache } from "react-query";
 import { useHistory } from "react-router";
-import useSnackbar from "../snackbar/useSnackbar";
+import { useSnackbar } from "../snackbar/redux/snackbar";
 import {
   deleteAuth,
   postAuth,

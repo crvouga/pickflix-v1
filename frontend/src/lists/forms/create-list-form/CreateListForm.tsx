@@ -1,7 +1,7 @@
 import { Box, Button, TextField, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
 
-import useSnackbar from "../../../snackbar/useSnackbar";
+import { useSnackbar } from "../../../snackbar/redux/snackbar";
 import useCreateListForm from "./useCreateListForm";
 import { useListener } from "../../../utils";
 import { ViewListButton } from "../../../snackbar/Snackbar";

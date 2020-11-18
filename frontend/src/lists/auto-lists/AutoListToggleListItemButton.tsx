@@ -2,7 +2,7 @@ import { Button } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router";
 import LabeledIconButton from "../../common/components/LabeledIconButton";
-import useSnackbar from "../../snackbar/useSnackbar";
+import { useSnackbar } from "../../snackbar/redux/snackbar";
 import { MediaId } from "../../tmdb/types";
 import { AutoListKeys, toAutoListName } from "../query";
 import { useQueryAutoLists } from "../query/hooks";

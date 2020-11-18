@@ -1,6 +1,6 @@
 import { Box, Button, TextField, Typography } from "@material-ui/core";
 import React, { useState } from "react";
-import useSnackbar from "../../snackbar/useSnackbar";
+import { useSnackbar } from "../../snackbar/redux/snackbar";
 import { putPasswordReset } from "./query";
 import { useHistory } from "react-router";
 

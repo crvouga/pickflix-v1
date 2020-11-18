@@ -3,17 +3,19 @@ import { snackbar } from "./snackbar";
 
 const SNACKBAR_TIMEOUT = 4000;
 
+const { setIsOpen, display, setProps } = snackbar.actions;
+const { isOpen } = snackbar.selectors;
+
 export function* snackbarSaga() {
-  yield put(snackbar.actions.setOpen(false));
-  yield takeLatest(snackbar.actions.display, function* (action) {
-    const props = action.payload;
-    if (yield select(snackbar.selectors.open)) {
-      yield put(snackbar.actions.setOpen(false));
+  yield put(setIsOpen(false));
+  yield takeLatest(display, function* ({ payload: newProps }) {
+    if (yield select(isOpen)) {
+      yield put(setIsOpen(false));
       yield delay(200);
     }
-    yield put(snackbar.actions.setProps(props));
-    yield put(snackbar.actions.setOpen(true));
+    yield put(setProps(newProps));
+    yield put(setIsOpen(true));
     yield delay(SNACKBAR_TIMEOUT);
-    yield put(snackbar.actions.setOpen(false));
+    yield put(setIsOpen(false));
   });
 }

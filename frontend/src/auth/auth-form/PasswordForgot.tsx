@@ -2,7 +2,7 @@ import { Box, Button, Typography } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import React, { useState } from "react";
 import { User } from "../../users/query";
-import useSnackbar from "../../snackbar/useSnackbar";
+import { useSnackbar } from "../../snackbar/redux/snackbar";
 import { postForgotPassword } from "./query";
 
 export default ({ user }: { user: User }) => {

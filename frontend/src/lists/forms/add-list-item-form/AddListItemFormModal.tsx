@@ -10,7 +10,7 @@ import useCreateListForm from "../create-list-form/useCreateListForm";
 import useAddListItemForm from "./useAddListItemForm";
 import { ListAggergation } from "../../query";
 import { useListener } from "../../../utils";
-import useSnackbar from "../../../snackbar/useSnackbar";
+import { useSnackbar } from "../../../snackbar/redux/snackbar";
 import { ViewListButton } from "../../../snackbar/Snackbar";
 
 const CreateNewListButton = () => {

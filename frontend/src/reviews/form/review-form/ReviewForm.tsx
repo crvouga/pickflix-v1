@@ -20,7 +20,7 @@ import Rating from "@material-ui/lab/Rating";
 import React, { useEffect, useRef, useState } from "react";
 import ListItemSkeleton from "../../../common/components/ListItemSkeleton";
 import useBoolean from "../../../common/hooks/useBoolean";
-import useSnackbar from "../../../snackbar/useSnackbar";
+import { useSnackbar } from "../../../snackbar/redux/snackbar";
 import { useQueryCurrentUser } from "../../../users/query/hooks";
 import UserListItem from "../../../users/components/UserListItem";
 import { useListener } from "../../../utils";

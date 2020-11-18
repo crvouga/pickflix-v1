@@ -137,3 +137,56 @@ export function preventZoom(e) {
   e.preventDefault();
   e.target.click();
 }
+
+/* 
+
+
+*/
+//SOURCE: https://stackoverflow.com/questions/41802259/javascript-deep-check-objects-have-same-keys
+export const deepSameKeys = (o1: any, o2: any) => {
+  // Both nulls = yes
+  if (o1 === null && o2 === null) {
+    return true;
+  }
+  // Get the keys of each object
+  const o1keys = o1 === null ? [] : Object.keys(o1);
+  const o2keys = o2 === null ? [] : Object.keys(o2);
+  if (o1keys.length !== o2keys.length) {
+    // Different number of own properties = not the same
+    return false;
+  }
+
+  // At this point, one of two things is true:
+  // A) `o1` and `o2` are both `!null`, or
+  // B) One of them is `null` and the other has own "own" properties
+  // The logic below relies on the fact we only try to use `o1` or
+  // `o2` if there's at least one entry in `o1keys`, which we won't
+  // given the guarantee above.
+
+  // Handy utility function
+  const hasOwn = Object.prototype.hasOwnProperty;
+
+  // Check that the keys match and recurse into nested objects as necessary
+  return o1keys.every((key) => {
+    if (!hasOwn.call(o2, key)) {
+      // Different keys
+      return false;
+    }
+    // Get the values and their types
+    const v1 = o1[key];
+    const v2 = o2[key];
+    const t1 = typeof v1;
+    const t2 = typeof v2;
+    if (t1 === "object") {
+      if (t2 === "object" && !deepSameKeys(v1, v2)) {
+        return false;
+      }
+    }
+    if (t2 === "object") {
+      if (t1 === "object" && !deepSameKeys(v1, v2)) {
+        return false;
+      }
+    }
+    return true;
+  });
+};
