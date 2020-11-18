@@ -1,6 +1,7 @@
-import { ListId } from ".";
 import { isValidId, makeId } from "../../id";
-import { UserId } from "../../users/models/make-user";
+import { Id } from "../../id/types";
+import { castUserId, UserId } from "../../users/models/make-user";
+import { ListId } from "./make-list";
 
 export enum AutoListKeys {
   WatchNext = "watch-next",
@@ -16,36 +17,39 @@ export const INITIAL_AUTO_LIST_INFOS: { key: AutoListKeys }[] = [
   },
 ];
 
+export type AutoListId = ListId;
+
+export const castAutoListKey = (key: any) => {
+  if (key === AutoListKeys.Liked || key === AutoListKeys.WatchNext) {
+    return key as AutoListKeys;
+  }
+  throw new Error("failed to cast auto list key");
+};
+
+export const castAutoListId = (id: any) => {
+  if (typeof id === "string" && isValidId(id)) {
+    return id as AutoListId;
+  }
+  throw new Error("failed to cast auto list id");
+};
+
 export type AutoList = {
   type: "autoList";
-  id: ListId;
+  id: AutoListId;
   ownerId: UserId;
   key: AutoListKeys;
 };
 
 type PartialAutoList = {
-  id?: ListId;
   key: AutoListKeys;
   ownerId: UserId;
 };
 
-export const makeAutoList = (partial: PartialAutoList): AutoList => {
-  const id = partial.id || (makeId() as ListId);
-  const ownerId = partial.ownerId;
-  const key = partial.key;
-
-  if (!isValidId(ownerId)) {
-    throw new Error("invalid owner id");
-  }
-
-  if (!isValidId(id)) {
-    throw new Error("invalid list id");
-  }
-
+export const makeAutoList = ({ key, ownerId }: PartialAutoList): AutoList => {
   return Object.freeze({
     type: "autoList",
-    id,
-    ownerId,
-    key,
+    id: makeId() as AutoListId,
+    ownerId: castUserId(ownerId),
+    key: castAutoListKey(key),
   });
 };

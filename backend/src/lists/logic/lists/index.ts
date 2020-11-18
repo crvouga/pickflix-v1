@@ -2,6 +2,7 @@ import { UserId } from "../../../users/models/make-user";
 import { List, ListId, makeList, PartialList } from "../../models";
 import { ListLogic } from "../build";
 import { PaginationOptions } from "../../../unit-of-work/types";
+import { omitFalsyValues } from "../../../utils";
 
 export async function addLists(
   this: ListLogic,
@@ -19,14 +20,12 @@ export async function addLists(
 
 export async function getListAggergations(
   this: ListLogic,
-  listInfo: { id: ListId } | { ownerId: UserId },
+  listInfo: { id?: ListId; ownerId?: UserId },
   pagination?: PaginationOptions
 ) {
-  const {
-    unitOfWork: { Lists },
-  } = this;
+  const { Lists } = this.unitOfWork;
 
-  const lists = await Lists.find(listInfo, {
+  const lists = await Lists.find(omitFalsyValues(listInfo), {
     orderBy: [["updatedAt", "descend"]],
     pagination,
   });

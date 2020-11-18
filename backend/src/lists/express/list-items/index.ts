@@ -7,7 +7,7 @@ import {
 } from "../../../media/models/types";
 import { castListId, ListId, ListItemId, castListItemId } from "../../models";
 import { Dependencies } from "../types";
-import { castUser } from "../../../users/models";
+import { castUser, castUserId } from "../../../users/models";
 import {
   makePaginationOptions,
   makePaginationResponse,
@@ -18,11 +18,14 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
 ) => {
   router.get("/list-items", async (req, res) => {
     try {
-      const listId =
-        "listId" in req.query ? castListId(req.query.listId) : undefined;
+      const userId = req.user ? castUserId(req.user.id) : undefined;
+
+      const listId = req.query.listId
+        ? castListId(req.query.listId)
+        : undefined;
 
       const mediaId =
-        "tmdbMediaId" in req.query && "tmdbMediaType" in req.query
+        req.query.tmdbMediaId && req.query.tmdbMediaType
           ? castMediaId({
               tmdbMediaId: req.query.tmdbMediaId,
               tmdbMediaType: req.query.tmdbMediaType,
@@ -35,6 +38,7 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
 
       const listItems = await listLogic.getListItemAggergations(
         {
+          userId,
           listId,
           mediaId,
         },

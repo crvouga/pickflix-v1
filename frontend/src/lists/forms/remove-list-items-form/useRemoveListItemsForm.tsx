@@ -1,14 +1,11 @@
 import { Paginated } from "../../../common/types";
 import { createEventEmitter } from "../../../utils";
-import { deleteListItems, ListItemAggergation } from "../../query";
+import {
+  deleteListItems,
+  ListItemAggergation,
+  useDeleteListItemsMutation,
+} from "../../query";
 import { useRemoveListItemsFormState } from "./remove-list-items-form";
-
-const eventEmitter = createEventEmitter<{
-  submit: undefined;
-  submitSuccess: undefined;
-  submitError: undefined;
-  submitSettled: undefined;
-}>();
 
 type Data = Paginated<ListItemAggergation>[];
 
@@ -22,14 +19,30 @@ const optimisticUpdate = (
   }));
 };
 
+const eventEmitter = createEventEmitter<{
+  submit: undefined;
+  submitSuccess: undefined;
+  submitError: undefined;
+  submitSettled: undefined;
+}>();
+
 export default () => {
-  const state = useRemoveListItemsFormState();
-  const { listItemIds } = state;
+  const formState = useRemoveListItemsFormState();
+  const [mutate] = useDeleteListItemsMutation();
+  const { listId, listItemIds } = formState;
 
   const submit = async () => {
+    if (!listId) {
+      throw new Error("listId required");
+    }
+
+    if (!listItemIds) {
+      throw new Error("listItemIds required");
+    }
+
     eventEmitter.emit("submit");
     try {
-      await deleteListItems(Object.values(listItemIds).map((id) => ({ id })));
+      await mutate(Object.values(listItemIds).map((id) => ({ listId, id })));
       eventEmitter.emit("submitSuccess");
     } catch (error) {
       eventEmitter.emit("submitError");
@@ -40,7 +53,7 @@ export default () => {
   };
 
   return {
-    ...state,
+    ...formState,
     eventEmitter,
     submit,
   };

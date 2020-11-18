@@ -1,7 +1,7 @@
 import { Box, Card, CardActionArea, Grid, Typography } from "@material-ui/core";
 import React from "react";
 import ChipUser from "../../../users/ChipUser";
-import { ListAggergation } from "../../query/types";
+import { ListAggergation } from "../../query";
 import ListImageBox from "./ListCardImage";
 
 export default ({ list }: { list: ListAggergation }) => {

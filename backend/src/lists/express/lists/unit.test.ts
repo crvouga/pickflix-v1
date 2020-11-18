@@ -34,7 +34,8 @@ describe("GET /lists", () => {
     );
 
     const response = await supertest(app)
-      .get(`/api/users/${user.username}/lists`)
+      .get(`/api/lists`)
+      .query({ ownerId: user.id })
       .expect(200);
 
     const results = response.body?.results ?? [];
@@ -52,7 +53,7 @@ describe("GET /lists", () => {
   it("sends a list with items", async (done) => {
     const { listLogic, user, app } = await buildExpressAppFake();
 
-    const [list] = await listLogic.addLists([
+    const lists = await listLogic.addLists([
       {
         ownerId: user.id,
         title: "my list",
@@ -60,20 +61,24 @@ describe("GET /lists", () => {
       },
     ]);
 
-    const expected = {
-      id: list.id,
-      ownerId: list.ownerId,
-      title: list.title,
-      description: list.description,
-    };
+    const response = await supertest(app)
+      .get(`/api/lists`)
+      .query({ id: lists[0].id })
+      .expect(200);
 
-    supertest(app)
-      .get(`/api/lists/${list.id}`)
-      .expect(200)
-      .then((response) => {
-        expect(response.body.list).toEqual(expect.objectContaining(expected));
-        done();
-      });
+    const results = response.body?.results ?? [];
+
+    expect(results).not.toHaveLength(0);
+
+    for (const list of lists) {
+      expect(results).toContainEqual(
+        expect.objectContaining({
+          list: list,
+        })
+      );
+    }
+
+    done();
   });
 });
 

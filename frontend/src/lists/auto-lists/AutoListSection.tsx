@@ -1,6 +1,7 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import ChipUser from "../../users/ChipUser";
+import { pluralize } from "../../utils";
 import { AutoListAggergation, toAutoListName } from "../query";
 import AutoListIcon from "./AutoListIcon";
 
@@ -29,6 +30,11 @@ export default ({ autoList }: { autoList: AutoListAggergation }) => {
       <Box paddingBottom={1}>
         <Typography variant="h5" style={{ wordBreak: "break-all" }}>
           {toAutoListName(autoList.list.key)}
+        </Typography>
+      </Box>
+      <Box paddingBottom={1}>
+        <Typography variant="subtitle1">
+          {pluralize(autoList.listItemCount, "item")}
         </Typography>
       </Box>
       <Box paddingBottom={1}>

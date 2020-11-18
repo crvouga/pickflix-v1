@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useQueryCache } from "react-query";
 import useSnackbar from "../../../snackbar/useSnackbar";
-import { deleteListItemsMutation, editListMutation } from "../../query";
-import { ListItem } from "../../query/types";
+import { ListItem } from "../../query";
 
 const useEditListFormState = () => {
   const [errors, setErrors] = useState<{ message: string }[]>([]);
@@ -37,14 +36,14 @@ export default () => {
     listItemIds: string[];
   }) => {
     try {
-      await Promise.all([
-        editListMutation(queryCache)({
-          listId,
-          title,
-          description,
-        }),
-        deleteListItemsMutation(queryCache)(listItemIds.map((id) => ({ id }))),
-      ]);
+      // await Promise.all([
+      //   editListMutation(queryCache)({
+      //     listId,
+      //     title,
+      //     description,
+      //   }),
+      //   deleteListItemsMutation(queryCache)(listItemIds.map((id) => ({ id }))),
+      // ]);
 
       snackbar.display({ message: "Saved Changes" });
     } catch (error) {

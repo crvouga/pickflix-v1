@@ -1,13 +1,8 @@
 import { Box } from "@material-ui/core";
 import React from "react";
-import { useQuery } from "react-query";
 import AutoListCard from "../lists/auto-lists/AutoListCard";
 import ListCardSkeleton from "../lists/lists/card/ListCardSkeleton";
-import {
-  AutoListAggergation,
-  getUsersAutoLists,
-  queryKeys,
-} from "../lists/query";
+import { AutoListAggergation, useQueryAutoLists } from "../lists/query";
 import { UserAggergation } from "./query";
 
 export default ({
@@ -23,10 +18,7 @@ export default ({
     }
   };
 
-  const query = useQuery(
-    queryKeys.userAutoLists({ username: user.user.username }),
-    () => getUsersAutoLists({ username: user.user.username })
-  );
+  const query = useQueryAutoLists({ ownerId: user.user.id });
 
   if (query.error) {
     return null;

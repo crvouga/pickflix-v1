@@ -9,6 +9,14 @@ import { useEffect } from "react";
 
 */
 
+export const omitFalsyValues = (object: { [key: string]: any }) => {
+  return Object.entries(object).reduce(
+    (object, [key, value]) =>
+      Boolean(value) ? { ...object, [key]: value } : object,
+    {}
+  );
+};
+
 export const ensureArray = <T>(x: T | T[]) => (Array.isArray(x) ? x : [x]);
 
 /* 

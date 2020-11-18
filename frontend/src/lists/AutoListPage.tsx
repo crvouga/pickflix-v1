@@ -7,7 +7,6 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
-import { useQuery } from "react-query";
 import { useParams } from "react-router";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
@@ -15,14 +14,15 @@ import BackButton from "../navigation/BackButton";
 import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
 import AutoListSection from "./auto-lists/AutoListSection";
 import ListItemsSection from "./list-items/ListItemsSection";
-import { getAutoList, queryKeys, toAutoListName } from "./query";
+import { toAutoListName } from "./query";
+import { useQueryAutoLists } from "./query/hooks";
 
 export default () => {
   const { autoListId } = useParams<{ autoListId: string }>();
 
-  const query = useQuery(queryKeys.autoList({ autoListId }), () =>
-    getAutoList({ autoListId })
-  );
+  const query = useQueryAutoLists({
+    id: autoListId,
+  });
 
   if (query.error) {
     return <ErrorPage />;
@@ -32,7 +32,11 @@ export default () => {
     return <LoadingPage />;
   }
 
-  const autoList = query.data;
+  const autoList = query.data[0];
+
+  if (!autoList) {
+    return <ErrorPage />;
+  }
 
   return (
     <React.Fragment>
@@ -55,7 +59,10 @@ export default () => {
       </Paper>
 
       <Container disableGutters maxWidth="md">
-        <ListItemsSection listId={autoList.list.id} />
+        <ListItemsSection
+          listItemCount={autoList.listItemCount}
+          listId={autoList.list.id}
+        />
       </Container>
     </React.Fragment>
   );

@@ -4,8 +4,9 @@ import React from "react";
 import LabeledIconButton from "../../../common/components/LabeledIconButton";
 import useModal from "../../../navigation/modals/useModal";
 import { MediaId } from "../../../tmdb/types";
-import { useQueryListItems } from "../../query";
+
 import useAddListItemForm from "./useAddListItemForm";
+import { useQueryListItems } from "../../query/hooks";
 
 export default ({ mediaId }: { mediaId: MediaId }) => {
   const addListItemModal = useModal("AddListItemForm");
@@ -15,7 +16,8 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
     mediaId,
   });
 
-  const isSaved = query.data && query.data.results.length > 0;
+  const isSaved =
+    query.data && query.data[0] && query.data[0].results.length > 0;
 
   return (
     <LabeledIconButton

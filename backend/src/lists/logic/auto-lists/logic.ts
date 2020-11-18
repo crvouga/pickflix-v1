@@ -10,6 +10,7 @@ import { ListAggergate } from "../../models/types";
 import { ListLogic } from "../build";
 import { DEFAULT_PAGE_SIZE } from "../../../pagination";
 import { PaginationOptions } from "../../../unit-of-work/types";
+import { omitFalsyValues } from "../../../utils";
 
 export async function initializeAutoLists(
   this: ListLogic,
@@ -42,14 +43,14 @@ export async function initializeAutoLists(
 
 export async function getAutoListAggergations(
   this: ListLogic,
-  autoListInfo:
-    | { id: ListId }
-    | { ownerId: UserId }
-    | { ownerId: UserId; key: AutoListKeys }
+  autoListInfo: {
+    id?: ListId;
+    ownerId?: UserId;
+  }
 ) {
   const { AutoLists } = this.unitOfWork;
 
-  const lists = await AutoLists.find(autoListInfo);
+  const lists = await AutoLists.find(omitFalsyValues(autoListInfo));
 
   const aggergatedLists = await Promise.all(
     lists.map((list) => this.aggergateList(list))

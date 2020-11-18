@@ -1,42 +1,49 @@
 import { useQueryCache } from "react-query";
 import { createEventEmitter } from "../../../utils";
-import { List, postList, postListItem } from "../../query";
+import {
+  List,
+  postList,
+  postListItem,
+  useCreateListMutation,
+  useAddListItemMutation,
+} from "../../query";
 import { useCreateListFormState } from "./create-list-form";
 
 const eventEmitter = createEventEmitter<{
   submit: undefined;
   submitSuccess: List;
+  submitError: undefined;
 }>();
 
 export default () => {
-  const queryCache = useQueryCache();
-  const addListFormState = useCreateListFormState();
-  const { mediaIds, title } = addListFormState;
+  const formState = useCreateListFormState();
+  const [createListMutation] = useCreateListMutation();
+  const [addListItemMutation] = useAddListItemMutation();
+  const { mediaIds, title } = formState;
 
   const submit = async () => {
     eventEmitter.emit("submit");
     try {
-      const list = await postList({
+      const list = await createListMutation({
         title,
         description: "",
       });
 
-      if (mediaIds[0]) {
-        await postListItem({
+      if (list && mediaIds[0]) {
+        await addListItemMutation({
           mediaId: mediaIds[0],
           listId: list.id,
         });
       }
       eventEmitter.emit("submitSuccess", list);
     } catch (error) {
+      eventEmitter.emit("submitError");
       throw error;
-    } finally {
-      queryCache.invalidateQueries((query) => query.queryKey.includes("lists"));
     }
   };
 
   return {
-    ...addListFormState,
+    ...formState,
     submit,
     eventEmitter,
   };

@@ -1,5 +1,5 @@
 import { createEventEmitter } from "../../../utils";
-import { postListItem } from "../../query";
+import { useAddListItemMutation } from "../../query";
 import { useAddListItemFormState } from "./add-list-item-form";
 
 const eventEmitter = createEventEmitter<{
@@ -11,6 +11,7 @@ const eventEmitter = createEventEmitter<{
 
 export default () => {
   const addListItemFormState = useAddListItemFormState();
+  const [addListItemMutation] = useAddListItemMutation();
   const { listId, mediaId } = addListItemFormState;
 
   const submit = async () => {
@@ -20,7 +21,7 @@ export default () => {
 
     eventEmitter.emit("submit");
     try {
-      await postListItem({
+      await addListItemMutation({
         listId,
         mediaId,
       });

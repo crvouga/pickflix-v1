@@ -1,10 +1,10 @@
-import { SvgIconProps, useTheme } from "@material-ui/core";
+import { SvgIconProps } from "@material-ui/core";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
 import React from "react";
-import { AutoListKeys } from "../query/types";
+import { AutoListKeys } from "../query";
 
 type Props = SvgIconProps & {
   autoListKey: AutoListKeys;

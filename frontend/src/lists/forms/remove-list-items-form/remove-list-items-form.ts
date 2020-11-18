@@ -5,6 +5,8 @@ import {
 } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../../redux/types";
+import { QueryKey } from "react-query";
+import { createPayloadReducer } from "../../../redux/utils";
 
 const name = "removeListItemsForm";
 
@@ -14,6 +16,7 @@ const name = "removeListItemsForm";
 
 export type RemoveListItemsFormState = {
   listItemIds: { [key: string]: string };
+  listId?: string;
   isSelecting: boolean;
 };
 
@@ -22,6 +25,7 @@ export type RemoveListItemsFormState = {
 */
 
 const initialState: RemoveListItemsFormState = {
+  listId: undefined,
   listItemIds: {},
   isSelecting: false,
 };
@@ -40,6 +44,7 @@ const selectors = {
 */
 
 const actions = {
+  setListId: createAction<string | undefined>(name + "/SET_LIST_ID"),
   setListItemIds: createAction<{ [id: string]: string }>(
     name + "/SET_LIST_ITEM_IDS"
   ),
@@ -51,12 +56,9 @@ const actions = {
 */
 
 const reducer = createReducer(initialState, {
-  [actions.setIsSelecting.toString()]: (state, action) => {
-    state.isSelecting = action.payload;
-  },
-  [actions.setListItemIds.toString()]: (state, action) => {
-    state.listItemIds = action.payload;
-  },
+  [actions.setListId.toString()]: createPayloadReducer("listId"),
+  [actions.setIsSelecting.toString()]: createPayloadReducer("isSelecting"),
+  [actions.setListItemIds.toString()]: createPayloadReducer("listItemIds"),
 });
 
 /* 

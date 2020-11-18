@@ -11,7 +11,7 @@ export default () => {
 
   const { eventEmitter } = useRemoveListItemsForm();
 
-  useListener(eventEmitter, "submitSuccess", deleteListItemsFormModal.close);
+  useListener(eventEmitter, "submit", deleteListItemsFormModal.close);
 
   return (
     <Dialog

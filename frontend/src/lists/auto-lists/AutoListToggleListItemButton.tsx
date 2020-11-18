@@ -1,16 +1,11 @@
 import { Button } from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useQuery } from "react-query";
+import React from "react";
 import { useHistory } from "react-router";
 import LabeledIconButton from "../../common/components/LabeledIconButton";
 import useSnackbar from "../../snackbar/useSnackbar";
 import { MediaId } from "../../tmdb/types";
-import {
-  AutoListKeys,
-  getAutoLists,
-  queryKeys,
-  toAutoListName,
-} from "../query";
+import { AutoListKeys, toAutoListName } from "../query";
+import { useQueryAutoLists } from "../query/hooks";
 import useListItemToggleState from "../useListItemToggleState";
 import AutoListIcon from "./AutoListIcon";
 
@@ -80,7 +75,7 @@ export default ({
   mediaId: MediaId;
   autoListKey: AutoListKeys;
 }) => {
-  const query = useQuery(queryKeys.autoLists(), () => getAutoLists());
+  const query = useQueryAutoLists({});
   const autoList = query.data
     ? query.data.find((list) => list.list.key === autoListKey)
     : undefined;

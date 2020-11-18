@@ -1,12 +1,7 @@
 import { last } from "ramda";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import {
-  useInfiniteQuery,
-  QueryKey,
-  QueryFunction,
-  InfiniteQueryConfig,
-} from "react-query";
+import { InfiniteQueryConfig, QueryKey, useInfiniteQuery } from "react-query";
 import { Paginated } from "../types";
 
 export default <Result,>(
@@ -45,7 +40,13 @@ export default <Result,>(
       query.fetchMore();
     }
     return () => {};
-  }, [query, inView]);
+  }, [
+    query.isFetching,
+    query.canFetchMore,
+    query.isFetchingMore,
+    query.fetchMore,
+    inView,
+  ]);
 
   return {
     ...query,

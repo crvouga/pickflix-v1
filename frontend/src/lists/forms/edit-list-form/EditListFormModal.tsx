@@ -14,14 +14,8 @@ import { Alert } from "@material-ui/lab";
 import React, { useEffect, useRef } from "react";
 import ErrorBox from "../../../common/components/ErrorBox";
 import ResponsiveDialog from "../../../common/components/ResponsiveDialog";
-import { useQueryList } from "../../query";
+import { useQueryLists } from "../../query";
 import useEditListForm from "./useEditListForm";
-
-const useStylesDialog = makeStyles((theme) => ({
-  paper: {
-    backgroundColor: theme.palette.background.default,
-  },
-}));
 
 type Props = DialogProps & {
   listId: string;
@@ -29,13 +23,11 @@ type Props = DialogProps & {
 };
 
 export default ({ listId, ...DialogProps }: Props) => {
-  const classesDialog = useStylesDialog();
-
   const editListForm = useEditListForm();
   const refTitle = useRef<HTMLInputElement>();
   const refDescription = useRef<HTMLInputElement>();
 
-  const queryList = useQueryList({ listId });
+  const queryList = useQueryLists({ id: listId });
 
   useEffect(() => {
     if (DialogProps.open) {
@@ -55,7 +47,7 @@ export default ({ listId, ...DialogProps }: Props) => {
     DialogProps.onClose();
   };
 
-  const list = queryList.data;
+  const list = queryList.data?.[0]?.results?.[0];
 
   const handleSubmit = async () => {
     try {

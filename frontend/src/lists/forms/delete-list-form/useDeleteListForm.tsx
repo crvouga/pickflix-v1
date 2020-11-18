@@ -1,7 +1,5 @@
-import { useQueryCache } from "react-query";
 import { createEventEmitter } from "../../../utils";
-import { deleteList, queryKeys } from "../../query";
-import { ListAggergation } from "../../query/types";
+import { useDeleteListMutation } from "../../query";
 import { useDeleteListFormState } from "./delete-list-form";
 
 const eventEmitter = createEventEmitter<{
@@ -13,33 +11,24 @@ const eventEmitter = createEventEmitter<{
 
 export default () => {
   const state = useDeleteListFormState();
+  const [deleteListMutation] = useDeleteListMutation();
   const { listId } = state;
-
-  const queryCache = useQueryCache();
 
   const submit = async () => {
     if (!listId) {
       return;
     }
-    const key = queryKeys.lists();
-    const previous = queryCache.getQueryData<ListAggergation[]>(key) || [];
 
     try {
       eventEmitter.emit("submit");
 
-      const optimistic = previous.filter((list) => list.list.id !== listId);
-      queryCache.setQueryData(key, optimistic);
-
-      await deleteList({ listId });
-      queryCache.removeQueries(queryKeys.list({ listId }));
+      await deleteListMutation({ listId });
 
       eventEmitter.emit("submitSuccess");
     } catch (error) {
-      queryCache.setQueryData(key, previous);
       eventEmitter.emit("submitError");
       throw error;
     } finally {
-      queryCache.invalidateQueries(key);
       eventEmitter.emit("submitSettled");
     }
   };

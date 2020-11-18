@@ -5,7 +5,6 @@ import clsx from "clsx";
 import React from "react";
 import ErrorBox from "../../common/components/ErrorBox";
 import LoadingBox from "../../common/components/LoadingBox";
-import useInfiniteQueryPagination from "../../common/hooks/useInfiniteQueryPagination";
 import MoviePosterCard from "../../movie/components/MoviePosterCard";
 import {
   MoviePosterGridSkeleton,
@@ -13,7 +12,7 @@ import {
 } from "../../movie/components/MoviePosterGrid";
 import { ensureArray } from "../../utils";
 import useDeleteListItemsForm from "../forms/remove-list-items-form/useRemoveListItemsForm";
-import { getListItems, queryKeys } from "../query";
+import { useQueryListItems } from "../query";
 import ListItemGridEmpty from "./ListItemGridEmpty";
 
 const useStyles = makeStyles((theme) => ({
@@ -22,25 +21,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default ({ listId }: { listId: string }) => {
+export default ({
+  listId,
+  listItemCount,
+}: {
+  listId: string;
+  listItemCount: number;
+}) => {
   const classes = useStyles();
 
   const { listItemIds, isSelecting, toggle } = useDeleteListItemsForm();
 
-  const {
-    fetchMoreRef,
-    ...query
-  } = useInfiniteQueryPagination(
-    queryKeys.listItems({ listId }),
-    ({ lastPage }) => getListItems({ listId, page: lastPage })
-  );
+  const { fetchMoreRef, ...query } = useQueryListItems({
+    listId,
+  });
 
   if (query.error) {
     return <ErrorBox />;
   }
 
   if (!query.data) {
-    return <MoviePosterGridSkeleton posterCount={8} />;
+    return (
+      <MoviePosterGridSkeleton posterCount={Math.min(listItemCount, 20)} />
+    );
   }
 
   const listItems = ensureArray(query.data).flatMap((_) => _.results);

@@ -1,7 +1,7 @@
 import { IRouter } from "express";
 import { pick } from "ramda";
-import { User } from "../../../users/models";
-import { ListId } from "../../models";
+import { User, castUsername, castUserId } from "../../../users/models";
+import { ListId, castListId } from "../../models";
 import { Dependencies } from "../types";
 import {
   makePaginationOptions,
@@ -11,18 +11,26 @@ import {
 export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
   router: IRouter
 ) => {
-  router.get("/users/:username/lists", async (req, res, next) => {
+  router.get("/lists", async (req, res) => {
     try {
-      const username = req.params.username as string;
-      const paginationOptions = makePaginationOptions({
-        page: req.query.page,
-      });
+      const ownerId = req.query.ownerId
+        ? castUserId(req.query.ownerId)
+        : req.user
+        ? castUserId(req.user.id)
+        : undefined;
 
-      const user = await userLogic.getUser({ username });
+      const id = req.query.id ? castListId(req.query.id) : undefined;
+
+      const page = req.query.page ? req.query.page : 1;
+
+      const paginationOptions = makePaginationOptions({
+        page,
+      });
 
       const listAggergations = await listLogic.getListAggergations(
         {
-          ownerId: user.id,
+          id,
+          ownerId,
         },
         paginationOptions
       );
@@ -38,24 +46,6 @@ export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
         .end();
     } catch (error) {
       res.status(400).json({ error }).end();
-    }
-  });
-
-  router.get("/lists/:listId", async (req, res, next) => {
-    try {
-      const listId = req.params.listId as ListId;
-
-      const [list] = await listLogic.getListAggergations({
-        id: listId,
-      });
-
-      if (list) {
-        return res.status(200).json(list).end();
-      } else {
-        return res.status(404).end();
-      }
-    } catch (error) {
-      return next(error);
     }
   });
 

@@ -1,11 +1,11 @@
 import { ListItem, ListItemAvatar, ListItemText } from "@material-ui/core";
 import React from "react";
-import { useQuery } from "react-query";
 import { useHistory } from "react-router";
-import { getUsersAutoLists, queryKeys } from "../lists/query";
+import { AutoListKeys } from "../lists/query";
+import { useQueryAutoLists } from "../lists/query/hooks";
 import MovieAvatar from "../movie/components/MovieAvatar";
 import MoviePosterScroll from "../movie/components/MoviePosterScroll";
-import { User, UserAggergation } from "../users/query";
+import { UserAggergation } from "../users/query";
 
 type Props = {
   user: UserAggergation;
@@ -13,9 +13,9 @@ type Props = {
 
 export default ({ user }: Props) => {
   const history = useHistory();
-  const query = useQuery(queryKeys.userAutoLists(user.user), () =>
-    getUsersAutoLists(user.user)
-  );
+  const query = useQueryAutoLists({
+    ownerId: user.user.id,
+  });
 
   if (query.error) {
     return null;
@@ -25,11 +25,17 @@ export default ({ user }: Props) => {
     return null;
   }
 
-  const autoListsByKey = query.data;
+  const watchNext = query.data.find(
+    (autoList) => autoList.list.key === AutoListKeys.WatchNext
+  );
+
+  if (!watchNext) {
+    return null;
+  }
 
   return (
     <React.Fragment>
-      {autoListsByKey["watch-next"].listItems.slice(0, 10).map(
+      {watchNext.listItems.slice(0, 10).map(
         (item) =>
           item.tmdbData.similar.results && (
             <React.Fragment key={item.listItem.id}>

@@ -1,18 +1,23 @@
 import { Box, Chip } from "@material-ui/core";
 import RemoveIcon from "@material-ui/icons/Remove";
-import React from "react";
+import React, { useEffect } from "react";
 import useModal from "../../navigation/modals/useModal";
 import { useListener } from "../../utils";
 import useDeleteListItemsForm from "../forms/remove-list-items-form/useRemoveListItemsForm";
 
-export default ({ listId }: { listId: string }) => {
+export const ListItemActionBar = ({ listId }: { listId: string }) => {
   const {
     isSelecting,
     setListItemIds,
     listItemIds,
     setIsSelecting,
     eventEmitter,
+    setListId,
   } = useDeleteListItemsForm();
+
+  useEffect(() => {
+    setListId(listId);
+  }, [listId]);
 
   const deleteListItemsFormModal = useModal("DeleteListItemsForm");
   const seletectedCount = Object.values(listItemIds).length;
@@ -24,7 +29,7 @@ export default ({ listId }: { listId: string }) => {
 
   if (isSelecting) {
     return (
-      <Box width="100%" display="flex" alignItems="center" p={1}>
+      <React.Fragment>
         <Chip
           clickable
           onClick={() => {
@@ -43,12 +48,12 @@ export default ({ listId }: { listId: string }) => {
             deleteListItemsFormModal.open();
           }}
         />
-      </Box>
+      </React.Fragment>
     );
   }
 
   return (
-    <Box width="100%" display="flex" alignItems="center" p={1}>
+    <React.Fragment>
       <Chip
         clickable
         onClick={() => {
@@ -56,6 +61,14 @@ export default ({ listId }: { listId: string }) => {
         }}
         label="Select"
       />
+    </React.Fragment>
+  );
+};
+
+export default ({ listId }: { listId: string }) => {
+  return (
+    <Box width="100%" display="flex" alignItems="center" p={2}>
+      <ListItemActionBar listId={listId} />
     </Box>
   );
 };

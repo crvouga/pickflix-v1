@@ -8,6 +8,7 @@ import { ListItemId, PartialListItem } from "../../models/make-list-item";
 import { ListLogic } from "../build";
 import { PaginationOptions } from "../../../unit-of-work/types";
 import { omitFalsyValues } from "../../../utils";
+import { UserId } from "../../../users/models";
 
 export async function removeListItems(
   this: ListLogic,
@@ -29,6 +30,7 @@ export async function removeListItems(
 export async function getListItemAggergations(
   this: ListLogic,
   listItemInfo: {
+    userId?: UserId;
     listId?: ListId;
     mediaId?: MediaId;
   },

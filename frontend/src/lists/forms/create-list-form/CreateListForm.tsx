@@ -10,11 +10,6 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
   const snackbar = useSnackbar();
   const createListForm = useCreateListForm();
 
-  useEffect(() => {
-    createListForm.setMediaIds([]);
-    createListForm.setTitle("");
-  }, []);
-
   const handleSubmit = () => {
     createListForm.submit();
   };

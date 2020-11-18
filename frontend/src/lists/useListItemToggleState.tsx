@@ -1,12 +1,7 @@
-import { useQuery, useQueryCache } from "react-query";
-import { TmdbMediaType, MediaId } from "../tmdb/types";
-import {
-  deleteListItems,
-  getListItems,
-  postListItem,
-  queryKeys,
-} from "./query";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useQueryCache } from "react-query";
+import { MediaId } from "../tmdb/types";
+import { deleteListItems, postListItem, useQueryListItems } from "./query";
 
 type Props = {
   listId: string;
@@ -17,12 +12,15 @@ type Props = {
 
 export default ({ listId, mediaId, onAdded, onRemoved }: Props) => {
   const queryCache = useQueryCache();
-  const queryKey = queryKeys.listItems({ listId, mediaId });
-  const query = useQuery(queryKey, () => getListItems({ listId, mediaId }));
+
+  const query = useQueryListItems({
+    listId,
+    mediaId,
+  });
   const [isAdded, setIsAdded] = useState(false);
 
   useEffect(() => {
-    setIsAdded(Boolean(query.data && query.data.results.length > 0));
+    setIsAdded(Boolean(query.data && query.data[0].results.length > 0));
   }, [query.data]);
 
   const toggle = async () => {

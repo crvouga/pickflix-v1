@@ -13,6 +13,7 @@ import React from "react";
 import useBoolean from "../../../common/hooks/useBoolean";
 import { pluralize, useListener } from "../../../utils";
 import useDeleteListItemsForm from "./useRemoveListItemsForm";
+import useSnackbar from "../../../snackbar/useSnackbar";
 
 const LoadingDialog = () => {
   const { eventEmitter } = useDeleteListItemsForm();
@@ -26,7 +27,7 @@ const LoadingDialog = () => {
       <List>
         <ListItem>
           <ListItemIcon>
-            <CircularProgress />
+            <CircularProgress disableShrink />
           </ListItemIcon>
           <ListItemText primary="Removing" />
         </ListItem>
@@ -36,11 +37,17 @@ const LoadingDialog = () => {
 };
 
 export default ({ onCancel }: { onCancel?: () => void }) => {
-  const { submit, listItemIds } = useDeleteListItemsForm();
-
+  const { submit, eventEmitter, listItemIds } = useDeleteListItemsForm();
+  const snackbar = useSnackbar();
   const selectedCount = Object.values(listItemIds).length;
 
   const title = `Remove ${pluralize(selectedCount, "item")}?`;
+
+  useListener(eventEmitter, "submitSuccess", () => {
+    snackbar.display({
+      message: `Deleted ${pluralize(selectedCount, "item")}`,
+    });
+  });
 
   return (
     <React.Fragment>
@@ -67,7 +74,7 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
         )}
       </Box>
 
-      <LoadingDialog />
+      {/* <LoadingDialog /> */}
     </React.Fragment>
   );
 };

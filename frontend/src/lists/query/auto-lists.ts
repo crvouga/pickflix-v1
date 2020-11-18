@@ -1,34 +1,7 @@
-import { Movie, TmdbMedia, MovieSimilar } from "../../tmdb/types";
+import { BackendAPI } from "../../backend-api";
 import { User } from "../../users/query";
-
-export type ListItem = {
-  type: "listItem";
-  id: string;
-  userId: string;
-  listId: string;
-  createdAt: number;
-} & TmdbMedia;
-
-export type ListItemAggergation = {
-  listItem: ListItem;
-  tmdbData: Movie & { similar: MovieSimilar };
-};
-
-export type List = {
-  type: "list";
-  id: string;
-  ownerId: string;
-  title: string;
-  description: string;
-  createdAt: number;
-};
-
-export type ListAggergation = {
-  list: List;
-  listItemCount: number;
-  listItems: ListItemAggergation[];
-  owner: User;
-};
+import { ListItemAggergation } from "./list-items";
+import { useQuery } from "react-query";
 
 export enum AutoListKeys {
   WatchNext = "watch-next",
@@ -60,4 +33,24 @@ export type AutoListAggergation = {
 
 export type AutoListAggergationByKey = {
   [key in AutoListKeys]: AutoListAggergation;
+};
+
+/*
+
+
+*/
+
+export type GetAutoListParams = {
+  id?: string;
+  ownerId?: string;
+};
+
+export const getAutoLists = async (params: GetAutoListParams) => {
+  const { data } = await BackendAPI.get<AutoListAggergation[]>(
+    `/api/auto-lists`,
+    {
+      params,
+    }
+  );
+  return data;
 };

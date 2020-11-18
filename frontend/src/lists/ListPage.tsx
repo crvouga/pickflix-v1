@@ -15,11 +15,11 @@ import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
 import { useQueryCurrentUser } from "../users/useCurrentUser";
 import ListItemsSection from "./list-items/ListItemsSection";
 import ListSection from "./lists/ListSection";
-import { useQueryList } from "./query";
+import { useQueryLists } from "./query";
 
 export default () => {
   const { listId } = useParams<{ listId: string }>();
-  const query = useQueryList({ listId });
+  const query = useQueryLists({ id: listId });
   const queryCurrentUser = useQueryCurrentUser();
 
   if (query.error) {
@@ -30,7 +30,7 @@ export default () => {
     return <LoadingPage />;
   }
 
-  const list = query.data;
+  const list = query.data[0].results[0];
   const currentUser = queryCurrentUser.data;
 
   return (
@@ -55,7 +55,10 @@ export default () => {
       </Paper>
 
       <Container disableGutters maxWidth="md">
-        <ListItemsSection listId={list.list.id} />
+        <ListItemsSection
+          listId={list.list.id}
+          listItemCount={list.listItemCount}
+        />
       </Container>
     </React.Fragment>
   );

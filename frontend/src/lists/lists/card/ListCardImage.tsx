@@ -5,7 +5,7 @@ import clsx from "clsx";
 import React from "react";
 import AspectRatio from "../../../common/components/AspectRatio";
 import makeImageUrl from "../../../tmdb/makeImageUrl";
-import { ListAggergation } from "../../query/types";
+import { ListAggergation } from "../../query";
 
 const useStyles = makeStyles((theme) => ({
   borderRadius: {

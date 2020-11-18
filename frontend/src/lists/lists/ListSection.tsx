@@ -2,8 +2,9 @@ import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import ChipUser from "../../users/ChipUser";
 import { UserAggergation } from "../../users/query";
-import ListCardImage from "./card/ListCardImage";
+import { pluralize } from "../../utils";
 import { ListAggergation } from "../query";
+import ListCardImage from "./card/ListCardImage";
 import ListActionBar from "./ListActionBar";
 
 export default ({
@@ -38,6 +39,9 @@ export default ({
           </Typography>
           <Typography variant="body1" align="center">
             {list.list.description}
+          </Typography>
+          <Typography variant="subtitle1" align="center">
+            {pluralize(list.listItemCount, "item")}
           </Typography>
         </Box>
         <ChipUser user={list.owner} />

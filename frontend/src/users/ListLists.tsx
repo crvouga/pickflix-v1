@@ -1,72 +1,40 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
-import { useQuery } from "react-query";
 import ListCard from "../lists/lists/card/ListCard";
+import ListCardCallToAction from "../lists/lists/card/ListCardCallToAction";
 import ListCardSkeleton from "../lists/lists/card/ListCardSkeleton";
-import { getUsersLists, ListAggergation, queryKeys } from "../lists/query";
+import { ListAggergation, useQueryLists } from "../lists/query";
+import useModal from "../navigation/modals/useModal";
 import { UserAggergation } from "./query";
 import { useQueryCurrentUser } from "./useCurrentUser";
-import ListCardCallToAction from "../lists/lists/card/ListCardCallToAction";
-import useCreateListForm from "../lists/forms/create-list-form/useCreateListForm";
-import useModal from "../navigation/modals/useModal";
 
-export default ({
-  user,
+const ListCardListSkeleton = ({ count }: { count: number }) => {
+  return (
+    <React.Fragment>
+      {[...Array(count)].map((_, index) => (
+        <Box key={index} width="100%" height="100px" paddingY={1}>
+          <ListCardSkeleton />
+        </Box>
+      ))}
+    </React.Fragment>
+  );
+};
+
+const ListCardListEmpty = () => {
+  return (
+    <Box m={6} display="flex" justifyContent="center" alignItems="center">
+      <Typography color="textSecondary">No lists</Typography>
+    </Box>
+  );
+};
+
+const ListCardList = ({
+  lists,
   onClick,
 }: {
-  onClick?: (list: ListAggergation) => void;
-  user: UserAggergation;
+  lists: ListAggergation[];
+  onClick: (list: ListAggergation) => void;
 }) => {
-  const createListFormModal = useModal("CreateListForm");
-  const handleClick = (list: ListAggergation) => {
-    if (onClick) {
-      onClick(list);
-    }
-  };
-
-  const queryCurrentUser = useQueryCurrentUser();
-  const query = useQuery(queryKeys.userLists(user.user), () =>
-    getUsersLists(user.user)
-  );
-
-  if (query.error) {
-    return null;
-  }
-
-  if (query.data === undefined || queryCurrentUser.data === undefined) {
-    return (
-      <React.Fragment>
-        {[...Array(user.listCount)].map((_, index) => (
-          <Box key={index} width="100%" height="100px" paddingY={1}>
-            <ListCardSkeleton />
-          </Box>
-        ))}
-      </React.Fragment>
-    );
-  }
-
-  const currentUser = queryCurrentUser.data;
-  const lists = query.data.results;
-
-  if (lists.length === 0) {
-    if (currentUser && user.user.id === currentUser.user.id) {
-      return (
-        <Box width="100%" paddingY={1}>
-          <ListCardCallToAction
-            onClick={createListFormModal.open}
-            title="Make a list"
-            subtitle="Keep track of movie you like or want to watch"
-          />
-        </Box>
-      );
-    }
-    return (
-      <Box m={6} display="flex" justifyContent="center" alignItems="center">
-        <Typography color="textSecondary">No lists</Typography>
-      </Box>
-    );
-  }
-
   return (
     <React.Fragment>
       {lists.map((list) => (
@@ -75,11 +43,93 @@ export default ({
           width="100%"
           height="100px"
           paddingY={1}
-          onClick={() => handleClick(list)}
+          onClick={() => {
+            onClick(list);
+          }}
         >
           <ListCard list={list} />
         </Box>
       ))}
     </React.Fragment>
   );
+};
+
+const ListListsCurrentUser = ({
+  currentUser,
+  onClick,
+}: {
+  currentUser: UserAggergation;
+  onClick: (list: ListAggergation) => void;
+}) => {
+  const query = useQueryLists({});
+  const createListFormModal = useModal("CreateListForm");
+
+  if (query.error) {
+    return null;
+  }
+
+  if (query.data === undefined) {
+    return <ListCardListSkeleton count={currentUser.listCount} />;
+  }
+
+  if (query.data[0].results.length === 0) {
+    return (
+      <Box width="100%" paddingY={1}>
+        <ListCardCallToAction
+          onClick={createListFormModal.open}
+          title="Make a list"
+          subtitle="Keep track of movie you like or want to watch"
+        />
+      </Box>
+    );
+  }
+
+  return <ListCardList onClick={onClick} lists={query.data[0].results} />;
+};
+
+const ListListsUser = ({
+  user,
+  onClick,
+}: {
+  user: UserAggergation;
+  onClick: (list: ListAggergation) => void;
+}) => {
+  const query = useQueryLists({
+    ownerId: user.user.id,
+  });
+
+  if (query.error) {
+    return null;
+  }
+  if (query.data === undefined) {
+    return <ListCardListSkeleton count={user.listCount} />;
+  }
+  if (query.data.length === 0) {
+    return <ListCardListEmpty />;
+  }
+  return <ListCardList onClick={onClick} lists={query.data[0].results} />;
+};
+
+export default ({
+  user,
+  onClick,
+}: {
+  onClick: (list: ListAggergation) => void;
+  user: UserAggergation;
+}) => {
+  const query = useQueryCurrentUser();
+
+  if (query.error) {
+    return null;
+  }
+  if (query.data === undefined) {
+    return <ListCardListSkeleton count={user.listCount} />;
+  }
+
+  const currentUser = query.data;
+
+  if (currentUser) {
+    return <ListListsCurrentUser currentUser={currentUser} onClick={onClick} />;
+  }
+  return <ListListsUser user={user} onClick={onClick} />;
 };
