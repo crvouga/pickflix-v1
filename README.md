@@ -1,4 +1,4 @@
-# https://www.pickflix.org/
+# https://www.pickflix.io/
 
 # Pickflix 🎬🎥🍿
 
