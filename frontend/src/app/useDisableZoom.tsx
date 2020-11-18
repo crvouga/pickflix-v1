@@ -6,27 +6,26 @@ export default () => {
   useEffect(() => {
     document.body.setAttribute("style", "touch-action: pan-y;");
 
-    document.addEventListener("click", (event) => {
+    const handleClick = (event: MouseEvent) => {
       event.preventDefault();
       event.stopPropagation();
-    });
+    };
 
-    document.addEventListener(
-      "touchstart",
-      (event) => {
-        if (event.touches.length > 1) {
-          event.preventDefault();
-          event.stopPropagation();
-        }
-      },
-      {
-        passive: false,
+    const handleTouch = (event: TouchEvent) => {
+      if (event.touches.length > 1) {
+        event.preventDefault();
+        event.stopPropagation();
       }
-    );
+    };
+
+    document.addEventListener("click", handleClick);
+    document.addEventListener("touchstart", handleTouch, {
+      passive: false,
+    });
     return () => {
       document.body.removeAttribute("style");
-      document.removeEventListener("click", () => {});
-      document.removeEventListener("touchstart", () => {});
+      document.removeEventListener("click", handleClick);
+      document.removeEventListener("touchstart", handleTouch);
     };
   }, []);
 };
