@@ -1,5 +1,6 @@
 import React from "react";
 import { QueryCache, ReactQueryCacheProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query-devtools";
 import { Provider } from "react-redux";
 import { Router } from "react-router";
 import { PersistGate } from "redux-persist/integration/react";
@@ -19,6 +20,7 @@ export default ({ children }: Props) => {
       <ThemeProvider>
         <Router history={history}>
           <ReactQueryCacheProvider queryCache={new QueryCache()}>
+            <ReactQueryDevtools initialIsOpen={false} />
             <PersistGate loading={<AppLoadingPage />} persistor={persistor}>
               <TmdbConfigurationGate loading={<AppLoadingPage />}>
                 {children}

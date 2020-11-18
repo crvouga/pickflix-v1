@@ -13,12 +13,11 @@ import {
 } from "./list-items";
 import {
   deleteList,
+  DeleteListParams,
   getLists,
   GetListsParams,
   ListAggergation,
   postList,
-  PostListParams,
-  DeleteListParams,
 } from "./lists";
 
 /* 
