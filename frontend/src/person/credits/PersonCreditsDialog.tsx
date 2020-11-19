@@ -13,7 +13,7 @@ import matchSorter from "match-sorter";
 import { groupBy } from "ramda";
 import React, { useState } from "react";
 import ResponsiveDialog from "../../common/components/ResponsiveDialog";
-import SearchTextField from "../../search/SearchTextField";
+import SearchTextField from "../../search/input/SearchTextField";
 import { PersonMovieCreditsResponse } from "../../tmdb/types";
 import { closeDialog } from "../../utils";
 import PersonCreditListItem from "./PersonCreditListItem";
@@ -40,9 +40,8 @@ export default ({
       <AppBar position="sticky" color="default">
         <Box p={1} display="flex">
           <SearchTextField
-            variant="outlined"
             placeholder="Search Credits"
-            onChange={setText}
+            onChange={(e) => setText(e.target.value)}
             autoFocus={false}
           />
           {isMobile && (

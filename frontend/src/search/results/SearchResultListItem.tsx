@@ -9,9 +9,9 @@ import { ListItemProps } from "material-ui";
 import moment from "moment";
 import React from "react";
 import { useHistory } from "react-router";
-import makeImageUrl from "../tmdb/makeImageUrl";
-import { SearchResult } from "./query";
-import useSearchHistory from "./useSearchHistory";
+import makeImageUrl from "../../tmdb/makeImageUrl";
+import { SearchResult } from "../query";
+import { useSearchState } from "../redux/search";
 
 type Props = ListItemProps & {
   result: SearchResult;
@@ -19,15 +19,32 @@ type Props = ListItemProps & {
 
 export default ({ result, ...ListItemProps }: Props) => {
   const history = useHistory();
-
-  const searchHistory = useSearchHistory();
+  const search = useSearchState();
 
   const handleClick = (result: SearchResult) => () => {
-    searchHistory.push(result);
-    history.push(`/${result.mediaType}/${result.id}`);
+    history.push(`/${result.type}/${result.id}`);
+    search.pushHistory(result);
+    search.setText("");
   };
 
-  switch (result.mediaType) {
+  switch (result.type) {
+    case "person":
+      return (
+        <ListItem
+          onClick={handleClick(result)}
+          key={result.id}
+          button
+          {...ListItemProps}
+        >
+          <ListItemAvatar>
+            <Avatar src={makeImageUrl(1, result)} />
+          </ListItemAvatar>
+          <ListItemText
+            primary={result.name}
+            secondary={result.knownForDepartment}
+          />
+        </ListItem>
+      );
     case "movie":
       return (
         <ListItem
@@ -47,26 +64,7 @@ export default ({ result, ...ListItemProps }: Props) => {
           />
         </ListItem>
       );
-
-    case "person":
-      return (
-        <ListItem
-          onClick={handleClick(result)}
-          key={result.id}
-          button
-          {...ListItemProps}
-        >
-          <ListItemAvatar>
-            <Avatar src={makeImageUrl(1, result)} />
-          </ListItemAvatar>
-          <ListItemText
-            primary={result.name}
-            secondary={result.knownForDepartment}
-          />
-        </ListItem>
-      );
-
-    case "tv":
-      return null;
   }
+
+  return null;
 };

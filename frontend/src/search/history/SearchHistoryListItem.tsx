@@ -1,25 +1,23 @@
 import {
-  Box,
   Avatar,
+  IconButton,
   ListItem,
   ListItemAvatar,
-  ListItemText,
   ListItemIcon,
   ListItemSecondaryAction,
-  IconButton,
-  useTheme,
+  ListItemText,
   makeStyles,
 } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
+import HistoryIcon from "@material-ui/icons/History";
 import MovieIcon from "@material-ui/icons/Movie";
 import { ListItemProps } from "material-ui";
 import moment from "moment";
 import React from "react";
 import { useHistory } from "react-router";
-import makeImageUrl from "../tmdb/makeImageUrl";
-import { SearchResult } from "./query";
-import useSearchHistory from "./useSearchHistory";
-import HistoryIcon from "@material-ui/icons/History";
-import DeleteIcon from "@material-ui/icons/Delete";
+import makeImageUrl from "../../tmdb/makeImageUrl";
+import { SearchResult } from "../query";
+import { useSearchState } from "../redux/search";
 
 type Props = ListItemProps & {
   result: SearchResult;
@@ -36,9 +34,9 @@ const useStyles = makeStyles((theme) => ({
 
 const DeleteButton = ({ result }: { result: SearchResult }) => {
   const classes = useStyles();
-  const searchHistory = useSearchHistory();
+  const search = useSearchState();
   const handleDelete = (result: SearchResult) => {
-    searchHistory.remove(result);
+    search.removeHistory(result);
   };
 
   return (
@@ -52,14 +50,14 @@ export default ({ result, ...ListItemProps }: Props) => {
   const classes = useStyles();
   const history = useHistory();
 
-  const searchHistory = useSearchHistory();
+  const search = useSearchState();
 
   const handleClick = (result: SearchResult) => () => {
-    searchHistory.push(result);
-    history.push(`/${result.mediaType}/${result.id}`);
+    search.pushHistory(result);
+    history.push(`/${result.type}/${result.id}`);
   };
 
-  switch (result.mediaType) {
+  switch (result.type) {
     case "movie":
       return (
         <ListItem
@@ -110,8 +108,6 @@ export default ({ result, ...ListItemProps }: Props) => {
           </ListItemSecondaryAction>
         </ListItem>
       );
-
-    case "tv":
-      return null;
   }
+  return null;
 };

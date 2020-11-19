@@ -8,7 +8,7 @@ import {
 import React, { useState } from "react";
 import ResponsiveDialog from "../../common/components/ResponsiveDialog";
 import useModal from "../../navigation/modals/useModal";
-import SearchTextField from "../../search/SearchTextField";
+import SearchTextField from "../../search/input/SearchTextField";
 import { DiscoverMovieTag } from "../query/types";
 import useDiscoverState from "../useDiscoverState";
 import SearchResults from "./SearchResults";
@@ -36,7 +36,7 @@ export default () => {
         <Box display="flex" p={1}>
           <SearchTextField
             placeholder="Search Tags"
-            onChange={setSearchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
           {isMobile && (
             <Button

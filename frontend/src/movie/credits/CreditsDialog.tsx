@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import React, { useState } from "react";
 import ResponsiveDialog from "../../common/components/ResponsiveDialog";
-import SearchTextField from "../../search/SearchTextField";
+import SearchTextField from "../../search/input/SearchTextField";
 import { MovieCredits } from "../../tmdb/types";
 import matchSorter from "match-sorter";
 import CreditsListItem from "./CreditsListItem";
@@ -46,9 +46,8 @@ export default ({
       <AppBar position="sticky" color="default">
         <Box p={1} display="flex">
           <SearchTextField
-            variant="outlined"
             placeholder="Search Credits"
-            onChange={setText}
+            onChange={(e) => setText(e.target.value)}
             autoFocus={false}
           />
           {isMobile && (

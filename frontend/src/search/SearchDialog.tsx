@@ -1,22 +1,12 @@
-import {
-  AppBar,
-  Box,
-  Button,
-  Dialog,
-  makeStyles,
-  useMediaQuery,
-  useTheme,
-} from "@material-ui/core";
-import React, { useState, useEffect } from "react";
-import useModal from "../navigation/modals/useModal";
-import SearchHistoryList from "./SearchHistoryList";
-import SearchResultList from "./SearchResultList";
-import SearchTextField from "./SearchTextField";
+import { Button, useMediaQuery, useTheme } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import ResponsiveDialog from "../common/components/ResponsiveDialog";
+import useModal from "../navigation/modals/useModal";
+import SearchBar from "./input/SearchBar";
+import SearchResults from "./results/SearchResults";
 
 const CloseButton = () => {
   const searchModal = useModal("Search");
-
   return (
     <Button size="large" onClick={searchModal.close} color="primary">
       Done
@@ -41,18 +31,8 @@ export default () => {
       onClose={searchModal.close}
       transitionDuration={0}
     >
-      <AppBar position="sticky" color="default">
-        <Box p={1} display="flex">
-          <SearchTextField onChange={setText} />
-          {isMobile && <CloseButton />}
-        </Box>
-      </AppBar>
-
-      {text.trim().length === 0 ? (
-        <SearchHistoryList />
-      ) : (
-        <SearchResultList text={text} />
-      )}
+      <SearchBar />
+      <SearchResults />
     </ResponsiveDialog>
   );
 };
