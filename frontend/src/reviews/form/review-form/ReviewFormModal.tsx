@@ -8,12 +8,18 @@ import useReviewForm from "./useReviewForm";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
-    backgroundColor: "transparent",
     [theme.breakpoints.up("sm")]: {
       marginTop: theme.spacing(6),
       marginBottom: "auto",
       width: "480px",
       maxHeight: "720px",
+    },
+    [theme.breakpoints.down("xs")]: {
+      top: 0,
+      left: 0,
+      margin: 0,
+      marginBottom: "auto",
+      minWidth: "100vw",
     },
   },
 }));
@@ -33,7 +39,7 @@ export default () => {
   return (
     <Dialog
       TransitionComponent={SlideUp}
-      fullScreen={isMobile}
+      // fullScreen={isMobile}
       classes={classesDialog}
       open={reviewFormModal.isOpen}
       onClose={reviewFormModal.close}
