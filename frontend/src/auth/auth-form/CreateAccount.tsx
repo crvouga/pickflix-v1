@@ -1,6 +1,6 @@
 import { Box, Button, TextField, Typography } from "@material-ui/core";
 import React, { useState } from "react";
-import { useAuth } from "../useAuth";
+import { signUp } from "../query/mutations";
 
 export default ({
   emailAddress,
@@ -9,8 +9,6 @@ export default ({
   emailAddress: string;
   username: string;
 }) => {
-  const auth = useAuth();
-
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -18,7 +16,7 @@ export default ({
   const disabled = password !== passwordRepeat;
 
   const handleSubmit = async () => {
-    await auth.signUp({
+    await signUp({
       emailAddress,
       username,
       password,

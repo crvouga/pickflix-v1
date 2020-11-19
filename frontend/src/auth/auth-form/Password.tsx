@@ -10,10 +10,10 @@ import {
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import React, { useRef, useState } from "react";
+import { useHistory } from "react-router";
 import AvatarUser from "../../users/components/AvatarUser";
 import { User } from "../../users/query";
-import { useAuth } from "../useAuth";
-import { useHistory } from "react-router";
+import { signIn } from "../query/mutations";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 export default ({ user }: { user: User }) => {
   const classes = useStyles();
   const history = useHistory();
-  const auth = useAuth();
+
   const refPassword = useRef<HTMLInputElement>();
   const [disabled, setDisabled] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -43,7 +43,7 @@ export default ({ user }: { user: User }) => {
   const handleSubmit = async () => {
     const password = refPassword.current?.value || "";
     try {
-      await auth.signIn({
+      await signIn({
         emailAddress: user.emailAddress,
         password,
       });

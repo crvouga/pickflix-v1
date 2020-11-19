@@ -4,25 +4,19 @@ import {
   ButtonProps,
   Card,
   CardContent,
-  CircularProgress,
-  Dialog,
   Hidden,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   TextField,
   TextFieldProps,
 } from "@material-ui/core";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
-import CloseIcon from "@material-ui/icons/Close";
 import Rating from "@material-ui/lab/Rating";
 import React, { useEffect, useRef, useState } from "react";
 import ListItemSkeleton from "../../../common/components/ListItemSkeleton";
+import LoadingDialog from "../../../common/components/LoadingDialog";
 import useBoolean from "../../../common/hooks/useBoolean";
 import { useSnackbar } from "../../../snackbar/redux/snackbar";
-import { useQueryCurrentUser } from "../../../users/query/hooks";
 import UserListItem from "../../../users/components/UserListItem";
+import { useQueryCurrentUser } from "../../../users/query/hooks";
 import { useListener } from "../../../utils";
 import ReviewFormMedia from "./ReviewFormMedia";
 import useReviewForm from "./useReviewForm";
@@ -114,7 +108,7 @@ const ReviewCancelButton = (props: ButtonProps) => {
   );
 };
 
-const LoadingDialog = () => {
+const Loading = () => {
   const reviewForm = useReviewForm();
   const isLoading = useBoolean(false);
 
@@ -122,16 +116,10 @@ const LoadingDialog = () => {
   useListener(reviewForm.eventEmitter, "submitSettled", isLoading.setFalse);
 
   return (
-    <Dialog open={isLoading.value}>
-      <List>
-        <ListItem>
-          <ListItemIcon>
-            <CircularProgress disableShrink />
-          </ListItemIcon>
-          <ListItemText primary="Posting" />
-        </ListItem>
-      </List>
-    </Dialog>
+    <LoadingDialog
+      open={isLoading.value}
+      ListItemTextProps={{ primary: "Loading" }}
+    />
   );
 };
 
@@ -169,7 +157,7 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
 
   return (
     <React.Fragment>
-      <LoadingDialog />
+      <Loading />
       <Card>
         <Hidden smUp>
           <Box display="flex" p={2}>

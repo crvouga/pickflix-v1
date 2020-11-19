@@ -1,40 +1,26 @@
-import {
-  Button,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from "@material-ui/core";
+import { Button, Dialog, DialogActions, DialogTitle } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router";
+import LoadingDialog from "../../../common/components/LoadingDialog";
 import { ZoomIn } from "../../../common/components/TransitionComponents";
 import useBoolean from "../../../common/hooks/useBoolean";
 import useModal from "../../../navigation/modals/useModal";
 import { useListener } from "../../../utils";
 import useDeleteListForm from "./useDeleteListForm";
 
-const LoadingDialog = () => {
+const Loading = () => {
   const { eventEmitter } = useDeleteListForm();
   const isLoading = useBoolean(false);
   useListener(eventEmitter, "submit", isLoading.setTrue);
   useListener(eventEmitter, "submitSettled", isLoading.setFalse);
   return (
-    <Dialog open={isLoading.value}>
-      <List>
-        <ListItem>
-          <ListItemIcon>
-            <CircularProgress disableShrink />
-          </ListItemIcon>
-          <ListItemText primary="Deleting" />
-        </ListItem>
-      </List>
-    </Dialog>
+    <LoadingDialog
+      open={isLoading.value}
+      ListItemTextProps={{ primary: "Deleting" }}
+    />
   );
 };
+
 export default () => {
   const history = useHistory();
   const { isOpen, close } = useModal("DeleteListForm");
@@ -53,7 +39,7 @@ export default () => {
 
   return (
     <Dialog TransitionComponent={ZoomIn} open={isOpen} onClose={close}>
-      <LoadingDialog />
+      <Loading />
       <DialogTitle>Delete list?</DialogTitle>
       <DialogActions>
         <Button size="large" onClick={close}>

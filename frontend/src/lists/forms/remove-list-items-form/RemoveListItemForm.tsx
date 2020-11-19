@@ -1,23 +1,12 @@
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Dialog,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-  DialogTitle,
-  DialogActions,
-} from "@material-ui/core";
+import { Button, DialogActions, DialogTitle } from "@material-ui/core";
 import React from "react";
+import LoadingDialog from "../../../common/components/LoadingDialog";
 import useBoolean from "../../../common/hooks/useBoolean";
+import { useSnackbar } from "../../../snackbar/redux/snackbar";
 import { pluralize, useListener } from "../../../utils";
 import useDeleteListItemsForm from "./useRemoveListItemsForm";
-import { useSnackbar } from "../../../snackbar/redux/snackbar";
 
-const LoadingDialog = () => {
+const Loading = () => {
   const { eventEmitter } = useDeleteListItemsForm();
   const isLoading = useBoolean(false);
 
@@ -25,16 +14,10 @@ const LoadingDialog = () => {
   useListener(eventEmitter, "submitSettled", isLoading.setFalse);
 
   return (
-    <Dialog open={isLoading.value}>
-      <List>
-        <ListItem>
-          <ListItemIcon>
-            <CircularProgress disableShrink />
-          </ListItemIcon>
-          <ListItemText primary="Removing" />
-        </ListItem>
-      </List>
-    </Dialog>
+    <LoadingDialog
+      open={isLoading.value}
+      ListItemTextProps={{ primary: "Removing" }}
+    />
   );
 };
 
@@ -70,8 +53,6 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
           Remove
         </Button>
       </DialogActions>
-
-      {/* <LoadingDialog /> */}
     </React.Fragment>
   );
 };

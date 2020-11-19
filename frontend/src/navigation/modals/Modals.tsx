@@ -1,5 +1,5 @@
 import React from "react";
-import AddListItemFormModal from "../../lists/forms/add-list-item-form/AddListItemFormModal";
+import AuthPopups from "../../auth/AuthPopups";
 import CreateListFormModal from "../../lists/forms/create-list-form/CreateListFormModal";
 import DeleteListFormModal from "../../lists/forms/delete-list-form/DeleteListFormModal";
 import EditListFormModal from "../../lists/forms/edit-list-form/EditListFormModal";
@@ -8,15 +8,11 @@ import ToggleListItemFormModal from "../../lists/forms/toggle-list-item-form/Tog
 import DeleteReviewFormModal from "../../reviews/form/delete-review/DeleteReviewFormModal";
 import ReviewFormModal from "../../reviews/form/review-form/ReviewFormModal";
 import SearchModal from "../../search/SearchDialog";
-import { useQueryCurrentUser } from "../../users/query/hooks";
 
 export default () => {
-  const query = useQueryCurrentUser();
   return (
     <React.Fragment>
-      {!query.error && query.data && (
-        <AddListItemFormModal currentUser={query.data} />
-      )}
+      <AuthPopups />
       <ToggleListItemFormModal />
       <EditListFormModal />
       <CreateListFormModal />
@@ -24,7 +20,6 @@ export default () => {
       <DeleteListItemFormModal />
       <DeleteReviewFormModal />
       <ReviewFormModal />
-
       <SearchModal />
     </React.Fragment>
   );

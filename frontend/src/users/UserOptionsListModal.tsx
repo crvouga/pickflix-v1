@@ -2,17 +2,12 @@ import { List, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import React from "react";
-import { useAuth } from "../auth/useAuth";
+import { signOut } from "../auth/query/mutations";
 import ResponsiveDialogDrawer from "../common/components/ResponsiveDialogDrawer";
-type Props = {
-  open: boolean;
-  onClose: () => void;
-};
 
-export default ({ open, onClose }: Props) => {
-  const auth = useAuth();
+export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   const handleClickSignOut = async () => {
-    await auth.signOut();
+    await signOut();
   };
 
   return (

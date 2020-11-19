@@ -17,8 +17,6 @@ import { BottomNavigationGutter } from "./Navigation.Mobile";
 export default () => {
   return (
     <React.Fragment>
-      <Modals />
-      <Snackbar />
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/discover" component={DiscoverMoviePage} />
@@ -31,6 +29,8 @@ export default () => {
         <Route path="/user" component={CurrentUserPage} />
         <Route path="/auth" component={AuthPage} />
       </Switch>
+      <Modals />
+      <Snackbar />
       <BottomNavigationGutter />
     </React.Fragment>
   );
