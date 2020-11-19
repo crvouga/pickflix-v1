@@ -11,6 +11,7 @@ import React from "react";
 import { useHistory } from "react-router";
 import { APP_BAR_HEIGHT } from "../navigation/constants";
 import { useSnackbar } from "./redux/snackbar";
+import { SNACKBAR_TRANSITION_DURATION } from "./redux/snackbar-saga";
 
 const Transition = (props: TransitionProps) => (
   <Slide direction="up" {...props} />
@@ -35,17 +36,19 @@ const useStylesSnackbarContent = makeStyles((theme) => ({
   },
 }));
 
-type ViewListButtonProps = {
-  listId: string;
-};
-
-export const ViewListButton = ({ listId }: ViewListButtonProps) => {
+export const LinkButton = ({
+  path,
+  label = "Go To",
+}: {
+  path: string;
+  label?: string;
+}) => {
   const snackbar = useSnackbar();
   const history = useHistory();
 
   const handleClick = () => {
-    snackbar.setIsOpen(false);
-    history.push(`/list/${listId}`);
+    snackbar.close();
+    history.push(path);
   };
 
   return (
@@ -55,7 +58,7 @@ export const ViewListButton = ({ listId }: ViewListButtonProps) => {
       onClick={handleClick}
       style={{ fontWeight: "bold" }}
     >
-      See List
+      {label}
     </Button>
   );
 };
@@ -64,7 +67,7 @@ export const CloseSnackbarButton = () => {
   const snackbar = useSnackbar();
 
   const handleClick = () => {
-    snackbar.setIsOpen(false);
+    snackbar.close();
   };
 
   return (
@@ -80,7 +83,7 @@ export default () => {
   const snackbar = useSnackbar();
 
   const handleClick = () => {
-    snackbar.setIsOpen(false);
+    snackbar.close();
   };
 
   return (
@@ -93,6 +96,7 @@ export default () => {
         classes: classesSnackbarContent,
         elevation: 0,
       }}
+      transitionDuration={SNACKBAR_TRANSITION_DURATION}
       anchorOrigin={{
         vertical: "bottom",
         horizontal: "center",

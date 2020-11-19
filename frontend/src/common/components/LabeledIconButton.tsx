@@ -14,6 +14,8 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     padding: theme.spacing(1),
     flex: 1,
+    color: ({ disabled }: { disabled?: boolean }) =>
+      disabled ? theme.palette.action.disabled : theme.palette.action.active,
   },
 }));
 
@@ -22,11 +24,20 @@ export type LabeledIconButtonProps = ButtonBaseProps & {
   label: string;
 };
 
-export default ({ label, icon, ...props }: LabeledIconButtonProps) => {
-  const classes = useStyles();
+export default ({
+  label,
+  icon,
+  disabled,
+  ...props
+}: LabeledIconButtonProps) => {
+  const classes = useStyles({ disabled });
   return (
-    <ButtonBase {...props} className={clsx(classes.root, props.className)}>
-      <Box>{icon}</Box>
+    <ButtonBase
+      {...props}
+      disabled={disabled}
+      className={clsx(classes.root, props.className)}
+    >
+      <Box color="inherit">{icon}</Box>
       <Typography color="inherit" variant="subtitle2">
         {label}
       </Typography>

@@ -7,6 +7,7 @@ import { createListForm } from "../lists/forms/create-list-form/create-list-form
 import { deleteListForm } from "../lists/forms/delete-list-form/delete-list-form";
 import { editListForm } from "../lists/forms/edit-list-form/edit-list-form";
 import { removeListItemsForm } from "../lists/forms/remove-list-items-form/remove-list-items-form";
+import { toggleListItemForm } from "../lists/forms/toggle-list-item-form/toggle-list-item-form";
 import { moviePageUi } from "../movie/redux/movie-page-ui";
 import { personPageUi } from "../person/redux/person-page-ui";
 import { deleteReviewForm } from "../reviews/form/delete-review/delete-review-form";
@@ -17,6 +18,7 @@ import { video } from "../video/redux/video";
 import { AppState } from "./types";
 
 const reducers: { [key in keyof AppState]: Reducer } = {
+  toggleListItemForm: toggleListItemForm.reducer,
   deleteListForm: deleteListForm.reducer,
   createListForm: createListForm.reducer,
   addListItemForm: addListItemForm.reducer,

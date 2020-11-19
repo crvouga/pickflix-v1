@@ -11,7 +11,7 @@ import useAddListItemForm from "./useAddListItemForm";
 import { ListAggergation } from "../../query";
 import { useListener } from "../../../utils";
 import { useSnackbar } from "../../../snackbar/redux/snackbar";
-import { ViewListButton } from "../../../snackbar/Snackbar";
+import { LinkButton } from "../../../snackbar/Snackbar";
 
 const CreateNewListButton = () => {
   const createListFormModal = useModal("CreateListForm");
@@ -48,7 +48,7 @@ export default ({ currentUser }: { currentUser: UserAggergation }) => {
   useListener(addListItemForm.eventEmitter, "submitSuccess", (list) => {
     snackbar.display({
       message: `Added to "${list.title}"`,
-      action: <ViewListButton listId={list.id} />,
+      action: <LinkButton path={`/list/${list.id}`} />,
     });
     addListItemModal.close();
   });

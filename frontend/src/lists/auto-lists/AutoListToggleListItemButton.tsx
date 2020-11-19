@@ -1,4 +1,4 @@
-import { Button } from "@material-ui/core";
+import { Button, CircularProgress, Box } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router";
 import LabeledIconButton from "../../common/components/LabeledIconButton";
@@ -6,26 +6,12 @@ import { useSnackbar } from "../../snackbar/redux/snackbar";
 import { MediaId } from "../../tmdb/types";
 import { AutoListKeys, toAutoListName } from "../query";
 import { useQueryAutoLists } from "../query/hooks";
-import useListItemToggleState from "../useListItemToggleState";
+import useToggleListItemMutation from "../forms/toggle-list-item-form/useToggleListItemMutation";
 import AutoListIcon from "./AutoListIcon";
+import { useListener } from "../../utils";
+import { LinkButton } from "../../snackbar/Snackbar";
 
-const SeeListButton = ({ listId }: { listId: string }) => {
-  const history = useHistory();
-  return (
-    <Button
-      color="primary"
-      onClick={() => {
-        if (listId) {
-          history.push(`/auto-list/${listId}`);
-        }
-      }}
-    >
-      See List
-    </Button>
-  );
-};
-
-const Sub = ({
+const ToggleAutoListButton = ({
   listId,
   mediaId,
   autoListKey,
@@ -36,33 +22,38 @@ const Sub = ({
 }) => {
   const snackbar = useSnackbar();
 
-  const listItemState = useListItemToggleState({
+  const { mutate, status, eventEmitter } = useToggleListItemMutation({
     mediaId,
     listId,
-    onRemoved: () => {
-      snackbar.display({
-        message: `Removed from ${toAutoListName(autoListKey)}`,
-      });
-    },
-    onAdded: () => {
-      snackbar.display({
-        message: `Added to ${toAutoListName(autoListKey)}`,
-        action: <SeeListButton listId={listId} />,
-      });
-    },
+  });
+
+  useListener(eventEmitter, "added", () => {
+    snackbar.display({
+      message: `Added to ${toAutoListName(autoListKey)}`,
+      action: <LinkButton path={`/auto-list/${listId}`} />,
+    });
+  });
+
+  useListener(eventEmitter, "removed", () => {
+    snackbar.display({
+      message: `Removed from ${toAutoListName(autoListKey)}`,
+    });
   });
 
   return (
     <LabeledIconButton
       label={toAutoListName(autoListKey)}
       onClick={() => {
-        listItemState.toggle();
+        mutate();
       }}
       icon={
-        <AutoListIcon
-          autoListKey={autoListKey}
-          filled={listItemState.isAdded}
-        />
+        status === "loading" ? (
+          <Box color="action.active">
+            <CircularProgress color="inherit" disableShrink size="1.8em" />
+          </Box>
+        ) : (
+          <AutoListIcon autoListKey={autoListKey} filled={status === "added"} />
+        )
       }
     />
   );
@@ -91,5 +82,11 @@ export default ({
     );
   }
 
-  return <Sub listId={listId} mediaId={mediaId} autoListKey={autoListKey} />;
+  return (
+    <ToggleAutoListButton
+      listId={listId}
+      mediaId={mediaId}
+      autoListKey={autoListKey}
+    />
+  );
 };

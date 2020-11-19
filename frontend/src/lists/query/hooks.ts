@@ -1,5 +1,11 @@
 import equals from "fast-deep-equal";
-import { useMutation, useQuery, useQueryCache } from "react-query";
+import {
+  useMutation,
+  useQuery,
+  useQueryCache,
+  QueryConfig,
+  InfiniteQueryConfig,
+} from "react-query";
 import useInfiniteQueryPagination from "../../common/hooks/useInfiniteQueryPagination";
 import { Paginated } from "../../common/types";
 import { GetAutoListParams, getAutoLists } from "./auto-lists";
@@ -21,7 +27,6 @@ import {
   PatchListParams,
   patchList,
 } from "./lists";
-import { useState } from "react";
 
 /* 
 
@@ -60,10 +65,14 @@ const makeGetListItemsQueryKey = (params: GetListItemsParams) => [
   params.mediaId,
 ];
 
-export const useQueryListItems = (params: GetListItemsParams) => {
+export const useQueryListItems = (
+  params: GetListItemsParams,
+  config?: InfiniteQueryConfig<Paginated<ListItemAggergation>>
+) => {
   return useInfiniteQueryPagination(
     makeGetListItemsQueryKey(params),
-    ({ lastPage }) => getListItems({ ...params, page: lastPage })
+    ({ lastPage }) => getListItems({ ...params, page: lastPage }),
+    config
   );
 };
 
@@ -129,8 +138,14 @@ export const useAddListItemMutation = () => {
       return () => {};
     },
     onSettled: (listItem) => {
-      const queryKey = makeGetListsQueryKey({});
-      queryCache.invalidateQueries(queryKey);
+      if (listItem) {
+        queryCache.invalidateQueries((query) =>
+          query.queryKey.some(
+            (item) =>
+              equals(item, listItem.mediaId) || equals(item, listItem.listId)
+          )
+        );
+      }
     },
   });
 };

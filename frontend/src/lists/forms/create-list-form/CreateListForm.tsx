@@ -1,10 +1,9 @@
 import { Box, Button, TextField, Typography } from "@material-ui/core";
-import React, { useEffect } from "react";
-
+import React from "react";
 import { useSnackbar } from "../../../snackbar/redux/snackbar";
-import useCreateListForm from "./useCreateListForm";
+import { LinkButton } from "../../../snackbar/Snackbar";
 import { useListener } from "../../../utils";
-import { ViewListButton } from "../../../snackbar/Snackbar";
+import useCreateListForm from "./useCreateListForm";
 
 export default ({ onCancel }: { onCancel?: () => void }) => {
   const snackbar = useSnackbar();
@@ -17,7 +16,7 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
   useListener(createListForm.eventEmitter, "submitSuccess", (list) => {
     snackbar.display({
       message: `Created "${list.title}"`,
-      action: <ViewListButton listId={list.id} />,
+      action: <LinkButton path={`/list/${list.id}`} />,
     });
   });
 

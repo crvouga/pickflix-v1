@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import { AppState } from "../../redux/types";
 import { createPayloadReducer } from "../../redux/utils";
 
-const name = "snackbar";
+const name: "snackbar" = "snackbar";
 
 /*
 
@@ -57,8 +57,8 @@ const reducer = createReducer(initialState, {
 
 const slice = (state: AppState) => state.snackbar;
 const selectors = {
-  slice,
-  isOpen: createSelector([slice], (slice) => slice.isOpen),
+  props: createSelector([slice], (slice) => slice.props),
+  isOpen: (state: AppState) => state.snackbar.isOpen,
 };
 
 /* 
@@ -72,14 +72,20 @@ export const snackbar = {
   reducer,
 };
 
+/* 
+
+
+*/
+
 export const useSnackbar = () => {
   const dispatch = useDispatch();
   const actions = bindActionCreators(snackbar.actions, dispatch);
-  const slice = useSelector(snackbar.selectors.slice);
+  const props = useSelector(snackbar.selectors.props);
   const isOpen = useSelector(snackbar.selectors.isOpen);
   return {
-    ...actions,
-    ...slice,
+    props,
     isOpen,
+    close: () => actions.setIsOpen(false),
+    display: actions.display,
   };
 };
