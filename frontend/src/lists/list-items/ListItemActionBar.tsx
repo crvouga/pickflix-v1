@@ -23,8 +23,11 @@ export const ListItemActionBar = ({ listId }: { listId: string }) => {
   const deleteListItemsFormModal = useModal("DeleteListItemsForm");
   const seletectedCount = Object.values(listItemIds).length;
 
-  useListener(eventEmitter, "submitSuccess", () => {
+  useListener(eventEmitter, "submit", () => {
     setIsSelecting(false);
+  });
+
+  useListener(eventEmitter, "submitSuccess", () => {
     setListItemIds({});
   });
 

@@ -11,7 +11,8 @@ export type ModalName =
   | "DiscoverSort"
   | "DiscoverSearch"
   | "DiscoverTune"
-  | "Search";
+  | "Search"
+  | "ToggleListItemForm";
 
 export default (modalName: ModalName) => {
   const history = useHistory();

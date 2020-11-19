@@ -9,6 +9,7 @@ import {
   MovieReleaseDates,
   MovieSimilar,
   MovieVideos,
+  MediaId,
 } from "../../tmdb/types";
 
 export type MoviePageData = {
@@ -21,7 +22,7 @@ export type MoviePageData = {
   releaseDates: MovieReleaseDates;
 } & MovieDetails;
 
-export const getMoviePage = async (tmdbMediaId: string) => {
+export const getMoviePage = async (tmdbMediaId: number) => {
   const { data } = await BackendAPI.get<MoviePageData>(
     `/api/tmdb/movie/${tmdbMediaId}`,
     {
@@ -56,8 +57,10 @@ export const queryKeys = {
   ],
 };
 
-export const useQueryMovie = ({ tmdbMediaId }: { tmdbMediaId: string }) => {
-  return useQuery(["movie", tmdbMediaId], () => getMoviePage(tmdbMediaId));
+export const useQueryMoviePage = ({ mediaId }: { mediaId: MediaId }) => {
+  return useQuery(["movie", mediaId.tmdbMediaId], () =>
+    getMoviePage(mediaId.tmdbMediaId)
+  );
 };
 
 export const getMovieSimilar = async ({

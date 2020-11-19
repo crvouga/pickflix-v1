@@ -4,6 +4,7 @@ import {
   makeStyles,
   Slide,
   Snackbar,
+  ButtonProps,
 } from "@material-ui/core";
 import { TransitionProps } from "@material-ui/core/transitions";
 import CloseIcon from "@material-ui/icons/Close";
@@ -38,11 +39,12 @@ const useStylesSnackbarContent = makeStyles((theme) => ({
 
 export const LinkButton = ({
   path,
-  label = "Go To",
+  label = "View",
+  ...props
 }: {
   path: string;
   label?: string;
-}) => {
+} & ButtonProps) => {
   const snackbar = useSnackbar();
   const history = useHistory();
 
@@ -57,6 +59,7 @@ export const LinkButton = ({
       size="small"
       onClick={handleClick}
       style={{ fontWeight: "bold" }}
+      {...props}
     >
       {label}
     </Button>

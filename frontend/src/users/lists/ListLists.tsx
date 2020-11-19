@@ -2,29 +2,11 @@ import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import ListCard from "../../lists/lists/card/ListCard";
 import ListCardCallToAction from "../../lists/lists/card/ListCardCallToAction";
-import ListCardSkeleton from "../../lists/lists/card/ListCardSkeleton";
+import ListCardListSkeleton from "../../lists/lists/card/ListCardListSkeleton";
 import { ListAggergation, useQueryLists } from "../../lists/query";
 import useModal from "../../navigation/modals/useModal";
 import { UserAggergation } from "../query";
 import { useQueryCurrentUser } from "../query/hooks";
-
-/*
-
-
-
-*/
-
-const ListCardListSkeleton = ({ count }: { count: number }) => {
-  return (
-    <React.Fragment>
-      {[...Array(count)].map((_, index) => (
-        <Box key={index} width="100%" height="100px" paddingY={1}>
-          <ListCardSkeleton />
-        </Box>
-      ))}
-    </React.Fragment>
-  );
-};
 
 const ListCardListEmpty = () => {
   return (

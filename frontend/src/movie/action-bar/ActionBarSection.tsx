@@ -1,7 +1,7 @@
 import { Box } from "@material-ui/core";
 import React from "react";
 import AutoListToggleListItemButton from "../../lists/auto-lists/AutoListToggleListItemButton";
-import AddListItemButton from "../../lists/forms/add-list-item-form/AddListItemButton";
+import OpenToggleListItemFormButton from "../../lists/forms/toggle-list-item-form/OpenToggleListItemFormButton";
 import { AutoListKeys } from "../../lists/query";
 import { MediaId } from "../../tmdb/types";
 
@@ -16,7 +16,8 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
         autoListKey={AutoListKeys.WatchNext}
         mediaId={mediaId}
       />
-      <AddListItemButton mediaId={mediaId} />
+      <OpenToggleListItemFormButton mediaId={mediaId} />
+      {/* <AddListItemButton mediaId={mediaId} /> */}
     </Box>
   );
 };

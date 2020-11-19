@@ -103,7 +103,12 @@ const ReviewFormSubmitButton = (props: ButtonProps) => {
 
 const ReviewCancelButton = (props: ButtonProps) => {
   return (
-    <Button variant="text" size="large" startIcon={<CloseIcon />} {...props}>
+    <Button
+      variant="text"
+      size="large"
+      // startIcon={<CloseIcon />}
+      {...props}
+    >
       Cancel
     </Button>
   );

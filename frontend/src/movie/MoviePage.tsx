@@ -29,7 +29,7 @@ import VideoPlayer from "../video/VideoPlayer";
 import MovieCredits from "./credits/MovieCredits";
 import MovieCollection from "./MovieCollection";
 import MovieDetails from "./MovieDetails";
-import { useQueryMovie } from "./query";
+import { useQueryMoviePage } from "./query";
 import useMoviePageUi from "./redux/useMoviePageUi";
 import MovieRelated from "./related/MovieRelated";
 import ReviewsAndComments from "./review/ReviewsAndComments";
@@ -64,11 +64,12 @@ export default () => {
   }, [moviePageUi.isVideoPlayerSticky]);
 
   const { tmdbMediaId } = useParams<{ tmdbMediaId: string }>();
-  const query = useQueryMovie({ tmdbMediaId });
-  const mediaId = {
+  const mediaId: MediaId = {
     tmdbMediaId: Number(tmdbMediaId),
     tmdbMediaType: TmdbMediaType.movie,
   };
+
+  const query = useQueryMoviePage({ mediaId });
 
   const pageHistory = usePageHistory();
   useEffect(() => {

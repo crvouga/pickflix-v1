@@ -14,8 +14,9 @@ const useStylesDialog = makeStyles((theme) => ({
       marginTop: "60px",
       marginBottom: "auto",
       minHeight: "360px",
-      maxHeight: "480px",
+      // maxHeight: "480px",
       width: "480px",
+      zIndex: theme.zIndex.snackbar - 1,
     },
   },
 }));

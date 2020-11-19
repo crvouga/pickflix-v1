@@ -5,6 +5,7 @@ import {
   Paper,
   Toolbar,
   Typography,
+  Box,
 } from "@material-ui/core";
 import React from "react";
 import { useParams } from "react-router";
@@ -59,10 +60,12 @@ export default () => {
       </Paper>
 
       <Container disableGutters maxWidth="md">
-        <ListItemsSection
-          listItemCount={autoList.listItemCount}
-          listId={autoList.list.id}
-        />
+        <Box p={1}>
+          <ListItemsSection
+            listItemCount={autoList.listItemCount}
+            listId={autoList.list.id}
+          />
+        </Box>
       </Container>
     </React.Fragment>
   );

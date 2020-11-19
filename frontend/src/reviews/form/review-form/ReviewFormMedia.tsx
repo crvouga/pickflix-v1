@@ -1,13 +1,12 @@
+import { Box, CircularProgress, TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import React, { useState } from "react";
+import { useDebounce } from "use-debounce/lib";
 import ListItemSkeleton from "../../../common/components/ListItemSkeleton";
 import MovieListItem from "../../../movie/components/MovieListItem";
 import { useQueryMovie, useQueryMovieSearch } from "../../../tmdb/query";
 import { MediaId, TmdbMediaType } from "../../../tmdb/types";
 import useReviewForm from "./useReviewForm";
-import { TextField, CircularProgress, Box } from "@material-ui/core";
-import { useDebounce } from "use-debounce/lib";
-import usePageHistory from "../../../home/page-history/usePageHistory";
 
 const Media = ({ mediaId }: { mediaId: MediaId }) => {
   const query = useQueryMovie({
