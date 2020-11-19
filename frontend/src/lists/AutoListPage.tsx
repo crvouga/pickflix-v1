@@ -60,12 +60,10 @@ export default () => {
       </Paper>
 
       <Container disableGutters maxWidth="md">
-        <Box p={1}>
-          <ListItemsSection
-            listItemCount={autoList.listItemCount}
-            listId={autoList.list.id}
-          />
-        </Box>
+        <ListItemsSection
+          listItemCount={autoList.listItemCount}
+          listId={autoList.list.id}
+        />
       </Container>
     </React.Fragment>
   );

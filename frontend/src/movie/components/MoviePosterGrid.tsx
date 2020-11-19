@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { Grid, Box } from "@material-ui/core";
 import { repeat } from "ramda";
 import React from "react";
 import MoviePosterCard, { Movie } from "./MoviePosterCard";
@@ -15,13 +15,15 @@ export const ResponsiveGrid = <T,>({
   renderItem,
 }: ResponsiveGridProps<T>) => {
   return (
-    <Grid container spacing={1}>
-      {items.map((item, index) => (
-        <Grid item xs={6} sm={4} md={3} key={toItemKey(item, index)}>
-          {renderItem(item)}
-        </Grid>
-      ))}
-    </Grid>
+    <Box p={1}>
+      <Grid container spacing={1}>
+        {items.map((item, index) => (
+          <Grid item xs={6} sm={4} md={3} key={toItemKey(item, index)}>
+            {renderItem(item)}
+          </Grid>
+        ))}
+      </Grid>
+    </Box>
   );
 };
 

@@ -47,9 +47,7 @@ export default () => {
       </Box>
 
       <Container maxWidth="md" disableGutters>
-        <Box p={1}>
-          <DiscoverMovieResults />
-        </Box>
+        <DiscoverMovieResults />
       </Container>
     </React.Fragment>
   );
