@@ -44,9 +44,18 @@ export type FindOptions<T> = {
 
 export interface IRepository<T extends Identifiable> {
   find: (_: Partial<T>, options?: FindOptions<T>) => Promise<T[]>;
-  get: (_: string[]) => Promise<T[]>;
+
+  search: (
+    query: string,
+    keys: (keyof T)[],
+    options?: FindOptions<T>
+  ) => Promise<T[]>;
+
   add: (_: T[]) => Promise<T[]>;
+
   remove: (_: Partial<T>[]) => Promise<boolean>;
+
   update: (_: Partial<T> & Pick<T, "id">) => Promise<T>;
+
   count: (_: Partial<T>) => Promise<number>;
 }

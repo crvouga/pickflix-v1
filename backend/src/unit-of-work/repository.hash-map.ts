@@ -1,6 +1,36 @@
 import * as R from "ramda";
 import { pipe } from "remeda";
 import { FindOptions, Identifiable, IRepository } from "./types";
+import { matchSorter } from "match-sorter";
+
+const optionsToCompartors = <T>(options?: FindOptions<T>) => {
+  const comparators: ((a: T, b: T) => number)[] = [];
+  if (options?.orderBy) {
+    for (const [key, direction] of options.orderBy) {
+      switch (direction) {
+        case "ascend":
+          comparators.push(R.ascend<T>((_) => _[key]));
+          break;
+        case "descend":
+          comparators.push(R.descend<T>((_) => _[key]));
+          break;
+      }
+    }
+  }
+  return comparators;
+};
+
+const optionsToIndexRange = <T>(
+  options?: FindOptions<T>
+): [number, number] | [] => {
+  if (options?.pagination) {
+    const { pageSize, page } = options.pagination;
+    const startIndex = pageSize * (Math.max(page, 1) - 1);
+    const endIndex = startIndex + pageSize;
+    return [startIndex, endIndex];
+  }
+  return [];
+};
 
 export class RepositoryHashMap<T extends Identifiable>
   implements IRepository<T> {
@@ -13,44 +43,27 @@ export class RepositoryHashMap<T extends Identifiable>
   }
 
   async find(entityInfo: Partial<T>, options?: FindOptions<T>): Promise<T[]> {
-    const comparators: ((a: T, b: T) => number)[] = [];
-
-    if (options?.orderBy) {
-      for (const [key, direction] of options.orderBy) {
-        switch (direction) {
-          case "ascend":
-            comparators.push(R.ascend<T>((_) => _[key]));
-            break;
-          case "descend":
-            comparators.push(R.descend<T>((_) => _[key]));
-            break;
-        }
-      }
-    }
-
-    let startIndex: number | undefined = undefined;
-    let endIndex: number | undefined = undefined;
-
-    if (options?.pagination) {
-      const { pageSize, page } = options.pagination;
-      startIndex = pageSize * (Math.max(page, 1) - 1);
-      endIndex = startIndex + pageSize;
-    }
-
     return pipe(
       this.db,
       (db) => Object.values(db),
       (rows) => rows.filter(R.whereEq(entityInfo)),
-      (rows) => R.sortWith(comparators, rows),
-      (rows) => rows.slice(startIndex, endIndex)
+      (rows) => R.sortWith(optionsToCompartors(options), rows),
+      (rows) => rows.slice(...optionsToIndexRange(options))
     );
   }
 
-  async get(entityIds: string[]): Promise<T[]> {
-    return R.innerJoin(
-      (value, entityId) => value.id === entityId,
-      Object.values(this.db),
-      entityIds
+  async search(
+    query: string,
+    keys: (keyof T)[],
+    options?: FindOptions<T>
+  ): Promise<T[]> {
+    return pipe(
+      this.db,
+      (db) => Object.values(db),
+      (rows) =>
+        matchSorter(rows, query, { keys: keys.map((key) => key.toString()) }),
+      (rows) => R.sortWith(optionsToCompartors(options), rows),
+      (rows) => rows.slice(...optionsToIndexRange(options))
     );
   }
 

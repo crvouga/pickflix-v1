@@ -1,6 +1,10 @@
 import { IRouter } from "express";
 import { Dependencies } from "./types";
 import { User } from "../models";
+import {
+  makePaginationOptions,
+  makePaginationResponse,
+} from "../../pagination";
 
 export const buildAuthRouter = ({ userLogic, middlewares }: Dependencies) => (
   router: IRouter
@@ -81,6 +85,34 @@ export const buildUsersRouter = ({ userLogic, middlewares }: Dependencies) => (
       return res.status(200).json(userAggergation).end();
     } catch (error) {
       return next(error);
+    }
+  });
+
+  router.get("/search/users", async (req, res) => {
+    try {
+      const query = String(req.query.query);
+      const page = req.query.page;
+
+      const paginationOptions = makePaginationOptions({
+        page,
+      });
+
+      const results = await userLogic.searchByUsernameAndDisplayName(
+        query,
+        paginationOptions
+      );
+
+      res
+        .status(200)
+        .json(
+          makePaginationResponse({
+            ...paginationOptions,
+            results,
+          })
+        )
+        .end();
+    } catch (error) {
+      res.status(400).json({ error, message: "failed to search users" }).end();
     }
   });
 

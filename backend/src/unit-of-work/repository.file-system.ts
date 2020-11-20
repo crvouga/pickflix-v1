@@ -34,9 +34,13 @@ export class RepositoryFileSystem<T extends Identifiable>
     return await this.repositoryHashMap.find(entityInfo, options);
   }
 
-  async get(entityIds: string[]): Promise<T[]> {
+  async search(
+    query: string,
+    keys: (keyof T)[],
+    options?: FindOptions<T>
+  ): Promise<T[]> {
     this.read();
-    return await this.repositoryHashMap.get(entityIds);
+    return await this.repositoryHashMap.search(query, keys, options);
   }
 
   async count(entityInfo: Partial<T>): Promise<number> {

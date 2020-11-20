@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 import { IEmailService } from "../../email/EmailService";
-import { IUnitOfWork } from "../../unit-of-work/types";
+import { IUnitOfWork, PaginationOptions } from "../../unit-of-work/types";
 import { CredentialType } from "../models/make-credential";
 import { UserId } from "../models/make-user";
 import {
@@ -113,5 +113,18 @@ export class UserLogic {
     const credentialTypes = credentials.map((credential) => credential.type);
 
     return credentialTypes;
+  }
+
+  async searchByUsernameAndDisplayName(
+    query: string,
+    pagination?: PaginationOptions
+  ) {
+    const { Users } = this.unitOfWork;
+
+    const results = await Users.search(query, ["username", "displayName"], {
+      pagination,
+    });
+
+    return results;
   }
 }
