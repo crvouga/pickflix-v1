@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from "axios";
+import matchSorter from "match-sorter";
 import { BackendAPI } from "../../backend-api";
-import useInfiniteQueryPagination from "../../common/hooks/useInfiniteQueryPagination";
 import { makeEmptyPaginatedResponse, Paginated } from "../../common/types";
 import { User } from "../../users/query";
 
@@ -134,5 +134,54 @@ export const getSearchMovie = async (
       ...result,
       type: "movie",
     })),
+  };
+};
+
+export const getSearchUsers = async (
+  params: GetSearchParams,
+  config?: AxiosRequestConfig
+): Promise<Paginated<UserResult>> => {
+  if (params.query.length === 0) {
+    return makeEmptyPaginatedResponse<UserResult>();
+  }
+  const { data } = await BackendAPI.get<Paginated<UserResult>>(
+    `/api/search/users`,
+    {
+      ...config,
+      params,
+    }
+  );
+  return {
+    ...data,
+    results: data.results.map((result) => ({
+      ...result,
+      type: "user",
+    })),
+  };
+};
+
+export const getSearchAll = async (
+  params: GetSearchParams,
+  config?: AxiosRequestConfig
+): Promise<Paginated<UserResult | MovieResult | PersonResult | TvResult>> => {
+  if (params.query.length === 0) {
+    return makeEmptyPaginatedResponse<
+      UserResult | MovieResult | PersonResult | TvResult
+    >();
+  }
+
+  const [userResults, multiResults] = await Promise.all([
+    getSearchUsers(params, config),
+    getSearchMulti(params, config),
+  ]);
+
+  return {
+    ...userResults,
+    ...multiResults,
+    results: matchSorter(
+      [...userResults.results, ...multiResults.results],
+      params.query,
+      { keys: ["username", "displayName", "title", "name"] }
+    ),
   };
 };

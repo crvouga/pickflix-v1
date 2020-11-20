@@ -1,12 +1,18 @@
+import { useDebounce } from "use-debounce/lib";
 import useInfiniteQueryPagination from "../../common/hooks/useInfiniteQueryPagination";
+import { Paginated } from "../../common/types";
 import {
+  getSearchAll,
   getSearchMovie,
-  getSearchMulti,
   GetSearchParams,
   getSearchPerson,
+  getSearchUsers,
+  MovieResult,
+  PersonResult,
+  TvResult,
+  UserResult,
 } from "../query";
 import { SearchFilter } from "../redux/search";
-import { useDebounce } from "use-debounce/lib";
 
 const MAX_QUERY_LENGTH = 100;
 
@@ -17,7 +23,11 @@ export default ({ filter, text }: { filter?: SearchFilter; text: string }) => {
 
   return useInfiniteQueryPagination(
     ["search", filter, debouncedText],
-    ({ lastPage }) => {
+    ({
+      lastPage,
+    }): Promise<
+      Paginated<MovieResult | PersonResult | TvResult | UserResult>
+    > => {
       const params: GetSearchParams = {
         page: lastPage,
         query,
@@ -28,9 +38,9 @@ export default ({ filter, text }: { filter?: SearchFilter; text: string }) => {
         case "person":
           return getSearchPerson(params);
         case "user":
-          return getSearchPerson(params);
+          return getSearchUsers(params);
       }
-      return getSearchMulti(params);
+      return getSearchAll(params);
     }
   );
 };

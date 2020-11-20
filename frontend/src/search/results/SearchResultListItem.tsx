@@ -10,6 +10,7 @@ import moment from "moment";
 import React from "react";
 import { useHistory } from "react-router";
 import makeImageUrl from "../../tmdb/makeImageUrl";
+import UserListItem from "../../users/components/UserListItem";
 import { SearchResult } from "../query";
 import { useSearchState } from "../redux/search";
 
@@ -22,7 +23,17 @@ export default ({ result, ...ListItemProps }: Props) => {
   const search = useSearchState();
 
   const handleClick = (result: SearchResult) => () => {
-    history.push(`/${result.type}/${result.id}`);
+    switch (result.type) {
+      case "movie":
+        history.push(`/movie/${result.id}`);
+        break;
+      case "person":
+        history.push(`/person/${result.id}`);
+        break;
+      case "user":
+        history.push(`/user/${result.username}`);
+        break;
+    }
     search.pushHistory(result);
     search.setText("");
   };
@@ -64,7 +75,16 @@ export default ({ result, ...ListItemProps }: Props) => {
           />
         </ListItem>
       );
-  }
+    case "user":
+      return (
+        <UserListItem
+          user={result}
+          ListItemTextProps={{ secondary: "User" }}
+          onClick={handleClick(result)}
+        />
+      );
 
-  return null;
+    default:
+      return null;
+  }
 };

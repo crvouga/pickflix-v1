@@ -16,6 +16,7 @@ import moment from "moment";
 import React from "react";
 import { useHistory } from "react-router";
 import makeImageUrl from "../../tmdb/makeImageUrl";
+import AvatarUser from "../../users/components/AvatarUser";
 import { SearchResult } from "../query";
 import { useSearchState } from "../redux/search";
 
@@ -53,8 +54,18 @@ export default ({ result, ...ListItemProps }: Props) => {
   const search = useSearchState();
 
   const handleClick = (result: SearchResult) => () => {
+    switch (result.type) {
+      case "movie":
+        history.push(`/movie/${result.id}`);
+        break;
+      case "person":
+        history.push(`/person/${result.id}`);
+        break;
+      case "user":
+        history.push(`/user/${result.username}`);
+        break;
+    }
     search.pushHistory(result);
-    history.push(`/${result.type}/${result.id}`);
   };
 
   switch (result.type) {
@@ -102,6 +113,27 @@ export default ({ result, ...ListItemProps }: Props) => {
             primary={result.name}
             secondary={result.knownForDepartment}
           />
+
+          <ListItemSecondaryAction>
+            <DeleteButton result={result} />
+          </ListItemSecondaryAction>
+        </ListItem>
+      );
+    case "user":
+      return (
+        <ListItem
+          onClick={handleClick(result)}
+          key={result.id}
+          button
+          {...ListItemProps}
+        >
+          <ListItemIcon>
+            <HistoryIcon className={classes.historyIcon} />
+          </ListItemIcon>
+          <ListItemAvatar>
+            <AvatarUser user={result} />
+          </ListItemAvatar>
+          <ListItemText primary={result.username} secondary={"User"} />
 
           <ListItemSecondaryAction>
             <DeleteButton result={result} />
