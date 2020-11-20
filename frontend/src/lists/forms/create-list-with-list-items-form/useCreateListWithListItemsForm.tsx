@@ -1,24 +1,31 @@
+import { MediaId } from "../../../tmdb/types";
 import { createEventEmitter } from "../../../utils";
 import {
   List,
   useAddListItemMutation,
   useCreateListMutation,
 } from "../../query";
-import { useCreateListFormState } from "./create-list-form";
+import { useFormState } from "./create-list-with-list-items-form";
 
 const eventEmitter = createEventEmitter<{
   submit: undefined;
   submitSuccess: List;
   submitError: undefined;
+  submitSettled: undefined;
 }>();
 
 export default () => {
-  const formState = useCreateListFormState();
+  const formState = useFormState();
   const [createListMutation] = useCreateListMutation();
   const [addListItemMutation] = useAddListItemMutation();
-  const { mediaIds, setMediaIds, setTitle, title } = formState;
 
-  const submit = async () => {
+  const submit = async ({
+    title,
+    mediaIds,
+  }: {
+    mediaIds: MediaId[];
+    title: string;
+  }) => {
     eventEmitter.emit("submit");
     try {
       const list = await createListMutation({
@@ -32,14 +39,12 @@ export default () => {
           listId: list.id,
         });
       }
-
-      setTitle("");
-      setMediaIds([]);
-
       eventEmitter.emit("submitSuccess", list);
     } catch (error) {
       eventEmitter.emit("submitError");
       throw error;
+    } finally {
+      eventEmitter.emit("submitSettled");
     }
   };
 

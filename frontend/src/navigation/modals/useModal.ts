@@ -4,6 +4,7 @@ export type ModalName =
   | "AddListItemForm"
   | "DeleteListItemsForm"
   | "CreateListForm"
+  | "CreateListWithListItemsForm"
   | "ReviewForm"
   | "DeleteReviewForm"
   | "EditListForm"
@@ -23,6 +24,7 @@ export default (modalName: ModalName) => {
   const open = () => {
     history.push({
       state: {
+        ...location.state,
         [modalName]: true,
       },
     });
@@ -31,6 +33,7 @@ export default (modalName: ModalName) => {
   const close = () => {
     history.replace({
       state: {
+        ...location.state,
         [modalName]: false,
       },
     });

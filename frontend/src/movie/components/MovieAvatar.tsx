@@ -5,7 +5,7 @@ import makeImageUrl from "../../tmdb/makeImageUrl";
 
 type Props = AvatarProps & {
   movie: {
-    posterPath?: string;
+    posterPath?: string | null;
   };
 };
 

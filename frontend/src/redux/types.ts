@@ -2,7 +2,7 @@ import { DiscoverActiveTags } from "../discover/redux/discover-active-tags";
 import { DiscoverTagsState } from "../discover/redux/discover-tags";
 import { PageHistoryState } from "../home/page-history/page-history";
 import { AddListItemFormState } from "../lists/forms/add-list-item-form/add-list-item-form";
-import { CreateListFormState } from "../lists/forms/create-list-form/create-list-form";
+import { CreateListWithListItemsFormState } from "../lists/forms/create-list-with-list-items-form/create-list-with-list-items-form";
 import { DeleteListFormState } from "../lists/forms/delete-list-form/delete-list-form";
 import { EditListFormState } from "../lists/forms/edit-list-form/edit-list-form";
 import { RemoveListItemsFormState } from "../lists/forms/remove-list-items-form/remove-list-items-form";
@@ -23,7 +23,7 @@ export type AppState = {
   reviewForm: ReviewFormState;
   editListForm: EditListFormState;
   addListItemForm: AddListItemFormState;
-  createListForm: CreateListFormState;
+  createListWithListItemsForm: CreateListWithListItemsFormState;
   video: VideoState;
   pageHistory: PageHistoryState;
   snackbar: SnackbarState;

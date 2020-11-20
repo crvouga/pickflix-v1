@@ -7,31 +7,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../../redux/types";
 import { MediaId } from "../../../tmdb/types";
 
-const name = "createListForm";
+const name: "createListWithListItemsForm" = "createListWithListItemsForm";
 
 /* 
 
 */
 
-export type CreateListFormState = {
+export type CreateListWithListItemsFormState = {
   mediaIds: MediaId[];
-  title: string;
 };
 
 /* 
 
 */
 
-const initialState: CreateListFormState = {
+const initialState: CreateListWithListItemsFormState = {
   mediaIds: [],
-  title: "",
 };
 
 /* 
 
 */
 
-const slice = (state: AppState) => state.createListForm;
+const slice = (state: AppState) => state.createListWithListItemsForm;
 const selectors = {
   slice,
 };
@@ -42,7 +40,6 @@ const selectors = {
 
 const actions = {
   setMediaIds: createAction<MediaId[]>(name + "/SET_MEDIA_IDS"),
-  setTitle: createAction<string>(name + "/SET_TITLE"),
 };
 
 /* 
@@ -50,9 +47,6 @@ const actions = {
 */
 
 const reducer = createReducer(initialState, {
-  [actions.setTitle.toString()]: (state, action) => {
-    state.title = action.payload;
-  },
   [actions.setMediaIds.toString()]: (state, action) => {
     state.mediaIds = action.payload;
   },
@@ -62,16 +56,19 @@ const reducer = createReducer(initialState, {
 
 */
 
-export const createListForm = {
+export const createListWithListItemsForm = {
   actions,
   reducer,
   selectors,
 };
 
-export const useCreateListFormState = () => {
+export const useFormState = () => {
   const dispatch = useDispatch();
-  const actions = bindActionCreators(createListForm.actions, dispatch);
-  const slice = useSelector(createListForm.selectors.slice);
+  const actions = bindActionCreators(
+    createListWithListItemsForm.actions,
+    dispatch
+  );
+  const slice = useSelector(createListWithListItemsForm.selectors.slice);
 
   return {
     ...slice,

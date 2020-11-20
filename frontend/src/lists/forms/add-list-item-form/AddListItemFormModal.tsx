@@ -6,7 +6,7 @@ import { SlideUp } from "../../../common/components/TransitionComponents";
 import useModal from "../../../navigation/modals/useModal";
 import ListLists from "../../../users/lists/ListLists";
 import { UserAggergation } from "../../../users/query";
-import useCreateListForm from "../create-list-form/useCreateListForm";
+import useCreateListForm from "../create-list-with-list-items-form/useCreateListWithListItemsForm";
 import useAddListItemForm from "./useAddListItemForm";
 import { ListAggergation } from "../../query";
 import { useListener } from "../../../utils";

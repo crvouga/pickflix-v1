@@ -1,14 +1,16 @@
 import {
+  Box,
   Divider,
   List,
   ListItem,
-  ListItemText,
   ListItemIcon,
-  Box,
+  ListItemText,
   ListItemTextProps,
 } from "@material-ui/core";
+import AddIcon from "@material-ui/icons/Add";
 import React from "react";
 import MovieListItemContainer from "../../../movie/components/MovieListItemContainer";
+import useModal from "../../../navigation/modals/useModal";
 import { MediaId } from "../../../tmdb/types";
 import { useQueryCurrentUser, UserAggergation } from "../../../users/query";
 import {
@@ -17,17 +19,15 @@ import {
   useQueryAutoLists,
   useQueryLists,
 } from "../../query";
+import useCreateListWithListItemsForm from "../create-list-with-list-items-form/useCreateListWithListItemsForm";
 import { useToggleListItemFormState } from "./toggle-list-item-form";
 import ToggleListItemListItem, {
   ToggleListItemListItemSkeleton,
 } from "./ToggleListItemListItem";
-import AddIcon from "@material-ui/icons/Add";
-import useModal from "../../../navigation/modals/useModal";
-import useCreateListForm from "../create-list-form/useCreateListForm";
 
 const CreateListListItem = ({ mediaId }: { mediaId?: MediaId }) => {
-  const { open } = useModal("CreateListForm");
-  const { setMediaIds } = useCreateListForm();
+  const { open } = useModal("CreateListWithListItemsForm");
+  const { setMediaIds } = useCreateListWithListItemsForm();
 
   return (
     <ListItem
