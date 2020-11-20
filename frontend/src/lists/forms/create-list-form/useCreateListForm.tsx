@@ -1,11 +1,8 @@
-import { useQueryCache } from "react-query";
 import { createEventEmitter } from "../../../utils";
 import {
   List,
-  postList,
-  postListItem,
-  useCreateListMutation,
   useAddListItemMutation,
+  useCreateListMutation,
 } from "../../query";
 import { useCreateListFormState } from "./create-list-form";
 
@@ -19,7 +16,7 @@ export default () => {
   const formState = useCreateListFormState();
   const [createListMutation] = useCreateListMutation();
   const [addListItemMutation] = useAddListItemMutation();
-  const { mediaIds, title } = formState;
+  const { mediaIds, setMediaIds, setTitle, title } = formState;
 
   const submit = async () => {
     eventEmitter.emit("submit");
@@ -35,6 +32,10 @@ export default () => {
           listId: list.id,
         });
       }
+
+      setTitle("");
+      setMediaIds([]);
+
       eventEmitter.emit("submitSuccess", list);
     } catch (error) {
       eventEmitter.emit("submitError");

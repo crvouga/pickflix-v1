@@ -1,5 +1,6 @@
 import { useQuery } from "react-query";
 import { BackendAPI } from "../backend-api";
+import { Paginated } from "../common/types";
 import {
   MediaId,
   Movie,
@@ -9,7 +10,6 @@ import {
   PersonDetailsResponse,
   TmdbConfiguration,
 } from "./types";
-import { Paginated } from "../common/types";
 
 export const queryKeys = {
   tmdbConfiguration: () => ["tmdb", "configuration"],
@@ -143,7 +143,7 @@ export const useQueryMovieSearch = ({
   text: string;
   page?: number;
 }) => {
-  return useQuery(["movie", "search", text, , page], () =>
+  return useQuery(["movie", "search", text, page], () =>
     getSearchMovies({ query: text, page })
   );
 };

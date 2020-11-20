@@ -35,8 +35,7 @@ import {
 
 const makeGetAutoListsQueryKey = (params: GetAutoListParams) => [
   "auto-lists",
-  params.id,
-  params.ownerId,
+  params,
 ];
 
 export const useQueryAutoLists = (params: GetAutoListParams) => {
@@ -45,11 +44,8 @@ export const useQueryAutoLists = (params: GetAutoListParams) => {
 
 type GetListsData = Paginated<ListAggergation>[];
 
-const makeGetListsQueryKey = (params: GetListsParams) => [
-  "lists",
-  params.id,
-  params.ownerId,
-];
+const makeGetListsQueryKey = (params: GetListsParams) => ["lists", params];
+
 export const useQueryLists = (params: GetListsParams) => {
   return useInfiniteQueryPagination(
     makeGetListsQueryKey(params),
@@ -61,8 +57,7 @@ type GetListItemsData = Paginated<ListItemAggergation>[];
 
 const makeGetListItemsQueryKey = (params: GetListItemsParams) => [
   "list-items",
-  params.listId,
-  params.mediaId,
+  params,
 ];
 
 export const useQueryListItems = (

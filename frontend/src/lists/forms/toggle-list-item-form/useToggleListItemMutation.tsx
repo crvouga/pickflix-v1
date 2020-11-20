@@ -3,6 +3,7 @@ import { MediaId } from "../../../tmdb/types";
 import { createEventEmitter, Emitter } from "../../../utils";
 import { deleteListItems, postListItem, useQueryListItems } from "../../query";
 import { useState, useRef } from "react";
+import { equals } from "ramda";
 
 interface Events {
   added: undefined;
@@ -12,6 +13,8 @@ interface Events {
 }
 
 export default ({ listId, mediaId }: { listId: string; mediaId: MediaId }) => {
+  const queryCache = useQueryCache();
+
   const eventEmitterRef = useRef<Emitter<Events>>(createEventEmitter<Events>());
 
   const query = useQueryListItems(
@@ -52,6 +55,9 @@ export default ({ listId, mediaId }: { listId: string; mediaId: MediaId }) => {
       eventEmitterRef.current.emit("settled");
       query.refetch();
       setIsMutation(false);
+      queryCache.invalidateQueries((query) =>
+        equals(query.queryKey, ["list-items", { mediaId }])
+      );
     }
   };
 

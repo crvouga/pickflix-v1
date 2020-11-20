@@ -1,15 +1,14 @@
 import {
   Avatar,
+  Box,
+  BoxProps,
   makeStyles,
   Typography,
   TypographyVariant,
-  BoxProps,
-  Box,
 } from "@material-ui/core";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import clsx from "clsx";
 import React from "react";
-import { useHistory } from "react-router";
 
 type StyleProps = {
   scale: number;

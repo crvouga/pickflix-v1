@@ -33,13 +33,10 @@ export default () => {
   });
 
   const classesDialog = useStylesDialog();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   return (
     <Dialog
       TransitionComponent={SlideUp}
-      // fullScreen={isMobile}
       classes={classesDialog}
       open={reviewFormModal.isOpen}
       onClose={reviewFormModal.close}

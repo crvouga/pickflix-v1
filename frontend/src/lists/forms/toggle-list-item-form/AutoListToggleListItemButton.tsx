@@ -1,15 +1,13 @@
-import { Button, CircularProgress, Box } from "@material-ui/core";
 import React from "react";
-import { useHistory } from "react-router";
-import LabeledIconButton from "../../common/components/LabeledIconButton";
-import { useSnackbar } from "../../snackbar/redux/snackbar";
-import { MediaId } from "../../tmdb/types";
-import { AutoListKeys, toAutoListName } from "../query";
-import { useQueryAutoLists } from "../query/hooks";
-import useToggleListItemMutation from "../forms/toggle-list-item-form/useToggleListItemMutation";
-import AutoListIcon from "./AutoListIcon";
-import { useListener } from "../../utils";
-import { LinkButton } from "../../snackbar/Snackbar";
+import LabeledIconButton from "../../../common/components/LabeledIconButton";
+import { useSnackbar } from "../../../snackbar/redux/snackbar";
+import { LinkButton } from "../../../snackbar/Snackbar";
+import { MediaId } from "../../../tmdb/types";
+import { useListener } from "../../../utils";
+import AutoListIcon from "../../auto-lists/AutoListIcon";
+import { AutoListKeys, toAutoListName } from "../../query";
+import { useQueryAutoLists } from "../../query/hooks";
+import useToggleListItemMutation from "./useToggleListItemMutation";
 
 const ToggleAutoListButton = ({
   listId,
@@ -47,13 +45,14 @@ const ToggleAutoListButton = ({
         mutate();
       }}
       icon={
-        status === "loading" ? (
-          <Box color="action.active">
-            <CircularProgress color="inherit" disableShrink size="1.8em" />
-          </Box>
-        ) : (
-          <AutoListIcon autoListKey={autoListKey} filled={status === "added"} />
-        )
+        <AutoListIcon autoListKey={autoListKey} filled={status === "added"} />
+        // status === "loading" ? (
+        //   <Box color="action.active">
+        //     <CircularProgress color="inherit" disableShrink size="1.8em" />
+        //   </Box>
+        // ) : (
+        //   <AutoListIcon autoListKey={autoListKey} filled={status === "added"} />
+        // )
       }
     />
   );

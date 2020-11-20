@@ -1,6 +1,6 @@
 import { Box } from "@material-ui/core";
 import React from "react";
-import AutoListToggleListItemButton from "../../lists/auto-lists/AutoListToggleListItemButton";
+import AutoListToggleListItemButton from "../../lists/forms/toggle-list-item-form/AutoListToggleListItemButton";
 import OpenToggleListItemFormButton from "../../lists/forms/toggle-list-item-form/OpenToggleListItemFormButton";
 import { AutoListKeys } from "../../lists/query";
 import { MediaId } from "../../tmdb/types";
