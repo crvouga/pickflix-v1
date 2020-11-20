@@ -1,5 +1,5 @@
-import { List, Typography, Box } from "@material-ui/core";
-import React, { useEffect } from "react";
+import { Box, List, Typography } from "@material-ui/core";
+import React from "react";
 import ErrorBox from "../../common/components/ErrorBox";
 import ListItemSkeleton from "../../common/components/ListItemSkeleton";
 import LoadingBox from "../../common/components/LoadingBox";
@@ -9,6 +9,7 @@ import useQuerySearchResults from "./useQuerySearchResults";
 
 export default () => {
   const { text, filter } = useSearchState();
+
   const { fetchMoreRef, data, error, canFetchMore } = useQuerySearchResults({
     text,
     filter,
@@ -21,7 +22,7 @@ export default () => {
   if (!data) {
     return (
       <List>
-        {[1, 2, 3, 4, 5].map((n) => (
+        {[...Array(5)].map((n) => (
           <ListItemSkeleton key={n} />
         ))}
       </List>
