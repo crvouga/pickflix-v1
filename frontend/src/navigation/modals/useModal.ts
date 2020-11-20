@@ -24,16 +24,14 @@ export default (modalName: ModalName) => {
   const open = () => {
     history.push({
       state: {
-        ...location.state,
         [modalName]: true,
       },
     });
   };
 
   const close = () => {
-    history.replace({
+    history.push({
       state: {
-        ...location.state,
         [modalName]: false,
       },
     });

@@ -6,7 +6,7 @@ import {
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import SearchIcon from "@material-ui/icons/Search";
-import React, { useCallback } from "react";
+import React from "react";
 
 const useStyles = makeStyles((theme) => ({
   startAdornment: {
@@ -29,7 +29,7 @@ const shouldNotComponentUpdate = (previousProps: Props, nextProps: Props) =>
 export default React.memo(
   React.forwardRef(({ onClear, ...props }: Props, inputRef) => {
     const classes = useStyles();
-    console.log("RENDER");
+
     return (
       <InputBase
         fullWidth
