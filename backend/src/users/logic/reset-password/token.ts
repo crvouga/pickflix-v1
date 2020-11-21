@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import configuration from "../../../configuration";
+import configuration from "../../../app/configuration";
 import { UserId } from "../../models/make-user";
 
 export type ResetPasswordTokenData = {

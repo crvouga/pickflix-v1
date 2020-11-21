@@ -1,5 +1,5 @@
-import { isValidId, makeId } from "../../id";
-import { Id } from "../../id/types";
+import { isValidId, makeId } from "../../common/id";
+import { Id } from "../../common/id/types";
 import { castUserId, UserId } from "../../users/models/make-user";
 import { ListId } from "./make-list";
 

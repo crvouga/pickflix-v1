@@ -1,7 +1,7 @@
-import { RepositoryHashMap } from "../../unit-of-work/repository.hash-map";
+import { RepositoryHashMap } from "../../common/unit-of-work/repository.hash-map";
 import { Review } from "../models/make-review";
 import { IReviewRepository } from "./types";
-import { RepositoryFileSystem } from "../../unit-of-work/repository.file-system";
+import { RepositoryFileSystem } from "../../common/unit-of-work/repository.file-system";
 
 export class ReviewRepositoryHashMap
   extends RepositoryHashMap<Review>

@@ -1,6 +1,9 @@
 import { MediaLogic } from "../../media/logic/build";
 import { MediaId } from "../../media/models/types";
-import { IUnitOfWork, PaginationOptions } from "../../unit-of-work/types";
+import {
+  IUnitOfWork,
+  PaginationOptions,
+} from "../../common/unit-of-work/types";
 import { UserId } from "../../users/models/make-user";
 import {
   makeReview,
@@ -14,7 +17,7 @@ import {
   PartialReviewVote,
   ReviewVoteValue,
 } from "../models/make-review-vote";
-import { removeNullOrUndefinedEntries } from "../../utils";
+import { removeNullOrUndefinedEntries } from "../../common/utils";
 
 export class ReviewLogic {
   mediaLogic: MediaLogic;

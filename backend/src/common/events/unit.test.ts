@@ -1,5 +1,5 @@
-import { buildListLogicFake } from "../lists/logic/build.fake";
-import { makeUserFake } from "../users/models/make-user.fake";
+import { buildListLogicFake } from "../../lists/logic/build.fake";
+import { makeUserFake } from "../../users/models/make-user.fake";
 import { buildEventEmitter } from "./build";
 import { EventTypes } from "./types";
 

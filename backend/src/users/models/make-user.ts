@@ -1,6 +1,6 @@
 import * as EmailValidator from "email-validator";
-import { isValidId, makeId } from "../../id";
-import { Id } from "../../id/types";
+import { isValidId, makeId } from "../../common/id";
+import { Id } from "../../common/id/types";
 
 export type UserId = Id & { UserId: true };
 

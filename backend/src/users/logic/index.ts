@@ -1,6 +1,6 @@
-import { emailService } from "../../email";
-import { eventEmitter } from "../../events";
-import { unitOfWork } from "../../unit-of-work";
+import { emailService } from "../email";
+import { eventEmitter } from "../../common/events";
+import { unitOfWork } from "../../common/unit-of-work";
 import { UserLogic } from "./user-logic";
 
 export const userLogic = new UserLogic({

@@ -1,5 +1,5 @@
 import { MailService } from "@sendgrid/mail";
-import configuration from "../configuration";
+import configuration from "../../app/configuration";
 
 export type Email = {
   to: string;

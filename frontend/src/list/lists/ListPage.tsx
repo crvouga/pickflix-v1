@@ -9,14 +9,14 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { useParams } from "react-router";
-import ErrorPage from "../common/page/ErrorPage";
-import LoadingPage from "../common/page/LoadingPage";
-import BackButton from "../app/navigation/BackButton";
-import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
-import { useQueryCurrentUser } from "../user/query/hooks";
-import ListItemsSection from "./list-items/ListItemsSection";
-import ListSection from "./lists/ListSection";
-import { useQueryLists } from "./query";
+import ErrorPage from "../../common/page/ErrorPage";
+import LoadingPage from "../../common/page/LoadingPage";
+import BackButton from "../../app/navigation/BackButton";
+import ResponsiveNavigation from "../../app/navigation/ResponsiveNavigation";
+import { useQueryCurrentUser } from "../../user/query/hooks";
+import ListItemsSection from "../list-items/ListItemsSection";
+import ListSection from "./ListSection";
+import { useQueryLists } from "../query";
 
 export default () => {
   const { listId } = useParams<{ listId: string }>();

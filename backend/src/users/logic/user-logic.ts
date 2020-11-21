@@ -1,6 +1,9 @@
 import { EventEmitter } from "events";
-import { IEmailService } from "../../email/EmailService";
-import { IUnitOfWork, PaginationOptions } from "../../unit-of-work/types";
+import { IEmailService } from "../email/EmailService";
+import {
+  IUnitOfWork,
+  PaginationOptions,
+} from "../../common/unit-of-work/types";
 import { CredentialType } from "../models/make-credential";
 import { UserId } from "../models/make-user";
 import {

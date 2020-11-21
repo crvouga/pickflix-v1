@@ -3,9 +3,9 @@ import {
   TmdbMediaId,
   TmdbMediaType,
 } from "../../../media/models/types";
-import { PaginationOptions } from "../../../unit-of-work/types";
+import { PaginationOptions } from "../../../common/unit-of-work/types";
 import { UserId } from "../../../users/models";
-import { removeNullOrUndefinedEntries } from "../../../utils";
+import { removeNullOrUndefinedEntries } from "../../../common/utils";
 import { ListId, ListItem, makeListItem, updateList } from "../../models";
 import { ListItemId, PartialListItem } from "../../models/make-list-item";
 import { ListLogic } from "../build";

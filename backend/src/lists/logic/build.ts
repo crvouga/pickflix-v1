@@ -1,5 +1,5 @@
 import { MediaLogic } from "../../media/logic/build";
-import { IUnitOfWork } from "../../unit-of-work/types";
+import { IUnitOfWork } from "../../common/unit-of-work/types";
 import { aggergateList, aggergateListItem } from "./aggergate";
 import {
   getAutoList,

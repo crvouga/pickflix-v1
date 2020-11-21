@@ -2,15 +2,15 @@ import {
   IAutoListRepository,
   IListItemRepository,
   IListRepository,
-} from "../lists/repositories/types";
+} from "../../lists/repositories/types";
 import {
   IReviewRepository,
   IReviewVoteRepository,
-} from "../reviews/repositories/types";
+} from "../../reviews/repositories/types";
 import {
   ICredentialRepository,
   IUserRepository,
-} from "../users/repositories/types";
+} from "../../users/repositories/types";
 
 export interface IUnitOfWork {
   begin(): Promise<void>;

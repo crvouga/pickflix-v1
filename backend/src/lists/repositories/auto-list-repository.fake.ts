@@ -1,5 +1,5 @@
-import { RepositoryFileSystem } from "../../unit-of-work/repository.file-system";
-import { RepositoryHashMap } from "../../unit-of-work/repository.hash-map";
+import { RepositoryFileSystem } from "../../common/unit-of-work/repository.file-system";
+import { RepositoryHashMap } from "../../common/unit-of-work/repository.hash-map";
 import { AutoList } from "../models";
 import { IAutoListRepository } from "./types";
 

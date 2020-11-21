@@ -1,4 +1,4 @@
-import { EventTypes } from "../../../events";
+import { EventTypes } from "../../../common/events";
 import {
   makeCredential,
   makePasswordHash,

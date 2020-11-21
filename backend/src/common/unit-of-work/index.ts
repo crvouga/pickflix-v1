@@ -1,5 +1,5 @@
 import { UnitOfWorkFileSystem, UnitOfWorkHashMap } from "./unit-of-work.fake";
-import configuration from "../configuration";
+import configuration from "../../app/configuration";
 
 const getUnitOfWork = () => {
   switch (configuration.NODE_ENV) {

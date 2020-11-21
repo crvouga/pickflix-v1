@@ -1,4 +1,4 @@
-import { IRepository } from "../../unit-of-work/types";
+import { IRepository } from "../../common/unit-of-work/types";
 import { AutoList, List, ListItem } from "../models";
 
 export interface IListRepository extends IRepository<List> {}

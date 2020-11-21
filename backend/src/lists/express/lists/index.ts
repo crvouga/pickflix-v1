@@ -2,9 +2,9 @@ import { IRouter } from "express";
 import {
   makePaginationOptions,
   makePaginationResponse,
-} from "../../../pagination";
+} from "../../../common/pagination";
 import { castUserId, User } from "../../../users/models";
-import { removeNullOrUndefinedEntries } from "../../../utils";
+import { removeNullOrUndefinedEntries } from "../../../common/utils";
 import {
   castListDescription,
   castListId,

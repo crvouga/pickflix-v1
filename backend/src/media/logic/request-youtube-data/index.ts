@@ -1,8 +1,8 @@
 import qs from "qs";
-import config from "../../../configuration";
+import config from "../../../app/configuration";
 
 import { MediaLogic } from "../build";
-import configuration from "../../../configuration";
+import configuration from "../../../app/configuration";
 
 const stringifyConfig: qs.IStringifyOptions = {
   arrayFormat: "comma",

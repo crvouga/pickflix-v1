@@ -4,7 +4,7 @@ import { Application, Handler } from "express";
 import session from "express-session";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import configuration from "../../configuration";
+import configuration from "../../app/configuration";
 import { UserLogic } from "../logic/user-logic";
 import { User, UserId } from "../models/make-user";
 import makeFileStore from "session-file-store";

@@ -1,5 +1,5 @@
-import { makeUserFake } from "../users/models";
-import { UserRepositoryHashMap } from "../users/repositories/user-repository.fake";
+import { makeUserFake } from "../../users/models";
+import { UserRepositoryHashMap } from "../../users/repositories/user-repository.fake";
 
 describe("hash map respository", () => {
   it("searches entities by keys", async () => {

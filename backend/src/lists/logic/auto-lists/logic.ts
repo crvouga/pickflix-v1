@@ -8,9 +8,9 @@ import {
 } from "../../models";
 import { ListAggergate } from "../../models/types";
 import { ListLogic } from "../build";
-import { DEFAULT_PAGE_SIZE } from "../../../pagination";
-import { PaginationOptions } from "../../../unit-of-work/types";
-import { removeNullOrUndefinedEntries } from "../../../utils";
+import { DEFAULT_PAGE_SIZE } from "../../../common/pagination";
+import { PaginationOptions } from "../../../common/unit-of-work/types";
+import { removeNullOrUndefinedEntries } from "../../../common/utils";
 
 export async function initializeAutoLists(
   this: ListLogic,

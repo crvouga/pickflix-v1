@@ -1,4 +1,4 @@
-import { IRepository } from "../../unit-of-work/types";
+import { IRepository } from "../../common/unit-of-work/types";
 import { User } from "../models/make-user";
 import { Credential } from "../models/make-credential";
 

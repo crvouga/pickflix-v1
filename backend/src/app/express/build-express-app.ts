@@ -1,8 +1,8 @@
 import bodyParser from "body-parser";
 import express, { Application, ErrorRequestHandler } from "express";
 import path from "path";
+import { buildAuthMiddleware } from "../../users/express/build-auth-middleware";
 import configuration from "../configuration";
-import { buildAuthMiddleware } from "../users/express/build-auth-middleware";
 import { buildApiRouter } from "./build-api-router";
 import { ExpressAppDependencies } from "./types";
 
@@ -36,9 +36,9 @@ const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
   }
 };
 
-export const buildExpressApp = (dependencies: ExpressAppDependencies) => (
-  app: Application
-) => {
+export const buildExpressApp = (dependencies: ExpressAppDependencies) => {
+  const app = express();
+
   buildMiddleware(dependencies)(app);
 
   buildApiRouter(dependencies)(app);
@@ -47,7 +47,5 @@ export const buildExpressApp = (dependencies: ExpressAppDependencies) => (
 
   app.use(errorHandler);
 
-  return {
-    app,
-  };
+  return app;
 };

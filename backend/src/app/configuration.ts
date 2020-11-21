@@ -38,10 +38,10 @@ const configuration = Object.freeze({
 
   // MAKE SURE .gitignore THIS!
   // used to store session data and data access layer in dev
-  PATH_TO_FILE_STORE: path.join(__dirname, "..", "_store"),
+  PATH_TO_FILE_STORE: path.join(__dirname, "../../_store"),
 
   // file path to frontend static files
-  PATH_TO_FRONTEND_BUILD: path.join(__dirname, "../../frontend/build"),
+  PATH_TO_FRONTEND_BUILD: path.join(__dirname, "../../../frontend/build"),
 
   //
   SESSION_COOKIE_SECRET: process.env.SESSION_COOKIE_SECRET,

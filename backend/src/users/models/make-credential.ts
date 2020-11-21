@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
-import { makeId } from "../../id";
-import { Id } from "../../id/types";
+import { makeId } from "../../common/id";
+import { Id } from "../../common/id/types";
 import { UserId } from "./make-user";
 
 export const makePasswordHash = (password: string) => bcrypt.hash(password, 10);

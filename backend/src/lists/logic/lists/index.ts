@@ -1,8 +1,8 @@
 import { UserId } from "../../../users/models/make-user";
 import { List, ListId, makeList, PartialList, updateList } from "../../models";
 import { ListLogic } from "../build";
-import { PaginationOptions } from "../../../unit-of-work/types";
-import { removeNullOrUndefinedEntries } from "../../../utils";
+import { PaginationOptions } from "../../../common/unit-of-work/types";
+import { removeNullOrUndefinedEntries } from "../../../common/utils";
 
 export async function addLists(
   this: ListLogic,

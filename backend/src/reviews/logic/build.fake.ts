@@ -1,4 +1,4 @@
-import { UnitOfWorkHashMap } from "../../unit-of-work/unit-of-work.fake";
+import { UnitOfWorkHashMap } from "../../common/unit-of-work/unit-of-work.fake";
 import { ReviewLogic } from "./build";
 import { buildMediaLogicFake } from "../../media/logic/build.fake";
 

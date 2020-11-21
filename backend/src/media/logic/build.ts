@@ -1,6 +1,6 @@
-import {IUnitOfWork} from '../../unit-of-work/types';
-import {requestTmdbData} from './request-tmdb-data';
-import {requestYoutubeData} from './request-youtube-data';
+import { IUnitOfWork } from "../../common/unit-of-work/types";
+import { requestTmdbData } from "./request-tmdb-data";
+import { requestYoutubeData } from "./request-youtube-data";
 
 export class MediaLogic {
   axios: any;

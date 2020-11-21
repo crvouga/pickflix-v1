@@ -1,6 +1,6 @@
 import fs from "fs";
 import { innerJoin, whereEq, ascend, prop, descend, sortWith } from "ramda";
-import configuration from "../configuration";
+import configuration from "../../app/configuration";
 import { Identifiable, IRepository, FindOptions } from "./types";
 import { RepositoryHashMap } from "./repository.hash-map";
 export class RepositoryFileSystem<T extends Identifiable>

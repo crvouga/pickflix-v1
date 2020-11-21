@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { EventTypes } from "../../../events";
+import { EventTypes } from "../../../common/events";
 import { makeUserFake } from "../../models";
 import { buildUserLogicFake } from "../user-logic.fake";
 

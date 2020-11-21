@@ -1,6 +1,6 @@
 import pg from "pg";
-import config from "../../configuration";
-import configuration from "../../configuration";
+import config from "../../../app/configuration";
+import configuration from "../../../app/configuration";
 
 export default (
   NODE_ENV?: "test" | "production" | "development"

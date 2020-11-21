@@ -1,5 +1,5 @@
 import { buildMediaLogicFake } from "../../media/logic/build.fake";
-import { UnitOfWorkHashMap } from "../../unit-of-work/unit-of-work.fake";
+import { UnitOfWorkHashMap } from "../../common/unit-of-work/unit-of-work.fake";
 import { ListLogic } from "./build";
 
 export const buildListLogicFake = ({

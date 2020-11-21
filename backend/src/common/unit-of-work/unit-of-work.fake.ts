@@ -1,31 +1,31 @@
 import {
   AutoListRepositoryHashMap,
   AutoListRepositoryFileSystem,
-} from "../lists/repositories/auto-list-repository.fake";
+} from "../../lists/repositories/auto-list-repository.fake";
 import {
   ListItemRepositoryHashMap,
   ListItemRepositoryFileSystem,
-} from "../lists/repositories/list-item-repository.fake";
+} from "../../lists/repositories/list-item-repository.fake";
 import {
   ListRepositoryHashMap,
   ListRepositoryFileSystem,
-} from "../lists/repositories/list-repository.fake";
+} from "../../lists/repositories/list-repository.fake";
 import {
   ReviewRepositoryHashMap,
   ReviewRepositoryFileSystem,
-} from "../reviews/repositories/review-repository.fake";
+} from "../../reviews/repositories/review-repository.fake";
 import {
   ReviewVoteRepositoryHashMap,
   ReviewVoteRepositoryFileSystem,
-} from "../reviews/repositories/review-vote-repository.fake";
+} from "../../reviews/repositories/review-vote-repository.fake";
 import {
   CredentialRepositoryHashMap,
   CredentialRepositoryFileSystem,
-} from "../users/repositories/credential-repository.fake";
+} from "../../users/repositories/credential-repository.fake";
 import {
   UserRepositoryHashMap,
   UserRepositoryFileSystem,
-} from "../users/repositories/user-repository.fake";
+} from "../../users/repositories/user-repository.fake";
 import { IUnitOfWork } from "./types";
 
 export class UnitOfWorkFileSystem implements IUnitOfWork {

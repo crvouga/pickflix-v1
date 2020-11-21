@@ -1,4 +1,4 @@
-import { Email } from "../../../email";
+import { Email } from "../../email";
 import { User } from "../../models";
 
 export type Link = string & { Link: true };

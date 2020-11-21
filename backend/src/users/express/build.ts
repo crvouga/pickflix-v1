@@ -4,7 +4,7 @@ import { User } from "../models";
 import {
   makePaginationOptions,
   makePaginationResponse,
-} from "../../pagination";
+} from "../../common/pagination";
 
 export const buildAuthRouter = ({ userLogic, middlewares }: Dependencies) => (
   router: IRouter

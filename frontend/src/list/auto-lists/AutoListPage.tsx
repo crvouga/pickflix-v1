@@ -9,14 +9,14 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { useParams } from "react-router";
-import ErrorPage from "../common/page/ErrorPage";
-import LoadingPage from "../common/page/LoadingPage";
-import BackButton from "../app/navigation/BackButton";
-import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
-import AutoListSection from "./auto-lists/AutoListSection";
-import ListItemsSection from "./list-items/ListItemsSection";
-import { toAutoListName } from "./query";
-import { useQueryAutoLists } from "./query/hooks";
+import ErrorPage from "../../common/page/ErrorPage";
+import LoadingPage from "../../common/page/LoadingPage";
+import BackButton from "../../app/navigation/BackButton";
+import ResponsiveNavigation from "../../app/navigation/ResponsiveNavigation";
+import AutoListSection from "./AutoListSection";
+import ListItemsSection from "../list-items/ListItemsSection";
+import { toAutoListName } from "../query";
+import { useQueryAutoLists } from "../query/hooks";
 
 export default () => {
   const { autoListId } = useParams<{ autoListId: string }>();

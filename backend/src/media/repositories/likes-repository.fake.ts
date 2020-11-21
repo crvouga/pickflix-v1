@@ -1,4 +1,4 @@
-import { RepositoryHashMap } from "../../unit-of-work/repository.hash-map";
+import { RepositoryHashMap } from "../../common/unit-of-work/repository.hash-map";
 import { Entity } from "../models/types";
 import { ILikesRepository } from "./types";
 

@@ -1,5 +1,5 @@
 import supertest from "supertest";
-import { buildExpressAppFake } from "../../../express/build.fake";
+import { buildExpressAppFake } from "../../../app/express/build.fake";
 import { makeMediaIdFake } from "../../../media/models/types";
 
 describe("/api/reviews", () => {

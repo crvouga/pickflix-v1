@@ -1,6 +1,6 @@
 import { MediaLogic } from "./build";
 import { AxiosRequestConfig } from "axios";
-import { UnitOfWorkHashMap } from "../../unit-of-work/unit-of-work.fake";
+import { UnitOfWorkHashMap } from "../../common/unit-of-work/unit-of-work.fake";
 
 const buildKeyvFake = () => {
   const keyvMap = new Map<any, any>();
