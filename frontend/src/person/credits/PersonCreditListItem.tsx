@@ -1,5 +1,5 @@
 import React from "react";
-import { PersonMovieCredit } from "../../tmdb/types";
+import { PersonMovieCredit } from "../../media/tmdb/types";
 import {
   ListItem,
   ListItemAvatar,

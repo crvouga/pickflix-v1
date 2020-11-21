@@ -9,8 +9,8 @@ import { ListItemProps } from "material-ui";
 import moment from "moment";
 import React from "react";
 import { useHistory } from "react-router";
-import makeImageUrl from "../../tmdb/makeImageUrl";
-import UserListItem from "../../users/components/UserListItem";
+import makeImageUrl from "../../media/tmdb/makeImageUrl";
+import UserListItem from "../../user/components/UserListItem";
 import { SearchResult } from "../query";
 import { useSearchState } from "../redux/search";
 

@@ -11,8 +11,8 @@ import {
 import HistoryOutlinedIcon from "@material-ui/icons/HistoryOutlined";
 import React from "react";
 import PickflixLogo from "../common/PickflixLogo";
-import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
-import { useQueryCurrentUser } from "../users/query/hooks";
+import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
+import { useQueryCurrentUser } from "../user/query/hooks";
 import CurrentUserMovies from "./CurrentUserMovies";
 import NonCurrentUserMovies from "./NonCurrentUserMovies";
 import PageHistory from "./page-history/PageHistory";

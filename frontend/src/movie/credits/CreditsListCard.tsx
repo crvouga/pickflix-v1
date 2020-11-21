@@ -8,8 +8,8 @@ import {
 import React from "react";
 import { useHistory } from "react-router";
 import AspectRatio from "../../common/components/AspectRatio";
-import makeImageUrl from "../../tmdb/makeImageUrl";
-import { MovieCreditCast, MovieCreditCrew } from "../../tmdb/types";
+import makeImageUrl from "../../media/tmdb/makeImageUrl";
+import { MovieCreditCast, MovieCreditCrew } from "../../media/tmdb/types";
 
 type Props = { credit: MovieCreditCast | MovieCreditCrew };
 

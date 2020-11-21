@@ -10,7 +10,7 @@ import {
   MovieSimilar,
   MovieVideos,
   MediaId,
-} from "../../tmdb/types";
+} from "../../media/tmdb/types";
 
 export type MoviePageData = {
   credits: MovieCredits;

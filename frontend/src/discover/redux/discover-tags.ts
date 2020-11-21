@@ -1,6 +1,6 @@
 import { createAction, createReducer, createSelector } from "@reduxjs/toolkit";
 import { union } from "ramda";
-import { AppState } from "../../redux/types";
+import { AppState } from "../../app/redux/types";
 import { DiscoverMovieTag } from "../query/types";
 import { discoverActiveTags } from "./discover-active-tags";
 

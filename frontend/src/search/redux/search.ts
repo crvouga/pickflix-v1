@@ -4,8 +4,8 @@ import {
   createReducer,
 } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import { AppState } from "../../redux/types";
-import { createPayloadReducer } from "../../redux/utils";
+import { AppState } from "../../app/redux/types";
+import { createPayloadReducer } from "../../app/redux/utils";
 import { SearchResult } from "../query";
 import { uniqBy } from "ramda";
 

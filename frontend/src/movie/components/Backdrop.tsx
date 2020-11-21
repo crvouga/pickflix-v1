@@ -4,8 +4,8 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/opacity.css";
 import { useHistory } from "react-router";
 import AspectRatio from "../../common/components/AspectRatio";
-import makeImageUrl from "../../tmdb/makeImageUrl";
-import { Movie } from "../../tmdb/types";
+import makeImageUrl from "../../media/tmdb/makeImageUrl";
+import { Movie } from "../../media/tmdb/types";
 
 const useStyles = makeStyles((theme) => ({
   image: {

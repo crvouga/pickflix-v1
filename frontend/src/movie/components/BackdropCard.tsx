@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import moment from "moment";
 import React from "react";
-import makeImageUrl from "../../tmdb/makeImageUrl";
+import makeImageUrl from "../../media/tmdb/makeImageUrl";
 
 type Props = {
   movie: {

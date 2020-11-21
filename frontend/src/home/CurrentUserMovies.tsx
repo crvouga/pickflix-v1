@@ -1,11 +1,11 @@
 import { ListItem, ListItemAvatar, ListItemText } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router";
-import { AutoListKeys } from "../lists/query";
-import { useQueryAutoLists } from "../lists/query/hooks";
+import { AutoListKeys } from "../list/query";
+import { useQueryAutoLists } from "../list/query/hooks";
 import MovieAvatar from "../movie/components/MovieAvatar";
 import MoviePosterScroll from "../movie/components/MoviePosterScroll";
-import { UserAggergation } from "../users/query";
+import { UserAggergation } from "../user/query";
 
 type Props = {
   user: UserAggergation;

@@ -1,6 +1,6 @@
 import { CircularProgress, makeStyles } from "@material-ui/core";
 import React from "react";
-import ResponsiveNavigation from "../../navigation/ResponsiveNavigation";
+import ResponsiveNavigation from "../../app/navigation/ResponsiveNavigation";
 
 const useStyles = makeStyles((theme) => ({
   root: {

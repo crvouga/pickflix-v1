@@ -9,8 +9,8 @@ import {
   makeStyles,
   CardActions,
 } from "@material-ui/core";
-import makeImageUrl from "../tmdb/makeImageUrl";
-import { PersonDetailsResponse } from "../tmdb/types";
+import makeImageUrl from "../media/tmdb/makeImageUrl";
+import { PersonDetailsResponse } from "../media/tmdb/types";
 import OpenDiscoverButton from "../discover/OpenDiscoverButton";
 import { TagType } from "../discover/query/types";
 

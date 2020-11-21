@@ -1,10 +1,10 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
-import { getReviewStatistics, queryKeys } from "../../reviews/query";
-import RatingAverage from "../../reviews/rating/RatingAverage";
-import RatingDistributon from "../../reviews/rating/RatingDistributon";
-import { MediaId } from "../../tmdb/types";
+import { getReviewStatistics, queryKeys } from "../../review/query";
+import RatingAverage from "../../review/rating/RatingAverage";
+import RatingDistributon from "../../review/rating/RatingDistributon";
+import { MediaId } from "../../media/tmdb/types";
 
 type Props = {
   mediaId: MediaId;

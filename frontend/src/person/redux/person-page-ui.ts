@@ -1,5 +1,5 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import { AppState } from "../../redux/types";
+import { AppState } from "../../app/redux/types";
 
 const name = "personPageUi";
 

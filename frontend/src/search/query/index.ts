@@ -2,7 +2,7 @@ import { AxiosRequestConfig } from "axios";
 import matchSorter from "match-sorter";
 import { BackendAPI } from "../../backend-api";
 import { makeEmptyPaginatedResponse, Paginated } from "../../common/types";
-import { User } from "../../users/query";
+import { User } from "../../user/query";
 
 /* 
 

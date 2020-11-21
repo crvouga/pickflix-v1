@@ -3,7 +3,7 @@ import {
   PersonDetailsResponse,
   PersonImagesResponse,
   PersonMovieCreditsResponse,
-} from "../../tmdb/types";
+} from "../../media/tmdb/types";
 
 type PersonPageResponse = {
   credits: PersonMovieCreditsResponse;

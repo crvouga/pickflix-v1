@@ -7,7 +7,7 @@ import {
   PersonDetailsResponse,
   PersonMovieCredit,
   PersonMovieCreditsResponse,
-} from "../../tmdb/types";
+} from "../../media/tmdb/types";
 import PersonCreditsDialog from "./PersonCreditsDialog";
 import moment from "moment";
 

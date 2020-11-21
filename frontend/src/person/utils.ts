@@ -4,7 +4,7 @@ import {
   PersonMovieCreditsResponse,
   PersonDetailsResponse,
   PersonMovieCredit,
-} from "../tmdb/types";
+} from "../media/tmdb/types";
 
 type DetailsProps = {
   details: PersonDetailsResponse;

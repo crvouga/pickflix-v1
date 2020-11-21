@@ -1,7 +1,7 @@
 import { Box, Container, makeStyles, Toolbar } from "@material-ui/core";
 import React from "react";
-import { APP_BAR_HEIGHT } from "../navigation/constants";
-import ResponsiveNavigation from "../navigation/ResponsiveNavigation";
+import { APP_BAR_HEIGHT } from "../app/navigation/constants";
+import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
 import { AddButton, RedoButton, TuneButton, UndoButton } from "./Actions";
 import DiscoverMovieResults from "./DiscoverMovieResults";
 import DiscoverMovieTags from "./DiscoverMovieTags";

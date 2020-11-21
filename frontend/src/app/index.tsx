@@ -1,6 +1,6 @@
 import React from "react";
 import Providers from "./Providers";
-import Routes from "../navigation/Routes";
+import Routes from "./Routes";
 import useDisableZoom from "./useDisableZoom";
 
 export default () => {

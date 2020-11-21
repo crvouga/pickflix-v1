@@ -2,7 +2,7 @@ import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
 import { BackendAPI } from "../backend-api";
-import { Collection } from "../tmdb/types";
+import { Collection } from "../media/tmdb/types";
 import MoviePosterScroll from "./components/MoviePosterScroll";
 
 const queryKeys = {

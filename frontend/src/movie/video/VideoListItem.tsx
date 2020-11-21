@@ -4,14 +4,14 @@ import moment from "moment";
 import numeral from "numeral";
 import React from "react";
 import { useQuery } from "react-query";
-import { MovieVideo } from "../../tmdb/types";
+import { MovieVideo } from "../../media/tmdb/types";
 import {
   getYoutubeVideoDetails,
   queryKeys,
   videoKeyToThumbnailURL,
   YoutubeVideo,
   useQueryYoutubeVideoDetails,
-} from "../../youtube/query";
+} from "../../media/youtube/query";
 
 export const toViewCount = (video: Partial<YoutubeVideo>) =>
   numeral(video?.statistics?.viewCount)

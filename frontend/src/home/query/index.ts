@@ -4,7 +4,7 @@ import {
   getPopularPersons,
   getTopRatedMovies,
   getUpcomingMovies,
-} from "../../tmdb/query";
+} from "../../media/tmdb/query";
 
 export const queryKeys = {
   homePage: () => ["home"],

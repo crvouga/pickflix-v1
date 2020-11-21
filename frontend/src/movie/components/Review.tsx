@@ -9,8 +9,8 @@ import React from "react";
 import ExpandHeight from "../../common/components/ExpandHeight";
 import Markdown from "../../common/components/Markdown";
 import useBoolean from "../../common/hooks/useBoolean";
-import * as TMDb from "../../tmdb/attribution";
-import { MovieReview } from "../../tmdb/types";
+import * as TMDb from "../../media/tmdb/attribution";
+import { MovieReview } from "../../media/tmdb/types";
 import MarkdownTypography from "../../common/components/MarkdownTypography";
 
 const useStyles = makeStyles((theme) => ({

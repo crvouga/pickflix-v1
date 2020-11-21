@@ -2,8 +2,8 @@ import { CardHeader, CardHeaderProps } from "@material-ui/core";
 import React from "react";
 import ListItemSkeleton from "../../common/components/ListItemSkeleton";
 import { toYear } from "../../person/utils";
-import { useQueryMovie } from "../../tmdb/query";
-import { MediaId } from "../../tmdb/types";
+import { useQueryMovie } from "../../media/tmdb/query";
+import { MediaId } from "../../media/tmdb/types";
 import MovieAvatar from "./MovieAvatar";
 
 type Movie = {

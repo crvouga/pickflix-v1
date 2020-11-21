@@ -6,7 +6,7 @@ import {
   MovieDetails,
   MovieGenre,
   MovieReleaseDates,
-} from "../tmdb/types";
+} from "../media/tmdb/types";
 
 type DetailsProp = { details: MovieDetails };
 // type KeywordsProp = { keywords: MovieKeywords };

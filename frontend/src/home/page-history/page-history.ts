@@ -5,7 +5,7 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { uniqWith } from "ramda";
-import { AppState } from "../../redux/types";
+import { AppState } from "../../app/redux/types";
 
 const name = "page-history";
 

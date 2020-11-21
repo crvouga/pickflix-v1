@@ -8,7 +8,7 @@ import TuneIcon from "@material-ui/icons/Tune";
 import UndoIcon from "@material-ui/icons/Undo";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import useModal from "../navigation/modals/useModal";
+import useModal from "../app/modals/useModal";
 import { discoverActiveTags } from "./redux/discover-active-tags";
 
 export const UndoButton = (props: IconButtonProps) => {

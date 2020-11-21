@@ -1,7 +1,7 @@
 import { Avatar, AvatarProps } from "@material-ui/core";
 import MovieIcon from "@material-ui/icons/Movie";
 import React from "react";
-import makeImageUrl from "../../tmdb/makeImageUrl";
+import makeImageUrl from "../../media/tmdb/makeImageUrl";
 
 type Props = AvatarProps & {
   movie: {

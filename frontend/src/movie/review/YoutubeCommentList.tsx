@@ -1,12 +1,12 @@
 import { Box } from "@material-ui/core";
 import React from "react";
 import { useQuery } from "react-query";
-import ReviewCardSkeleton from "../../reviews/card/ReviewCardSkeleton";
-import CommentThreadList from "../../youtube/CommentThreadList";
+import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";
+import CommentThreadList from "../../media/youtube/CommentThreadList";
 import {
   getYoutubeVideoCommentThreadList,
   queryKeys,
-} from "../../youtube/query";
+} from "../../media/youtube/query";
 
 export default ({ videoId }: { videoId?: string }) => {
   const query = useQuery(queryKeys.youtubeCommentThread({ videoId }), () =>

@@ -1,7 +1,11 @@
 import { Box, Divider, Typography } from "@material-ui/core";
 import React from "react";
 import ReadMoreTypography from "../common/components/ReadMoreTypography";
-import { MovieDetails, MovieReleaseDates, TmdbMediaType } from "../tmdb/types";
+import {
+  MovieDetails,
+  MovieReleaseDates,
+  TmdbMediaType,
+} from "../media/tmdb/types";
 import ActionBarSection from "./action-bar/ActionBarSection";
 import {
   SMALL_DOT,

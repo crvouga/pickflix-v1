@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { makeCancelable } from "../../utils";
+import { makeCancelable } from "../../common/utility";
 import {
   getSearchCompany,
   getSearchKeyword,

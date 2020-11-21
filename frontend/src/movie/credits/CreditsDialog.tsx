@@ -12,7 +12,7 @@ import {
 import React, { useState } from "react";
 import ResponsiveDialog from "../../common/components/ResponsiveDialog";
 import SearchTextField from "../../search/input/SearchTextField";
-import { MovieCredits } from "../../tmdb/types";
+import { MovieCredits } from "../../media/tmdb/types";
 import matchSorter from "match-sorter";
 import CreditsListItem from "./CreditsListItem";
 import { groupBy } from "ramda";

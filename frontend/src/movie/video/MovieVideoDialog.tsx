@@ -9,9 +9,9 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import ResponsiveDialog from "../../common/components/ResponsiveDialog";
-import { closeDialog } from "../../utils";
-import useVideoState from "../../video/useVideoState";
-import { YoutubeDetailsContainer } from "../../youtube/YoutubeVideo";
+import { closeDialog } from "../../common/utility";
+import useVideoState from "../../media/video/useVideoState";
+import { YoutubeDetailsContainer } from "../../media/youtube/YoutubeVideo";
 import { MovieVideoListItem } from "./VideoListItem";
 
 export default (props: DialogProps) => {

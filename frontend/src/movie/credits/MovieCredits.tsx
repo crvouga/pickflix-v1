@@ -10,7 +10,7 @@ import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { partition, take, whereEq } from "ramda";
 import React from "react";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
-import { MovieCredits } from "../../tmdb/types";
+import { MovieCredits } from "../../media/tmdb/types";
 import CreditsListCard from "./CreditsListCard";
 import CreditsDialog from "./CreditsDialog";
 import useBoolean from "../../common/hooks/useBoolean";

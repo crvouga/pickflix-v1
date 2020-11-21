@@ -7,8 +7,8 @@ import {
 } from "@material-ui/core";
 import BusinessIcon from "@material-ui/icons/Business";
 import React from "react";
-import makeImageUrl from "../../tmdb/makeImageUrl";
-import { capitalizeWords } from "../../utils";
+import makeImageUrl from "../../media/tmdb/makeImageUrl";
+import { capitalizeWords } from "../../common/utility";
 import {
   DiscoverMovieTag,
   sortByKeyToName,

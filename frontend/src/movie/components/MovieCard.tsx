@@ -11,7 +11,7 @@ import moment from "moment";
 import React from "react";
 import { useHistory } from "react-router";
 import ReadMore from "../../common/components/ReadMore";
-import makeImageUrl from "../../tmdb/makeImageUrl";
+import makeImageUrl from "../../media/tmdb/makeImageUrl";
 
 type Movie = {
   id: string;

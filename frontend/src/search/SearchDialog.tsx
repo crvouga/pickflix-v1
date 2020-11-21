@@ -1,7 +1,7 @@
 import { Button, useMediaQuery, useTheme } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import ResponsiveDialog from "../common/components/ResponsiveDialog";
-import useModal from "../navigation/modals/useModal";
+import useModal from "../app/modals/useModal";
 import SearchBar from "./input/SearchBar";
 import SearchResults from "./results/SearchResults";
 

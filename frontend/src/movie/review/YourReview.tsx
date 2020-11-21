@@ -1,17 +1,17 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
-import SignInButton from "../../auth/SignInButton";
-import useModal from "../../navigation/modals/useModal";
-import useReviewForm from "../../reviews/form/review-form/useReviewForm";
-import { useQueryReviews } from "../../reviews/query";
-import ReviewCard from "../../reviews/card/ReviewCard";
-import ReviewCardCallToAction from "../../reviews/card/ReviewCardCallToAction";
-import ReviewCardSkeleton from "../../reviews/card/ReviewCardSkeleton";
-import { MediaId } from "../../tmdb/types";
-import { UserAggergation } from "../../users/query";
-import { useQueryCurrentUser } from "../../users/query/hooks";
-import useReviewActions from "../../reviews/card/useReviewActions";
-import SignInCallToAction from "../../auth/SignInCallToAction";
+import SignInButton from "../../user/auth/SignInButton";
+import useModal from "../../app/modals/useModal";
+import useReviewForm from "../../review/form/review-form/useReviewForm";
+import { useQueryReviews } from "../../review/query";
+import ReviewCard from "../../review/card/ReviewCard";
+import ReviewCardCallToAction from "../../review/card/ReviewCardCallToAction";
+import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";
+import { MediaId } from "../../media/tmdb/types";
+import { UserAggergation } from "../../user/query";
+import { useQueryCurrentUser } from "../../user/query/hooks";
+import useReviewActions from "../../review/card/useReviewActions";
+import SignInCallToAction from "../../user/auth/SignInCallToAction";
 
 const YourReview = ({
   user,

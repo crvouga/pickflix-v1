@@ -13,7 +13,7 @@ import "react-lazy-load-image-component/src/effects/opacity.css";
 import { useHistory } from "react-router";
 import AspectRatio from "../../common/components/AspectRatio";
 import { useLazyImage } from "../../common/hooks/useLazyImage";
-import makeImageUrl from "../../tmdb/makeImageUrl";
+import makeImageUrl from "../../media/tmdb/makeImageUrl";
 
 const useStyles = makeStyles((theme) => ({
   fallback: {

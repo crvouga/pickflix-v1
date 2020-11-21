@@ -1,0 +1,33 @@
+import { DiscoverActiveTags } from "../../discover/redux/discover-active-tags";
+import { DiscoverTagsState } from "../../discover/redux/discover-tags";
+import { PageHistoryState } from "../../home/page-history/page-history";
+import { CreateListWithListItemsFormState } from "../../list/forms/create-list-with-list-items-form/create-list-with-list-items-form";
+import { DeleteListFormState } from "../../list/forms/delete-list-form/delete-list-form";
+import { EditListFormState } from "../../list/forms/edit-list-form/edit-list-form";
+import { RemoveListItemsFormState } from "../../list/forms/remove-list-items-form/remove-list-items-form";
+import { ToggleListItemFormState } from "../../list/forms/toggle-list-item-form/toggle-list-item-form";
+import { moviePageUi } from "../../movie/redux/movie-page-ui";
+import { PersonPageUiState } from "../../person/redux/person-page-ui";
+import { DeleteReviewFormState } from "../../review/form/delete-review/delete-review-form";
+import { ReviewFormState } from "../../review/form/review-form/review-form";
+import { SearchState } from "../../search/redux/search";
+import { SnackbarState } from "../modals/redux/snackbar";
+import { VideoState } from "../../media/video/redux/video";
+
+export type AppState = {
+  toggleListItemForm: ToggleListItemFormState;
+  deleteListForm: DeleteListFormState;
+  removeListItemsForm: RemoveListItemsFormState;
+  deleteReviewForm: DeleteReviewFormState;
+  reviewForm: ReviewFormState;
+  editListForm: EditListFormState;
+  createListWithListItemsForm: CreateListWithListItemsFormState;
+  video: VideoState;
+  pageHistory: PageHistoryState;
+  snackbar: SnackbarState;
+  search: SearchState;
+  personPageUi: PersonPageUiState;
+  moviePageUi: moviePageUi;
+  discoverActiveTags: DiscoverActiveTags;
+  discoverTags: DiscoverTagsState;
+};

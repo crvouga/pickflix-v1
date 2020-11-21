@@ -7,7 +7,7 @@ import {
 } from "@material-ui/core";
 import React, { useState } from "react";
 import ResponsiveDialog from "../../common/components/ResponsiveDialog";
-import useModal from "../../navigation/modals/useModal";
+import useModal from "../../app/modals/useModal";
 import SearchTextField from "../../search/input/SearchTextField";
 import { DiscoverMovieTag } from "../query/types";
 import useDiscoverState from "../useDiscoverState";

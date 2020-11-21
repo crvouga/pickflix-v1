@@ -12,8 +12,8 @@ import React from "react";
 import { useQuery } from "react-query";
 import HorizontalScroll from "../common/components/HorizontalScroll";
 import LoadingBox from "../common/components/LoadingBox";
-import BackButton from "../navigation/BackButton";
-import useModal from "../navigation/modals/useModal";
+import BackButton from "../app/navigation/BackButton";
+import useModal from "../app/modals/useModal";
 import BaseTag from "./BaseTag";
 import { getMovieCertifications, queryKeys } from "./query";
 import {

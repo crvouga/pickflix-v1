@@ -13,7 +13,7 @@ import undoable, {
   StateWithHistory,
   UndoableOptions,
 } from "redux-undo";
-import { AppState } from "../../redux/types";
+import { AppState } from "../../app/redux/types";
 import { DiscoverMovieTag } from "../query/types";
 
 const name = "discoverActiveTags";

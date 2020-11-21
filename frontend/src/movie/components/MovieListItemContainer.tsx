@@ -1,8 +1,8 @@
 import React from "react";
 import ListItemSkeleton from "../../common/components/ListItemSkeleton";
 import MovieListItem from "./MovieListItem";
-import { useQueryMovie } from "../../tmdb/query";
-import { MediaId } from "../../tmdb/types";
+import { useQueryMovie } from "../../media/tmdb/query";
+import { MediaId } from "../../media/tmdb/types";
 
 export default ({ mediaId }: { mediaId: MediaId }) => {
   const query = useQueryMovie({

@@ -10,7 +10,7 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 import "react-lazy-load-image-component/src/effects/opacity.css";
 import { useHistory } from "react-router";
 import AspectRatio from "../../common/components/AspectRatio";
-import makeImageUrl from "../../tmdb/makeImageUrl";
+import makeImageUrl from "../../media/tmdb/makeImageUrl";
 
 const useStyles = makeStyles((theme) => ({
   fallback: {

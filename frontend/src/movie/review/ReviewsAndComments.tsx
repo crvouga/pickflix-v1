@@ -1,9 +1,9 @@
 import { Box, Tab, Tabs, Typography } from "@material-ui/core";
 import React from "react";
-import useReviewForm from "../../reviews/form/review-form/useReviewForm";
-import { MediaId } from "../../tmdb/types";
-import { useListener } from "../../utils";
-import useVideoState from "../../video/useVideoState";
+import useReviewForm from "../../review/form/review-form/useReviewForm";
+import { MediaId } from "../../media/tmdb/types";
+import { useListener } from "../../common/utility";
+import useVideoState from "../../media/video/useVideoState";
 import { ReviewCommentsTabValue } from "../redux/movie-page-ui";
 import useMoviePageUi from "../redux/useMoviePageUi";
 import MovieReviewList from "./ReviewCardList";

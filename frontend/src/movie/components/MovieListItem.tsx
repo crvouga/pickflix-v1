@@ -10,7 +10,7 @@ import MovieIcon from "@material-ui/icons/Movie";
 import React from "react";
 import { useHistory } from "react-router";
 import { toYear } from "../../person/utils";
-import makeImageUrl from "../../tmdb/makeImageUrl";
+import makeImageUrl from "../../media/tmdb/makeImageUrl";
 
 type Props = Omit<ListItemProps, "button"> & {
   noLink?: boolean;

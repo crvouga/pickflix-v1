@@ -10,9 +10,9 @@ import {
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import React, { useEffect } from "react";
 import useBoolean from "../../common/hooks/useBoolean";
-import { MovieVideo, MovieVideos } from "../../tmdb/types";
-import useVideoState from "../../video/useVideoState";
-import { YoutubeStatusAlertError } from "../../youtube/YoutubeStatusAlert";
+import { MovieVideo, MovieVideos } from "../../media/tmdb/types";
+import useVideoState from "../../media/video/useVideoState";
+import { YoutubeStatusAlertError } from "../../media/youtube/YoutubeStatusAlert";
 import MovieVideoDialog from "./MovieVideoDialog";
 import { MovieVideoListItem } from "./VideoListItem";
 

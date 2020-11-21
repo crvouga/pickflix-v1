@@ -1,7 +1,7 @@
 import { Button, makeStyles, Typography } from "@material-ui/core";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import React from "react";
-import ResponsiveNavigation from "../../navigation/ResponsiveNavigation";
+import ResponsiveNavigation from "../../app/navigation/ResponsiveNavigation";
 
 const useStyles = makeStyles((theme) => ({
   root: {

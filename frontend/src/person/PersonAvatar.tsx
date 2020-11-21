@@ -3,7 +3,7 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import React from "react";
 import { useHistory } from "react-router";
 import AspectRatio from "../common/components/AspectRatio";
-import makeImageUrl from "../tmdb/makeImageUrl";
+import makeImageUrl from "../media/tmdb/makeImageUrl";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {

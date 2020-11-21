@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { take, uniqBy } from "ramda";
 import React from "react";
-import { MovieRecommendations, MovieSimilar } from "../../tmdb/types";
+import { MovieRecommendations, MovieSimilar } from "../../media/tmdb/types";
 import MoviePosterScroll from "../components/MoviePosterScroll";
 import useBoolean from "../../common/hooks/useBoolean";
 import MovieRelatedDialog from "./MovieRelatedDialog";

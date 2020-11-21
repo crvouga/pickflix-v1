@@ -1,13 +1,15 @@
+import { createBrowserHistory } from "history";
 import React from "react";
 import { Provider } from "react-redux";
 import { Router } from "react-router";
 import { PersistGate } from "redux-persist/integration/react";
-import { history } from "../navigation/history";
-import { configureReduxStore } from "../redux/configure-redux-store";
-import TmdbConfigurationGate from "../tmdb/TmdbConfigurationGate";
+import TmdbConfigurationGate from "../media/tmdb/TmdbConfigurationGate";
 import AppLoadingPage from "./AppLoadingPage";
 import QueryProvider from "./QueryProvider";
+import { configureReduxStore } from "./redux/configure-redux-store";
 import ThemeProvider from "./ThemeProvider";
+
+const history = createBrowserHistory();
 
 const { store, persistor } = configureReduxStore();
 
