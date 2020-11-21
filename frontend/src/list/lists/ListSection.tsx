@@ -1,21 +1,13 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
-import ChipUser from "../../user/components/ChipUser";
-import { UserAggergation } from "../../user/query";
 import { pluralize } from "../../common/utility";
+import WithAuthentication from "../../user/auth/WithAuthentication";
+import ChipUser from "../../user/components/ChipUser";
 import { ListAggergation } from "../query";
 import ListCardImage from "./card/ListCardImage";
 import ListActionBar from "./ListActionBar";
 
-export default ({
-  currentUser,
-  list,
-}: {
-  currentUser: UserAggergation | null;
-  list: ListAggergation;
-}) => {
-  const isCurrentUser = currentUser && currentUser.user.id === list.owner.id;
-
+export default ({ list }: { list: ListAggergation }) => {
   return (
     <React.Fragment>
       <Box
@@ -46,7 +38,13 @@ export default ({
         </Box>
         <ChipUser user={list.owner} />
       </Box>
-      {isCurrentUser && <ListActionBar list={list.list} />}
+      <WithAuthentication
+        renderAuthenticated={(currentUser) =>
+          currentUser.user.id === list.owner.id && (
+            <ListActionBar list={list.list} />
+          )
+        }
+      />
     </React.Fragment>
   );
 };

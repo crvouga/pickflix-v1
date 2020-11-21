@@ -17,6 +17,11 @@ import { isNullOrUndefined } from "util";
 export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
   router: IRouter
 ) => {
+  /* 
+    
+    NOTE: list id take presedence over owner id 
+
+  */
   router.get("/lists", async (req, res) => {
     try {
       const ownerId = req.query.ownerId
@@ -27,17 +32,20 @@ export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
 
       const id = req.query.id ? castListId(req.query.id) : undefined;
 
-      const page = req.query.page ? req.query.page : 1;
+      const listInfo = id
+        ? {
+            id,
+          }
+        : {
+            ownerId,
+          };
 
       const paginationOptions = makePaginationOptions({
-        page,
+        page: req.query.page,
       });
 
       const listAggergations = await listLogic.getListAggergations(
-        {
-          id,
-          ownerId,
-        },
+        listInfo,
         paginationOptions
       );
 

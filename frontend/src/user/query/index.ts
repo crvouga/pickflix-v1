@@ -1,5 +1,5 @@
 import { BackendAPI } from "../../backend-api";
-export * from "./hooks";
+export * from "../auth/hooks";
 
 export type User = {
   type: "user";

@@ -12,7 +12,7 @@ import HistoryOutlinedIcon from "@material-ui/icons/HistoryOutlined";
 import React from "react";
 import PickflixLogo from "../common/PickflixLogo";
 import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
-import { useQueryCurrentUser } from "../user/query/hooks";
+import { useQueryCurrentUser } from "../user/auth/hooks";
 import CurrentUserMovies from "./CurrentUserMovies";
 import NonCurrentUserMovies from "./NonCurrentUserMovies";
 import PageHistory from "./page-history/PageHistory";

@@ -8,7 +8,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import React from "react";
 import { useLocation } from "react-router";
-import { useQueryCurrentUser } from "../../user/query/hooks";
+import { useQueryCurrentUser } from "../../user/auth/hooks";
 
 export const DiscoverPageIcon = () => {
   const location = useLocation();

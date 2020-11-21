@@ -5,34 +5,38 @@ import {
   Paper,
   Toolbar,
   Typography,
-  Box,
 } from "@material-ui/core";
 import React from "react";
-import { useParams } from "react-router";
-import ErrorPage from "../../common/page/ErrorPage";
-import LoadingPage from "../../common/page/LoadingPage";
+import { useHistory, useParams } from "react-router";
 import BackButton from "../../app/navigation/BackButton";
 import ResponsiveNavigation from "../../app/navigation/ResponsiveNavigation";
-import { useQueryCurrentUser } from "../../user/query/hooks";
+import EmptyPage from "../../common/page/EmptyPage";
+import ErrorPage from "../../common/page/ErrorPage";
+import LoadingPage from "../../common/page/LoadingPage";
 import ListItemsSection from "../list-items/ListItemsSection";
-import ListSection from "./ListSection";
 import { useQueryLists } from "../query";
+import ListSection from "./ListSection";
 
 export default () => {
   const { listId } = useParams<{ listId: string }>();
   const query = useQueryLists({ id: listId });
-  const queryCurrentUser = useQueryCurrentUser();
+  const history = useHistory();
 
   if (query.error) {
     return <ErrorPage />;
   }
 
-  if (!query.data || queryCurrentUser.data === undefined) {
+  if (!query.data) {
     return <LoadingPage />;
   }
 
-  const list = query.data[0].results[0];
-  const currentUser = queryCurrentUser.data;
+  const lists = query.data;
+
+  if (lists[0] && lists[0].results.length === 0) {
+    return <EmptyPage />;
+  }
+
+  const list = lists[0].results[0];
 
   return (
     <React.Fragment>
@@ -51,7 +55,7 @@ export default () => {
 
       <Paper>
         <Container disableGutters maxWidth="md">
-          <ListSection list={list} currentUser={currentUser} />
+          <ListSection list={list} />
         </Container>
       </Paper>
 

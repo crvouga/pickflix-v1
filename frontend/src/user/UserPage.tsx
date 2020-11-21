@@ -27,7 +27,7 @@ import ListAutoLists from "./lists/ListAutoLists";
 import ListLists from "./lists/ListLists";
 import ListReviews from "./reviews/ListReviews";
 import { getUser, queryKeys } from "./query";
-import { useQueryCurrentUser } from "./query/hooks";
+import { useQueryCurrentUser } from "./auth/hooks";
 import UserOptionsListModal from "./UserOptionsListModal";
 
 const useStyles = makeStyles((theme) => ({

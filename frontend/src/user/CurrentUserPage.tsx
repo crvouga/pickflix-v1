@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect } from "react-router";
 import SignInPage from "./SignInPage";
-import { useQueryCurrentUser } from "./query/hooks";
+import { useQueryCurrentUser } from "./auth/hooks";
 import LoadingPage from "../common/page/LoadingPage";
 
 export default () => {

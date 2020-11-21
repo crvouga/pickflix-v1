@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router";
+import EmptyPage from "../common/page/EmptyPage";
 import DiscoverMoviePage from "../discover/DiscoverMoviePage";
 import HomePage from "../home/HomePage";
 import AutoListPage from "../list/auto-lists/AutoListPage";
@@ -28,6 +29,7 @@ export default () => {
         <Route path="/user/:username" component={UserPage} />
         <Route path="/user" component={CurrentUserPage} />
         <Route path="/auth" component={AuthPage} />
+        <Route component={EmptyPage} />
       </Switch>
       <Modals />
       <Snackbar />

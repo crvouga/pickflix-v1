@@ -1,4 +1,4 @@
-import { Box, Chip, Grow, Zoom } from "@material-ui/core";
+import { Box, Chip, Zoom } from "@material-ui/core";
 import RemoveIcon from "@material-ui/icons/Remove";
 import React, { useEffect } from "react";
 import useModal from "../../app/modals/useModal";
@@ -10,7 +10,6 @@ export const ListItemActionBar = ({ listId }: { listId: string }) => {
     isSelecting,
     setListItemIds,
     listItemIds,
-    toggleIsSelecting,
     setIsSelecting,
     eventEmitter,
     setListId,

@@ -16,6 +16,11 @@ import {
 export const listItems = ({ listLogic, middlewares }: Dependencies) => (
   router: express.IRouter
 ) => {
+  /* 
+    
+    NOTE: list id take presedence over user id 
+
+  */
   router.get("/list-items", async (req, res) => {
     try {
       const userId = req.user ? castUserId(req.user.id) : undefined;
@@ -32,16 +37,22 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
             })
           : undefined;
 
+      const listInfo = listId
+        ? {
+            listId,
+            mediaId,
+          }
+        : {
+            mediaId,
+            userId,
+          };
+
       const paginationOptions = makePaginationOptions({
         page: req.query.page,
       });
 
       const listItems = await listLogic.getListItemAggergations(
-        {
-          userId,
-          listId,
-          mediaId,
-        },
+        listInfo,
         paginationOptions
       );
 

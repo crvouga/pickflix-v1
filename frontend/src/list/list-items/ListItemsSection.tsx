@@ -1,7 +1,7 @@
 import { Box, makeStyles } from "@material-ui/core";
 import React from "react";
 import { APP_BAR_HEIGHT } from "../../app/navigation/constants";
-import { ListAggergation } from "../query";
+import WithAuthentication from "../../user/auth/WithAuthentication";
 import ListItemActionBar from "./ListItemActionBar";
 import ListItemGrid from "./ListItemGrid";
 
@@ -25,9 +25,13 @@ export default ({
 
   return (
     <React.Fragment>
-      <Box className={classes.appBar}>
-        <ListItemActionBar listId={listId} />
-      </Box>
+      <WithAuthentication
+        renderAuthenticated={(currentUser) => (
+          <Box className={classes.appBar}>
+            <ListItemActionBar listId={listId} />
+          </Box>
+        )}
+      />
       <ListItemGrid listItemCount={listItemCount} listId={listId} />
     </React.Fragment>
   );

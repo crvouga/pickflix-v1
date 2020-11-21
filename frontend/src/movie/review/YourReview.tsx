@@ -9,7 +9,7 @@ import ReviewCardCallToAction from "../../review/card/ReviewCardCallToAction";
 import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";
 import { MediaId } from "../../media/tmdb/types";
 import { UserAggergation } from "../../user/query";
-import { useQueryCurrentUser } from "../../user/query/hooks";
+import { useQueryCurrentUser } from "../../user/auth/hooks";
 import useReviewActions from "../../review/card/useReviewActions";
 import SignInCallToAction from "../../user/auth/SignInCallToAction";
 

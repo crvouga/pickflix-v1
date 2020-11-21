@@ -6,7 +6,7 @@ import ListCardListSkeleton from "../../list/lists/card/ListCardListSkeleton";
 import { ListAggergation, useQueryLists } from "../../list/query";
 import useModal from "../../app/modals/useModal";
 import { UserAggergation } from "../query";
-import { useQueryCurrentUser } from "../query/hooks";
+import { useQueryCurrentUser } from "../auth/hooks";
 
 const ListCardListEmpty = () => {
   return (
