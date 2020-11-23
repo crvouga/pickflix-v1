@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useQuery, useQueryCache } from "react-query";
 import { BackendAPI } from "../../backend-api";
 export * from "../auth/hooks";
 
@@ -67,4 +67,40 @@ export const getCurrentUser = async () => {
   const { data } = await BackendAPI.get<UserAggergation | null>("/api/auth");
 
   return data;
+};
+
+/*
+
+
+*/
+
+export type PatchUserParams = {
+  email?: string;
+  displayName?: string;
+  username?: string;
+};
+
+export const patchUser = async (params: PatchUserParams) => {
+  const { data } = await BackendAPI.patch<User>("/api/users");
+  return data;
+};
+
+/* 
+
+
+*/
+
+export const useEditUserMutation = () => {
+  const queryCache = useQueryCache();
+  return async (params: PatchUserParams) => {
+    try {
+      await patchUser(params);
+    } catch (error) {
+      throw error;
+    } finally {
+      queryCache.invalidateQueries((query) =>
+        query.queryKey.includes("current-user")
+      );
+    }
+  };
 };

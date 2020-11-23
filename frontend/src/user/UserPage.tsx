@@ -4,31 +4,26 @@ import {
   Container,
   Grid,
   Hidden,
-  IconButton,
   makeStyles,
   Paper,
   Toolbar,
   Typography,
 } from "@material-ui/core";
-import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
-import RateReviewOutlinedIcon from "@material-ui/icons/RateReviewOutlined";
-import SettingsIcon from "@material-ui/icons/Settings";
 import React from "react";
 import { useQuery } from "react-query";
 import { useHistory, useParams } from "react-router";
-import useBoolean from "../common/hooks/useBoolean";
+import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
-import useModal from "../app/modals/useModal";
-import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
-import useReviewForm from "../review/form/review-form/useReviewForm";
+import WithAuthentication from "./auth/WithAuthentication";
 import AvatarUser from "./components/AvatarUser";
+import CurrentUserActions, {
+  OpenCurrentUserActionsModalButton,
+} from "./CurrentUserActions";
 import ListAutoLists from "./lists/ListAutoLists";
 import ListLists from "./lists/ListLists";
-import ListReviews from "./reviews/ListReviews";
 import { getUser, queryKeys } from "./query";
-import { useQueryCurrentUser } from "./auth/hooks";
-import UserOptionsListModal from "./UserOptionsListModal";
+import ListReviews from "./reviews/ListReviews";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -42,47 +37,35 @@ export default () => {
   const { username } = useParams<{ username: string }>();
   const classes = useStyles();
   const history = useHistory();
-  const isDialogOpen = useBoolean(false);
-  const createListFormModal = useModal("CreateListForm");
-  const reviewFormModal = useModal("ReviewForm");
-  const reviewForm = useReviewForm();
-  const queryCurrentUser = useQueryCurrentUser();
+
   const query = useQuery(queryKeys.user({ username }), () =>
     getUser({ username })
   );
 
-  const handleClickReview = () => {
-    reviewForm.setReview({});
-    reviewFormModal.open();
-  };
-
-  if (query.error || queryCurrentUser.error) {
+  if (query.error) {
     return <ErrorPage />;
   }
 
-  if (query.data === undefined || queryCurrentUser.data === undefined) {
+  if (query.data === undefined) {
     return <LoadingPage />;
   }
 
   const user = query.data;
-  const currentUser = queryCurrentUser.data;
-  const isCurrentUser =
-    currentUser !== null && user.user.id === currentUser.user.id;
 
   return (
     <React.Fragment>
-      <UserOptionsListModal
-        open={isDialogOpen.value}
-        onClose={isDialogOpen.setFalse}
-      />
-
       <ResponsiveNavigation />
       <Hidden smUp>
         <AppBar color="default" position="sticky">
           <Toolbar>
-            <IconButton onClick={isDialogOpen.setTrue}>
-              <SettingsIcon />
-            </IconButton>
+            <WithAuthentication
+              renderAuthenticated={(currentUser) =>
+                currentUser.user.id === user.user.id && (
+                  <OpenCurrentUserActionsModalButton />
+                )
+              }
+              renderUnathenticated={() => <Box p={3} />}
+            />
             <Box flex={1}>
               <Typography variant="h6" align="center">
                 {user.user.username}
@@ -110,19 +93,13 @@ export default () => {
               </Typography>
             </Box>
           </Box>
-          {isCurrentUser && (
-            <Toolbar disableGutters>
-              <IconButton onClick={isDialogOpen.setTrue}>
-                <SettingsIcon />
-              </IconButton>
-              <IconButton onClick={createListFormModal.open}>
-                <PlaylistAddIcon />
-              </IconButton>
-              <IconButton onClick={handleClickReview}>
-                <RateReviewOutlinedIcon />
-              </IconButton>
-            </Toolbar>
-          )}
+          <WithAuthentication
+            renderAuthenticated={(currentUser) =>
+              currentUser.user.id === user.user.id && (
+                <CurrentUserActions currentUser={currentUser} />
+              )
+            }
+          />
         </Container>
       </Paper>
 

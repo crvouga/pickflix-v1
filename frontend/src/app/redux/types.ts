@@ -6,15 +6,17 @@ import { DeleteListFormState } from "../../list/forms/delete-list-form/delete-li
 import { EditListFormState } from "../../list/forms/edit-list-form/edit-list-form";
 import { RemoveListItemsFormState } from "../../list/forms/remove-list-items-form/remove-list-items-form";
 import { ToggleListItemFormState } from "../../list/forms/toggle-list-item-form/toggle-list-item-form";
+import { VideoState } from "../../media/video/redux/video";
 import { moviePageUi } from "../../movie/redux/movie-page-ui";
 import { PersonPageUiState } from "../../person/redux/person-page-ui";
 import { DeleteReviewFormState } from "../../review/form/delete-review/delete-review-form";
 import { ReviewFormState } from "../../review/form/review-form/review-form";
 import { SearchState } from "../../search/redux/search";
+import { EditUserFormState } from "../../user/forms/edit-user-form/edit-user-form";
 import { SnackbarState } from "../modals/redux/snackbar";
-import { VideoState } from "../../media/video/redux/video";
 
 export type AppState = {
+  editUserForm: EditUserFormState;
   toggleListItemForm: ToggleListItemFormState;
   deleteListForm: DeleteListFormState;
   removeListItemsForm: RemoveListItemsFormState;

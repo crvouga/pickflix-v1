@@ -1,25 +1,41 @@
+import React from "react";
 import { useQueryCurrentUser, UserAggergation } from "../query";
 
-export default ({
-  renderAuthenticated,
-  renderUnathenticated,
-}: {
-  renderAuthenticated?: (
-    currentUser: UserAggergation
-  ) => JSX.Element | null | false;
-  renderUnathenticated?: () => JSX.Element | null | false;
-}) => {
-  const query = useQueryCurrentUser();
+type Node = JSX.Element | null | false;
 
-  if (query.error !== undefined || query.data === undefined) {
+export default React.memo(
+  ({
+    renderLoading,
+    renderError,
+    renderAuthenticated,
+    renderUnathenticated,
+  }: {
+    renderLoading?: () => Node;
+    renderError?: () => Node;
+    renderAuthenticated?: (currentUser: UserAggergation) => Node;
+    renderUnathenticated?: () => Node;
+  }) => {
+    const query = useQueryCurrentUser();
+
+    if (query.error !== undefined && renderError) {
+      return renderError() || null;
+    }
+
+    if (query.data === undefined && renderLoading) {
+      return renderLoading() || null;
+    }
+
+    const currentUser = query.data;
+
+    if (currentUser === null && renderUnathenticated) {
+      return renderUnathenticated() || null;
+    }
+
+    if (currentUser && renderAuthenticated) {
+      return renderAuthenticated(currentUser) || null;
+    }
+
     return null;
-  }
-
-  const currentUser = query.data;
-
-  if (currentUser === null) {
-    return renderUnathenticated ? renderUnathenticated() || null : null;
-  }
-
-  return renderAuthenticated ? renderAuthenticated(currentUser) || null : null;
-};
+  },
+  () => true
+);

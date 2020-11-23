@@ -1,50 +1,21 @@
-import {
-  Box,
-  Button,
-  CircularProgress,
-  TextField,
-  Typography,
-} from "@material-ui/core";
+import { Box, Button, Typography } from "@material-ui/core";
 import React, { useRef, useState } from "react";
-import { useQuery } from "react-query";
 import { useHistory } from "react-router";
-import { useDebounce } from "use-debounce/lib";
-import { getUsers } from "../../query";
-import UsernameTextFieldContainer from "../../forms/UsernameTextField";
-
-//copyed from server
-const USERNAME_REGEXP = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
+import UsernameTextField from "../../forms/UsernameTextField";
+import useUsernameValidation from "../../forms/useUsernameValidation";
 
 export default ({ emailAddress }: { emailAddress: string }) => {
   const refUsername = useRef<HTMLInputElement>();
   const history = useHistory();
 
-  const [text, setText] = useState("");
-  const [debounced] = useDebounce(text, 200);
-  const handleChange = (event: React.ChangeEvent<{ value: string }>) => {
-    setText(event.target.value);
-  };
-  const query = useQuery(["username", debounced], () =>
-    getUsers({ username: debounced })
-  );
-  const users = query.data || [];
+  const [username, setUsername] = useState("");
+  const { isInvalid, helperText, isLoading } = useUsernameValidation(username);
 
   const handleSubmit = () => {
-    const username = refUsername.current?.value || "";
     history.push(`/auth?emailAddress=${emailAddress}&username=${username}`);
   };
 
-  const isError =
-    users.length > 0 || (!USERNAME_REGEXP.test(text) && text.length !== 0);
-
-  const errorMessage =
-    users.length > 0
-      ? "Username taken"
-      : !USERNAME_REGEXP.test(text) && text.length !== 0
-      ? "Invalid username"
-      : "";
-
-  const disabled = isError || query.status === "loading" || text.length === 0;
+  const disabled = isInvalid || isLoading;
 
   return (
     <React.Fragment>
@@ -58,25 +29,15 @@ export default ({ emailAddress }: { emailAddress: string }) => {
       </Box>
 
       <Box paddingBottom={2}>
-        <UsernameTextFieldContainer fullWidth />
-        {/* <TextField
-          variant="outlined"
-          inputRef={refUsername}
-          label="Username"
+        <UsernameTextField
           fullWidth
-          autoFocus
-          autoCorrect="off"
-          autoCapitalize="none"
-          onChange={handleChange}
-          error={isError}
-          helperText={errorMessage}
-          InputProps={{
-            endAdornment:
-              query.status === "loading" ? (
-                <CircularProgress size="2em" />
-              ) : null,
+          isLoading={isLoading}
+          error={isInvalid && username.length > 0}
+          helperText={helperText}
+          onChange={(e) => {
+            setUsername(e.target.value);
           }}
-        /> */}
+        />
       </Box>
 
       <Button

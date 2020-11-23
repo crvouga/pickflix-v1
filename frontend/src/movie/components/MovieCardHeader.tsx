@@ -23,11 +23,6 @@ export const MovieCardHeader = ({
   const { title, releaseDate } = movie;
 
   const releaseYear = releaseDate ? toYear(releaseDate) : undefined;
-  // console.log({ releaseYear });
-  // const history = useHistory();
-  // const handleClick = () => {
-  //   history.push(`/movie/${id}`);
-  // };
 
   return (
     <CardHeader

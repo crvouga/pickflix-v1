@@ -1,5 +1,4 @@
 import React from "react";
-import AuthPopups from "../../user/auth/AuthPopups";
 import CreateListFormModal from "../../list/forms/create-list-form/CreateListFormModal";
 import CreateListWithListItemsFormModal from "../../list/forms/create-list-with-list-items-form/CreateListWithListItemsFormModal";
 import DeleteListFormModal from "../../list/forms/delete-list-form/DeleteListFormModal";
@@ -9,6 +8,9 @@ import ToggleListItemFormModal from "../../list/forms/toggle-list-item-form/Togg
 import DeleteReviewFormModal from "../../review/form/delete-review/DeleteReviewFormModal";
 import ReviewFormModal from "../../review/form/review-form/ReviewFormModal";
 import SearchModal from "../../search/SearchDialog";
+import AuthPopups from "../../user/auth/AuthPopups";
+import EditUserFormModal from "../../user/forms/edit-user-form/EditUserFormModal";
+import { CurrentUserActionsModal } from "../../user/CurrentUserActions";
 
 export default () => {
   return (
@@ -23,6 +25,8 @@ export default () => {
       <DeleteReviewFormModal />
       <ReviewFormModal />
       <SearchModal />
+      <EditUserFormModal />
+      <CurrentUserActionsModal />
     </React.Fragment>
   );
 };

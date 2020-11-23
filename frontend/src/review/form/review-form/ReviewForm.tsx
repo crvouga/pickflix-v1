@@ -109,7 +109,7 @@ const ReviewCancelButton = (props: ButtonProps) => {
   );
 };
 
-const Loading = () => {
+const Posting = () => {
   const reviewForm = useReviewForm();
   const isLoading = useBoolean(false);
 
@@ -119,7 +119,7 @@ const Loading = () => {
   return (
     <LoadingDialog
       open={isLoading.value}
-      ListItemTextProps={{ primary: "Loading" }}
+      ListItemTextProps={{ primary: "Posting" }}
     />
   );
 };
@@ -158,7 +158,7 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
 
   return (
     <React.Fragment>
-      <Loading />
+      <Posting />
       <Card>
         <Hidden smUp>
           <Box display="flex" p={2}>

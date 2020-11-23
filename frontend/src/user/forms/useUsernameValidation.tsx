@@ -1,5 +1,3 @@
-import { CircularProgress, TextField, TextFieldProps } from "@material-ui/core";
-import React from "react";
 import { useDebounce } from "use-debounce/lib";
 import { useQueryUsers } from "../query";
 //copyed from server
@@ -15,22 +13,22 @@ export default (username: string) => {
     username: debouncedUsername,
   });
 
+  const isLoading = query.status === "loading";
+
   const usersWithUsername = query.data ?? [];
 
-  const isError =
-    (usersWithUsername.length > 0 || !isValidUsername(username)) &&
-    username.length !== 0;
+  const isInvalid = usersWithUsername.length > 0 || !isValidUsername(username);
 
   const helperText =
     usersWithUsername.length > 0
-      ? "Username is already being used"
+      ? "Username taken"
       : !isValidUsername(username) && username.length !== 0
-      ? "Username is not valid"
+      ? "Invalid username"
       : "";
 
   return {
-    isError,
+    isInvalid,
     helperText,
-    isLoading: query.status === "loading",
+    isLoading,
   };
 };

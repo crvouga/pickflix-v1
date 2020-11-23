@@ -16,6 +16,7 @@ interface Props {
     message: string;
   };
 }
+
 const close = (DialogProps: DialogProps) => () => {
   if (DialogProps.onClose) {
     DialogProps.onClose({}, "backdropClick");

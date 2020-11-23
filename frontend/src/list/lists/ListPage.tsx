@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
-import { useHistory, useParams } from "react-router";
+import { useParams } from "react-router";
 import BackButton from "../../app/navigation/BackButton";
 import ResponsiveNavigation from "../../app/navigation/ResponsiveNavigation";
 import EmptyPage from "../../common/page/EmptyPage";
@@ -20,7 +20,6 @@ import ListSection from "./ListSection";
 export default () => {
   const { listId } = useParams<{ listId: string }>();
   const query = useQueryLists({ id: listId });
-  const history = useHistory();
 
   if (query.error) {
     return <ErrorPage />;
@@ -61,6 +60,7 @@ export default () => {
 
       <Container disableGutters maxWidth="md">
         <ListItemsSection
+          owner={list.owner}
           listId={list.list.id}
           listItemCount={list.listItemCount}
         />

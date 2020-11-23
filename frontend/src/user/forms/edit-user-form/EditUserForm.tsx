@@ -1,43 +1,84 @@
-import React, { useState } from "react";
-import { TextField, TextFieldProps, CircularProgress } from "@material-ui/core";
-import { useQueryUsers } from "../../query";
-import { useDebounce } from "use-debounce/lib";
+import { Box, Button, ButtonProps, Hidden } from "@material-ui/core";
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import React from "react";
+import { UserAggergation } from "../../query";
+import UsernameTextField from "../UsernameTextField";
+import useEditUserForm from "./useEditUserForm";
 
-const NameField = React.forwardRef((props: TextFieldProps, ref) => {
-  return <TextField inputRef={ref} {...props} />;
-});
+const CancelButton = (props: ButtonProps) => {
+  return (
+    <Button size="large" {...props}>
+      Cancel
+    </Button>
+  );
+};
 
-export const UsernameField = React.forwardRef((props: TextFieldProps, ref) => {
-  const [username, setUsername] = useState("");
-  const [debouncedUsername] = useDebounce(username, 200);
-  const query = useQueryUsers({
-    username: debouncedUsername,
-  });
+const SubmitButton = (props: ButtonProps) => {
+  return (
+    <Box
+      color={props.disabled ? "action.disabled" : "text.primary"}
+      fontWeight="bold"
+    >
+      <Button
+        variant="contained"
+        color="primary"
+        size="large"
+        startIcon={<ArrowUpwardIcon />}
+        style={{ color: "inherit", fontWeight: "inherit" }}
+        {...props}
+      >
+        Submit
+      </Button>
+    </Box>
+  );
+};
 
-  const usersWithUsername = query.data ?? [];
+export default ({
+  currentUser,
+  onCancel,
+}: {
+  currentUser: UserAggergation;
+  onCancel: () => void;
+}) => {
+  const { usernameValidation, isDisabled, formState } = useEditUserForm();
 
   return (
-    <TextField
-      inputRef={ref}
-      onChange={(event) => {
-        setUsername(event.target.value);
-      }}
-      error={usersWithUsername.length > 0}
-      helperText={
-        usersWithUsername.length > 0 ? "Username is already being used" : ""
-      }
-      InputProps={{
-        endAdornment: (
-          <React.Fragment>
-            {query.status === "loading" && <CircularProgress size="1.75em" />}
-          </React.Fragment>
-        ),
-      }}
-      {...props}
-    />
-  );
-});
+    <Box p={2}>
+      <Hidden smUp>
+        <Box display="flex" paddingBottom={2}>
+          <CancelButton onClick={onCancel} />
+          <Box flex={1} />
+          <SubmitButton disabled={isDisabled} />
+        </Box>
+      </Hidden>
+      <Box paddingBottom={2}>
+        <UsernameTextField
+          fullWidth
+          defaultValue={formState.user?.username}
+          error={
+            usernameValidation.isInvalid &&
+            (formState.user?.username || "").length > 0
+          }
+          helperText={usernameValidation.helperText}
+          isLoading={usernameValidation.isLoading}
+          onChange={(event) => {
+            formState.setUser({
+              ...formState.user,
+              username: event.target.value,
+            });
+          }}
+        />
+      </Box>
 
-export default () => {
-  return <React.Fragment></React.Fragment>;
+      <Hidden xsDown>
+        <Box display="flex">
+          <Box flex={1} />
+          <Box marginRight={2}>
+            <CancelButton onClick={onCancel} />
+          </Box>
+          <SubmitButton disabled={isDisabled} />
+        </Box>
+      </Hidden>
+    </Box>
+  );
 };
