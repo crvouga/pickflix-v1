@@ -6,10 +6,12 @@ import ChipUser from "../../user/components/ChipUser";
 import { ListAggergation } from "../query";
 import ListCardImage from "./card/ListCardImage";
 import ListActionBar from "./ListActionBar";
+import RemoveListItemFormModal from "../forms/remove-list-items-form/RemoveListItemFormModal";
 
 export default ({ list }: { list: ListAggergation }) => {
   return (
     <React.Fragment>
+      <RemoveListItemFormModal />
       <Box
         width="100%"
         display="flex"

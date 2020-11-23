@@ -1,7 +1,6 @@
 import { Box, Chip, Zoom } from "@material-ui/core";
 import RemoveIcon from "@material-ui/icons/Remove";
 import React, { useEffect } from "react";
-import useModal from "../../app/modals/useModal";
 import { useListener } from "../../common/utility";
 import useDeleteListItemsForm from "../forms/remove-list-items-form/useRemoveListItemsForm";
 
@@ -13,13 +12,13 @@ export const ListItemActionBar = ({ listId }: { listId: string }) => {
     setIsSelecting,
     eventEmitter,
     setListId,
+    setIsModalOpen,
   } = useDeleteListItemsForm();
 
   useEffect(() => {
     setListId(listId);
   }, [listId]);
 
-  const deleteListItemsFormModal = useModal("DeleteListItemsForm");
   const seletectedCount = Object.values(listItemIds).length;
 
   useListener(eventEmitter, "submit", () => {
@@ -47,12 +46,14 @@ export const ListItemActionBar = ({ listId }: { listId: string }) => {
       <Box flex={1}></Box>
       <Zoom in={isSelecting}>
         <Chip
+          // color="primary"
           clickable
+          variant={seletectedCount === 0 ? "outlined" : "default"}
           disabled={seletectedCount === 0}
           label="Remove"
           icon={<RemoveIcon />}
           onClick={() => {
-            deleteListItemsFormModal.open();
+            setIsModalOpen(true);
           }}
         />
       </Zoom>

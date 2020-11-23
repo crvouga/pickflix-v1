@@ -1,19 +1,12 @@
-import {
-  AppBar,
-  Container,
-  Hidden,
-  Paper,
-  Toolbar,
-  Typography,
-} from "@material-ui/core";
+import { Container, Hidden, Paper } from "@material-ui/core";
 import React from "react";
 import { useParams } from "react-router";
-import BackButton from "../../app/navigation/BackButton";
 import ResponsiveNavigation from "../../app/navigation/ResponsiveNavigation";
 import EmptyPage from "../../common/page/EmptyPage";
 import ErrorPage from "../../common/page/ErrorPage";
 import LoadingPage from "../../common/page/LoadingPage";
 import ListItemsSection from "../list-items/ListItemsSection";
+import ListPageAppBar from "../ListPageAppBar";
 import { useQueryLists } from "../query";
 import ListSection from "./ListSection";
 
@@ -42,14 +35,7 @@ export default () => {
       <ResponsiveNavigation />
 
       <Hidden smUp>
-        <AppBar position="sticky" color="default">
-          <Toolbar>
-            <BackButton />
-            <Typography variant="h6" noWrap>
-              {list.list.title}
-            </Typography>
-          </Toolbar>
-        </AppBar>
+        <ListPageAppBar title={list.list.title} />
       </Hidden>
 
       <Paper>

@@ -1,10 +1,12 @@
 import { Box, makeStyles } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { APP_BAR_HEIGHT } from "../../app/navigation/constants";
 import WithAuthentication from "../../user/auth/WithAuthentication";
 import { User } from "../../user/query";
 import ListItemActionBar from "./ListItemActionBar";
 import ListItemGrid from "./ListItemGrid";
+import RemoveListItemFormModal from "../forms/remove-list-items-form/RemoveListItemFormModal";
+import useRemoveListItemsForm from "../forms/remove-list-items-form/useRemoveListItemsForm";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -26,8 +28,16 @@ export default ({
 }) => {
   const classes = useStyles();
 
+  const { setIsSelecting, setListItemIds } = useRemoveListItemsForm();
+  useEffect(() => {
+    setListItemIds({});
+    setIsSelecting(false);
+  }, []);
+
   return (
     <React.Fragment>
+      <RemoveListItemFormModal />
+
       <WithAuthentication
         renderAuthenticated={(currentUser) =>
           owner.id === currentUser.user.id && (
