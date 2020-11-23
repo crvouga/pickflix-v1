@@ -10,6 +10,7 @@ import { useQuery } from "react-query";
 import { useHistory } from "react-router";
 import { useDebounce } from "use-debounce/lib";
 import { getUsers } from "../../query";
+import UsernameTextFieldContainer from "../../forms/UsernameTextField";
 
 //copyed from server
 const USERNAME_REGEXP = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
@@ -57,7 +58,8 @@ export default ({ emailAddress }: { emailAddress: string }) => {
       </Box>
 
       <Box paddingBottom={2}>
-        <TextField
+        <UsernameTextFieldContainer fullWidth />
+        {/* <TextField
           variant="outlined"
           inputRef={refUsername}
           label="Username"
@@ -74,7 +76,7 @@ export default ({ emailAddress }: { emailAddress: string }) => {
                 <CircularProgress size="2em" />
               ) : null,
           }}
-        />
+        /> */}
       </Box>
 
       <Button

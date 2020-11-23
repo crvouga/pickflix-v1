@@ -5,7 +5,7 @@ import {
   PaginationOptions,
 } from "../../common/unit-of-work/types";
 import { CredentialType } from "../models/make-credential";
-import { UserId } from "../models/make-user";
+import { UserId, updateUser } from "../models/make-user";
 import {
   createUserWithPassword,
   verifyEmailAddressAndPassword,
@@ -129,5 +129,24 @@ export class UserLogic {
     });
 
     return results;
+  }
+
+  async editUser({
+    id,
+    ...edits
+  }: { id: UserId } & {
+    username?: string;
+    displayName?: string;
+    emailAddress?: string;
+  }) {
+    const { Users } = this.unitOfWork;
+
+    const user = await this.getUser({ id });
+
+    const updated = updateUser(user, edits);
+
+    await Users.update(updated);
+
+    return updated;
   }
 }

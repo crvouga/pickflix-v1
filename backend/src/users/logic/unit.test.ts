@@ -28,4 +28,26 @@ describe("user logic", () => {
     const results3 = await userLogic.searchByUsernameAndDisplayName("3");
     expect(results3).toContainEqual(user3);
   });
+
+  it("edit username", async () => {
+    const { userLogic } = buildUserLogicFake();
+    const before = makeUserFake({
+      username: "before",
+    });
+    await userLogic.unitOfWork.Users.add([before]);
+
+    await userLogic.editUser({
+      id: before.id,
+      username: "after",
+    });
+
+    const after = await userLogic.getUser({ id: before.id });
+
+    const { username: usernameBefore, ...userBefore } = before;
+    const { username: usernameAfter, ...userAfter } = after;
+
+    expect(usernameBefore).toBe("before");
+    expect(usernameAfter).toBe("after");
+    expect(userAfter).toStrictEqual(userBefore);
+  });
 });

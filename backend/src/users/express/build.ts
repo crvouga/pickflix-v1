@@ -1,10 +1,17 @@
 import { IRouter } from "express";
-import { Dependencies } from "./types";
-import { User } from "../models";
 import {
   makePaginationOptions,
   makePaginationResponse,
 } from "../../common/pagination";
+import { removeNullOrUndefinedEntries } from "../../common/utils";
+import {
+  castDisplayName,
+  castEmailAddress,
+  castUserId,
+  castUsername,
+  User,
+} from "../models";
+import { Dependencies } from "./types";
 
 export const buildAuthRouter = ({ userLogic, middlewares }: Dependencies) => (
   router: IRouter
@@ -164,6 +171,35 @@ export const buildUsersRouter = ({ userLogic, middlewares }: Dependencies) => (
       });
     } catch (error) {
       next(error);
+    }
+  });
+
+  router.patch("/users", middlewares.isAuthenticated, async (req, res) => {
+    try {
+      const userId = castUserId(req.user?.id);
+
+      const username = req.body.username
+        ? castUsername(req.body.username)
+        : undefined;
+
+      const displayName = req.body.displayName
+        ? castDisplayName(req.body.displayName)
+        : undefined;
+
+      const emailAddress = req.body.emailAddress
+        ? castEmailAddress(req.body.emailAddress)
+        : undefined;
+
+      const edits = removeNullOrUndefinedEntries({
+        username,
+        displayName,
+        emailAddress,
+      });
+
+      const patchedUser = await userLogic.editUser({ id: userId, ...edits });
+      res.json(200).json(patchedUser).end();
+    } catch (error) {
+      res.status(400).json({ message: "failed to edit user", error }).end();
     }
   });
 };

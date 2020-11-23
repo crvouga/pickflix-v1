@@ -1,4 +1,5 @@
 import * as EmailValidator from "email-validator";
+import { isNullOrUndefined } from "util";
 import { isValidId, makeId } from "../../common/id";
 import { Id } from "../../common/id/types";
 
@@ -96,4 +97,29 @@ export const makeUser = (partial: {
     username,
     displayName,
   });
+};
+
+export const updateUser = (
+  user: User,
+  {
+    displayName,
+    emailAddress,
+    username,
+  }: { displayName?: string; emailAddress?: string; username?: string }
+) => {
+  return {
+    ...castUser(user),
+
+    ...(isNullOrUndefined(displayName)
+      ? {}
+      : { displayName: castDisplayName(displayName) }),
+
+    ...(isNullOrUndefined(emailAddress)
+      ? {}
+      : { emailAddress: castEmailAddress(emailAddress) }),
+
+    ...(isNullOrUndefined(username)
+      ? {}
+      : { username: castUsername(username) }),
+  };
 };

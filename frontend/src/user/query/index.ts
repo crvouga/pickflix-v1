@@ -1,3 +1,4 @@
+import { useQuery } from "react-query";
 import { BackendAPI } from "../../backend-api";
 export * from "../auth/hooks";
 
@@ -39,17 +40,22 @@ export const getUser = async ({ username }: { username: string }) => {
 
 */
 
-export const getUsers = async ({
-  emailAddress,
-  username,
-}: {
+type GetUsersParams = {
   emailAddress?: string;
   username?: string;
-}) => {
+};
+
+export const getUsers = async (params: GetUsersParams) => {
   const { data } = await BackendAPI.get<User[]>("/api/users", {
-    params: { emailAddress, username },
+    params,
   });
   return data;
+};
+
+const makeGetUsersQueryKey = (params: GetUsersParams) => ["users", params];
+
+export const useQueryUsers = (params: GetUsersParams) => {
+  return useQuery(makeGetUsersQueryKey(params), () => getUsers(params));
 };
 
 /* 
