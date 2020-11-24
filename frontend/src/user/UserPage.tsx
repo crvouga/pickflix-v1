@@ -52,6 +52,16 @@ export default () => {
 
   const user = query.data;
 
+  const TypographyUsername = () => {
+    return (
+      <Box flex={1}>
+        <Typography variant="h6" align="center">
+          {user.user.username}
+        </Typography>
+      </Box>
+    );
+  };
+
   return (
     <React.Fragment>
       <ResponsiveNavigation />
@@ -60,18 +70,18 @@ export default () => {
           <Toolbar>
             <WithAuthentication
               renderAuthenticated={(currentUser) =>
-                currentUser.user.id === user.user.id && (
-                  <OpenCurrentUserActionsModalButton />
+                currentUser.user.id === user.user.id ? (
+                  <React.Fragment>
+                    <OpenCurrentUserActionsModalButton />
+                    <TypographyUsername />
+                    <Box p={3} />
+                  </React.Fragment>
+                ) : (
+                  <TypographyUsername />
                 )
               }
-              renderUnathenticated={() => <Box p={3} />}
+              renderDefault={() => <TypographyUsername />}
             />
-            <Box flex={1}>
-              <Typography variant="h6" align="center">
-                {user.user.username}
-              </Typography>
-            </Box>
-            <Box p={3} />
           </Toolbar>
         </AppBar>
       </Hidden>

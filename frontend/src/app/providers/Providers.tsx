@@ -10,8 +10,8 @@ type Props = React.PropsWithChildren<{}>;
 
 export default ({ children }: Props) => {
   return (
-    <ReduxProvider>
-      <ThemeProvider>
+    <ThemeProvider>
+      <ReduxProvider>
         <HistoryProvider>
           <QueryProvider>
             <TmdbConfigurationGate loading={<AppLoadingPage />}>
@@ -19,7 +19,7 @@ export default ({ children }: Props) => {
             </TmdbConfigurationGate>
           </QueryProvider>
         </HistoryProvider>
-      </ThemeProvider>
-    </ReduxProvider>
+      </ReduxProvider>
+    </ThemeProvider>
   );
 };
