@@ -2,20 +2,31 @@ import { Box, Button, Typography } from "@material-ui/core";
 import React, { useRef, useState } from "react";
 import { useHistory } from "react-router";
 import UsernameTextField from "../../forms/UsernameTextField";
-import useUsernameValidation from "../../forms/useUsernameValidation";
+import {
+  useIsUsernameTaken,
+  isValidUsername,
+} from "../../forms/useUsernameValidation";
 
 export default ({ emailAddress }: { emailAddress: string }) => {
-  const refUsername = useRef<HTMLInputElement>();
   const history = useHistory();
 
   const [username, setUsername] = useState("");
-  const { isInvalid, helperText, isLoading } = useUsernameValidation(username);
+  const { isTaken, isLoading } = useIsUsernameTaken(username);
+  const isValid = isValidUsername(username);
 
   const handleSubmit = () => {
     history.push(`/auth?emailAddress=${emailAddress}&username=${username}`);
   };
 
-  const disabled = isInvalid || isLoading;
+  const helperText =
+    !isValid && username.length > 0
+      ? "Invalid username"
+      : isTaken
+      ? "Username already being used"
+      : "";
+
+  const isError = !isValid || isTaken;
+  const disabled = isError || isLoading || username.length === 0;
 
   return (
     <React.Fragment>
@@ -32,7 +43,7 @@ export default ({ emailAddress }: { emailAddress: string }) => {
         <UsernameTextField
           fullWidth
           isLoading={isLoading}
-          error={isInvalid && username.length > 0}
+          error={isError && username.length > 0}
           helperText={helperText}
           onChange={(e) => {
             setUsername(e.target.value);

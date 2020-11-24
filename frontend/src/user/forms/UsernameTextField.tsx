@@ -47,7 +47,7 @@ export default React.forwardRef(({ isLoading, ...props }: Props, ref) => {
       InputProps={{
         endAdornment: (
           <React.Fragment>
-            {isLoading && <CircularProgress size="1.75em" />}
+            {isLoading && <CircularProgress disableShrink size="1.75em" />}
           </React.Fragment>
         ),
       }}

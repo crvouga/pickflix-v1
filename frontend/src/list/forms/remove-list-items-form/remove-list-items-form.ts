@@ -2,6 +2,7 @@ import {
   bindActionCreators,
   createAction,
   createReducer,
+  createSelector,
 } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../../app/redux/types";
@@ -13,10 +14,12 @@ const name = "removeListItemsForm";
 
 */
 
+export type IsSelecting = boolean;
+
 export type RemoveListItemsFormState = {
   listItemIds: { [key: string]: string };
   listId?: string;
-  isSelecting: boolean;
+  isSelecting: IsSelecting;
 };
 
 /* 
@@ -36,6 +39,7 @@ const initialState: RemoveListItemsFormState = {
 const slice = (state: AppState) => state.removeListItemsForm;
 const selectors = {
   slice,
+  isSelecting: createSelector([slice], (slice) => slice.isSelecting),
 };
 
 /* 
@@ -47,7 +51,7 @@ const actions = {
   setListItemIds: createAction<{ [id: string]: string }>(
     name + "/SET_LIST_ITEM_IDS"
   ),
-  setIsSelecting: createAction<boolean>(name + "/SET_IS_SELECTING"),
+  setIsSelecting: createAction<IsSelecting>(name + "/SET_IS_SELECTING"),
 };
 
 /* 

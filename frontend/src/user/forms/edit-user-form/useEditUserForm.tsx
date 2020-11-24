@@ -1,10 +1,6 @@
 import { createEventEmitter } from "../../../common/utility";
-import {
-  PatchUserParams,
-  useEditUserMutation,
-  useQueryCurrentUser,
-} from "../../query";
-import useUsernameValidation from "../useUsernameValidation";
+import { PatchUserParams, useEditUserMutation } from "../../query";
+import { isValidUsername, useIsUsernameTaken } from "../useUsernameValidation";
 import { useEditUserFormState } from "./edit-user-form";
 
 const eventEmitter = createEventEmitter<{
@@ -14,12 +10,23 @@ const eventEmitter = createEventEmitter<{
   submitSettled: undefined;
 }>();
 
+const useUsernameValidation = (username: string) => {
+  const { isTaken, isLoading } = useIsUsernameTaken(username);
+  const isValid = isValidUsername(username);
+  return {
+    isValid,
+    isTaken,
+    isLoading,
+  };
+};
+
 export default () => {
   const formState = useEditUserFormState();
 
   const usernameValidation = useUsernameValidation(
-    formState.user.username || ""
+    formState.user?.username ?? ""
   );
+
   const mutate = useEditUserMutation();
 
   const submit = async (params: PatchUserParams) => {
@@ -34,13 +41,16 @@ export default () => {
       eventEmitter.emit("submitSettled");
     }
   };
+
   const isDisabled =
-    usernameValidation.isInvalid || usernameValidation.isLoading;
+    !usernameValidation.isValid ||
+    usernameValidation.isLoading ||
+    usernameValidation.isTaken;
 
   return {
     isDisabled,
-    formState,
     usernameValidation,
+    formState,
     submit,
     eventEmitter,
   };
