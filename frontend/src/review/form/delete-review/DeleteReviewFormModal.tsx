@@ -10,7 +10,7 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import React from "react";
-import { useSnackbar } from "../../../app/modals/redux/snackbar";
+import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
 import useModal from "../../../app/modals/useModal";
 import { ZoomIn } from "../../../common/components/TransitionComponents";
 import useBoolean from "../../../common/hooks/useBoolean";

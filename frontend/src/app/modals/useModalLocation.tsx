@@ -1,23 +1,7 @@
 import { useHistory, useLocation } from "react-router";
+import { IModal, ModalName } from "./types";
 
-export type ModalName =
-  | "AddListItemForm"
-  | "DeleteListItemsForm"
-  | "CreateListForm"
-  | "CreateListWithListItemsForm"
-  | "ReviewForm"
-  | "DeleteReviewForm"
-  | "EditListForm"
-  | "DeleteListForm"
-  | "DiscoverSort"
-  | "DiscoverSearch"
-  | "DiscoverTune"
-  | "Search"
-  | "ToggleListItemForm"
-  | "EditUserForm"
-  | "CurrentUserActions";
-
-export default (modalName: ModalName) => {
+export default (modalName: ModalName): IModal => {
   const history = useHistory();
   const location = useLocation<{ [key in ModalName]: boolean }>();
 

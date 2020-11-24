@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import React, { useRef } from "react";
 import useModal from "../../../app/modals/useModal";
-import { useSnackbar } from "../../../app/modals/redux/snackbar";
+import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
 import { useListener } from "../../../common/utility";
 import useEditListForm from "./useEditListForm";
 

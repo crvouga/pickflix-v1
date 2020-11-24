@@ -14,10 +14,12 @@ import { deleteReviewForm } from "../../review/form/delete-review/delete-review-
 import { reviewForm } from "../../review/form/review-form/review-form";
 import { search } from "../../search/redux/search";
 import { editUserForm } from "../../user/forms/edit-user-form/edit-user-form";
-import { snackbar } from "../modals/redux/snackbar";
+import { snackbar } from "../snackbar/redux/snackbar";
+import { modal } from "../modals/redux/modal";
 import { AppState } from "./types";
 
 const reducers: { [key in keyof AppState]: Reducer } = {
+  modal: modal.reducer,
   editUserForm: editUserForm.reducer,
   createListWithListItemsForm: createListWithListItemsForm.reducer,
   deleteListForm: deleteListForm.reducer,

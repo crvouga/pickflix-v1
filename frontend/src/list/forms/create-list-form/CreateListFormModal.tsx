@@ -8,8 +8,8 @@ import {
   TextField,
 } from "@material-ui/core";
 import React, { useRef } from "react";
-import { useSnackbar } from "../../../app/modals/redux/snackbar";
-import { LinkButton } from "../../../app/modals/Snackbar";
+import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
+import { LinkButton } from "../../../app/snackbar/Snackbar";
 import useModal from "../../../app/modals/useModal";
 import LoadingDialog from "../../../common/components/LoadingDialog";
 import { ZoomIn } from "../../../common/components/TransitionComponents";

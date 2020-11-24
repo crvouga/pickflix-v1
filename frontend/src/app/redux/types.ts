@@ -13,9 +13,11 @@ import { DeleteReviewFormState } from "../../review/form/delete-review/delete-re
 import { ReviewFormState } from "../../review/form/review-form/review-form";
 import { SearchState } from "../../search/redux/search";
 import { EditUserFormState } from "../../user/forms/edit-user-form/edit-user-form";
-import { SnackbarState } from "../modals/redux/snackbar";
+import { SnackbarState } from "../snackbar/redux/snackbar";
+import { ModalState } from "../modals/redux/modal";
 
 export type AppState = {
+  modal: ModalState;
   editUserForm: EditUserFormState;
   toggleListItemForm: ToggleListItemFormState;
   deleteListForm: DeleteListFormState;

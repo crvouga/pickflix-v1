@@ -6,7 +6,7 @@ import {
 } from "@material-ui/core";
 import "fontsource-roboto";
 import React from "react";
-import { palette } from "../media/tmdb/attribution";
+import { palette } from "../../media/tmdb/attribution";
 
 export const theme = createMuiTheme({
   typography: {

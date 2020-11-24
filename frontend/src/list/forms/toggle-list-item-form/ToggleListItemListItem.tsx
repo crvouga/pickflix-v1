@@ -12,7 +12,7 @@ import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
 import { Skeleton } from "@material-ui/lab";
 import React from "react";
 import { useHistory } from "react-router";
-import { LinkButton } from "../../../app/modals/Snackbar";
+import { LinkButton } from "../../../app/snackbar/Snackbar";
 import { MediaId } from "../../../media/tmdb/types";
 import useToggleListItemMutation from "./useToggleListItemMutation";
 

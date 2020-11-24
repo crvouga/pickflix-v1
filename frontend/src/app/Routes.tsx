@@ -12,7 +12,7 @@ import AuthPage from "../user/auth/auth-form/AuthPage";
 import CurrentUserPage from "../user/CurrentUserPage";
 import UserPage from "../user/UserPage";
 import Modals from "./modals/Modals";
-import Snackbar from "./modals/Snackbar";
+import Snackbar from "./snackbar/Snackbar";
 import { BottomNavigationGutter } from "./navigation/Navigation.Mobile";
 
 export default () => {

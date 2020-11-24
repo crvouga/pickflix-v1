@@ -11,8 +11,8 @@ import {
 import React, { useRef } from "react";
 import { MovieCardHeaderContainer } from "../../../movie/components/MovieCardHeader";
 import useModal from "../../../app/modals/useModal";
-import { useSnackbar } from "../../../app/modals/redux/snackbar";
-import { LinkButton } from "../../../app/modals/Snackbar";
+import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
+import { LinkButton } from "../../../app/snackbar/Snackbar";
 import { useListener } from "../../../common/utility";
 import useCreateListWithListItemsForm from "./useCreateListWithListItemsForm";
 

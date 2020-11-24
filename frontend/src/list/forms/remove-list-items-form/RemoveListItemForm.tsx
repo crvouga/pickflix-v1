@@ -2,7 +2,7 @@ import { Button, DialogActions, DialogTitle } from "@material-ui/core";
 import React from "react";
 import LoadingDialog from "../../../common/components/LoadingDialog";
 import useBoolean from "../../../common/hooks/useBoolean";
-import { useSnackbar } from "../../../app/modals/redux/snackbar";
+import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
 import { pluralize, useListener } from "../../../common/utility";
 import useDeleteListItemsForm from "./useRemoveListItemsForm";
 
@@ -30,7 +30,7 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
 
   useListener(eventEmitter, "submitSuccess", () => {
     snackbar.display({
-      message: `Deleted ${pluralize(selectedCount, "item")}`,
+      message: `Removed ${pluralize(selectedCount, "item")}`,
     });
   });
 

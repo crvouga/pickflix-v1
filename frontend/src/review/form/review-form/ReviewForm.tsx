@@ -11,7 +11,7 @@ import {
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import Rating from "@material-ui/lab/Rating";
 import React, { useEffect, useRef, useState } from "react";
-import { useSnackbar } from "../../../app/modals/redux/snackbar";
+import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
 import ListItemSkeleton from "../../../common/components/ListItemSkeleton";
 import LoadingDialog from "../../../common/components/LoadingDialog";
 import useBoolean from "../../../common/hooks/useBoolean";

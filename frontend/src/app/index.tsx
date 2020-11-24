@@ -1,5 +1,5 @@
 import React from "react";
-import Providers from "./Providers";
+import Providers from "./providers/Providers";
 import Routes from "./Routes";
 import useDisableZoom from "./useDisableZoom";
 

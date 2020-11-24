@@ -17,7 +17,6 @@ export type RemoveListItemsFormState = {
   listItemIds: { [key: string]: string };
   listId?: string;
   isSelecting: boolean;
-  isModalOpen: boolean;
 };
 
 /* 
@@ -28,7 +27,6 @@ const initialState: RemoveListItemsFormState = {
   listId: undefined,
   listItemIds: {},
   isSelecting: false,
-  isModalOpen: false,
 };
 
 /* 
@@ -50,7 +48,6 @@ const actions = {
     name + "/SET_LIST_ITEM_IDS"
   ),
   setIsSelecting: createAction<boolean>(name + "/SET_IS_SELECTING"),
-  setIsModalOpen: createAction<boolean>(name + "/SET_IS_MODAL_OPEN"),
 };
 
 /* 
@@ -61,7 +58,6 @@ const reducer = createReducer(initialState, {
   [actions.setListId.toString()]: createPayloadReducer("listId"),
   [actions.setIsSelecting.toString()]: createPayloadReducer("isSelecting"),
   [actions.setListItemIds.toString()]: createPayloadReducer("listItemIds"),
-  [actions.setIsModalOpen.toString()]: createPayloadReducer("isModalOpen"),
 });
 
 /* 
@@ -74,6 +70,10 @@ export const removeListItemsForm = {
   selectors,
   name,
 };
+
+/* 
+
+*/
 
 export const useRemoveListItemsFormState = () => {
   const slice = useSelector(removeListItemsForm.selectors.slice);

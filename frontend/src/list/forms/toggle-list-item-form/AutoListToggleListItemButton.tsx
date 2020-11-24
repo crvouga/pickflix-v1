@@ -1,6 +1,6 @@
 import React from "react";
-import { useSnackbar } from "../../../app/modals/redux/snackbar";
-import { LinkButton } from "../../../app/modals/Snackbar";
+import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
+import { LinkButton } from "../../../app/snackbar/Snackbar";
 import LabeledIconButton from "../../../common/components/LabeledIconButton";
 import { MediaId } from "../../../media/tmdb/types";
 import { useListener } from "../../../common/utility";

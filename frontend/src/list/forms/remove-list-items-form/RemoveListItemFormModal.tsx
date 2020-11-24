@@ -1,24 +1,20 @@
 import { Dialog } from "@material-ui/core";
 import React from "react";
+import useModal from "../../../app/modals/useModal";
 import { ZoomIn } from "../../../common/components/TransitionComponents";
 import { useListener } from "../../../common/utility";
 import DeleteListItemForm from "./RemoveListItemForm";
 import useRemoveListItemsForm from "./useRemoveListItemsForm";
 
 export default () => {
-  const {
-    eventEmitter,
-    isModalOpen,
-    setIsModalOpen,
-  } = useRemoveListItemsForm();
+  const { isOpen, close } = useModal("RemoveListItemsForm");
+  const { eventEmitter } = useRemoveListItemsForm();
 
-  const onClose = () => setIsModalOpen(false);
-
-  useListener(eventEmitter, "submit", onClose);
+  useListener(eventEmitter, "submit", close);
 
   return (
-    <Dialog TransitionComponent={ZoomIn} open={isModalOpen} onClose={onClose}>
-      <DeleteListItemForm onCancel={onClose} />
+    <Dialog TransitionComponent={ZoomIn} open={isOpen} onClose={close}>
+      <DeleteListItemForm onCancel={close} />
     </Dialog>
   );
 };

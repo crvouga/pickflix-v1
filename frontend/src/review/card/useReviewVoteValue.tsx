@@ -1,5 +1,5 @@
 import { QueryKey, useQueryCache } from "react-query";
-import { useSnackbar } from "../../app/modals/redux/snackbar";
+import { useSnackbar } from "../../app/snackbar/redux/snackbar";
 import {
   deleteReviewVote,
   GetReviewsResponseData,
