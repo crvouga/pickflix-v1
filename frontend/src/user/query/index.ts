@@ -63,6 +63,7 @@ type GetUsersParams = {
 
 type GetUsersData = Paginated<UserAggergation>;
 const EMPTY_GET_USERS_DATA = makeEmptyPaginatedResponse<UserAggergation>();
+
 export const getUsers = async (params: GetUsersParams) => {
   const { emailAddress, username } = params;
 

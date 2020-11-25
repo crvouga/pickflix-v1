@@ -1,15 +1,5 @@
 import { createEventEmitter } from "../../../common/utility";
-import {
-  isValidDisplayName,
-  PatchUserParams,
-  useEditUserMutation,
-  User,
-} from "../../query";
-import {
-  useEditEmailAddressValidation,
-  useEditUsernameValidation,
-} from "../validation";
-import { useEditUserFormState } from "./edit-user-form";
+import { PatchUserParams, useEditUserMutation } from "../../query";
 
 const eventEmitter = createEventEmitter<{
   submit: undefined;
@@ -18,47 +8,7 @@ const eventEmitter = createEventEmitter<{
   submitSettled: undefined;
 }>();
 
-export const useEditUserFormValidation = (
-  currentUser: User,
-  {
-    username,
-    emailAddress,
-    displayName,
-  }: { username: string; emailAddress: string; displayName: string }
-) => {
-  const usernameValidation = useEditUsernameValidation(currentUser, username);
-
-  const emailAddressValidation = useEditEmailAddressValidation(
-    currentUser,
-    emailAddress
-  );
-
-  const displayNameValidation = {
-    isValid: isValidDisplayName(displayName),
-  };
-
-  const isLoading =
-    usernameValidation.isLoading || emailAddressValidation.isLoading;
-
-  const isValid =
-    usernameValidation.isValid &&
-    emailAddressValidation.isValid &&
-    displayNameValidation.isValid;
-
-  const isTaken = usernameValidation.isTaken || emailAddressValidation.isTaken;
-
-  const isDisabled = isLoading || !isValid || isTaken;
-
-  return {
-    isDisabled,
-    username: usernameValidation,
-    displayName: displayNameValidation,
-    emailAddress: emailAddressValidation,
-  };
-};
-
 export default () => {
-  const formState = useEditUserFormState();
   const mutate = useEditUserMutation();
 
   const submit = async (params: PatchUserParams & { userId: string }) => {
@@ -75,7 +25,6 @@ export default () => {
   };
 
   return {
-    formState,
     submit,
     eventEmitter,
   };

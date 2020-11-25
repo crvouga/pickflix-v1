@@ -5,13 +5,14 @@ import { signUp } from "../query/mutations";
 export default ({
   emailAddress,
   username,
+  displayName,
 }: {
   emailAddress: string;
   username: string;
+  displayName: string;
 }) => {
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
-  const [displayName, setDisplayName] = useState("");
 
   const disabled = password !== passwordRepeat;
 

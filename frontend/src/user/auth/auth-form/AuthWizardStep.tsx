@@ -8,14 +8,16 @@ import Email from "./Email";
 import Password from "./Password";
 import PasswordForgot from "./PasswordForgot";
 import PasswordReset from "./PasswordReset";
-import PickUsername from "./PickUsername";
+import UsernameAndName from "./UsernameAndName";
 
 export default () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
 
   const emailAddress = params.get("emailAddress") || "";
+  const displayName = params.get("displayName") || "";
   const username = params.get("username");
+
   const resetPasswordToken = params.get("resetPasswordToken");
   const forgotPasswordFlag = params.get("forgotPasswordFlag");
 
@@ -45,11 +47,17 @@ export default () => {
   const users = queryUsers.data.results.map((_) => _.user);
 
   if (users.length === 0 && !username) {
-    return <PickUsername emailAddress={emailAddress} />;
+    return <UsernameAndName emailAddress={emailAddress} />;
   }
 
   if (users.length === 0 && username) {
-    return <CreateAccount username={username} emailAddress={emailAddress} />;
+    return (
+      <CreateAccount
+        displayName={displayName}
+        username={username}
+        emailAddress={emailAddress}
+      />
+    );
   }
 
   const user = users[0];

@@ -1,25 +1,25 @@
-import {
-  Box,
-  Button,
-  ButtonProps,
-  CircularProgress,
-  Hidden,
-  List,
-  TextField,
-} from "@material-ui/core";
+import { Box, Button, ButtonProps, Hidden, List } from "@material-ui/core";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
-import React, { useEffect } from "react";
+import React from "react";
 import LoadingDialog from "../../../common/components/LoadingDialog";
 import useBoolean from "../../../common/hooks/useBoolean";
 import { useListener } from "../../../common/utility";
 import WithAuthentication from "../../auth/WithAuthentication";
 import UserListItem from "../../components/UserListItem";
+import { UserAggergation } from "../../query";
 import {
-  MAX_DISPLAY_NAME_LENGTH,
-  MAX_USERNAME_LENGTH,
-  UserAggergation,
-} from "../../query";
-import useEditUserForm, { useEditUserFormValidation } from "./useEditUserForm";
+  DisplayNameTextField,
+  useDisplayNameTextFieldState,
+} from "../DisplayNameTextField";
+import {
+  EmailAddressTextField,
+  useEmailAddressTextFieldState,
+} from "../EmailAddressTextField";
+import {
+  UsernameTextField,
+  useUsernameTextFieldState,
+} from "../UsernameTextField";
+import useEditUserForm from "./useEditUserForm";
 
 const CancelButton = (props: ButtonProps) => {
   return (
@@ -29,29 +29,10 @@ const CancelButton = (props: ButtonProps) => {
   );
 };
 
-const SubmitButtonContainer = ({
-  currentUser,
-}: {
-  currentUser: UserAggergation;
-}) => {
-  const { formState, submit } = useEditUserForm();
-  const { isDisabled } = useEditUserFormValidation(
-    currentUser.user,
-    formState.user
-  );
-
-  const handleSubmit = () => {
-    const { displayName, username, emailAddress } = formState.user;
-    submit({
-      userId: currentUser.user.id,
-      displayName,
-      username,
-      emailAddress,
-    });
-  };
+const SubmitButton = (props: ButtonProps) => {
   return (
     <Box
-      color={isDisabled ? "action.disabled" : "text.primary"}
+      color={props.disabled ? "action.disabled" : "text.primary"}
       fontWeight="bold"
     >
       <Button
@@ -60,139 +41,11 @@ const SubmitButtonContainer = ({
         size="large"
         startIcon={<ArrowUpwardIcon />}
         style={{ color: "inherit", fontWeight: "inherit" }}
-        onClick={handleSubmit}
-        disabled={isDisabled}
+        {...props}
       >
         Submit
       </Button>
     </Box>
-  );
-};
-
-const TextFieldUsernameContainer = ({
-  currentUser,
-}: {
-  currentUser: UserAggergation;
-}) => {
-  const { formState } = useEditUserForm();
-  const validation = useEditUserFormValidation(
-    currentUser.user,
-    formState.user
-  );
-  const { isTaken, isLoading, isValid } = validation.username;
-
-  const isCurrentUsersUsername =
-    formState.user?.username === currentUser.user.username;
-
-  const isError =
-    (isTaken || !isValid) && !isCurrentUsersUsername && !isLoading;
-
-  const helperText =
-    isTaken && !isCurrentUsersUsername && !isLoading
-      ? "Username taken"
-      : !isValid
-      ? "Invalid username"
-      : "";
-
-  return (
-    <TextField
-      label="Username"
-      fullWidth
-      defaultValue={currentUser.user.username}
-      error={isError}
-      helperText={helperText}
-      onChange={(event) => {
-        const newUsername = event.target.value.slice(0, MAX_USERNAME_LENGTH);
-
-        event.target.value = newUsername;
-
-        formState.setUser({
-          ...formState.user,
-          username: newUsername,
-        });
-      }}
-      InputProps={{
-        endAdornment: isLoading ? <CircularProgress size="2em" /> : undefined,
-      }}
-    />
-  );
-};
-
-const TextFieldNameContainer = ({
-  currentUser,
-}: {
-  currentUser: UserAggergation;
-}) => {
-  const { formState } = useEditUserForm();
-  const validation = useEditUserFormValidation(
-    currentUser.user,
-    formState.user
-  );
-  const { isValid } = validation.displayName;
-
-  const helperText = !isValid
-    ? "Invalid name"
-    : "Help people search for your account by using the name you're known by.";
-
-  return (
-    <TextField
-      label="Name"
-      fullWidth
-      defaultValue={currentUser.user.displayName}
-      error={!isValid}
-      helperText={helperText}
-      onChange={(event) => {
-        const newDisplayName = event.target.value.slice(
-          0,
-          MAX_DISPLAY_NAME_LENGTH
-        );
-
-        event.target.value = newDisplayName;
-
-        formState.setUser({
-          ...formState.user,
-          displayName: newDisplayName,
-        });
-      }}
-    />
-  );
-};
-
-const TextFieldEmailAddressContainer = ({
-  currentUser,
-}: {
-  currentUser: UserAggergation;
-}) => {
-  const { formState } = useEditUserForm();
-  const validation = useEditUserFormValidation(
-    currentUser.user,
-    formState.user
-  );
-  const { isValid, isTaken, isLoading } = validation.emailAddress;
-
-  const helperText = !isValid
-    ? "Invalid email address"
-    : isTaken
-    ? "Email address taken"
-    : "";
-
-  return (
-    <TextField
-      label="Email Address"
-      fullWidth
-      defaultValue={currentUser.user.emailAddress}
-      error={!isValid}
-      helperText={helperText}
-      onChange={(event) => {
-        formState.setUser({
-          ...formState.user,
-          emailAddress: event.target.value,
-        });
-      }}
-      InputProps={{
-        endAdornment: isLoading ? <CircularProgress size="2em" /> : undefined,
-      }}
-    />
   );
 };
 
@@ -216,11 +69,37 @@ const EditUserForm = ({
   currentUser: UserAggergation;
   onCancel: () => void;
 }) => {
-  const { formState } = useEditUserForm();
+  const usernameTextFieldState = useUsernameTextFieldState({
+    currentUsername: currentUser.user.username,
+  });
 
-  useEffect(() => {
-    formState.setUser(currentUser.user);
-  }, []);
+  const displayNameTextFieldState = useDisplayNameTextFieldState({
+    currentDisplayName: currentUser.user.displayName,
+  });
+
+  const emailAddressTextFieldState = useEmailAddressTextFieldState({
+    currentEmailAddress: currentUser.user.emailAddress,
+  });
+
+  const isDisabled =
+    usernameTextFieldState.isError ||
+    displayNameTextFieldState.isError ||
+    emailAddressTextFieldState.isError;
+
+  const { submit } = useEditUserForm();
+
+  const handleSubmit = () => {
+    const userId = currentUser.user.id;
+    const { username } = usernameTextFieldState;
+    const { displayName } = displayNameTextFieldState;
+    const { emailAddress } = emailAddressTextFieldState;
+    submit({
+      userId,
+      username,
+      displayName,
+      emailAddress,
+    });
+  };
 
   return (
     <React.Fragment>
@@ -230,7 +109,7 @@ const EditUserForm = ({
           <Box display="flex" paddingBottom={2}>
             <CancelButton onClick={onCancel} />
             <Box flex={1} />
-            <SubmitButtonContainer currentUser={currentUser} />
+            <SubmitButton disabled={isDisabled} onClick={handleSubmit} />
           </Box>
         </Hidden>
 
@@ -239,13 +118,13 @@ const EditUserForm = ({
         </List>
 
         <Box paddingBottom={2}>
-          <TextFieldUsernameContainer currentUser={currentUser} />
+          <UsernameTextField state={usernameTextFieldState} />
         </Box>
         <Box paddingBottom={2}>
-          <TextFieldNameContainer currentUser={currentUser} />
+          <DisplayNameTextField state={displayNameTextFieldState} />
         </Box>
         <Box paddingBottom={4}>
-          <TextFieldEmailAddressContainer currentUser={currentUser} />
+          <EmailAddressTextField state={emailAddressTextFieldState} />
         </Box>
 
         <Hidden xsDown>
@@ -254,7 +133,7 @@ const EditUserForm = ({
             <Box marginRight={2}>
               <CancelButton onClick={onCancel} />
             </Box>
-            <SubmitButtonContainer currentUser={currentUser} />
+            <SubmitButton disabled={isDisabled} onClick={handleSubmit} />
           </Box>
         </Hidden>
       </Box>
