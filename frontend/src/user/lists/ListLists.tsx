@@ -101,12 +101,15 @@ const ListListsUser = ({
   if (query.error) {
     return null;
   }
+
   if (query.data === undefined) {
     return <ListCardListSkeleton count={user.listCount} />;
   }
-  if (query.data.length === 0) {
+
+  if (query.data[0].results.length === 0) {
     return <ListCardListEmpty />;
   }
+
   return <ListCardList onClick={onClick} lists={query.data[0].results} />;
 };
 
