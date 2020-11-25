@@ -1,12 +1,11 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
+import useModal from "../../app/modals/useModal";
 import ListCard from "../../list/lists/card/ListCard";
 import ListCardCallToAction from "../../list/lists/card/ListCardCallToAction";
 import ListCardListSkeleton from "../../list/lists/card/ListCardListSkeleton";
 import { ListAggergation, useQueryLists } from "../../list/query";
-import useModal from "../../app/modals/useModal";
-import { UserAggergation } from "../query";
-import { useQueryCurrentUser } from "../query/hooks";
+import { useQueryCurrentUser, UserAggergation } from "../query";
 
 const ListCardListEmpty = () => {
   return (
@@ -55,7 +54,9 @@ const ListListsCurrentUser = ({
   currentUser: UserAggergation;
   onClick: (list: ListAggergation) => void;
 }) => {
-  const query = useQueryLists({});
+  const query = useQueryLists({
+    ownerId: currentUser.user.id,
+  });
   const createListFormModal = useModal("CreateListForm");
 
   if (query.error) {

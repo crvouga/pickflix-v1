@@ -16,7 +16,7 @@ import ListItemSkeleton from "../../../common/components/ListItemSkeleton";
 import LoadingDialog from "../../../common/components/LoadingDialog";
 import useBoolean from "../../../common/hooks/useBoolean";
 import UserListItem from "../../../user/components/UserListItem";
-import { useQueryCurrentUser } from "../../../user/query/hooks";
+import { useQueryCurrentUser } from "../../../user/query";
 import { useListener } from "../../../common/utility";
 import ReviewFormMedia from "./ReviewFormMedia";
 import useReviewForm from "./useReviewForm";

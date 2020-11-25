@@ -44,7 +44,10 @@ export const useQueryAutoLists = (params: GetAutoListParams) => {
 
 type GetListsData = Paginated<ListAggergation>[];
 
-const makeGetListsQueryKey = (params: GetListsParams) => ["lists", params];
+export const makeGetListsQueryKey = (params: GetListsParams) => [
+  "lists",
+  params,
+];
 
 export const useQueryLists = (params: GetListsParams) => {
   return useInfiniteQueryPagination(

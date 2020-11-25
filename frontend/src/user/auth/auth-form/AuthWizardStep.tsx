@@ -1,9 +1,8 @@
 import React from "react";
-import { useQuery } from "react-query";
 import { useLocation } from "react-router";
 import ErrorBox from "../../../common/components/ErrorBox";
 import LoadingBox from "../../../common/components/LoadingBox";
-import { getUsers, queryKeys } from "../../query";
+import { useQueryUsers } from "../../query";
 import CreateAccount from "./CreateAccount";
 import Email from "./Email";
 import Password from "./Password";
@@ -15,14 +14,12 @@ export default () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
 
-  const emailAddress = params.get("emailAddress");
+  const emailAddress = params.get("emailAddress") || "";
   const username = params.get("username");
   const resetPasswordToken = params.get("resetPasswordToken");
   const forgotPasswordFlag = params.get("forgotPasswordFlag");
 
-  const queryUsers = useQuery(queryKeys.users(emailAddress || ""), () =>
-    emailAddress ? getUsers({ emailAddress }) : Promise.reject()
-  );
+  const queryUsers = useQueryUsers({ emailAddress });
 
   if (!emailAddress) {
     return <Email />;

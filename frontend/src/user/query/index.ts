@@ -1,7 +1,8 @@
+import equals from "fast-deep-equal";
 import { useQuery, useQueryCache } from "react-query";
 import { BackendAPI } from "../../backend-api";
 import { Paginated } from "../../common/types";
-export * from "./hooks";
+import { makeGetListsQueryKey } from "../../list/query";
 
 export type User = {
   type: "user";
@@ -18,10 +19,15 @@ export type UserAggergation = {
   autoListCount: number;
 };
 
-export const queryKeys = {
-  user: ({ username }: { username: string }) => ["users", username],
-  currentUser: () => ["current-user"],
-  users: (email: string) => ["users", email],
+/* 
+
+
+*/
+
+export const makeGetCurrentUserQueryKey = () => ["current-user"];
+
+export const useQueryCurrentUser = () => {
+  return useQuery(makeGetCurrentUserQueryKey(), () => getCurrentUser());
 };
 
 /* 
@@ -96,8 +102,9 @@ export const useEditUserMutation = () => {
     } finally {
       queryCache.invalidateQueries(
         (query) =>
-          query.queryKey.includes("current-user") ||
-          query.queryKey.includes(userId)
+          equals(query.queryKey, makeGetCurrentUserQueryKey()) ||
+          equals(query.queryKey, makeGetUsersQueryKey({ id: userId })) ||
+          equals(query.queryKey, makeGetListsQueryKey({ ownerId: userId }))
       );
     }
   };
