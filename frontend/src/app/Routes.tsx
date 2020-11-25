@@ -1,36 +1,44 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Route, Switch } from "react-router";
-import EmptyPage from "../common/page/EmptyPage";
-import DiscoverMoviePage from "../discover/DiscoverMoviePage";
-import HomePage from "../home/HomePage";
-import AutoListPage from "../list/auto-lists/AutoListPage";
-import ListPage from "../list/lists/ListPage";
-import MoviePage from "../movie/MoviePage";
-import PersonPage from "../person/PersonPage";
-import SearchPage from "../search/SearchPage.Mobile";
-import AuthPage from "../user/auth/auth-form/AuthPage";
-import CurrentUserPage from "../user/CurrentUserPage";
-import UserPage from "../user/UserPage";
+import LoadingPage from "../common/page/LoadingPage";
 import Modals from "./modals/Modals";
-import Snackbar from "./snackbar/Snackbar";
 import { BottomNavigationGutter } from "./navigation/Navigation.Mobile";
+import Snackbar from "./snackbar/Snackbar";
+
+const HomePage = React.lazy(() => import("../home/HomePage"));
+const EmptyPage = React.lazy(() => import("../common/page/EmptyPage"));
+const DiscoverMoviePage = React.lazy(
+  () => import("../discover/DiscoverMoviePage")
+);
+const AutoListPage = React.lazy(
+  () => import("../list/auto-lists/AutoListPage")
+);
+const ListPage = React.lazy(() => import("../list/lists/ListPage"));
+const MoviePage = React.lazy(() => import("../movie/MoviePage"));
+const PersonPage = React.lazy(() => import("../person/PersonPage"));
+const SearchPage = React.lazy(() => import("../search/SearchPage.Mobile"));
+const AuthPage = React.lazy(() => import("../user/auth/auth-form/AuthPage"));
+const CurrentUserPage = React.lazy(() => import("../user/CurrentUserPage"));
+const UserPage = React.lazy(() => import("../user/UserPage"));
 
 export default () => {
   return (
     <React.Fragment>
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route path="/discover" component={DiscoverMoviePage} />
-        <Route path="/search" component={SearchPage} />
-        <Route path="/movie/:tmdbMediaId" component={MoviePage} />
-        <Route path="/person/:tmdbMediaId" component={PersonPage} />
-        <Route path="/list/:listId" component={ListPage} />
-        <Route path="/auto-list/:autoListId" component={AutoListPage} />
-        <Route path="/user/:userId" component={UserPage} />
-        <Route path="/current-user" component={CurrentUserPage} />
-        <Route path="/auth" component={AuthPage} />
-        <Route component={EmptyPage} />
-      </Switch>
+      <Suspense fallback={<LoadingPage />}>
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path="/discover" component={DiscoverMoviePage} />
+          <Route path="/search" component={SearchPage} />
+          <Route path="/movie/:tmdbMediaId" component={MoviePage} />
+          <Route path="/person/:tmdbMediaId" component={PersonPage} />
+          <Route path="/list/:listId" component={ListPage} />
+          <Route path="/auto-list/:autoListId" component={AutoListPage} />
+          <Route path="/user/:userId" component={UserPage} />
+          <Route path="/current-user" component={CurrentUserPage} />
+          <Route path="/auth" component={AuthPage} />
+          <Route component={EmptyPage} />
+        </Switch>
+      </Suspense>
       <Modals />
       <Snackbar />
       <BottomNavigationGutter />
