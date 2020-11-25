@@ -13,7 +13,7 @@ import React from "react";
 export default ({
   ListItemTextProps,
   ...props
-}: { ListItemTextProps: ListItemTextProps } & DialogProps) => {
+}: { ListItemTextProps?: ListItemTextProps } & DialogProps) => {
   return (
     <Dialog {...props}>
       <List>

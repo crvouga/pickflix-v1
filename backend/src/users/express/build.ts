@@ -9,22 +9,25 @@ import {
   castEmailAddress,
   castUserId,
   castUsername,
-  User,
 } from "../models";
 import { Dependencies } from "./types";
 
 export const buildAuthRouter = ({ userLogic, middlewares }: Dependencies) => (
   router: IRouter
 ) => {
-  router.get("/auth", middlewares.isAuthenticated, async (req, res) => {
-    if (req.isAuthenticated() && req.user) {
-      const username = castUsername(req.user.username);
-      const userAggergations = await userLogic.getUserAggergations({
-        username,
-      });
-      const userAggergation = userAggergations[0];
-      return res.status(200).json(userAggergation);
-    } else {
+  router.get("/auth", async (req, res) => {
+    try {
+      if (req.user) {
+        const username = castUsername(req.user.username);
+        const userAggergations = await userLogic.getUserAggergations({
+          username,
+        });
+        const userAggergation = userAggergations[0];
+        return res.status(200).json(userAggergation);
+      } else {
+        return res.status(204).json(null).end();
+      }
+    } catch (error) {
       return res.status(204).json(null).end();
     }
   });
@@ -150,7 +153,6 @@ export const buildUsersRouter = ({ userLogic, middlewares }: Dependencies) => (
         )
         .end();
     } catch (error) {
-      console.log(error);
       res.status(400).json({ message: "failed to get users", error }).end();
     }
   });

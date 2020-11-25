@@ -1,6 +1,14 @@
 import { createEventEmitter } from "../../../common/utility";
-import { PatchUserParams, useEditUserMutation } from "../../query";
-import { isValidUsername, useIsUsernameTaken } from "../useUsernameValidation";
+import {
+  isValidDisplayName,
+  PatchUserParams,
+  useEditUserMutation,
+  User,
+} from "../../query";
+import {
+  useEditEmailAddressValidation,
+  useEditUsernameValidation,
+} from "../validation";
 import { useEditUserFormState } from "./edit-user-form";
 
 const eventEmitter = createEventEmitter<{
@@ -10,23 +18,47 @@ const eventEmitter = createEventEmitter<{
   submitSettled: undefined;
 }>();
 
-const useUsernameValidation = (username: string) => {
-  const { isTaken, isLoading } = useIsUsernameTaken(username);
-  const isValid = isValidUsername(username);
+export const useEditUserFormValidation = (
+  currentUser: User,
+  {
+    username,
+    emailAddress,
+    displayName,
+  }: { username: string; emailAddress: string; displayName: string }
+) => {
+  const usernameValidation = useEditUsernameValidation(currentUser, username);
+
+  const emailAddressValidation = useEditEmailAddressValidation(
+    currentUser,
+    emailAddress
+  );
+
+  const displayNameValidation = {
+    isValid: isValidDisplayName(displayName),
+  };
+
+  const isLoading =
+    usernameValidation.isLoading || emailAddressValidation.isLoading;
+
+  const isValid =
+    usernameValidation.isValid &&
+    emailAddressValidation.isValid &&
+    displayNameValidation.isValid;
+
+  const isTaken = usernameValidation.isTaken || emailAddressValidation.isTaken;
+
+  const isDisabled = isLoading || !isValid || isTaken;
+
   return {
-    isValid,
-    isTaken,
-    isLoading,
+    isDisabled,
+    username: usernameValidation,
+    displayName: displayNameValidation,
+    emailAddress: emailAddressValidation,
   };
 };
 
 export default () => {
   const formState = useEditUserFormState();
-
-  const usernameValidation = useUsernameValidation(
-    formState.user?.username ?? ""
-  );
-
   const mutate = useEditUserMutation();
 
   const submit = async (params: PatchUserParams & { userId: string }) => {
@@ -42,14 +74,7 @@ export default () => {
     }
   };
 
-  const isDisabled =
-    !usernameValidation.isValid ||
-    usernameValidation.isLoading ||
-    usernameValidation.isTaken;
-
   return {
-    isDisabled,
-    usernameValidation,
     formState,
     submit,
     eventEmitter,

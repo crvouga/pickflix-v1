@@ -77,13 +77,7 @@ export default ({ result, ...ListItemProps }: Props) => {
         </ListItem>
       );
     case "user":
-      return (
-        <UserListItem
-          user={result}
-          ListItemTextProps={{ secondary: "User" }}
-          onClick={handleClick(result)}
-        />
-      );
+      return <UserListItem user={result} onClick={handleClick(result)} />;
 
     default:
       return null;

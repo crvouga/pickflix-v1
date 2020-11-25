@@ -16,7 +16,11 @@ const name: "editUserForm" = "editUserForm";
 */
 
 export type EditUserFormState = {
-  user: Partial<User>;
+  user: {
+    displayName: string;
+    username: string;
+    emailAddress: string;
+  };
 };
 
 /* 

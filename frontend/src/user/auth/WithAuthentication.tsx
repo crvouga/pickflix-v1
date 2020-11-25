@@ -25,7 +25,7 @@ export default ({
     return renderLoading() || null;
   }
 
-  const currentUser = query.data;
+  const currentUser = query.data || null;
 
   if (currentUser === null && renderUnathenticated) {
     return renderUnathenticated() || null;

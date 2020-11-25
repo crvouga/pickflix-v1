@@ -13,16 +13,16 @@ export type User = {
   displayName: string;
 };
 
-const USERNAME_REGEXP = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
-const MAX_USERNAME_LENGTH = 100;
-const MIN_USERNAME_LENGTH = 2;
-
 export const castUserId = (userId: any) => {
   if (isValidId(userId)) {
     return userId as UserId;
   }
   throw new Error("invalid userId");
 };
+
+const USERNAME_REGEXP = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;
+const MAX_USERNAME_LENGTH = 16;
+const MIN_USERNAME_LENGTH = 2;
 
 export const castUsername = (username: any) => {
   if (typeof username !== "string") {
@@ -55,10 +55,17 @@ export const castEmailAddress = (emailAddress: any) => {
   return emailAddress;
 };
 
+const MAX_DISPLAY_NAME_LENGTH = 30;
+
 export const castDisplayName = (displayName: any) => {
   if (typeof displayName !== "string") {
     throw new Error("displayName must be a string");
   }
+
+  if (displayName.length > MAX_DISPLAY_NAME_LENGTH) {
+    throw new Error("displayName is too long");
+  }
+
   return displayName;
 };
 
@@ -80,22 +87,25 @@ export const castUser = (user: any) => {
   throw new Error("invalid user");
 };
 
-export const makeUser = (partial: {
-  id?: UserId;
+const makeUserId = () => {
+  return makeId() as UserId;
+};
+
+export const makeUser = ({
+  emailAddress,
+  username,
+  displayName,
+}: {
   username: string;
   emailAddress: string;
   displayName?: string;
 }): User => {
-  const id = partial.id || (makeId() as UserId);
-  const emailAddress = partial.emailAddress.trim();
-  const username = partial.username.trim();
-  const displayName = (partial.displayName || "").trim();
-
-  return castUser({
-    id,
-    emailAddress,
-    username,
-    displayName,
+  return Object.freeze({
+    type: "user",
+    id: makeUserId(),
+    emailAddress: castEmailAddress(emailAddress),
+    username: castUsername(username),
+    displayName: castDisplayName(displayName),
   });
 };
 

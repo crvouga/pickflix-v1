@@ -1,11 +1,9 @@
 import { Box, Button, Typography } from "@material-ui/core";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
 import UsernameTextField from "../../forms/UsernameTextField";
-import {
-  useIsUsernameTaken,
-  isValidUsername,
-} from "../../forms/useUsernameValidation";
+import { useIsUsernameTaken } from "../../forms/validation";
+import { isValidUsername } from "../../query";
 
 export default ({ emailAddress }: { emailAddress: string }) => {
   const history = useHistory();

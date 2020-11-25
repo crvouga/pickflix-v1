@@ -134,7 +134,10 @@ export default ({ result, ...ListItemProps }: Props) => {
           <ListItemAvatar>
             <AvatarUser user={result} />
           </ListItemAvatar>
-          <ListItemText primary={result.username} secondary={"User"} />
+          <ListItemText
+            primary={result.username}
+            secondary={result.displayName || ""}
+          />
 
           <ListItemSecondaryAction>
             <DeleteButton result={result} />

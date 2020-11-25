@@ -75,7 +75,7 @@ export const CurrentUserActionsModal = () => {
 
   return (
     <ResponsiveDialogDrawer open={isOpen} onClose={close}>
-      <List>
+      <List onClick={close}>
         <ListItem button onClick={onEditUser}>
           <ListItemIcon>
             <EditOutlinedIcon />

@@ -39,7 +39,11 @@ export default ({
         <ListItemAvatar>
           <AvatarUser user={user} />
         </ListItemAvatar>
-        <ListItemText primary={user.username} {...ListItemTextProps} />
+        <ListItemText
+          primary={user.username}
+          secondary={user.displayName}
+          {...ListItemTextProps}
+        />
       </ListItem>
     </CardActionArea>
   );
