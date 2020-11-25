@@ -8,8 +8,9 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router";
-import AvatarUser from "./AvatarUser";
 import { User } from "../query";
+import { makeUserPageRoute } from "../UserPage";
+import AvatarUser from "./AvatarUser";
 
 type Props = Omit<ListItemProps, "button"> & {
   user: User;
@@ -27,7 +28,7 @@ export default ({
 }: Props) => {
   const history = useHistory();
   const handleClick = () => {
-    history.push(`/user/${user.username}`);
+    history.push(makeUserPageRoute({ userId: user.id }));
   };
   return (
     <CardActionArea

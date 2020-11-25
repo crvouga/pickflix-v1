@@ -20,6 +20,7 @@ import { pluralize } from "../../common/utility";
 import { ReviewAggergation } from "../query/types";
 import ReviewCardActions from "./ReviewCardActions";
 import ReviewCardOptionsModal from "./ReviewCardOptionsModal";
+import { makeUserPageRoute } from "../../user/UserPage";
 
 const MoreButton = (props: IconButtonProps) => {
   return (
@@ -41,7 +42,7 @@ export const CardHeaderAuthor = ({
   return (
     <CardHeader
       onClick={() => {
-        history.push(`/user/${review.author.username}`);
+        history.push(makeUserPageRoute({ userId: review.author.id }));
       }}
       avatar={<AvatarUser user={review.author} />}
       title={review.author.username}

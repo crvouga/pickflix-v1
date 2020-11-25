@@ -45,7 +45,7 @@ export default () => {
     return <LoadingBox />;
   }
 
-  const users = queryUsers.data;
+  const users = queryUsers.data.results.map((_) => _.user);
 
   if (users.length === 0 && !username) {
     return <PickUsername emailAddress={emailAddress} />;

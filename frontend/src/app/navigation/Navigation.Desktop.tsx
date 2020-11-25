@@ -12,6 +12,7 @@ import PickflixLogo from "../../common/PickflixLogo";
 import useModal from "../modals/useModal";
 import { DiscoverPageIcon, HomePageIcon, ProfilePageIcon } from "./PageIcons";
 import { SearchBox } from "./Search";
+import { makeCurrentUserPageRoute } from "../../user/CurrentUserPage";
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -33,7 +34,7 @@ export default () => {
   };
 
   const handleClickProfile = () => {
-    history.push("/user");
+    history.push(makeCurrentUserPageRoute());
   };
 
   const handleClickDiscover = () => {

@@ -29,7 +29,7 @@ export default () => {
 
   const mutate = useEditUserMutation();
 
-  const submit = async (params: PatchUserParams) => {
+  const submit = async (params: PatchUserParams & { userId: string }) => {
     try {
       eventEmitter.emit("submit");
       await mutate(params);

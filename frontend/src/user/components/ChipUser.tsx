@@ -1,8 +1,9 @@
 import { Chip, ChipProps } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router";
-import AvatarUser from "./AvatarUser";
 import { User } from "../query";
+import { makeUserPageRoute } from "../UserPage";
+import AvatarUser from "./AvatarUser";
 
 type Props = ChipProps & {
   user: User;
@@ -15,7 +16,7 @@ export default ({ user, ...props }: Props) => {
     <Chip
       clickable
       onClick={() => {
-        history.push(`/user/${user.username}`);
+        history.push(makeUserPageRoute({ userId: user.id }));
       }}
       variant="outlined"
       avatar={<AvatarUser user={user} />}

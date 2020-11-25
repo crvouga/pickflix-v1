@@ -26,8 +26,8 @@ export default () => {
         <Route path="/person/:tmdbMediaId" component={PersonPage} />
         <Route path="/list/:listId" component={ListPage} />
         <Route path="/auto-list/:autoListId" component={AutoListPage} />
-        <Route path="/user/:username" component={UserPage} />
-        <Route path="/user" component={CurrentUserPage} />
+        <Route path="/user/:userId" component={UserPage} />
+        <Route path="/current-user" component={CurrentUserPage} />
         <Route path="/auth" component={AuthPage} />
         <Route component={EmptyPage} />
       </Switch>

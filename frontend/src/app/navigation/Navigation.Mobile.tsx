@@ -6,6 +6,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { useHistory, useLocation } from "react-router";
+import { makeCurrentUserPageRoute } from "../../user/CurrentUserPage";
 import {
   DiscoverPageIcon,
   HomePageIcon,
@@ -82,11 +83,11 @@ export default () => {
       },
     },
     {
-      value: "/profile",
+      value: makeCurrentUserPageRoute(),
       label: "Profile",
       icon: <ProfilePageIcon />,
       onClick: () => {
-        history.push("/user");
+        history.push(makeCurrentUserPageRoute());
       },
     },
   ];

@@ -19,6 +19,7 @@ import makeImageUrl from "../../media/tmdb/makeImageUrl";
 import AvatarUser from "../../user/components/AvatarUser";
 import { SearchResult } from "../query";
 import { useSearchState } from "../redux/search";
+import { makeUserPageRoute } from "../../user/UserPage";
 
 type Props = ListItemProps & {
   result: SearchResult;
@@ -62,7 +63,7 @@ export default ({ result, ...ListItemProps }: Props) => {
         history.push(`/person/${result.id}`);
         break;
       case "user":
-        history.push(`/user/${result.username}`);
+        history.push(makeUserPageRoute({ userId: result.id }));
         break;
     }
     search.pushHistory(result);

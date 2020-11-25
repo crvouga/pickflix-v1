@@ -13,7 +13,7 @@ import ReviewCardCallToAction from "../../review/card/ReviewCardCallToAction";
 import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";
 import useReviewVoteValue from "../../review/card/useReviewVoteValue";
 import { UserAggergation } from "../query";
-import { useQueryCurrentUser } from "../auth/hooks";
+import { useQueryCurrentUser } from "../query/hooks";
 import useReviewActions from "../../review/card/useReviewActions";
 
 const ListReviewsSkeleton = ({

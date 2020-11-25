@@ -1,19 +1,42 @@
+import { Box, Container } from "@material-ui/core";
 import React from "react";
-import { Redirect } from "react-router";
-import SignInPage from "./SignInPage";
-import { useQueryCurrentUser } from "./auth/hooks";
+import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
 import LoadingPage from "../common/page/LoadingPage";
+import SignInCallToAction from "./auth/SignInCallToAction";
+import WithAuthentication from "./auth/WithAuthentication";
+import { UserPage } from "./UserPage";
+
+export const makeCurrentUserPageRoute = () => "/current-user";
+
+const SignInPage = () => {
+  return (
+    <React.Fragment>
+      <ResponsiveNavigation />
+
+      <Container maxWidth="md">
+        <Box
+          width="100%"
+          height="100%"
+          marginTop={6}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <SignInCallToAction />
+        </Box>
+      </Container>
+    </React.Fragment>
+  );
+};
 
 export default () => {
-  const query = useQueryCurrentUser();
-
-  if (query.error || query.data === null) {
-    return <SignInPage />;
-  }
-
-  if (!query.data) {
-    return <LoadingPage />;
-  }
-
-  return <Redirect to={`/user/${query.data.user.username}`} />;
+  return (
+    <WithAuthentication
+      renderLoading={() => <LoadingPage />}
+      renderAuthenticated={(currentUser) => (
+        <UserPage isCurrentUser={true} user={currentUser} />
+      )}
+      renderUnathenticated={() => <SignInPage />}
+    />
+  );
 };

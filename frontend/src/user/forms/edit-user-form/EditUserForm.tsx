@@ -78,7 +78,17 @@ const EditUserForm = ({
   currentUser: UserAggergation;
   onCancel: () => void;
 }) => {
-  const { isDisabled, formState } = useEditUserForm();
+  const { isDisabled, formState, submit } = useEditUserForm();
+
+  const handleSubmit = () => {
+    const { displayName, username, emailAddress } = formState.user;
+    submit({
+      userId: currentUser.user.id,
+      displayName,
+      username,
+      emailAddress,
+    });
+  };
 
   useEffect(() => {
     formState.setUser(currentUser.user);
@@ -103,7 +113,7 @@ const EditUserForm = ({
           <Box marginRight={2}>
             <CancelButton onClick={onCancel} />
           </Box>
-          <SubmitButton disabled={isDisabled} />
+          <SubmitButton disabled={isDisabled} onClick={handleSubmit} />
         </Box>
       </Hidden>
     </Box>

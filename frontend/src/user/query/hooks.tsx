@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { getCurrentUser, queryKeys, UserAggergation } from "../query";
+import { getCurrentUser, queryKeys } from ".";
 
 export const useQueryCurrentUser = () => {
   return useQuery(queryKeys.currentUser(), () => getCurrentUser(), {

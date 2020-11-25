@@ -10,9 +10,9 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
-import { useQuery } from "react-query";
 import { useHistory, useParams } from "react-router";
 import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
+import EmptyPage from "../common/page/EmptyPage";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
 import WithAuthentication from "./auth/WithAuthentication";
@@ -22,8 +22,11 @@ import CurrentUserActions, {
 } from "./CurrentUserActions";
 import ListAutoLists from "./lists/ListAutoLists";
 import ListLists from "./lists/ListLists";
-import { getUser, queryKeys } from "./query";
+import { useQueryUsers, UserAggergation } from "./query";
 import ListReviews from "./reviews/ListReviews";
+
+export const makeUserPageRoute = ({ userId }: { userId: string }) =>
+  `/user/${userId}`;
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -33,34 +36,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default () => {
-  const { username } = useParams<{ username: string }>();
+export const UserPage = ({
+  user,
+  isCurrentUser = false,
+}: {
+  user: UserAggergation;
+  isCurrentUser?: boolean;
+}) => {
   const classes = useStyles();
   const history = useHistory();
 
-  const query = useQuery(queryKeys.user({ username }), () =>
-    getUser({ username })
+  const usernameTitle = (
+    <Box flex={1}>
+      <Typography variant="h6" align="center">
+        {user.user.username}
+      </Typography>
+    </Box>
   );
-
-  if (query.error) {
-    return <ErrorPage />;
-  }
-
-  if (query.data === undefined) {
-    return <LoadingPage />;
-  }
-
-  const user = query.data;
-
-  const TypographyUsername = () => {
-    return (
-      <Box flex={1}>
-        <Typography variant="h6" align="center">
-          {user.user.username}
-        </Typography>
-      </Box>
-    );
-  };
 
   return (
     <React.Fragment>
@@ -70,17 +62,17 @@ export default () => {
           <Toolbar>
             <WithAuthentication
               renderAuthenticated={(currentUser) =>
-                currentUser.user.id === user.user.id ? (
+                user.user.id === currentUser.user.id ? (
                   <React.Fragment>
                     <OpenCurrentUserActionsModalButton />
-                    <TypographyUsername />
+                    {usernameTitle}
                     <Box p={3} />
                   </React.Fragment>
                 ) : (
-                  <TypographyUsername />
+                  usernameTitle
                 )
               }
-              renderDefault={() => <TypographyUsername />}
+              renderDefault={() => usernameTitle}
             />
           </Toolbar>
         </AppBar>
@@ -103,6 +95,7 @@ export default () => {
               </Typography>
             </Box>
           </Box>
+
           <WithAuthentication
             renderAuthenticated={(currentUser) =>
               currentUser.user.id === user.user.id && (
@@ -145,4 +138,30 @@ export default () => {
       </Container>
     </React.Fragment>
   );
+};
+
+export default () => {
+  const { userId } = useParams<{ userId: string }>();
+  const classes = useStyles();
+  const history = useHistory();
+
+  const query = useQueryUsers({ id: userId });
+
+  if (query.error) {
+    return <ErrorPage />;
+  }
+
+  if (query.data === undefined) {
+    return <LoadingPage />;
+  }
+
+  const users = query.data.results;
+
+  if (users.length === 0) {
+    return <EmptyPage />;
+  }
+
+  const user = users[0];
+
+  return <UserPage user={user} />;
 };

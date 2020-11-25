@@ -1,6 +1,7 @@
 import { useQuery, useQueryCache } from "react-query";
 import { BackendAPI } from "../../backend-api";
-export * from "../auth/hooks";
+import { Paginated } from "../../common/types";
+export * from "./hooks";
 
 export type User = {
   type: "user";
@@ -28,27 +29,20 @@ export const queryKeys = {
 
 */
 
-export const getUser = async ({ username }: { username: string }) => {
-  const { data } = await BackendAPI.get<UserAggergation>(
-    `/api/users/${username}`
-  );
-  return data;
-};
-
-/* 
-
-
-*/
-
 type GetUsersParams = {
+  id?: string;
   emailAddress?: string;
   username?: string;
+  page?: number;
 };
 
 export const getUsers = async (params: GetUsersParams) => {
-  const { data } = await BackendAPI.get<User[]>("/api/users", {
-    params,
-  });
+  const { data } = await BackendAPI.get<Paginated<UserAggergation>>(
+    "/api/users",
+    {
+      params,
+    }
+  );
   return data;
 };
 
@@ -65,7 +59,6 @@ export const useQueryUsers = (params: GetUsersParams) => {
 
 export const getCurrentUser = async () => {
   const { data } = await BackendAPI.get<UserAggergation | null>("/api/auth");
-
   return data;
 };
 
@@ -75,13 +68,13 @@ export const getCurrentUser = async () => {
 */
 
 export type PatchUserParams = {
-  email?: string;
+  emailAddress?: string;
   displayName?: string;
   username?: string;
 };
 
 export const patchUser = async (params: PatchUserParams) => {
-  const { data } = await BackendAPI.patch<User>("/api/users");
+  const { data } = await BackendAPI.patch<User>("/api/users", params);
   return data;
 };
 
@@ -92,14 +85,19 @@ export const patchUser = async (params: PatchUserParams) => {
 
 export const useEditUserMutation = () => {
   const queryCache = useQueryCache();
-  return async (params: PatchUserParams) => {
+  return async ({
+    userId,
+    ...params
+  }: PatchUserParams & { userId: string }) => {
     try {
       await patchUser(params);
     } catch (error) {
       throw error;
     } finally {
-      queryCache.invalidateQueries((query) =>
-        query.queryKey.includes("current-user")
+      queryCache.invalidateQueries(
+        (query) =>
+          query.queryKey.includes("current-user") ||
+          query.queryKey.includes(userId)
       );
     }
   };

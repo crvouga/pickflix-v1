@@ -5,7 +5,7 @@ import {
   PaginationOptions,
 } from "../../common/unit-of-work/types";
 import { CredentialType } from "../models/make-credential";
-import { UserId, updateUser } from "../models/make-user";
+import { UserId, updateUser, User } from "../models/make-user";
 import {
   createUserWithPassword,
   verifyEmailAddressAndPassword,
@@ -15,6 +15,7 @@ import {
   resetPassword,
   sendResetPasswordEmail,
 } from "./reset-password";
+import { removeNullOrUndefinedEntries } from "../../common/utils";
 
 export class UserLogic {
   unitOfWork: IUnitOfWork;
@@ -77,12 +78,8 @@ export class UserLogic {
     return user;
   }
 
-  async getUserAggergation(
-    info: { username: string } | { id: UserId } | { emailAddress: string }
-  ) {
+  async aggergateUser(user: User) {
     const { AutoLists, Reviews, Lists } = this.unitOfWork;
-
-    const user = await this.getUser(info);
 
     const [reviewCount, listCount, autoListCount] = await Promise.all([
       Reviews.count({ authorId: user.id }),
@@ -96,6 +93,27 @@ export class UserLogic {
       listCount,
       autoListCount,
     };
+  }
+
+  async getUserAggergations(
+    userSpec: {
+      id?: UserId;
+      username?: string;
+      emailAddress?: string;
+    },
+    pagination?: PaginationOptions
+  ) {
+    const { Users } = this.unitOfWork;
+
+    const users = await Users.find(removeNullOrUndefinedEntries(userSpec), {
+      pagination,
+    });
+
+    const userAggergations = await Promise.all(
+      users.map((user) => this.aggergateUser(user))
+    );
+
+    return userAggergations;
   }
 
   async getCredentialTypesForEmailAddress({

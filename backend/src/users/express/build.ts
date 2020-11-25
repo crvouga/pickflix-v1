@@ -18,9 +18,11 @@ export const buildAuthRouter = ({ userLogic, middlewares }: Dependencies) => (
 ) => {
   router.get("/auth", middlewares.isAuthenticated, async (req, res) => {
     if (req.isAuthenticated() && req.user) {
-      const userAggergation = await userLogic.getUserAggergation({
-        username: req.user.username,
+      const username = castUsername(req.user.username);
+      const userAggergations = await userLogic.getUserAggergations({
+        username,
       });
+      const userAggergation = userAggergations[0];
       return res.status(200).json(userAggergation);
     } else {
       return res.status(204).json(null).end();
@@ -85,16 +87,6 @@ export const buildUsersRouter = ({ userLogic, middlewares }: Dependencies) => (
     }
   });
 
-  router.get("/users/:username", async (req, res, next) => {
-    try {
-      const username = req.params.username as string;
-      const userAggergation = await userLogic.getUserAggergation({ username });
-      return res.status(200).json(userAggergation).end();
-    } catch (error) {
-      return next(error);
-    }
-  });
-
   router.get("/search/users", async (req, res) => {
     try {
       const query = String(req.query.query);
@@ -123,29 +115,43 @@ export const buildUsersRouter = ({ userLogic, middlewares }: Dependencies) => (
     }
   });
 
-  router.get("/users", async (req, res, next) => {
+  router.get("/users", async (req, res) => {
     try {
-      const username = req.query.username as string | undefined;
-      const emailAddress = req.query.emailAddress as string | undefined;
+      const id = req.query.id ? castUserId(req.query.id) : undefined;
 
-      const users: User[] = [];
+      const username = req.query.username
+        ? castUsername(req.query.username)
+        : undefined;
 
-      if (emailAddress) {
-        const [user] = await userLogic.getUsers({ emailAddress });
-        if (user) {
-          users.push(user);
-        }
-      }
+      const emailAddress = req.query.emailAddress
+        ? castEmailAddress(req.query.emailAddress)
+        : undefined;
 
-      if (username) {
-        const [user] = await userLogic.getUsers({ username });
-        if (user) {
-          users.push(user);
-        }
-      }
-      return res.status(200).json(users).end();
+      const paginationOptions = makePaginationOptions({
+        page: req.query.page,
+      });
+
+      const userAggergations = await userLogic.getUserAggergations(
+        {
+          id,
+          username,
+          emailAddress,
+        },
+        paginationOptions
+      );
+
+      res
+        .status(200)
+        .json(
+          makePaginationResponse({
+            ...paginationOptions,
+            results: userAggergations,
+          })
+        )
+        .end();
     } catch (error) {
-      return next(error);
+      console.log(error);
+      res.status(400).json({ message: "failed to get users", error }).end();
     }
   });
 
@@ -197,7 +203,7 @@ export const buildUsersRouter = ({ userLogic, middlewares }: Dependencies) => (
       });
 
       const patchedUser = await userLogic.editUser({ id: userId, ...edits });
-      res.json(200).json(patchedUser).end();
+      res.status(201).json(patchedUser).end();
     } catch (error) {
       res.status(400).json({ message: "failed to edit user", error }).end();
     }
