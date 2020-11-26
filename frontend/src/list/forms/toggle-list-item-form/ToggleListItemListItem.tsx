@@ -43,9 +43,7 @@ export default ({
   path: string;
   mediaId: MediaId;
 }) => {
-  const history = useHistory();
-
-  const { status, eventEmitter, mutate } = useToggleListItemMutation({
+  const { status, isAdded, mutate } = useToggleListItemMutation({
     listId,
     mediaId,
   });
@@ -64,7 +62,7 @@ export default ({
               }}
             />
           </Box>
-        ) : status === "added" ? (
+        ) : isAdded ? (
           <CheckBoxIcon />
         ) : (
           <CheckBoxOutlineBlankIcon />

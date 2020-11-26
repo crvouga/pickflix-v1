@@ -1,5 +1,5 @@
-import { MediaId } from "../../../media/tmdb/types";
 import { createEventEmitter } from "../../../common/utility";
+import { MediaId } from "../../../media/tmdb/types";
 import {
   List,
   useAddListItemMutation,
@@ -17,7 +17,7 @@ const eventEmitter = createEventEmitter<{
 export default () => {
   const formState = useFormState();
   const [createListMutation] = useCreateListMutation();
-  const [addListItemMutation] = useAddListItemMutation();
+  const addListItemMutation = useAddListItemMutation();
 
   const submit = async ({
     title,

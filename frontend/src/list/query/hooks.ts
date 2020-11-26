@@ -131,7 +131,7 @@ export const useDeleteListItemsMutation = () => {
 
 export const useAddListItemMutation = () => {
   const queryCache = useQueryCache();
-  return useMutation(postListItem, {
+  const [mutate] = useMutation(postListItem, {
     onMutate: (params) => {
       return () => {};
     },
@@ -146,6 +146,7 @@ export const useAddListItemMutation = () => {
       }
     },
   });
+  return mutate;
 };
 
 /* 

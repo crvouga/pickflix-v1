@@ -20,7 +20,7 @@ const ToggleAutoListButton = ({
 }) => {
   const snackbar = useSnackbar();
 
-  const { mutate, status, eventEmitter } = useToggleListItemMutation({
+  const { mutate, isAdded, status, eventEmitter } = useToggleListItemMutation({
     mediaId,
     listId,
   });
@@ -44,16 +44,7 @@ const ToggleAutoListButton = ({
       onClick={() => {
         mutate();
       }}
-      icon={
-        <AutoListIcon autoListKey={autoListKey} filled={status === "added"} />
-        // status === "loading" ? (
-        //   <Box color="action.active">
-        //     <CircularProgress color="inherit" disableShrink size="1.8em" />
-        //   </Box>
-        // ) : (
-        //   <AutoListIcon autoListKey={autoListKey} filled={status === "added"} />
-        // )
-      }
+      icon={<AutoListIcon autoListKey={autoListKey} filled={isAdded} />}
     />
   );
 };

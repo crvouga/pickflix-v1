@@ -1,8 +1,14 @@
 import { useQueryCache } from "react-query";
 import { MediaId } from "../../../media/tmdb/types";
 import { createEventEmitter, Emitter } from "../../../common/utility";
-import { deleteListItems, postListItem, useQueryListItems } from "../../query";
-import { useState, useRef } from "react";
+import {
+  deleteListItems,
+  postListItem,
+  useQueryListItems,
+  useAddListItemMutation,
+  useDeleteListItemsMutation,
+} from "../../query";
+import { useState, useRef, useEffect } from "react";
 import { equals } from "ramda";
 
 interface Events {
@@ -17,6 +23,9 @@ export default ({ listId, mediaId }: { listId: string; mediaId: MediaId }) => {
 
   const eventEmitterRef = useRef<Emitter<Events>>(createEventEmitter<Events>());
 
+  const addListItemMutation = useAddListItemMutation();
+  const deleteListItemsMutation = useDeleteListItemsMutation();
+
   const query = useQueryListItems(
     {
       listId,
@@ -27,6 +36,7 @@ export default ({ listId, mediaId }: { listId: string; mediaId: MediaId }) => {
     }
   );
 
+  const [isAdded, setIsAdded] = useState(false);
   const [isMutating, setIsMutation] = useState(false);
 
   const status: "loading" | "added" | "removed" =
@@ -36,16 +46,39 @@ export default ({ listId, mediaId }: { listId: string; mediaId: MediaId }) => {
       ? "added"
       : "removed";
 
+  useEffect(() => {
+    if (status === "added") {
+      setIsAdded(true);
+    }
+    if (status === "removed") {
+      setIsAdded(false);
+    }
+  }, [status]);
+
   const mutate = async () => {
     try {
       if (status === "added") {
+        const previous = isAdded;
+        setIsAdded(false);
         setIsMutation(true);
-        await deleteListItems([{ listId, mediaId }]);
+        try {
+          await deleteListItemsMutation([{ listId, mediaId }]);
+        } catch (error) {
+          setIsAdded(previous);
+          throw error;
+        }
         eventEmitterRef.current.emit("removed");
       }
       if (status === "removed") {
+        const previous = isAdded;
+        setIsAdded(true);
         setIsMutation(true);
-        await postListItem({ listId, mediaId });
+        try {
+          await addListItemMutation({ listId, mediaId });
+        } catch (error) {
+          setIsAdded(previous);
+          throw error;
+        }
         eventEmitterRef.current.emit("added");
       }
     } catch (error) {
@@ -62,6 +95,7 @@ export default ({ listId, mediaId }: { listId: string; mediaId: MediaId }) => {
   };
 
   return {
+    isAdded,
     query,
     status,
     mutate,
