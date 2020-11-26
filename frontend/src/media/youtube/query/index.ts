@@ -4,6 +4,10 @@ import { YoutubeVideoListResponse } from "./types";
 import axios from "axios";
 import { YoutubeCommentThreadListResponse } from "./youtube-comment-types";
 import { useQuery } from "react-query";
+import { useInfiniteQuery } from "react-query";
+import { last } from "ramda";
+import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
 
 export * from "./types";
 
@@ -100,9 +104,12 @@ export const useQueryYoutubeVideoDetails = ({
 
 export const getYoutubeVideoCommentThreadList = async ({
   videoId,
+  nextPageToken,
 }: {
   videoId: string;
+  nextPageToken?: string;
 }) => {
+  //DOCS: https://developers.google.com/youtube/v3/docs/commentThreads/list
   const { data } = await BackendAPI.get<YoutubeCommentThreadListResponse>(
     "/api/youtube/commentThreads",
     {
@@ -112,8 +119,52 @@ export const getYoutubeVideoCommentThreadList = async ({
         order: "relevance",
         textFormat: "plainText",
         maxResults: 50,
+        pageToken: nextPageToken,
       },
     }
   );
   return data;
+};
+
+const makeGetYoutubeVideoCommentThreadListQueryKey = ({
+  videoId,
+}: {
+  videoId: string;
+}) => ["youtubeVideoCommentThreadList", videoId];
+
+export const useQueryYoutubeVideoCommentThreadList = ({
+  videoId,
+}: {
+  videoId: string;
+}) => {
+  const query = useInfiniteQuery(
+    makeGetYoutubeVideoCommentThreadListQueryKey({ videoId }),
+    (...args) => {
+      const nextPageToken = String(last(args) ?? "");
+      return getYoutubeVideoCommentThreadList({
+        videoId,
+        nextPageToken,
+      });
+    },
+    {
+      getFetchMore: (lastPage, allPages) => {
+        if (lastPage.items.length > 0) {
+          return lastPage.nextPageToken;
+        }
+      },
+    }
+  );
+
+  const [fetchMoreRef, inView] = useInView();
+
+  useEffect(() => {
+    if (inView && query.canFetchMore && !query.isFetching) {
+      query.fetchMore();
+    }
+    return () => {};
+  }, [inView]);
+  return {
+    ...query,
+    fetchMoreRef,
+  };
 };

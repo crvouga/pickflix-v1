@@ -7,7 +7,7 @@ export default () => {
       display="flex"
       alignItems="center"
       justifyContent="center"
-      height="200px"
+      height="240px"
     >
       <Typography align="center" color="textSecondary" variant="h6">
         There's nothing here

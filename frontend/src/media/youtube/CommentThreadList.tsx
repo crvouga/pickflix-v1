@@ -1,4 +1,4 @@
-import { Divider, Box } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import React from "react";
 import YoutubeCommentThread from "./CommentThread";
 import { YoutubeCommentThreadListResponse } from "./query/youtube-comment-types";

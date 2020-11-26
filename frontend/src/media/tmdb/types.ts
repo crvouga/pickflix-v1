@@ -74,10 +74,6 @@ export interface MovieReview {
   author: string;
 }
 
-export interface MovieReviews {
-  results: MovieReview[];
-}
-
 export interface MovieGenre {
   id: string;
   name: string;

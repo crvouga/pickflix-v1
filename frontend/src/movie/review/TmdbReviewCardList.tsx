@@ -1,16 +1,17 @@
 import { Box } from "@material-ui/core";
 import React from "react";
-import { useQuery } from "react-query";
 import ErrorBox from "../../common/components/ErrorBox";
-import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";
-import { getTmdbMovieReviews, queryKeys } from "../../media/tmdb/query";
+import LoadingBox from "../../common/components/LoadingBox";
+import { useQueryTmdbReviews } from "../../media/tmdb/query";
 import { MediaId } from "../../media/tmdb/types";
+import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";
 import TmdbReviewCard from "./TmdbReviewCard";
+import NothingHere from "../../common/components/NothingHere";
 
 export default ({ mediaId }: { mediaId: MediaId }) => {
-  const query = useQuery(queryKeys.movieReviews({ mediaId }), () =>
-    getTmdbMovieReviews({ mediaId })
-  );
+  const { fetchMoreRef, canFetchMore, ...query } = useQueryTmdbReviews({
+    mediaId,
+  });
 
   if (query.error) {
     return <ErrorBox />;
@@ -28,7 +29,11 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
     );
   }
 
-  const reviews = query.data.results;
+  const reviews = query.data.flatMap((page) => page.results);
+
+  if (reviews.length === 0) {
+    return <NothingHere />;
+  }
 
   return (
     <React.Fragment>
@@ -37,6 +42,8 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
           <TmdbReviewCard review={review} />
         </Box>
       ))}
+      <div ref={fetchMoreRef} />
+      {canFetchMore && <LoadingBox m={6} />}
     </React.Fragment>
   );
 };

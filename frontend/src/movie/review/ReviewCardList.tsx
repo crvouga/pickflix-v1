@@ -1,19 +1,24 @@
 import { Box } from "@material-ui/core";
 import React from "react";
+import useModal from "../../app/modals/useModal";
 import ErrorBox from "../../common/components/ErrorBox";
-import { getReviewsQueryKey, useQueryReviews } from "../../review/query";
+import { MediaId } from "../../media/tmdb/types";
 import ReviewCard from "../../review/card/ReviewCard";
+import ReviewCardCallToAction from "../../review/card/ReviewCardCallToAction";
 import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";
 import useReviewVoteValue from "../../review/card/useReviewVoteValue";
-import { MediaId } from "../../media/tmdb/types";
+import useReviewForm from "../../review/form/review-form/useReviewForm";
+import { getReviewsQueryKey, useQueryReviews } from "../../review/query";
 
 type Props = {
   mediaId: MediaId;
 };
 
-export default (props: Props) => {
-  const query = useQueryReviews(props);
-  const reviewVoteValue = useReviewVoteValue(getReviewsQueryKey(props));
+export default ({ mediaId }: Props) => {
+  const reviewFormModal = useModal("ReviewForm");
+  const reviewForm = useReviewForm();
+  const query = useQueryReviews({ mediaId });
+  const reviewVoteValue = useReviewVoteValue(getReviewsQueryKey({ mediaId }));
 
   if (query.error) {
     return <ErrorBox />;
@@ -32,6 +37,22 @@ export default (props: Props) => {
   }
 
   const reviews = query.data;
+
+  if (reviews.results.length === 0) {
+    return (
+      <Box p={2}>
+        <ReviewCardCallToAction
+          title="Be the first to leave a review!"
+          onClick={() => {
+            reviewForm.setReview({
+              mediaId,
+            });
+            reviewFormModal.open();
+          }}
+        />
+      </Box>
+    );
+  }
 
   return (
     <React.Fragment>

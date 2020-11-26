@@ -1,8 +1,10 @@
+import throttle from "lodash.throttle";
 import { last } from "ramda";
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useInView } from "react-intersection-observer";
 import { InfiniteQueryConfig, QueryKey, useInfiniteQuery } from "react-query";
 import { Paginated } from "../types";
+import { useDebounce } from "use-debounce/lib";
 
 export default <Result,>(
   queryKey: QueryKey,
@@ -29,24 +31,13 @@ export default <Result,>(
   );
 
   const [fetchMoreRef, inView] = useInView();
-
   useEffect(() => {
-    if (
-      inView &&
-      query.canFetchMore &&
-      !query.isFetching &&
-      !query.isFetchingMore
-    ) {
+    const { canFetchMore, isFetching } = query;
+    if (inView && canFetchMore && !isFetching) {
       query.fetchMore();
     }
     return () => {};
-  }, [
-    query.isFetching,
-    query.canFetchMore,
-    query.isFetchingMore,
-    query.fetchMore,
-    inView,
-  ]);
+  }, [inView]);
 
   return {
     ...query,

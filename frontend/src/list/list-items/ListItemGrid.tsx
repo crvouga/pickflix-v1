@@ -13,7 +13,7 @@ import {
 import { ensureArray } from "../../common/utility";
 import useDeleteListItemsForm from "../forms/remove-list-items-form/useRemoveListItemsForm";
 import { useQueryListItems } from "../query";
-import ListItemGridEmpty from "./ListItemGridEmpty";
+import NothingHere from "../../common/components/NothingHere";
 
 const useStyles = makeStyles((theme) => ({
   selected: {
@@ -49,7 +49,7 @@ export default ({
   const listItems = ensureArray(query.data).flatMap((_) => _.results);
 
   if (listItems.length === 0) {
-    return <ListItemGridEmpty />;
+    return <NothingHere />;
   }
 
   return (

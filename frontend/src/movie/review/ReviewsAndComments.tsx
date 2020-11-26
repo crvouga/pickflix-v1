@@ -1,9 +1,9 @@
 import { Box, Tab, Tabs, Typography } from "@material-ui/core";
 import React from "react";
-import useReviewForm from "../../review/form/review-form/useReviewForm";
-import { MediaId } from "../../media/tmdb/types";
 import { useListener } from "../../common/utility";
+import { MediaId } from "../../media/tmdb/types";
 import useVideoState from "../../media/video/useVideoState";
+import useReviewForm from "../../review/form/review-form/useReviewForm";
 import { ReviewCommentsTabValue } from "../redux/movie-page-ui";
 import useMoviePageUi from "../redux/useMoviePageUi";
 import MovieReviewList from "./ReviewCardList";
@@ -59,7 +59,8 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
       case "tmdb":
         return <TmdbReviewCardList mediaId={mediaId} />;
       case "youtube":
-        return <YoutubeCommentList videoId={videoState.currentVideo?.key} />;
+        const videoId = videoState.currentVideo?.key;
+        return <YoutubeCommentList videoId={videoId} />;
     }
   };
 

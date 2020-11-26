@@ -1,23 +1,24 @@
 import { Box } from "@material-ui/core";
 import React from "react";
-import { useQuery } from "react-query";
+import LoadingBox from "../../common/components/LoadingBox";
+import NothingHere from "../../common/components/NothingHere";
+import CommentThread from "../../media/youtube/CommentThread";
+import { useQueryYoutubeVideoCommentThreadList } from "../../media/youtube/query";
 import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";
-import CommentThreadList from "../../media/youtube/CommentThreadList";
-import {
-  getYoutubeVideoCommentThreadList,
-  queryKeys,
-} from "../../media/youtube/query";
 
-export default ({ videoId }: { videoId?: string }) => {
-  const query = useQuery(queryKeys.youtubeCommentThread({ videoId }), () =>
-    videoId ? getYoutubeVideoCommentThreadList({ videoId }) : Promise.reject()
-  );
+const YoutubeCommentList = ({ videoId }: { videoId: string }) => {
+  const {
+    fetchMoreRef,
+    canFetchMore,
+    isLoading,
+    ...query
+  } = useQueryYoutubeVideoCommentThreadList({ videoId });
 
-  if (!videoId || query.error) {
-    return null;
+  if (query.error) {
+    return <NothingHere />;
   }
 
-  if (!query.data) {
+  if (query.data === undefined) {
     return (
       <React.Fragment>
         {[...Array(3)].map((_, index) => (
@@ -29,7 +30,29 @@ export default ({ videoId }: { videoId?: string }) => {
     );
   }
 
-  const commentThreadList = query.data;
+  const items = query.data.flatMap((page) => page.items);
 
-  return <CommentThreadList commentThreadList={commentThreadList} />;
+  if (items.length === 0) {
+    return <NothingHere />;
+  }
+
+  return (
+    <React.Fragment>
+      {items.map((commentThread) => (
+        <Box key={commentThread.id} paddingX={2} paddingY={1}>
+          <CommentThread commentThread={commentThread} />
+        </Box>
+      ))}
+      <div ref={fetchMoreRef} />
+      {canFetchMore && <LoadingBox m={6} />}
+    </React.Fragment>
+  );
+};
+
+export default ({ videoId }: { videoId?: string }) => {
+  if (videoId) {
+    return <YoutubeCommentList videoId={videoId} />;
+  }
+
+  return <NothingHere />;
 };

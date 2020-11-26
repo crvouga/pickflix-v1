@@ -1,11 +1,12 @@
 import { useQuery } from "react-query";
 import { BackendAPI } from "../../backend-api";
+import useInfiniteQueryPagination from "../../common/hooks/useInfiniteQueryPagination";
 import { Paginated } from "../../common/types";
 import {
   MediaId,
   Movie,
   MovieDetails,
-  MovieReviews,
+  MovieReview,
   Person,
   PersonDetailsResponse,
   TmdbConfiguration,
@@ -24,11 +25,18 @@ export const queryKeys = {
 
 export const getTmdbMovieReviews = async ({
   mediaId,
+  page,
 }: {
   mediaId: MediaId;
+  page?: number;
 }) => {
-  const { data } = await BackendAPI.get<MovieReviews>(
-    `/api/tmdb/movie/${mediaId.tmdbMediaId}/reviews`
+  const { data } = await BackendAPI.get<Paginated<MovieReview>>(
+    `/api/tmdb/movie/${mediaId.tmdbMediaId}/reviews`,
+    {
+      params: {
+        page,
+      },
+    }
   );
   return data;
 };
@@ -145,5 +153,18 @@ export const useQueryMovieSearch = ({
 }) => {
   return useQuery(["movie", "search", text, page], () =>
     getSearchMovies({ query: text, page })
+  );
+};
+
+const makeGetTmdbReviewsQueryKey = ({ mediaId }: { mediaId: MediaId }) => [
+  "movie",
+  mediaId,
+  "reviews",
+];
+
+export const useQueryTmdbReviews = ({ mediaId }: { mediaId: MediaId }) => {
+  return useInfiniteQueryPagination(
+    makeGetTmdbReviewsQueryKey({ mediaId }),
+    ({ lastPage }) => getTmdbMovieReviews({ mediaId, page: lastPage })
   );
 };
