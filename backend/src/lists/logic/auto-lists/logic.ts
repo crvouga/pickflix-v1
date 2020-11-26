@@ -1,16 +1,14 @@
+import { removeNullOrUndefinedEntries } from "../../../common/utils";
 import { User, UserId } from "../../../users/models/make-user";
 import {
   AutoList,
   AutoListKeys,
   INITIAL_AUTO_LIST_INFOS,
-  makeAutoList,
   ListId,
+  makeAutoList,
 } from "../../models";
 import { ListAggergate } from "../../models/types";
 import { ListLogic } from "../build";
-import { DEFAULT_PAGE_SIZE } from "../../../common/pagination";
-import { PaginationOptions } from "../../../common/unit-of-work/types";
-import { removeNullOrUndefinedEntries } from "../../../common/utils";
 
 export async function initializeAutoLists(
   this: ListLogic,

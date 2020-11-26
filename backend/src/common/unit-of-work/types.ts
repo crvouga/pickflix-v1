@@ -37,18 +37,18 @@ export type PaginationOptions = {
 
 export type OrderByOptions<T> = [keyof T, "ascend" | "descend"][];
 
-export type FindOptions<T> = {
+export type RepositoryQueryOptions<T> = {
   orderBy?: OrderByOptions<T>;
   pagination?: PaginationOptions;
 };
 
 export interface IRepository<T extends Identifiable> {
-  find: (_: Partial<T>, options?: FindOptions<T>) => Promise<T[]>;
+  find: (_: Partial<T>, options?: RepositoryQueryOptions<T>) => Promise<T[]>;
 
   search: (
     query: string,
     keys: (keyof T)[],
-    options?: FindOptions<T>
+    options?: RepositoryQueryOptions<T>
   ) => Promise<T[]>;
 
   add: (_: T[]) => Promise<T[]>;

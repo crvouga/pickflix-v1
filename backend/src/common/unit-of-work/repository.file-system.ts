@@ -1,16 +1,16 @@
 import fs from "fs";
 import { innerJoin, whereEq, ascend, prop, descend, sortWith } from "ramda";
 import configuration from "../../app/configuration";
-import { Identifiable, IRepository, FindOptions } from "./types";
-import { RepositoryHashMap } from "./repository.hash-map";
-export class RepositoryFileSystem<T extends Identifiable>
+import { Identifiable, IRepository, RepositoryQueryOptions } from "./types";
+import { GenericRepositoryHashMap } from "./repository.hash-map";
+export class GenericRepositoryFileSystem<T extends Identifiable>
   implements IRepository<T> {
   filename: string;
-  repositoryHashMap: RepositoryHashMap<T>;
+  repositoryHashMap: GenericRepositoryHashMap<T>;
 
   constructor(collectionName: string) {
     this.filename = `${configuration.PATH_TO_FILE_STORE}/${collectionName}.json`;
-    this.repositoryHashMap = new RepositoryHashMap<T>();
+    this.repositoryHashMap = new GenericRepositoryHashMap<T>();
   }
 
   read(): { [id: string]: T } {
@@ -29,7 +29,10 @@ export class RepositoryFileSystem<T extends Identifiable>
     fs.writeFileSync(this.filename, JSON.stringify(db));
   }
 
-  async find(entityInfo: Partial<T>, options?: FindOptions<T>): Promise<T[]> {
+  async find(
+    entityInfo: Partial<T>,
+    options?: RepositoryQueryOptions<T>
+  ): Promise<T[]> {
     this.read();
     return await this.repositoryHashMap.find(entityInfo, options);
   }
@@ -37,7 +40,7 @@ export class RepositoryFileSystem<T extends Identifiable>
   async search(
     query: string,
     keys: (keyof T)[],
-    options?: FindOptions<T>
+    options?: RepositoryQueryOptions<T>
   ): Promise<T[]> {
     this.read();
     return await this.repositoryHashMap.search(query, keys, options);

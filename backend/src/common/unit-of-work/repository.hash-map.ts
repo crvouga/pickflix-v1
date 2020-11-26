@@ -1,9 +1,13 @@
 import * as R from "ramda";
 import { pipe } from "remeda";
-import { FindOptions, Identifiable, IRepository } from "./types";
+import {
+  RepositoryQueryOptions,
+  Identifiable,
+  IRepository as IGenericRepository,
+} from "./types";
 import { matchSorter } from "match-sorter";
 
-const optionsToCompartors = <T>(options?: FindOptions<T>) => {
+const optionsToCompartors = <T>(options?: RepositoryQueryOptions<T>) => {
   const comparators: ((a: T, b: T) => number)[] = [];
   if (options?.orderBy) {
     for (const [key, direction] of options.orderBy) {
@@ -21,7 +25,7 @@ const optionsToCompartors = <T>(options?: FindOptions<T>) => {
 };
 
 const optionsToIndexRange = <T>(
-  options?: FindOptions<T>
+  options?: RepositoryQueryOptions<T>
 ): [number, number] | [] => {
   if (options?.pagination) {
     const { pageSize, page } = options.pagination;
@@ -32,8 +36,8 @@ const optionsToIndexRange = <T>(
   return [];
 };
 
-export class RepositoryHashMap<T extends Identifiable>
-  implements IRepository<T> {
+export class GenericRepositoryHashMap<T extends Identifiable>
+  implements IGenericRepository<T> {
   db: {
     [id: string]: T;
   };
@@ -42,7 +46,10 @@ export class RepositoryHashMap<T extends Identifiable>
     this.db = {};
   }
 
-  async find(entityInfo: Partial<T>, options?: FindOptions<T>): Promise<T[]> {
+  async find(
+    entityInfo: Partial<T>,
+    options?: RepositoryQueryOptions<T>
+  ): Promise<T[]> {
     return pipe(
       this.db,
       (db) => Object.values(db),
@@ -55,7 +62,7 @@ export class RepositoryHashMap<T extends Identifiable>
   async search(
     query: string,
     keys: (keyof T)[],
-    options?: FindOptions<T>
+    options?: RepositoryQueryOptions<T>
   ): Promise<T[]> {
     return pipe(
       this.db,

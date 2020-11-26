@@ -1,10 +1,10 @@
-import { RepositoryFileSystem } from "../../common/unit-of-work/repository.file-system";
-import { RepositoryHashMap } from "../../common/unit-of-work/repository.hash-map";
+import { GenericRepositoryFileSystem } from "../../common/unit-of-work/repository.file-system";
+import { GenericRepositoryHashMap } from "../../common/unit-of-work/repository.hash-map";
 import { Credential } from "../models/make-credential";
 import { ICredentialRepository } from "./types";
 
 export class CredentialRepositoryFileSystem
-  extends RepositoryFileSystem<Credential>
+  extends GenericRepositoryFileSystem<Credential>
   implements ICredentialRepository {
   constructor() {
     super("credentials");
@@ -12,7 +12,7 @@ export class CredentialRepositoryFileSystem
 }
 
 export class CredentialRepositoryHashMap
-  extends RepositoryHashMap<Credential>
+  extends GenericRepositoryHashMap<Credential>
   implements ICredentialRepository {
   constructor() {
     super();

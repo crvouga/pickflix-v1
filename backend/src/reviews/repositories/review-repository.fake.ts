@@ -1,17 +1,17 @@
-import { RepositoryHashMap } from "../../common/unit-of-work/repository.hash-map";
+import { GenericRepositoryHashMap } from "../../common/unit-of-work/repository.hash-map";
 import { Review } from "../models/make-review";
 import { IReviewRepository } from "./types";
-import { RepositoryFileSystem } from "../../common/unit-of-work/repository.file-system";
+import { GenericRepositoryFileSystem } from "../../common/unit-of-work/repository.file-system";
 
 export class ReviewRepositoryHashMap
-  extends RepositoryHashMap<Review>
+  extends GenericRepositoryHashMap<Review>
   implements IReviewRepository {
   constructor() {
     super();
   }
 }
 export class ReviewRepositoryFileSystem
-  extends RepositoryFileSystem<Review>
+  extends GenericRepositoryFileSystem<Review>
   implements IReviewRepository {
   constructor() {
     super("reviews");

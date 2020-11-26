@@ -124,7 +124,8 @@ export async function resetPassword(
     throw new Error("User is using different email");
   }
 
-  if (Date.now() - tokenData.createdAt > 1000 * 60 * 60 * 60 * 24 /* 1 day */) {
+  const ONE_DAY = 1000 * 60 * 60 * 60 * 24;
+  if (Date.now() - tokenData.createdAt > ONE_DAY) {
     throw new Error("Token expired");
   }
 

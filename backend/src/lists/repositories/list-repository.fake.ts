@@ -1,10 +1,10 @@
-import { RepositoryFileSystem } from "../../common/unit-of-work/repository.file-system";
-import { RepositoryHashMap } from "../../common/unit-of-work/repository.hash-map";
+import { GenericRepositoryFileSystem } from "../../common/unit-of-work/repository.file-system";
+import { GenericRepositoryHashMap } from "../../common/unit-of-work/repository.hash-map";
 import { List } from "../models";
 import { IListRepository } from "./types";
 
 export class ListRepositoryHashMap
-  extends RepositoryHashMap<List>
+  extends GenericRepositoryHashMap<List>
   implements IListRepository {
   constructor() {
     super();
@@ -12,7 +12,7 @@ export class ListRepositoryHashMap
 }
 
 export class ListRepositoryFileSystem
-  extends RepositoryFileSystem<List>
+  extends GenericRepositoryFileSystem<List>
   implements IListRepository {
   constructor() {
     super("lists");
