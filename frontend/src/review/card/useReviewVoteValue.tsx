@@ -91,7 +91,7 @@ export default (queryKey: QueryKey) => {
     try {
       if (review.reviewVoteValue === voteValue) {
         await deleteReviewVote({ reviewId: review.review.id });
-        snackbar.display({ message: "Removed vote" });
+        // snackbar.display({ message: "Removed vote" });
       } else {
         await postReviewVote({
           reviewId: review.review.id,
