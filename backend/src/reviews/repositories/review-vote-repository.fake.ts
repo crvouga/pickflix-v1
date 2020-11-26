@@ -7,7 +7,7 @@ export class ReviewVoteRepositoryHashMap
   extends GenericRepositoryHashMap<ReviewVote>
   implements IReviewVoteRepository {
   constructor() {
-    super();
+    super({});
   }
 }
 export class ReviewVoteRepositoryFileSystem

@@ -7,7 +7,7 @@ export class UserRepositoryHashMap
   extends GenericRepositoryHashMap<User>
   implements IUserRepository {
   constructor() {
-    super();
+    super({});
   }
 }
 

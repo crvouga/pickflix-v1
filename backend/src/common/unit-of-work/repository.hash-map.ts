@@ -38,12 +38,12 @@ const optionsToIndexRange = <T>(
 
 export class GenericRepositoryHashMap<T extends Identifiable>
   implements IGenericRepository<T> {
-  db: {
+  hashMap: {
     [id: string]: T;
   };
 
-  constructor() {
-    this.db = {};
+  constructor(hashMap: { [id: string]: T }) {
+    this.hashMap = hashMap;
   }
 
   async find(
@@ -51,8 +51,8 @@ export class GenericRepositoryHashMap<T extends Identifiable>
     options?: RepositoryQueryOptions<T>
   ): Promise<T[]> {
     return pipe(
-      this.db,
-      (db) => Object.values(db),
+      this.hashMap,
+      (hashMap) => Object.values(hashMap),
       (rows) => rows.filter(R.whereEq(entityInfo)),
       (rows) => R.sortWith(optionsToCompartors(options), rows),
       (rows) => rows.slice(...optionsToIndexRange(options))
@@ -65,8 +65,8 @@ export class GenericRepositoryHashMap<T extends Identifiable>
     options?: RepositoryQueryOptions<T>
   ): Promise<T[]> {
     return pipe(
-      this.db,
-      (db) => Object.values(db),
+      this.hashMap,
+      (hashMap) => Object.values(hashMap),
       (rows) =>
         matchSorter(rows, query, { keys: keys.map((key) => key.toString()) }),
       (rows) => R.sortWith(optionsToCompartors(options), rows),
@@ -81,20 +81,20 @@ export class GenericRepositoryHashMap<T extends Identifiable>
 
   async add(entities: T[]): Promise<T[]> {
     for (const entity of entities) {
-      this.db[entity.id] = entity;
+      this.hashMap[entity.id] = entity;
     }
     return entities;
   }
 
   async remove(entityInfos: Partial<T>[]): Promise<boolean> {
     for (const entityInfo of entityInfos) {
-      this.db = R.reject(R.whereEq(entityInfo), this.db);
+      this.hashMap = R.reject(R.whereEq(entityInfo), this.hashMap);
     }
     return true;
   }
 
   async update({ id, ...entityInfo }: Partial<T> & Pick<T, "id">): Promise<T> {
-    const entity = this.db[id];
+    const entity = this.hashMap[id];
     if (!entity) {
       throw new Error("entity does not exists");
     }
@@ -102,7 +102,7 @@ export class GenericRepositoryHashMap<T extends Identifiable>
       ...entity,
       ...entityInfo,
     };
-    this.db[id] = updated;
+    this.hashMap[id] = updated;
     return updated;
   }
 }

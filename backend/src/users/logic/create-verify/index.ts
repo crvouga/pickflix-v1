@@ -5,7 +5,7 @@ import {
   makeUser,
   passwordHashCompare,
 } from "../../models";
-import { UserLogic } from "../user-logic";
+import { UserLogic } from "../logic";
 
 export async function verifyEmailAddressAndPassword(
   this: UserLogic,

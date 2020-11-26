@@ -6,7 +6,7 @@ import { GenericRepositoryFileSystem } from "../../common/unit-of-work/repositor
 export interface IUserRepository {
   find(
     spec: Partial<User>,
-    options: RepositoryQueryOptions<User>
+    options?: RepositoryQueryOptions<User>
   ): Promise<User[]>;
 
   search(
@@ -25,8 +25,8 @@ export interface IUserRepository {
 export class UserRepositoryHashMap implements IUserRepository {
   repository: GenericRepositoryHashMap<User>;
 
-  constructor(repository: GenericRepositoryHashMap<User>) {
-    this.repository = repository;
+  constructor() {
+    this.repository = new GenericRepositoryHashMap<User>({});
   }
 
   async find(spec: Partial<User>, options: RepositoryQueryOptions<User>) {
@@ -57,8 +57,8 @@ export class UserRepositoryHashMap implements IUserRepository {
 export class UserRepositoryFileSystem implements IUserRepository {
   repository: GenericRepositoryFileSystem<User>;
 
-  constructor(repository: GenericRepositoryFileSystem<User>) {
-    this.repository = repository;
+  constructor() {
+    this.repository = new GenericRepositoryFileSystem<User>("user");
   }
 
   async find(partial: Partial<User>, options: RepositoryQueryOptions<User>) {

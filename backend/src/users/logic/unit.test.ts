@@ -1,4 +1,4 @@
-import { buildUserLogicFake } from "./user-logic.fake";
+import { buildUserLogicFake } from "./build";
 import { makeUserFake } from "../models";
 
 describe("user logic", () => {

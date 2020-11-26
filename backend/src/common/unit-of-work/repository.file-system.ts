@@ -10,23 +10,23 @@ export class GenericRepositoryFileSystem<T extends Identifiable>
 
   constructor(collectionName: string) {
     this.filename = `${configuration.PATH_TO_FILE_STORE}/${collectionName}.json`;
-    this.repositoryHashMap = new GenericRepositoryHashMap<T>();
+    this.repositoryHashMap = new GenericRepositoryHashMap<T>({});
   }
 
   read(): { [id: string]: T } {
     try {
-      const db = JSON.parse(fs.readFileSync(this.filename, "utf8"));
-      this.repositoryHashMap.db = db;
-      return db;
+      const hashMap = JSON.parse(fs.readFileSync(this.filename, "utf8"));
+      this.repositoryHashMap.hashMap = hashMap;
+      return hashMap;
     } catch (error) {
-      this.repositoryHashMap.db = {};
+      this.repositoryHashMap.hashMap = {};
       return {};
     }
   }
 
   write() {
-    const db = this.repositoryHashMap.db;
-    fs.writeFileSync(this.filename, JSON.stringify(db));
+    const hashMap = this.repositoryHashMap.hashMap;
+    fs.writeFileSync(this.filename, JSON.stringify(hashMap));
   }
 
   async find(

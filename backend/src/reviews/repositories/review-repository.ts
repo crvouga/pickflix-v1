@@ -13,7 +13,7 @@ export interface IReviewRepository {
 
   remove(id: ReviewId): void;
 
-  count(spec: Partial<Review>): Promise<Number>;
+  count(spec: Partial<Review>): Promise<number>;
 
   update(id: ReviewId, partial: Partial<Review>): void;
 }
@@ -21,8 +21,8 @@ export interface IReviewRepository {
 export class ReviewRepositoryHashMap implements IReviewRepository {
   repository: GenericRepositoryHashMap<Review>;
 
-  constructor(repository: GenericRepositoryHashMap<Review>) {
-    this.repository = repository;
+  constructor(hashMap: { [id: string]: Review }) {
+    this.repository = new GenericRepositoryHashMap<Review>(hashMap);
   }
 
   async find(spec: Partial<Review>, options?: RepositoryQueryOptions<Review>) {
@@ -49,8 +49,8 @@ export class ReviewRepositoryHashMap implements IReviewRepository {
 export class ReviewRepositoryFileSystem implements IReviewRepository {
   repository: GenericRepositoryFileSystem<Review>;
 
-  constructor(repository: GenericRepositoryFileSystem<Review>) {
-    this.repository = repository;
+  constructor() {
+    this.repository = new GenericRepositoryFileSystem<Review>("review");
   }
 
   async find(spec: Partial<Review>, options?: RepositoryQueryOptions<Review>) {

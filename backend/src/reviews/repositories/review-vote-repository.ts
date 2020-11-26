@@ -1,8 +1,10 @@
+import { GenericRepositoryFileSystem } from "../../common/unit-of-work/repository.file-system";
 import { GenericRepositoryHashMap } from "../../common/unit-of-work/repository.hash-map";
 import { ReviewVote, ReviewVoteId } from "../models/make-review-vote";
-import { GenericRepositoryFileSystem } from "../../common/unit-of-work/repository.file-system";
 
 export interface IReviewVoteRepository {
+  find(spec: Partial<ReviewVote>): Promise<ReviewVote[]>;
+
   add(review: ReviewVote): void;
 
   remove(id: ReviewVoteId): void;
@@ -15,12 +17,16 @@ export interface IReviewVoteRepository {
 export class ReviewVoteRepositoryHashMap implements IReviewVoteRepository {
   repository: GenericRepositoryHashMap<ReviewVote>;
 
-  constructor(repository: GenericRepositoryHashMap<ReviewVote>) {
-    this.repository = repository;
+  constructor(hashMap: { [id: string]: ReviewVote }) {
+    this.repository = new GenericRepositoryHashMap<ReviewVote>(hashMap);
   }
 
-  async add(review: ReviewVote) {
-    this.repository.add([review]);
+  async find(spec: Partial<ReviewVote>) {
+    return this.repository.find(spec);
+  }
+
+  async add(reviewVote: ReviewVote) {
+    this.repository.add([reviewVote]);
   }
 
   async remove(id: ReviewVoteId) {
@@ -39,12 +45,16 @@ export class ReviewVoteRepositoryHashMap implements IReviewVoteRepository {
 export class ReviewVoteRepositoryFileSystem implements IReviewVoteRepository {
   repository: GenericRepositoryFileSystem<ReviewVote>;
 
-  constructor(repository: GenericRepositoryFileSystem<ReviewVote>) {
-    this.repository = repository;
+  constructor() {
+    this.repository = new GenericRepositoryFileSystem<ReviewVote>("reviewVote");
   }
 
-  async add(review: ReviewVote) {
-    this.repository.add([review]);
+  async find(spec: Partial<ReviewVote>) {
+    return this.repository.find(spec);
+  }
+
+  async add(reviewVote: ReviewVote) {
+    this.repository.add([reviewVote]);
   }
 
   async remove(id: ReviewVoteId) {

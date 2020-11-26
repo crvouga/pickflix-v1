@@ -7,7 +7,7 @@ export class ListRepositoryHashMap
   extends GenericRepositoryHashMap<List>
   implements IListRepository {
   constructor() {
-    super();
+    super({});
   }
 }
 

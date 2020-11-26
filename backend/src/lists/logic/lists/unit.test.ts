@@ -1,4 +1,4 @@
-import { TmdbMediaType, makeMediaIdFake } from "../../../media/models/types";
+import { makeMediaIdFake } from "../../../media/models/types";
 import { makeUserFake } from "../../../users/models/make-user.fake";
 import { buildListLogicFake } from "../build.fake";
 

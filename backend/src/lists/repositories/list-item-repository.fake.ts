@@ -7,7 +7,7 @@ export class ListItemRepositoryHashMap
   extends GenericRepositoryHashMap<ListItem>
   implements IListItemRepository {
   constructor() {
-    super();
+    super({});
   }
 }
 

@@ -5,7 +5,7 @@ import session from "express-session";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import configuration from "../../app/configuration";
-import { UserLogic } from "../logic/user-logic";
+import { UserLogic } from "../logic/logic";
 import { User, UserId } from "../models/make-user";
 import makeFileStore from "session-file-store";
 import csrf from "csurf";

@@ -1,6 +1,6 @@
 import { listLogic } from "../lists/logic";
 import { mediaLogic } from "../media/logic";
-import { reviewLogic } from "../reviews/logic";
+
 import {
   authenticate,
   isAuthenticated,
@@ -9,12 +9,13 @@ import { userLogic } from "../users/logic";
 import configuration from "./configuration";
 import { buildExpressApp } from "./express/build-express-app";
 import { ExpressAppDependencies } from "./express/types";
+import { buildReviewLogicProduction } from "../reviews/logic/build";
 
 export const dependencies: ExpressAppDependencies = {
   listLogic,
   userLogic,
   mediaLogic,
-  reviewLogic,
+  reviewLogic: buildReviewLogicProduction({ mediaLogic }),
   middlewares: {
     authenticate,
     isAuthenticated,

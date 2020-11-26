@@ -15,6 +15,6 @@ export class CredentialRepositoryHashMap
   extends GenericRepositoryHashMap<Credential>
   implements ICredentialRepository {
   constructor() {
-    super();
+    super({});
   }
 }

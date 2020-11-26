@@ -4,11 +4,11 @@ import { UserId } from "../../users/models";
 import { makeUserFake } from "../../users/models/make-user.fake";
 import { ReviewVoteValue } from "../models/make-review-vote";
 import { makeReviewFake } from "../models/make-review.fake";
-import { buildReviewLogicFake } from "./build.fake";
+import { buildReviewLogicTest } from "./build";
 
 describe("review logic", () => {
   it("gets all reviews for a user", async () => {
-    const { reviewLogic } = buildReviewLogicFake();
+    const { reviewLogic } = buildReviewLogicTest();
     const user = makeUserFake();
     const reviewsByUser = [1, 2, 3].map((n) =>
       makeReviewFake({
@@ -23,7 +23,7 @@ describe("review logic", () => {
   });
 
   it("gets review for a media", async () => {
-    const { reviewLogic } = buildReviewLogicFake();
+    const { reviewLogic } = buildReviewLogicTest();
 
     const users = [1, 2, 3].map(() =>
       makeUserFake({
@@ -46,7 +46,7 @@ describe("review logic", () => {
   });
 
   it("only allows one review per media", async () => {
-    const { reviewLogic } = buildReviewLogicFake();
+    const { reviewLogic } = buildReviewLogicTest();
 
     const user = makeUserFake();
     const mediaId = makeMediaIdFake();
@@ -64,23 +64,23 @@ describe("review logic", () => {
     }
   });
   it("puts review in repo", async () => {
-    const { reviewLogic } = buildReviewLogicFake();
+    const { reviewLogic } = buildReviewLogicTest();
     const reviewInfo = makeReviewFake();
     const [added] = await reviewLogic.addReviews([reviewInfo]);
-    const [found] = await reviewLogic.unitOfWork.Reviews.find({
+    const [found] = await reviewLogic.reviewRepository.find({
       id: added.id,
     });
     expect(found).toMatchObject(added);
   });
   it("removes review", async () => {
-    const { reviewLogic } = buildReviewLogicFake();
+    const { reviewLogic } = buildReviewLogicTest();
 
     const reviewInfo = makeReviewFake();
     await reviewLogic.addReviews([reviewInfo]);
     const before = await reviewLogic.getReviews({
       authorId: reviewInfo.authorId,
     });
-    await reviewLogic.removeReviews(before);
+    await reviewLogic.removeReviews(before[0].id);
     const after = await reviewLogic.getReviews({
       authorId: reviewInfo.authorId,
     });
@@ -88,7 +88,7 @@ describe("review logic", () => {
     expect(after).toHaveLength(0);
   });
   it("edits review", async () => {
-    const { reviewLogic } = buildReviewLogicFake();
+    const { reviewLogic } = buildReviewLogicTest();
 
     const [added] = await reviewLogic.addReviews([
       makeReviewFake({ content: "good" }),
@@ -102,12 +102,12 @@ describe("review logic", () => {
   });
 
   it("casts uses most recent vote", async () => {
-    const { reviewLogic } = buildReviewLogicFake();
+    const { reviewLogic } = buildReviewLogicTest();
     const user = makeUserFake();
 
     const review = await reviewLogic.addReview(makeReviewFake());
 
-    const before = await reviewLogic.unitOfWork.ReviewVotes.find({
+    const before = await reviewLogic.reviewVoteRepository.find({
       reviewId: review.id,
       userId: user.id,
     });
@@ -124,7 +124,7 @@ describe("review logic", () => {
       });
     }
 
-    const after = await reviewLogic.unitOfWork.ReviewVotes.find({
+    const after = await reviewLogic.reviewVoteRepository.find({
       reviewId: review.id,
       userId: user.id,
     });
@@ -133,7 +133,7 @@ describe("review logic", () => {
   });
 
   it("get aggergated review", async () => {
-    const { reviewLogic } = buildReviewLogicFake();
+    const { reviewLogic } = buildReviewLogicTest();
     const user = makeUserFake();
     const review = await reviewLogic.addReview(makeReviewFake());
 

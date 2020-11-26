@@ -77,7 +77,7 @@ export const reviews = ({
     async (req, res, next) => {
       try {
         const reviewId = req.params.reviewId as ReviewId;
-        await reviewLogic.removeReviews([{ id: reviewId }]);
+        await reviewLogic.removeReviews(reviewId);
         res.status(204).end();
       } catch (error) {
         next(error);

@@ -1,7 +1,7 @@
 import { EventEmitter } from "events";
 import { EmailServiceStub } from "../email/EmailService";
 import { UnitOfWorkHashMap } from "../../common/unit-of-work/unit-of-work.fake";
-import { UserLogic } from "./user-logic";
+import { UserLogic } from "./logic";
 
 export const buildUserLogicFake = ({
   unitOfWork = new UnitOfWorkHashMap(),

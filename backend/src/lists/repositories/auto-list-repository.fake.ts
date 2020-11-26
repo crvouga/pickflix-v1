@@ -7,7 +7,7 @@ export class AutoListRepositoryHashMap
   extends GenericRepositoryHashMap<AutoList>
   implements IAutoListRepository {
   constructor() {
-    super();
+    super({});
   }
 }
 

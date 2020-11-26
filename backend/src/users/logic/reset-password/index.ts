@@ -4,7 +4,7 @@ import {
   makeCredential,
   makePasswordHash,
 } from "../../models/make-credential";
-import { UserLogic } from "../user-logic";
+import { UserLogic } from "../logic";
 import { castLink, makeResetPasswordEmail } from "./email";
 import { decodeToken, encodeToken } from "./token";
 
