@@ -5,6 +5,7 @@ import { buildAuthMiddleware } from "../../users/express/build-auth-middleware";
 import configuration from "../configuration";
 import { buildApiRouter } from "./build-api-router";
 import { ExpressAppDependencies } from "./types";
+import { buildSecurityMiddleware } from "./build-security-middleware";
 
 const buildMiddleware = (dependencies: ExpressAppDependencies) => (
   app: Application
@@ -12,6 +13,7 @@ const buildMiddleware = (dependencies: ExpressAppDependencies) => (
   app.use(bodyParser.json());
 
   buildAuthMiddleware(dependencies)(app);
+  buildSecurityMiddleware(dependencies)(app);
 };
 
 const buildFrontendRouter = () => (app: Application) => {
