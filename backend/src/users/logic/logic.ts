@@ -1,11 +1,14 @@
 import { EventEmitter } from "events";
-import { IEmailService } from "../email/EmailService";
-import {
-  IUnitOfWork,
-  PaginationOptions,
-} from "../../common/unit-of-work/types";
+import { PaginationOptions } from "../../common/unit-of-work/types";
+import { removeNullOrUndefinedEntries } from "../../common/utils";
+import { IAutoListRepository } from "../../lists/repositories/auto-list-repository";
+import { IListRepository } from "../../lists/repositories/list-repository";
+import { IReviewRepository } from "../../reviews/repositories/review-repository";
+import { IEmailLogic } from "../email";
 import { CredentialType } from "../models/make-credential";
-import { UserId, updateUser, User } from "../models/make-user";
+import { updateUser, User, UserId } from "../models/make-user";
+import { ICredentialRepository } from "../repositories/credential-repository";
+import { IUserRepository } from "../repositories/user-repository";
 import {
   createUserWithPassword,
   verifyEmailAddressAndPassword,
@@ -15,25 +18,42 @@ import {
   resetPassword,
   sendResetPasswordEmail,
 } from "./reset-password";
-import { removeNullOrUndefinedEntries } from "../../common/utils";
+
+type UserLogicDependencies = {
+  userRepository: IUserRepository;
+  credentialRepository: ICredentialRepository;
+  listRepository: IListRepository;
+  autoListRepository: IAutoListRepository;
+  reviewRepository: IReviewRepository;
+  eventEmitter: EventEmitter;
+  emailLogic: IEmailLogic;
+};
 
 export class UserLogic {
-  unitOfWork: IUnitOfWork;
+  userRepository: IUserRepository;
+  credentialRepository: ICredentialRepository;
+  listRepository: IListRepository;
+  autoListRepository: IAutoListRepository;
+  reviewRepository: IReviewRepository;
   eventEmitter: EventEmitter;
-  emailService: IEmailService;
+  emailLogic: IEmailLogic;
 
   constructor({
-    unitOfWork,
     eventEmitter,
-    emailService,
-  }: {
-    unitOfWork: IUnitOfWork;
-    eventEmitter: EventEmitter;
-    emailService: IEmailService;
-  }) {
-    this.unitOfWork = unitOfWork;
+    emailLogic,
+    userRepository,
+    credentialRepository,
+    listRepository,
+    autoListRepository,
+    reviewRepository,
+  }: UserLogicDependencies) {
     this.eventEmitter = eventEmitter;
-    this.emailService = emailService;
+    this.emailLogic = emailLogic;
+    this.credentialRepository = credentialRepository;
+    this.userRepository = userRepository;
+    this.listRepository = listRepository;
+    this.autoListRepository = autoListRepository;
+    this.reviewRepository = reviewRepository;
   }
 
   getResetPasswordEmail = getResetPasswordEmail;
@@ -44,9 +64,7 @@ export class UserLogic {
   createUserWithPassword = createUserWithPassword;
 
   async getPasswordCredential({ userId }: { userId: UserId }) {
-    const { Credentials } = this.unitOfWork;
-
-    const [passwordCredential] = await Credentials.find({
+    const [passwordCredential] = await this.credentialRepository.find({
       userId,
       type: CredentialType.password,
     });
@@ -61,15 +79,13 @@ export class UserLogic {
   async getUsers(
     userInfo: { username: string } | { id: UserId } | { emailAddress: string }
   ) {
-    return await this.unitOfWork.Users.find(userInfo);
+    return await this.userRepository.find(userInfo);
   }
 
   async getUser(
     info: { username: string } | { id: UserId } | { emailAddress: string }
   ) {
-    const { Users } = this.unitOfWork;
-
-    const [user] = await Users.find(info);
+    const [user] = await this.userRepository.find(info);
 
     if (!user) {
       throw new Error("User does not exists");
@@ -79,12 +95,10 @@ export class UserLogic {
   }
 
   async aggergateUser(user: User) {
-    const { AutoLists, Reviews, Lists } = this.unitOfWork;
-
     const [reviewCount, listCount, autoListCount] = await Promise.all([
-      Reviews.count({ authorId: user.id }),
-      Lists.count({ ownerId: user.id }),
-      AutoLists.count({ ownerId: user.id }),
+      this.reviewRepository.count({ authorId: user.id }),
+      this.listRepository.count({ ownerId: user.id }),
+      this.autoListRepository.count({ ownerId: user.id }),
     ]);
 
     return {
@@ -103,11 +117,12 @@ export class UserLogic {
     },
     pagination?: PaginationOptions
   ) {
-    const { Users } = this.unitOfWork;
-
-    const users = await Users.find(removeNullOrUndefinedEntries(userSpec), {
-      pagination,
-    });
+    const users = await this.userRepository.find(
+      removeNullOrUndefinedEntries(userSpec),
+      {
+        pagination,
+      }
+    );
 
     const userAggergations = await Promise.all(
       users.map((user) => this.aggergateUser(user))
@@ -121,13 +136,13 @@ export class UserLogic {
   }: {
     emailAddress: string;
   }) {
-    const [user] = await this.unitOfWork.Users.find({ emailAddress });
+    const [user] = await this.userRepository.find({ emailAddress });
 
     if (!user) {
       return [];
     }
 
-    const credentials = await this.unitOfWork.Credentials.find({
+    const credentials = await this.credentialRepository.find({
       userId: user.id,
     });
 
@@ -140,11 +155,13 @@ export class UserLogic {
     query: string,
     pagination?: PaginationOptions
   ) {
-    const { Users } = this.unitOfWork;
-
-    const results = await Users.search(query, ["username", "displayName"], {
-      pagination,
-    });
+    const results = await this.userRepository.search(
+      query,
+      ["username", "displayName"],
+      {
+        pagination,
+      }
+    );
 
     return results;
   }
@@ -157,13 +174,11 @@ export class UserLogic {
     displayName?: string;
     emailAddress?: string;
   }) {
-    const { Users } = this.unitOfWork;
-
     const user = await this.getUser({ id });
 
     const updated = updateUser(user, edits);
 
-    await Users.update(updated);
+    await this.userRepository.update(id, updated);
 
     return updated;
   }

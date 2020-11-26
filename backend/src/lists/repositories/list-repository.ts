@@ -1,3 +1,4 @@
+import { GenericRepositoryFileSystem } from "../../common/unit-of-work/repository.file-system";
 import { GenericRepositoryHashMap } from "../../common/unit-of-work/repository.hash-map";
 import { RepositoryQueryOptions } from "../../common/unit-of-work/types";
 import { List, ListId } from "../models/make-list";
@@ -20,8 +21,36 @@ export interface IListRepository {
 export class ListRepositoryHashMap implements IListRepository {
   repository: GenericRepositoryHashMap<List>;
 
-  constructor(repository: GenericRepositoryHashMap<List>) {
-    this.repository = repository;
+  constructor() {
+    this.repository = new GenericRepositoryHashMap<List>({});
+  }
+
+  async find(spec: Partial<List>, options: RepositoryQueryOptions<List>) {
+    return this.repository.find(spec, options);
+  }
+
+  async add(list: List) {
+    this.repository.add([list]);
+  }
+
+  async remove(id: ListId) {
+    this.repository.remove([{ id }]);
+  }
+
+  async update(id: ListId, partial: Partial<List>) {
+    this.repository.update({ id, ...partial });
+  }
+
+  async count(spec: Partial<List>) {
+    return this.repository.count(spec);
+  }
+}
+
+export class ListRepositoryFileSystem implements IListRepository {
+  repository: GenericRepositoryFileSystem<List>;
+
+  constructor() {
+    this.repository = new GenericRepositoryFileSystem<List>("lists");
   }
 
   async find(spec: Partial<List>, options: RepositoryQueryOptions<List>) {

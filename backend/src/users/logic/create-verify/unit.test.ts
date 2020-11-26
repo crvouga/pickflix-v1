@@ -1,11 +1,11 @@
 import { EventEmitter } from "events";
 import { EventTypes } from "../../../common/events";
 import { makeUserFake } from "../../models";
-import { buildUserLogicFake } from "../build";
+import { buildUserLogicTest } from "../build";
 
 describe("user logic", () => {
   it("creates and gets user", async () => {
-    const { userLogic } = buildUserLogicFake();
+    const { userLogic } = buildUserLogicTest();
     const user = await userLogic.createUserWithPassword({
       emailAddress: "crvouga@gmail.com",
       displayName: "Chris",
@@ -21,7 +21,7 @@ describe("user logic", () => {
   });
 
   it("only allows unique email and or username", async () => {
-    const { userLogic } = buildUserLogicFake();
+    const { userLogic } = buildUserLogicTest();
     const info = {
       emailAddress: "crvouga@gmail.com",
       username: "123",
@@ -39,7 +39,7 @@ describe("user logic", () => {
   });
 
   it("verifies username and password", async () => {
-    const { userLogic } = buildUserLogicFake();
+    const { userLogic } = buildUserLogicTest();
 
     const PASSWORD = "password";
 
@@ -62,7 +62,7 @@ describe("user logic", () => {
   it("emits an event when created", async (done) => {
     const emitMock = jest.fn();
 
-    const { userLogic } = buildUserLogicFake({
+    const { userLogic } = buildUserLogicTest({
       eventEmitter: {
         ...new EventEmitter(),
         emit: emitMock,

@@ -6,13 +6,15 @@ export interface IAutoListRepository {
   find(spec: Partial<AutoList>): Promise<AutoList[]>;
 
   add(autoList: AutoList): void;
+
+  count(spec: Partial<AutoList>): Promise<number>;
 }
 
 export class AutoListRepositoryHashMap implements IAutoListRepository {
   repository: GenericRepositoryHashMap<AutoList>;
 
-  constructor(repository: GenericRepositoryHashMap<AutoList>) {
-    this.repository = repository;
+  constructor() {
+    this.repository = new GenericRepositoryHashMap<AutoList>({});
   }
 
   async find(spec: Partial<AutoList>) {
@@ -21,14 +23,18 @@ export class AutoListRepositoryHashMap implements IAutoListRepository {
 
   async add(autoList: AutoList) {
     this.repository.add([autoList]);
+  }
+
+  async count(spec: Partial<AutoList>) {
+    return this.repository.count(spec);
   }
 }
 
 export class AutoListRepositoryFileSystem implements IAutoListRepository {
   repository: GenericRepositoryFileSystem<AutoList>;
 
-  constructor(repository: GenericRepositoryFileSystem<AutoList>) {
-    this.repository = repository;
+  constructor() {
+    this.repository = new GenericRepositoryFileSystem<AutoList>("autoLists");
   }
 
   async find(spec: Partial<AutoList>) {
@@ -37,5 +43,9 @@ export class AutoListRepositoryFileSystem implements IAutoListRepository {
 
   async add(autoList: AutoList) {
     this.repository.add([autoList]);
+  }
+
+  async count(spec: Partial<AutoList>) {
+    return this.repository.count(spec);
   }
 }

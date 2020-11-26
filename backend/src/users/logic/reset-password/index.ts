@@ -89,7 +89,7 @@ export async function sendResetPasswordEmail(
     redirectUrl,
   });
 
-  await this.emailService.sendEmail(email);
+  await this.emailLogic.sendEmail(email);
 }
 
 export async function resetPassword(
@@ -102,8 +102,6 @@ export async function resetPassword(
     newPassword: string;
   }
 ) {
-  const { Credentials } = this.unitOfWork;
-
   const tokenData = decodeToken(resetPasswordToken);
 
   const user = await this.getUser({ id: tokenData.userId });
@@ -136,5 +134,8 @@ export async function resetPassword(
     passwordHash,
   });
 
-  await Credentials.update(updatedPasswordCredential);
+  await this.credentialRepository.update(
+    updatedPasswordCredential.id,
+    updatedPasswordCredential
+  );
 }

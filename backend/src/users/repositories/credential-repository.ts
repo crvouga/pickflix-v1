@@ -15,8 +15,8 @@ export interface ICredentialRepository {
 export class CredentialRepositoryHashMap implements ICredentialRepository {
   repository: GenericRepositoryHashMap<Credential>;
 
-  constructor(repository: GenericRepositoryHashMap<Credential>) {
-    this.repository = repository;
+  constructor() {
+    this.repository = new GenericRepositoryHashMap<Credential>({});
   }
 
   async find(spec: Partial<Credential>) {
@@ -39,8 +39,10 @@ export class CredentialRepositoryHashMap implements ICredentialRepository {
 export class CredentialRepositoryFileSystem implements ICredentialRepository {
   repository: GenericRepositoryFileSystem<Credential>;
 
-  constructor(repository: GenericRepositoryFileSystem<Credential>) {
-    this.repository = repository;
+  constructor() {
+    this.repository = new GenericRepositoryFileSystem<Credential>(
+      "credentials"
+    );
   }
 
   async find(spec: Partial<Credential>) {

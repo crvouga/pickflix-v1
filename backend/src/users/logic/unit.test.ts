@@ -1,9 +1,9 @@
-import { buildUserLogicFake } from "./build";
+import { buildUserLogicTest } from "./build";
 import { makeUserFake } from "../models";
 
 describe("user logic", () => {
   it("searchs users by username and displayName", async () => {
-    const { userLogic } = buildUserLogicFake();
+    const { userLogic } = buildUserLogicTest();
 
     const user1 = makeUserFake({
       username: "1",
@@ -14,7 +14,9 @@ describe("user logic", () => {
     const user3 = makeUserFake({
       username: "123",
     });
-    await userLogic.unitOfWork.Users.add([user1, user2, user3]);
+    for (const user of [user1, user2, user3]) {
+      await userLogic.userRepository.add(user);
+    }
 
     const results1 = await userLogic.searchByUsernameAndDisplayName("1");
     expect(results1).toContainEqual(user1);
@@ -30,11 +32,11 @@ describe("user logic", () => {
   });
 
   it("edit username", async () => {
-    const { userLogic } = buildUserLogicFake();
+    const { userLogic } = buildUserLogicTest();
     const before = makeUserFake({
       username: "before",
     });
-    await userLogic.unitOfWork.Users.add([before]);
+    await userLogic.userRepository.add(before);
 
     await userLogic.editUser({
       id: before.id,

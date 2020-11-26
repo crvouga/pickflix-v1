@@ -17,8 +17,6 @@ export async function verifyEmailAddressAndPassword(
     password: string;
   }
 ) {
-  const { Credentials } = this.unitOfWork;
-
   const user = await this.getUser({ emailAddress });
 
   const passwordCredential = await this.getPasswordCredential({
@@ -26,12 +24,11 @@ export async function verifyEmailAddressAndPassword(
   });
 
   if (await passwordHashCompare(password, passwordCredential.passwordHash)) {
-    await Credentials.update(
-      makeCredential({
-        ...passwordCredential,
-        verifiedAt: Date.now(),
-      })
-    );
+    const updated = makeCredential({
+      ...passwordCredential,
+      verifiedAt: Date.now(),
+    });
+    await this.credentialRepository.update(updated.id, updated);
     return user;
   }
 
@@ -52,13 +49,11 @@ export async function createUserWithPassword(
     password: string;
   }
 ) {
-  const { Users, Credentials } = this.unitOfWork;
-
   const [foundUsernames, foundEmails] = await Promise.all([
-    Users.find({
+    this.userRepository.find({
       username,
     }),
-    Users.find({
+    this.userRepository.find({
       emailAddress,
     }),
   ]);
@@ -85,7 +80,10 @@ export async function createUserWithPassword(
     verifiedAt: Date.now(),
   });
 
-  await Promise.all([Users.add([user]), Credentials.add([passwordCredential])]);
+  await Promise.all([
+    this.userRepository.add(user),
+    this.credentialRepository.add(passwordCredential),
+  ]);
 
   this.eventEmitter.emit(EventTypes.USER_CREATED, { user });
 
