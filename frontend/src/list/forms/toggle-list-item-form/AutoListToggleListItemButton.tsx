@@ -1,13 +1,29 @@
+import { ButtonBaseProps } from "@material-ui/core";
 import React from "react";
 import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
 import { LinkButton } from "../../../app/snackbar/Snackbar";
 import LabeledIconButton from "../../../common/components/LabeledIconButton";
-import { MediaId } from "../../../media/tmdb/types";
 import { useListener } from "../../../common/utility";
+import { MediaId } from "../../../media/tmdb/types";
 import AutoListIcon from "../../auto-lists/AutoListIcon";
 import { AutoListKeys, toAutoListName } from "../../query";
 import { useQueryAutoLists } from "../../query/hooks";
 import useToggleListItemMutation from "./useToggleListItemMutation";
+
+export const AutoListButton = ({
+  autoListKey,
+  ...props
+}: {
+  autoListKey: AutoListKeys;
+} & ButtonBaseProps) => {
+  return (
+    <LabeledIconButton
+      label={toAutoListName(autoListKey)}
+      icon={<AutoListIcon autoListKey={autoListKey} />}
+      {...props}
+    />
+  );
+};
 
 const ToggleAutoListButton = ({
   listId,
@@ -64,12 +80,7 @@ export default ({
   const listId = autoList?.list.id;
 
   if (!listId) {
-    return (
-      <LabeledIconButton
-        label={toAutoListName(autoListKey)}
-        icon={<AutoListIcon autoListKey={autoListKey} />}
-      />
-    );
+    return <AutoListButton autoListKey={autoListKey} />;
   }
 
   return (

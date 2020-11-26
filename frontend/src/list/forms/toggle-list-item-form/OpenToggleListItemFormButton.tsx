@@ -1,3 +1,4 @@
+import { ButtonBaseProps } from "@material-ui/core";
 import ListIcon from "@material-ui/icons/List";
 import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
 import React from "react";
@@ -6,6 +7,10 @@ import LabeledIconButton from "../../../common/components/LabeledIconButton";
 import { MediaId } from "../../../media/tmdb/types";
 import { useQueryListItems } from "../../query";
 import { useToggleListItemFormState } from "./toggle-list-item-form";
+
+export const ListsButton = (props: ButtonBaseProps) => {
+  return <LabeledIconButton label={"Lists"} icon={<ListIcon />} {...props} />;
+};
 
 const ListsIcon = ({ mediaId }: { mediaId: MediaId }) => {
   const query = useQueryListItems({ mediaId });

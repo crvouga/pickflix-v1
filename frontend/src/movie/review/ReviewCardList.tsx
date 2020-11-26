@@ -9,6 +9,7 @@ import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";
 import useReviewVoteValue from "../../review/card/useReviewVoteValue";
 import useReviewForm from "../../review/form/review-form/useReviewForm";
 import { getReviewsQueryKey, useQueryReviews } from "../../review/query";
+import WithAuthentication from "../../user/auth/WithAuthentication";
 
 type Props = {
   mediaId: MediaId;
@@ -41,13 +42,26 @@ export default ({ mediaId }: Props) => {
   if (reviews.results.length === 0) {
     return (
       <Box p={2}>
-        <ReviewCardCallToAction
-          title="Be the first to leave a review!"
-          onClick={() => {
-            reviewForm.setReview({
-              mediaId,
-            });
-            reviewFormModal.open();
+        <WithAuthentication
+          renderAuthenticated={() => (
+            <ReviewCardCallToAction
+              title="Be the first to leave a review!"
+              onClick={() => {
+                reviewForm.setReview({
+                  mediaId,
+                });
+                reviewFormModal.open();
+              }}
+            />
+          )}
+          renderDefault={() => {
+            const { open } = useModal("SignInCallToAction");
+            return (
+              <ReviewCardCallToAction
+                title="Be the first to leave a review!"
+                onClick={open}
+              />
+            );
           }}
         />
       </Box>

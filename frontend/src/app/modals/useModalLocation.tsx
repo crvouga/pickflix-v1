@@ -16,11 +16,12 @@ export default (modalName: ModalName): IModal => {
   };
 
   const close = () => {
-    history.push({
-      state: {
-        [modalName]: false,
-      },
-    });
+    history.goBack();
+    // history.push({
+    //   state: {
+    //     [modalName]: false,
+    //   },
+    // });
   };
 
   return {

@@ -21,6 +21,7 @@ const modalStateTypeByModalName: {
   ReviewForm: "location",
   Search: "location",
   ToggleListItemForm: "location",
+  SignInCallToAction: "location",
 };
 
 export default (modalName: ModalName): IModal => {

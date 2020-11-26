@@ -1,23 +1,47 @@
 import { Box } from "@material-ui/core";
 import React from "react";
-import AutoListToggleListItemButton from "../../list/forms/toggle-list-item-form/AutoListToggleListItemButton";
-import OpenToggleListItemFormButton from "../../list/forms/toggle-list-item-form/OpenToggleListItemFormButton";
+import AutoListToggleListItemButton, {
+  AutoListButton,
+} from "../../list/forms/toggle-list-item-form/AutoListToggleListItemButton";
+import OpenToggleListItemFormButton, {
+  ListsButton,
+} from "../../list/forms/toggle-list-item-form/OpenToggleListItemFormButton";
 import { AutoListKeys } from "../../list/query";
 import { MediaId } from "../../media/tmdb/types";
+import WithAuthentication from "../../user/auth/WithAuthentication";
+import useModal from "../../app/modals/useModal";
 
 export default ({ mediaId }: { mediaId: MediaId }) => {
   return (
     <Box display="flex" justifyContent="space-between" flexWrap="nowrap">
-      <AutoListToggleListItemButton
-        autoListKey={AutoListKeys.Liked}
-        mediaId={mediaId}
+      <WithAuthentication
+        renderAuthenticated={() => (
+          <React.Fragment>
+            <AutoListToggleListItemButton
+              autoListKey={AutoListKeys.Liked}
+              mediaId={mediaId}
+            />
+            <AutoListToggleListItemButton
+              autoListKey={AutoListKeys.WatchNext}
+              mediaId={mediaId}
+            />
+            <OpenToggleListItemFormButton mediaId={mediaId} />
+          </React.Fragment>
+        )}
+        renderDefault={() => {
+          const { open } = useModal("SignInCallToAction");
+          return (
+            <React.Fragment>
+              <AutoListButton autoListKey={AutoListKeys.Liked} onClick={open} />
+              <AutoListButton
+                autoListKey={AutoListKeys.WatchNext}
+                onClick={open}
+              />
+              <ListsButton onClick={open} />
+            </React.Fragment>
+          );
+        }}
       />
-      <AutoListToggleListItemButton
-        autoListKey={AutoListKeys.WatchNext}
-        mediaId={mediaId}
-      />
-      <OpenToggleListItemFormButton mediaId={mediaId} />
-      {/* <AddListItemButton mediaId={mediaId} /> */}
     </Box>
   );
 };

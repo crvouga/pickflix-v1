@@ -142,8 +142,6 @@ export const UserPage = ({
 
 export default () => {
   const { userId } = useParams<{ userId: string }>();
-  const classes = useStyles();
-  const history = useHistory();
 
   const query = useQueryUsers({ id: userId });
 

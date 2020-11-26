@@ -20,6 +20,7 @@ export type ModalName =
   | "ToggleListItemForm"
   | "EditUserForm"
   | "CurrentUserActions"
-  | "RemoveListItemsForm";
+  | "RemoveListItemsForm"
+  | "SignInCallToAction";
 
 export type ModalStateType = "redux" | "location";

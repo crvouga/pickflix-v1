@@ -8,6 +8,7 @@ import DeleteReviewFormModal from "../../review/form/delete-review/DeleteReviewF
 import ReviewFormModal from "../../review/form/review-form/ReviewFormModal";
 import SearchModal from "../../search/SearchDialog";
 import AuthPopups from "../../user/auth/AuthPopups";
+import SignInCallToActionModal from "../../user/auth/SignInCallToActionModal";
 import { CurrentUserActionsModal } from "../../user/CurrentUserActions";
 import EditUserFormModal from "../../user/forms/edit-user-form/EditUserFormModal";
 
@@ -25,6 +26,7 @@ export default () => {
       <SearchModal />
       <EditUserFormModal />
       <CurrentUserActionsModal />
+      <SignInCallToActionModal />
     </React.Fragment>
   );
 };

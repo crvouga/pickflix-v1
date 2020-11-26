@@ -12,6 +12,7 @@ import { UserAggergation } from "../../user/query";
 import { useQueryCurrentUser } from "../../user/query";
 import useReviewActions from "../../review/card/useReviewActions";
 import SignInCallToAction from "../../user/auth/SignInCallToAction";
+import WithAuthentication from "../../user/auth/WithAuthentication";
 
 const YourReview = ({
   user,
@@ -67,25 +68,26 @@ const YourReview = ({
 };
 
 export default ({ mediaId }: { mediaId: MediaId }) => {
-  const query = useQueryCurrentUser();
-
-  if (query.error || !query.data) {
-    return (
-      <Box paddingX={2}>
-        <Box paddingBottom={1}>
-          <Typography variant="h6">Your Review</Typography>
-        </Box>
-        <SignInCallToAction subtitle="Signing in allows you to write reviews!" />
-      </Box>
-    );
-  }
-
   return (
     <Box paddingX={2}>
       <Box paddingBottom={1}>
         <Typography variant="h6">Your Review</Typography>
       </Box>
-      <YourReview mediaId={mediaId} user={query.data} />
+      <WithAuthentication
+        renderAuthenticated={(currentUser) => (
+          <YourReview mediaId={mediaId} user={currentUser} />
+        )}
+        renderDefault={() => {
+          const { open } = useModal("SignInCallToAction");
+          return (
+            <ReviewCardCallToAction
+              title="Write a review"
+              subtitle="Help people decide if they should watch this movie"
+              onClick={open}
+            />
+          );
+        }}
+      />
     </Box>
   );
 };
