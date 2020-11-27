@@ -1,10 +1,10 @@
-import { buildListLogicFake } from "../build.fake";
+import { buildListLogicTest } from "../build";
 import { makeUserFake } from "../../../users/models/make-user.fake";
 import { AutoListKeys } from "../../models";
 
 describe("auto list logic", () => {
   it("creates auto lists", async () => {
-    const { listLogic } = buildListLogicFake();
+    const { listLogic } = buildListLogicTest();
     const user = makeUserFake();
     const added = await listLogic.initializeAutoLists({ user });
     const got = await listLogic.getAutoListAggergations({ ownerId: user.id });
@@ -17,7 +17,7 @@ describe("auto list logic", () => {
   });
 
   it("gets aggergated auto lists for user indexed by key", async () => {
-    const { listLogic } = buildListLogicFake();
+    const { listLogic } = buildListLogicTest();
     const user = makeUserFake();
     await listLogic.initializeAutoLists({ user });
 

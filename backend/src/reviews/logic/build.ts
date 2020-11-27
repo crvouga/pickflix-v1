@@ -1,22 +1,11 @@
-import { UnitOfWorkHashMap } from "../../common/unit-of-work/unit-of-work.fake";
-import { buildMediaLogicFake } from "../../media/logic/build.fake";
-import {
-  ReviewRepositoryFileSystem,
-  ReviewRepositoryHashMap,
-} from "../repositories/review-repository";
-import {
-  ReviewVoteRepositoryFileSystem,
-  ReviewVoteRepositoryHashMap,
-} from "../repositories/review-vote-repository";
+import { buildMediaLogicTest } from "../../media/logic/build";
+import { UserRepositoryHashMap } from "../../users/repositories/user-repository";
+import { ReviewRepositoryHashMap } from "../repositories/review-repository";
+import { ReviewVoteRepositoryHashMap } from "../repositories/review-vote-repository";
 import { ReviewLogic } from "./logic";
-import {
-  UserRepositoryHashMap,
-  UserRepositoryFileSystem,
-} from "../../users/repositories/user-repository";
-import { MediaLogic } from "../../media/logic/build";
 
 export const buildReviewLogicTest = () => {
-  const { mediaLogic } = buildMediaLogicFake();
+  const { mediaLogic } = buildMediaLogicTest();
 
   const userRepository = new UserRepositoryHashMap();
   const reviewRepository = new ReviewRepositoryHashMap({});
@@ -30,31 +19,4 @@ export const buildReviewLogicTest = () => {
   });
 
   return { reviewLogic };
-};
-
-export const buildReviewLogicDevelopment = ({
-  mediaLogic,
-}: {
-  mediaLogic: MediaLogic;
-}) => {
-  const userRepository = new UserRepositoryFileSystem();
-  const reviewRepository = new ReviewRepositoryFileSystem();
-  const reviewVoteRepository = new ReviewVoteRepositoryFileSystem();
-
-  const reviewLogic = new ReviewLogic({
-    mediaLogic,
-    reviewRepository,
-    reviewVoteRepository,
-    userRepository,
-  });
-
-  return reviewLogic;
-};
-
-export const buildReviewLogicProduction = ({
-  mediaLogic,
-}: {
-  mediaLogic: MediaLogic;
-}) => {
-  return buildReviewLogicDevelopment({ mediaLogic });
 };

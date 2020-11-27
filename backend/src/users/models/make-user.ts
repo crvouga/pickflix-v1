@@ -1,9 +1,13 @@
 import * as EmailValidator from "email-validator";
 import { isNullOrUndefined } from "util";
-import { isValidId, makeId } from "../../common/id";
-import { Id } from "../../common/id/types";
+import { isValidId, makeId } from "../../app/id";
+import { Id } from "../../app/id";
+import { Opaque } from "../../app/utils";
 
-export type UserId = Id & { UserId: true };
+export type UserId = Opaque<Id, "UserId">;
+export type Username = Opaque<string, "Username">;
+export type EmailAddress = Opaque<string, "EmailAddress">;
+export type DisplayName = Opaque<string, "DisplayName">;
 
 export type User = {
   type: "user";

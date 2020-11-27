@@ -1,9 +1,6 @@
-import {
-  IUnitOfWork,
-  PaginationOptions,
-} from "../../common/unit-of-work/types";
-import { removeNullOrUndefinedEntries } from "../../common/utils";
-import { MediaLogic } from "../../media/logic/build";
+import { IUnitOfWork, PaginationOptions } from "../../app/data-access/types";
+import { removeNullOrUndefinedEntries } from "../../app/utils";
+import { MediaLogic } from "../../media/logic/logic";
 import { MediaId } from "../../media/models/types";
 import { UserId } from "../../users/models/make-user";
 import {

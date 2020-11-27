@@ -2,9 +2,9 @@ import { IRouter } from "express";
 import {
   makePaginationOptions,
   makePaginationResponse,
-} from "../../../common/pagination";
+} from "../../../app/pagination";
 import { castUserId, User } from "../../../users/models";
-import { removeNullOrUndefinedEntries } from "../../../common/utils";
+import { removeNullOrUndefinedEntries } from "../../../app/utils";
 import {
   castListDescription,
   castListId,
@@ -83,12 +83,10 @@ export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
           description,
         });
 
-        const [editedList] = await listLogic.editLists([
-          {
-            id: listId,
-            ...edits,
-          },
-        ]);
+        const editedList = await listLogic.editList({
+          id: listId,
+          ...edits,
+        });
 
         res.status(204).json(editedList).end();
       } catch (error) {
@@ -105,13 +103,11 @@ export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
 
       const description = castListDescription(req.body.description || "");
 
-      const [list] = await listLogic.addLists([
-        {
-          ownerId: ownerId,
-          title,
-          description,
-        },
-      ]);
+      const list = await listLogic.addList({
+        ownerId: ownerId,
+        title,
+        description,
+      });
 
       res.status(201).json(list);
     } catch (error) {
@@ -123,7 +119,7 @@ export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
     try {
       const listId = castListId(req.params.listId);
 
-      await listLogic.removeLists([{ id: listId }]);
+      await listLogic.removeList(listId);
 
       res.status(204).end();
     } catch (error) {

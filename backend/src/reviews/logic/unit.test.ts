@@ -1,4 +1,4 @@
-import { makeId } from "../../common/id";
+import { makeId } from "../../app/id";
 import { makeMediaIdFake } from "../../media/models/types";
 import { UserId } from "../../users/models";
 import { makeUserFake } from "../../users/models/make-user.fake";

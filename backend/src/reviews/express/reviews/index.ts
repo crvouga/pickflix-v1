@@ -15,7 +15,7 @@ import { Dependencies } from "../types";
 import {
   makePaginationOptions,
   makePaginationResponse,
-} from "../../../common/pagination";
+} from "../../../app/pagination";
 
 export const reviews = ({
   reviewLogic,

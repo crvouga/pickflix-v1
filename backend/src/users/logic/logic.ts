@@ -1,10 +1,10 @@
-import { EventEmitter } from "events";
-import { PaginationOptions } from "../../common/unit-of-work/types";
-import { removeNullOrUndefinedEntries } from "../../common/utils";
+import { PaginationOptions } from "../../app/data-access/types";
+import { IEmailLogic } from "../../app/email";
+import { Emitter, Events } from "../../app/events";
+import { removeNullOrUndefinedEntries } from "../../app/utils";
 import { IAutoListRepository } from "../../lists/repositories/auto-list-repository";
 import { IListRepository } from "../../lists/repositories/list-repository";
 import { IReviewRepository } from "../../reviews/repositories/review-repository";
-import { IEmailLogic } from "../email";
 import { CredentialType } from "../models/make-credential";
 import { updateUser, User, UserId } from "../models/make-user";
 import { ICredentialRepository } from "../repositories/credential-repository";
@@ -19,23 +19,13 @@ import {
   sendResetPasswordEmail,
 } from "./reset-password";
 
-type UserLogicDependencies = {
-  userRepository: IUserRepository;
-  credentialRepository: ICredentialRepository;
-  listRepository: IListRepository;
-  autoListRepository: IAutoListRepository;
-  reviewRepository: IReviewRepository;
-  eventEmitter: EventEmitter;
-  emailLogic: IEmailLogic;
-};
-
 export class UserLogic {
   userRepository: IUserRepository;
   credentialRepository: ICredentialRepository;
   listRepository: IListRepository;
   autoListRepository: IAutoListRepository;
   reviewRepository: IReviewRepository;
-  eventEmitter: EventEmitter;
+  eventEmitter: Emitter<Events>;
   emailLogic: IEmailLogic;
 
   constructor({
@@ -46,7 +36,15 @@ export class UserLogic {
     listRepository,
     autoListRepository,
     reviewRepository,
-  }: UserLogicDependencies) {
+  }: {
+    userRepository: IUserRepository;
+    credentialRepository: ICredentialRepository;
+    listRepository: IListRepository;
+    autoListRepository: IAutoListRepository;
+    reviewRepository: IReviewRepository;
+    eventEmitter: Emitter<Events>;
+    emailLogic: IEmailLogic;
+  }) {
     this.eventEmitter = eventEmitter;
     this.emailLogic = emailLogic;
     this.credentialRepository = credentialRepository;
@@ -178,7 +176,7 @@ export class UserLogic {
 
     const updated = updateUser(user, edits);
 
-    await this.userRepository.update(id, updated);
+    this.userRepository.update(id, updated);
 
     return updated;
   }

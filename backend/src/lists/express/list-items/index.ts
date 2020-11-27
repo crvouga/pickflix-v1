@@ -11,7 +11,7 @@ import { castUser, castUserId } from "../../../users/models";
 import {
   makePaginationOptions,
   makePaginationResponse,
-} from "../../../common/pagination";
+} from "../../../app/pagination";
 
 export const listItems = ({ listLogic, middlewares }: Dependencies) => (
   router: express.IRouter

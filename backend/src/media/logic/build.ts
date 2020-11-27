@@ -1,26 +1,30 @@
-import { IUnitOfWork } from "../../common/unit-of-work/types";
-import { requestTmdbData } from "./request-tmdb-data";
-import { requestYoutubeData } from "./request-youtube-data";
+import axios, { AxiosRequestConfig } from "axios";
+import keyv from "../../app/data-access/mongodb/keyv";
+import { MediaLogic } from "./logic";
 
-export class MediaLogic {
-  axios: any;
-  keyv: any;
-  unitOfWork: IUnitOfWork;
-
-  constructor({
-    axios,
+const buildKeyvStub = () => {
+  const keyvMap = new Map<any, any>();
+  const keyv = {
+    set: async (k: any, v: any) => keyvMap.set(k, v),
+    get: async (k: any) => keyvMap.get(k),
+  };
+  return {
+    keyvMap,
     keyv,
-    unitOfWork,
-  }: {
-    axios: any;
-    keyv: any;
-    unitOfWork: IUnitOfWork;
-  }) {
-    this.axios = axios;
-    this.keyv = keyv;
-    this.unitOfWork = unitOfWork;
-  }
+  };
+};
 
-  requestTmdbData = requestTmdbData;
-  requestYoutubeData = requestYoutubeData;
-}
+const axiosStub = async (_: AxiosRequestConfig) => ({
+  data: {},
+});
+
+export const buildMediaLogicTest = () => {
+  const { keyv, keyvMap } = buildKeyvStub();
+
+  const mediaLogic = new MediaLogic({
+    keyv,
+    axios: axiosStub,
+  });
+
+  return { mediaLogic };
+};

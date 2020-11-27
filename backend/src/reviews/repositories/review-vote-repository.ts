@@ -1,5 +1,5 @@
-import { GenericRepositoryFileSystem } from "../../common/unit-of-work/repository.file-system";
-import { GenericRepositoryHashMap } from "../../common/unit-of-work/repository.hash-map";
+import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository.file-system";
+import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository.hash-map";
 import { ReviewVote, ReviewVoteId } from "../models/make-review-vote";
 
 export interface IReviewVoteRepository {

@@ -1,4 +1,4 @@
-import { EventTypes } from "../../../common/events";
+import { EventTypes } from "../../../app/events/types";
 import {
   makeCredential,
   makePasswordHash,
@@ -72,20 +72,20 @@ export async function createUserWithPassword(
     throw errors;
   }
 
-  const user = makeUser({ username, displayName, emailAddress });
+  const newUser = makeUser({ username, displayName, emailAddress });
 
   const passwordCredential = makeCredential({
-    userId: user.id,
+    userId: newUser.id,
     passwordHash: await makePasswordHash(password),
     verifiedAt: Date.now(),
   });
 
   await Promise.all([
-    this.userRepository.add(user),
+    this.userRepository.add(newUser),
     this.credentialRepository.add(passwordCredential),
   ]);
 
-  this.eventEmitter.emit(EventTypes.USER_CREATED, { user });
+  this.eventEmitter.emit("UserCreated", newUser);
 
-  return user;
+  return newUser;
 }

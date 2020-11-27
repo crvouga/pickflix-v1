@@ -1,12 +1,12 @@
-import { GenericRepositoryFileSystem } from "../../common/unit-of-work/repository.file-system";
-import { GenericRepositoryHashMap } from "../../common/unit-of-work/repository.hash-map";
-import { RepositoryQueryOptions } from "../../common/unit-of-work/types";
+import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository.file-system";
+import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository.hash-map";
+import { RepositoryQueryOptions } from "../../app/data-access/types";
 import { List, ListId } from "../models/make-list";
 
 export interface IListRepository {
   find(
     spec: Partial<List>,
-    options: RepositoryQueryOptions<List>
+    options?: RepositoryQueryOptions<List>
   ): Promise<List[]>;
 
   add(list: List): void;

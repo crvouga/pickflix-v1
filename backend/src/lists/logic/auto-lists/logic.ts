@@ -1,4 +1,4 @@
-import { removeNullOrUndefinedEntries } from "../../../common/utils";
+import { removeNullOrUndefinedEntries } from "../../../app/utils";
 import { User, UserId } from "../../../users/models/make-user";
 import {
   AutoList,
@@ -8,16 +8,14 @@ import {
   makeAutoList,
 } from "../../models";
 import { ListAggergate } from "../../models/types";
-import { ListLogic } from "../build";
+import { ListLogic } from "../logic";
 
 export async function initializeAutoLists(
   this: ListLogic,
   { user }: { user: User }
 ) {
-  const { AutoLists } = this.unitOfWork;
-
   for (const { key } of INITIAL_AUTO_LIST_INFOS) {
-    const found = await AutoLists.find({
+    const found = await this.autoListRepository.find({
       ownerId: user.id,
       key,
     });
@@ -34,9 +32,11 @@ export async function initializeAutoLists(
     })
   );
 
-  const added = await this.unitOfWork.AutoLists.add(autoLists);
+  for (const autoList of autoLists) {
+    await this.autoListRepository.add(autoList);
+  }
 
-  return added;
+  return autoLists;
 }
 
 export async function getAutoListAggergations(
@@ -46,9 +46,7 @@ export async function getAutoListAggergations(
     ownerId?: UserId;
   }
 ) {
-  const { AutoLists } = this.unitOfWork;
-
-  const lists = await AutoLists.find(
+  const lists = await this.autoListRepository.find(
     removeNullOrUndefinedEntries(autoListInfo)
   );
 
@@ -80,9 +78,7 @@ export async function getAutoList(
   this: ListLogic,
   autoListInfo: { key: AutoListKeys; ownerId: UserId }
 ) {
-  const { AutoLists } = this.unitOfWork;
-
-  const [found] = await AutoLists.find(autoListInfo);
+  const [found] = await this.autoListRepository.find(autoListInfo);
 
   if (!found) {
     throw new Error("Auto list does not exists");

@@ -1,14 +1,14 @@
+import { PaginationOptions } from "../../../app/data-access/types";
+import { removeNullOrUndefinedEntries } from "../../../app/utils";
 import {
   MediaId,
   TmdbMediaId,
   TmdbMediaType,
 } from "../../../media/models/types";
-import { PaginationOptions } from "../../../common/unit-of-work/types";
 import { UserId } from "../../../users/models";
-import { removeNullOrUndefinedEntries } from "../../../common/utils";
 import { ListId, ListItem, makeListItem, updateList } from "../../models";
 import { ListItemId, PartialListItem } from "../../models/make-list-item";
-import { ListLogic } from "../build";
+import { ListLogic } from "../logic";
 
 export async function removeListItems(
   this: ListLogic,
@@ -22,9 +22,7 @@ export async function removeListItems(
       }
   )[]
 ) {
-  const { ListItems } = this.unitOfWork;
-
-  await ListItems.remove(listItemInfos);
+  await this.listItemRepository.remove(listItemInfos);
 }
 
 export async function getListItemAggergations(
@@ -36,9 +34,7 @@ export async function getListItemAggergations(
   },
   paginationOptions?: PaginationOptions
 ) {
-  const { ListItems } = this.unitOfWork;
-
-  const listItems = await ListItems.find(
+  const listItems = await this.listItemRepository.find(
     removeNullOrUndefinedEntries(listItemInfo),
     {
       orderBy: [["createdAt", "descend"]],
@@ -61,8 +57,7 @@ export async function getListItem(
     tmdbMediaType: TmdbMediaType;
   }
 ) {
-  const { ListItems } = this.unitOfWork;
-  const [found] = await ListItems.find(listItemInfo);
+  const [found] = await this.listItemRepository.find(listItemInfo);
   if (!found) {
     throw new Error("List item does not exists");
   }
@@ -73,21 +68,19 @@ export async function addListItems(
   this: ListLogic,
   listItemInfos: PartialListItem[]
 ): Promise<ListItem[]> {
-  const { ListItems, Lists, AutoLists } = this.unitOfWork;
-
   const addedListItems = [];
 
   for (const listItemInfo of listItemInfos) {
     const listItem = makeListItem(listItemInfo);
 
     const [[list], [autoList], foundListItems] = await Promise.all([
-      Lists.find({
+      this.listRepository.find({
         id: listItem.listId,
       }),
-      AutoLists.find({
+      this.autoListRepository.find({
         id: listItem.listId,
       }),
-      ListItems.find({
+      this.listItemRepository.find({
         listId: listItem.listId,
         mediaId: listItem.mediaId,
       }),
@@ -101,13 +94,14 @@ export async function addListItems(
       throw new Error("try to add duplicate list item");
     }
 
-    const [addedListItem] = await ListItems.add([listItem]);
+    await this.listItemRepository.add([listItem]);
 
     if (list) {
-      await Lists.update(updateList(list, {}));
+      const updatedList = updateList(list, {});
+      await this.listRepository.update(list.id, updatedList);
     }
 
-    addedListItems.push(addedListItem);
+    addedListItems.push(listItem);
   }
 
   return addedListItems;

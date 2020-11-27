@@ -1,6 +1,6 @@
 import { AutoList, List, ListItem } from "../../models";
 import { ListAggergate, ListItemAggergate } from "../../models/types";
-import { ListLogic } from "../build";
+import { ListLogic } from "../logic";
 
 export async function aggergateListItem(
   this: ListLogic,
@@ -23,10 +23,8 @@ export async function aggergateList<T extends List | AutoList>(
   this: ListLogic,
   list: T
 ): Promise<ListAggergate<T>> {
-  const { ListItems, Users } = this.unitOfWork;
-
   const [listItemCount, listItems, [owner]] = await Promise.all([
-    ListItems.count({
+    this.listItemRepository.count({
       listId: list.id,
     }),
     this.getListItemAggergations(
@@ -38,7 +36,7 @@ export async function aggergateList<T extends List | AutoList>(
         pageSize: 4,
       }
     ),
-    Users.find({
+    this.userRepository.find({
       id: list.ownerId,
     }),
   ]);

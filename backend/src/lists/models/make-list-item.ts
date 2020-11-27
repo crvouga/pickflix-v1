@@ -5,9 +5,9 @@ import {
   MediaId,
 } from "../../media/models/types";
 import { UserId } from "../../users/models/make-user";
-import { Id } from "../../common/id/types";
+import { Id } from "../../app/id";
 import { ListId } from ".";
-import { makeId, isValidId } from "../../common/id";
+import { makeId, isValidId } from "../../app/id";
 
 export type ListItemId = Id & { ListItemId: true };
 

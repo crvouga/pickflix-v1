@@ -1,6 +1,6 @@
-import { GenericRepositoryHashMap } from "../../common/unit-of-work/repository.hash-map";
+import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository.hash-map";
 import { AutoList } from "../models/make-auto-list";
-import { GenericRepositoryFileSystem } from "../../common/unit-of-work/repository.file-system";
+import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository.file-system";
 
 export interface IAutoListRepository {
   find(spec: Partial<AutoList>): Promise<AutoList[]>;

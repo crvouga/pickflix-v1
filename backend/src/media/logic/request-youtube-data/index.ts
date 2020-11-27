@@ -1,7 +1,7 @@
 import qs from "qs";
 import config from "../../../app/configuration";
 
-import { MediaLogic } from "../build";
+import { MediaLogic } from "../logic";
 import configuration from "../../../app/configuration";
 
 const stringifyConfig: qs.IStringifyOptions = {

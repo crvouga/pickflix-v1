@@ -1,23 +1,21 @@
 import supertest from "supertest";
-import { buildExpressAppFake } from "../../../app/express/build.fake";
+import { buildAppTest } from "../../../app/build/build-test";
 import { makeMediaIdFake } from "../../../media/models/types";
 
 describe("get list items", () => {
   it("gets items", async (done) => {
-    const { app, listLogic, user } = await buildExpressAppFake();
+    const { app, listLogic, currentUser } = await buildAppTest();
 
-    const [list] = await listLogic.addLists([
-      {
-        ownerId: user.id,
-        title: "my list",
-      },
-    ]);
+    const list = await listLogic.addList({
+      ownerId: currentUser.id,
+      title: "my list",
+    });
 
     const mediaId = makeMediaIdFake();
 
     const listItems = await listLogic.addListItems([
       {
-        userId: user.id,
+        userId: currentUser.id,
         listId: list.id,
         mediaId,
       },
@@ -39,15 +37,13 @@ describe("get list items", () => {
 
 describe("posting list items", () => {
   it("adds item to list", async (done) => {
-    const { user, listLogic, app } = await buildExpressAppFake();
+    const { currentUser, listLogic, app } = await buildAppTest();
 
-    const [list] = await listLogic.addLists([
-      {
-        ownerId: user.id,
-        title: "cool movies",
-        description: "cool",
-      },
-    ]);
+    const list = await listLogic.addList({
+      ownerId: currentUser.id,
+      title: "cool movies",
+      description: "cool",
+    });
 
     await supertest(app)
       .post(`/api/list-items`)
@@ -63,19 +59,18 @@ describe("posting list items", () => {
 
 describe("delete list items", () => {
   it("deletes list item", async (done) => {
-    const { app, listLogic, user } = await buildExpressAppFake();
+    const { app, listLogic, currentUser } = await buildAppTest();
 
-    const [list] = await listLogic.addLists([
-      {
-        ownerId: user.id,
-        title: "my movies",
-        description: "some cool movies",
-      },
-    ]);
+    const list = await listLogic.addList({
+      ownerId: currentUser.id,
+      title: "my movies",
+      description: "some cool movies",
+    });
+
     const mediaId = makeMediaIdFake();
     const [listItem] = await listLogic.addListItems([
       {
-        userId: user.id,
+        userId: currentUser.id,
         listId: list.id,
         mediaId,
       },

@@ -1,7 +1,7 @@
 import { User, UserId } from "../models/make-user";
-import { RepositoryQueryOptions } from "../../common/unit-of-work/types";
-import { GenericRepositoryHashMap } from "../../common/unit-of-work/repository.hash-map";
-import { GenericRepositoryFileSystem } from "../../common/unit-of-work/repository.file-system";
+import { RepositoryQueryOptions } from "../../app/data-access/types";
+import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository.hash-map";
+import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository.file-system";
 
 export interface IUserRepository {
   find(

@@ -1,10 +1,10 @@
 import supertest from "supertest";
-import { buildExpressAppFake } from "../../../app/express/build.fake";
+import { buildAppTest } from "../../../app/build/build-test";
 import { makeMediaIdFake } from "../../../media/models/types";
 
 describe("/api/reviews", () => {
   it("POST then GET", async () => {
-    const { app } = await buildExpressAppFake();
+    const { app } = await buildAppTest();
 
     const mediaId = makeMediaIdFake();
 
@@ -35,7 +35,7 @@ describe("/api/reviews", () => {
   });
 
   it("POST /reviews", async (done) => {
-    const { app } = await buildExpressAppFake();
+    const { app } = await buildAppTest();
     const mediaId = makeMediaIdFake();
     const response = await supertest(app)
       .post("/api/reviews")

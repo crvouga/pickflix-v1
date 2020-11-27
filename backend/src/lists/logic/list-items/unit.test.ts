@@ -1,15 +1,16 @@
 import { makeMediaIdFake } from "../../../media/models/types";
 import { makeUserFake } from "../../../users/models/make-user.fake";
-import { buildListLogicFake } from "../build.fake";
+import { buildListLogicTest } from "../build";
 
 describe("getting list items", () => {
   it("get aggergated list items", async () => {
-    const { listLogic } = buildListLogicFake();
+    const { listLogic } = buildListLogicTest();
 
     const user = makeUserFake();
-    const [list] = await listLogic.addLists([
-      { ownerId: user.id, title: "my list" },
-    ]);
+    const list = await listLogic.addList({
+      ownerId: user.id,
+      title: "my list",
+    });
 
     const listItems = await listLogic.addListItems(
       [1, 2, 3, 4, 5].map((n) => ({
@@ -30,16 +31,14 @@ describe("getting list items", () => {
     }
   });
   it("rejects if duplicate list items", async () => {
-    const { listLogic } = buildListLogicFake();
+    const { listLogic } = buildListLogicTest();
 
     const currentUser = makeUserFake();
 
-    const [list] = await listLogic.addLists([
-      {
-        ownerId: currentUser.id,
-        title: "my list",
-      },
-    ]);
+    const list = await listLogic.addList({
+      ownerId: currentUser.id,
+      title: "my list",
+    });
 
     const mediaId = makeMediaIdFake();
 
@@ -69,16 +68,14 @@ describe("getting list items", () => {
   });
 
   it("removes list item by list id and media ids", async () => {
-    const { listLogic } = buildListLogicFake();
+    const { listLogic } = buildListLogicTest();
 
     const currentUser = makeUserFake();
 
-    const [list] = await listLogic.addLists([
-      {
-        ownerId: currentUser.id,
-        title: "my list",
-      },
-    ]);
+    const list = await listLogic.addList({
+      ownerId: currentUser.id,
+      title: "my list",
+    });
 
     const mediaId1 = makeMediaIdFake({
       tmdbMediaId: 550,

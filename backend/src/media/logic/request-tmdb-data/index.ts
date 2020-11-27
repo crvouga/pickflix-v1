@@ -1,7 +1,7 @@
 import { camelizeKeys, decamelize, decamelizeKeys } from "humps";
 import qs from "qs";
 import config from "../../../app/configuration";
-import { MediaLogic } from "../build";
+import { MediaLogic } from "../logic";
 import { MediaId } from "../../models/types";
 
 type Params = (

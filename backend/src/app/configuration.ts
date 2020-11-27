@@ -26,12 +26,16 @@ if (!process.env.SECRET) {
   throw "SECRET required";
 }
 
+const castNodeEnv = (env: any): "test" | "development" | "production" => {
+  if (env === "development" || env === "test" || env === "production") {
+    return env;
+  }
+  return "development";
+};
+
 const configuration = Object.freeze({
   //
-  NODE_ENV: (process.env.NODE_ENV || "development") as
-    | "test"
-    | "development"
-    | "production",
+  NODE_ENV: castNodeEnv(process.env.NODE_ENV),
 
   //
   PORT: process.env.PORT || "5000",
