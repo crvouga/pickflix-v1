@@ -76,18 +76,16 @@ export const useAuthenticationMiddleware = ({
         usernameField: "emailAddress",
         passwordField: "password",
       },
-      (emailAddress, password, callback) => {
-        userLogic
-          .verifyEmailAddressAndPassword({
+      async (emailAddress, password, callback) => {
+        try {
+          const user = await userLogic.verifyEmailAddressAndPassword({
             emailAddress,
             password,
-          })
-          .then((user) => {
-            callback(null, user ? user : false);
-          })
-          .catch((error) => {
-            callback(error);
           });
+          callback(null, user ? user : false);
+        } catch (error) {
+          callback(error);
+        }
       }
     )
   );
@@ -101,7 +99,7 @@ export const useAuthenticationMiddleware = ({
       const user = await userLogic.getUser({ id });
       callback(null, user);
     } catch (error) {
-      callback(new Error("failed to deserialize user"));
+      callback(null, undefined);
     }
   });
 
