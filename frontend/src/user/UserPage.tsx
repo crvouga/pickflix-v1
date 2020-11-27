@@ -8,6 +8,8 @@ import {
   Paper,
   Toolbar,
   Typography,
+  Tabs,
+  Tab,
 } from "@material-ui/core";
 import React from "react";
 import { useHistory, useParams } from "react-router";
@@ -105,6 +107,12 @@ export const UserPage = ({
           />
         </Container>
       </Paper>
+
+      {/* <Tabs indicatorColor="primary" textColor="primary" variant="fullWidth">
+        <Tab label="Overview" />
+        <Tab label="Lists" />
+        <Tab label="Reviews" />
+      </Tabs> */}
 
       <Container maxWidth="md" disableGutters>
         <Grid container>

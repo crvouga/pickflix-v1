@@ -12,6 +12,8 @@ import WithAuthentication from "../../user/auth/WithAuthentication";
 import useModal from "../../app/modals/useModal";
 
 export default ({ mediaId }: { mediaId: MediaId }) => {
+  const { open } = useModal("SignInCallToAction");
+
   return (
     <Box display="flex" justifyContent="space-between" flexWrap="nowrap">
       <WithAuthentication
@@ -28,19 +30,16 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
             <OpenToggleListItemFormButton mediaId={mediaId} />
           </React.Fragment>
         )}
-        renderDefault={() => {
-          const { open } = useModal("SignInCallToAction");
-          return (
-            <React.Fragment>
-              <AutoListButton autoListKey={AutoListKeys.Liked} onClick={open} />
-              <AutoListButton
-                autoListKey={AutoListKeys.WatchNext}
-                onClick={open}
-              />
-              <ListsButton onClick={open} />
-            </React.Fragment>
-          );
-        }}
+        renderDefault={() => (
+          <React.Fragment>
+            <AutoListButton autoListKey={AutoListKeys.Liked} onClick={open} />
+            <AutoListButton
+              autoListKey={AutoListKeys.WatchNext}
+              onClick={open}
+            />
+            <ListsButton onClick={open} />
+          </React.Fragment>
+        )}
       />
     </Box>
   );

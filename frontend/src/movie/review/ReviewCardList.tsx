@@ -20,6 +20,7 @@ export default ({ mediaId }: Props) => {
   const reviewForm = useReviewForm();
   const query = useQueryReviews({ mediaId });
   const reviewVoteValue = useReviewVoteValue(getReviewsQueryKey({ mediaId }));
+  const { open } = useModal("SignInCallToAction");
 
   if (query.error) {
     return <ErrorBox />;
@@ -54,15 +55,12 @@ export default ({ mediaId }: Props) => {
               }}
             />
           )}
-          renderDefault={() => {
-            const { open } = useModal("SignInCallToAction");
-            return (
-              <ReviewCardCallToAction
-                title="Be the first to leave a review!"
-                onClick={open}
-              />
-            );
-          }}
+          renderDefault={() => (
+            <ReviewCardCallToAction
+              title="Be the first to leave a review!"
+              onClick={open}
+            />
+          )}
         />
       </Box>
     );

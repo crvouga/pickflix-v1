@@ -68,6 +68,8 @@ const YourReview = ({
 };
 
 export default ({ mediaId }: { mediaId: MediaId }) => {
+  const { open } = useModal("SignInCallToAction");
+
   return (
     <Box paddingX={2}>
       <Box paddingBottom={1}>
@@ -77,16 +79,13 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
         renderAuthenticated={(currentUser) => (
           <YourReview mediaId={mediaId} user={currentUser} />
         )}
-        renderDefault={() => {
-          const { open } = useModal("SignInCallToAction");
-          return (
-            <ReviewCardCallToAction
-              title="Write a review"
-              subtitle="Help people decide if they should watch this movie"
-              onClick={open}
-            />
-          );
-        }}
+        renderDefault={() => (
+          <ReviewCardCallToAction
+            title="Write a review"
+            subtitle="Help people decide if they should watch this movie"
+            onClick={open}
+          />
+        )}
       />
     </Box>
   );
