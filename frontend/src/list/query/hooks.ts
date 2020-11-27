@@ -163,6 +163,7 @@ export const useCreateListMutation = () => {
       queryCache.invalidateQueries(
         makeGetListsQueryKey({ ownerId: list.ownerId })
       );
+      queryCache.invalidateQueries(makeGetListsQueryKey({}));
       return list;
     } catch (error) {
       throw error;
