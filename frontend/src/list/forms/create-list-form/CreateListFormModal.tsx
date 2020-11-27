@@ -22,7 +22,7 @@ export default () => {
   const isLoading = useBoolean(false);
   const { isOpen, close } = useModal("CreateListForm");
 
-  const [createListMutation] = useCreateListMutation();
+  const createListMutation = useCreateListMutation();
   const submit = async ({ title }: { title: string }) => {
     try {
       return await createListMutation({ title, description: "" });

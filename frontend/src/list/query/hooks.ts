@@ -26,6 +26,7 @@ import {
   postList,
   PatchListParams,
   patchList,
+  PostListParams,
 } from "./lists";
 
 /* 
@@ -156,14 +157,17 @@ export const useAddListItemMutation = () => {
 
 export const useCreateListMutation = () => {
   const queryCache = useQueryCache();
-  return useMutation(postList, {
-    onSettled: () => {
-      const query = queryCache.getQuery(makeGetListsQueryKey({}));
-      if (query) {
-        query.refetch();
-      }
-    },
-  });
+  return async (params: PostListParams) => {
+    try {
+      const list = await postList(params);
+      queryCache.invalidateQueries(
+        makeGetListsQueryKey({ ownerId: list.ownerId })
+      );
+      return list;
+    } catch (error) {
+      throw error;
+    }
+  };
 };
 
 /* 

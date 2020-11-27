@@ -16,7 +16,7 @@ const eventEmitter = createEventEmitter<{
 
 export default () => {
   const formState = useFormState();
-  const [createListMutation] = useCreateListMutation();
+  const createListMutation = useCreateListMutation();
   const addListItemMutation = useAddListItemMutation();
 
   const submit = async ({
