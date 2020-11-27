@@ -13,10 +13,10 @@ import {
 } from "../express/authentication-middleware";
 import { makeExpressApp } from "../express/make-express-app";
 import { ExpressAppDependencies } from "../express/types";
-import { buildRepositoriesFileSystem } from "./build-repositories";
+import { buildRepositoriesHashMap } from "./build-repositories";
 
 export const buildLogicProduction = () => {
-  const repositories = buildRepositoriesFileSystem();
+  const repositories = buildRepositoriesHashMap();
 
   const eventEmitter = createEventEmitter<Events>();
 
