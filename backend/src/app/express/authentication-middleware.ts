@@ -97,9 +97,11 @@ export const useAuthenticationMiddleware = ({
   passport.deserializeUser<User, UserId>(async (id, callback) => {
     try {
       const user = await userLogic.getUser({ id });
-      callback(null, user);
+      callback(undefined, user);
     } catch (error) {
-      callback(null, undefined);
+      //EXPLANATION: https://github.com/jaredhanson/passport/issues/6
+      //@ts-ignore
+      callback(undefined, false);
     }
   });
 

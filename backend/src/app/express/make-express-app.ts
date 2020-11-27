@@ -50,5 +50,7 @@ export const makeExpressApp = (dependencies: ExpressAppDependencies) => {
 
   app.use(errorHandler);
 
-  return { app };
+  return {
+    app,
+  };
 };
