@@ -120,7 +120,8 @@ export const useDeleteListItemsMutation = () => {
       queryCache.setQueryData(queryKey, previous);
       throw error;
     } finally {
-      queryCache.invalidateQueries((query) => query.queryKey.includes(listId));
+      queryCache.invalidateQueries(makeGetListsQueryKey({ id: listId }));
+      queryCache.invalidateQueries(makeGetListItemsQueryKey({ listId }));
     }
   };
 };
