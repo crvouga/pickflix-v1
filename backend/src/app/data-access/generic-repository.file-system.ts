@@ -9,17 +9,17 @@ import {
 
 export class GenericRepositoryFileSystem<T extends Identifiable>
   implements IGenericRepository<T> {
-  filename: string;
+  filePath: string;
   repositoryHashMap: GenericRepositoryHashMap<T>;
 
-  constructor(collectionName: string) {
-    this.filename = `${configuration.PATH_TO_FILE_STORE}/${collectionName}.json`;
+  constructor(filePath: string) {
     this.repositoryHashMap = new GenericRepositoryHashMap<T>({});
+    this.filePath = filePath;
   }
 
   read(): { [id: string]: T } {
     try {
-      const hashMap = JSON.parse(fs.readFileSync(this.filename, "utf8"));
+      const hashMap = JSON.parse(fs.readFileSync(this.filePath, "utf8"));
       this.repositoryHashMap.hashMap = hashMap;
       return hashMap;
     } catch (error) {
@@ -30,7 +30,7 @@ export class GenericRepositoryFileSystem<T extends Identifiable>
 
   write() {
     const hashMap = this.repositoryHashMap.hashMap;
-    fs.writeFileSync(this.filename, JSON.stringify(hashMap));
+    fs.writeFileSync(this.filePath, JSON.stringify(hashMap));
   }
 
   async find(

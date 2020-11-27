@@ -33,8 +33,8 @@ export class AutoListRepositoryHashMap implements IAutoListRepository {
 export class AutoListRepositoryFileSystem implements IAutoListRepository {
   repository: GenericRepositoryFileSystem<AutoList>;
 
-  constructor() {
-    this.repository = new GenericRepositoryFileSystem<AutoList>("autoLists");
+  constructor(filePath: string) {
+    this.repository = new GenericRepositoryFileSystem<AutoList>(filePath);
   }
 
   async find(spec: Partial<AutoList>) {

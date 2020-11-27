@@ -1,16 +1,9 @@
 import sgMail from "@sendgrid/mail";
 import axios from "axios";
 import { ListLogic } from "../../lists/logic/logic";
-import { AutoListRepositoryFileSystem } from "../../lists/repositories/auto-list-repository";
-import { ListItemRepositoryFileSystem } from "../../lists/repositories/list-item-repository";
-import { ListRepositoryFileSystem } from "../../lists/repositories/list-repository";
 import { MediaLogic } from "../../media/logic/logic";
 import { ReviewLogic } from "../../reviews/logic/logic";
-import { ReviewRepositoryFileSystem } from "../../reviews/repositories/review-repository";
-import { ReviewVoteRepositoryFileSystem } from "../../reviews/repositories/review-vote-repository";
 import { UserLogic } from "../../users/logic/logic";
-import { CredentialRepositoryFileSystem } from "../../users/repositories/credential-repository";
-import { UserRepositoryFileSystem } from "../../users/repositories/user-repository";
 import keyv from "../data-access/mongodb/keyv";
 import { EmailLogic } from "../email";
 import { createEventEmitter, Events } from "../events";
@@ -20,29 +13,10 @@ import {
 } from "../express/authentication-middleware";
 import { makeExpressApp } from "../express/make-express-app";
 import { ExpressAppDependencies } from "../express/types";
-
-export const buildRepositoriesDevelopment = () => {
-  const userRepository = new UserRepositoryFileSystem();
-  const credentialRepository = new CredentialRepositoryFileSystem();
-  const reviewRepository = new ReviewRepositoryFileSystem();
-  const reviewVoteRepository = new ReviewVoteRepositoryFileSystem();
-  const listRepository = new ListRepositoryFileSystem();
-  const listItemRepository = new ListItemRepositoryFileSystem();
-  const autoListRepository = new AutoListRepositoryFileSystem();
-
-  return {
-    userRepository,
-    credentialRepository,
-    reviewRepository,
-    reviewVoteRepository,
-    listRepository,
-    listItemRepository,
-    autoListRepository,
-  };
-};
+import { buildRepositoriesFileSystem } from "./build-repositories";
 
 export const buildLogicDevelopment = () => {
-  const repositories = buildRepositoriesDevelopment();
+  const repositories = buildRepositoriesFileSystem();
 
   const eventEmitter = createEventEmitter<Events>();
 

@@ -39,10 +39,8 @@ export class CredentialRepositoryHashMap implements ICredentialRepository {
 export class CredentialRepositoryFileSystem implements ICredentialRepository {
   repository: GenericRepositoryFileSystem<Credential>;
 
-  constructor() {
-    this.repository = new GenericRepositoryFileSystem<Credential>(
-      "credentials"
-    );
+  constructor(filePath: string) {
+    this.repository = new GenericRepositoryFileSystem<Credential>(filePath);
   }
 
   async find(spec: Partial<Credential>) {

@@ -57,12 +57,12 @@ export class UserRepositoryHashMap implements IUserRepository {
 export class UserRepositoryFileSystem implements IUserRepository {
   repository: GenericRepositoryFileSystem<User>;
 
-  constructor() {
-    this.repository = new GenericRepositoryFileSystem<User>("user");
+  constructor(filePath: string) {
+    this.repository = new GenericRepositoryFileSystem<User>(filePath);
   }
 
-  async find(partial: Partial<User>, options: RepositoryQueryOptions<User>) {
-    return this.repository.find(partial, options);
+  async find(spec: Partial<User>, options: RepositoryQueryOptions<User>) {
+    return this.repository.find(spec, options);
   }
 
   async search(

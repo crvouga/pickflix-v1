@@ -49,8 +49,8 @@ export class ListRepositoryHashMap implements IListRepository {
 export class ListRepositoryFileSystem implements IListRepository {
   repository: GenericRepositoryFileSystem<List>;
 
-  constructor() {
-    this.repository = new GenericRepositoryFileSystem<List>("lists");
+  constructor(filePath: string) {
+    this.repository = new GenericRepositoryFileSystem<List>(filePath);
   }
 
   async find(spec: Partial<List>, options: RepositoryQueryOptions<List>) {

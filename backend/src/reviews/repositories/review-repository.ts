@@ -49,8 +49,8 @@ export class ReviewRepositoryHashMap implements IReviewRepository {
 export class ReviewRepositoryFileSystem implements IReviewRepository {
   repository: GenericRepositoryFileSystem<Review>;
 
-  constructor() {
-    this.repository = new GenericRepositoryFileSystem<Review>("review");
+  constructor(filePath: string) {
+    this.repository = new GenericRepositoryFileSystem<Review>(filePath);
   }
 
   async find(spec: Partial<Review>, options?: RepositoryQueryOptions<Review>) {
