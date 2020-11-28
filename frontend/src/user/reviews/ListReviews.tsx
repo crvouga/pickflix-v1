@@ -5,7 +5,7 @@ import ReviewCardCallToAction from "../../review/card/ReviewCardCallToAction";
 import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";
 import useReviewActions from "../../review/card/useReviewActions";
 import useReviewVoteValue from "../../review/card/useReviewVoteValue";
-import { getReviewsQueryKey, useQueryReviews } from "../../review/query";
+import { makeGetReviewsQueryKey, useQueryReviews } from "../../review/query";
 import WithAuthentication from "../auth/WithAuthentication";
 import { UserAggergation } from "../query";
 
@@ -31,7 +31,7 @@ export const ListReviewsUser = ({ user }: { user: UserAggergation }) => {
   });
 
   const reviewVoteValue = useReviewVoteValue(
-    getReviewsQueryKey({
+    makeGetReviewsQueryKey({
       authorId: user.user.id,
     })
   );
@@ -44,7 +44,7 @@ export const ListReviewsUser = ({ user }: { user: UserAggergation }) => {
     return <ListReviewsSkeleton reviewCardCount={user.reviewCount} />;
   }
 
-  const reviews = query.data.results;
+  const reviews = query.data.flatMap((page) => page.results);
 
   if (reviews.length === 0) {
     return (
@@ -86,7 +86,7 @@ export const ListReviewsCurrentUser = ({
   });
 
   const reviewVoteValue = useReviewVoteValue(
-    getReviewsQueryKey({
+    makeGetReviewsQueryKey({
       authorId: currentUser.user.id,
     })
   );
@@ -100,7 +100,7 @@ export const ListReviewsCurrentUser = ({
     return <ListReviewsSkeleton reviewCardCount={currentUser.reviewCount} />;
   }
 
-  const reviews = query.data.results;
+  const reviews = query.data.flatMap((page) => page.results);
 
   if (reviews.length === 0) {
     return (

@@ -9,6 +9,7 @@ import MoviePosterGrid, {
 import { tagsToParams } from "./query/types";
 import useDiscoverState from "./useDiscoverState";
 import useDiscoverMovieQuery from "./useDiscoverQuery";
+import InfiniteScrollBottom from "../common/hooks/InfiniteScrollBottom";
 
 export default () => {
   const { activeTags } = useDiscoverState();
@@ -38,8 +39,10 @@ export default () => {
   return (
     <React.Fragment>
       <MoviePosterGrid movies={data.flatMap((response) => response.results)} />
-      <div ref={fetchMoreRef} />
-      {canFetchMore && <LoadingBox m={4} />}
+      <InfiniteScrollBottom
+        canFetchMore={canFetchMore}
+        fetchMoreRef={fetchMoreRef}
+      />
     </React.Fragment>
   );
 };

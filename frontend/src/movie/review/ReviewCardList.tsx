@@ -8,7 +8,7 @@ import ReviewCardCallToAction from "../../review/card/ReviewCardCallToAction";
 import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";
 import useReviewVoteValue from "../../review/card/useReviewVoteValue";
 import useReviewForm from "../../review/form/review-form/useReviewForm";
-import { getReviewsQueryKey, useQueryReviews } from "../../review/query";
+import { makeGetReviewsQueryKey, useQueryReviews } from "../../review/query";
 import WithAuthentication from "../../user/auth/WithAuthentication";
 
 type Props = {
@@ -19,7 +19,9 @@ export default ({ mediaId }: Props) => {
   const reviewFormModal = useModal("ReviewForm");
   const reviewForm = useReviewForm();
   const query = useQueryReviews({ mediaId });
-  const reviewVoteValue = useReviewVoteValue(getReviewsQueryKey({ mediaId }));
+  const reviewVoteValue = useReviewVoteValue(
+    makeGetReviewsQueryKey({ mediaId })
+  );
   const { open } = useModal("SignInCallToAction");
 
   if (query.error) {
@@ -38,9 +40,9 @@ export default ({ mediaId }: Props) => {
     );
   }
 
-  const reviews = query.data;
+  const reviews = query.data.flatMap((page) => page.results);
 
-  if (reviews.results.length === 0) {
+  if (reviews.length === 0) {
     return (
       <Box p={2}>
         <WithAuthentication
@@ -68,7 +70,7 @@ export default ({ mediaId }: Props) => {
 
   return (
     <React.Fragment>
-      {reviews.results.map((review) => (
+      {reviews.map((review) => (
         <Box paddingX={2} paddingY={1} key={review.review.id}>
           <ReviewCard
             showAuthor

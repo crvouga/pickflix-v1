@@ -17,8 +17,10 @@ import { editUserForm } from "../../user/forms/edit-user-form/edit-user-form";
 import { snackbar } from "../snackbar/redux/snackbar";
 import { modal } from "../modals/redux/modal";
 import { AppState } from "./types";
+import { userPageUi } from "../../user/redux/user-page-ui";
 
 const reducers: { [key in keyof AppState]: Reducer } = {
+  userPageUi: userPageUi.reducer,
   modal: modal.reducer,
   editUserForm: editUserForm.reducer,
   createListWithListItemsForm: createListWithListItemsForm.reducer,

@@ -1,15 +1,15 @@
 import { Box } from "@material-ui/core";
 import React from "react";
 import ErrorBox from "../../common/components/ErrorBox";
-import LoadingBox from "../../common/components/LoadingBox";
+import NothingHere from "../../common/components/NothingHere";
+import InfiniteScrollBottom from "../../common/hooks/InfiniteScrollBottom";
 import { useQueryTmdbReviews } from "../../media/tmdb/query";
 import { MediaId } from "../../media/tmdb/types";
 import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";
 import TmdbReviewCard from "./TmdbReviewCard";
-import NothingHere from "../../common/components/NothingHere";
 
 export default ({ mediaId }: { mediaId: MediaId }) => {
-  const { fetchMoreRef, canFetchMore, ...query } = useQueryTmdbReviews({
+  const query = useQueryTmdbReviews({
     mediaId,
   });
 
@@ -42,8 +42,7 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
           <TmdbReviewCard review={review} />
         </Box>
       ))}
-      <div ref={fetchMoreRef} />
-      {canFetchMore && <LoadingBox m={6} />}
+      <InfiniteScrollBottom {...query} />
     </React.Fragment>
   );
 };

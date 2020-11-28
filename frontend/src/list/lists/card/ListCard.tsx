@@ -10,6 +10,7 @@ import React from "react";
 import ChipUser from "../../../user/components/ChipUser";
 import { ListAggergation } from "../../query";
 import ListImageBox from "./ListCardImage";
+import { useHistory } from "react-router";
 
 export default ({
   list,
@@ -18,8 +19,9 @@ export default ({
   list: ListAggergation;
   CardHeaderProps?: CardHeaderProps;
 }) => {
+  const history = useHistory();
   return (
-    <Card>
+    <Card onClick={() => history.push(`/list/${list.list.id}`)}>
       <Grid container direction="row">
         <Grid item>
           <Box p={1} width="90px">

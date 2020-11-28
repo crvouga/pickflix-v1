@@ -33,9 +33,7 @@ export default () => {
   return (
     <WithAuthentication
       renderLoading={() => <LoadingPage />}
-      renderAuthenticated={(currentUser) => (
-        <UserPage isCurrentUser={true} user={currentUser} />
-      )}
+      renderAuthenticated={(currentUser) => <UserPage user={currentUser} />}
       renderUnathenticated={() => <SignInPage />}
     />
   );

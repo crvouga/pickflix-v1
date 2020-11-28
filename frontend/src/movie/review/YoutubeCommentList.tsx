@@ -5,14 +5,10 @@ import NothingHere from "../../common/components/NothingHere";
 import CommentThread from "../../media/youtube/CommentThread";
 import { useQueryYoutubeVideoCommentThreadList } from "../../media/youtube/query";
 import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";
+import InfiniteScrollBottom from "../../common/hooks/InfiniteScrollBottom";
 
 const YoutubeCommentList = ({ videoId }: { videoId: string }) => {
-  const {
-    fetchMoreRef,
-    canFetchMore,
-    isLoading,
-    ...query
-  } = useQueryYoutubeVideoCommentThreadList({ videoId });
+  const query = useQueryYoutubeVideoCommentThreadList({ videoId });
 
   if (query.error) {
     return <NothingHere />;
@@ -43,8 +39,7 @@ const YoutubeCommentList = ({ videoId }: { videoId: string }) => {
           <CommentThread commentThread={commentThread} />
         </Box>
       ))}
-      <div ref={fetchMoreRef} />
-      {canFetchMore && <LoadingBox m={6} />}
+      <InfiniteScrollBottom {...query} />
     </React.Fragment>
   );
 };

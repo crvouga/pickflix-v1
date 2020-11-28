@@ -2,14 +2,13 @@ import {
   AppBar,
   Box,
   Container,
-  Grid,
   Hidden,
   makeStyles,
   Paper,
+  Tab,
+  Tabs,
   Toolbar,
   Typography,
-  Tabs,
-  Tab,
 } from "@material-ui/core";
 import React from "react";
 import { useHistory, useParams } from "react-router";
@@ -22,10 +21,8 @@ import AvatarUser from "./components/AvatarUser";
 import CurrentUserActions, {
   OpenCurrentUserActionsModalButton,
 } from "./CurrentUserActions";
-import ListAutoLists from "./lists/ListAutoLists";
-import ListLists from "./lists/ListLists";
 import { useQueryUsers, UserAggergation } from "./query";
-import ListReviews from "./reviews/ListReviews";
+import TabsAndTabPanels from "./TabsAndTabPanels";
 
 export const makeUserPageRoute = ({ userId }: { userId: string }) =>
   `/user/${userId}`;
@@ -38,15 +35,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const UserPage = ({
-  user,
-  isCurrentUser = false,
-}: {
-  user: UserAggergation;
-  isCurrentUser?: boolean;
-}) => {
+export const UserPage = ({ user }: { user: UserAggergation }) => {
   const classes = useStyles();
-  const history = useHistory();
 
   const usernameTitle = (
     <Box flex={1}>
@@ -108,41 +98,8 @@ export const UserPage = ({
         </Container>
       </Paper>
 
-      {/* <Tabs indicatorColor="primary" textColor="primary" variant="fullWidth">
-        <Tab label="Overview" />
-        <Tab label="Lists" />
-        <Tab label="Reviews" />
-      </Tabs> */}
-
       <Container maxWidth="md" disableGutters>
-        <Grid container>
-          <Grid item xs={12} sm={6}>
-            <Box p={2}>
-              <Typography variant="h5">Auto Lists</Typography>
-              <ListAutoLists
-                onClick={(autoList) => {
-                  history.push(`/auto-list/${autoList.list.id}`);
-                }}
-                user={user}
-              />
-            </Box>
-            <Box p={2}>
-              <Typography variant="h5">Lists</Typography>
-              <ListLists
-                onClick={(list) => {
-                  history.push(`/list/${list.list.id}`);
-                }}
-                user={user}
-              />
-            </Box>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Box p={2}>
-              <Typography variant="h5">Reviews</Typography>
-              <ListReviews user={user} />
-            </Box>
-          </Grid>
-        </Grid>
+        <TabsAndTabPanels user={user} />
       </Container>
     </React.Fragment>
   );

@@ -2,7 +2,7 @@ import { Box, List, Typography } from "@material-ui/core";
 import React from "react";
 import ErrorBox from "../../common/components/ErrorBox";
 import ListItemSkeleton from "../../common/components/ListItemSkeleton";
-import LoadingBox from "../../common/components/LoadingBox";
+import InfiniteScrollBottom from "../../common/hooks/InfiniteScrollBottom";
 import { useSearchState } from "../redux/search";
 import SearchResultListItem from "./SearchResultListItem";
 import useQuerySearchResults from "./useQuerySearchResults";
@@ -10,16 +10,16 @@ import useQuerySearchResults from "./useQuerySearchResults";
 export default () => {
   const { text, filter } = useSearchState();
 
-  const { fetchMoreRef, data, error, canFetchMore } = useQuerySearchResults({
+  const query = useQuerySearchResults({
     text,
     filter,
   });
 
-  if (error) {
+  if (query.error) {
     return <ErrorBox />;
   }
 
-  if (!data) {
+  if (!query.data) {
     return (
       <List>
         {[...Array(5)].map((n) => (
@@ -29,7 +29,7 @@ export default () => {
     );
   }
 
-  const results = data.flatMap((page) => page.results);
+  const results = query.data.flatMap((page) => page.results);
 
   if (results.length === 0) {
     return (
@@ -52,8 +52,7 @@ export default () => {
           <SearchResultListItem key={index} result={result} />
         ))}
       </List>
-      {canFetchMore && <LoadingBox m={4} />}
-      <div ref={fetchMoreRef} />
+      <InfiniteScrollBottom {...query} />
     </React.Fragment>
   );
 };

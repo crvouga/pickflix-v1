@@ -11,7 +11,11 @@ type Props = BoxProps & { CircularProgressProps?: CircularProgressProps };
 export default ({ CircularProgressProps, ...props }: Props) => {
   return (
     <Box textAlign="center" color="text.secondary" {...props}>
-      <CircularProgress color="inherit" {...CircularProgressProps} />
+      <CircularProgress
+        disableShrink
+        color="inherit"
+        {...CircularProgressProps}
+      />
     </Box>
   );
 };

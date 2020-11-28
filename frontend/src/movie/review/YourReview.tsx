@@ -35,7 +35,7 @@ const YourReview = ({
     return <ReviewCardSkeleton showAuthor iconButtonCount={1} />;
   }
 
-  const reviews = query.data.results;
+  const reviews = query.data.flatMap((page) => page.results);
 
   if (reviews.length === 0) {
     return (

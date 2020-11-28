@@ -1,5 +1,6 @@
 import { Box, Tab, Tabs, Typography } from "@material-ui/core";
 import React from "react";
+import TabPanel from "../../common/components/TabPanel";
 import { useListener } from "../../common/utility";
 import { MediaId } from "../../media/tmdb/types";
 import useVideoState from "../../media/video/useVideoState";
@@ -9,20 +10,6 @@ import useMoviePageUi from "../redux/useMoviePageUi";
 import MovieReviewList from "./ReviewCardList";
 import TmdbReviewCardList from "./TmdbReviewCardList";
 import YoutubeCommentList from "./YoutubeCommentList";
-
-const TabPanel = (props: {
-  children?: React.ReactNode;
-  index: any;
-  value: any;
-}) => {
-  const { children, value, index } = props;
-
-  return (
-    <Box hidden={value !== index} minHeight="360px">
-      {value === index && <React.Fragment>{children}</React.Fragment>}
-    </Box>
-  );
-};
 
 export default ({ mediaId }: { mediaId: MediaId }) => {
   const videoState = useVideoState();

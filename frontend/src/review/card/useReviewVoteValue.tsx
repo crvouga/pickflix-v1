@@ -2,11 +2,12 @@ import { QueryKey, useQueryCache } from "react-query";
 import { useSnackbar } from "../../app/snackbar/redux/snackbar";
 import {
   deleteReviewVote,
-  GetReviewsResponseData,
+  GetReviewsQueryData,
   postReviewVote,
   ReviewAggergation,
   ReviewVoteValue,
 } from "../query";
+import { Paginated } from "../../common/types";
 
 const updateReviewVoteValue = (
   nextVoteValue: ReviewVoteValue | null,
@@ -43,35 +44,57 @@ const updateReviewVoteValue = (
   return updated;
 };
 
+const updatePage = (
+  reviewId: string,
+  nextVoteValue: ReviewVoteValue | null,
+  page: Paginated<ReviewAggergation>
+): Paginated<ReviewAggergation> => {
+  if (!page) {
+    return page;
+  }
+  const index = page.results.findIndex((_) => _.review.id === reviewId);
+
+  if (index === -1) {
+    return page;
+  }
+
+  return {
+    ...page,
+    results: [
+      ...page.results.slice(0, index),
+      updateReviewVoteValue(nextVoteValue, page.results[index]),
+      ...page.results.slice(index + 1),
+    ],
+  };
+};
+
 const optimisticUpdate = (
   reviewId: string,
   nextVoteValue: ReviewVoteValue | null,
-  previous: GetReviewsResponseData
-): GetReviewsResponseData => {
+  previous: GetReviewsQueryData
+): GetReviewsQueryData => {
   if (!previous) {
     return previous;
   }
-  const index = previous.results.findIndex((_) => _.review.id === reviewId);
+  const index = previous.findIndex((page) =>
+    page.results.find((review) => review.review.id === reviewId)
+  );
 
   if (index === -1) {
     return previous;
   }
 
-  return {
-    ...previous,
-    results: [
-      ...previous.results.slice(0, index),
-      updateReviewVoteValue(nextVoteValue, previous.results[index]),
-      ...previous.results.slice(index + 1),
-    ],
-  };
+  return [
+    ...previous.slice(0, index),
+    updatePage(reviewId, nextVoteValue, previous[index]),
+    ...previous.slice(index + 1),
+  ];
 };
 
 export default (queryKey: QueryKey) => {
-  const snackbar = useSnackbar();
   const queryCache = useQueryCache();
 
-  const previous = queryCache.getQueryData<GetReviewsResponseData>(queryKey);
+  const previous = queryCache.getQueryData<GetReviewsQueryData>(queryKey);
 
   const toggleVoteValue = async (
     review: ReviewAggergation,
@@ -91,18 +114,11 @@ export default (queryKey: QueryKey) => {
     try {
       if (review.reviewVoteValue === voteValue) {
         await deleteReviewVote({ reviewId: review.review.id });
-        // snackbar.display({ message: "Removed vote" });
       } else {
         await postReviewVote({
           reviewId: review.review.id,
           voteValue: voteValue,
         });
-        // snackbar.display({
-        //   message:
-        //     voteValue === ReviewVoteValue.UP
-        //       ? "Up voted review"
-        //       : "Down voted review",
-        // });
       }
     } catch (error) {
       queryCache.setQueryData(queryKey, previous);

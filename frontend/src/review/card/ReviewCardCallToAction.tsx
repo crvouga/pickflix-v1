@@ -8,6 +8,7 @@ import {
 import RateReviewOutlinedIcon from "@material-ui/icons/RateReviewOutlined";
 import { Rating } from "@material-ui/lab";
 import React from "react";
+import useModal from "../../app/modals/useModal";
 
 type Props = {
   onClick?: () => void;
@@ -15,10 +16,15 @@ type Props = {
   subtitle?: string;
 };
 
-export default ({ onClick, title, subtitle }: Props) => {
+export default ({
+  onClick,
+  title = "Write a review",
+  subtitle = "Help people decide if they should watch any given movie",
+}: Props) => {
+  const { open } = useModal("ReviewForm");
   return (
     <Card>
-      <CardActionArea onClick={onClick}>
+      <CardActionArea onClick={onClick || open}>
         <CardContent>
           <Box
             display="flex"

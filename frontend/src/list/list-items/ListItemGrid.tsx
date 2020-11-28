@@ -14,6 +14,7 @@ import { ensureArray } from "../../common/utility";
 import useDeleteListItemsForm from "../forms/remove-list-items-form/useRemoveListItemsForm";
 import { useQueryListItems } from "../query";
 import NothingHere from "../../common/components/NothingHere";
+import InfiniteScrollBottom from "../../common/hooks/InfiniteScrollBottom";
 
 const useStyles = makeStyles((theme) => ({
   selected: {
@@ -32,7 +33,7 @@ export default ({
 
   const { listItemIds, isSelecting, toggleDeletion } = useDeleteListItemsForm();
 
-  const { fetchMoreRef, ...query } = useQueryListItems({
+  const query = useQueryListItems({
     listId,
   });
 
@@ -90,8 +91,7 @@ export default ({
           </Box>
         )}
       />
-      {query.canFetchMore && <LoadingBox m={6} />}
-      <div ref={fetchMoreRef} />
+      <InfiniteScrollBottom {...query} />
     </React.Fragment>
   );
 };

@@ -7,6 +7,7 @@ import {
   IconButton,
   IconButtonProps,
   Typography,
+  makeStyles,
 } from "@material-ui/core";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import { Rating } from "@material-ui/lab";
@@ -22,6 +23,17 @@ import ReviewCardActions from "./ReviewCardActions";
 import ReviewCardOptionsModal from "./ReviewCardOptionsModal";
 import { makeUserPageRoute } from "../../user/UserPage";
 
+export type ReviewCardProps = {
+  review: ReviewAggergation;
+  showAuthor?: boolean;
+  showMedia?: boolean;
+  noWrap?: boolean;
+  onVoteUp?: () => void;
+  onVoteDown?: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
+};
+
 const MoreButton = (props: IconButtonProps) => {
   return (
     <IconButton {...props}>
@@ -33,8 +45,7 @@ const MoreButton = (props: IconButtonProps) => {
 export const CardHeaderAuthor = ({
   review,
   CardHeaderProps,
-}: {
-  review: ReviewAggergation;
+}: ReviewCardProps & {
   CardHeaderProps?: CardHeaderProps;
 }) => {
   const history = useHistory();
@@ -52,22 +63,34 @@ export const CardHeaderAuthor = ({
   );
 };
 
+const useStylesCardHeader = makeStyles((theme) => ({
+  //EXPLANATION: https://stackoverflow.com/questions/59356314/how-apply-ellipsis-to-title-in-material-ui-cardheader
+  content: {
+    flex: "1 1 auto",
+    width: "100%",
+    minWidth: 0,
+  },
+}));
+
 export const CardHeaderMedia = ({
   review,
+  noWrap,
   CardHeaderProps,
-}: {
-  review: ReviewAggergation;
+}: ReviewCardProps & {
   CardHeaderProps?: CardHeaderProps;
 }) => {
+  const classesCardHeader = useStylesCardHeader();
   const history = useHistory();
 
   return (
     <CardHeader
+      classes={classesCardHeader}
       onClick={() => {
         history.push(
           `/${review.review.mediaId.tmdbMediaType}/${review.review.mediaId.tmdbMediaId}`
         );
       }}
+      titleTypographyProps={{ noWrap }}
       avatar={<MovieAvatar movie={review.tmdbData} />}
       title={review.tmdbData.title}
       subheader={pluralize(review.mediaReviewCount, "review")}
@@ -79,7 +102,7 @@ export const CardHeaderMedia = ({
 const toPublishedAt = (date: any) =>
   moment(date, "YYYYMMDD").fromNow().replace("a ", "1 ");
 
-const ReviewCardContent = ({ review }: { review: ReviewAggergation }) => {
+const ReviewCardContent = ({ noWrap, review }: ReviewCardProps) => {
   return (
     <CardContent>
       <Box display="flex" alignItems="center" paddingBottom={1}>
@@ -97,33 +120,21 @@ const ReviewCardContent = ({ review }: { review: ReviewAggergation }) => {
         </Typography>
       </Box>
 
-      <Typography style={{ wordBreak: "break-word" }} variant="body1">
-        {review.review.content}
-      </Typography>
+      <Box minHeight="2em">
+        <Typography
+          noWrap={noWrap}
+          style={{ wordBreak: "break-word" }}
+          variant="body1"
+        >
+          {review.review.content}
+        </Typography>
+      </Box>
     </CardContent>
   );
 };
 
-type Props = {
-  review: ReviewAggergation;
-  showAuthor?: boolean;
-  showMedia?: boolean;
-  onVoteUp?: () => void;
-  onVoteDown?: () => void;
-  onEdit?: () => void;
-  onDelete?: () => void;
-};
-
-export default (props: Props) => {
-  const {
-    showMedia,
-    showAuthor,
-    onEdit,
-    onDelete,
-    onVoteDown,
-    onVoteUp,
-    review,
-  } = props;
+export default (props: ReviewCardProps) => {
+  const { showMedia, showAuthor, onEdit, onDelete } = props;
 
   const isReviewOptionsOpen = useBoolean(false);
 
@@ -152,17 +163,13 @@ export default (props: Props) => {
       />
       <Card>
         {showMedia && (
-          <CardHeaderMedia CardHeaderProps={CardHeaderProps} review={review} />
+          <CardHeaderMedia CardHeaderProps={CardHeaderProps} {...props} />
         )}
         {showAuthor && (
-          <CardHeaderAuthor CardHeaderProps={CardHeaderProps} review={review} />
+          <CardHeaderAuthor CardHeaderProps={CardHeaderProps} {...props} />
         )}
-        <ReviewCardContent review={review} />
-        <ReviewCardActions
-          review={review}
-          onVoteDown={onVoteDown}
-          onVoteUp={onVoteUp}
-        />
+        <ReviewCardContent {...props} />
+        <ReviewCardActions {...props} />
       </Card>
     </React.Fragment>
   );
