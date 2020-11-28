@@ -104,7 +104,7 @@ export const ReviewCardGridContainer = ({
       <React.Fragment>
         <Grid container spacing={1}>
           {sliced.map((review) => (
-            <Grid item {...ItemProps}>
+            <Grid key={review.review.id} item {...ItemProps}>
               <ReviewCardContainer {...ReviewCardProps} review={review} />
             </Grid>
           ))}
@@ -118,7 +118,7 @@ export const ReviewCardGridContainer = ({
     <React.Fragment>
       <Grid container spacing={1}>
         {reviews.map((review) => (
-          <Grid item {...ItemProps}>
+          <Grid key={review.review.id} item {...ItemProps}>
             <ReviewCardContainer {...ReviewCardProps} review={review} />
           </Grid>
         ))}

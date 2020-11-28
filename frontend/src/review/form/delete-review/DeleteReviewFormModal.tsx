@@ -70,10 +70,10 @@ export default () => {
       <LoadingDialog />
       <DialogTitle>Delete Review?</DialogTitle>
       <DialogActions>
-        <Button variant="text" size="large" onClick={handleCancel}>
+        <Button size="large" onClick={handleCancel}>
           Cancel
         </Button>
-        <Button color="primary" size="large" onClick={handleSubmit}>
+        <Button size="large" onClick={handleSubmit}>
           Delete
         </Button>
       </DialogActions>
