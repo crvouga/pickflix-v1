@@ -1,18 +1,19 @@
-import { Box, Grid, Typography, Button } from "@material-ui/core";
+import { Box, Button, Grid, Typography } from "@material-ui/core";
 import React from "react";
-import { useHistory } from "react-router";
 import {
   AutoListCardGridContainer,
   ListCardGridContainer,
 } from "../list/lists/card/ListCardGrid";
-import { UserAggergation } from "./query";
-import ListReviews from "./reviews/ListReviews";
-import { useUserPageUi } from "./redux/user-page-ui";
-import ReviewCardContainer from "../review/card/ReviewCardContainer";
 import { ReviewCardGridContainer } from "../review/card/ReviewCardGrid";
+import { UserAggergation } from "./query";
+import { useUserPageUi } from "./redux/user-page-ui";
+import useModal from "../app/modals/useModal";
+import useReviewForm from "../review/form/review-form/useReviewForm";
 
 export default ({ user }: { user: UserAggergation }) => {
   const userPageUi = useUserPageUi();
+  const reviewFormModal = useModal("ReviewForm");
+  const reviewForm = useReviewForm();
   return (
     <Grid container>
       <Grid item xs={12} sm={6}>
@@ -58,10 +59,19 @@ export default ({ user }: { user: UserAggergation }) => {
             Reviews
           </Typography>
           <ReviewCardGridContainer
-            authorId={user.user.id}
+            GetReviewParams={{
+              userId: user.user.id,
+              authorId: user.user.id,
+            }}
             count={user.reviewCount}
             ItemProps={{ xs: 12 }}
             limit={3}
+            ReviewCardCallToActionProps={{
+              onClick: () => {
+                reviewForm.setReview({});
+                reviewFormModal.open();
+              },
+            }}
             renderOverLimit={() => (
               <Box paddingY={1}>
                 <Button

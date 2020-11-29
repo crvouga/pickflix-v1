@@ -20,6 +20,7 @@ const SearchPage = React.lazy(() => import("../search/SearchPage.Mobile"));
 const AuthPage = React.lazy(() => import("../user/auth/auth-form/AuthPage"));
 const CurrentUserPage = React.lazy(() => import("../user/CurrentUserPage"));
 const UserPage = React.lazy(() => import("../user/UserPage"));
+const ReviewPage = React.lazy(() => import("../review/ReviewPage"));
 
 export default () => {
   return (
@@ -34,6 +35,7 @@ export default () => {
           <Route path="/list/:listId" component={ListPage} />
           <Route path="/auto-list/:autoListId" component={AutoListPage} />
           <Route path="/user/:userId" component={UserPage} />
+          <Route path="/review/:reviewId" component={ReviewPage} />
           <Route path="/current-user" component={CurrentUserPage} />
           <Route path="/auth" component={AuthPage} />
           <Route component={EmptyPage} />

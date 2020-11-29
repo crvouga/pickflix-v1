@@ -1,6 +1,5 @@
-import { useQueryCache } from "react-query";
-import { MediaId } from "../../../media/tmdb/types";
 import { createEventEmitter } from "../../../common/utility";
+import { MediaId } from "../../../media/tmdb/types";
 import { postReview } from "../../query";
 import { useReviewFormState } from "./review-form";
 
@@ -13,7 +12,6 @@ const eventEmitter = createEventEmitter<{
 
 export default () => {
   const formState = useReviewFormState();
-  const queryCache = useQueryCache();
 
   const submit = async ({
     mediaId,
@@ -38,9 +36,6 @@ export default () => {
       throw error;
     } finally {
       eventEmitter.emit("submitSettled");
-      queryCache.invalidateQueries((query) =>
-        query.queryKey.includes("reviews")
-      );
     }
   };
 

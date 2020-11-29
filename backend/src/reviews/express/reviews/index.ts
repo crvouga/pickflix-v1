@@ -1,47 +1,46 @@
 import { IRouter } from "express";
 import {
+  makePaginationOptions,
+  makePaginationResponse,
+} from "../../../app/pagination";
+import {
   castMediaId,
   MediaId,
   TmdbMediaId,
   TmdbMediaType,
 } from "../../../media/models/types";
-import { castUser, UserId } from "../../../users/models/make-user";
+import { castUser, UserId, castUserId } from "../../../users/models/make-user";
 import {
+  castReviewId,
   castReviewContent,
   castReviewRating,
   ReviewId,
 } from "../../models/make-review";
 import { Dependencies } from "../types";
-import {
-  makePaginationOptions,
-  makePaginationResponse,
-} from "../../../app/pagination";
 
-export const reviews = ({
-  reviewLogic,
-  middlewares,
-  userLogic,
-}: Dependencies) => (router: IRouter) => {
+export const reviews = ({ reviewLogic, middlewares }: Dependencies) => (
+  router: IRouter
+) => {
   router.get("/reviews", async (req, res, next) => {
     try {
-      const userId = (req.query.userId || req.user?.id) as UserId | undefined;
+      const userId = req.query.userId
+        ? castUserId(req.query.userId)
+        : req.user
+        ? castUserId(req.user.id)
+        : undefined;
 
-      const authorId = req.query.authorId as UserId | undefined;
+      const id = req.query.id ? castReviewId(req.query.id) : undefined;
 
-      const tmdbMediaId = Number(req.query.tmdbMediaId) as
-        | TmdbMediaId
-        | undefined;
+      const authorId = req.query.authorId
+        ? castUserId(req.query.authorId)
+        : userId;
 
-      const tmdbMediaType = req.query.tmdbMediaType as
-        | TmdbMediaType
-        | undefined;
-
-      const mediaId: MediaId | undefined =
-        tmdbMediaId && tmdbMediaType
-          ? {
-              tmdbMediaId,
-              tmdbMediaType,
-            }
+      const mediaId =
+        req.query.tmdbMediaId && req.query.tmdbMediaType
+          ? castMediaId({
+              tmdbMediaId: req.query.tmdbMediaId,
+              tmdbMediaType: req.query.tmdbMediaType,
+            })
           : undefined;
 
       const paginationOptions = makePaginationOptions({
@@ -50,6 +49,7 @@ export const reviews = ({
 
       const reviewAggergations = await reviewLogic.getAllAggergations(
         {
+          id,
           userId,
           authorId,
           mediaId,

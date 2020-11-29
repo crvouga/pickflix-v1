@@ -4,13 +4,19 @@ import { MediaId } from "../../media/tmdb/types";
 import { useQueryReviewStatistics } from "../../review/query";
 import RatingAverage from "../../review/rating/RatingAverage";
 import RatingDistributon from "../../review/rating/RatingDistributon";
+import useReviewForm from "../../review/form/review-form/useReviewForm";
+import { useListener } from "../../common/utility";
 
 type Props = {
   mediaId: MediaId;
 };
 
 export default ({ mediaId }: Props) => {
+  const reviewForm = useReviewForm();
   const query = useQueryReviewStatistics({ mediaId });
+  useListener(reviewForm.eventEmitter, "submitSuccess", () => {
+    query.refetch();
+  });
 
   if (query.error) {
     return null;

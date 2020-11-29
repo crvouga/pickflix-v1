@@ -1,18 +1,16 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
-import SignInButton from "../../user/auth/SignInButton";
 import useModal from "../../app/modals/useModal";
-import useReviewForm from "../../review/form/review-form/useReviewForm";
-import { useQueryReviews } from "../../review/query";
+import { MediaId } from "../../media/tmdb/types";
 import ReviewCard from "../../review/card/ReviewCard";
 import ReviewCardCallToAction from "../../review/card/ReviewCardCallToAction";
 import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";
-import { MediaId } from "../../media/tmdb/types";
-import { UserAggergation } from "../../user/query";
-import { useQueryCurrentUser } from "../../user/query";
 import useReviewActions from "../../review/card/useReviewActions";
-import SignInCallToAction from "../../user/auth/SignInCallToAction";
+import { useQueryReviews } from "../../review/query";
 import WithAuthentication from "../../user/auth/WithAuthentication";
+import { UserAggergation } from "../../user/query";
+import useReviewForm from "../../review/form/review-form/useReviewForm";
+import { useListener } from "../../common/utility";
 
 const YourReview = ({
   user,
@@ -21,10 +19,14 @@ const YourReview = ({
   user: UserAggergation;
   mediaId: MediaId;
 }) => {
+  const reviewForm = useReviewForm();
   const reviewActions = useReviewActions();
   const query = useQueryReviews({
     authorId: user.user.id,
     mediaId,
+  });
+  useListener(reviewForm.eventEmitter, "submitSuccess", () => {
+    query.refetch();
   });
 
   if (query.error) {

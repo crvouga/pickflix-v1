@@ -1,13 +1,18 @@
 import { Grid, GridProps, Box, Typography } from "@material-ui/core";
 import React from "react";
 import LoadingBox from "../../common/components/LoadingBox";
-import { useQueryReviews } from "../query";
+import { useQueryReviews, GetReviewsParams } from "../query";
 import ReviewCardContainer from "./ReviewCardContainer";
 import ReviewCardSkeleton from "./ReviewCardSkeleton";
 import { ReviewCardProps } from "./ReviewCard";
 import WithAuthentication from "../../user/auth/WithAuthentication";
-import ReviewCardCallToAction from "./ReviewCardCallToAction";
+import ReviewCardCallToAction, {
+  ReviewCardCallToActionProps,
+} from "./ReviewCardCallToAction";
 import InfiniteScrollBottom from "../../common/hooks/InfiniteScrollBottom";
+import useReviewForm from "../form/review-form/useReviewForm";
+import { useListener } from "../../common/utility";
+import { queryCache, useQueryCache } from "react-query";
 
 const DEFAULT_REVIEW_CARD_PROPS: Partial<ReviewCardProps> = {
   showMedia: true,
@@ -48,23 +53,30 @@ export const ReviewCardGridSkeleton = ({
   );
 };
 
+type ReviewCardGridContainerProps = {
+  ItemProps?: GridProps;
+  limit?: number;
+  renderOverLimit?: () => React.ReactNode;
+  ReviewCardProps?: Partial<ReviewCardProps>;
+  ReviewCardCallToActionProps?: ReviewCardCallToActionProps;
+  count?: number;
+  GetReviewParams: GetReviewsParams;
+};
+
 export const ReviewCardGridContainer = ({
-  authorId,
+  GetReviewParams,
   count,
   ItemProps = DEFAULT_ITEM_PROPS,
   limit,
   renderOverLimit,
   ReviewCardProps = DEFAULT_REVIEW_CARD_PROPS,
-}: {
-  ItemProps?: GridProps;
-  limit?: number;
-  renderOverLimit?: () => React.ReactNode;
-  authorId: string;
-  count: number;
-  ReviewCardProps?: Partial<ReviewCardProps>;
-}) => {
-  const query = useQueryReviews({
-    authorId,
+  ReviewCardCallToActionProps,
+}: ReviewCardGridContainerProps) => {
+  const reviewForm = useReviewForm();
+  const query = useQueryReviews(GetReviewParams);
+
+  useListener(reviewForm.eventEmitter, "submitSuccess", () => {
+    query.refetch();
   });
 
   if (query.error) {
@@ -76,7 +88,7 @@ export const ReviewCardGridContainer = ({
       <ReviewCardGridSkeleton
         {...ReviewCardProps}
         ItemProps={ItemProps}
-        count={count}
+        count={count || 0}
       />
     );
   }
@@ -87,8 +99,8 @@ export const ReviewCardGridContainer = ({
     return (
       <WithAuthentication
         renderAuthenticated={(currentUser) =>
-          authorId === currentUser.user.id ? (
-            <ReviewCardCallToAction />
+          GetReviewParams.userId === currentUser.user.id ? (
+            <ReviewCardCallToAction {...ReviewCardCallToActionProps} />
           ) : (
             <ReviewCardGridEmpty />
           )

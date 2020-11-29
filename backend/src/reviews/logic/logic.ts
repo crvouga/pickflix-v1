@@ -150,6 +150,7 @@ export class ReviewLogic {
       userId,
       ...reviewInfo
     }: {
+      id?: ReviewId;
       userId?: UserId;
       authorId?: UserId;
       mediaId?: MediaId;

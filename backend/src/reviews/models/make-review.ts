@@ -5,6 +5,13 @@ import { UserId } from "../../users/models/make-user";
 
 export type ReviewId = Id & { ReviewId: true };
 
+export const castReviewId = (id: any) => {
+  if (isValidId(id)) {
+    return id as ReviewId;
+  }
+  throw new Error("invalid review id");
+};
+
 export type Review = {
   id: ReviewId;
   authorId: UserId;

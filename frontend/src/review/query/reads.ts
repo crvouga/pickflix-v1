@@ -44,6 +44,7 @@ export const useQueryReviewStatistics = (params: GetReviewStatisticsParams) => {
 */
 
 export type GetReviewsParams = {
+  id?: string;
   authorId?: string;
   mediaId?: MediaId;
   userId?: string;

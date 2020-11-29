@@ -16,11 +16,17 @@ type Props = {
   subtitle?: string;
 };
 
+export type ReviewCardCallToActionProps = {
+  onClick?: () => void;
+  title?: string;
+  subtitle?: string;
+};
+
 export default ({
   onClick,
   title = "Write a review",
   subtitle = "Help people decide if they should watch any given movie",
-}: Props) => {
+}: ReviewCardCallToActionProps) => {
   const { open } = useModal("ReviewForm");
   return (
     <Card>

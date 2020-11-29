@@ -1,89 +1,13 @@
-import { Box } from "@material-ui/core";
 import React from "react";
-import useModal from "../../app/modals/useModal";
-import ErrorBox from "../../common/components/ErrorBox";
 import { MediaId } from "../../media/tmdb/types";
-import ReviewCard from "../../review/card/ReviewCard";
-import ReviewCardCallToAction from "../../review/card/ReviewCardCallToAction";
-import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";
-import useReviewVoteValue from "../../review/card/useReviewVoteValue";
-import useReviewForm from "../../review/form/review-form/useReviewForm";
-import { makeGetReviewsQueryKey, useQueryReviews } from "../../review/query";
-import WithAuthentication from "../../user/auth/WithAuthentication";
+import { ReviewCardGridContainer } from "../../review/card/ReviewCardGrid";
 
-type Props = {
-  mediaId: MediaId;
-};
-
-export default ({ mediaId }: Props) => {
-  const reviewFormModal = useModal("ReviewForm");
-  const reviewForm = useReviewForm();
-  const query = useQueryReviews({ mediaId });
-  const reviewVoteValue = useReviewVoteValue(
-    makeGetReviewsQueryKey({ mediaId })
-  );
-  const { open } = useModal("SignInCallToAction");
-
-  if (query.error) {
-    return <ErrorBox />;
-  }
-
-  if (!query.data) {
-    return (
-      <React.Fragment>
-        {[...Array(3)].map((_, index) => (
-          <Box paddingX={2} paddingY={1} key={index}>
-            <ReviewCardSkeleton showAuthor iconButtonCount={2} />
-          </Box>
-        ))}
-      </React.Fragment>
-    );
-  }
-
-  const reviews = query.data.flatMap((page) => page.results);
-
-  if (reviews.length === 0) {
-    return (
-      <Box p={2}>
-        <WithAuthentication
-          renderAuthenticated={() => (
-            <ReviewCardCallToAction
-              title="Be the first to leave a review!"
-              onClick={() => {
-                reviewForm.setReview({
-                  mediaId,
-                });
-                reviewFormModal.open();
-              }}
-            />
-          )}
-          renderDefault={() => (
-            <ReviewCardCallToAction
-              title="Be the first to leave a review!"
-              onClick={open}
-            />
-          )}
-        />
-      </Box>
-    );
-  }
-
+export default ({ mediaId }: { mediaId: MediaId }) => {
   return (
-    <React.Fragment>
-      {reviews.map((review) => (
-        <Box paddingX={2} paddingY={1} key={review.review.id}>
-          <ReviewCard
-            showAuthor
-            review={review}
-            onVoteDown={() => {
-              reviewVoteValue.voteDown(review);
-            }}
-            onVoteUp={() => {
-              reviewVoteValue.voteUp(review);
-            }}
-          />
-        </Box>
-      ))}
-    </React.Fragment>
+    <ReviewCardGridContainer
+      ItemProps={{ xs: 12 }}
+      ReviewCardProps={{ showMedia: false, showAuthor: true }}
+      GetReviewParams={{ mediaId }}
+    />
   );
 };
