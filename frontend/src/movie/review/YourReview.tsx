@@ -1,16 +1,18 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import useModal from "../../app/modals/useModal";
+import { useListener } from "../../common/utility";
 import { MediaId } from "../../media/tmdb/types";
-import ReviewCard from "../../review/card/ReviewCard";
-import ReviewCardCallToAction from "../../review/card/ReviewCardCallToAction";
+import { ReviewCardCallToAction } from "../../review/card/call-to-action/ReviewCardCallToAction";
+import ReviewCardCallToActionContainer from "../../review/card/call-to-action/ReviewCardCallToActionContainer";
+import ReviewCardContainer from "../../review/card/ReviewCardContainer";
 import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";
-import useReviewActions from "../../review/card/useReviewActions";
+import { eventEmitterReviewForm } from "../../review/form/edit-create-review/review-form";
 import { useQueryReviews } from "../../review/query";
 import WithAuthentication from "../../user/auth/WithAuthentication";
 import { UserAggergation } from "../../user/query";
-import useReviewForm from "../../review/form/review-form/useReviewForm";
-import { useListener } from "../../common/utility";
+import { eventEmitterReviewVoteForm } from "../../review/form/vote/review-vote-form";
+import equals from "fast-deep-equal";
 
 const YourReview = ({
   user,
@@ -19,14 +21,18 @@ const YourReview = ({
   user: UserAggergation;
   mediaId: MediaId;
 }) => {
-  const reviewForm = useReviewForm();
-  const reviewActions = useReviewActions();
+  const authorId = user.user.id;
   const query = useQueryReviews({
-    authorId: user.user.id,
+    authorId,
     mediaId,
   });
-  useListener(reviewForm.eventEmitter, "submitSuccess", () => {
+  useListener(eventEmitterReviewForm, "submitSuccess", () => {
     query.refetch();
+  });
+  useListener(eventEmitterReviewVoteForm, "submitSuccess", (review) => {
+    if (equals(review.authorId, authorId) && equals(review.mediaId, mediaId)) {
+      query.refetch();
+    }
   });
 
   if (query.error) {
@@ -41,30 +47,15 @@ const YourReview = ({
 
   if (reviews.length === 0) {
     return (
-      <ReviewCardCallToAction
-        title="Write a review"
-        subtitle="Help people decide if they should watch this movie"
-        onClick={() => {
-          reviewActions.onEdit({
-            mediaId,
-          });
-        }}
-      />
+      <ReviewCardCallToActionContainer partialReview={{ mediaId: mediaId }} />
     );
   }
 
   const review = reviews[0];
 
   return (
-    <ReviewCard
-      showAuthor
-      review={review}
-      onEdit={() => {
-        reviewActions.onEdit(review.review);
-      }}
-      onDelete={() => {
-        reviewActions.onDelete(review.review.id);
-      }}
+    <ReviewCardContainer
+      ReviewCardProps={{ showAuthor: true, review: review }}
     />
   );
 };
@@ -81,13 +72,7 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
         renderAuthenticated={(currentUser) => (
           <YourReview mediaId={mediaId} user={currentUser} />
         )}
-        renderDefault={() => (
-          <ReviewCardCallToAction
-            title="Write a review"
-            subtitle="Help people decide if they should watch this movie"
-            onClick={open}
-          />
-        )}
+        renderDefault={() => <ReviewCardCallToAction onClick={open} />}
       />
     </Box>
   );

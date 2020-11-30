@@ -15,11 +15,15 @@ import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
 import ListItemSkeleton from "../../../common/components/ListItemSkeleton";
 import LoadingDialog from "../../../common/components/LoadingDialog";
 import useBoolean from "../../../common/hooks/useBoolean";
+import { useListener } from "../../../common/utility";
 import UserListItem from "../../../user/components/UserListItem";
 import { useQueryCurrentUser } from "../../../user/query";
-import { useListener } from "../../../common/utility";
+import {
+  eventEmitterReviewForm,
+  submitReview,
+  useReviewFormState,
+} from "./review-form";
 import ReviewFormMedia from "./ReviewFormMedia";
-import useReviewForm from "./useReviewForm";
 
 const ReviewFormAuthor = () => {
   const query = useQueryCurrentUser();
@@ -37,12 +41,12 @@ const ReviewFormAuthor = () => {
 };
 
 const ReviewFormRating = () => {
-  const reviewForm = useReviewForm();
+  const { review, setReview } = useReviewFormState();
   const [rating, setRating] = useState(0);
   return (
     <Rating
       name="review-form-rating"
-      value={reviewForm.review.rating || 0}
+      value={review.rating || 0}
       size="large"
       onChangeActive={(e, value) => {
         if (value > 0) {
@@ -50,8 +54,8 @@ const ReviewFormRating = () => {
         }
       }}
       onClick={() => {
-        reviewForm.setReview({
-          ...reviewForm.review,
+        setReview({
+          ...review,
           rating,
         });
       }}
@@ -110,12 +114,9 @@ const ReviewCancelButton = (props: ButtonProps) => {
 };
 
 const Posting = () => {
-  const reviewForm = useReviewForm();
   const isLoading = useBoolean(false);
-
-  useListener(reviewForm.eventEmitter, "submit", isLoading.setTrue);
-  useListener(reviewForm.eventEmitter, "submitSettled", isLoading.setFalse);
-
+  useListener(eventEmitterReviewForm, "submit", isLoading.setTrue);
+  useListener(eventEmitterReviewForm, "submitSettled", isLoading.setFalse);
   return (
     <LoadingDialog
       open={isLoading.value}
@@ -125,15 +126,15 @@ const Posting = () => {
 };
 
 export default ({ onCancel }: { onCancel?: () => void }) => {
-  const reviewForm = useReviewForm();
+  const reviewFormState = useReviewFormState();
   const snackbar = useSnackbar();
   const refContent = useRef<HTMLInputElement>();
 
   const handleSubmit = () => {
-    const { review } = reviewForm;
-    const { mediaId, rating } = review;
+    const { mediaId, rating } = reviewFormState.review;
+
     if (mediaId && rating) {
-      reviewForm.submit({
+      submitReview({
         content: refContent.current?.value || "",
         rating,
         mediaId,
@@ -143,18 +144,19 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
 
   useEffect(() => {
     if (refContent.current) {
-      refContent.current.value = reviewForm.review.content || "";
+      refContent.current.value = reviewFormState.review.content || "";
     }
-  }, [reviewForm.review.content, refContent.current]);
+  }, [reviewFormState.review.content, refContent.current]);
 
-  useListener(reviewForm.eventEmitter, "submitSuccess", () => {
+  useListener(eventEmitterReviewForm, "submitSuccess", () => {
     snackbar.display({
       message: "Review posted",
     });
   });
 
   const disabled =
-    !Boolean(reviewForm.review.mediaId) || !Boolean(reviewForm.review.rating);
+    !Boolean(reviewFormState.review.mediaId) ||
+    !Boolean(reviewFormState.review.rating);
 
   return (
     <React.Fragment>
@@ -181,7 +183,7 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
           </Box>
           <Box>
             <ReviewFormContent
-              defaultValue={reviewForm.review.content || ""}
+              defaultValue={reviewFormState.review.content || ""}
               inputRef={refContent}
             />
           </Box>

@@ -8,6 +8,13 @@ export enum ReviewVoteValue {
   DOWN = "DOWN",
 }
 
+export const castReviewVoteValue = (voteValue: any): ReviewVoteValue => {
+  if (voteValue in ReviewVoteValue) {
+    return voteValue;
+  }
+  throw new Error("invalid review vote value");
+};
+
 export type ReviewVoteId = Id & { ReviewVoteId: true };
 
 export type ReviewVote = {

@@ -101,37 +101,6 @@ describe("review logic", () => {
     expect(edited.content).not.toEqual(added.content);
   });
 
-  it("casts uses most recent vote", async () => {
-    const { reviewLogic } = buildReviewLogicTest();
-    const user = makeUserFake();
-
-    const review = await reviewLogic.addReview(makeReviewFake());
-
-    const before = await reviewLogic.reviewVoteRepository.find({
-      reviewId: review.id,
-      userId: user.id,
-    });
-
-    for (const voteValue of [
-      ReviewVoteValue.UP,
-      ReviewVoteValue.DOWN,
-      ReviewVoteValue.UP,
-    ]) {
-      await reviewLogic.castReviewVote({
-        reviewId: review.id,
-        userId: user.id,
-        voteValue,
-      });
-    }
-
-    const after = await reviewLogic.reviewVoteRepository.find({
-      reviewId: review.id,
-      userId: user.id,
-    });
-    expect(before).toHaveLength(0);
-    expect(after).toHaveLength(1);
-  });
-
   it("get aggergated review", async () => {
     const { reviewLogic } = buildReviewLogicTest();
     const user = makeUserFake();
@@ -142,7 +111,7 @@ describe("review logic", () => {
       ReviewVoteValue.DOWN,
       ReviewVoteValue.UP,
     ]) {
-      await reviewLogic.castReviewVote({
+      await reviewLogic.setReviewVote({
         reviewId: review.id,
         userId: user.id,
         voteValue,

@@ -1,19 +1,20 @@
 import { Box, Button, Grid, Typography } from "@material-ui/core";
 import React from "react";
+import useModal from "../app/modals/useModal";
 import {
   AutoListCardGridContainer,
   ListCardGridContainer,
 } from "../list/lists/card/ListCardGrid";
-import { ReviewCardGridContainer } from "../review/card/ReviewCardGrid";
+import { ReviewCardGridContainer } from "../review/card/ReviewCardGridContainer";
+import { useReviewFormState } from "../review/form/edit-create-review/review-form";
 import { UserAggergation } from "./query";
 import { useUserPageUi } from "./redux/user-page-ui";
-import useModal from "../app/modals/useModal";
-import useReviewForm from "../review/form/review-form/useReviewForm";
 
 export default ({ user }: { user: UserAggergation }) => {
   const userPageUi = useUserPageUi();
   const reviewFormModal = useModal("ReviewForm");
-  const reviewForm = useReviewForm();
+  const reviewFormState = useReviewFormState();
+
   return (
     <Grid container>
       <Grid item xs={12} sm={6}>
@@ -68,7 +69,7 @@ export default ({ user }: { user: UserAggergation }) => {
             limit={3}
             ReviewCardCallToActionProps={{
               onClick: () => {
-                reviewForm.setReview({});
+                reviewFormState.setReview({});
                 reviewFormModal.open();
               },
             }}

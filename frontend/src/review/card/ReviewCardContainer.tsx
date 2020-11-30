@@ -1,48 +1,42 @@
 import React from "react";
 import WithAuthentication from "../../user/auth/WithAuthentication";
-import { makeGetReviewsQueryKey } from "../query";
+import { GetReviewsParams } from "../query";
+import useReviewActionsProps from "./review-actions/useReviewActionsProps";
+import { useReviewVoteActionProps } from "../form/vote/review-vote-form";
 import ReviewCard, { ReviewCardProps } from "./ReviewCard";
-import useReviewActions from "./useReviewActions";
-import useReviewVoteValue from "./useReviewVoteValue";
 
-export default (props: ReviewCardProps) => {
-  const { review } = props;
-  const { onDelete, onEdit } = useReviewActions();
-
-  const { voteUp, voteDown } = useReviewVoteValue(
-    makeGetReviewsQueryKey({
-      authorId: review.review.authorId,
-    })
-  );
-
-  const ActionProps = {
-    onDelete: () => {
-      onDelete(review.review.id);
-    },
-    onEdit: () => {
-      onEdit(review.review);
-    },
-  };
-
-  const VoteProps = {
-    onVoteUp: () => {
-      voteUp(review);
-    },
-    onVoteDown: () => {
-      voteDown(review);
-    },
-  };
+export default ({
+  ReviewCardProps,
+}: {
+  ReviewCardProps: ReviewCardProps;
+  GetReviewsParams?: GetReviewsParams;
+}) => {
+  const { review } = ReviewCardProps;
+  const { reviewActionProps } = useReviewActionsProps(review);
+  const { reviewVoteActionProps } = useReviewVoteActionProps(review);
 
   return (
     <WithAuthentication
       renderAuthenticated={(currentUser) =>
         review.review.authorId === currentUser.user.id ? (
-          <ReviewCard {...props} {...ActionProps} {...VoteProps} />
+          <ReviewCard
+            {...ReviewCardProps}
+            ReviewActionsProps={reviewActionProps}
+            ReviewVoteActionProps={reviewVoteActionProps}
+          />
         ) : (
-          <ReviewCard {...props} {...VoteProps} />
+          <ReviewCard
+            {...ReviewCardProps}
+            ReviewVoteActionProps={reviewVoteActionProps}
+          />
         )
       }
-      renderDefault={() => <ReviewCard {...props} {...VoteProps} />}
+      renderDefault={() => (
+        <ReviewCard
+          {...ReviewCardProps}
+          ReviewVoteActionProps={reviewVoteActionProps}
+        />
+      )}
     />
   );
 };

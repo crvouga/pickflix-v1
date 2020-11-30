@@ -79,6 +79,7 @@ export const makeGetReviewsQueryKey = (params: GetReviewsParams) => [
 ];
 
 export type GetReviewsQueryData = Paginated<ReviewAggergation>[];
+
 export const useQueryReviews = (params: GetReviewsParams) => {
   return useInfiniteQueryPagination(
     makeGetReviewsQueryKey(params),

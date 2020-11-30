@@ -58,7 +58,7 @@ export const deleteReview = async ({ reviewId }: DeleteReviewParams) => {
 
 export type PostReviewVoteParams = {
   reviewId: string;
-  voteValue: ReviewVoteValue;
+  voteValue: ReviewVoteValue | null;
 };
 
 export const postReviewVote = async ({
@@ -70,24 +70,6 @@ export const postReviewVote = async ({
     {
       voteValue,
     }
-  );
-  return data;
-};
-
-/* 
-
-
-*/
-
-export type DeleteReviewVoteParams = {
-  reviewId: string;
-};
-
-export const deleteReviewVote = async ({
-  reviewId,
-}: DeleteReviewVoteParams) => {
-  const { data } = await BackendAPI.delete<{}>(
-    `/api/reviews/${reviewId}/review-votes`
   );
   return data;
 };

@@ -6,7 +6,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../../app/redux/types";
 import { createPayloadReducer } from "../../../app/redux/utils";
-import { Review } from "../../query";
+import { createEventEmitter } from "../../../common/utility";
+import { MediaId } from "../../../media/tmdb/types";
+import { postReview, Review } from "../../query";
 
 const name = "reviewForm";
 
@@ -80,4 +82,47 @@ export const useReviewFormState = () => {
     ...actions,
     ...slice,
   };
+};
+
+/* 
+
+
+*/
+
+export const eventEmitterReviewForm = createEventEmitter<{
+  submit: undefined;
+  submitSuccess: Review;
+  submitError: undefined;
+  submitSettled: undefined;
+}>();
+
+/*
+
+
+*/
+
+export const submitReview = async ({
+  mediaId,
+  rating,
+  content,
+}: {
+  mediaId: MediaId;
+  rating: number;
+  content: string;
+}) => {
+  eventEmitterReviewForm.emit("submit");
+
+  try {
+    const review = await postReview({
+      content,
+      rating,
+      mediaId,
+    });
+    eventEmitterReviewForm.emit("submitSuccess", review);
+  } catch (error) {
+    eventEmitterReviewForm.emit("submitError");
+    throw error;
+  } finally {
+    eventEmitterReviewForm.emit("submitSettled");
+  }
 };

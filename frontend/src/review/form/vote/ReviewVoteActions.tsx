@@ -2,50 +2,21 @@ import {
   Box,
   Button,
   ButtonProps,
-  CardActions,
-  IconButton,
-  IconButtonProps,
   makeStyles,
   SvgIconProps,
 } from "@material-ui/core";
-import DeleteForeverIcon from "@material-ui/icons/DeleteForever";
-import EditIcon from "@material-ui/icons/Edit";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import ThumbDownOutlinedIcon from "@material-ui/icons/ThumbDownOutlined";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import numeral from "numeral";
 import React from "react";
-import { ReviewAggergation, ReviewVoteValue } from "../query/types";
+import { ReviewVoteValue } from "../../query/types";
 
-export const EditButton = (props: IconButtonProps) => {
-  return (
-    <IconButton {...props}>
-      <EditIcon />
-    </IconButton>
-  );
-};
+/* 
 
-export const DeleteButton = (props: IconButtonProps) => {
-  return (
-    <IconButton {...props}>
-      <DeleteForeverIcon />
-    </IconButton>
-  );
-};
 
-export const VoteDownIcon = ({
-  outlined = true,
-  ...props
-}: {
-  outlined?: boolean;
-} & SvgIconProps) => {
-  return outlined ? (
-    <ThumbDownOutlinedIcon {...props} />
-  ) : (
-    <ThumbDownIcon {...props} />
-  );
-};
+*/
 
 export const VoteUpIcon = ({
   outlined = true,
@@ -79,6 +50,24 @@ export const VoteUpButton = ({
   );
 };
 
+/* 
+
+
+*/
+
+export const VoteDownIcon = ({
+  outlined = true,
+  ...props
+}: {
+  outlined?: boolean;
+} & SvgIconProps) => {
+  return outlined ? (
+    <ThumbDownOutlinedIcon {...props} />
+  ) : (
+    <ThumbDownIcon {...props} />
+  );
+};
+
 export const VoteDownButton = ({
   outlined = true,
   count = 0,
@@ -97,6 +86,47 @@ export const VoteDownButton = ({
     </Button>
   );
 };
+
+/* 
+
+
+*/
+
+export type ReviewVoteActionProps = {
+  voteValue: ReviewVoteValue | null;
+  upVoteCount: number;
+  downVoteCount: number;
+  onVoteUp: () => void;
+  onVoteDown: () => void;
+};
+
+export const ReviewVoteActions = ({
+  voteValue,
+  upVoteCount,
+  downVoteCount,
+  onVoteUp,
+  onVoteDown,
+}: ReviewVoteActionProps) => {
+  return (
+    <React.Fragment>
+      <VoteUpButton
+        onClick={onVoteUp}
+        outlined={voteValue !== ReviewVoteValue.UP}
+        count={upVoteCount}
+      />
+      <VoteDownButton
+        onClick={onVoteDown}
+        outlined={voteValue !== ReviewVoteValue.DOWN}
+        count={downVoteCount}
+      />
+    </React.Fragment>
+  );
+};
+
+/* 
+
+
+*/
 
 const useStyles = makeStyles((theme) => ({
   bucket: {
@@ -121,34 +151,5 @@ export const ReviewVoteBar = (props: { percentage: number }) => {
     <Box className={classes.bucket}>
       <Box className={classes.bucketFill} />
     </Box>
-  );
-};
-
-export default ({
-  review,
-  onVoteUp,
-  onVoteDown,
-}: {
-  review: ReviewAggergation;
-  onVoteUp?: () => void;
-  onVoteDown?: () => void;
-}) => {
-  return (
-    <CardActions>
-      {onVoteUp && (
-        <VoteUpButton
-          onClick={onVoteUp}
-          outlined={review.reviewVoteValue !== ReviewVoteValue.UP}
-          count={review.reviewUpVoteCount}
-        />
-      )}
-      {onVoteDown && (
-        <VoteDownButton
-          onClick={onVoteDown}
-          outlined={review.reviewVoteValue !== ReviewVoteValue.DOWN}
-          count={review.reviewVoteCount - review.reviewUpVoteCount}
-        />
-      )}
-    </CardActions>
   );
 };

@@ -228,42 +228,51 @@ export class ReviewLogic {
     return updated;
   }
 
-  async castReviewVote(partialReviewVote: PartialReviewVote) {
-    const reviewVote = makeReviewVote(partialReviewVote);
-
-    const [existingReview] = await this.reviewRepository.find({
-      id: reviewVote.reviewId,
-    });
-    if (!existingReview) {
-      throw new Error("Can't vote on a review that doesn't exists.");
-    }
-
-    //ensure one vote per user per review
-    const [found] = await this.reviewVoteRepository.find({
-      reviewId: reviewVote.reviewId,
-      userId: reviewVote.userId,
-    });
-    if (found) {
-      await this.reviewVoteRepository.update(found.id, {
-        voteValue: reviewVote.voteValue,
-      });
-    } else {
-      await this.reviewVoteRepository.add(reviewVote);
-    }
-  }
-
-  async uncastReviewVote({
+  async setReviewVote({
+    voteValue,
     userId,
     reviewId,
   }: {
+    voteValue: ReviewVoteValue | null;
     userId: UserId;
     reviewId: ReviewId;
   }) {
-    const [found] = await this.reviewVoteRepository.find({ userId, reviewId });
-    if (!found) {
-      throw new Error("Can't remove review vote that doesn't exists.");
+    const [review] = await this.reviewRepository.find({
+      id: reviewId,
+    });
+
+    if (!review) {
+      throw new Error("Can't vote on review that does not exists");
     }
-    await this.reviewVoteRepository.remove(found.id);
+
+    const [reviewVote] = await this.reviewVoteRepository.find({
+      reviewId: reviewId,
+      userId: userId,
+    });
+
+    if (reviewVote && voteValue === null) {
+      await this.reviewVoteRepository.remove(reviewVote.id);
+      return false;
+    }
+
+    if (reviewVote && voteValue !== null) {
+      await this.reviewVoteRepository.update(reviewVote.id, {
+        voteValue: voteValue,
+      });
+      return true;
+    }
+
+    if (!reviewVote && voteValue !== null) {
+      const reviewVote = makeReviewVote({
+        reviewId,
+        userId,
+        voteValue,
+      });
+      await this.reviewVoteRepository.add(reviewVote);
+      return true;
+    }
+
+    return false;
   }
 
   async getRatingFrequency({ mediaId }: { mediaId: MediaId }) {

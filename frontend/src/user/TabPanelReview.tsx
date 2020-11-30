@@ -1,13 +1,13 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
-import { UserAggergation } from "./query";
-import { ReviewCardGridContainer } from "../review/card/ReviewCardGrid";
-import useReviewForm from "../review/form/review-form/useReviewForm";
 import useModal from "../app/modals/useModal";
+import { ReviewCardGridContainer } from "../review/card/ReviewCardGridContainer";
+import { useReviewFormState } from "../review/form/edit-create-review/review-form";
+import { UserAggergation } from "./query";
 
 export default ({ user }: { user: UserAggergation }) => {
   const reviewFormModal = useModal("ReviewForm");
-  const reviewForm = useReviewForm();
+  const reviewFormState = useReviewFormState();
   return (
     <React.Fragment>
       <Box p={2}>
@@ -24,7 +24,7 @@ export default ({ user }: { user: UserAggergation }) => {
           ReviewCardCallToActionProps={{
             onClick: () => {
               reviewFormModal.open();
-              reviewForm.setReview({});
+              reviewFormState.setReview({});
             },
           }}
           ReviewCardProps={{ noWrap: true, showMedia: true }}

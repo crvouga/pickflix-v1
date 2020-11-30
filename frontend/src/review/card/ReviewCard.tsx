@@ -1,13 +1,14 @@
 import {
   Box,
   Card,
+  CardActions,
   CardContent,
   CardHeader,
   CardHeaderProps,
   IconButton,
   IconButtonProps,
-  Typography,
   makeStyles,
+  Typography,
 } from "@material-ui/core";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import { Rating } from "@material-ui/lab";
@@ -15,23 +16,28 @@ import moment from "moment";
 import React from "react";
 import { useHistory } from "react-router";
 import useBoolean from "../../common/hooks/useBoolean";
+import { pluralize } from "../../common/utility";
 import MovieAvatar from "../../movie/components/MovieAvatar";
 import AvatarUser from "../../user/components/AvatarUser";
-import { pluralize } from "../../common/utility";
-import { ReviewAggergation } from "../query/types";
-import ReviewCardActions from "./ReviewCardActions";
-import ReviewCardOptionsModal from "./ReviewCardOptionsModal";
 import { makeUserPageRoute } from "../../user/UserPage";
+import { ReviewAggergation } from "../query/types";
+import {
+  ReviewVoteActionProps,
+  ReviewVoteActions,
+} from "../form/vote/ReviewVoteActions";
+import {
+  ReviewActionsModal,
+  ReviewActionsProps,
+} from "./review-actions/ReviewActions";
 
 export type ReviewCardProps = {
   review: ReviewAggergation;
   showAuthor?: boolean;
   showMedia?: boolean;
   noWrap?: boolean;
-  onVoteUp?: () => void;
-  onVoteDown?: () => void;
-  onEdit?: () => void;
-  onDelete?: () => void;
+
+  ReviewActionsProps?: ReviewActionsProps;
+  ReviewVoteActionProps?: ReviewVoteActionProps;
 };
 
 const MoreButton = (props: IconButtonProps) => {
@@ -134,12 +140,17 @@ const ReviewCardContent = ({ noWrap, review }: ReviewCardProps) => {
 };
 
 export default (props: ReviewCardProps) => {
-  const { showMedia, showAuthor, onEdit, onDelete } = props;
+  const {
+    showMedia,
+    showAuthor,
+    ReviewActionsProps,
+    ReviewVoteActionProps,
+  } = props;
 
   const isReviewOptionsOpen = useBoolean(false);
 
   const CardHeaderProps = {
-    action: (onEdit || onDelete) && (
+    action: ReviewActionsProps && (
       <MoreButton
         onClick={(event) => {
           event.stopPropagation();
@@ -155,11 +166,10 @@ export default (props: ReviewCardProps) => {
 
   return (
     <React.Fragment>
-      <ReviewCardOptionsModal
+      <ReviewActionsModal
         open={isReviewOptionsOpen.value}
         onClose={onClose}
-        onEdit={onEdit}
-        onDelete={onDelete}
+        ReviewActionsProps={ReviewActionsProps}
       />
       <Card>
         {showMedia && (
@@ -169,7 +179,11 @@ export default (props: ReviewCardProps) => {
           <CardHeaderAuthor CardHeaderProps={CardHeaderProps} {...props} />
         )}
         <ReviewCardContent {...props} />
-        <ReviewCardActions {...props} />
+        <CardActions>
+          {ReviewVoteActionProps && (
+            <ReviewVoteActions {...ReviewVoteActionProps} />
+          )}
+        </CardActions>
       </Card>
     </React.Fragment>
   );

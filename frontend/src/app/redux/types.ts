@@ -10,14 +10,16 @@ import { VideoState } from "../../media/video/redux/video";
 import { moviePageUi } from "../../movie/redux/movie-page-ui";
 import { PersonPageUiState } from "../../person/redux/person-page-ui";
 import { DeleteReviewFormState } from "../../review/form/delete-review/delete-review-form";
-import { ReviewFormState } from "../../review/form/review-form/review-form";
+import { ReviewFormState } from "../../review/form/edit-create-review/review-form";
 import { SearchState } from "../../search/redux/search";
 import { EditUserFormState } from "../../user/forms/edit-user-form/edit-user-form";
 import { SnackbarState } from "../snackbar/redux/snackbar";
 import { ModalState } from "../modals/redux/modal";
 import { UserPageUiState } from "../../user/redux/user-page-ui";
+import { ReviewsVoteFormState } from "../../review/form/vote/review-vote-form";
 
 export type AppState = {
+  reviewsVoteForm: ReviewsVoteFormState;
   userPageUi: UserPageUiState;
   modal: ModalState;
   editUserForm: EditUserFormState;

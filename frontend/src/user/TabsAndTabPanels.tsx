@@ -1,13 +1,13 @@
 import { Tab, Tabs } from "@material-ui/core";
 import React from "react";
 import TabPanel from "../common/components/TabPanel";
+import { useListener } from "../common/utility";
+import { eventEmitterReviewForm } from "../review/form/edit-create-review/review-form";
 import { UserAggergation } from "./query";
 import { UserPageTabValue, useUserPageUi } from "./redux/user-page-ui";
 import TabPanelList from "./TabPanelList";
 import TabPanelOverview from "./TabPanelOverview";
 import TabPanelReview from "./TabPanelReview";
-import useReviewForm from "../review/form/review-form/useReviewForm";
-import { useListener } from "../common/utility";
 
 const tabValueToLabel = (tabValue: UserPageTabValue): string => {
   switch (tabValue) {
@@ -40,8 +40,7 @@ export default ({ user }: { user: UserAggergation }) => {
     }
   };
 
-  const reviewForm = useReviewForm();
-  useListener(reviewForm.eventEmitter, "submitSuccess", () => {
+  useListener(eventEmitterReviewForm, "submitSuccess", () => {
     userPageUi.setTabValue("reviews");
   });
 

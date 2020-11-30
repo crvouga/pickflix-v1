@@ -5,7 +5,7 @@ import DeleteListFormModal from "../../list/forms/delete-list-form/DeleteListFor
 import EditListFormModal from "../../list/forms/edit-list-form/EditListFormModal";
 import ToggleListItemFormModal from "../../list/forms/toggle-list-item-form/ToggleListItemFormModal";
 import DeleteReviewFormModal from "../../review/form/delete-review/DeleteReviewFormModal";
-import ReviewFormModal from "../../review/form/review-form/ReviewFormModal";
+import ReviewFormModal from "../../review/form/edit-create-review/ReviewFormModal";
 import SearchModal from "../../search/SearchDialog";
 import AuthPopups from "../../user/auth/AuthPopups";
 import SignInCallToActionModal from "../../user/auth/SignInCallToActionModal";

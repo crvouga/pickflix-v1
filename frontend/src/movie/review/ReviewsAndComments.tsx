@@ -4,7 +4,7 @@ import TabPanel from "../../common/components/TabPanel";
 import { useListener } from "../../common/utility";
 import { MediaId } from "../../media/tmdb/types";
 import useVideoState from "../../media/video/useVideoState";
-import useReviewForm from "../../review/form/review-form/useReviewForm";
+import { eventEmitterReviewForm } from "../../review/form/edit-create-review/review-form";
 import { ReviewCommentsTabValue } from "../redux/movie-page-ui";
 import useMoviePageUi from "../redux/useMoviePageUi";
 import MovieReviewList from "./ReviewCardList";
@@ -14,9 +14,8 @@ import YoutubeCommentList from "./YoutubeCommentList";
 export default ({ mediaId }: { mediaId: MediaId }) => {
   const videoState = useVideoState();
   const moviePageUi = useMoviePageUi();
-  const reviewForm = useReviewForm();
 
-  useListener(reviewForm.eventEmitter, "submitSuccess", () => {
+  useListener(eventEmitterReviewForm, "submitSuccess", () => {
     moviePageUi.setReviewCommentsTabValue("pickflix");
   });
 

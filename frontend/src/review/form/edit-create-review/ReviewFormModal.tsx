@@ -2,14 +2,13 @@ import React from "react";
 import useModal from "../../../app/modals/useModal";
 import NonFullscreenResponsiveDialog from "../../../common/components/NonFullscreenResponsiveDialog";
 import { useListener } from "../../../common/utility";
+import { eventEmitterReviewForm } from "./review-form";
 import ReviewForm from "./ReviewForm";
-import useReviewForm from "./useReviewForm";
 
 export default () => {
-  const reviewForm = useReviewForm();
   const reviewFormModal = useModal("ReviewForm");
 
-  useListener(reviewForm.eventEmitter, "submitSuccess", () => {
+  useListener(eventEmitterReviewForm, "submitSuccess", () => {
     reviewFormModal.close();
   });
 

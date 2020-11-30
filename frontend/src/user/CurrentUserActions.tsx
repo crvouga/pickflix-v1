@@ -16,7 +16,7 @@ import React from "react";
 import useModal from "../app/modals/useModal";
 import ResponsiveDialogDrawer from "../common/components/ResponsiveDialogDrawer";
 import useBoolean from "../common/hooks/useBoolean";
-import useReviewForm from "../review/form/review-form/useReviewForm";
+import { useReviewFormState } from "../review/form/edit-create-review/review-form";
 import { signOut } from "./auth/query/mutations";
 import { UserAggergation } from "./query";
 
@@ -34,11 +34,11 @@ const useCurrentUserActions = () => {
   const isDialogOpen = useBoolean(false);
   const createListFormModal = useModal("CreateListForm");
   const reviewFormModal = useModal("ReviewForm");
-  const reviewForm = useReviewForm();
+  const reviewFormState = useReviewFormState();
   const editUserFormModal = useModal("EditUserForm");
 
   const onCreateReview = () => {
-    reviewForm.setReview({});
+    reviewFormState.setReview({});
     reviewFormModal.open();
   };
 

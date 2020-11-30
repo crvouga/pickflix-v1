@@ -11,15 +11,17 @@ import { video } from "../../media/video/redux/video";
 import { moviePageUi } from "../../movie/redux/movie-page-ui";
 import { personPageUi } from "../../person/redux/person-page-ui";
 import { deleteReviewForm } from "../../review/form/delete-review/delete-review-form";
-import { reviewForm } from "../../review/form/review-form/review-form";
+import { reviewForm } from "../../review/form/edit-create-review/review-form";
 import { search } from "../../search/redux/search";
 import { editUserForm } from "../../user/forms/edit-user-form/edit-user-form";
 import { snackbar } from "../snackbar/redux/snackbar";
 import { modal } from "../modals/redux/modal";
 import { AppState } from "./types";
 import { userPageUi } from "../../user/redux/user-page-ui";
+import { reviewsVoteForm } from "../../review/form/vote/review-vote-form";
 
 const reducers: { [key in keyof AppState]: Reducer } = {
+  reviewsVoteForm: reviewsVoteForm.reducer,
   userPageUi: userPageUi.reducer,
   modal: modal.reducer,
   editUserForm: editUserForm.reducer,

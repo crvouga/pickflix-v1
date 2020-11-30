@@ -1,18 +1,19 @@
-import { Grid, GridProps, Box, Typography } from "@material-ui/core";
+import { Box, Grid, GridProps, Typography } from "@material-ui/core";
+import { equals } from "ramda";
 import React from "react";
-import LoadingBox from "../../common/components/LoadingBox";
-import { useQueryReviews, GetReviewsParams } from "../query";
+import InfiniteScrollBottom from "../../common/hooks/InfiniteScrollBottom";
+import { useListener } from "../../common/utility";
+import WithAuthentication from "../../user/auth/WithAuthentication";
+import { eventEmitterReviewVoteForm } from "../form/vote/review-vote-form";
+import { GetReviewsParams, useQueryReviews } from "../query";
+import {
+  ReviewCardCallToAction,
+  ReviewCardCallToActionProps,
+} from "./call-to-action/ReviewCardCallToAction";
+import { ReviewCardProps } from "./ReviewCard";
 import ReviewCardContainer from "./ReviewCardContainer";
 import ReviewCardSkeleton from "./ReviewCardSkeleton";
-import { ReviewCardProps } from "./ReviewCard";
-import WithAuthentication from "../../user/auth/WithAuthentication";
-import ReviewCardCallToAction, {
-  ReviewCardCallToActionProps,
-} from "./ReviewCardCallToAction";
-import InfiniteScrollBottom from "../../common/hooks/InfiniteScrollBottom";
-import useReviewForm from "../form/review-form/useReviewForm";
-import { useListener } from "../../common/utility";
-import { queryCache, useQueryCache } from "react-query";
+import { eventEmitterReviewForm } from "../form/edit-create-review/review-form";
 
 const DEFAULT_REVIEW_CARD_PROPS: Partial<ReviewCardProps> = {
   showMedia: true,
@@ -72,10 +73,9 @@ export const ReviewCardGridContainer = ({
   ReviewCardProps = DEFAULT_REVIEW_CARD_PROPS,
   ReviewCardCallToActionProps,
 }: ReviewCardGridContainerProps) => {
-  const reviewForm = useReviewForm();
   const query = useQueryReviews(GetReviewParams);
 
-  useListener(reviewForm.eventEmitter, "submitSuccess", () => {
+  useListener(eventEmitterReviewForm, "submitSuccess", (review) => {
     query.refetch();
   });
 
@@ -117,7 +117,9 @@ export const ReviewCardGridContainer = ({
         <Grid container spacing={1}>
           {sliced.map((review) => (
             <Grid key={review.review.id} item {...ItemProps}>
-              <ReviewCardContainer {...ReviewCardProps} review={review} />
+              <ReviewCardContainer
+                ReviewCardProps={{ ...ReviewCardProps, review }}
+              />
             </Grid>
           ))}
         </Grid>
@@ -131,10 +133,13 @@ export const ReviewCardGridContainer = ({
       <Grid container spacing={1}>
         {reviews.map((review) => (
           <Grid key={review.review.id} item {...ItemProps}>
-            <ReviewCardContainer {...ReviewCardProps} review={review} />
+            <ReviewCardContainer
+              ReviewCardProps={{ ...ReviewCardProps, review }}
+            />
           </Grid>
         ))}
       </Grid>
+
       <InfiniteScrollBottom {...query} />
     </React.Fragment>
   );

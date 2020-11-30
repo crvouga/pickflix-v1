@@ -7,7 +7,7 @@ import { useQueryMovieSearch } from "../../../media/tmdb/query";
 import { MediaId, TmdbMediaType } from "../../../media/tmdb/types";
 import { MovieCardHeaderContainer } from "../../../movie/components/MovieCardHeader";
 import MovieListItem from "../../../movie/components/MovieListItem";
-import useReviewForm from "./useReviewForm";
+import { useReviewFormState } from "./review-form";
 
 const MediaSearch = React.forwardRef(
   (
@@ -76,8 +76,8 @@ const MediaSearch = React.forwardRef(
 );
 
 export default () => {
-  const reviewForm = useReviewForm();
-  const mediaId = reviewForm.review.mediaId;
+  const reviewFormState = useReviewFormState();
+  const mediaId = reviewFormState.review.mediaId;
 
   const isFocused = useBoolean(false);
 
@@ -86,8 +86,8 @@ export default () => {
   };
 
   const handleSelect = (mediaId: MediaId) => {
-    reviewForm.setReview({
-      ...reviewForm.review,
+    reviewFormState.setReview({
+      ...reviewFormState.review,
       mediaId: mediaId,
     });
   };
