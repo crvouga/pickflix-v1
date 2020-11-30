@@ -22,8 +22,8 @@ export default () => {
   if (!query.data) {
     return (
       <List>
-        {[...Array(5)].map((n) => (
-          <ListItemSkeleton key={n} />
+        {[...Array(5)].map((_, index) => (
+          <ListItemSkeleton key={index} />
         ))}
       </List>
     );
@@ -49,7 +49,9 @@ export default () => {
     <React.Fragment>
       <List>
         {results.map((result, index) => (
-          <SearchResultListItem key={index} result={result} />
+          <Box key={result.id || index}>
+            <SearchResultListItem result={result} />
+          </Box>
         ))}
       </List>
       <InfiniteScrollBottom {...query} />

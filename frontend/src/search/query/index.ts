@@ -170,18 +170,22 @@ export const getSearchAll = async (
     >();
   }
 
-  const [userResults, multiResults] = await Promise.all([
+  const [userResponse, multiResponse] = await Promise.all([
     getSearchUsers(params, config),
     getSearchMulti(params, config),
   ]);
 
+  const results = matchSorter(
+    [...userResponse.results, ...multiResponse.results],
+    params.query,
+    {
+      keys: ["username", "displayName", "title", "name"],
+    }
+  );
+
   return {
-    ...userResults,
-    ...multiResults,
-    results: matchSorter(
-      [...userResults.results, ...multiResults.results],
-      params.query,
-      { keys: ["username", "displayName", "title", "name"] }
-    ),
+    ...userResponse,
+    ...multiResponse,
+    results,
   };
 };

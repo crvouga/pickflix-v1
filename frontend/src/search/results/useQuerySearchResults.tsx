@@ -15,14 +15,18 @@ import {
 import { SearchFilter } from "../redux/search";
 
 const MAX_QUERY_LENGTH = 100;
+const DEBOUNCE_TIMEOUT = 1000 / 3;
+
+const deduplicateWhitespace = (string: string) => string.replace(/\s+/g, " ");
+
+const textToSearchQuery = (text: string) =>
+  deduplicateWhitespace(text.trim()).substr(0, MAX_QUERY_LENGTH);
 
 export default ({ filter, text }: { filter?: SearchFilter; text: string }) => {
-  const [debouncedText] = useDebounce(text, 1000 / 3);
-
-  const query = debouncedText.substr(0, MAX_QUERY_LENGTH);
+  const [searchQuery] = useDebounce(textToSearchQuery(text), DEBOUNCE_TIMEOUT);
 
   return useInfiniteQueryPagination(
-    ["search", filter, debouncedText],
+    ["search", filter, searchQuery],
     ({
       lastPage,
     }): Promise<
@@ -30,7 +34,7 @@ export default ({ filter, text }: { filter?: SearchFilter; text: string }) => {
     > => {
       const params: GetSearchParams = {
         page: lastPage,
-        query,
+        query: searchQuery,
       };
       switch (filter) {
         case "movie":

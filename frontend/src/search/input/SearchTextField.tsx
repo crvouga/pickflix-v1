@@ -23,6 +23,7 @@ type Props = InputBaseProps & {
   onClear?: () => void;
 };
 
+// prevent lag while typing
 const shouldNotComponentUpdate = (previousProps: Props, nextProps: Props) =>
   true;
 
@@ -43,6 +44,10 @@ export default React.memo(
             <CloseIcon />
           </IconButton>
         }
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="off"
+        spellCheck="false"
         {...props}
       />
     );

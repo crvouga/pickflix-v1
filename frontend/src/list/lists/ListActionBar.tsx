@@ -6,6 +6,7 @@ import useModal from "../../app/modals/useModal";
 import useDeleteListForm from "../forms/delete-list-form/useDeleteListForm";
 import useEditListForm from "../forms/edit-list-form/useEditListForm";
 import { List } from "../query";
+import GroupAddIcon from "@material-ui/icons/GroupAdd";
 
 const EditListButton = ({ list }: { list: List }) => {
   const editListFormModal = useModal("EditListForm");
@@ -39,11 +40,20 @@ const DeleteListButton = ({ list }: { list: List }) => {
   );
 };
 
+const AddUserButton = () => {
+  return (
+    <IconButton>
+      <GroupAddIcon />
+    </IconButton>
+  );
+};
+
 export default ({ list }: { list: List }) => {
   return (
     <Toolbar>
       <EditListButton list={list} />
       <DeleteListButton list={list} />
+      <AddUserButton />
     </Toolbar>
   );
 };
