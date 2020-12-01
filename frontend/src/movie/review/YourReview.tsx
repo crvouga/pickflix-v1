@@ -11,8 +11,6 @@ import { eventEmitterReviewForm } from "../../review/form/edit-create-review/rev
 import { useQueryReviews } from "../../review/query";
 import WithAuthentication from "../../user/auth/WithAuthentication";
 import { UserAggergation } from "../../user/query";
-import { eventEmitterReviewVoteForm } from "../../review/form/vote/review-vote-form";
-import equals from "fast-deep-equal";
 
 const YourReview = ({
   user,
@@ -28,11 +26,6 @@ const YourReview = ({
   });
   useListener(eventEmitterReviewForm, "submitSuccess", () => {
     query.refetch();
-  });
-  useListener(eventEmitterReviewVoteForm, "submitSuccess", (review) => {
-    if (equals(review.authorId, authorId) && equals(review.mediaId, mediaId)) {
-      query.refetch();
-    }
   });
 
   if (query.error) {

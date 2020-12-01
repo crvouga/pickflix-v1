@@ -1,6 +1,6 @@
 import { BackendAPI } from "../../backend-api";
 import { TmdbMediaType, MediaId } from "../../media/tmdb/types";
-import { Review, ReviewVote, ReviewVoteValue } from "./types";
+import { Review, ReviewVote, VoteValue } from "./types";
 
 /*
 
@@ -58,7 +58,7 @@ export const deleteReview = async ({ reviewId }: DeleteReviewParams) => {
 
 export type PostReviewVoteParams = {
   reviewId: string;
-  voteValue: ReviewVoteValue | null;
+  voteValue: VoteValue | null;
 };
 
 export const postReviewVote = async ({

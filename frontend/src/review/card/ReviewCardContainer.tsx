@@ -2,7 +2,7 @@ import React from "react";
 import WithAuthentication from "../../user/auth/WithAuthentication";
 import { GetReviewsParams } from "../query";
 import useReviewActionsProps from "./review-actions/useReviewActionsProps";
-import { useReviewVoteActionProps } from "../form/vote/review-vote-form";
+import { useReviewVoteActionProps } from "../form/vote/review-vote-states";
 import ReviewCard, { ReviewCardProps } from "./ReviewCard";
 
 export default ({

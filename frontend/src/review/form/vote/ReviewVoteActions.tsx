@@ -11,7 +11,7 @@ import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
 import numeral from "numeral";
 import React from "react";
-import { ReviewVoteValue } from "../../query/types";
+import { VoteValue } from "../../query/types";
 
 /* 
 
@@ -93,7 +93,7 @@ export const VoteDownButton = ({
 */
 
 export type ReviewVoteActionProps = {
-  voteValue: ReviewVoteValue | null;
+  voteValue: VoteValue | null;
   upVoteCount: number;
   downVoteCount: number;
   onVoteUp: () => void;
@@ -111,12 +111,12 @@ export const ReviewVoteActions = ({
     <React.Fragment>
       <VoteUpButton
         onClick={onVoteUp}
-        outlined={voteValue !== ReviewVoteValue.UP}
+        outlined={voteValue !== VoteValue.UP}
         count={upVoteCount}
       />
       <VoteDownButton
         onClick={onVoteDown}
-        outlined={voteValue !== ReviewVoteValue.DOWN}
+        outlined={voteValue !== VoteValue.DOWN}
         count={downVoteCount}
       />
     </React.Fragment>

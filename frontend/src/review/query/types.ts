@@ -11,7 +11,7 @@ export type Review = {
   updatedAt: number;
 };
 
-export enum ReviewVoteValue {
+export enum VoteValue {
   UP = "UP",
   DOWN = "DOWN",
 }
@@ -21,7 +21,7 @@ export type ReviewAggergation = {
   authorReviewCount: number;
   review: Review;
   reviewVoteCount: number;
-  reviewVoteValue: ReviewVoteValue | null;
+  reviewVoteValue: VoteValue | null;
   mediaReviewCount: number;
   tmdbData: Movie;
   reviewUpVoteCount: number;
@@ -31,7 +31,7 @@ export type ReviewVote = {
   id: string;
   userId: string;
   reviewId: string;
-  voteValue: ReviewVoteValue;
+  voteValue: VoteValue;
 };
 
 export type ReviewStatistics = {

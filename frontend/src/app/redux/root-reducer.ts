@@ -18,10 +18,10 @@ import { snackbar } from "../snackbar/redux/snackbar";
 import { modal } from "../modals/redux/modal";
 import { AppState } from "./types";
 import { userPageUi } from "../../user/redux/user-page-ui";
-import { reviewsVoteForm } from "../../review/form/vote/review-vote-form";
+import { reviewVoteStates } from "../../review/form/vote/review-vote-states";
 
 const reducers: { [key in keyof AppState]: Reducer } = {
-  reviewsVoteForm: reviewsVoteForm.reducer,
+  reviewVoteStates: reviewVoteStates.reducer,
   userPageUi: userPageUi.reducer,
   modal: modal.reducer,
   editUserForm: editUserForm.reducer,

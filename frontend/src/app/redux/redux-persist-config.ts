@@ -3,7 +3,7 @@ import { PersistConfig } from "redux-persist";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 import { AppState } from "./types";
 
-const blacklist: (keyof AppState)[] = ["reviewsVoteForm"];
+const blacklist: (keyof AppState)[] = ["reviewVoteStates"];
 
 export const persistConfig: PersistConfig<AppState> = {
   key: "root",

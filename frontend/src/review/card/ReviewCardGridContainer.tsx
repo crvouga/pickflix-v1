@@ -1,10 +1,9 @@
 import { Box, Grid, GridProps, Typography } from "@material-ui/core";
-import { equals } from "ramda";
 import React from "react";
 import InfiniteScrollBottom from "../../common/hooks/InfiniteScrollBottom";
 import { useListener } from "../../common/utility";
 import WithAuthentication from "../../user/auth/WithAuthentication";
-import { eventEmitterReviewVoteForm } from "../form/vote/review-vote-form";
+import { eventEmitterReviewForm } from "../form/edit-create-review/review-form";
 import { GetReviewsParams, useQueryReviews } from "../query";
 import {
   ReviewCardCallToAction,
@@ -13,7 +12,6 @@ import {
 import { ReviewCardProps } from "./ReviewCard";
 import ReviewCardContainer from "./ReviewCardContainer";
 import ReviewCardSkeleton from "./ReviewCardSkeleton";
-import { eventEmitterReviewForm } from "../form/edit-create-review/review-form";
 
 const DEFAULT_REVIEW_CARD_PROPS: Partial<ReviewCardProps> = {
   showMedia: true,

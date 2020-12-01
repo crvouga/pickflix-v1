@@ -16,10 +16,10 @@ import { EditUserFormState } from "../../user/forms/edit-user-form/edit-user-for
 import { SnackbarState } from "../snackbar/redux/snackbar";
 import { ModalState } from "../modals/redux/modal";
 import { UserPageUiState } from "../../user/redux/user-page-ui";
-import { ReviewsVoteFormState } from "../../review/form/vote/review-vote-form";
+import { ReviewVoteStatesState } from "../../review/form/vote/review-vote-states";
 
 export type AppState = {
-  reviewsVoteForm: ReviewsVoteFormState;
+  reviewVoteStates: ReviewVoteStatesState;
   userPageUi: UserPageUiState;
   modal: ModalState;
   editUserForm: EditUserFormState;
