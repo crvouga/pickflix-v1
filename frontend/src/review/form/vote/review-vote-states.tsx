@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../../app/redux/types";
 import { ReviewAggergation, VoteValue } from "../../query";
 import { ReviewVoteActionProps } from "./ReviewVoteActions";
+import { useEffect } from "react";
 
 export type VoteState = {
   upVoteCount: number;
@@ -158,6 +159,13 @@ export const useReviewVoteActionProps = (review: ReviewAggergation) => {
   const onVoteDown = () => {
     dispatch(reviewVoteStates.actions.vote(review, VoteValue.DOWN));
   };
+
+  useEffect(() => {
+    reviewVoteStates.actions.setVoteState(
+      review.review.id,
+      reviewToVoteState(review)
+    );
+  }, [review.reviewVoteValue]);
 
   const reviewVoteActionProps: ReviewVoteActionProps = {
     voteValue: voteState.voteValue,
