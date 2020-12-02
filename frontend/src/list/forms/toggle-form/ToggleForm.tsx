@@ -10,6 +10,7 @@ import { toAutoListName, useQueryAutoLists, useQueryLists } from "../../query";
 import { CreateListButton } from "./buttons/CreateListButton";
 import { ToggleButton, ToggleButtonSkeleton } from "./buttons/ToggleButton";
 import { useToggleFormState } from "./toggle-form";
+import InfiniteScrollBottom from "../../../common/components/InfiniteScrollBottom";
 
 export const ToggleFormSkeleton = ({
   autoListCount,
@@ -143,6 +144,7 @@ export const ToggleForm = ({
           }}
         />
       ))}
+      <InfiniteScrollBottom fetchMoreRef={fetchMoreRef} />
     </List>
   );
 };

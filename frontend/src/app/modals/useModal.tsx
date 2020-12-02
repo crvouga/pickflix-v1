@@ -22,6 +22,7 @@ const modalStateTypeByModalName: {
   Search: "location",
   ToggleForm: "location",
   SignInCallToAction: "location",
+  SignOutForm: "redux",
 };
 
 export default (modalName: ModalName): IModal => {

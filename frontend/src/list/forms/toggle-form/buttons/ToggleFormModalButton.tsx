@@ -17,11 +17,17 @@ export const ToggleFormModalButtonContainer = ({
   mediaId: MediaId;
 }) => {
   const { open } = useModal("ToggleForm");
-  const { setMediaId } = useToggleFormState();
+  const { setMediaId, listIds } = useToggleFormState();
   return (
     <LabeledIconButton
       label={"Lists"}
-      icon={false ? <ListIcon /> : <PlaylistAddCheckIcon />}
+      icon={
+        Object.values(listIds).length === 0 ? (
+          <ListIcon />
+        ) : (
+          <PlaylistAddCheckIcon />
+        )
+      }
       onClick={() => {
         setMediaId(mediaId);
         open();

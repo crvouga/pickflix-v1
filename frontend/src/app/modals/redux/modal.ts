@@ -4,6 +4,7 @@ import { bindActionCreators } from "redux";
 import { AppState } from "../../redux/types";
 import { createPayloadReducer } from "../../redux/utils";
 import { ModalName } from "../types";
+import { removeKey } from "../../../common/utility";
 
 const name: "modal" = "modal";
 
@@ -76,12 +77,14 @@ export const useModalState = () => {
 
   const open = (modalName: ModalName) => {
     setIsOpenByName({
+      ...isOpenByName,
       [modalName]: true,
     });
   };
 
   const close = (modalName: ModalName) => {
     setIsOpenByName({
+      ...isOpenByName,
       [modalName]: false,
     });
   };

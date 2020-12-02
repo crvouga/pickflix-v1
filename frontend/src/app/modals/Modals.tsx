@@ -11,10 +11,12 @@ import AuthPopups from "../../user/auth/AuthPopups";
 import SignInCallToActionModal from "../../user/auth/SignInCallToActionModal";
 import { CurrentUserActionsModal } from "../../user/CurrentUserActions";
 import EditUserFormModal from "../../user/forms/edit-user-form/EditUserFormModal";
+import SignOutFormModal from "../../user/forms/SignOutFormModal";
 
 export default () => {
   return (
     <React.Fragment>
+      <SignOutFormModal />
       <AuthPopups />
       <ToggleFormModal />
       <EditListFormModal />

@@ -17,7 +17,6 @@ import useModal from "../app/modals/useModal";
 import ResponsiveDialogDrawer from "../common/components/ResponsiveDialogDrawer";
 import useBoolean from "../common/hooks/useBoolean";
 import { useReviewFormState } from "../review/form/edit-create-review/review-form";
-import { signOut } from "./auth/query/mutations";
 import { UserAggergation } from "./query";
 
 export const OpenCurrentUserActionsModalButton = () => {
@@ -31,11 +30,11 @@ export const OpenCurrentUserActionsModalButton = () => {
 };
 
 const useCurrentUserActions = () => {
-  const isDialogOpen = useBoolean(false);
   const createListFormModal = useModal("CreateListForm");
   const reviewFormModal = useModal("ReviewForm");
   const reviewFormState = useReviewFormState();
   const editUserFormModal = useModal("EditUserForm");
+  const signOutFormModal = useModal("SignOutForm");
 
   const onCreateReview = () => {
     reviewFormState.setReview({});
@@ -44,7 +43,6 @@ const useCurrentUserActions = () => {
 
   const onEditUser = () => {
     editUserFormModal.open();
-    isDialogOpen.setFalse();
   };
 
   const onCreateList = () => {
@@ -52,7 +50,7 @@ const useCurrentUserActions = () => {
   };
 
   const onSignOut = () => {
-    signOut();
+    signOutFormModal.open();
   };
 
   return {
@@ -75,7 +73,7 @@ export const CurrentUserActionsModal = () => {
 
   return (
     <ResponsiveDialogDrawer open={isOpen} onClose={close}>
-      <List onClick={close}>
+      <List>
         <ListItem button onClick={onEditUser}>
           <ListItemIcon>
             <EditOutlinedIcon />
@@ -83,7 +81,13 @@ export const CurrentUserActionsModal = () => {
           <ListItemText primary="Edit Profile" />
         </ListItem>
 
-        <ListItem button onClick={onCreateList}>
+        <ListItem
+          button
+          onClick={() => {
+            close();
+            onCreateList();
+          }}
+        >
           <ListItemIcon>
             <PlaylistAddIcon />
           </ListItemIcon>
@@ -97,7 +101,13 @@ export const CurrentUserActionsModal = () => {
           <ListItemText primary="Create Review" />
         </ListItem>
 
-        <ListItem button onClick={onSignOut}>
+        <ListItem
+          button
+          onClick={() => {
+            close();
+            onSignOut();
+          }}
+        >
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>

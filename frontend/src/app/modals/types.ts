@@ -21,6 +21,7 @@ export type ModalName =
   | "EditUserForm"
   | "CurrentUserActions"
   | "RemoveListItemsForm"
-  | "SignInCallToAction";
+  | "SignInCallToAction"
+  | "SignOutForm";
 
 export type ModalStateType = "redux" | "location";
