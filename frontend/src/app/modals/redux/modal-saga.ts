@@ -3,7 +3,8 @@ import { historyEventChannel } from "../../providers/HistoryProvider";
 import { IsOpenByName, modal } from "./modal";
 
 export function* modalSaga() {
-  while (true) {
+  //disabled for right now
+  while (false) {
     yield take(historyEventChannel);
     const isOpenByName: IsOpenByName = yield select(
       modal.selectors.isOpenByName
