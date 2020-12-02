@@ -9,6 +9,10 @@ import {
   useQueryAutoLists,
 } from "../../../query";
 import { useToggleFormState } from "../toggle-form";
+import { useListener } from "../../../../common/utility";
+import { eventEmitterToggleForm } from "../toggle-form-saga";
+import { useSnackbar } from "../../../../app/snackbar/redux/snackbar";
+import { LinkButton } from "../../../../app/snackbar/Snackbar";
 
 export const AutoListToggleButton = ({
   checked,
@@ -59,6 +63,27 @@ export const AutoListToggleButtonContainer = ({
   autoListKey: AutoListKeys;
 } & ButtonBaseProps) => {
   const { listIds, toggle } = useToggleFormState();
+
+  const snackbar = useSnackbar();
+
+  useListener(eventEmitterToggleForm, "added", (added) => {
+    if (listId === added.listId) {
+      snackbar.display({
+        message: `Added to ${toAutoListName(autoListKey)}`,
+        action: <LinkButton path={`/auto-list/${listId}`} />,
+      });
+    }
+  });
+
+  useListener(eventEmitterToggleForm, "removed", (removed) => {
+    if (listId === removed.listId) {
+      snackbar.display({
+        message: `Removed from ${toAutoListName(autoListKey)}`,
+        // action: <LinkButton path={`/auto-list/${listId}`} />,
+      });
+    }
+  });
+
   return (
     <LabeledIconButton
       label={toAutoListName(autoListKey)}
