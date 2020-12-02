@@ -12,7 +12,7 @@ import React from "react";
 import useModal from "../../../app/modals/useModal";
 import ResponsiveDialog from "../../../common/components/ResponsiveDialog";
 import { SlideUp } from "../../../common/components/TransitionComponents";
-import ToggleForm from "./ToggleForm";
+import { ToggleFormContainer } from "./ToggleForm";
 
 export default () => {
   const { isOpen, close } = useModal("ToggleForm");
@@ -22,9 +22,8 @@ export default () => {
       TransitionComponent={SlideUp}
       open={isOpen}
       onClose={close}
-      keepMounted
     >
-      <ToggleForm />
+      <ToggleFormContainer />
 
       <Hidden smUp>
         <Box position="fixed" bottom={0} width="100%">

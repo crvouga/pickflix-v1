@@ -6,11 +6,19 @@ import Repeat from "../../../common/components/Repeat";
 import { MediaId } from "../../../media/tmdb/types";
 import MovieListItemContainer from "../../../movie/components/MovieListItemContainer";
 import { useQueryCurrentUser, UserAggergation } from "../../../user/query";
-import { toAutoListName, useQueryAutoLists, useQueryLists } from "../../query";
+import {
+  toAutoListName,
+  useQueryAutoLists,
+  useQueryLists,
+  ListAggergation,
+  AutoListAggergation,
+} from "../../query";
 import { CreateListButton } from "./buttons/CreateListButton";
 import { ToggleButton, ToggleButtonSkeleton } from "./buttons/ToggleButton";
 import { useToggleFormState } from "./toggle-form";
 import InfiniteScrollBottom from "../../../common/components/InfiniteScrollBottom";
+import { useListener } from "../../../common/utility";
+import { eventEmitterCreateListWithListItemsForm } from "../create-list-with-list-items-form/create-list-with-list-items-form";
 
 export const ToggleFormSkeleton = ({
   autoListCount,
@@ -47,51 +55,26 @@ export const ToggleFormSkeleton = ({
   );
 };
 
-export const ToggleForm = ({
+const ToggleForm = ({
   mediaId,
-
-  currentUser,
+  lists,
+  autoLists,
 }: {
   mediaId: MediaId;
-  currentUser: UserAggergation;
+  lists: ListAggergation[];
+  autoLists: AutoListAggergation[];
 }) => {
-  const { fetchMoreRef, ...queryLists } = useQueryLists({
-    includeListItemWithMediaId: mediaId,
-  });
-  const queryAutoLists = useQueryAutoLists({
-    includeListItemWithMediaId: mediaId,
-  });
   const history = useHistory();
   const { listIds, toggle, setListIds } = useToggleFormState();
 
   useEffect(() => {
-    if (queryLists.data && queryAutoLists.data) {
-      const lists = queryLists.data.flatMap((page) => page.results);
-      const autoLists = queryAutoLists.data;
-      const newListIds = [...lists, ...autoLists]
-        .filter((_) => Boolean(_.includeListItemWithMediaId))
-        .map((_) => _.list.id)
-        .reduce((listIds, listId) => ({ ...listIds, [listId]: listId }), {});
+    const initialListIds = [...lists, ...autoLists]
+      .filter((_) => Boolean(_.includeListItemWithMediaId))
+      .map((_) => _.list.id)
+      .reduce((listIds, listId) => ({ ...listIds, [listId]: listId }), {});
 
-      setListIds(newListIds);
-    }
-  }, [queryLists.data, queryAutoLists.data]);
-
-  if (queryLists.error || queryAutoLists.error) {
-    return null;
-  }
-
-  if (queryLists.data === undefined || queryAutoLists.data === undefined) {
-    return (
-      <ToggleFormSkeleton
-        autoListCount={currentUser.autoListCount}
-        listCount={currentUser.listCount}
-      />
-    );
-  }
-
-  const lists = queryLists.data.flatMap((page) => page.results);
-  const autoLists = queryAutoLists.data;
+    setListIds(initialListIds);
+  }, []);
 
   return (
     <List>
@@ -127,7 +110,9 @@ export const ToggleForm = ({
           primary="Lists"
         />
       </ListItem>
+
       <CreateListButton />
+
       {lists.map((list) => (
         <ToggleButton
           key={list.list.id}
@@ -144,12 +129,56 @@ export const ToggleForm = ({
           }}
         />
       ))}
-      <InfiniteScrollBottom fetchMoreRef={fetchMoreRef} />
     </List>
   );
 };
 
-export default () => {
+export const ToggleFormQueryContainer = ({
+  mediaId,
+  currentUser,
+}: {
+  mediaId: MediaId;
+  currentUser: UserAggergation;
+}) => {
+  const { fetchMoreRef, ...queryLists } = useQueryLists({
+    includeListItemWithMediaId: mediaId,
+  });
+  const queryAutoLists = useQueryAutoLists({
+    includeListItemWithMediaId: mediaId,
+  });
+
+  useListener(
+    eventEmitterCreateListWithListItemsForm,
+    "submitSuccess",
+    (list) => {
+      queryLists.refetch();
+    }
+  );
+
+  if (queryLists.error || queryAutoLists.error) {
+    return null;
+  }
+
+  if (queryLists.data === undefined || queryAutoLists.data === undefined) {
+    return (
+      <ToggleFormSkeleton
+        autoListCount={currentUser.autoListCount}
+        listCount={currentUser.listCount}
+      />
+    );
+  }
+  const lists = queryLists.data.flatMap((page) => page.results);
+  const autoLists = queryAutoLists.data;
+
+  return (
+    <React.Fragment>
+      <ToggleForm mediaId={mediaId} lists={lists} autoLists={autoLists} />
+      <InfiniteScrollBottom fetchMoreRef={fetchMoreRef} />
+    </React.Fragment>
+  );
+};
+
+export const ToggleFormContainer = () => {
   const query = useQueryCurrentUser();
   const { mediaId } = useToggleFormState();
 
@@ -171,5 +200,7 @@ export default () => {
     return null;
   }
 
-  return <ToggleForm mediaId={mediaId} currentUser={currentUser} />;
+  return (
+    <ToggleFormQueryContainer mediaId={mediaId} currentUser={currentUser} />
+  );
 };

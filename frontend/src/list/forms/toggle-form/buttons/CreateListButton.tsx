@@ -2,18 +2,21 @@ import { Box, ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import React from "react";
 import useModal from "../../../../app/modals/useModal";
-import { MediaId } from "../../../../media/tmdb/types";
-import useCreateListWithListItemsForm from "../../create-list-with-list-items-form/useCreateListWithListItemsForm";
+import { useCreateListWithListItemsForm } from "../../create-list-with-list-items-form/create-list-with-list-items-form";
+import { useToggleFormState } from "../toggle-form";
 
-export const CreateListButton = ({ mediaId }: { mediaId?: MediaId }) => {
+export const CreateListButton = () => {
   const { open } = useModal("CreateListWithListItemsForm");
+  const toggleFormModal = useModal("ToggleForm");
   const { setMediaIds } = useCreateListWithListItemsForm();
+  const { mediaId } = useToggleFormState();
 
   const handleClick = () => {
     if (mediaId) {
       setMediaIds([mediaId]);
     }
     open();
+    toggleFormModal.close();
   };
 
   return (

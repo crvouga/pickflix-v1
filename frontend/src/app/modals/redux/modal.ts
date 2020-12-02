@@ -4,7 +4,6 @@ import { bindActionCreators } from "redux";
 import { AppState } from "../../redux/types";
 import { createPayloadReducer } from "../../redux/utils";
 import { ModalName } from "../types";
-import { removeKey } from "../../../common/utility";
 
 const name: "modal" = "modal";
 

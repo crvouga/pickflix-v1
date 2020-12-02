@@ -16,13 +16,23 @@ import LoadingDialog from "../../../common/components/LoadingDialog";
 import useBoolean from "../../../common/hooks/useBoolean";
 import { useListener } from "../../../common/utility";
 import { MovieCardHeaderContainer } from "../../../movie/components/MovieCardHeader";
-import useCreateListWithListItemsForm from "./useCreateListWithListItemsForm";
+import {
+  eventEmitterCreateListWithListItemsForm,
+  useCreateListWithListItemsForm,
+} from "./create-list-with-list-items-form";
 
 const Creating = () => {
-  const { eventEmitter } = useCreateListWithListItemsForm();
   const isLoading = useBoolean(false);
-  useListener(eventEmitter, "submit", isLoading.setTrue);
-  useListener(eventEmitter, "submitSettled", isLoading.setFalse);
+  useListener(
+    eventEmitterCreateListWithListItemsForm,
+    "submit",
+    isLoading.setTrue
+  );
+  useListener(
+    eventEmitterCreateListWithListItemsForm,
+    "submitSettled",
+    isLoading.setFalse
+  );
   return (
     <LoadingDialog
       open={isLoading.value}
@@ -34,12 +44,7 @@ const Creating = () => {
 export default () => {
   const { isOpen, close } = useModal("CreateListWithListItemsForm");
 
-  const {
-    eventEmitter,
-    mediaIds,
-    setMediaIds,
-    submit,
-  } = useCreateListWithListItemsForm();
+  const { mediaIds, setMediaIds, submit } = useCreateListWithListItemsForm();
 
   const refTitle = useRef<HTMLInputElement>();
 
@@ -55,15 +60,19 @@ export default () => {
   };
 
   const snackbar = useSnackbar();
-  useListener(eventEmitter, "submitSuccess", (list) => {
-    snackbar.display({
-      message: `Created "${list.title}"`,
-      action: <LinkButton path={`/list/${list.id}`} />,
-    });
-    handleClose();
-  });
+  useListener(
+    eventEmitterCreateListWithListItemsForm,
+    "submitSuccess",
+    (list) => {
+      snackbar.display({
+        message: `Created "${list.title}"`,
+        action: <LinkButton path={`/list/${list.id}`} />,
+      });
+      handleClose();
+    }
+  );
 
-  useListener(eventEmitter, "submitSettled", () => {
+  useListener(eventEmitterCreateListWithListItemsForm, "submitSettled", () => {
     setMediaIds([]);
   });
 

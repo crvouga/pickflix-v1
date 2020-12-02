@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { useEffect } from "react";
+import { useEffect, DependencyList, useCallback } from "react";
 
 //SOURCE: https://rjzaworski.com/2019/10/event-emitters-in-typescript
 
@@ -22,12 +22,14 @@ export const createEventEmitter = <T extends EventMap>(): Emitter<T> => {
 export const useListener = <T extends EventMap, K extends EventKey<T>>(
   eventEmitter: Emitter<T>,
   eventName: K,
-  fn: EventReceiver<T[K]>
+  eventHandler: EventReceiver<T[K]>,
+  dependencyList?: DependencyList
 ) => {
+  const callback = useCallback(eventHandler, dependencyList || []);
   return useEffect(() => {
-    eventEmitter.on(eventName, fn);
+    eventEmitter.on(eventName, callback);
     return () => {
-      eventEmitter.off(eventName, fn);
+      eventEmitter.off(eventName, callback);
     };
   }, []);
 };

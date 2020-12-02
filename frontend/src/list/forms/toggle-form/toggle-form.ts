@@ -40,6 +40,7 @@ const slice = (state: AppState) => state[name];
 
 const selectors = {
   slice,
+  mediaId: createSelector([slice], (slice) => slice.mediaId),
   listIds: createSelector([slice], (slice) => slice.listIds),
 };
 
@@ -94,10 +95,12 @@ export const toggleForm = {
 export const useToggleFormState = () => {
   const dispatch = useDispatch();
   const actions = bindActionCreators(toggleForm.actions, dispatch);
-  const slice = useSelector(toggleForm.selectors.slice);
+  const mediaId = useSelector(toggleForm.selectors.mediaId);
+  const listIds = useSelector(toggleForm.selectors.listIds);
 
   return {
     ...actions,
-    ...slice,
+    listIds,
+    mediaId,
   };
 };
