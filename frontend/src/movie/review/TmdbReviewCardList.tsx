@@ -2,7 +2,7 @@ import { Box } from "@material-ui/core";
 import React from "react";
 import ErrorBox from "../../common/components/ErrorBox";
 import NothingHere from "../../common/components/NothingHere";
-import InfiniteScrollBottom from "../../common/hooks/InfiniteScrollBottom";
+import InfiniteScrollBottom from "../../common/components/InfiniteScrollBottom";
 import { useQueryTmdbReviews } from "../../media/tmdb/query";
 import { MediaId } from "../../media/tmdb/types";
 import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";

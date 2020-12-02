@@ -2,6 +2,7 @@ import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repos
 import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository.hash-map";
 import { RepositoryQueryOptions } from "../../app/data-access/types";
 import { ListItem } from "../models/make-list-item";
+import { ListId, ListItemId } from "../models";
 
 export interface IListItemRepository {
   find(
@@ -13,7 +14,9 @@ export interface IListItemRepository {
 
   add(listItems: ListItem[]): void;
 
-  remove(specs: Partial<ListItem>[]): void;
+  remove(id: ListItemId): void;
+
+  removeWhere(specs: Partial<ListItem>[]): void;
 }
 
 export class ListItemRepositoryHashMap implements IListItemRepository {
@@ -38,7 +41,11 @@ export class ListItemRepositoryHashMap implements IListItemRepository {
     this.repository.add(listItems);
   }
 
-  async remove(specs: Partial<ListItem>[]) {
+  async remove(id: ListItemId) {
+    this.repository.remove([{ id }]);
+  }
+
+  async removeWhere(specs: Partial<ListItem>[]) {
     this.repository.remove(specs);
   }
 }
@@ -65,7 +72,11 @@ export class ListItemRepositoryFileSystem implements IListItemRepository {
     this.repository.add(listItems);
   }
 
-  async remove(specs: Partial<ListItem>[]) {
+  async remove(id: ListItemId) {
+    this.repository.remove([{ id }]);
+  }
+
+  async removeWhere(specs: Partial<ListItem>[]) {
     this.repository.remove(specs);
   }
 }

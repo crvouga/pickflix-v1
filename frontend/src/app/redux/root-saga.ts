@@ -5,6 +5,7 @@ import { removeListItemsFormSaga } from "../../list/forms/remove-list-items-form
 import { reviewVoteStatesSaga } from "../../review/form/vote/review-vote-states-saga";
 import { modalSaga } from "../modals/redux/modal-saga";
 import { snackbarSaga } from "../snackbar/redux/snackbar-saga";
+import { toggleFormSaga } from "../../list/forms/toggle-form/toggle-form-saga";
 
 export function* rootSaga() {
   yield take(REHYDRATE);
@@ -14,5 +15,6 @@ export function* rootSaga() {
     spawn(modalSaga),
     spawn(removeListItemsFormSaga),
     spawn(reviewVoteStatesSaga),
+    spawn(toggleFormSaga),
   ];
 }

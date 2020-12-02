@@ -7,7 +7,7 @@ import MoviePosterGrid, {
   MoviePosterGridSkeleton,
 } from "../components/MoviePosterGrid";
 import { Movie } from "./MoviePosterCard";
-import InfiniteScrollBottom from "../../common/hooks/InfiniteScrollBottom";
+import InfiniteScrollBottom from "../../common/components/InfiniteScrollBottom";
 
 export default ({
   queryKey,

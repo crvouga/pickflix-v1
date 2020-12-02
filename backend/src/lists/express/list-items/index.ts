@@ -11,6 +11,7 @@ import { castUser, castUserId } from "../../../users/models";
 import {
   makePaginationOptions,
   makePaginationResponse,
+  castArray,
 } from "../../../app/pagination";
 
 export const listItems = ({ listLogic, middlewares }: Dependencies) => (
@@ -70,6 +71,46 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
     }
   });
 
+  router.post(
+    "/list-items/lists",
+    middlewares.isAuthenticated,
+    async (req, res) => {
+      try {
+        const userId = castUserId(req.user?.id);
+        const mediaId = castMediaId(req.body.mediaId);
+        const listIds = castArray(req.body.listIds).map(castListId);
+        await listLogic.setListItems({ userId, mediaId, listIds });
+      } catch (error) {
+        res.status(400).json({ error: error.toString() }).end();
+      }
+    }
+  );
+
+  router.post(
+    "/list-items/toggle",
+    middlewares.isAuthenticated,
+    async (req, res) => {
+      try {
+        const userId = castUserId(req.user?.id);
+        const listId = castListId(req.body.listId);
+        const mediaId = castMediaId(req.body.mediaId);
+
+        const isAdded = await listLogic.toggleListItem({
+          userId,
+          listId,
+          mediaId,
+        });
+
+        res.status(201).json(isAdded).end();
+      } catch (error) {
+        res
+          .status(400)
+          .json({ error: error.toString(), message: "failed to add list item" })
+          .end();
+      }
+    }
+  );
+
   router.post("/list-items", middlewares.isAuthenticated, async (req, res) => {
     try {
       const user = castUser(req.user);
@@ -86,7 +127,10 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
 
       res.status(201).json(added).end();
     } catch (error) {
-      res.status(400).json({ error }).end();
+      res
+        .status(400)
+        .json({ error: error.toString(), message: "failed to add list item" })
+        .end();
     }
   });
 
@@ -122,7 +166,13 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
 
         res.status(204).end();
       } catch (error) {
-        res.status(400).json({ error }).end();
+        res
+          .status(400)
+          .json({
+            error: error.toString(),
+            message: "failed to delete list item",
+          })
+          .end();
       }
     }
   );

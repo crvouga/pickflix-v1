@@ -13,6 +13,7 @@ import {
 } from "../../models";
 import { Dependencies } from "../types";
 import { isNullOrUndefined } from "util";
+import { castMediaId } from "../../../media/models/types";
 
 export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
   router: IRouter
@@ -30,6 +31,14 @@ export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
         ? castUserId(req.user.id)
         : undefined;
 
+      const includeListItemWithMediaId =
+        req.query.tmdbMediaId && req.query.tmdbMediaType
+          ? castMediaId({
+              tmdbMediaId: req.query.tmdbMediaId,
+              tmdbMediaType: req.query.tmdbMediaType,
+            })
+          : undefined;
+
       const id = req.query.id ? castListId(req.query.id) : undefined;
 
       const listInfo = id
@@ -44,10 +53,10 @@ export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
         page: req.query.page,
       });
 
-      const listAggergations = await listLogic.getListAggergations(
-        listInfo,
-        paginationOptions
-      );
+      const listAggergations = await listLogic.getListAggergations(listInfo, {
+        pagination: paginationOptions,
+        includeListItemWithMediaId,
+      });
 
       res
         .status(200)

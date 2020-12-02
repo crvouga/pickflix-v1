@@ -1,8 +1,17 @@
 import { UserId } from "../../../users/models/make-user";
-import { List, ListId, makeList, PartialList, updateList } from "../../models";
+import {
+  List,
+  ListId,
+  makeList,
+  PartialList,
+  updateList,
+  AutoList,
+} from "../../models";
 import { ListLogic } from "../logic";
 import { PaginationOptions } from "../../../app/data-access/types";
 import { removeNullOrUndefinedEntries } from "../../../app/utils";
+import { MediaId } from "../../../media/models/types";
+import { ListAggergate } from "../../models/types";
 
 export async function addList(this: ListLogic, partial: PartialList) {
   const list = makeList(partial);
@@ -10,21 +19,69 @@ export async function addList(this: ListLogic, partial: PartialList) {
   return list;
 }
 
+export type ListAggergationOptions = {
+  pagination?: PaginationOptions;
+  includeListItemWithMediaId?: MediaId;
+};
+
+export async function aggergateList<T extends List | AutoList>(
+  this: ListLogic,
+  list: T,
+  options?: ListAggergationOptions
+): Promise<ListAggergate<T>> {
+  const [
+    listItemCount,
+    listItems,
+    [owner],
+    [includeListItemWithMediaId],
+  ] = await Promise.all([
+    this.listItemRepository.count({
+      listId: list.id,
+    }),
+    this.getListItemAggergations(
+      {
+        listId: list.id,
+      },
+      {
+        page: 1,
+        pageSize: 4,
+      }
+    ),
+    this.userRepository.find({
+      id: list.ownerId,
+    }),
+    options?.includeListItemWithMediaId
+      ? this.listItemRepository.find({
+          listId: list.id,
+          mediaId: options.includeListItemWithMediaId,
+        })
+      : Promise.resolve([]),
+  ]);
+
+  return {
+    listItems,
+    listItemCount,
+    list,
+    owner,
+    includeListItemWithMediaId,
+  };
+}
+
 export async function getListAggergations(
   this: ListLogic,
-  listInfo: { id?: ListId; ownerId?: UserId },
-  pagination?: PaginationOptions
+  spec: { id?: ListId; ownerId?: UserId },
+  options?: ListAggergationOptions
 ) {
   const lists = await this.listRepository.find(
-    removeNullOrUndefinedEntries(listInfo),
+    removeNullOrUndefinedEntries(spec),
     {
       orderBy: [["updatedAt", "descend"]],
-      pagination,
+      pagination: options?.pagination,
     }
   );
 
   const aggergatedLists = await Promise.all(
-    lists.map((list) => this.aggergateList(list))
+    lists.map((list) => this.aggergateList(list, options))
   );
 
   return aggergatedLists;

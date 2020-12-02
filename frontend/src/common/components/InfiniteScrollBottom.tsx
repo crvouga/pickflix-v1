@@ -1,7 +1,7 @@
 import { Box, CircularProgress, Zoom } from "@material-ui/core";
 import React from "react";
 import { useInView } from "react-intersection-observer";
-import LoadingBox from "../components/LoadingBox";
+import LoadingBox from "./LoadingBox";
 
 export default ({
   canFetchMore,

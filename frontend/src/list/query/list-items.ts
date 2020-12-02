@@ -1,27 +1,10 @@
 import { BackendAPI } from "../../backend-api";
 import { Paginated } from "../../common/types";
-import { MediaId, Movie, MovieSimilar } from "../../media/tmdb/types";
+import { MediaId } from "../../media/tmdb/types";
+import { ListItem, ListItemAggergation } from "./types";
 
 /* 
 
-
-*/
-
-export type ListItem = {
-  type: "listItem";
-  id: string;
-  userId: string;
-  listId: string;
-  createdAt: number;
-  mediaId: MediaId;
-};
-
-export type ListItemAggergation = {
-  listItem: ListItem;
-  tmdbData: Movie & { similar: MovieSimilar };
-};
-
-/* 
 
 */
 
@@ -83,5 +66,23 @@ export const deleteListItems = async (params: DeleteListItemParams) => {
   const { data } = await BackendAPI.delete<undefined>(`/api/list-items`, {
     data: params,
   });
+  return data;
+};
+
+/* 
+
+
+*/
+
+export type ToggleListItemParams = {
+  listId: string;
+  mediaId: MediaId;
+};
+
+export const toggleListItem = async (params: ToggleListItemParams) => {
+  const { data } = await BackendAPI.post<boolean>(
+    `/api/list-items/toggle`,
+    params
+  );
   return data;
 };

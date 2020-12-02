@@ -1,7 +1,7 @@
 import { User } from "../../users/models";
-import { ListItem } from "./make-list-item";
-import { List } from "./make-list";
 import { AutoList } from "./make-auto-list";
+import { List } from "./make-list";
+import { ListItem } from "./make-list-item";
 
 type TmdbData = any;
 
@@ -15,4 +15,5 @@ export type ListAggergate<T extends List | AutoList> = {
   listItemCount: number;
   list: T;
   owner: User;
+  includeListItemWithMediaId?: ListItem;
 };

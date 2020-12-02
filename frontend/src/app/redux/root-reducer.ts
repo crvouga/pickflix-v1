@@ -6,19 +6,19 @@ import { createListWithListItemsForm } from "../../list/forms/create-list-with-l
 import { deleteListForm } from "../../list/forms/delete-list-form/delete-list-form";
 import { editListForm } from "../../list/forms/edit-list-form/edit-list-form";
 import { removeListItemsForm } from "../../list/forms/remove-list-items-form/remove-list-items-form";
-import { toggleListItemForm } from "../../list/forms/toggle-list-item-form/toggle-list-item-form";
+import { toggleForm } from "../../list/forms/toggle-form/toggle-form";
 import { video } from "../../media/video/redux/video";
 import { moviePageUi } from "../../movie/redux/movie-page-ui";
 import { personPageUi } from "../../person/redux/person-page-ui";
 import { deleteReviewForm } from "../../review/form/delete-review/delete-review-form";
 import { reviewForm } from "../../review/form/edit-create-review/review-form";
+import { reviewVoteStates } from "../../review/form/vote/review-vote-states";
 import { search } from "../../search/redux/search";
 import { editUserForm } from "../../user/forms/edit-user-form/edit-user-form";
-import { snackbar } from "../snackbar/redux/snackbar";
-import { modal } from "../modals/redux/modal";
-import { AppState } from "./types";
 import { userPageUi } from "../../user/redux/user-page-ui";
-import { reviewVoteStates } from "../../review/form/vote/review-vote-states";
+import { modal } from "../modals/redux/modal";
+import { snackbar } from "../snackbar/redux/snackbar";
+import { AppState } from "./types";
 
 const reducers: { [key in keyof AppState]: Reducer } = {
   reviewVoteStates: reviewVoteStates.reducer,
@@ -38,7 +38,7 @@ const reducers: { [key in keyof AppState]: Reducer } = {
   reviewForm: reviewForm.reducer,
   search: search.reducer,
   snackbar: snackbar.reducer,
-  toggleListItemForm: toggleListItemForm.reducer,
+  toggleForm: toggleForm.reducer,
   video: video.reducer,
 };
 

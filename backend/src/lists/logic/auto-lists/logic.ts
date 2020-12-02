@@ -9,6 +9,7 @@ import {
 } from "../../models";
 import { ListAggergate } from "../../models/types";
 import { ListLogic } from "../logic";
+import { ListAggergationOptions } from "../lists";
 
 export async function initializeAutoLists(
   this: ListLogic,
@@ -41,17 +42,18 @@ export async function initializeAutoLists(
 
 export async function getAutoListAggergations(
   this: ListLogic,
-  autoListInfo: {
+  spec: {
     id?: ListId;
     ownerId?: UserId;
-  }
+  },
+  options?: ListAggergationOptions
 ) {
   const lists = await this.autoListRepository.find(
-    removeNullOrUndefinedEntries(autoListInfo)
+    removeNullOrUndefinedEntries(spec)
   );
 
   const aggergatedLists = await Promise.all(
-    lists.map((list) => this.aggergateList(list))
+    lists.map((list) => this.aggergateList(list, options))
   );
 
   return aggergatedLists;

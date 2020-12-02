@@ -1,6 +1,6 @@
 import { Box, Grid, GridProps, Typography } from "@material-ui/core";
 import React from "react";
-import InfiniteScrollBottom from "../../../common/hooks/InfiniteScrollBottom";
+import InfiniteScrollBottom from "../../../common/components/InfiniteScrollBottom";
 import WithAuthentication from "../../../user/auth/WithAuthentication";
 import AutoListCard from "../../auto-lists/AutoListCard";
 import {

@@ -1,9 +1,9 @@
+import { Emitter, Events } from "../../app/events";
 import { MediaLogic } from "../../media/logic/logic";
 import { IUserRepository } from "../../users/repositories/user-repository";
 import { IAutoListRepository } from "../repositories/auto-list-repository";
 import { IListItemRepository } from "../repositories/list-item-repository";
 import { IListRepository } from "../repositories/list-repository";
-import { aggergateList, aggergateListItem } from "./aggergate";
 import {
   getAutoList,
   getAutoListAggergations,
@@ -12,12 +12,20 @@ import {
 } from "./auto-lists/logic";
 import {
   addListItems,
+  aggergateListItem,
   getListItem,
   getListItemAggergations,
   removeListItems,
+  setListItems,
+  toggleListItem,
 } from "./list-items";
-import { addList, editList, getListAggergations, removeList } from "./lists";
-import { Emitter, Events } from "../../app/events";
+import {
+  addList,
+  aggergateList,
+  editList,
+  getListAggergations,
+  removeList,
+} from "./lists";
 
 export class ListLogic {
   userRepository: IUserRepository;
@@ -66,6 +74,8 @@ export class ListLogic {
   addListItems = addListItems;
   removeListItems = removeListItems;
   getListItem = getListItem;
+  toggleListItem = toggleListItem;
+  setListItems = setListItems;
 
   getListAggergations = getListAggergations;
   addList = addList;

@@ -20,7 +20,7 @@ const modalStateTypeByModalName: {
   RemoveListItemsForm: "redux",
   ReviewForm: "location",
   Search: "location",
-  ToggleListItemForm: "location",
+  ToggleForm: "location",
   SignInCallToAction: "location",
 };
 

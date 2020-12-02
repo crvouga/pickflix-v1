@@ -9,7 +9,7 @@ import MoviePosterGrid, {
 import { tagsToParams } from "./query/types";
 import useDiscoverState from "./useDiscoverState";
 import useDiscoverMovieQuery from "./useDiscoverQuery";
-import InfiniteScrollBottom from "../common/hooks/InfiniteScrollBottom";
+import InfiniteScrollBottom from "../common/components/InfiniteScrollBottom";
 
 export default () => {
   const { activeTags } = useDiscoverState();

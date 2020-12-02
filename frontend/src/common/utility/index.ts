@@ -16,3 +16,23 @@ export const omitFalsyValues = (object: { [key: string]: any }) => {
 };
 
 export const ensureArray = <T>(x: T | T[]) => (Array.isArray(x) ? x : [x]);
+
+export const removeKey = (key: string, object: { [key: string]: any }) => {
+  const { [key]: _, ...restOfObject } = object;
+  return restOfObject;
+};
+
+export const addKey = (key: string, object: { [key: string]: any }) => {
+  return {
+    [key]: key,
+    ...object,
+  };
+};
+
+export const toggleKey = (key: string, object: { [key: string]: any }) => {
+  if (key in object) {
+    return removeKey(key, object);
+  } else {
+    return addKey(key, object);
+  }
+};

@@ -14,7 +14,7 @@ import { ensureArray } from "../../common/utility";
 import useDeleteListItemsForm from "../forms/remove-list-items-form/useRemoveListItemsForm";
 import { useQueryListItems } from "../query";
 import NothingHere from "../../common/components/NothingHere";
-import InfiniteScrollBottom from "../../common/hooks/InfiniteScrollBottom";
+import InfiniteScrollBottom from "../../common/components/InfiniteScrollBottom";
 
 const useStyles = makeStyles((theme) => ({
   selected: {

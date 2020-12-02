@@ -17,7 +17,7 @@ export type ModalName =
   | "DiscoverSearch"
   | "DiscoverTune"
   | "Search"
-  | "ToggleListItemForm"
+  | "ToggleForm"
   | "EditUserForm"
   | "CurrentUserActions"
   | "RemoveListItemsForm"

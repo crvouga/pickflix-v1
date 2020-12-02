@@ -6,9 +6,10 @@ import {
   TmdbMediaType,
 } from "../../../media/models/types";
 import { UserId } from "../../../users/models";
-import { ListId, ListItem, makeListItem, updateList } from "../../models";
+import { ListId, ListItem, makeListItem, updateList, List } from "../../models";
 import { ListItemId, PartialListItem } from "../../models/make-list-item";
 import { ListLogic } from "../logic";
+import { ListItemAggergate } from "../../models/types";
 
 export async function removeListItems(
   this: ListLogic,
@@ -22,7 +23,24 @@ export async function removeListItems(
       }
   )[]
 ) {
-  await this.listItemRepository.remove(listItemInfos);
+  await this.listItemRepository.removeWhere(listItemInfos);
+}
+
+export async function aggergateListItem(
+  this: ListLogic,
+  listItem: ListItem
+): Promise<ListItemAggergate> {
+  const tmdbData = await this.mediaLogic.requestTmdbData({
+    mediaId: listItem.mediaId,
+    query: {
+      appendToResponse: "similar",
+    },
+  });
+
+  return {
+    listItem,
+    tmdbData,
+  };
 }
 
 export async function getListItemAggergations(
@@ -87,11 +105,11 @@ export async function addListItems(
     ]);
 
     if (!list && !autoList) {
-      throw new Error("list does not exists");
+      continue;
     }
 
     if (foundListItems.length > 0) {
-      throw new Error("try to add duplicate list item");
+      continue;
     }
 
     await this.listItemRepository.add([listItem]);
@@ -105,4 +123,62 @@ export async function addListItems(
   }
 
   return addedListItems;
+}
+
+export function canEditListItems({
+  userId,
+  list,
+}: {
+  userId: UserId;
+  list: List;
+}) {
+  return userId === list.ownerId;
+}
+
+export async function toggleListItem(
+  this: ListLogic,
+  {
+    userId,
+    listId,
+    mediaId,
+  }: {
+    userId: UserId;
+    listId: ListId;
+    mediaId: MediaId;
+  }
+) {
+  const [[list], [autoList]] = await Promise.all([
+    this.listRepository.find({ id: listId }),
+    this.autoListRepository.find({ id: listId }),
+  ]);
+
+  if (!list && !autoList) {
+    throw new Error("list does not exists");
+  }
+
+  const [listItem] = await this.listItemRepository.find({ mediaId, listId });
+
+  if (listItem) {
+    await this.listItemRepository.remove(listItem.id);
+    return false;
+  } else {
+    const listItem = makeListItem({ userId, listId, mediaId });
+    await this.listItemRepository.add([listItem]);
+    return true;
+  }
+}
+
+export async function setListItems(
+  this: ListLogic,
+  {
+    userId,
+    mediaId,
+    listIds,
+  }: {
+    userId: UserId;
+    mediaId: MediaId;
+    listIds: ListId[];
+  }
+) {
+  throw new Error("not implemented");
 }

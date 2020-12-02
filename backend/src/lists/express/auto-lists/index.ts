@@ -2,6 +2,7 @@ import { IRouter } from "express";
 import { castUserId } from "../../../users/models";
 import { castAutoListId } from "../../models";
 import { Dependencies } from "../types";
+import { castMediaId } from "../../../media/models/types";
 
 export const autoLists = ({ listLogic }: Dependencies) => (router: IRouter) => {
   /* 
@@ -19,9 +20,19 @@ export const autoLists = ({ listLogic }: Dependencies) => (router: IRouter) => {
         ? castUserId(req.user.id)
         : undefined;
 
+      const includeListItemWithMediaId =
+        req.query.tmdbMediaId && req.query.tmdbMediaType
+          ? castMediaId({
+              tmdbMediaId: req.query.tmdbMediaId,
+              tmdbMediaType: req.query.tmdbMediaType,
+            })
+          : undefined;
+
       const listInfo = id ? { id } : { ownerId };
 
-      const autoLists = await listLogic.getAutoListAggergations(listInfo);
+      const autoLists = await listLogic.getAutoListAggergations(listInfo, {
+        includeListItemWithMediaId,
+      });
 
       res.status(200).json(autoLists).end();
     } catch (error) {

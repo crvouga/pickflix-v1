@@ -1,15 +1,14 @@
 import { Box } from "@material-ui/core";
 import React from "react";
-import AutoListToggleListItemButton, {
-  AutoListButton,
-} from "../../list/forms/toggle-list-item-form/AutoListToggleListItemButton";
-import OpenToggleListItemFormButton, {
-  ListsButton,
-} from "../../list/forms/toggle-list-item-form/OpenToggleListItemFormButton";
-import { AutoListKeys } from "../../list/query";
+import useModal from "../../app/modals/useModal";
+import {
+  AutoListToggleButtonActions,
+  AutoListToggleButtonActionsContainer,
+  ToggleFormModalButton,
+  ToggleFormModalButtonContainer,
+} from "../../list/forms/toggle-form/buttons";
 import { MediaId } from "../../media/tmdb/types";
 import WithAuthentication from "../../user/auth/WithAuthentication";
-import useModal from "../../app/modals/useModal";
 
 export default ({ mediaId }: { mediaId: MediaId }) => {
   const { open } = useModal("SignInCallToAction");
@@ -19,25 +18,20 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
       <WithAuthentication
         renderAuthenticated={() => (
           <React.Fragment>
-            <AutoListToggleListItemButton
-              autoListKey={AutoListKeys.Liked}
-              mediaId={mediaId}
-            />
-            <AutoListToggleListItemButton
-              autoListKey={AutoListKeys.WatchNext}
-              mediaId={mediaId}
-            />
-            <OpenToggleListItemFormButton mediaId={mediaId} />
+            <AutoListToggleButtonActionsContainer mediaId={mediaId} />
+            <ToggleFormModalButtonContainer mediaId={mediaId} />
+          </React.Fragment>
+        )}
+        renderUnathenticated={() => (
+          <React.Fragment>
+            <AutoListToggleButtonActions onClick={open} />
+            <ToggleFormModalButton onClick={open} />
           </React.Fragment>
         )}
         renderDefault={() => (
           <React.Fragment>
-            <AutoListButton autoListKey={AutoListKeys.Liked} onClick={open} />
-            <AutoListButton
-              autoListKey={AutoListKeys.WatchNext}
-              onClick={open}
-            />
-            <ListsButton onClick={open} />
+            <AutoListToggleButtonActions />
+            <ToggleFormModalButton />
           </React.Fragment>
         )}
       />

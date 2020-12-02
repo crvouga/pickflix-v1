@@ -5,25 +5,25 @@ import { CreateListWithListItemsFormState } from "../../list/forms/create-list-w
 import { DeleteListFormState } from "../../list/forms/delete-list-form/delete-list-form";
 import { EditListFormState } from "../../list/forms/edit-list-form/edit-list-form";
 import { RemoveListItemsFormState } from "../../list/forms/remove-list-items-form/remove-list-items-form";
-import { ToggleListItemFormState } from "../../list/forms/toggle-list-item-form/toggle-list-item-form";
+import { ToggleFormState } from "../../list/forms/toggle-form/toggle-form";
 import { VideoState } from "../../media/video/redux/video";
 import { moviePageUi } from "../../movie/redux/movie-page-ui";
 import { PersonPageUiState } from "../../person/redux/person-page-ui";
 import { DeleteReviewFormState } from "../../review/form/delete-review/delete-review-form";
 import { ReviewFormState } from "../../review/form/edit-create-review/review-form";
+import { ReviewVoteStatesState } from "../../review/form/vote/review-vote-states";
 import { SearchState } from "../../search/redux/search";
 import { EditUserFormState } from "../../user/forms/edit-user-form/edit-user-form";
-import { SnackbarState } from "../snackbar/redux/snackbar";
-import { ModalState } from "../modals/redux/modal";
 import { UserPageUiState } from "../../user/redux/user-page-ui";
-import { ReviewVoteStatesState } from "../../review/form/vote/review-vote-states";
+import { ModalState } from "../modals/redux/modal";
+import { SnackbarState } from "../snackbar/redux/snackbar";
 
 export type AppState = {
   reviewVoteStates: ReviewVoteStatesState;
   userPageUi: UserPageUiState;
   modal: ModalState;
   editUserForm: EditUserFormState;
-  toggleListItemForm: ToggleListItemFormState;
+  toggleForm: ToggleFormState;
   deleteListForm: DeleteListFormState;
   removeListItemsForm: RemoveListItemsFormState;
   deleteReviewForm: DeleteReviewFormState;

@@ -1,28 +1,7 @@
 import { BackendAPI } from "../../backend-api";
 import { Paginated } from "../../common/types";
-import { User } from "../../user/query";
-import { ListItemAggergation } from "./list-items";
-
-/* 
-
-
-*/
-
-export type List = {
-  type: "list";
-  id: string;
-  ownerId: string;
-  title: string;
-  description: string;
-  createdAt: number;
-};
-
-export type ListAggergation = {
-  list: List;
-  listItemCount: number;
-  listItems: ListItemAggergation[];
-  owner: User;
-};
+import { MediaId } from "../../media/tmdb/types";
+import { List, ListAggergation } from "./types";
 
 /* 
 
@@ -31,15 +10,26 @@ export type ListAggergation = {
 
 export type GetListsParams = {
   ownerId?: string;
+  includeListItemWithMediaId?: MediaId;
   id?: string;
   page?: number;
 };
 
 export type GetListsResponse = Paginated<ListAggergation>;
 
-export const getLists = async (params: GetListsParams) => {
+export const getLists = async ({
+  ownerId,
+  includeListItemWithMediaId,
+  id,
+  page,
+}: GetListsParams) => {
   const { data } = await BackendAPI.get<GetListsResponse>(`/api/lists`, {
-    params,
+    params: {
+      ownerId,
+      id,
+      page,
+      ...includeListItemWithMediaId,
+    },
   });
   return data;
 };

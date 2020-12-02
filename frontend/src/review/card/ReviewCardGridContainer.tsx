@@ -1,6 +1,6 @@
 import { Box, Grid, GridProps, Typography } from "@material-ui/core";
 import React from "react";
-import InfiniteScrollBottom from "../../common/hooks/InfiniteScrollBottom";
+import InfiniteScrollBottom from "../../common/components/InfiniteScrollBottom";
 import { useListener } from "../../common/utility";
 import WithAuthentication from "../../user/auth/WithAuthentication";
 import { eventEmitterReviewForm } from "../form/edit-create-review/review-form";

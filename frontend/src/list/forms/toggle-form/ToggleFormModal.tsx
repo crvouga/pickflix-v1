@@ -9,23 +9,23 @@ import {
 } from "@material-ui/core";
 import DoneIcon from "@material-ui/icons/Done";
 import React from "react";
+import useModal from "../../../app/modals/useModal";
 import ResponsiveDialog from "../../../common/components/ResponsiveDialog";
 import { SlideUp } from "../../../common/components/TransitionComponents";
-import useModal from "../../../app/modals/useModal";
-import ToggleListItemForm from "./ToggleListItemForm";
+import ToggleForm from "./ToggleForm";
 
 export default () => {
-  const { isOpen, close } = useModal("ToggleListItemForm");
+  const { isOpen, close } = useModal("ToggleForm");
 
   return (
     <ResponsiveDialog
       TransitionComponent={SlideUp}
       open={isOpen}
       onClose={close}
+      keepMounted
     >
-      <Box marginBottom={8}>
-        <ToggleListItemForm />
-      </Box>
+      <ToggleForm />
+
       <Hidden smUp>
         <Box position="fixed" bottom={0} width="100%">
           <Paper>

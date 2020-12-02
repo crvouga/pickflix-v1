@@ -1,10 +1,9 @@
 import equals from "fast-deep-equal";
 import {
+  InfiniteQueryConfig,
   useMutation,
   useQuery,
   useQueryCache,
-  QueryConfig,
-  InfiniteQueryConfig,
 } from "react-query";
 import useInfiniteQueryPagination from "../../common/hooks/useInfiniteQueryPagination";
 import { Paginated } from "../../common/types";
@@ -14,7 +13,6 @@ import {
   deleteListItems,
   getListItems,
   GetListItemsParams,
-  ListItemAggergation,
   postListItem,
 } from "./list-items";
 import {
@@ -22,12 +20,12 @@ import {
   DeleteListParams,
   getLists,
   GetListsParams,
-  ListAggergation,
-  postList,
-  PatchListParams,
   patchList,
+  PatchListParams,
+  postList,
   PostListParams,
 } from "./lists";
+import { ListAggergation, ListItemAggergation } from "./types";
 
 /* 
 

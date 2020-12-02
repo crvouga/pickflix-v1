@@ -3,7 +3,7 @@ import CreateListFormModal from "../../list/forms/create-list-form/CreateListFor
 import CreateListWithListItemsFormModal from "../../list/forms/create-list-with-list-items-form/CreateListWithListItemsFormModal";
 import DeleteListFormModal from "../../list/forms/delete-list-form/DeleteListFormModal";
 import EditListFormModal from "../../list/forms/edit-list-form/EditListFormModal";
-import ToggleListItemFormModal from "../../list/forms/toggle-list-item-form/ToggleListItemFormModal";
+import ToggleFormModal from "../../list/forms/toggle-form/ToggleFormModal";
 import DeleteReviewFormModal from "../../review/form/delete-review/DeleteReviewFormModal";
 import ReviewFormModal from "../../review/form/edit-create-review/ReviewFormModal";
 import SearchModal from "../../search/SearchDialog";
@@ -16,7 +16,7 @@ export default () => {
   return (
     <React.Fragment>
       <AuthPopups />
-      <ToggleListItemFormModal />
+      <ToggleFormModal />
       <EditListFormModal />
       <CreateListFormModal />
       <CreateListWithListItemsFormModal />

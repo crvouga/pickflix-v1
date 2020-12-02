@@ -42,7 +42,7 @@ export const LinkButton = ({
   label = "View",
   ...props
 }: {
-  path: string;
+  path?: string;
   label?: string;
 } & ButtonProps) => {
   const snackbar = useSnackbar();
@@ -50,7 +50,9 @@ export const LinkButton = ({
 
   const handleClick = () => {
     snackbar.close();
-    history.push(path);
+    if (path) {
+      history.push(path);
+    }
   };
 
   return (
