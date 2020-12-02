@@ -4,6 +4,7 @@ import { ListLogic } from "../../lists/logic/logic";
 import { AutoListRepositoryHashMap } from "../../lists/repositories/auto-list-repository";
 import { ListItemRepositoryHashMap } from "../../lists/repositories/list-item-repository";
 import { ListRepositoryHashMap } from "../../lists/repositories/list-repository";
+import { PermissionRepositoryHashMap } from "../../lists/repositories/permission-repository";
 import { MediaLogic } from "../../media/logic/logic";
 import { ReviewLogic } from "../../reviews/logic/logic";
 import { ReviewRepositoryHashMap } from "../../reviews/repositories/review-repository";
@@ -25,6 +26,7 @@ export const buildRepositoriesTest = () => {
   const listRepository = new ListRepositoryHashMap();
   const listItemRepository = new ListItemRepositoryHashMap();
   const autoListRepository = new AutoListRepositoryHashMap();
+  const permissionRepository = new PermissionRepositoryHashMap();
 
   return {
     userRepository,
@@ -34,6 +36,7 @@ export const buildRepositoriesTest = () => {
     listRepository,
     listItemRepository,
     autoListRepository,
+    permissionRepository,
   };
 };
 

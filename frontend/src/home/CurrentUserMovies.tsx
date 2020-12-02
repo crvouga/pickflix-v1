@@ -37,7 +37,7 @@ export default ({ user }: Props) => {
     <React.Fragment>
       {watchNext.listItems.slice(0, 10).map(
         (item) =>
-          item.tmdbData.similar.results && (
+          item.tmdbData.similar.results.length > 0 && (
             <React.Fragment key={item.listItem.id}>
               <ListItem
                 button

@@ -5,6 +5,7 @@ import { AutoListRepositoryHashMap } from "../repositories/auto-list-repository"
 import { ListItemRepositoryHashMap } from "../repositories/list-item-repository";
 import { ListRepositoryHashMap } from "../repositories/list-repository";
 import { ListLogic } from "./logic";
+import { PermissionRepositoryHashMap } from "../repositories/permission-repository";
 
 export const buildListLogicTest = () => {
   const { mediaLogic } = buildMediaLogicTest();
@@ -13,6 +14,7 @@ export const buildListLogicTest = () => {
   const listRepository = new ListRepositoryHashMap();
   const listItemRepository = new ListItemRepositoryHashMap();
   const autoListRepository = new AutoListRepositoryHashMap();
+  const permissionRepository = new PermissionRepositoryHashMap();
 
   const listLogic = new ListLogic({
     eventEmitter,
@@ -21,6 +23,7 @@ export const buildListLogicTest = () => {
     listRepository,
     listItemRepository,
     autoListRepository,
+    permissionRepository,
   });
 
   return { listLogic };

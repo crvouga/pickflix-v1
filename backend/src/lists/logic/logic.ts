@@ -26,12 +26,14 @@ import {
   getListAggergations,
   removeList,
 } from "./lists";
+import { IPermissionRepository } from "../repositories/permission-repository";
 
 export class ListLogic {
   userRepository: IUserRepository;
   listRepository: IListRepository;
   listItemRepository: IListItemRepository;
   autoListRepository: IAutoListRepository;
+  permissionRepository: IPermissionRepository;
   mediaLogic: MediaLogic;
   eventEmitter: Emitter<Events>;
 
@@ -41,6 +43,7 @@ export class ListLogic {
     listRepository,
     listItemRepository,
     autoListRepository,
+    permissionRepository,
     eventEmitter,
   }: {
     eventEmitter: Emitter<Events>;
@@ -49,7 +52,9 @@ export class ListLogic {
     listItemRepository: IListItemRepository;
     autoListRepository: IAutoListRepository;
     userRepository: IUserRepository;
+    permissionRepository: IPermissionRepository;
   }) {
+    this.permissionRepository = permissionRepository;
     this.userRepository = userRepository;
     this.mediaLogic = mediaLogic;
     this.listRepository = listRepository;

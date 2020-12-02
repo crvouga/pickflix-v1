@@ -27,6 +27,10 @@ import {
   UserRepositoryHashMap,
 } from "../../users/repositories/user-repository";
 import configuration from "../configuration";
+import {
+  PermissionRepositoryFileSystem,
+  PermissionRepositoryHashMap,
+} from "../../lists/repositories/permission-repository";
 
 const makeFilePath = (name: string) =>
   `${configuration.PATH_TO_FILE_STORE}/${name}.json`;
@@ -56,7 +60,12 @@ export const buildRepositoriesFileSystem = () => {
     makeFilePath("autoLists")
   );
 
+  const permissionRepository = new PermissionRepositoryFileSystem(
+    makeFilePath("permissions")
+  );
+
   return {
+    permissionRepository,
     userRepository,
     credentialRepository,
     reviewRepository,
@@ -82,7 +91,10 @@ export const buildRepositoriesHashMap = () => {
 
   const autoListRepository = new AutoListRepositoryHashMap();
 
+  const permissionRepository = new PermissionRepositoryHashMap();
+
   return {
+    permissionRepository,
     userRepository,
     credentialRepository,
     reviewRepository,
