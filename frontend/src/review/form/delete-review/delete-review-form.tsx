@@ -1,11 +1,13 @@
 import {
+  bindActionCreators,
   createAction,
   createReducer,
-  bindActionCreators,
 } from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../../app/redux/types";
-import { useSelector, useDispatch } from "react-redux";
 import { createPayloadReducer } from "../../../app/redux/utils";
+import { createEventEmitter } from "../../../common/utility";
+import { deleteReview } from "../../query";
 
 const name = "deleteReviewForm";
 
@@ -76,5 +78,43 @@ export const useDeleteReviewFormState = () => {
   return {
     ...slice,
     ...actions,
+  };
+};
+
+/*
+
+
+*/
+export const eventEmitterDeleteReview = createEventEmitter<{
+  submit: undefined;
+  submitSettled: undefined;
+  submitSuccess: undefined;
+}>();
+
+/*
+
+
+*/
+
+export const useDeleteReviewForm = () => {
+  const deleteFormState = useDeleteReviewFormState();
+
+  const submit = async ({ reviewId }: { reviewId: string }) => {
+    eventEmitterDeleteReview.emit("submit");
+    try {
+      await deleteReview({
+        reviewId,
+      });
+      eventEmitterDeleteReview.emit("submitSuccess");
+    } catch (error) {
+      throw error;
+    } finally {
+      eventEmitterDeleteReview.emit("submitSettled");
+    }
+  };
+
+  return {
+    ...deleteFormState,
+    submit,
   };
 };

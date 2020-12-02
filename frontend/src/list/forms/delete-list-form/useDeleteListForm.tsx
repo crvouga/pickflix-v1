@@ -2,7 +2,7 @@ import { createEventEmitter } from "../../../common/utility";
 import { useDeleteListMutation } from "../../query";
 import { useDeleteListFormState } from "./delete-list-form";
 
-const eventEmitter = createEventEmitter<{
+export const eventEmitterListForm = createEventEmitter<{
   submit: undefined;
   submitSuccess: undefined;
   submitError: undefined;
@@ -14,21 +14,20 @@ export default () => {
   const mutate = useDeleteListMutation();
 
   const submit = async ({ listId }: { listId: string }) => {
-    eventEmitter.emit("submit");
+    eventEmitterListForm.emit("submit");
     try {
       await mutate({ listId });
-      eventEmitter.emit("submitSuccess");
+      eventEmitterListForm.emit("submitSuccess");
     } catch (error) {
-      eventEmitter.emit("submitError");
+      eventEmitterListForm.emit("submitError");
       throw error;
     } finally {
-      eventEmitter.emit("submitSettled");
+      eventEmitterListForm.emit("submitSettled");
     }
   };
 
   return {
     ...formState,
-    eventEmitter,
     submit,
   };
 };

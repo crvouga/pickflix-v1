@@ -3,6 +3,7 @@ import React from "react";
 import { useListener } from "../../common/utility";
 import { MediaId } from "../../media/tmdb/types";
 import { eventEmitterReviewForm } from "../../review/form/edit-create-review/review-form";
+import { eventEmitterDeleteReview } from "../../review/form/delete-review/delete-review-form";
 import { useQueryReviewStatistics } from "../../review/query";
 import RatingAverage from "../../review/rating/RatingAverage";
 import RatingDistributon from "../../review/rating/RatingDistributon";
@@ -14,6 +15,9 @@ type Props = {
 export default ({ mediaId }: Props) => {
   const query = useQueryReviewStatistics({ mediaId });
   useListener(eventEmitterReviewForm, "submitSuccess", () => {
+    query.refetch();
+  });
+  useListener(eventEmitterDeleteReview, "submitSuccess", () => {
     query.refetch();
   });
 

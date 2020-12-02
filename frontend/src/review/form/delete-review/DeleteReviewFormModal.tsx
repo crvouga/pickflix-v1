@@ -10,19 +10,21 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import React from "react";
-import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
 import useModal from "../../../app/modals/useModal";
+import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
 import { ZoomIn } from "../../../common/components/TransitionComponents";
 import useBoolean from "../../../common/hooks/useBoolean";
 import { useListener } from "../../../common/utility";
-import useDeleteReviewForm from "./useDeleteReviewForm";
+import {
+  eventEmitterDeleteReview,
+  useDeleteReviewForm,
+} from "./delete-review-form";
 
 const LoadingDialog = () => {
-  const deleteReviewForm = useDeleteReviewForm();
   const open = useBoolean(false);
 
-  useListener(deleteReviewForm.eventEmitter, "submit", open.setTrue);
-  useListener(deleteReviewForm.eventEmitter, "submitSettled", open.setFalse);
+  useListener(eventEmitterDeleteReview, "submit", open.setTrue);
+  useListener(eventEmitterDeleteReview, "submitSettled", open.setFalse);
 
   return (
     <Dialog open={open.value}>
@@ -43,7 +45,7 @@ export default () => {
   const deleteReviewFormModal = useModal("DeleteReviewForm");
   const snackbar = useSnackbar();
 
-  useListener(deleteReviewForm.eventEmitter, "submitSuccess", () => {
+  useListener(eventEmitterDeleteReview, "submitSuccess", () => {
     deleteReviewFormModal.close();
     snackbar.display({
       message: "Deleted review",

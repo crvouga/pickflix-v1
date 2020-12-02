@@ -7,13 +7,12 @@ import { ZoomIn } from "../../../common/components/TransitionComponents";
 import useBoolean from "../../../common/hooks/useBoolean";
 import { useListener } from "../../../common/utility";
 import { makeCurrentUserPageRoute } from "../../../user/CurrentUserPage";
-import useDeleteListForm from "./useDeleteListForm";
+import useDeleteListForm, { eventEmitterListForm } from "./useDeleteListForm";
 
 const Loading = () => {
-  const { eventEmitter } = useDeleteListForm();
   const isLoading = useBoolean(false);
-  useListener(eventEmitter, "submit", isLoading.setTrue);
-  useListener(eventEmitter, "submitSettled", isLoading.setFalse);
+  useListener(eventEmitterListForm, "submit", isLoading.setTrue);
+  useListener(eventEmitterListForm, "submitSettled", isLoading.setFalse);
   return (
     <LoadingDialog
       open={isLoading.value}
@@ -25,7 +24,7 @@ const Loading = () => {
 export default () => {
   const history = useHistory();
   const { isOpen, close } = useModal("DeleteListForm");
-  const { listId, submit, eventEmitter } = useDeleteListForm();
+  const { listId, submit } = useDeleteListForm();
 
   const handleSubmit = () => {
     if (listId) {
@@ -33,7 +32,7 @@ export default () => {
     }
   };
 
-  useListener(eventEmitter, "submitSuccess", () => {
+  useListener(eventEmitterListForm, "submitSuccess", () => {
     close();
     history.push(makeCurrentUserPageRoute());
   });

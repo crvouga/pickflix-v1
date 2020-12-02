@@ -3,6 +3,7 @@ import React from "react";
 import InfiniteScrollBottom from "../../common/components/InfiniteScrollBottom";
 import { useListener } from "../../common/utility";
 import WithAuthentication from "../../user/auth/WithAuthentication";
+import { eventEmitterDeleteReview } from "../form/delete-review/delete-review-form";
 import { eventEmitterReviewForm } from "../form/edit-create-review/review-form";
 import { GetReviewsParams, useQueryReviews } from "../query";
 import {
@@ -74,6 +75,9 @@ export const ReviewCardGridContainer = ({
   const query = useQueryReviews(GetReviewParams);
 
   useListener(eventEmitterReviewForm, "submitSuccess", (review) => {
+    query.refetch();
+  });
+  useListener(eventEmitterDeleteReview, "submitSuccess", (review) => {
     query.refetch();
   });
 

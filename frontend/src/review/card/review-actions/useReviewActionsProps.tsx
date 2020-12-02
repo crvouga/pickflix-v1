@@ -1,5 +1,5 @@
 import useModal from "../../../app/modals/useModal";
-import useDeleteReviewForm from "../../form/delete-review/useDeleteReviewForm";
+import { useDeleteReviewForm } from "../../form/delete-review/delete-review-form";
 import { useReviewFormState } from "../../form/edit-create-review/review-form";
 import { ReviewAggergation } from "../../query";
 import { ReviewActionsProps } from "./ReviewActions";

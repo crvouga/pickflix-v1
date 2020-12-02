@@ -7,6 +7,7 @@ import { ReviewCardCallToAction } from "../../review/card/call-to-action/ReviewC
 import ReviewCardCallToActionContainer from "../../review/card/call-to-action/ReviewCardCallToActionContainer";
 import ReviewCardContainer from "../../review/card/ReviewCardContainer";
 import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";
+import { eventEmitterDeleteReview } from "../../review/form/delete-review/delete-review-form";
 import { eventEmitterReviewForm } from "../../review/form/edit-create-review/review-form";
 import { useQueryReviews } from "../../review/query";
 import WithAuthentication from "../../user/auth/WithAuthentication";
@@ -25,6 +26,9 @@ const YourReview = ({
     mediaId,
   });
   useListener(eventEmitterReviewForm, "submitSuccess", () => {
+    query.refetch();
+  });
+  useListener(eventEmitterDeleteReview, "submitSuccess", () => {
     query.refetch();
   });
 
