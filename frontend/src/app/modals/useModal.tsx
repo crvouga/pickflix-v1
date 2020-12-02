@@ -1,6 +1,6 @@
+import { useModalRedux } from "./redux/modal";
 import { IModal, ModalName, ModalStateType } from "./types";
 import useModalLocation from "./useModalLocation";
-import useModalRedux from "./useModalRedux";
 
 const modalStateTypeByModalName: {
   [modalName in ModalName]: ModalStateType;

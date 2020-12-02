@@ -1,9 +1,13 @@
-import { createAction, createReducer, createSelector } from "@reduxjs/toolkit";
+import {
+  createAction,
+  createReducer,
+  createSelector,
+  PayloadAction,
+} from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import { bindActionCreators } from "redux";
 import { AppState } from "../../redux/types";
 import { createPayloadReducer } from "../../redux/utils";
-import { ModalName } from "../types";
+import { IModal, ModalName } from "../types";
 
 const name: "modal" = "modal";
 
@@ -31,6 +35,8 @@ const initialState: ModalState = {
 
 const actions = {
   setIsOpenByName: createAction<IsOpenByName>(name + "/SET_IS_OPEN_BY_NAME"),
+  open: createAction<ModalName>(name + "/OPEN"),
+  close: createAction<ModalName>(name + "/CLOSE"),
 };
 
 /*
@@ -39,6 +45,12 @@ const actions = {
 
 const reducer = createReducer(initialState, {
   [actions.setIsOpenByName.toString()]: createPayloadReducer("isOpenByName"),
+  [actions.open.toString()]: (state, action: PayloadAction<ModalName>) => {
+    state.isOpenByName[action.payload] = true;
+  },
+  [actions.close.toString()]: (state, action: PayloadAction<ModalName>) => {
+    state.isOpenByName[action.payload] = false;
+  },
 });
 
 /*
@@ -46,9 +58,12 @@ const reducer = createReducer(initialState, {
 */
 
 const slice = (state: AppState) => state.modal;
+const isOpenByName = createSelector([slice], (slice) => slice.isOpenByName);
 const selectors = {
   slice,
-  isOpenByName: createSelector([slice], (slice) => slice.isOpenByName),
+  isOpenByName,
+  isOpen: (name: ModalName) => (state: AppState) =>
+    isOpenByName(state)[name] || false,
 };
 
 /* 
@@ -67,29 +82,14 @@ export const modal = {
 
 */
 
-export const useModalState = () => {
+export const useModalRedux = (name: ModalName): IModal => {
   const dispatch = useDispatch();
-  const actions = bindActionCreators(modal.actions, dispatch);
-  const slice = useSelector(modal.selectors.slice);
-  const { isOpenByName } = slice;
-  const { setIsOpenByName } = actions;
-
-  const open = (modalName: ModalName) => {
-    setIsOpenByName({
-      ...isOpenByName,
-      [modalName]: true,
-    });
+  const isOpen = useSelector(modal.selectors.isOpen(name));
+  const open = () => {
+    dispatch(modal.actions.open(name));
   };
-
-  const close = (modalName: ModalName) => {
-    setIsOpenByName({
-      ...isOpenByName,
-      [modalName]: false,
-    });
-  };
-
-  const isOpen = (modalName: ModalName) => {
-    return isOpenByName[modalName] ?? false;
+  const close = () => {
+    dispatch(modal.actions.close(name));
   };
 
   return {

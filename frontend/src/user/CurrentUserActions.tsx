@@ -15,7 +15,6 @@ import SettingsIcon from "@material-ui/icons/Settings";
 import React from "react";
 import useModal from "../app/modals/useModal";
 import ResponsiveDialogDrawer from "../common/components/ResponsiveDialogDrawer";
-import useBoolean from "../common/hooks/useBoolean";
 import { useReviewFormState } from "../review/form/edit-create-review/review-form";
 import { UserAggergation } from "./query";
 
@@ -74,7 +73,13 @@ export const CurrentUserActionsModal = () => {
   return (
     <ResponsiveDialogDrawer open={isOpen} onClose={close}>
       <List>
-        <ListItem button onClick={onEditUser}>
+        <ListItem
+          button
+          onClick={() => {
+            onEditUser();
+            close();
+          }}
+        >
           <ListItemIcon>
             <EditOutlinedIcon />
           </ListItemIcon>
@@ -84,8 +89,8 @@ export const CurrentUserActionsModal = () => {
         <ListItem
           button
           onClick={() => {
-            close();
             onCreateList();
+            close();
           }}
         >
           <ListItemIcon>
@@ -94,7 +99,13 @@ export const CurrentUserActionsModal = () => {
           <ListItemText primary="Create List" />
         </ListItem>
 
-        <ListItem button onClick={onCreateReview}>
+        <ListItem
+          button
+          onClick={() => {
+            onCreateReview();
+            close();
+          }}
+        >
           <ListItemIcon>
             <RateReviewOutlinedIcon />
           </ListItemIcon>
@@ -104,8 +115,8 @@ export const CurrentUserActionsModal = () => {
         <ListItem
           button
           onClick={() => {
-            close();
             onSignOut();
+            close();
           }}
         >
           <ListItemIcon>
