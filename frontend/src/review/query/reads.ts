@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { BackendAPI } from "../../backend-api";
-import useInfiniteQueryPagination from "../../common/hooks/useInfiniteQueryPagination";
+import { useInfiniteQueryPagination } from "../../common/infinite-scroll";
 import { Paginated } from "../../common/types";
 import { MediaId } from "../../media/tmdb/types";
 import { ReviewAggergation, ReviewStatistics } from "./types";

@@ -1,27 +1,59 @@
-export type IModal = {
+import { MediaId } from "../../media/tmdb/types";
+
+export type Modals = {
+  AddListItemForm: void;
+  CreateListForm: void;
+  CreateListWithListItemsForm: {
+    mediaIds: MediaId[];
+  };
+  CurrentUserActions: void;
+  DeleteListForm: void;
+  DeleteListItemsForm: void;
+  DeleteReviewForm: void;
+  DiscoverSearch: void;
+  DiscoverSort: void;
+  DiscoverTune: void;
+  EditListForm: void;
+  EditUserForm: void;
+  RemoveListItemsForm: void;
+  ReviewForm: void;
+  Search: void;
+  ToggleListItemForm: void;
+  SignInCallToAction: void;
+  SignOutForm: void;
+};
+
+export type IModal<K extends keyof Modals> = {
   isOpen: boolean;
-  open: () => void;
+  props: Modals[K];
+  open: (props: Modals[K]) => void;
   close: () => void;
 };
 
-export type ModalName =
-  | "AddListItemForm"
-  | "DeleteListItemsForm"
-  | "CreateListForm"
-  | "CreateListWithListItemsForm"
-  | "ReviewForm"
-  | "DeleteReviewForm"
-  | "EditListForm"
-  | "DeleteListForm"
-  | "DiscoverSort"
-  | "DiscoverSearch"
-  | "DiscoverTune"
-  | "Search"
-  | "ToggleForm"
-  | "EditUserForm"
-  | "CurrentUserActions"
-  | "RemoveListItemsForm"
-  | "SignInCallToAction"
-  | "SignOutForm";
+export enum ModalStateType {
+  Location = "Location",
+  Redux = "Redux",
+}
 
-export type ModalStateType = "redux" | "location";
+export const modalNameToModalStateType: {
+  [modalName in keyof Modals]: ModalStateType;
+} = {
+  AddListItemForm: ModalStateType.Location,
+  CreateListForm: ModalStateType.Redux,
+  CreateListWithListItemsForm: ModalStateType.Redux,
+  CurrentUserActions: ModalStateType.Redux,
+  DeleteListForm: ModalStateType.Redux,
+  DeleteListItemsForm: ModalStateType.Redux,
+  DeleteReviewForm: ModalStateType.Redux,
+  DiscoverSearch: ModalStateType.Location,
+  DiscoverSort: ModalStateType.Location,
+  DiscoverTune: ModalStateType.Location,
+  EditListForm: ModalStateType.Redux,
+  EditUserForm: ModalStateType.Location,
+  RemoveListItemsForm: ModalStateType.Redux,
+  ReviewForm: ModalStateType.Location,
+  Search: ModalStateType.Location,
+  ToggleListItemForm: ModalStateType.Location,
+  SignInCallToAction: ModalStateType.Location,
+  SignOutForm: ModalStateType.Redux,
+};

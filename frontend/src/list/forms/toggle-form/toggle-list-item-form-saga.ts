@@ -1,4 +1,4 @@
-import { toggleForm } from "./toggle-form";
+import { toggleForm } from "./toggle-list-item-form";
 import { call, takeEvery, put, select } from "redux-saga/effects";
 import { toggleKey, createEventEmitter } from "../../../common/utility";
 import { postListItem, deleteListItems } from "../../query";
@@ -18,13 +18,13 @@ export const eventEmitterToggleForm = createEventEmitter<{
 export function* toggleFormSaga() {
   yield takeEvery(toggleForm.actions.toggle, function* (action) {
     const { mediaId, listId } = action.payload;
-    const previousListIds: { [listId: string]: string } = yield select(
-      toggleForm.selectors.listIds
+    const previous: { [listId: string]: string } = yield select(
+      toggleForm.selectors.markedListIds
     );
-    const nextListIds = toggleKey(listId, previousListIds);
-    yield put(toggleForm.actions.setListIds(nextListIds));
+    const next = toggleKey(listId, previous);
+    yield put(toggleForm.actions.setMarkedListIds(next));
     try {
-      if (listId in nextListIds) {
+      if (listId in next) {
         eventEmitterToggleForm.emit("added", {
           mediaId,
           listId,

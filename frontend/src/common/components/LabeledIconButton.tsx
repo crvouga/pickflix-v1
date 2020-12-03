@@ -20,11 +20,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export type LabeledIconButtonProps = ButtonBaseProps & {
-  icon: ReactNode;
-  label: string;
+  icon?: ReactNode;
+  label?: string;
 };
 
-export default ({
+export const LabeledIconButton = ({
   label,
   icon,
   disabled,

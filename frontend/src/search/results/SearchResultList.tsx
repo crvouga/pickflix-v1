@@ -2,7 +2,7 @@ import { Box, List, Typography } from "@material-ui/core";
 import React from "react";
 import ErrorBox from "../../common/components/ErrorBox";
 import ListItemSkeleton from "../../common/components/ListItemSkeleton";
-import InfiniteScrollBottom from "../../common/components/InfiniteScrollBottom";
+import { InfiniteScrollBottom } from "../../common/infinite-scroll";
 import { useSearchState } from "../redux/search";
 import SearchResultListItem from "./SearchResultListItem";
 import useQuerySearchResults from "./useQuerySearchResults";

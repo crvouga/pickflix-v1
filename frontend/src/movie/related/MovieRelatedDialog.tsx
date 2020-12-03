@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import React, { ChangeEvent, useState } from "react";
 import LoadingBox from "../../common/components/LoadingBox";
-import useInfiniteQueryPagination from "../../common/hooks/useInfiniteQueryPagination";
+import { useInfiniteQueryPagination } from "../../common/infinite-scroll";
 import MoviePosterGrid, {
   MoviePosterGridSkeleton,
 } from "../components/MoviePosterGrid";

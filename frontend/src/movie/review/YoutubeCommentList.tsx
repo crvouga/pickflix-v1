@@ -5,7 +5,7 @@ import NothingHere from "../../common/components/NothingHere";
 import CommentThread from "../../media/youtube/CommentThread";
 import { useQueryYoutubeVideoCommentThreadList } from "../../media/youtube/query";
 import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";
-import InfiniteScrollBottom from "../../common/components/InfiniteScrollBottom";
+import { InfiniteScrollBottom } from "../../common/infinite-scroll";
 
 const YoutubeCommentList = ({ videoId }: { videoId: string }) => {
   const query = useQueryYoutubeVideoCommentThreadList({ videoId });

@@ -2,14 +2,13 @@ import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import { useDebounce } from "use-debounce/lib";
 import ErrorBox from "../common/components/ErrorBox";
-import LoadingBox from "../common/components/LoadingBox";
+import { InfiniteScrollBottom } from "../common/infinite-scroll";
 import MoviePosterGrid, {
   MoviePosterGridSkeleton,
 } from "../movie/components/MoviePosterGrid";
 import { tagsToParams } from "./query/types";
-import useDiscoverState from "./useDiscoverState";
 import useDiscoverMovieQuery from "./useDiscoverQuery";
-import InfiniteScrollBottom from "../common/components/InfiniteScrollBottom";
+import useDiscoverState from "./useDiscoverState";
 
 export default () => {
   const { activeTags } = useDiscoverState();

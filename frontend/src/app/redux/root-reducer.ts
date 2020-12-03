@@ -6,7 +6,7 @@ import { createListWithListItemsForm } from "../../list/forms/create-list-with-l
 import { deleteListForm } from "../../list/forms/delete-list-form/delete-list-form";
 import { editListForm } from "../../list/forms/edit-list-form/edit-list-form";
 import { removeListItemsForm } from "../../list/forms/remove-list-items-form/remove-list-items-form";
-import { toggleForm } from "../../list/forms/toggle-form/toggle-form";
+import { toggleForm } from "../../list/forms/toggle-form/toggle-list-item-form";
 import { video } from "../../media/video/redux/video";
 import { moviePageUi } from "../../movie/redux/movie-page-ui";
 import { personPageUi } from "../../person/redux/person-page-ui";

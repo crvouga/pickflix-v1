@@ -21,10 +21,12 @@ export default ({
   subtitle = "Keep track of movie you like or want to watch",
 }: Props) => {
   const { open } = useModal("CreateListForm");
-
+  const handleClick = () => {
+    open();
+  };
   return (
     <Card>
-      <CardActionArea onClick={onClick || open}>
+      <CardActionArea onClick={onClick || handleClick}>
         <CardContent>
           <Box display="flex" justifyContent="center" alignItems="center">
             <PlaylistAddIcon style={{ width: "64px", height: "64px" }} />

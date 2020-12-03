@@ -1,12 +1,34 @@
-import throttle from "lodash.throttle";
+import { Zoom } from "@material-ui/core";
 import { last } from "ramda";
-import { useCallback, useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { InfiniteQueryConfig, QueryKey, useInfiniteQuery } from "react-query";
-import { Paginated } from "../types";
-import { useDebounce } from "use-debounce/lib";
+import LoadingBox from "./components/LoadingBox";
+import { Paginated } from "./types";
 
-export default <Result,>(
+export type FetchMoreRef = (node?: Element | null | undefined) => void;
+
+export const InfiniteScrollBottom = ({
+  canFetchMore,
+  fetchMoreRef,
+}: {
+  canFetchMore?: boolean;
+  fetchMoreRef: FetchMoreRef;
+}) => {
+  const [inViewRef, isInView] = useInView();
+
+  return (
+    <React.Fragment>
+      <Zoom in={isInView && canFetchMore}>
+        <LoadingBox p={6} />
+      </Zoom>
+      <div ref={inViewRef} />
+      <div ref={fetchMoreRef} />
+    </React.Fragment>
+  );
+};
+
+export const useInfiniteQueryPagination = <Result,>(
   queryKey: QueryKey,
   queryFn: ({ lastPage }: { lastPage: number }) => Promise<Paginated<Result>>,
   queryConfig?: InfiniteQueryConfig<Paginated<Result>>

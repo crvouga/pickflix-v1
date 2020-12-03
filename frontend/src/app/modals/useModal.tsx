@@ -1,43 +1,26 @@
-import { useModalRedux } from "./redux/modal";
-import { IModal, ModalName, ModalStateType } from "./types";
+import {
+  IModal,
+  modalNameToModalStateType,
+  Modals,
+  ModalStateType,
+} from "./types";
 import useModalLocation from "./useModalLocation";
+import useModalRedux from "./useModalRedux";
 
-const modalStateTypeByModalName: {
-  [modalName in ModalName]: ModalStateType;
-} = {
-  AddListItemForm: "location",
-  CreateListForm: "redux",
-  CreateListWithListItemsForm: "redux",
-  CurrentUserActions: "redux",
-  DeleteListForm: "redux",
-  DeleteListItemsForm: "redux",
-  DeleteReviewForm: "redux",
-  DiscoverSearch: "location",
-  DiscoverSort: "location",
-  DiscoverTune: "location",
-  EditListForm: "redux",
-  EditUserForm: "location",
-  RemoveListItemsForm: "redux",
-  ReviewForm: "location",
-  Search: "location",
-  ToggleForm: "location",
-  SignInCallToAction: "location",
-  SignOutForm: "redux",
-};
-
-export default (modalName: ModalName): IModal => {
+export default <K extends keyof Modals>(modalName: K): IModal<K> => {
   const location = useModalLocation(modalName);
   const redux = useModalRedux(modalName);
 
-  const modalStateType = modalStateTypeByModalName[modalName];
+  const modalStateType = modalNameToModalStateType[modalName];
 
   const modalStateByType = {
-    location,
-    redux,
+    [ModalStateType.Location]: location,
+    [ModalStateType.Redux]: redux,
   };
 
-  const open = () => {
-    modalStateByType[modalStateType].open();
+  const open = (props: Modals[K]) => {
+    console.log({ open: props });
+    modalStateByType[modalStateType].open(props);
   };
 
   const close = () => {
@@ -45,10 +28,12 @@ export default (modalName: ModalName): IModal => {
   };
 
   const isOpen = modalStateByType[modalStateType].isOpen;
+  const props = modalStateByType[modalStateType].props;
 
   return {
     open,
     close,
     isOpen,
+    props,
   };
 };

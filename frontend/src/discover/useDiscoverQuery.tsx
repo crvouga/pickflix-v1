@@ -1,4 +1,4 @@
-import useInfiniteQueryPagination from "../common/hooks/useInfiniteQueryPagination";
+import { useInfiniteQueryPagination } from "../common/infinite-scroll";
 import { getDiscoverMovie, queryKeys } from "./query";
 import { DiscoverMovieQueryParams } from "./query/types";
 

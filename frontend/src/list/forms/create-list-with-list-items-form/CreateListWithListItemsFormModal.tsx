@@ -42,9 +42,10 @@ const Creating = () => {
 };
 
 export default () => {
-  const { isOpen, close } = useModal("CreateListWithListItemsForm");
+  const { isOpen, props, close } = useModal("CreateListWithListItemsForm");
+  const mediaIds = props?.mediaIds || [];
 
-  const { mediaIds, setMediaIds, submit } = useCreateListWithListItemsForm();
+  const { submit } = useCreateListWithListItemsForm();
 
   const refTitle = useRef<HTMLInputElement>();
 
@@ -55,7 +56,6 @@ export default () => {
   };
 
   const handleClose = () => {
-    setMediaIds([]);
     close();
   };
 
@@ -71,10 +71,6 @@ export default () => {
       handleClose();
     }
   );
-
-  useListener(eventEmitterCreateListWithListItemsForm, "submitSettled", () => {
-    setMediaIds([]);
-  });
 
   return (
     <React.Fragment>

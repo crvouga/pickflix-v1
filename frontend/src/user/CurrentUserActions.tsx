@@ -20,9 +20,11 @@ import { UserAggergation } from "./query";
 
 export const OpenCurrentUserActionsModalButton = () => {
   const { open } = useModal("CurrentUserActions");
-
+  const handleClick = () => {
+    open();
+  };
   return (
-    <IconButton onClick={open}>
+    <IconButton onClick={handleClick}>
       <SettingsIcon />
     </IconButton>
   );

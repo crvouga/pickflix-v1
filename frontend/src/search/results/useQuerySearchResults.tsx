@@ -1,5 +1,5 @@
 import { useDebounce } from "use-debounce/lib";
-import useInfiniteQueryPagination from "../../common/hooks/useInfiniteQueryPagination";
+import { useInfiniteQueryPagination } from "../../common/infinite-scroll";
 import { Paginated } from "../../common/types";
 import {
   getSearchAll,

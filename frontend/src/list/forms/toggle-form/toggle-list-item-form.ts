@@ -4,10 +4,13 @@ import {
   createReducer,
   createSelector,
 } from "@reduxjs/toolkit";
+import { equals } from "ramda";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../../app/redux/types";
 import { createPayloadReducer } from "../../../app/redux/utils";
 import { MediaId } from "../../../media/tmdb/types";
+import { ToggleListItemFormProps } from "./ToggleListItemForm";
+import { ListAggergation, AutoListAggergation } from "../../query";
 
 const name: "toggleForm" = "toggleForm";
 
@@ -17,8 +20,7 @@ const name: "toggleForm" = "toggleForm";
 */
 
 export type ToggleFormState = {
-  mediaId?: MediaId;
-  listIds: { [listId: string]: string };
+  markedListIds: { [listId: string]: string };
 };
 
 /* 
@@ -27,8 +29,7 @@ export type ToggleFormState = {
 */
 
 const initialState: ToggleFormState = {
-  mediaId: undefined,
-  listIds: {},
+  markedListIds: {},
 };
 
 /* 
@@ -37,11 +38,9 @@ const initialState: ToggleFormState = {
 */
 
 const slice = (state: AppState) => state[name];
-
 const selectors = {
   slice,
-  mediaId: createSelector([slice], (slice) => slice.mediaId),
-  listIds: createSelector([slice], (slice) => slice.listIds),
+  markedListIds: createSelector([slice], (slice) => slice.markedListIds),
 };
 
 /* 
@@ -50,9 +49,8 @@ const selectors = {
 */
 
 const actions = {
-  setMediaId: createAction<MediaId | undefined>(name + "/SET_MEDIA_ID"),
-  setListIds: createAction<{ [listId: string]: string }>(
-    name + "/SET_LIST_IDS"
+  setMarkedListIds: createAction<{ [listId: string]: string }>(
+    name + "/SET_MARKED_LIST_IDS"
   ),
   toggle: createAction(
     name + "/TOGGLE",
@@ -71,8 +69,7 @@ const actions = {
 */
 
 const reducer = createReducer(initialState, {
-  [actions.setMediaId.toString()]: createPayloadReducer("mediaId"),
-  [actions.setListIds.toString()]: createPayloadReducer("listIds"),
+  [actions.setMarkedListIds.toString()]: createPayloadReducer("markedListIds"),
 });
 
 /* 
@@ -87,6 +84,30 @@ export const toggleForm = {
   name,
 };
 
+/*
+
+
+*/
+
+export const toInitialMarkedListIds = ({
+  mediaId,
+  autoLists,
+  lists,
+}: {
+  lists: ListAggergation[];
+  autoLists: AutoListAggergation[];
+  mediaId: MediaId;
+}): { [listId: string]: string } => {
+  return [...lists, ...autoLists]
+    .filter(
+      (list) =>
+        list.includeListItemWithMediaId &&
+        equals(list.includeListItemWithMediaId.mediaId, mediaId)
+    )
+    .map((list) => list.list.id)
+    .reduce((listIds, listId) => ({ ...listIds, [listId]: listId }), {});
+};
+
 /* 
 
 
@@ -95,12 +116,11 @@ export const toggleForm = {
 export const useToggleFormState = () => {
   const dispatch = useDispatch();
   const actions = bindActionCreators(toggleForm.actions, dispatch);
-  const mediaId = useSelector(toggleForm.selectors.mediaId);
-  const listIds = useSelector(toggleForm.selectors.listIds);
+
+  const markedListIds = useSelector(toggleForm.selectors.markedListIds);
 
   return {
     ...actions,
-    listIds,
-    mediaId,
+    markedListIds,
   };
 };

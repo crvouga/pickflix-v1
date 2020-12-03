@@ -5,7 +5,7 @@ import { CreateListWithListItemsFormState } from "../../list/forms/create-list-w
 import { DeleteListFormState } from "../../list/forms/delete-list-form/delete-list-form";
 import { EditListFormState } from "../../list/forms/edit-list-form/edit-list-form";
 import { RemoveListItemsFormState } from "../../list/forms/remove-list-items-form/remove-list-items-form";
-import { ToggleFormState } from "../../list/forms/toggle-form/toggle-form";
+import { ToggleFormState } from "../../list/forms/toggle-form/toggle-list-item-form";
 import { VideoState } from "../../media/video/redux/video";
 import { moviePageUi } from "../../movie/redux/movie-page-ui";
 import { PersonPageUiState } from "../../person/redux/person-page-ui";

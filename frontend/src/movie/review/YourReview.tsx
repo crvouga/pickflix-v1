@@ -59,7 +59,9 @@ const YourReview = ({
 
 export default ({ mediaId }: { mediaId: MediaId }) => {
   const { open } = useModal("SignInCallToAction");
-
+  const handleClick = () => {
+    open();
+  };
   return (
     <Box paddingX={2}>
       <Box paddingBottom={1}>
@@ -69,7 +71,7 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
         renderAuthenticated={(currentUser) => (
           <YourReview mediaId={mediaId} user={currentUser} />
         )}
-        renderDefault={() => <ReviewCardCallToAction onClick={open} />}
+        renderDefault={() => <ReviewCardCallToAction onClick={handleClick} />}
       />
     </Box>
   );

@@ -1,13 +1,13 @@
 import { uniqBy } from "ramda";
 import React from "react";
 import { QueryKey } from "react-query";
-import useInfiniteQueryPagination from "../../common/hooks/useInfiniteQueryPagination";
+import { useInfiniteQueryPagination } from "../../common/infinite-scroll";
 import { Paginated } from "../../common/types";
 import MoviePosterGrid, {
   MoviePosterGridSkeleton,
 } from "../components/MoviePosterGrid";
 import { Movie } from "./MoviePosterCard";
-import InfiniteScrollBottom from "../../common/components/InfiniteScrollBottom";
+import { InfiniteScrollBottom } from "../../common/infinite-scroll";
 
 export default ({
   queryKey,
