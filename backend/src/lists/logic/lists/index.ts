@@ -1,43 +1,95 @@
+import {
+  PaginationOptions,
+  RepositoryQueryOptions,
+} from "../../../app/data-access/types";
+import { MediaId } from "../../../media/models/types";
 import { UserId } from "../../../users/models/make-user";
 import {
   List,
   ListId,
   makeList,
   PartialList,
+  PermissionType,
   updateList,
-  AutoList,
 } from "../../models";
+import { ListAggergation } from "../../models/types";
 import { ListLogic } from "../logic";
-import { PaginationOptions } from "../../../app/data-access/types";
-import { removeNullOrUndefinedEntries } from "../../../app/utils";
-import { MediaId } from "../../../media/models/types";
-import { ListAggergate } from "../../models/types";
+import { innerJoin } from "ramda";
 
-export async function addList(this: ListLogic, partial: PartialList) {
-  const list = makeList(partial);
+export async function getListsFromUserId(
+  this: ListLogic,
+  { userId }: { userId: UserId },
+  queryOptions?: RepositoryQueryOptions<List>
+) {
+  const permissions = await this.permissionRepository.find({ userId });
+
+  const listSpec = [
+    {
+      ownerId: userId,
+    },
+    ...permissions.map((permission) => ({ id: permission.listId })),
+  ];
+
+  const lists = await this.listRepository.find(listSpec, queryOptions);
+
+  return lists;
+}
+
+export async function getListsFromMediaIdAndUserId(
+  this: ListLogic,
+  { userId, mediaId }: { userId: UserId; mediaId: MediaId },
+  queryOptions?: RepositoryQueryOptions<List>
+) {
+  const [autoListsFromUserId, listsFromUserId] = await Promise.all([
+    this.autoListRepository.find({
+      ownerId: userId,
+    }),
+    this.getListsFromUserId({ userId }, queryOptions),
+  ]);
+
+  const allListsFromUserId = [...autoListsFromUserId, ...listsFromUserId];
+
+  const listItemSpec = allListsFromUserId.map((list) => ({
+    listId: list.id,
+    mediaId: mediaId,
+  }));
+
+  const listItemsFromListIdsAndMediaId = await this.listItemRepository.find(
+    listItemSpec
+  );
+
+  const listsFromMediaIdAndUserId = innerJoin(
+    (list, listItem) => list.id === listItem.listId,
+    allListsFromUserId,
+    listItemsFromListIdsAndMediaId
+  );
+
+  return listsFromMediaIdAndUserId;
+}
+
+export async function addList(this: ListLogic, partialList: PartialList) {
+  const list = makeList(partialList);
+
   await this.listRepository.add(list);
+
   return list;
 }
 
-export type ListAggergationOptions = {
-  pagination?: PaginationOptions;
-  includeListItemWithMediaId?: MediaId;
-};
-
-export async function aggergateList<T extends List | AutoList>(
+export async function aggergateList(
   this: ListLogic,
-  list: T,
-  options?: ListAggergationOptions
-): Promise<ListAggergate<T>> {
+  list: List
+): Promise<ListAggergation> {
   const [
     listItemCount,
     listItems,
     [owner],
-    [includeListItemWithMediaId],
+    editorPermissions,
   ] = await Promise.all([
-    this.listItemRepository.count({
-      listId: list.id,
-    }),
+    this.listItemRepository.count([
+      {
+        listId: list.id,
+      },
+    ]),
     this.getListItemAggergations(
       {
         listId: list.id,
@@ -47,44 +99,81 @@ export async function aggergateList<T extends List | AutoList>(
         pageSize: 4,
       }
     ),
-    this.userRepository.find({
-      id: list.ownerId,
+    this.userRepository.find([
+      {
+        id: list.ownerId,
+      },
+    ]),
+    this.permissionRepository.find({
+      listId: list.id,
+      permissionType: PermissionType.Editor,
     }),
-    options?.includeListItemWithMediaId
-      ? this.listItemRepository.find({
-          listId: list.id,
-          mediaId: options.includeListItemWithMediaId,
-        })
-      : Promise.resolve([]),
   ]);
+
+  const userSpec = editorPermissions.map((permission) => ({
+    id: permission.userId,
+  }));
+
+  const editors = await this.userRepository.find(userSpec);
 
   return {
     listItems,
     listItemCount,
     list,
     owner,
-    includeListItemWithMediaId,
+    editors,
   };
+}
+
+export async function getListAggergationsFromId(
+  this: ListLogic,
+  spec: { id: ListId },
+  queryOptions?: RepositoryQueryOptions<List>
+) {
+  const lists = await this.listRepository.find([spec], queryOptions);
+
+  const aggergatedLists = await Promise.all(
+    lists.map((list) => this.aggergateList(list))
+  );
+
+  return aggergatedLists;
+}
+
+export async function getListAggergationsFromUserId(
+  this: ListLogic,
+  { userId }: { userId: UserId },
+  queryOptions?: RepositoryQueryOptions<List>
+) {
+  const permissions = await this.permissionRepository.find({
+    userId,
+  });
+
+  const listSpec = [
+    ...permissions.map((permission) => ({ id: permission.listId })),
+    { ownerId: userId },
+  ];
+
+  const lists = await this.listRepository.find(listSpec, queryOptions);
+
+  const aggergatedLists = await Promise.all(
+    lists.map((list) => this.aggergateList(list))
+  );
+
+  return aggergatedLists;
 }
 
 export async function getListAggergations(
   this: ListLogic,
-  spec: { id?: ListId; ownerId?: UserId },
-  options?: ListAggergationOptions
+  spec: { id: ListId } | { userId: UserId },
+  queryOptions?: RepositoryQueryOptions<List>
 ) {
-  const lists = await this.listRepository.find(
-    removeNullOrUndefinedEntries(spec),
-    {
-      orderBy: [["updatedAt", "descend"]],
-      pagination: options?.pagination,
-    }
-  );
-
-  const aggergatedLists = await Promise.all(
-    lists.map((list) => this.aggergateList(list, options))
-  );
-
-  return aggergatedLists;
+  if ("id" in spec) {
+    return this.getListAggergationsFromId(spec, queryOptions);
+  }
+  if ("userId" in spec) {
+    return this.getListAggergationsFromUserId(spec, queryOptions);
+  }
+  return [];
 }
 
 export async function editList(
@@ -93,7 +182,7 @@ export async function editList(
 ) {
   const { id, ...edits } = listInfo;
 
-  const [found] = await this.listRepository.find({ id });
+  const [found] = await this.listRepository.find([{ id }]);
 
   if (!found) {
     throw new Error("try to edit list that does not exists");

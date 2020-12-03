@@ -1,12 +1,31 @@
-import { isValidId, makeId } from "../../app/id";
-import { Id } from "../../app/id";
-import { castUserId, UserId } from "../../users/models/make-user";
+import { Id, isValidId, makeId } from "../../app/id";
+import { castUserId, UserId } from "../../users/models";
 
 const MIN_LENGTH_TITLE = 1;
 const MAX_LENGTH_TITLE = 100;
 const MAX_LENGTH_DESCRIPTION = 500;
 
 export type ListId = Id & { ListId: true };
+
+export type List = {
+  type: "list";
+  id: ListId;
+  title: string;
+  description: string;
+  createdAt: number;
+  updatedAt: number;
+  ownerId: UserId;
+};
+
+export type PartialList = {
+  title: string;
+  description?: string;
+  ownerId: UserId;
+};
+
+/* 
+
+*/
 
 export const castListId = (listId: any) => {
   if (isValidId(listId)) {
@@ -36,31 +55,15 @@ export const castListTitle = (title: any) => {
   throw new Error("invalid list title");
 };
 
-export type List = {
-  type: "list";
-  id: ListId;
-  ownerId: UserId;
-  title: string;
-  description: string;
-  createdAt: number;
-  updatedAt: number;
-};
-
-export type PartialList = {
-  title: string;
-  description?: string;
-  ownerId: UserId;
-};
-
 export const makeList = ({
-  ownerId,
   description,
   title,
+  ownerId,
 }: PartialList): List => {
   return Object.freeze({
     type: "list",
-    id: castListId(makeId()),
     ownerId: castUserId(ownerId),
+    id: castListId(makeId()),
     title: castListTitle(title),
     description: castListDescription(description || ""),
     createdAt: Date.now(),

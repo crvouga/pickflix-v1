@@ -3,11 +3,10 @@ import { RepositoryQueryOptions } from "../../app/data-access/types";
 import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository.hash-map";
 import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository.file-system";
 
+type UserSpec = Partial<User>[];
+
 export interface IUserRepository {
-  find(
-    spec: Partial<User>,
-    options?: RepositoryQueryOptions<User>
-  ): Promise<User[]>;
+  find(spec: UserSpec, options?: RepositoryQueryOptions<User>): Promise<User[]>;
 
   search(
     query: string,
@@ -29,7 +28,7 @@ export class UserRepositoryHashMap implements IUserRepository {
     this.repository = new GenericRepositoryHashMap<User>({});
   }
 
-  async find(spec: Partial<User>, options: RepositoryQueryOptions<User>) {
+  async find(spec: UserSpec, options: RepositoryQueryOptions<User>) {
     return this.repository.find(spec, options);
   }
 
@@ -61,7 +60,7 @@ export class UserRepositoryFileSystem implements IUserRepository {
     this.repository = new GenericRepositoryFileSystem<User>(filePath);
   }
 
-  async find(spec: Partial<User>, options: RepositoryQueryOptions<User>) {
+  async find(spec: UserSpec, options: RepositoryQueryOptions<User>) {
     return this.repository.find(spec, options);
   }
 

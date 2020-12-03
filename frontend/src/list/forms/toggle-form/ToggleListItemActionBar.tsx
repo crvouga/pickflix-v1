@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import useModal from "../../../app/modals/useModal";
 import { MediaId } from "../../../media/tmdb/types";
 import WithAuthentication from "../../../user/auth/WithAuthentication";
-import { AutoListKeys } from "../../query";
+import { AutoListKeys, toAutoListName } from "../../query";
 import { AutoListToggleButton, ToggleFormModalButton } from "./buttons";
 import {
   useToggleFormState,
@@ -13,29 +13,48 @@ import {
   ToggleListItemFormModal,
 } from "./ToggleListItemForm";
 import { WithToggleListItemFormProps } from "./WithToggleListItemFormProps";
+import { useListener } from "../../../common/utility";
+import { eventEmitterToggleForm } from "./toggle-list-item-form-saga";
+import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
+import { LinkButton } from "../../../app/snackbar/Snackbar";
 
 export const AUTO_LIST_KEY_ORDER = [AutoListKeys.Liked, AutoListKeys.WatchNext];
 
 export const ToggleListItemActionBar = (props: ToggleListItemFormProps) => {
-  const { mediaId, lists, autoLists } = props;
+  const { mediaId, autoLists } = props;
   const toggleListItemFormModal = useModal("ToggleListItemForm");
-  const { markedListIds, setMarkedListIds, toggle } = useToggleFormState();
+  const { markedListIds, toggle } = useToggleFormState();
 
-  useEffect(() => {
-    setMarkedListIds(
-      toInitialMarkedListIds({
-        mediaId,
-        lists,
-        autoLists,
-      })
+  const snackbar = useSnackbar();
+
+  useListener(eventEmitterToggleForm, "added", ({ listId }) => {
+    const autoList = autoLists.find(
+      (autoList) => autoList.autoList.id === listId
     );
-  }, [lists.length]);
+    if (autoList) {
+      snackbar.display({
+        message: `Added to ${toAutoListName(autoList.autoList.key)}`,
+        action: <LinkButton path={`/auto-list/${autoList.autoList.id}`} />,
+      });
+    }
+  });
+
+  useListener(eventEmitterToggleForm, "removed", ({ listId }) => {
+    const autoList = autoLists.find(
+      (autoList) => autoList.autoList.id === listId
+    );
+    if (autoList) {
+      snackbar.display({
+        message: `Removed from ${toAutoListName(autoList.autoList.key)}`,
+      });
+    }
+  });
 
   return (
     <React.Fragment>
       {AUTO_LIST_KEY_ORDER.map((autoListKey) => {
         const autoList = autoLists.find(
-          (autoList) => autoList.list.key === autoListKey
+          (autoList) => autoList.autoList.key === autoListKey
         );
 
         if (!autoList) {
@@ -44,13 +63,13 @@ export const ToggleListItemActionBar = (props: ToggleListItemFormProps) => {
 
         return (
           <AutoListToggleButton
-            key={autoList.list.key}
-            autoListKey={autoList.list.key}
-            checked={autoList.list.id in markedListIds}
+            key={autoList.autoList.key}
+            autoListKey={autoList.autoList.key}
+            checked={autoList.autoList.id in markedListIds}
             onClick={() => {
               toggle({
                 mediaId,
-                listId: autoList.list.id,
+                listId: autoList.autoList.id,
               });
             }}
           />
@@ -73,13 +92,17 @@ export const ToggleListItemActionBar = (props: ToggleListItemFormProps) => {
   );
 };
 
-export const ToggleListItemActionBarDummy = () => {
+export const ToggleListItemActionBarDisabled = () => {
   return (
     <React.Fragment>
       {AUTO_LIST_KEY_ORDER.map((autoListKey) => (
-        <AutoListToggleButton key={autoListKey} autoListKey={autoListKey} />
+        <AutoListToggleButton
+          disabled
+          key={autoListKey}
+          autoListKey={autoListKey}
+        />
       ))}
-      <ToggleFormModalButton />
+      <ToggleFormModalButton disabled />
     </React.Fragment>
   );
 };
@@ -110,12 +133,12 @@ export const ToggleListItemActionBarContainer = ({
       renderAuthenticated={(currentUser) => (
         <WithToggleListItemFormProps
           mediaId={mediaId}
-          renderLoading={() => <ToggleListItemActionBarDummy />}
+          renderDefault={() => <ToggleListItemActionBarDisabled />}
           renderSuccess={(props) => <ToggleListItemActionBar {...props} />}
         />
       )}
       renderUnathenticated={() => <ToggleListItemActionBarUnauthenicated />}
-      renderDefault={() => <ToggleListItemActionBarDummy />}
+      renderDefault={() => <ToggleListItemActionBarDisabled />}
     />
   );
 };

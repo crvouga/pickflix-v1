@@ -18,7 +18,7 @@ export class AutoListRepositoryHashMap implements IAutoListRepository {
   }
 
   async find(spec: Partial<AutoList>) {
-    return this.repository.find(spec);
+    return this.repository.find([spec]);
   }
 
   async add(autoList: AutoList) {
@@ -26,7 +26,7 @@ export class AutoListRepositoryHashMap implements IAutoListRepository {
   }
 
   async count(spec: Partial<AutoList>) {
-    return this.repository.count(spec);
+    return this.repository.count([spec]);
   }
 }
 
@@ -38,7 +38,7 @@ export class AutoListRepositoryFileSystem implements IAutoListRepository {
   }
 
   async find(spec: Partial<AutoList>) {
-    return this.repository.find(spec);
+    return this.repository.find([spec]);
   }
 
   async add(autoList: AutoList) {
@@ -46,6 +46,6 @@ export class AutoListRepositoryFileSystem implements IAutoListRepository {
   }
 
   async count(spec: Partial<AutoList>) {
-    return this.repository.count(spec);
+    return this.repository.count([spec]);
   }
 }

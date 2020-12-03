@@ -3,11 +3,10 @@ import { GenericRepositoryHashMap } from "../../app/data-access/generic-reposito
 import { RepositoryQueryOptions } from "../../app/data-access/types";
 import { List, ListId } from "../models/make-list";
 
+type ListSpec = Partial<List>[];
+
 export interface IListRepository {
-  find(
-    spec: Partial<List>,
-    options?: RepositoryQueryOptions<List>
-  ): Promise<List[]>;
+  find(spec: ListSpec, options?: RepositoryQueryOptions<List>): Promise<List[]>;
 
   add(list: List): void;
 
@@ -25,7 +24,7 @@ export class ListRepositoryHashMap implements IListRepository {
     this.repository = new GenericRepositoryHashMap<List>({});
   }
 
-  async find(spec: Partial<List>, options: RepositoryQueryOptions<List>) {
+  async find(spec: ListSpec, options: RepositoryQueryOptions<List>) {
     return this.repository.find(spec, options);
   }
 
@@ -42,7 +41,7 @@ export class ListRepositoryHashMap implements IListRepository {
   }
 
   async count(spec: Partial<List>) {
-    return this.repository.count(spec);
+    return this.repository.count([spec]);
   }
 }
 
@@ -53,7 +52,7 @@ export class ListRepositoryFileSystem implements IListRepository {
     this.repository = new GenericRepositoryFileSystem<List>(filePath);
   }
 
-  async find(spec: Partial<List>, options: RepositoryQueryOptions<List>) {
+  async find(spec: ListSpec, options: RepositoryQueryOptions<List>) {
     return this.repository.find(spec, options);
   }
 
@@ -70,6 +69,6 @@ export class ListRepositoryFileSystem implements IListRepository {
   }
 
   async count(spec: Partial<List>) {
-    return this.repository.count(spec);
+    return this.repository.count([spec]);
   }
 }

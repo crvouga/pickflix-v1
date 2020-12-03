@@ -24,12 +24,12 @@ export default ({ autoList }: { autoList: AutoListAggergation }) => {
       >
         <AutoListIcon
           style={{ width: "65px", height: "65px" }}
-          autoListKey={autoList.list.key}
+          autoListKey={autoList.autoList.key}
         />
       </Box>
       <Box paddingBottom={1}>
         <Typography variant="h5" style={{ wordBreak: "break-all" }}>
-          {toAutoListName(autoList.list.key)}
+          {toAutoListName(autoList.autoList.key)}
         </Typography>
       </Box>
       <Box paddingBottom={1}>

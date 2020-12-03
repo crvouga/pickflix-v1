@@ -1,19 +1,15 @@
 import { PaginationOptions } from "../../../app/data-access/types";
 import { removeNullOrUndefinedEntries } from "../../../app/utils";
-import {
-  MediaId,
-  TmdbMediaId,
-  TmdbMediaType,
-} from "../../../media/models/types";
+import { MediaId } from "../../../media/models/types";
 import { UserId } from "../../../users/models";
-import { ListId, ListItem, makeListItem, updateList, List } from "../../models";
+import { ListId, ListItem, makeListItem, updateList } from "../../models";
 import { ListItemId, PartialListItem } from "../../models/make-list-item";
+import { ListItemAggergation } from "../../models/types";
 import { ListLogic } from "../logic";
-import { ListItemAggergate } from "../../models/types";
 
 export async function removeListItems(
   this: ListLogic,
-  listItemInfos: (
+  spec: (
     | {
         id: ListItemId;
       }
@@ -23,13 +19,13 @@ export async function removeListItems(
       }
   )[]
 ) {
-  await this.listItemRepository.removeWhere(listItemInfos);
+  await this.listItemRepository.removeWhere(spec);
 }
 
 export async function aggergateListItem(
   this: ListLogic,
   listItem: ListItem
-): Promise<ListItemAggergate> {
+): Promise<ListItemAggergation> {
   const tmdbData = await this.mediaLogic.requestTmdbData({
     mediaId: listItem.mediaId,
     query: {
@@ -45,15 +41,11 @@ export async function aggergateListItem(
 
 export async function getListItemAggergations(
   this: ListLogic,
-  listItemInfo: {
-    userId?: UserId;
-    listId?: ListId;
-    mediaId?: MediaId;
-  },
+  spec: Partial<ListItem>,
   paginationOptions?: PaginationOptions
 ) {
   const listItems = await this.listItemRepository.find(
-    removeNullOrUndefinedEntries(listItemInfo),
+    [removeNullOrUndefinedEntries(spec)],
     {
       orderBy: [["createdAt", "descend"]],
       pagination: paginationOptions,
@@ -67,21 +59,6 @@ export async function getListItemAggergations(
   return aggergatedListItems;
 }
 
-export async function getListItem(
-  this: ListLogic,
-  listItemInfo: {
-    listId: ListId;
-    tmdbMediaId: TmdbMediaId;
-    tmdbMediaType: TmdbMediaType;
-  }
-) {
-  const [found] = await this.listItemRepository.find(listItemInfo);
-  if (!found) {
-    throw new Error("List item does not exists");
-  }
-  return found;
-}
-
 export async function addListItems(
   this: ListLogic,
   listItemInfos: PartialListItem[]
@@ -92,16 +69,20 @@ export async function addListItems(
     const listItem = makeListItem(listItemInfo);
 
     const [[list], [autoList], foundListItems] = await Promise.all([
-      this.listRepository.find({
-        id: listItem.listId,
-      }),
+      this.listRepository.find([
+        {
+          id: listItem.listId,
+        },
+      ]),
       this.autoListRepository.find({
         id: listItem.listId,
       }),
-      this.listItemRepository.find({
-        listId: listItem.listId,
-        mediaId: listItem.mediaId,
-      }),
+      this.listItemRepository.find([
+        {
+          listId: listItem.listId,
+          mediaId: listItem.mediaId,
+        },
+      ]),
     ]);
 
     if (!list && !autoList) {
@@ -125,16 +106,6 @@ export async function addListItems(
   return addedListItems;
 }
 
-export function canEditListItems({
-  userId,
-  list,
-}: {
-  userId: UserId;
-  list: List;
-}) {
-  return userId === list.ownerId;
-}
-
 export async function toggleListItem(
   this: ListLogic,
   {
@@ -148,7 +119,7 @@ export async function toggleListItem(
   }
 ) {
   const [[list], [autoList]] = await Promise.all([
-    this.listRepository.find({ id: listId }),
+    this.listRepository.find([{ id: listId }]),
     this.autoListRepository.find({ id: listId }),
   ]);
 
@@ -156,7 +127,7 @@ export async function toggleListItem(
     throw new Error("list does not exists");
   }
 
-  const [listItem] = await this.listItemRepository.find({ mediaId, listId });
+  const [listItem] = await this.listItemRepository.find([{ mediaId, listId }]);
 
   if (listItem) {
     await this.listItemRepository.remove(listItem.id);

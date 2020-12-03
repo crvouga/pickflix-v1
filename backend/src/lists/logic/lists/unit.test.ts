@@ -3,39 +3,62 @@ import { makeUserFake } from "../../../users/models/make-user.fake";
 import { buildListLogicTest } from "../build";
 
 describe("list logic", () => {
-  // it("orders list by most recently item added", async () => {
-  //   const { listLogic } = buildListLogicTest();
-  //   const user = makeUserFake();
+  it("gets lists by media id", async () => {
+    const { listLogic } = buildListLogicTest();
+    const user = makeUserFake();
 
-  //   const list1 = await listLogic.addList({
-  //     ownerId: user.id,
-  //     title: "list1",
-  //   });
+    const added = [];
+    for (const partial of [
+      {
+        ownerId: user.id,
+        title: "my list",
+      },
+      {
+        ownerId: user.id,
+        title: "my other list",
+      },
+      {
+        ownerId: user.id,
+        title: "my other other list",
+      },
+    ]) {
+      added.push(await listLogic.addList(partial));
+    }
+    const [list1, list2, list3] = added;
 
-  //   const list2 = await listLogic.addList({
-  //     ownerId: user.id,
-  //     title: "list2",
-  //   });
+    const mediaId = makeMediaIdFake();
 
-  //   const before = await listLogic.getListAggergations({ ownerId: user.id });
+    await listLogic.addListItems([
+      {
+        userId: user.id,
+        listId: list1.id,
+        mediaId: mediaId,
+      },
+      {
+        userId: user.id,
+        listId: list3.id,
+        mediaId: mediaId,
+      },
+    ]);
 
-  //   const mediaId = makeMediaIdFake();
+    const listsFromMediaIdAndUserId = await listLogic.getListsFromMediaIdAndUserId(
+      {
+        userId: user.id,
+        mediaId: mediaId,
+      }
+    );
 
-  //   await listLogic.addListItems([
-  //     {
-  //       userId: user.id,
-  //       listId: list2.id,
-  //       mediaId,
-  //     },
-  //   ]);
-
-  //   const after = await listLogic.getListAggergations({ ownerId: user.id });
-
-  //   expect(before[0].list.id).toBe(list1.id);
-  //   expect(before[1].list.id).toBe(list2.id);
-  //   expect(after[0].list.id).toBe(list2.id);
-  //   expect(after[1].list.id).toBe(list1.id);
-  // });
+    expect(listsFromMediaIdAndUserId).toContainEqual(
+      expect.objectContaining({ id: list1.id })
+    );
+    expect(listsFromMediaIdAndUserId).toContainEqual(
+      expect.objectContaining({ id: list3.id })
+    );
+    //
+    expect(listsFromMediaIdAndUserId).not.toContainEqual(
+      expect.objectContaining({ id: list2.id })
+    );
+  });
 
   it("removes lists", async () => {
     const { listLogic } = buildListLogicTest();
@@ -63,7 +86,9 @@ describe("list logic", () => {
     await listLogic.removeList(list1.id);
     await listLogic.removeList(list3.id);
 
-    const after = await listLogic.getListAggergations({ ownerId: user.id });
+    const after = await listLogic.getListAggergationsFromUserId({
+      userId: user.id,
+    });
     expect(after.map((_) => _.list)).toEqual(
       expect.arrayContaining([expect.objectContaining(list2)])
     );
@@ -91,7 +116,7 @@ describe("list logic", () => {
     });
 
     const [aggergatedList2] = await listLogic.getListAggergations({
-      ownerId: user.id,
+      userId: user.id,
     });
 
     expect(aggergatedList1).toStrictEqual(aggergatedList2);

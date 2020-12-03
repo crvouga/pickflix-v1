@@ -4,16 +4,16 @@ import { IUserRepository } from "../../users/repositories/user-repository";
 import { IAutoListRepository } from "../repositories/auto-list-repository";
 import { IListItemRepository } from "../repositories/list-item-repository";
 import { IListRepository } from "../repositories/list-repository";
+import { IPermissionRepository } from "../repositories/permission-repository";
 import {
+  aggergateAutoList,
   getAutoList,
   getAutoListAggergations,
-  getAutoListAggergationsByKey,
   initializeAutoLists,
-} from "./auto-lists/logic";
+} from "./auto-lists";
 import {
   addListItems,
   aggergateListItem,
-  getListItem,
   getListItemAggergations,
   removeListItems,
   setListItems,
@@ -24,9 +24,12 @@ import {
   aggergateList,
   editList,
   getListAggergations,
+  getListAggergationsFromId,
+  getListAggergationsFromUserId,
   removeList,
+  getListsFromMediaIdAndUserId,
+  getListsFromUserId,
 } from "./lists";
-import { IPermissionRepository } from "../repositories/permission-repository";
 
 export class ListLogic {
   userRepository: IUserRepository;
@@ -68,17 +71,18 @@ export class ListLogic {
   }
 
   aggergateList = aggergateList;
+  aggergateAutoList = aggergateAutoList;
   aggergateListItem = aggergateListItem;
 
   initializeAutoLists = initializeAutoLists;
   getAutoListAggergations = getAutoListAggergations;
-  getAutoListAggergationsByKey = getAutoListAggergationsByKey;
   getAutoList = getAutoList;
 
+  getListAggergationsFromUserId = getListAggergationsFromUserId;
+  getListAggergationsFromId = getListAggergationsFromId;
   getListItemAggergations = getListItemAggergations;
   addListItems = addListItems;
   removeListItems = removeListItems;
-  getListItem = getListItem;
   toggleListItem = toggleListItem;
   setListItems = setListItems;
 
@@ -86,4 +90,6 @@ export class ListLogic {
   addList = addList;
   removeList = removeList;
   editList = editList;
+  getListsFromMediaIdAndUserId = getListsFromMediaIdAndUserId;
+  getListsFromUserId = getListsFromUserId;
 }

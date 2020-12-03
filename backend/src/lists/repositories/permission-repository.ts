@@ -1,8 +1,6 @@
 import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository.file-system";
 import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository.hash-map";
-import { RepositoryQueryOptions } from "../../app/data-access/types";
-import { ListItemId, Permission, PermissionId } from "../models";
-import { ListItem } from "../models/make-list-item";
+import { Permission, PermissionId } from "../models";
 
 export interface IPermissionRepository {
   find(spec: Partial<Permission>): Promise<Permission[]>;
@@ -10,6 +8,8 @@ export interface IPermissionRepository {
   add(permission: Permission): void;
 
   remove(id: PermissionId): void;
+
+  count(spec: Partial<Permission>): Promise<number>;
 }
 
 export class PermissionRepositoryHashMap implements IPermissionRepository {
@@ -20,7 +20,7 @@ export class PermissionRepositoryHashMap implements IPermissionRepository {
   }
 
   async find(spec: Partial<Permission>) {
-    return this.repository.find(spec);
+    return this.repository.find([spec]);
   }
 
   async add(permission: Permission) {
@@ -29,6 +29,10 @@ export class PermissionRepositoryHashMap implements IPermissionRepository {
 
   async remove(id: PermissionId) {
     this.repository.remove([{ id }]);
+  }
+
+  async count(spec: Partial<Permission>) {
+    return this.repository.count([spec]);
   }
 }
 
@@ -40,7 +44,7 @@ export class PermissionRepositoryFileSystem implements IPermissionRepository {
   }
 
   async find(spec: Partial<Permission>) {
-    return this.repository.find(spec);
+    return this.repository.find([spec]);
   }
 
   async add(permission: Permission) {
@@ -49,5 +53,9 @@ export class PermissionRepositoryFileSystem implements IPermissionRepository {
 
   async remove(id: PermissionId) {
     this.repository.remove([{ id }]);
+  }
+
+  async count(spec: Partial<Permission>) {
+    return this.repository.count([spec]);
   }
 }

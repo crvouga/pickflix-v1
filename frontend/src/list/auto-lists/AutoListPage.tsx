@@ -35,7 +35,7 @@ export default () => {
     <React.Fragment>
       <ResponsiveNavigation />
       <Hidden smUp>
-        <ListPageAppBar title={toAutoListName(autoList.list.key)} />
+        <ListPageAppBar title={toAutoListName(autoList.autoList.key)} />
       </Hidden>
 
       <Paper>
@@ -48,7 +48,7 @@ export default () => {
         <ListItemsSection
           owner={autoList.owner}
           listItemCount={autoList.listItemCount}
-          listId={autoList.list.id}
+          listId={autoList.autoList.id}
         />
       </Container>
     </React.Fragment>

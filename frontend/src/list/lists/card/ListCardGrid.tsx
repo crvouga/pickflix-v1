@@ -76,7 +76,7 @@ export const AutoListCardGrid = ({
   return (
     <Grid container spacing={1}>
       {autoLists.map((autoList) => (
-        <Grid key={autoList.list.id} item {...ItemProps}>
+        <Grid key={autoList.autoList.id} item {...ItemProps}>
           <AutoListCard autoList={autoList} />
         </Grid>
       ))}

@@ -50,12 +50,16 @@ export async function createUserWithPassword(
   }
 ) {
   const [foundUsernames, foundEmails] = await Promise.all([
-    this.userRepository.find({
-      username,
-    }),
-    this.userRepository.find({
-      emailAddress,
-    }),
+    this.userRepository.find([
+      {
+        username,
+      },
+    ]),
+    this.userRepository.find([
+      {
+        emailAddress,
+      },
+    ]),
   ]);
 
   const errors = [];

@@ -1,5 +1,6 @@
 import { Box, Grid, GridProps, Typography } from "@material-ui/core";
 import React from "react";
+import NothingHere from "../../common/components/NothingHere";
 import { InfiniteScrollBottom } from "../../common/infinite-scroll";
 import { useListener } from "../../common/utility";
 import WithAuthentication from "../../user/auth/WithAuthentication";
@@ -24,15 +25,6 @@ const DEFAULT_ITEM_PROPS: GridProps = {
   md: 4,
 };
 
-export const ReviewCardGridEmpty = () => {
-  return (
-    <Box m={6}>
-      <Typography align="center" variant="h6" color="textSecondary">
-        No Reviews
-      </Typography>
-    </Box>
-  );
-};
 export const ReviewCardGridSkeleton = ({
   ItemProps = DEFAULT_ITEM_PROPS,
   ReviewCardProps = DEFAULT_REVIEW_CARD_PROPS,
@@ -101,13 +93,14 @@ export const ReviewCardGridContainer = ({
     return (
       <WithAuthentication
         renderAuthenticated={(currentUser) =>
-          GetReviewParams.userId === currentUser.user.id ? (
-            <ReviewCardCallToAction {...ReviewCardCallToActionProps} />
+          GetReviewParams.userId &&
+          GetReviewParams.userId !== currentUser.user.id ? (
+            <NothingHere />
           ) : (
-            <ReviewCardGridEmpty />
+            <ReviewCardCallToAction {...ReviewCardCallToActionProps} />
           )
         }
-        renderDefault={() => <ReviewCardGridEmpty />}
+        renderDefault={() => <NothingHere />}
       />
     );
   }

@@ -6,6 +6,7 @@ import { ReviewRepositoryHashMap } from "../../reviews/repositories/review-repos
 import { CredentialRepositoryHashMap } from "../repositories/credential-repository";
 import { UserRepositoryHashMap } from "../repositories/user-repository";
 import { UserLogic } from "./logic";
+import { PermissionRepositoryHashMap } from "../../lists/repositories/permission-repository";
 
 export const buildUserLogicTest = () => {
   const eventEmitter = createEventEmitter<Events>();
@@ -15,7 +16,7 @@ export const buildUserLogicTest = () => {
   const listRepository = new ListRepositoryHashMap();
   const autoListRepository = new AutoListRepositoryHashMap();
   const reviewRepository = new ReviewRepositoryHashMap({});
-
+  const permissionRepository = new PermissionRepositoryHashMap();
   const userLogic = new UserLogic({
     eventEmitter,
     emailLogic,
@@ -24,6 +25,7 @@ export const buildUserLogicTest = () => {
     autoListRepository,
     reviewRepository,
     credentialRepository,
+    permissionRepository,
   });
 
   return { userLogic, eventEmitter };

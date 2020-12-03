@@ -7,7 +7,6 @@ import {
 } from "react-query";
 import { useInfiniteQueryPagination } from "../../common/infinite-scroll";
 import { Paginated } from "../../common/types";
-import { GetAutoListParams, getAutoLists } from "./auto-lists";
 import {
   DeleteListItemParams,
   deleteListItems,
@@ -18,14 +17,30 @@ import {
 import {
   deleteList,
   DeleteListParams,
+  GetAutoListParams,
+  getAutoLists,
   getLists,
   GetListsParams,
   patchList,
   PatchListParams,
   postList,
   PostListParams,
+  GetListsFromMediaIdParams,
+  getListsFromMediaId,
 } from "./lists";
 import { ListAggergation, ListItemAggergation } from "./types";
+
+const makeGetListsFromMediaIdQueryKey = (params: GetListsFromMediaIdParams) => [
+  "list-items",
+  "lists",
+  params,
+];
+
+export const useQueryListsFromMediaId = (params: GetListsFromMediaIdParams) => {
+  return useQuery(makeGetListsFromMediaIdQueryKey(params), () =>
+    getListsFromMediaId(params)
+  );
+};
 
 /* 
 

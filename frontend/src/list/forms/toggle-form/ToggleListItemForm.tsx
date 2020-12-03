@@ -109,7 +109,7 @@ const ToggleListItemForm = (props: ToggleListItemFormProps) => {
 
       {AUTO_LIST_KEY_ORDER.map((autoListKey) => {
         const autoList = autoLists.find(
-          (autoList) => autoList.list.key === autoListKey
+          (autoList) => autoList.autoList.key === autoListKey
         );
 
         if (!autoList) {
@@ -118,17 +118,17 @@ const ToggleListItemForm = (props: ToggleListItemFormProps) => {
 
         return (
           <ToggleButton
-            key={autoList.list.id}
-            checked={autoList.list.id in markedListIds}
-            title={toAutoListName(autoList.list.key)}
+            key={autoList.autoList.id}
+            checked={autoList.autoList.id in markedListIds}
+            title={toAutoListName(autoList.autoList.key)}
             onClick={() => {
               toggle({
-                listId: autoList.list.id,
+                listId: autoList.autoList.id,
                 mediaId,
               });
             }}
             onSecondaryActionClick={() => {
-              history.push(`/auto-list/${autoList.list.id}`);
+              history.push(`/auto-list/${autoList.autoList.id}`);
             }}
           />
         );

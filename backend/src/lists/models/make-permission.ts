@@ -3,7 +3,6 @@ import { ListId, castListId } from "./make-list";
 import { Id, makeId, isValidId } from "../../app/id";
 
 export enum PermissionType {
-  Owner = "Owner",
   Editor = "Editor",
 }
 
@@ -17,10 +16,7 @@ export type Permission = {
 };
 
 export const castPermissionType = (permissionType: any) => {
-  if (
-    permissionType === PermissionType.Editor ||
-    permissionType === PermissionType.Owner
-  ) {
+  if (permissionType === PermissionType.Editor) {
     return permissionType;
   }
   throw new Error("failed to cast permission type");

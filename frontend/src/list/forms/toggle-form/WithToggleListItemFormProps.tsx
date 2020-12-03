@@ -1,5 +1,9 @@
 import { MediaId } from "../../../media/tmdb/types";
-import { useQueryAutoLists, useQueryLists } from "../../query";
+import {
+  useQueryAutoLists,
+  useQueryLists,
+  useQueryListsFromMediaId,
+} from "../../query";
 import { ToggleListItemFormProps } from "./ToggleListItemForm";
 import {
   useToggleFormState,
@@ -13,60 +17,48 @@ type Node = JSX.Element | null | false;
 
 type Props = {
   mediaId: MediaId;
-  renderLoading?: () => Node;
-  renderError?: () => Node;
+  renderDefault?: () => Node;
   renderSuccess?: (_: ToggleListItemFormProps) => Node;
 };
 
 export const WithToggleListItemFormProps = ({
   mediaId,
-  renderError,
-  renderLoading,
+  renderDefault,
   renderSuccess,
 }: Props) => {
-  const queryAutoLists = useQueryAutoLists({
-    includeListItemWithMediaId: mediaId,
-  });
-  const { fetchMoreRef, ...queryLists } = useQueryLists({
-    includeListItemWithMediaId: mediaId,
-  });
-
-  const { setMarkedListIds } = useToggleFormState();
+  const queryAutoLists = useQueryAutoLists({});
+  const { fetchMoreRef, ...queryLists } = useQueryLists({});
+  const queryListsFromMediaId = useQueryListsFromMediaId({ mediaId });
 
   useListener(eventEmitterCreateListWithListItemsForm, "submitSuccess", () => {
     queryAutoLists.refetch();
     queryLists.refetch();
+    queryListsFromMediaId.refetch();
   });
 
   const lists = queryLists.data?.flatMap((page) => page.results) || [];
   const autoLists = queryAutoLists.data || [];
+  const listsFromMediaId = queryListsFromMediaId.data || [];
+
+  const { setMarkedListIds } = useToggleFormState();
 
   useEffect(() => {
-    setMarkedListIds(
-      toInitialMarkedListIds({
-        mediaId,
-        lists,
-        autoLists,
-      })
-    );
-  }, [autoLists.length, lists.length]);
+    const listIds = listsFromMediaId
+      .map((list) => list.id)
+      .reduce((listIds, listId) => ({ ...listIds, [listId]: listId }), {});
+    setMarkedListIds(listIds);
+  }, [listsFromMediaId.length]);
 
-  if (queryAutoLists.error || queryLists.error) {
-    return (renderError && renderError()) || null;
-  }
-
-  if (queryAutoLists.data === undefined || queryLists.data === undefined) {
-    return (renderLoading && renderLoading()) || null;
-  }
-
-  return (
-    (renderSuccess &&
+  if (queryLists.data && queryAutoLists.data && renderSuccess) {
+    return (
       renderSuccess({
         lists,
         autoLists,
         fetchMoreRef,
         mediaId,
-      })) ||
-    null
-  );
+      }) || null
+    );
+  }
+
+  return renderDefault?.() || null;
 };

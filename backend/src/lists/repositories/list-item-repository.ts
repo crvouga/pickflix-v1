@@ -1,22 +1,24 @@
 import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository.file-system";
 import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository.hash-map";
 import { RepositoryQueryOptions } from "../../app/data-access/types";
+import { ListItemId } from "../models";
 import { ListItem } from "../models/make-list-item";
-import { ListId, ListItemId } from "../models";
+
+type ListItemSpec = Partial<ListItem>[];
 
 export interface IListItemRepository {
   find(
-    spec: Partial<ListItem>,
+    spec: ListItemSpec,
     options?: RepositoryQueryOptions<ListItem>
   ): Promise<ListItem[]>;
 
-  count(spec: Partial<ListItem>): Promise<number>;
+  count(spec: ListItemSpec): Promise<number>;
 
   add(listItems: ListItem[]): void;
 
   remove(id: ListItemId): void;
 
-  removeWhere(specs: Partial<ListItem>[]): void;
+  removeWhere(specs: ListItemSpec): void;
 }
 
 export class ListItemRepositoryHashMap implements IListItemRepository {
@@ -26,14 +28,11 @@ export class ListItemRepositoryHashMap implements IListItemRepository {
     this.repository = new GenericRepositoryHashMap<ListItem>({});
   }
 
-  async find(
-    spec: Partial<ListItem>,
-    options: RepositoryQueryOptions<ListItem>
-  ) {
+  async find(spec: ListItemSpec, options: RepositoryQueryOptions<ListItem>) {
     return this.repository.find(spec, options);
   }
 
-  async count(spec: Partial<ListItem>) {
+  async count(spec: ListItemSpec) {
     return this.repository.count(spec);
   }
 
@@ -45,7 +44,7 @@ export class ListItemRepositoryHashMap implements IListItemRepository {
     this.repository.remove([{ id }]);
   }
 
-  async removeWhere(specs: Partial<ListItem>[]) {
+  async removeWhere(specs: ListItemSpec) {
     this.repository.remove(specs);
   }
 }
@@ -57,14 +56,11 @@ export class ListItemRepositoryFileSystem implements IListItemRepository {
     this.repository = new GenericRepositoryFileSystem<ListItem>(filePath);
   }
 
-  async find(
-    spec: Partial<ListItem>,
-    options: RepositoryQueryOptions<ListItem>
-  ) {
+  async find(spec: ListItemSpec, options: RepositoryQueryOptions<ListItem>) {
     return this.repository.find(spec, options);
   }
 
-  async count(spec: Partial<ListItem>) {
+  async count(spec: ListItemSpec) {
     return this.repository.count(spec);
   }
 
@@ -76,7 +72,7 @@ export class ListItemRepositoryFileSystem implements IListItemRepository {
     this.repository.remove([{ id }]);
   }
 
-  async removeWhere(specs: Partial<ListItem>[]) {
+  async removeWhere(specs: ListItemSpec) {
     this.repository.remove(specs);
   }
 }

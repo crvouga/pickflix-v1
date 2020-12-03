@@ -1,10 +1,11 @@
 import { IRouter } from "express";
+import { isNullOrUndefined } from "util";
 import {
   makePaginationOptions,
   makePaginationResponse,
 } from "../../../app/pagination";
-import { castUserId, User } from "../../../users/models";
 import { removeNullOrUndefinedEntries } from "../../../app/utils";
+import { castUserId, UserId } from "../../../users/models";
 import {
   castListDescription,
   castListId,
@@ -12,10 +13,8 @@ import {
   ListId,
 } from "../../models";
 import { Dependencies } from "../types";
-import { isNullOrUndefined } from "util";
-import { castMediaId } from "../../../media/models/types";
 
-export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
+export const lists = ({ listLogic, middlewares }: Dependencies) => (
   router: IRouter
 ) => {
   /* 
@@ -25,37 +24,35 @@ export const lists = ({ listLogic, userLogic, middlewares }: Dependencies) => (
   */
   router.get("/lists", async (req, res) => {
     try {
-      const ownerId = req.query.ownerId
+      const userId = req.query.ownerId
         ? castUserId(req.query.ownerId)
         : req.user
         ? castUserId(req.user.id)
         : undefined;
 
-      const includeListItemWithMediaId =
-        req.query.tmdbMediaId && req.query.tmdbMediaType
-          ? castMediaId({
-              tmdbMediaId: req.query.tmdbMediaId,
-              tmdbMediaType: req.query.tmdbMediaType,
-            })
-          : undefined;
-
       const id = req.query.id ? castListId(req.query.id) : undefined;
 
-      const listInfo = id
+      const spec: { id: ListId } | { userId: UserId } | undefined = id
         ? {
             id,
           }
-        : {
-            ownerId,
-          };
+        : userId
+        ? {
+            userId,
+          }
+        : undefined;
+
+      if (!spec) {
+        throw new Error("invalid list query");
+      }
 
       const paginationOptions = makePaginationOptions({
         page: req.query.page,
       });
 
-      const listAggergations = await listLogic.getListAggergations(listInfo, {
+      const listAggergations = await listLogic.getListAggergations(spec, {
         pagination: paginationOptions,
-        includeListItemWithMediaId,
+        orderBy: [["updatedAt", "descend"]],
       });
 
       res

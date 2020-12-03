@@ -5,15 +5,22 @@ import { ListItem } from "./make-list-item";
 
 type TmdbData = any;
 
-export type ListItemAggergate = {
+export type ListItemAggergation = {
   listItem: ListItem;
   tmdbData: TmdbData;
 };
 
-export type ListAggergate<T extends List | AutoList> = {
-  listItems: ListItemAggergate[];
+export type ListAggergation = {
+  listItems: ListItemAggergation[];
   listItemCount: number;
-  list: T;
+  list: List;
   owner: User;
-  includeListItemWithMediaId?: ListItem;
+  editors: User[];
+};
+
+export type AutoListAggergation = {
+  listItems: ListItemAggergation[];
+  listItemCount: number;
+  autoList: AutoList;
+  owner: User;
 };

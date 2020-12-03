@@ -123,7 +123,7 @@ export class ReviewLogic {
       mediaReviewCount,
       tmdbData,
     ] = await Promise.all([
-      this.userRepository.find({ id: review.authorId }),
+      this.userRepository.find([{ id: review.authorId }]),
       this.reviewRepository.count({ authorId: review.authorId }),
       this.reviewRepository.count({
         mediaId: review.mediaId,

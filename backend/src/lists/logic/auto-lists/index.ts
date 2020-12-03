@@ -1,4 +1,3 @@
-import { removeNullOrUndefinedEntries } from "../../../app/utils";
 import { User, UserId } from "../../../users/models/make-user";
 import {
   AutoList,
@@ -7,9 +6,8 @@ import {
   ListId,
   makeAutoList,
 } from "../../models";
-import { ListAggergate } from "../../models/types";
+import { AutoListAggergation } from "../../models/types";
 import { ListLogic } from "../logic";
-import { ListAggergationOptions } from "../lists";
 
 export async function initializeAutoLists(
   this: ListLogic,
@@ -40,40 +38,49 @@ export async function initializeAutoLists(
   return autoLists;
 }
 
-export async function getAutoListAggergations(
+export async function aggergateAutoList(
   this: ListLogic,
-  spec: {
-    id?: ListId;
-    ownerId?: UserId;
-  },
-  options?: ListAggergationOptions
-) {
-  const lists = await this.autoListRepository.find(
-    removeNullOrUndefinedEntries(spec)
-  );
+  autoList: AutoList
+): Promise<AutoListAggergation> {
+  const [listItems, listItemCount, [owner]] = await Promise.all([
+    this.getListItemAggergations(
+      {
+        listId: autoList.id,
+      },
+      {
+        page: 1,
+        pageSize: 4,
+      }
+    ),
+    this.listItemRepository.count([{ listId: autoList.id }]),
+    this.userRepository.find([{ id: autoList.ownerId }]),
+  ]);
 
-  const aggergatedLists = await Promise.all(
-    lists.map((list) => this.aggergateList(list, options))
-  );
-
-  return aggergatedLists;
+  return {
+    listItems,
+    listItemCount,
+    owner,
+    autoList,
+  };
 }
 
-export async function getAutoListAggergationsByKey(
+export async function getAutoListAggergations(
   this: ListLogic,
-  autoListInfo: { ownerId: UserId }
+  spec:
+    | {
+        id: ListId;
+      }
+    | {
+        ownerId: UserId;
+      }
 ) {
-  const aggergatedLists = await this.getAutoListAggergations(autoListInfo);
+  const autoLists = await this.autoListRepository.find(spec);
 
-  const byKey = aggergatedLists.reduce(
-    (byKey, list) => ({
-      ...byKey,
-      [list.list.key]: list,
-    }),
-    {}
-  ) as { [key in AutoListKeys]: ListAggergate<AutoList> };
+  const autoListAggergations = await Promise.all(
+    autoLists.map((autoList) => this.aggergateAutoList(autoList))
+  );
 
-  return byKey;
+  return autoListAggergations;
 }
 
 export async function getAutoList(

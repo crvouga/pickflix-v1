@@ -20,7 +20,7 @@ export class CredentialRepositoryHashMap implements ICredentialRepository {
   }
 
   async find(spec: Partial<Credential>) {
-    return this.repository.find(spec);
+    return this.repository.find([spec]);
   }
 
   async add(credential: Credential) {
@@ -44,7 +44,7 @@ export class CredentialRepositoryFileSystem implements ICredentialRepository {
   }
 
   async find(spec: Partial<Credential>) {
-    return this.repository.find(spec);
+    return this.repository.find([spec]);
   }
 
   async add(credential: Credential) {

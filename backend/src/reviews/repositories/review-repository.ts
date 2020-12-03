@@ -26,7 +26,7 @@ export class ReviewRepositoryHashMap implements IReviewRepository {
   }
 
   async find(spec: Partial<Review>, options?: RepositoryQueryOptions<Review>) {
-    return this.repository.find(spec, options);
+    return this.repository.find([spec], options);
   }
 
   async add(review: Review) {
@@ -38,7 +38,7 @@ export class ReviewRepositoryHashMap implements IReviewRepository {
   }
 
   async count(spec: Partial<Review>) {
-    return this.repository.count(spec);
+    return this.repository.count([spec]);
   }
 
   async update(id: ReviewId, partial: Partial<Review>) {
@@ -54,7 +54,7 @@ export class ReviewRepositoryFileSystem implements IReviewRepository {
   }
 
   async find(spec: Partial<Review>, options?: RepositoryQueryOptions<Review>) {
-    return this.repository.find(spec, options);
+    return this.repository.find([spec], options);
   }
 
   async add(review: Review) {
@@ -66,7 +66,7 @@ export class ReviewRepositoryFileSystem implements IReviewRepository {
   }
 
   async count(spec: Partial<Review>) {
-    return this.repository.count(spec);
+    return this.repository.count([spec]);
   }
 
   async update(id: ReviewId, partial: Partial<Review>) {

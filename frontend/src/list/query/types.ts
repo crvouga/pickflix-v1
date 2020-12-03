@@ -14,11 +14,6 @@ export type ListItem = {
   mediaId: MediaId;
 };
 
-export type ListItemAggergation = {
-  listItem: ListItem;
-  tmdbData: TmdbData;
-};
-
 export enum AutoListKeys {
   WatchNext = "watch-next",
   Liked = "liked",
@@ -58,13 +53,22 @@ export type List = {
   createdAt: number;
 };
 
-export type ListAggergate<T extends List | AutoList> = {
-  listItems: ListItemAggergate[];
-  listItemCount: number;
-  list: T;
-  owner: User;
-  includeListItemWithMediaId?: ListItem;
+export type ListItemAggergation = {
+  listItem: ListItem;
+  tmdbData: TmdbData;
 };
 
-export type AutoListAggergation = ListAggergate<AutoList>;
-export type ListAggergation = ListAggergate<List>;
+export type ListAggergation = {
+  listItems: ListItemAggergation[];
+  listItemCount: number;
+  list: List;
+  owner: User;
+  editors: User[];
+};
+
+export type AutoListAggergation = {
+  listItems: ListItemAggergation[];
+  listItemCount: number;
+  autoList: AutoList;
+  owner: User;
+};

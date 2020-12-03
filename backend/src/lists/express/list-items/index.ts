@@ -1,22 +1,53 @@
-import express, { query } from "express";
+import express from "express";
 import {
-  castMediaId,
-  TmdbMediaId,
-  TmdbMediaType,
-  MediaId,
-} from "../../../media/models/types";
-import { castListId, ListId, ListItemId, castListItemId } from "../../models";
-import { Dependencies } from "../types";
-import { castUser, castUserId } from "../../../users/models";
-import {
+  castArray,
   makePaginationOptions,
   makePaginationResponse,
-  castArray,
 } from "../../../app/pagination";
+import { castMediaId, MediaId } from "../../../media/models/types";
+import { castUser, castUserId } from "../../../users/models";
+import { castListId, castListItemId, ListId, ListItemId } from "../../models";
+import { Dependencies } from "../types";
 
 export const listItems = ({ listLogic, middlewares }: Dependencies) => (
   router: express.IRouter
 ) => {
+  router.get(
+    "/list-items/lists",
+    middlewares.isAuthenticated,
+    async (req, res) => {
+      try {
+        const userId = castUserId(req.user?.id);
+
+        const mediaId = castMediaId({
+          tmdbMediaId: req.query.tmdbMediaId,
+          tmdbMediaType: req.query.tmdbMediaType,
+        });
+
+        console.log({ mediaId, userId });
+
+        const listsOrAutoLists = await listLogic.getListsFromMediaIdAndUserId(
+          {
+            userId,
+            mediaId,
+          },
+          {
+            orderBy: [["updatedAt", "descend"]],
+            pagination: {
+              page: 1,
+              pageSize: 100,
+            },
+          }
+        );
+        console.log({ listsOrAutoLists });
+
+        res.status(200).json(listsOrAutoLists).end();
+      } catch (error) {
+        res.status(400).json({ error: error.toString() }).end();
+      }
+    }
+  );
+
   /* 
     
     NOTE: list id take presedence over user id 
@@ -38,7 +69,7 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
             })
           : undefined;
 
-      const listInfo = listId
+      const spec = listId
         ? {
             listId,
             mediaId,
@@ -53,7 +84,7 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
       });
 
       const listItems = await listLogic.getListItemAggergations(
-        listInfo,
+        spec,
         paginationOptions
       );
 

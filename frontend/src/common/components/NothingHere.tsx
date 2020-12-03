@@ -1,7 +1,7 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
 
-export default () => {
+export default ({ text = "There's nothing here" }: { text?: string }) => {
   return (
     <Box
       display="flex"
@@ -10,7 +10,7 @@ export default () => {
       height="240px"
     >
       <Typography align="center" color="textSecondary" variant="h6">
-        There's nothing here
+        {text}
       </Typography>
     </Box>
   );

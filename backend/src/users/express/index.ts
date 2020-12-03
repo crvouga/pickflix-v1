@@ -134,12 +134,20 @@ export const useUsersRouter = ({ userLogic, middlewares }: Dependencies) => (
         page: req.query.page,
       });
 
+      const spec = id
+        ? { id }
+        : username
+        ? { username }
+        : emailAddress
+        ? { emailAddress }
+        : undefined;
+
+      if (!spec) {
+        throw new Error("invalid query");
+      }
+
       const userAggergations = await userLogic.getUserAggergations(
-        {
-          id,
-          username,
-          emailAddress,
-        },
+        spec,
         paginationOptions
       );
 

@@ -20,19 +20,13 @@ export const autoLists = ({ listLogic }: Dependencies) => (router: IRouter) => {
         ? castUserId(req.user.id)
         : undefined;
 
-      const includeListItemWithMediaId =
-        req.query.tmdbMediaId && req.query.tmdbMediaType
-          ? castMediaId({
-              tmdbMediaId: req.query.tmdbMediaId,
-              tmdbMediaType: req.query.tmdbMediaType,
-            })
-          : undefined;
+      const spec = id ? { id } : ownerId ? { ownerId } : undefined;
 
-      const listInfo = id ? { id } : { ownerId };
+      if (!spec) {
+        throw new Error("invalid query");
+      }
 
-      const autoLists = await listLogic.getAutoListAggergations(listInfo, {
-        includeListItemWithMediaId,
-      });
+      const autoLists = await listLogic.getAutoListAggergations(spec);
 
       res.status(200).json(autoLists).end();
     } catch (error) {

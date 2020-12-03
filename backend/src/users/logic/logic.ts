@@ -18,6 +18,7 @@ import {
   resetPassword,
   sendResetPasswordEmail,
 } from "./reset-password";
+import { IPermissionRepository } from "../../lists/repositories/permission-repository";
 
 export class UserLogic {
   userRepository: IUserRepository;
@@ -26,6 +27,7 @@ export class UserLogic {
   autoListRepository: IAutoListRepository;
   reviewRepository: IReviewRepository;
   eventEmitter: Emitter<Events>;
+  permissionRepository: IPermissionRepository;
   emailLogic: IEmailLogic;
 
   constructor({
@@ -36,6 +38,7 @@ export class UserLogic {
     listRepository,
     autoListRepository,
     reviewRepository,
+    permissionRepository,
   }: {
     userRepository: IUserRepository;
     credentialRepository: ICredentialRepository;
@@ -44,6 +47,7 @@ export class UserLogic {
     reviewRepository: IReviewRepository;
     eventEmitter: Emitter<Events>;
     emailLogic: IEmailLogic;
+    permissionRepository: IPermissionRepository;
   }) {
     this.eventEmitter = eventEmitter;
     this.emailLogic = emailLogic;
@@ -52,6 +56,7 @@ export class UserLogic {
     this.listRepository = listRepository;
     this.autoListRepository = autoListRepository;
     this.reviewRepository = reviewRepository;
+    this.permissionRepository = permissionRepository;
   }
 
   getResetPasswordEmail = getResetPasswordEmail;
@@ -75,15 +80,15 @@ export class UserLogic {
   }
 
   async getUsers(
-    userInfo: { username: string } | { id: UserId } | { emailAddress: string }
+    spec: { username: string } | { id: UserId } | { emailAddress: string }
   ) {
-    return await this.userRepository.find(userInfo);
+    return await this.userRepository.find([spec]);
   }
 
   async getUser(
-    info: { username: string } | { id: UserId } | { emailAddress: string }
+    spec: { username: string } | { id: UserId } | { emailAddress: string }
   ) {
-    const [user] = await this.userRepository.find(info);
+    const [user] = await this.userRepository.find([spec]);
 
     if (!user) {
       throw new Error("User does not exists");
@@ -95,7 +100,7 @@ export class UserLogic {
   async aggergateUser(user: User) {
     const [reviewCount, listCount, autoListCount] = await Promise.all([
       this.reviewRepository.count({ authorId: user.id }),
-      this.listRepository.count({ ownerId: user.id }),
+      this.permissionRepository.count({ userId: user.id }),
       this.autoListRepository.count({ ownerId: user.id }),
     ]);
 
@@ -108,19 +113,21 @@ export class UserLogic {
   }
 
   async getUserAggergations(
-    userSpec: {
-      id?: UserId;
-      username?: string;
-      emailAddress?: string;
-    },
+    spec:
+      | {
+          id: UserId;
+        }
+      | {
+          username: string;
+        }
+      | {
+          emailAddress: string;
+        },
     pagination?: PaginationOptions
   ) {
-    const users = await this.userRepository.find(
-      removeNullOrUndefinedEntries(userSpec),
-      {
-        pagination,
-      }
-    );
+    const users = await this.userRepository.find([spec], {
+      pagination,
+    });
 
     const userAggergations = await Promise.all(
       users.map((user) => this.aggergateUser(user))
@@ -134,7 +141,7 @@ export class UserLogic {
   }: {
     emailAddress: string;
   }) {
-    const [user] = await this.userRepository.find({ emailAddress });
+    const [user] = await this.userRepository.find([{ emailAddress }]);
 
     if (!user) {
       return [];

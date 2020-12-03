@@ -20,8 +20,13 @@ export type RepositoryQueryOptions<T> = {
   pagination?: PaginationOptions;
 };
 
+export type RepositoryQuerySpec<T> = Partial<T>[];
+
 export interface IGenericRepository<T extends Identifiable> {
-  find: (_: Partial<T>, options?: RepositoryQueryOptions<T>) => Promise<T[]>;
+  find: (
+    spec: RepositoryQuerySpec<T>,
+    options?: RepositoryQueryOptions<T>
+  ) => Promise<T[]>;
 
   search: (
     query: string,
@@ -35,5 +40,5 @@ export interface IGenericRepository<T extends Identifiable> {
 
   update: (_: Partial<T> & Pick<T, "id">) => Promise<T>;
 
-  count: (_: Partial<T>) => Promise<number>;
+  count: (spec: RepositoryQuerySpec<T>) => Promise<number>;
 }

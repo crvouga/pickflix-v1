@@ -3,6 +3,7 @@ import { pipe } from "remeda";
 import {
   RepositoryQueryOptions,
   Identifiable,
+  RepositoryQuerySpec,
   IGenericRepository,
 } from "./types";
 import { matchSorter } from "match-sorter";
@@ -47,13 +48,16 @@ export class GenericRepositoryHashMap<T extends Identifiable>
   }
 
   async find(
-    entityInfo: Partial<T>,
+    spec: RepositoryQuerySpec<T>,
     options?: RepositoryQueryOptions<T>
   ): Promise<T[]> {
     return pipe(
       this.hashMap,
       (hashMap) => Object.values(hashMap),
-      (rows) => rows.filter(R.whereEq(entityInfo)),
+      (rows) =>
+        rows.filter((row) =>
+          spec.some((partialSpec) => R.whereEq(partialSpec, row))
+        ),
       (rows) => R.sortWith(optionsToCompartors(options), rows),
       (rows) => rows.slice(...optionsToIndexRange(options))
     );
@@ -74,8 +78,8 @@ export class GenericRepositoryHashMap<T extends Identifiable>
     );
   }
 
-  async count(entityInfo: Partial<T>): Promise<number> {
-    const found = await this.find(entityInfo);
+  async count(spec: RepositoryQuerySpec<T>): Promise<number> {
+    const found = await this.find(spec);
     return found.length;
   }
 

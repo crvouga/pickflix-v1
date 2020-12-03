@@ -12,7 +12,7 @@ type Props = {
 export default ({ autoList, onClick }: Props) => {
   const history = useHistory();
   const handleClick = () => {
-    history.push(`/auto-list/${autoList.list.id}`);
+    history.push(`/auto-list/${autoList.autoList.id}`);
   };
   return (
     <Card onClick={onClick || handleClick}>
@@ -27,14 +27,14 @@ export default ({ autoList, onClick }: Props) => {
           >
             <AutoListIcon
               style={{ width: "55px", height: "55px" }}
-              autoListKey={autoList.list.key}
+              autoListKey={autoList.autoList.key}
             />
           </Box>
         </Grid>
         <Grid item zeroMinWidth xs>
           <Box p={2}>
             <Typography variant="h6" noWrap>
-              {toAutoListName(autoList.list.key)}
+              {toAutoListName(autoList.autoList.key)}
             </Typography>
             <Box display="flex" alignItems="center">
               <Box marginRight={1}>

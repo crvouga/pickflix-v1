@@ -1,7 +1,53 @@
 import { BackendAPI } from "../../backend-api";
 import { Paginated } from "../../common/types";
 import { MediaId } from "../../media/tmdb/types";
-import { List, ListAggergation } from "./types";
+import { AutoList, AutoListAggergation, List, ListAggergation } from "./types";
+
+/* 
+
+
+*/
+
+export type GetListsFromMediaIdParams = {
+  mediaId: MediaId;
+};
+
+export const getListsFromMediaId = async ({
+  mediaId,
+}: GetListsFromMediaIdParams) => {
+  const { data } = await BackendAPI.get<(List | AutoList)[]>(
+    "/api/list-items/lists",
+    {
+      params: {
+        ...mediaId,
+      },
+    }
+  );
+  return data;
+};
+
+/*
+
+
+*/
+
+export type GetAutoListParams = {
+  id?: string;
+  ownerId?: string;
+};
+
+export const getAutoLists = async ({ id, ownerId }: GetAutoListParams) => {
+  const { data } = await BackendAPI.get<AutoListAggergation[]>(
+    `/api/auto-lists`,
+    {
+      params: {
+        id,
+        ownerId,
+      },
+    }
+  );
+  return data;
+};
 
 /* 
 
@@ -10,7 +56,7 @@ import { List, ListAggergation } from "./types";
 
 export type GetListsParams = {
   ownerId?: string;
-  includeListItemWithMediaId?: MediaId;
+
   id?: string;
   page?: number;
 };
@@ -19,7 +65,7 @@ export type GetListsResponse = Paginated<ListAggergation>;
 
 export const getLists = async ({
   ownerId,
-  includeListItemWithMediaId,
+
   id,
   page,
 }: GetListsParams) => {
@@ -28,7 +74,6 @@ export const getLists = async ({
       ownerId,
       id,
       page,
-      ...includeListItemWithMediaId,
     },
   });
   return data;

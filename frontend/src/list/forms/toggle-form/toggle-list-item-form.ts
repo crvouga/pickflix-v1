@@ -98,14 +98,7 @@ export const toInitialMarkedListIds = ({
   autoLists: AutoListAggergation[];
   mediaId: MediaId;
 }): { [listId: string]: string } => {
-  return [...lists, ...autoLists]
-    .filter(
-      (list) =>
-        list.includeListItemWithMediaId &&
-        equals(list.includeListItemWithMediaId.mediaId, mediaId)
-    )
-    .map((list) => list.list.id)
-    .reduce((listIds, listId) => ({ ...listIds, [listId]: listId }), {});
+  return {};
 };
 
 /* 

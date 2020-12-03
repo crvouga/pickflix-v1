@@ -26,7 +26,7 @@ export default ({ user }: Props) => {
   }
 
   const watchNext = query.data.find(
-    (autoList) => autoList.list.key === AutoListKeys.WatchNext
+    (autoList) => autoList.autoList.key === AutoListKeys.WatchNext
   );
 
   if (!watchNext) {
