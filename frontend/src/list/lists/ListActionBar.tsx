@@ -8,10 +8,8 @@ import DeleteListFormModal from "../forms/delete-list-form/DeleteListFormModal";
 import useDeleteListForm from "../forms/delete-list-form/useDeleteListForm";
 import EditListFormModal from "../forms/edit-list-form/EditListFormModal";
 import useEditListForm from "../forms/edit-list-form/useEditListForm";
-import {
-  AddPermissionFormModal,
-  PermissionFormModal,
-} from "../forms/permissions-form/PermissionForm";
+import { AddPermissionFormModal } from "../forms/permissions-form/AddPermissionForm";
+import { PermissionFormModal } from "../forms/permissions-form/PermissionForm";
 import { List, ListAggergation } from "../query";
 
 const EditListButton = ({ list }: { list: List }) => {

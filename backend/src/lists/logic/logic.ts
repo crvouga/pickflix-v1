@@ -26,10 +26,18 @@ import {
   getListAggergations,
   getListAggergationsFromId,
   getListAggergationsFromUserId,
-  removeList,
   getListsFromMediaIdAndUserId,
   getListsFromUserId,
+  removeList,
+  getList,
 } from "./lists";
+import {
+  addEditors,
+  removeEditors,
+  isEditorOrOwner,
+  isOwner,
+  isEditor,
+} from "./permissions";
 
 export class ListLogic {
   userRepository: IUserRepository;
@@ -73,11 +81,11 @@ export class ListLogic {
   aggergateList = aggergateList;
   aggergateAutoList = aggergateAutoList;
   aggergateListItem = aggergateListItem;
-
+  //
   initializeAutoLists = initializeAutoLists;
   getAutoListAggergations = getAutoListAggergations;
   getAutoList = getAutoList;
-
+  //
   getListAggergationsFromUserId = getListAggergationsFromUserId;
   getListAggergationsFromId = getListAggergationsFromId;
   getListItemAggergations = getListItemAggergations;
@@ -85,11 +93,18 @@ export class ListLogic {
   removeListItems = removeListItems;
   toggleListItem = toggleListItem;
   setListItems = setListItems;
-
+  //
   getListAggergations = getListAggergations;
   addList = addList;
   removeList = removeList;
   editList = editList;
   getListsFromMediaIdAndUserId = getListsFromMediaIdAndUserId;
   getListsFromUserId = getListsFromUserId;
+  getList = getList;
+  //
+  addEditors = addEditors;
+  removeEditors = removeEditors;
+  isEditorOrOwner = isEditorOrOwner;
+  isEditor = isEditor;
+  isOwner = isOwner;
 }

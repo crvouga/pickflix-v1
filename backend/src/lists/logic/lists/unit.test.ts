@@ -83,8 +83,11 @@ describe("list logic", () => {
     }
     const [list1, list2, list3] = added;
 
-    await listLogic.removeList(list1.id);
-    await listLogic.removeList(list3.id);
+    await listLogic.removeList({
+      userId: user.id,
+      listId: list1.id,
+    });
+    await listLogic.removeList({ userId: user.id, listId: list3.id });
 
     const after = await listLogic.getListAggergationsFromUserId({
       userId: user.id,
@@ -151,5 +154,32 @@ describe("list logic", () => {
     } catch (error) {
       expect(error).toBeFalsy();
     }
+  });
+
+  it("only allows owner of list to remove list", async () => {
+    const { listLogic } = buildListLogicTest();
+    const owner = makeUserFake();
+    const editor = makeUserFake();
+    const list = await listLogic.addList({
+      ownerId: owner.id,
+      title: "shared list",
+    });
+
+    await listLogic.addEditors({
+      listId: list.id,
+      userId: owner.id,
+      editorIds: [editor.id],
+    });
+
+    const before = await listLogic.getList({ listId: list.id });
+
+    await listLogic.removeList({
+      listId: list.id,
+      userId: editor.id,
+    });
+
+    const after = await listLogic.getList({ listId: list.id });
+
+    expect(before).toEqual(after);
   });
 });

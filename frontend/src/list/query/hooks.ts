@@ -16,17 +16,21 @@ import {
 } from "./list-items";
 import {
   deleteList,
+  DeleteListEditorsParams,
   DeleteListParams,
   GetAutoListParams,
   getAutoLists,
   getLists,
+  getListsFromMediaId,
+  GetListsFromMediaIdParams,
   GetListsParams,
   patchList,
   PatchListParams,
   postList,
+  postListEditors,
+  PostListEditorsParams,
   PostListParams,
-  GetListsFromMediaIdParams,
-  getListsFromMediaId,
+  deleteListEditors,
 } from "./lists";
 import { ListAggergation, ListItemAggergation } from "./types";
 
@@ -270,6 +274,50 @@ export const useEditListMutation = () => {
       queryCache.invalidateQueries((query) =>
         query.queryKey.includes(params.listId)
       );
+    }
+  };
+};
+
+/* 
+
+*/
+
+export const useAddEditorsMutation = () => {
+  const queryCache = useQueryCache();
+  return async (params: PostListEditorsParams) => {
+    try {
+      await postListEditors(params);
+    } catch (error) {
+      throw error;
+    } finally {
+      queryCache.invalidateQueries(
+        makeGetListsQueryKey({
+          id: params.listId,
+        })
+      );
+      queryCache.invalidateQueries(makeGetListsQueryKey({}));
+    }
+  };
+};
+
+/* 
+
+*/
+
+export const useDeleteEditorsMutation = () => {
+  const queryCache = useQueryCache();
+  return async (params: DeleteListEditorsParams) => {
+    try {
+      await deleteListEditors(params);
+    } catch (error) {
+      throw error;
+    } finally {
+      queryCache.invalidateQueries(
+        makeGetListsQueryKey({
+          id: params.listId,
+        })
+      );
+      queryCache.invalidateQueries(makeGetListsQueryKey({}));
     }
   };
 };

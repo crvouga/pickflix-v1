@@ -1,16 +1,27 @@
-import { CircularProgress, TextField, Zoom, Box } from "@material-ui/core";
-import { Autocomplete, AutocompleteProps } from "@material-ui/lab";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Zoom,
+} from "@material-ui/core";
+import { Autocomplete } from "@material-ui/lab";
 import React, { useState } from "react";
-import UserListItem from "../../../user/components/UserListItem";
-import { User } from "../../../user/query";
+import useModal from "../../../app/modals/useModal";
+import NonFullscreenResponsiveDialog from "../../../common/components/NonFullscreenResponsiveDialog";
+import { SlideLeft } from "../../../common/components/TransitionComponents";
 import { useQuerySearchUsers } from "../../../search/query";
 import ChipUser from "../../../user/components/ChipUser";
+import UserListItem from "../../../user/components/UserListItem";
+import { User } from "../../../user/query";
+import { ListAggergation, useAddEditorsMutation } from "../../query";
+import { SubmitButton } from "../../../common/components/SubmitButton";
 
 type AutoCompeleteUsersProps = {
   users: User[];
   isLoading?: boolean;
   onTextChanged: (text: string) => void;
-  selectedUsers: User[];
+
   onSelectedUsersChanged: (users: User[]) => void;
 };
 const noop = () => {};
@@ -19,7 +30,6 @@ const AutoCompeleteUsers = ({
   users,
   isLoading,
   onTextChanged,
-  selectedUsers,
   onSelectedUsersChanged,
 }: AutoCompeleteUsersProps) => {
   return (
@@ -31,12 +41,9 @@ const AutoCompeleteUsers = ({
       onInputChange={(event, input) => {
         onTextChanged(input);
       }}
-      // value={selectedUsers}
-      // onChange={(event, value) => {
-
-      //   // onSelectedUsersChanged(value);
-      // }}
-
+      onChange={(event, value) => {
+        onSelectedUsersChanged(value);
+      }}
       renderTags={(tags, getTagProps) => {
         return (
           <React.Fragment>
@@ -82,24 +89,49 @@ const AutoCompeleteUsers = ({
   );
 };
 
-export const AutoCompeleteUsersContainer = () => {
-  const selectedUsers: User[] = [];
-  const setSelectedUsers = (selectedUsers: User[]) => {};
-
+export const AddPermissionFormModal = ({ list }: { list: ListAggergation }) => {
+  const { isOpen, close } = useModal("AddPermissionForm");
+  const mutate = useAddEditorsMutation();
   const [text, setText] = useState("");
-
   const query = useQuerySearchUsers({
     text,
   });
 
+  const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
+
+  const submit = async () => {
+    try {
+      await mutate({
+        listId: list.list.id,
+        editorIds: selectedUsers.map((user) => user.id),
+      });
+    } catch (error) {}
+  };
+
   const users = query.data?.flatMap((page) => page.results) || [];
 
   return (
-    <AutoCompeleteUsers
-      users={users}
-      onTextChanged={setText}
-      onSelectedUsersChanged={setSelectedUsers}
-      selectedUsers={selectedUsers}
-    />
+    <NonFullscreenResponsiveDialog
+      TransitionComponent={SlideLeft}
+      open={isOpen}
+      onClose={close}
+    >
+      <Box p={2}>
+        <AutoCompeleteUsers
+          users={users}
+          onTextChanged={setText}
+          onSelectedUsersChanged={setSelectedUsers}
+        />
+
+        <Box paddingTop={2} display="flex" justifyContent="space-between">
+          <Button size="large" onClick={close}>
+            Cancel
+          </Button>
+          <SubmitButton disabled={selectedUsers.length === 0} onClick={submit}>
+            Add
+          </SubmitButton>
+        </Box>
+      </Box>
+    </NonFullscreenResponsiveDialog>
   );
 };

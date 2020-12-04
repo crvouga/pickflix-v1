@@ -6,6 +6,7 @@ import { User } from "../../user/query";
 import RemoveListItemFormModal from "../forms/remove-list-items-form/RemoveListItemFormModal";
 import ListItemActionBar from "./ListItemActionBar";
 import ListItemGrid from "./ListItemGrid";
+import { ListAggergation, AutoList, AutoListAggergation } from "../query";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -16,15 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default ({
-  listId,
-  listItemCount,
-  owner,
-}: {
-  owner: User;
-  listId: string;
-  listItemCount: number;
-}) => {
+export default ({ list }: { list: ListAggergation | AutoListAggergation }) => {
   const classes = useStyles();
 
   return (
@@ -33,14 +26,14 @@ export default ({
 
       <WithAuthentication
         renderAuthenticated={(currentUser) =>
-          owner.id === currentUser.user.id && (
+          list.owner.id === currentUser.user.id && (
             <Box className={classes.appBar}>
-              <ListItemActionBar listId={listId} />
+              <ListItemActionBar list={list} />
             </Box>
           )
         }
       />
-      <ListItemGrid listItemCount={listItemCount} listId={listId} />
+      <ListItemGrid list={list} />
     </React.Fragment>
   );
 };

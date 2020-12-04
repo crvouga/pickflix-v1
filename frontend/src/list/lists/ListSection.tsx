@@ -3,10 +3,10 @@ import React from "react";
 import { pluralize } from "../../common/utility";
 import WithAuthentication from "../../user/auth/WithAuthentication";
 import ChipUser from "../../user/components/ChipUser";
-import { ListAggergation } from "../query";
+import RemoveListItemFormModal from "../forms/remove-list-items-form/RemoveListItemFormModal";
+import { ListAggergation, isEditorOrOwner } from "../query";
 import ListCardImage from "./card/ListCardImage";
 import ListActionBar from "./ListActionBar";
-import RemoveListItemFormModal from "../forms/remove-list-items-form/RemoveListItemFormModal";
 
 export default ({ list }: { list: ListAggergation }) => {
   return (
@@ -38,11 +38,27 @@ export default ({ list }: { list: ListAggergation }) => {
             {pluralize(list.listItemCount, "item")}
           </Typography>
         </Box>
-        <ChipUser user={list.owner} />
+        <Box
+          display="flex"
+          flexWrap="wrap"
+          justifyContent="center"
+          paddingX={2}
+        >
+          <Box marginRight={1} marginBottom={1}>
+            <ChipUser user={list.owner} />
+          </Box>
+          {list.editors.map((editor) => (
+            <Box key={editor.id} marginRight={1} marginBottom={1}>
+              <ChipUser user={editor} />
+            </Box>
+          ))}
+        </Box>
       </Box>
       <WithAuthentication
         renderAuthenticated={(currentUser) =>
-          currentUser.user.id === list.owner.id && <ListActionBar list={list} />
+          isEditorOrOwner(currentUser.user, list) && (
+            <ListActionBar list={list} />
+          )
         }
       />
     </React.Fragment>

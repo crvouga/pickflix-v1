@@ -4,8 +4,15 @@ import React, { useEffect } from "react";
 import useModal from "../../app/modals/useModal";
 import { useListener } from "../../common/utility";
 import useRemoveListItemsForm from "../forms/remove-list-items-form/useRemoveListItemsForm";
+import { ListAggergation, AutoListAggergation } from "../query";
 
-export const ListItemActionBar = ({ listId }: { listId: string }) => {
+export const ListItemActionBar = ({
+  list,
+}: {
+  list: ListAggergation | AutoListAggergation;
+}) => {
+  const listId = "list" in list ? list.list.id : list.autoList.id;
+
   const removeListItemsFormModal = useModal("RemoveListItemsForm");
   const {
     isSelecting,
@@ -62,10 +69,10 @@ export const ListItemActionBar = ({ listId }: { listId: string }) => {
   );
 };
 
-export default ({ listId }: { listId: string }) => {
+export default ({ list }: { list: ListAggergation | AutoListAggergation }) => {
   return (
     <Box width="100%" display="flex" alignItems="center" p={2}>
-      <ListItemActionBar listId={listId} />
+      <ListItemActionBar list={list} />
     </Box>
   );
 };

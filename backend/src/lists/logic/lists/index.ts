@@ -195,6 +195,21 @@ export async function editList(
   return updated;
 }
 
-export async function removeList(this: ListLogic, id: ListId): Promise<void> {
-  await this.listRepository.remove(id);
+export async function getList(this: ListLogic, { listId }: { listId: ListId }) {
+  const found = await this.listRepository.find([{ id: listId }]);
+
+  if (found.length === 0) {
+    throw new Error("Failed to get list");
+  }
+
+  return found[0];
+}
+
+export async function removeList(
+  this: ListLogic,
+  { listId, userId }: { listId: ListId; userId: UserId }
+): Promise<void> {
+  if (await this.isOwner({ listId, userId })) {
+    await this.listRepository.remove(listId);
+  }
 }

@@ -9,28 +9,22 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   Typography,
-  Button,
+  IconButton,
 } from "@material-ui/core";
 import GroupAddOutlinedIcon from "@material-ui/icons/GroupAddOutlined";
 import React from "react";
+import { useHistory } from "react-router";
 import useModal from "../../../app/modals/useModal";
 import {
   DoneButton,
   ResponsiveDialog,
 } from "../../../common/components/ResponsiveDialog";
-import {
-  SlideUp,
-  SlideLeft,
-  ZoomIn,
-} from "../../../common/components/TransitionComponents";
+import { SlideUp } from "../../../common/components/TransitionComponents";
 import AvatarUser from "../../../user/components/AvatarUser";
+import { makeUserPageRoute } from "../../../user/UserPage";
 import ListCard from "../../lists/card/ListCard";
 import { ListAggergation } from "../../query";
-import { useHistory } from "react-router";
-import { makeUserPageRoute } from "../../../user/UserPage";
-import { AutoCompeleteUsersContainer } from "./AutoCompleteUserSearch";
-import NonFullscreenResponsiveDialog from "../../../common/components/NonFullscreenResponsiveDialog";
-
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 export const PermissionForm = ({ list }: { list: ListAggergation }) => {
   const history = useHistory();
   const addPermissionFormModal = useModal("AddPermissionForm");
@@ -70,15 +64,26 @@ export const PermissionForm = ({ list }: { list: ListAggergation }) => {
           primary={list.owner.username}
           secondary={list.owner.displayName}
         />
-        <ListItemSecondaryAction>
+        <Box paddingX={4}>
           <Typography color="textSecondary" style={{ fontStyle: "italic" }}>
             Owner
           </Typography>
+        </Box>
+        <ListItemSecondaryAction>
+          <IconButton>
+            <MoreHorizIcon />
+          </IconButton>
         </ListItemSecondaryAction>
       </ListItem>
 
       {list.editors.map((editor) => (
-        <ListItem key={editor.id}>
+        <ListItem
+          key={editor.id}
+          button
+          onClick={() => {
+            history.push(makeUserPageRoute({ userId: editor.id }));
+          }}
+        >
           <ListItemAvatar>
             <AvatarUser user={editor} />
           </ListItemAvatar>
@@ -86,43 +91,20 @@ export const PermissionForm = ({ list }: { list: ListAggergation }) => {
             primary={editor.username}
             secondary={editor.displayName}
           />
-          <ListItemSecondaryAction>
+          <Box paddingX={4}>
             <Typography color="textSecondary" style={{ fontStyle: "italic" }}>
               Editor
             </Typography>
+          </Box>
+
+          <ListItemSecondaryAction>
+            <IconButton>
+              <MoreHorizIcon />
+            </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
       ))}
     </List>
-  );
-};
-
-export const AddPermissionFormModal = ({ list }: { list: ListAggergation }) => {
-  const { isOpen, close } = useModal("AddPermissionForm");
-
-  return (
-    <NonFullscreenResponsiveDialog
-      TransitionComponent={SlideLeft}
-      open={isOpen}
-      onClose={close}
-    >
-      <Box p={2}>
-        <AutoCompeleteUsersContainer />
-        <Box paddingTop={2} display="flex" justifyContent="space-between">
-          <Button size="large" onClick={close}>
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            style={{ color: "white", fontWeight: "bold" }}
-          >
-            Add
-          </Button>
-        </Box>
-      </Box>
-    </NonFullscreenResponsiveDialog>
   );
 };
 

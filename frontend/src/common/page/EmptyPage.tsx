@@ -19,7 +19,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default () => {
+export default ({
+  title = "Could not find page",
+  subtitle = "",
+}: {
+  title?: string;
+  subtitle?: string;
+}) => {
   const classes = useStyles();
   const history = useHistory();
 
@@ -28,7 +34,12 @@ export default () => {
       <ResponsiveNavigation />
       <div className={classes.root}>
         <Box paddingBottom={2}>
-          <Typography variant="h5">Couldn't find page</Typography>
+          <Typography align="center" variant="h5">
+            {title}
+          </Typography>
+          <Typography align="center" color="textSecondary" variant="subtitle1">
+            {subtitle}
+          </Typography>
         </Box>
 
         <Box display="flex">

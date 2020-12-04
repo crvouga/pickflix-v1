@@ -25,7 +25,12 @@ export default () => {
   const lists = query.data;
 
   if (lists[0] && lists[0].results.length === 0) {
-    return <EmptyPage />;
+    return (
+      <EmptyPage
+        title="Could not find list"
+        subtitle="This probably means the list was deleted"
+      />
+    );
   }
 
   const list = lists[0].results[0];
@@ -45,11 +50,7 @@ export default () => {
       </Paper>
 
       <Container disableGutters maxWidth="md">
-        <ListItemsSection
-          owner={list.owner}
-          listId={list.list.id}
-          listItemCount={list.listItemCount}
-        />
+        <ListItemsSection list={list} />
       </Container>
     </React.Fragment>
   );

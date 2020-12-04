@@ -1,9 +1,9 @@
 import express from "express";
 import {
-  castArray,
   makePaginationOptions,
   makePaginationResponse,
 } from "../../../app/pagination";
+import { castArray } from "../../../app/utils";
 import { castMediaId, MediaId } from "../../../media/models/types";
 import { castUser, castUserId } from "../../../users/models";
 import { castListId, castListItemId, ListId, ListItemId } from "../../models";

@@ -45,11 +45,7 @@ export default () => {
       </Paper>
 
       <Container disableGutters maxWidth="md">
-        <ListItemsSection
-          owner={autoList.owner}
-          listItemCount={autoList.listItemCount}
-          listId={autoList.autoList.id}
-        />
+        <ListItemsSection list={autoList} />
       </Container>
     </React.Fragment>
   );

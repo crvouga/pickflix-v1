@@ -4,17 +4,20 @@ import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import clsx from "clsx";
 import React from "react";
 import ErrorBox from "../../common/components/ErrorBox";
-import LoadingBox from "../../common/components/LoadingBox";
+import NothingHere from "../../common/components/NothingHere";
+import { InfiniteScrollBottom } from "../../common/infinite-scroll";
+import { ensureArray } from "../../common/utility";
 import MoviePosterCard from "../../movie/components/MoviePosterCard";
 import {
   MoviePosterGridSkeleton,
   ResponsiveGrid,
 } from "../../movie/components/MoviePosterGrid";
-import { ensureArray } from "../../common/utility";
 import useDeleteListItemsForm from "../forms/remove-list-items-form/useRemoveListItemsForm";
-import { useQueryListItems } from "../query";
-import NothingHere from "../../common/components/NothingHere";
-import { InfiniteScrollBottom } from "../../common/infinite-scroll";
+import {
+  AutoListAggergation,
+  useQueryListItems,
+  ListAggergation,
+} from "../query";
 
 const useStyles = makeStyles((theme) => ({
   selected: {
@@ -22,13 +25,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default ({
-  listId,
-  listItemCount,
-}: {
-  listId: string;
-  listItemCount: number;
-}) => {
+export default ({ list }: { list: ListAggergation | AutoListAggergation }) => {
+  const listId = "list" in list ? list.list.id : list.autoList.id;
+
   const classes = useStyles();
 
   const { listItemIds, isSelecting, toggleDeletion } = useDeleteListItemsForm();
@@ -43,7 +42,7 @@ export default ({
 
   if (!query.data) {
     return (
-      <MoviePosterGridSkeleton posterCount={Math.min(listItemCount, 20)} />
+      <MoviePosterGridSkeleton posterCount={Math.min(list.listItemCount, 20)} />
     );
   }
 

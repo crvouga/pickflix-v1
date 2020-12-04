@@ -24,6 +24,7 @@ import {
   useReviewFormState,
 } from "./review-form";
 import ReviewFormMedia from "./ReviewFormMedia";
+import { SubmitButton } from "../../../common/components/SubmitButton";
 
 const ReviewFormAuthor = () => {
   const query = useQueryCurrentUser();
@@ -82,21 +83,9 @@ const ReviewFormContent = (props: TextFieldProps) => {
 
 const ReviewFormSubmitButton = (props: ButtonProps) => {
   return (
-    <Box
-      color={props.disabled ? "action.disabled" : "text.primary"}
-      fontWeight="bold"
-    >
-      <Button
-        variant="contained"
-        color="primary"
-        size="large"
-        startIcon={<ArrowUpwardIcon />}
-        style={{ color: "inherit", fontWeight: "inherit" }}
-        {...props}
-      >
-        Post
-      </Button>
-    </Box>
+    <SubmitButton startIcon={<ArrowUpwardIcon />} {...props}>
+      Post
+    </SubmitButton>
   );
 };
 

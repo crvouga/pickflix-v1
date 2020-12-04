@@ -5,7 +5,7 @@ export const makeUserFake = (overrides?: Partial<User>): User => {
   return {
     ...makeUser({
       emailAddress: "test@gmail.com",
-      username: "iLikeMovies",
+      username: "bobsmith",
       displayName: "Bob Smith",
     }),
     ...overrides,

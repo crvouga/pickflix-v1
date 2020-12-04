@@ -121,15 +121,23 @@ export const lists = ({ listLogic, middlewares }: Dependencies) => (
     }
   });
 
-  router.delete("/lists/:listId", async (req, res, next) => {
-    try {
-      const listId = castListId(req.params.listId);
+  router.delete(
+    "/lists/:listId",
+    middlewares.isAuthenticated,
+    async (req, res) => {
+      try {
+        const userId = castUserId(req.user?.id);
+        const listId = castListId(req.params.listId);
 
-      await listLogic.removeList(listId);
+        await listLogic.removeList({ userId, listId });
 
-      res.status(204).end();
-    } catch (error) {
-      res.status(400).json({ error, message: "failed to delete list" }).end();
+        res.status(204).end();
+      } catch (error) {
+        res
+          .status(400)
+          .json({ error: error.toString(), message: "failed to delete list" })
+          .end();
+      }
     }
-  });
+  );
 };

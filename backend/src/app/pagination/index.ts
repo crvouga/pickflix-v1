@@ -1,21 +1,7 @@
 import { PaginationOptions } from "../data-access/types";
+import { castArray, castPositiveNumber } from "../utils";
 
 export const DEFAULT_PAGE_SIZE = 20;
-
-export const castPositiveNumber = (anything: any) => {
-  const number = Number(anything);
-  if (number > 0) {
-    return number;
-  }
-  throw new Error("invalid positive number");
-};
-
-export const castArray = <T>(array: any) => {
-  if (Array.isArray(array)) {
-    return array as T[];
-  }
-  throw new Error("invalid array");
-};
 
 export const makePaginationOptions = ({
   pageSize,

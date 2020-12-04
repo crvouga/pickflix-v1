@@ -8,6 +8,50 @@ import { AutoList, AutoListAggergation, List, ListAggergation } from "./types";
 
 */
 
+export type PostListEditorsParams = {
+  listId: string;
+  editorIds: string[];
+};
+
+export const postListEditors = async ({
+  listId,
+  editorIds,
+}: PostListEditorsParams) => {
+  const { data } = await BackendAPI.post<undefined>(
+    `/api/lists/${listId}/editors`,
+    editorIds
+  );
+  return data;
+};
+
+/* 
+
+
+*/
+
+export type DeleteListEditorsParams = {
+  listId: string;
+  editorIds: string[];
+};
+
+export const deleteListEditors = async ({
+  listId,
+  editorIds,
+}: DeleteListEditorsParams) => {
+  const { data } = await BackendAPI.delete<undefined>(
+    `/api/lists/${listId}/editors`,
+    {
+      data: editorIds,
+    }
+  );
+  return data;
+};
+
+/* 
+
+
+*/
+
 export type GetListsFromMediaIdParams = {
   mediaId: MediaId;
 };
@@ -56,19 +100,13 @@ export const getAutoLists = async ({ id, ownerId }: GetAutoListParams) => {
 
 export type GetListsParams = {
   ownerId?: string;
-
   id?: string;
   page?: number;
 };
 
 export type GetListsResponse = Paginated<ListAggergation>;
 
-export const getLists = async ({
-  ownerId,
-
-  id,
-  page,
-}: GetListsParams) => {
+export const getLists = async ({ ownerId, id, page }: GetListsParams) => {
   const { data } = await BackendAPI.get<GetListsResponse>(`/api/lists`, {
     params: {
       ownerId,

@@ -72,3 +72,13 @@ export type AutoListAggergation = {
   autoList: AutoList;
   owner: User;
 };
+
+export const isEditorOrOwner = (
+  user: User,
+  list: ListAggergation | AutoListAggergation
+) => {
+  return (
+    list.owner.id === user.id ||
+    ("list" in list && list.editors.some((editor) => editor.id === user.id))
+  );
+};
