@@ -1,7 +1,7 @@
 import { Box, Chip } from "@material-ui/core";
 import React from "react";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
-import { SearchFilter, toSearchFilterName } from "../redux/search";
+import { SearchFilter, toSearchFilterName } from "../query";
 
 type Props = {
   onClick: (filter: SearchFilter) => void;

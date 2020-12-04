@@ -20,6 +20,7 @@ import {
   eventEmitterCreateListWithListItemsForm,
   useCreateListWithListItemsForm,
 } from "./create-list-with-list-items-form";
+import { ZoomIn } from "../../../common/components/TransitionComponents";
 
 const Creating = () => {
   const isLoading = useBoolean(false);
@@ -74,7 +75,7 @@ export default () => {
 
   return (
     <React.Fragment>
-      <Dialog open={isOpen} onClose={handleClose}>
+      <Dialog TransitionComponent={ZoomIn} open={isOpen} onClose={handleClose}>
         <DialogTitle>Create List</DialogTitle>
         <DialogContent>
           <Box paddingBottom={1}>

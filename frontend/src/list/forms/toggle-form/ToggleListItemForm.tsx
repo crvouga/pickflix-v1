@@ -11,7 +11,10 @@ import { useHistory } from "react-router";
 import useModal from "../../../app/modals/useModal";
 import ListItemSkeleton from "../../../common/components/ListItemSkeleton";
 import Repeat from "../../../common/components/Repeat";
-import ResponsiveDialog from "../../../common/components/ResponsiveDialog";
+import {
+  DoneButton,
+  ResponsiveDialog,
+} from "../../../common/components/ResponsiveDialog";
 import { SlideUp } from "../../../common/components/TransitionComponents";
 import {
   FetchMoreRef,
@@ -26,7 +29,6 @@ import {
 } from "../../query";
 import {
   CreateListButton,
-  DoneButton,
   ToggleButton,
   ToggleButtonSkeleton,
 } from "./buttons";
@@ -185,6 +187,7 @@ export const ToggleListItemFormModal = ({
       <ToggleListItemForm {...ToggleListItemFormProps} />
       <Hidden smUp>
         <Box position="fixed" bottom={0} width="100%">
+          <Divider />
           <DoneButton onClick={close} />
         </Box>
       </Hidden>

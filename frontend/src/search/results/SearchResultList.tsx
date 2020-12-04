@@ -5,7 +5,7 @@ import ListItemSkeleton from "../../common/components/ListItemSkeleton";
 import { InfiniteScrollBottom } from "../../common/infinite-scroll";
 import { useSearchState } from "../redux/search";
 import SearchResultListItem from "./SearchResultListItem";
-import useQuerySearchResults from "./useQuerySearchResults";
+import { useQuerySearchResults } from "../query";
 
 export default () => {
   const { text, filter } = useSearchState();

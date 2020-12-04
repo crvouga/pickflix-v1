@@ -3,27 +3,14 @@ import {
   createAction,
   createReducer,
 } from "@reduxjs/toolkit";
+import { uniqBy } from "ramda";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../app/redux/types";
 import { createPayloadReducer } from "../../app/redux/utils";
-import { SearchResult } from "../query";
-import { uniqBy } from "ramda";
+import { SearchFilter, SearchResult } from "../query";
 
 const name: "search" = "search";
 
-export enum SearchFilter {
-  // multi = "multi",
-  movie = "movie",
-  person = "person",
-  user = "user",
-}
-export const toSearchFilterName = (filter: SearchFilter) => {
-  return {
-    [SearchFilter.movie]: "Movies",
-    [SearchFilter.person]: "People",
-    [SearchFilter.user]: "Users",
-  }[filter];
-};
 export type SearchState = {
   history: SearchResult[];
   filter?: SearchFilter;

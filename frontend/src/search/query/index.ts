@@ -1,6 +1,8 @@
 import { AxiosRequestConfig } from "axios";
 import matchSorter from "match-sorter";
+import { useDebounce } from "use-debounce/lib";
 import { BackendAPI } from "../../backend-api";
+import { useInfiniteQueryPagination } from "../../common/infinite-scroll";
 import { makeEmptyPaginatedResponse, Paginated } from "../../common/types";
 import { User } from "../../user/query";
 
@@ -9,6 +11,18 @@ import { User } from "../../user/query";
 
 */
 
+export enum SearchFilter {
+  movie = "movie",
+  person = "person",
+  user = "user",
+}
+export const toSearchFilterName = (filter: SearchFilter) => {
+  return {
+    [SearchFilter.movie]: "Movies",
+    [SearchFilter.person]: "People",
+    [SearchFilter.user]: "Users",
+  }[filter];
+};
 export type UserResult = User;
 
 export type PersonResult = {
@@ -188,4 +202,76 @@ export const getSearchAll = async (
     ...multiResponse,
     results,
   };
+};
+
+const MAX_QUERY_LENGTH = 100;
+const DEBOUNCE_TIMEOUT = 1000 / 3;
+
+const deduplicateWhitespace = (string: string) => string.replace(/\s+/g, " ");
+
+const textToSearchQuery = (text: string) =>
+  deduplicateWhitespace(text.trim()).substr(0, MAX_QUERY_LENGTH);
+
+const useSearchQuery = ({
+  text,
+  debounceTimeout = DEBOUNCE_TIMEOUT,
+}: {
+  text: string;
+  debounceTimeout?: number;
+}) => {
+  const [searchQuery] = useDebounce(textToSearchQuery(text), debounceTimeout);
+  return searchQuery;
+};
+
+export const useQuerySearchResults = ({
+  filter,
+  text,
+  debounceTimeout = DEBOUNCE_TIMEOUT,
+}: {
+  filter?: SearchFilter;
+  text: string;
+  debounceTimeout?: number;
+}) => {
+  const searchQuery = useSearchQuery({ text, debounceTimeout });
+
+  return useInfiniteQueryPagination(
+    ["search", filter, searchQuery],
+    ({
+      lastPage,
+    }): Promise<
+      Paginated<MovieResult | PersonResult | TvResult | UserResult>
+    > => {
+      const params: GetSearchParams = {
+        page: lastPage,
+        query: searchQuery,
+      };
+      switch (filter) {
+        case "movie":
+          return getSearchMovie(params);
+        case "person":
+          return getSearchPerson(params);
+        case "user":
+          return getSearchUsers(params);
+      }
+      return getSearchAll(params);
+    }
+  );
+};
+
+export const useQuerySearchUsers = (params: {
+  text: string;
+  debounceTimeout?: number;
+}) => {
+  const searchQuery = useSearchQuery(params);
+
+  return useInfiniteQueryPagination(
+    ["search", "users", searchQuery],
+    ({ lastPage }): Promise<Paginated<UserResult>> => {
+      const params: GetSearchParams = {
+        page: lastPage,
+        query: searchQuery,
+      };
+      return getSearchUsers(params);
+    }
+  );
 };

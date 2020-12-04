@@ -12,6 +12,7 @@ import useModal from "../../../app/modals/useModal";
 import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
 import { useListener } from "../../../common/utility";
 import useEditListForm from "./useEditListForm";
+import { ZoomIn } from "../../../common/components/TransitionComponents";
 
 export default () => {
   const { isOpen, close } = useModal("EditListForm");
@@ -60,7 +61,7 @@ export default () => {
   };
 
   return (
-    <Dialog open={isOpen} onClose={close}>
+    <Dialog TransitionComponent={ZoomIn} open={isOpen} onClose={close}>
       <DialogTitle>Edit List</DialogTitle>
       <DialogContent>
         <Box marginBottom={2}>

@@ -25,7 +25,7 @@ import {
   yearRangeToName,
 } from "./query/types";
 import useDiscoverState from "./useDiscoverState";
-import ResponsiveDialog from "../common/components/ResponsiveDialog";
+import { ResponsiveDialog } from "../common/components/ResponsiveDialog";
 
 const ReleaseYearRangeSection = () => {
   const discoverTuneModal = useModal("DiscoverTune");

@@ -1,5 +1,6 @@
-import { Tab, Tabs, AppBar } from "@material-ui/core";
+import { AppBar, Container, Tab, Tabs } from "@material-ui/core";
 import React from "react";
+import { APP_BAR_HEIGHT } from "../app/navigation/constants";
 import TabPanel from "../common/components/TabPanel";
 import { useListener } from "../common/utility";
 import { eventEmitterReviewForm } from "../review/form/edit-create-review/review-form";
@@ -8,7 +9,6 @@ import { UserPageTabValue, useUserPageUi } from "./redux/user-page-ui";
 import TabPanelList from "./TabPanelList";
 import TabPanelOverview from "./TabPanelOverview";
 import TabPanelReview from "./TabPanelReview";
-import { APP_BAR_HEIGHT } from "../app/navigation/constants";
 
 const tabValueToLabel = (tabValue: UserPageTabValue): string => {
   switch (tabValue) {
@@ -48,23 +48,27 @@ export default ({ user }: { user: UserAggergation }) => {
   return (
     <React.Fragment>
       <AppBar color="default" position="sticky" style={{ top: APP_BAR_HEIGHT }}>
-        <Tabs
-          value={userPageUi.tabIndex}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="fullWidth"
-          onChange={handleChange}
-        >
-          {userPageUi.tabOrder.map((tabValue) => (
-            <Tab key={tabValue} label={tabValueToLabel(tabValue)} />
-          ))}
-        </Tabs>
+        <Container maxWidth="md">
+          <Tabs
+            value={userPageUi.tabIndex}
+            indicatorColor="primary"
+            textColor="primary"
+            variant="fullWidth"
+            onChange={handleChange}
+          >
+            {userPageUi.tabOrder.map((tabValue) => (
+              <Tab key={tabValue} label={tabValueToLabel(tabValue)} />
+            ))}
+          </Tabs>
+        </Container>
       </AppBar>
-      {userPageUi.tabOrder.map((tabValue, index) => (
-        <TabPanel key={tabValue} value={userPageUi.tabIndex} index={index}>
-          {tabValueToTabComponent(tabValue)}
-        </TabPanel>
-      ))}
+      <Container maxWidth="md" disableGutters>
+        {userPageUi.tabOrder.map((tabValue, index) => (
+          <TabPanel key={tabValue} value={userPageUi.tabIndex} index={index}>
+            {tabValueToTabComponent(tabValue)}
+          </TabPanel>
+        ))}
+      </Container>
     </React.Fragment>
   );
 };

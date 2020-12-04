@@ -42,9 +42,7 @@ export default ({ list }: { list: ListAggergation }) => {
       </Box>
       <WithAuthentication
         renderAuthenticated={(currentUser) =>
-          currentUser.user.id === list.owner.id && (
-            <ListActionBar list={list.list} />
-          )
+          currentUser.user.id === list.owner.id && <ListActionBar list={list} />
         }
       />
     </React.Fragment>

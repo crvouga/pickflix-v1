@@ -98,9 +98,7 @@ export const UserPage = ({ user }: { user: UserAggergation }) => {
         </Container>
       </Paper>
 
-      <Container maxWidth="md" disableGutters>
-        <TabsAndTabPanels user={user} />
-      </Container>
+      <TabsAndTabPanels user={user} />
     </React.Fragment>
   );
 };

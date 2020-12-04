@@ -21,6 +21,8 @@ export type Modals = {
   ToggleListItemForm: void;
   SignInCallToAction: void;
   SignOutForm: void;
+  PermissionForm: void;
+  AddPermissionForm: void;
 };
 
 export type IModal<K extends keyof Modals> = {
@@ -38,6 +40,8 @@ export enum ModalStateType {
 export const modalNameToModalStateType: {
   [modalName in keyof Modals]: ModalStateType;
 } = {
+  AddPermissionForm: ModalStateType.Location,
+  PermissionForm: ModalStateType.Location,
   AddListItemForm: ModalStateType.Location,
   CreateListForm: ModalStateType.Redux,
   CreateListWithListItemsForm: ModalStateType.Redux,

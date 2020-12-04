@@ -2,17 +2,14 @@ import {
   Box,
   Button,
   ButtonBaseProps,
-  List,
   ListItem,
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-  Paper,
 } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
 import CheckBoxOutlineBlankIcon from "@material-ui/icons/CheckBoxOutlineBlank";
-import DoneIcon from "@material-ui/icons/Done";
 import ListIcon from "@material-ui/icons/List";
 import PlaylistAddCheckIcon from "@material-ui/icons/PlaylistAddCheck";
 import { Skeleton } from "@material-ui/lab";
@@ -27,7 +24,7 @@ import { AutoListKeys, toAutoListName } from "../../query";
 export const CreateListButton = ({ onClick }: { onClick?: () => void }) => {
   return (
     <ListItem button onClick={onClick}>
-      <ListItemIcon color="inherit">
+      <ListItemIcon>
         <Box color="primary.main">
           <AddIcon color="inherit" />
         </Box>
@@ -80,7 +77,7 @@ export const ToggleButton = ({
       <ListItemText primary={title} />
 
       <ListItemSecondaryAction>
-        <Button size="small" color="primary" onClick={onSecondaryActionClick}>
+        <Button color="primary" onClick={onSecondaryActionClick}>
           View
         </Button>
       </ListItemSecondaryAction>
@@ -115,23 +112,5 @@ export const ToggleFormModalButton = ({
       icon={Boolean(checked) ? <PlaylistAddCheckIcon /> : <ListIcon />}
       {...props}
     />
-  );
-};
-
-export const DoneButton = ({ onClick }: { onClick?: () => void }) => {
-  return (
-    <Paper>
-      <List>
-        <ListItem button onClick={onClick}>
-          <ListItemIcon>
-            <DoneIcon />
-          </ListItemIcon>
-          <ListItemText
-            primaryTypographyProps={{ variant: "h6" }}
-            primary="Done"
-          />
-        </ListItem>
-      </List>
-    </Paper>
   );
 };

@@ -10,7 +10,7 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import ResponsiveDialog from "../../common/components/ResponsiveDialog";
+import { ResponsiveDialog } from "../../common/components/ResponsiveDialog";
 import SearchTextField from "../../search/input/SearchTextField";
 import { MovieCredits } from "../../media/tmdb/types";
 import matchSorter from "match-sorter";

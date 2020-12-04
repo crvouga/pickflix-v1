@@ -7,10 +7,9 @@ import {
   Typography,
 } from "@material-ui/core";
 import React from "react";
-import ChipUser from "../../../user/components/ChipUser";
+import { useHistory } from "react-router";
 import { ListAggergation } from "../../query";
 import ListImageBox from "./ListCardImage";
-import { useHistory } from "react-router";
 
 export default ({
   list,
@@ -38,14 +37,14 @@ export default ({
                     {list.listItemCount} items
                   </Typography>
                 </Box>
-                <Box>
+                {/* <Box>
                   <ChipUser
                     clickable={false}
                     onClick={() => {}}
                     size="small"
                     user={list.owner}
                   />
-                </Box>
+                </Box> */}
               </Box>
             }
             {...CardHeaderProps}

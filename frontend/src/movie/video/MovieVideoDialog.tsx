@@ -8,7 +8,7 @@ import {
   useTheme,
 } from "@material-ui/core";
 import React from "react";
-import ResponsiveDialog from "../../common/components/ResponsiveDialog";
+import { ResponsiveDialog } from "../../common/components/ResponsiveDialog";
 import { closeDialog } from "../../common/utility";
 import useVideoState from "../../media/video/useVideoState";
 import { YoutubeDetailsContainer } from "../../media/youtube/YoutubeVideo";

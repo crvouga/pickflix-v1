@@ -16,7 +16,6 @@ export default <K extends keyof Modals>(modalName: K): IModal<K> => {
   const props = location?.state?.[modalName]?.props as Modals[K];
 
   const open = (props: Modals[K]) => {
-    console.log({ open });
     history.push({
       state: {
         [modalName]: {

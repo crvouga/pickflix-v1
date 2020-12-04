@@ -19,7 +19,6 @@ export default <K extends keyof Modals>(modalName: K): IModal<K> => {
   };
 
   const open = (props: Modals[K]) => {
-    console.log({ open: props });
     modalStateByType[modalStateType].open(props);
   };
 

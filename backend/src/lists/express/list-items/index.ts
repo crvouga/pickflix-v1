@@ -24,8 +24,6 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
           tmdbMediaType: req.query.tmdbMediaType,
         });
 
-        console.log({ mediaId, userId });
-
         const listsOrAutoLists = await listLogic.getListsFromMediaIdAndUserId(
           {
             userId,
@@ -39,7 +37,6 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
             },
           }
         );
-        console.log({ listsOrAutoLists });
 
         res.status(200).json(listsOrAutoLists).end();
       } catch (error) {
