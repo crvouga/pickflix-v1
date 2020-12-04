@@ -79,12 +79,7 @@ export async function addEditors(
   }
 
   for (const editorId of editorIds) {
-    const [foundPermission] = await this.permissionRepository.find({
-      listId,
-      userId: editorId,
-    });
-
-    if (foundPermission) {
+    if (await this.isEditorOrOwner({ userId: editorId, listId })) {
       continue;
     }
 

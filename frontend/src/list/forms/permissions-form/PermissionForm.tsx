@@ -1,5 +1,11 @@
 import {
   Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Divider,
   Hidden,
   IconButton,
@@ -10,16 +16,12 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  DialogContentText,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
+import DeleteForeverOutlinedIcon from "@material-ui/icons/DeleteForeverOutlined";
 import GroupAddOutlinedIcon from "@material-ui/icons/GroupAddOutlined";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
 import React from "react";
 import { useHistory } from "react-router";
 import useModal from "../../../app/modals/useModal";
@@ -33,6 +35,7 @@ import {
   ZoomIn,
 } from "../../../common/components/TransitionComponents";
 import useBoolean from "../../../common/hooks/useBoolean";
+import WithAuthentication from "../../../user/auth/WithAuthentication";
 import AvatarUser from "../../../user/components/AvatarUser";
 import { User } from "../../../user/query";
 import { makeUserPageRoute } from "../../../user/UserPage";
@@ -42,11 +45,7 @@ import {
   useDeleteEditorsMutation,
   useTransferOwnershipMutation,
 } from "../../query";
-import DeleteForeverOutlinedIcon from "@material-ui/icons/DeleteForeverOutlined";
-import { createEventEmitter, useListener } from "../../../common/utility";
 import LoadingDialog from "../../../common/components/LoadingDialog";
-import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
-import WithAuthentication from "../../../user/auth/WithAuthentication";
 
 const EditorListItem = ({
   list,
@@ -58,6 +57,8 @@ const EditorListItem = ({
   const history = useHistory();
   const isOptionsOpen = useBoolean(false);
   const isRemoveDialogOpen = useBoolean(false);
+
+  const isTransfering = useBoolean(false);
   const isTransferOwnershipDialogOpen = useBoolean(false);
 
   const deleteEditorsMutation = useDeleteEditorsMutation();
@@ -73,12 +74,17 @@ const EditorListItem = ({
   };
 
   const handleTransferOwnership = async () => {
-    isTransferOwnershipDialogOpen.setFalse();
-
-    await transferOwnershipMutation({
-      listId: list.list.id,
-      editorId: editor.id,
-    });
+    try {
+      isTransfering.setTrue();
+      await transferOwnershipMutation({
+        listId: list.list.id,
+        editorId: editor.id,
+      });
+      isTransferOwnershipDialogOpen.setFalse();
+    } catch (error) {
+    } finally {
+      isTransfering.setFalse();
+    }
   };
 
   return (
@@ -121,6 +127,11 @@ const EditorListItem = ({
           </Button>
         </DialogActions>
       </Dialog>
+
+      <LoadingDialog
+        open={isTransfering.value}
+        ListItemTextProps={{ primary: "Transfering" }}
+      />
 
       <ResponsiveDialogDrawer
         open={isOptionsOpen.value}

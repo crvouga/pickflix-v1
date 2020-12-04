@@ -16,6 +16,8 @@ import UserListItem from "../../../user/components/UserListItem";
 import { User } from "../../../user/query";
 import { ListAggergation, useAddEditorsMutation } from "../../query";
 import { SubmitButton } from "../../../common/components/SubmitButton";
+import LoadingDialog from "../../../common/components/LoadingDialog";
+import useBoolean from "../../../common/hooks/useBoolean";
 
 type AutoCompeleteUsersProps = {
   users: User[];
@@ -76,7 +78,7 @@ const AutoCompeleteUsers = ({
               endAdornment: (
                 <React.Fragment>
                   {isLoading ? (
-                    <CircularProgress color="inherit" size={20} />
+                    <CircularProgress disableShrink color="inherit" size={20} />
                   ) : null}
                   {params.InputProps.endAdornment}
                 </React.Fragment>
@@ -90,49 +92,63 @@ const AutoCompeleteUsers = ({
 };
 
 export const AddPermissionFormModal = ({ list }: { list: ListAggergation }) => {
+  const isLoading = useBoolean(false);
   const { isOpen, close } = useModal("AddPermissionForm");
   const mutate = useAddEditorsMutation();
   const [text, setText] = useState("");
   const query = useQuerySearchUsers({
     text,
   });
-
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
 
   const submit = async () => {
-    close();
     try {
+      isLoading.setTrue();
       await mutate({
         listId: list.list.id,
         editorIds: selectedUsers.map((user) => user.id),
       });
-    } catch (error) {}
+      close();
+    } catch (error) {
+    } finally {
+      isLoading.setFalse();
+    }
   };
 
   const users = query.data?.flatMap((page) => page.results) || [];
 
   return (
-    <NonFullscreenResponsiveDialog
-      TransitionComponent={SlideLeft}
-      open={isOpen}
-      onClose={close}
-    >
-      <Box p={2}>
-        <AutoCompeleteUsers
-          users={users}
-          onTextChanged={setText}
-          onSelectedUsersChanged={setSelectedUsers}
-        />
+    <React.Fragment>
+      <NonFullscreenResponsiveDialog
+        TransitionComponent={SlideLeft}
+        open={isOpen}
+        onClose={close}
+      >
+        <Box p={2}>
+          <AutoCompeleteUsers
+            users={users}
+            onTextChanged={setText}
+            onSelectedUsersChanged={setSelectedUsers}
+            isLoading={query.isLoading}
+          />
 
-        <Box paddingTop={2} display="flex" justifyContent="space-between">
-          <Button size="large" onClick={close}>
-            Cancel
-          </Button>
-          <SubmitButton disabled={selectedUsers.length === 0} onClick={submit}>
-            Add
-          </SubmitButton>
+          <Box paddingTop={2} display="flex" justifyContent="space-between">
+            <Button size="large" onClick={close}>
+              Cancel
+            </Button>
+            <SubmitButton
+              disabled={selectedUsers.length === 0}
+              onClick={submit}
+            >
+              Add
+            </SubmitButton>
+          </Box>
         </Box>
-      </Box>
-    </NonFullscreenResponsiveDialog>
+      </NonFullscreenResponsiveDialog>
+      <LoadingDialog
+        open={isLoading.value}
+        ListItemTextProps={{ primary: "Adding" }}
+      />
+    </React.Fragment>
   );
 };
