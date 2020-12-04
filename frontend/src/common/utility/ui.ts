@@ -1,7 +1,7 @@
-import { DialogProps, Theme } from "@material-ui/core";
+import { DialogProps, Theme, ModalProps } from "@material-ui/core";
 import { fade } from "@material-ui/core/styles/colorManipulator";
 
-export const closeDialog = (props: DialogProps) => {
+export const closeModal = (props: ModalProps | DialogProps) => {
   if (props.onClose) {
     props.onClose({}, "backdropClick");
   }

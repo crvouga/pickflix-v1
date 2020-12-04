@@ -100,6 +100,7 @@ export const AddPermissionFormModal = ({ list }: { list: ListAggergation }) => {
   const [selectedUsers, setSelectedUsers] = useState<User[]>([]);
 
   const submit = async () => {
+    close();
     try {
       await mutate({
         listId: list.list.id,

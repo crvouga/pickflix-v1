@@ -11,6 +11,8 @@ import useEditListForm from "../forms/edit-list-form/useEditListForm";
 import { AddPermissionFormModal } from "../forms/permissions-form/AddPermissionForm";
 import { PermissionFormModal } from "../forms/permissions-form/PermissionForm";
 import { List, ListAggergation } from "../query";
+import WithAuthentication from "../../user/auth/WithAuthentication";
+import { UserAggergation } from "../../user/query";
 
 const EditListButton = ({ list }: { list: List }) => {
   const editListFormModal = useModal("EditListForm");
@@ -57,14 +59,24 @@ const AddUserButton = () => {
   );
 };
 
-export default ({ list }: { list: ListAggergation }) => {
+export default ({
+  currentUser,
+  list,
+}: {
+  currentUser: UserAggergation;
+  list: ListAggergation;
+}) => {
   return (
     <Toolbar>
       <EditListButton list={list.list} />
       <EditListFormModal />
 
-      <DeleteListButton list={list.list} />
-      <DeleteListFormModal />
+      {currentUser.user.id === list.owner.id && (
+        <React.Fragment>
+          <DeleteListButton list={list.list} />
+          <DeleteListFormModal />
+        </React.Fragment>
+      )}
 
       <AddUserButton />
       <PermissionFormModal list={list} />

@@ -90,9 +90,9 @@ export class GenericRepositoryHashMap<T extends Identifiable>
     return entities;
   }
 
-  async remove(entityInfos: Partial<T>[]): Promise<boolean> {
-    for (const entityInfo of entityInfos) {
-      this.hashMap = R.reject(R.whereEq(entityInfo), this.hashMap);
+  async remove(spec: Partial<T>[]): Promise<boolean> {
+    for (const andSpec of spec) {
+      this.hashMap = R.reject(R.whereEq(andSpec), this.hashMap);
     }
     return true;
   }

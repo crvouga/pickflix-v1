@@ -32,6 +32,7 @@ import {
   getList,
 } from "./lists";
 import {
+  transferOwnership,
   addEditors,
   removeEditors,
   isEditorOrOwner,
@@ -107,4 +108,5 @@ export class ListLogic {
   isEditorOrOwner = isEditorOrOwner;
   isEditor = isEditor;
   isOwner = isOwner;
+  transferOwnership = transferOwnership;
 }

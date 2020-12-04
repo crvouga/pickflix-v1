@@ -57,7 +57,7 @@ export default ({ list }: { list: ListAggergation }) => {
       <WithAuthentication
         renderAuthenticated={(currentUser) =>
           isEditorOrOwner(currentUser.user, list) && (
-            <ListActionBar list={list} />
+            <ListActionBar currentUser={currentUser} list={list} />
           )
         }
       />

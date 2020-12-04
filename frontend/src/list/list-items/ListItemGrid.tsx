@@ -15,8 +15,8 @@ import {
 import useDeleteListItemsForm from "../forms/remove-list-items-form/useRemoveListItemsForm";
 import {
   AutoListAggergation,
-  useQueryListItems,
   ListAggergation,
+  useQueryListItems,
 } from "../query";
 
 const useStyles = makeStyles((theme) => ({

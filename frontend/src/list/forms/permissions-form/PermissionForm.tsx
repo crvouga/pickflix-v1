@@ -2,6 +2,7 @@ import {
   Box,
   Divider,
   Hidden,
+  IconButton,
   List,
   ListItem,
   ListItemAvatar,
@@ -9,9 +10,16 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   Typography,
-  IconButton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  DialogContentText,
 } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 import GroupAddOutlinedIcon from "@material-ui/icons/GroupAddOutlined";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import React from "react";
 import { useHistory } from "react-router";
 import useModal from "../../../app/modals/useModal";
@@ -19,12 +27,171 @@ import {
   DoneButton,
   ResponsiveDialog,
 } from "../../../common/components/ResponsiveDialog";
-import { SlideUp } from "../../../common/components/TransitionComponents";
+import ResponsiveDialogDrawer from "../../../common/components/ResponsiveDialogDrawer";
+import {
+  SlideUp,
+  ZoomIn,
+} from "../../../common/components/TransitionComponents";
+import useBoolean from "../../../common/hooks/useBoolean";
 import AvatarUser from "../../../user/components/AvatarUser";
+import { User } from "../../../user/query";
 import { makeUserPageRoute } from "../../../user/UserPage";
 import ListCard from "../../lists/card/ListCard";
-import { ListAggergation } from "../../query";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import {
+  ListAggergation,
+  useDeleteEditorsMutation,
+  useTransferOwnershipMutation,
+} from "../../query";
+import DeleteForeverOutlinedIcon from "@material-ui/icons/DeleteForeverOutlined";
+import { createEventEmitter, useListener } from "../../../common/utility";
+import LoadingDialog from "../../../common/components/LoadingDialog";
+import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
+import WithAuthentication from "../../../user/auth/WithAuthentication";
+
+const EditorListItem = ({
+  list,
+  editor,
+}: {
+  list: ListAggergation;
+  editor: User;
+}) => {
+  const history = useHistory();
+  const isOptionsOpen = useBoolean(false);
+  const isRemoveDialogOpen = useBoolean(false);
+  const isTransferOwnershipDialogOpen = useBoolean(false);
+
+  const deleteEditorsMutation = useDeleteEditorsMutation();
+  const transferOwnershipMutation = useTransferOwnershipMutation();
+
+  const handleRemove = async () => {
+    isRemoveDialogOpen.setFalse();
+
+    await deleteEditorsMutation({
+      listId: list.list.id,
+      editorIds: [editor.id],
+    });
+  };
+
+  const handleTransferOwnership = async () => {
+    isTransferOwnershipDialogOpen.setFalse();
+
+    await transferOwnershipMutation({
+      listId: list.list.id,
+      editorId: editor.id,
+    });
+  };
+
+  return (
+    <React.Fragment key={editor.id}>
+      <Dialog
+        TransitionComponent={ZoomIn}
+        open={isRemoveDialogOpen.value}
+        onClose={isRemoveDialogOpen.setFalse}
+      >
+        <DialogTitle>Remove?</DialogTitle>
+        <DialogActions>
+          <Button size="large" onClick={isRemoveDialogOpen.setFalse}>
+            Cancel
+          </Button>
+          <Button size="large" onClick={handleRemove}>
+            Remove
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        TransitionComponent={ZoomIn}
+        open={isTransferOwnershipDialogOpen.value}
+        onClose={isTransferOwnershipDialogOpen.setFalse}
+      >
+        <DialogTitle>Make this person the owner?</DialogTitle>
+        <DialogContent>
+          <DialogContentText color="textSecondary">
+            Once you make this person the owner you could be removed from the
+            list without notice and the list could be deleted without your
+            constent.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button size="large" onClick={isTransferOwnershipDialogOpen.setFalse}>
+            No
+          </Button>
+          <Button size="large" onClick={handleTransferOwnership}>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <ResponsiveDialogDrawer
+        open={isOptionsOpen.value}
+        onClose={isOptionsOpen.setFalse}
+      >
+        <List>
+          <WithAuthentication
+            renderAuthenticated={(currentUser) =>
+              currentUser.user.id === list.owner.id && (
+                <ListItem
+                  button
+                  onClick={() => {
+                    isTransferOwnershipDialogOpen.setTrue();
+                    isOptionsOpen.setFalse();
+                  }}
+                >
+                  <ListItemIcon>
+                    <SwapHorizIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Make Owner" />
+                </ListItem>
+              )
+            }
+          />
+
+          <ListItem
+            button
+            onClick={() => {
+              isRemoveDialogOpen.setTrue();
+              isOptionsOpen.setFalse();
+            }}
+          >
+            <ListItemIcon>
+              <DeleteForeverOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Remove" />
+          </ListItem>
+
+          <ListItem button onClick={isOptionsOpen.setFalse}>
+            <ListItemIcon>
+              <CloseIcon />
+            </ListItemIcon>
+            <ListItemText primary="Cancel" />
+          </ListItem>
+        </List>
+      </ResponsiveDialogDrawer>
+
+      <ListItem
+        button
+        onClick={() => {
+          history.push(makeUserPageRoute({ userId: editor.id }));
+        }}
+      >
+        <ListItemAvatar>
+          <AvatarUser user={editor} />
+        </ListItemAvatar>
+        <ListItemText
+          primary={editor.username}
+          secondary={editor.displayName}
+        />
+
+        <ListItemSecondaryAction>
+          <IconButton onClick={isOptionsOpen.setTrue}>
+            <MoreHorizIcon />
+          </IconButton>
+        </ListItemSecondaryAction>
+      </ListItem>
+    </React.Fragment>
+  );
+};
+
 export const PermissionForm = ({ list }: { list: ListAggergation }) => {
   const history = useHistory();
   const addPermissionFormModal = useModal("AddPermissionForm");
@@ -64,45 +231,16 @@ export const PermissionForm = ({ list }: { list: ListAggergation }) => {
           primary={list.owner.username}
           secondary={list.owner.displayName}
         />
-        <Box paddingX={4}>
+
+        <ListItemSecondaryAction>
           <Typography color="textSecondary" style={{ fontStyle: "italic" }}>
             Owner
           </Typography>
-        </Box>
-        <ListItemSecondaryAction>
-          <IconButton>
-            <MoreHorizIcon />
-          </IconButton>
         </ListItemSecondaryAction>
       </ListItem>
 
       {list.editors.map((editor) => (
-        <ListItem
-          key={editor.id}
-          button
-          onClick={() => {
-            history.push(makeUserPageRoute({ userId: editor.id }));
-          }}
-        >
-          <ListItemAvatar>
-            <AvatarUser user={editor} />
-          </ListItemAvatar>
-          <ListItemText
-            primary={editor.username}
-            secondary={editor.displayName}
-          />
-          <Box paddingX={4}>
-            <Typography color="textSecondary" style={{ fontStyle: "italic" }}>
-              Editor
-            </Typography>
-          </Box>
-
-          <ListItemSecondaryAction>
-            <IconButton>
-              <MoreHorizIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
+        <EditorListItem key={editor.id} list={list} editor={editor} />
       ))}
     </List>
   );

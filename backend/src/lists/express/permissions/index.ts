@@ -49,4 +49,25 @@ export const permissions = ({ listLogic, middlewares }: Dependencies) => (
       }
     }
   );
+  router.post(
+    "/lists/:listId/transfer",
+    middlewares.isAuthenticated,
+    async (req, res) => {
+      try {
+        const listId = castListId(req.params.listId);
+        const ownerId = castUserId(req.user?.id);
+        const editorId = castUserId(req.body.editorId);
+
+        await listLogic.transferOwnership({
+          ownerId,
+          editorId,
+          listId,
+        });
+
+        res.status(201).end();
+      } catch (error) {
+        res.status(400).json({ error: error.toString() }).end();
+      }
+    }
+  );
 };

@@ -136,8 +136,11 @@ describe("list logic", () => {
     expect.assertions(1);
     try {
       await listLogic.editList({
-        id: added.id,
-        title: "",
+        userId: user.id,
+        listId: added.id,
+        edits: {
+          title: "",
+        },
       });
     } catch (error) {
       expect(error).toBeTruthy();

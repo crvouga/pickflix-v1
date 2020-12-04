@@ -1,5 +1,6 @@
 import { Id, isValidId, makeId } from "../../app/id";
 import { castUserId, UserId } from "../../users/models";
+import { isNullOrUndefined } from "util";
 
 const MIN_LENGTH_TITLE = 1;
 const MAX_LENGTH_TITLE = 100;
@@ -55,17 +56,47 @@ export const castListTitle = (title: any) => {
   throw new Error("invalid list title");
 };
 
+const castDate = (date: any) => {
+  if (typeof date === "number") {
+    return Number(date);
+  }
+  throw new Error("invalid date");
+};
+
+export const castList = (list: any): List => {
+  if (
+    "type" in list &&
+    "id" in list &&
+    "ownerId" in list &&
+    "title" in list &&
+    "description" in list &&
+    "createdAt" in list &&
+    "updatedAt" in list
+  ) {
+    return Object.freeze({
+      type: "list",
+      id: castListId(list.id),
+      title: castListTitle(list.title),
+      description: castListDescription(list.description),
+      ownerId: castUserId(list.ownerId),
+      createdAt: castDate(list.createdAt),
+      updatedAt: castDate(list.updatedAt),
+    });
+  }
+  throw new Error("failed to cast list becuase of missing key");
+};
+
 export const makeList = ({
-  description,
+  description = "",
   title,
   ownerId,
 }: PartialList): List => {
-  return Object.freeze({
+  return castList({
     type: "list",
-    ownerId: castUserId(ownerId),
-    id: castListId(makeId()),
-    title: castListTitle(title),
-    description: castListDescription(description || ""),
+    id: makeId(),
+    ownerId,
+    title,
+    description,
     createdAt: Date.now(),
     updatedAt: Date.now(),
   });
@@ -74,19 +105,20 @@ export const makeList = ({
 export const updateList = (
   list: List,
   {
+    ownerId,
     title,
     description,
   }: {
+    ownerId?: UserId;
     title?: string;
     description?: string;
   }
 ): List => {
-  return {
+  return castList({
     ...list,
-    ...(title !== undefined ? { title: castListTitle(title) } : {}),
-    ...(description !== undefined
-      ? { description: castListDescription(description) }
-      : {}),
+    ...(isNullOrUndefined(title) ? {} : { title }),
+    ...(isNullOrUndefined(description) ? {} : { description }),
+    ...(isNullOrUndefined(ownerId) ? {} : { ownerId }),
     updatedAt: Date.now(),
-  };
+  });
 };

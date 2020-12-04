@@ -1,6 +1,11 @@
-import { ListLogic } from "../logic";
 import { UserId } from "../../../users/models";
-import { ListId, PermissionType, makePermission } from "../../models";
+import {
+  ListId,
+  makePermission,
+  PermissionType,
+  updateList,
+} from "../../models";
+import { ListLogic } from "../logic";
 
 export async function isOwner(
   this: ListLogic,
@@ -121,4 +126,62 @@ export async function removeEditors(
       await this.permissionRepository.remove(permission.id);
     }
   }
+}
+
+export async function transferOwnership(
+  this: ListLogic,
+  {
+    ownerId,
+    listId,
+    editorId,
+  }: {
+    ownerId: UserId;
+    listId: ListId;
+    editorId: UserId;
+  }
+) {
+  const [list] = await this.listRepository.find([
+    {
+      id: listId,
+    },
+  ]);
+
+  if (!list) {
+    throw new Error(
+      "tried to transfer ownership of a list that does not exists"
+    );
+  }
+
+  if (list.ownerId !== ownerId) {
+    throw new Error(
+      "only current owner of list can transfer ownership of list"
+    );
+  }
+
+  const [editorPermission] = await this.permissionRepository.find({
+    userId: editorId,
+    listId: listId,
+    permissionType: PermissionType.Editor,
+  });
+
+  if (!editorPermission) {
+    throw new Error(
+      "can only transfer ownership to users who are already an editor"
+    );
+  }
+
+  const newPermission = makePermission({
+    listId: list.id,
+    userId: ownerId,
+    permissionType: PermissionType.Editor,
+  });
+
+  const updatedList = updateList(list, {
+    ownerId: editorId,
+  });
+
+  //TODO: wrap this in a unit of work
+  await this.permissionRepository.remove(editorPermission.id);
+  await this.permissionRepository.add(newPermission);
+  await this.listRepository.update(listId, updatedList);
 }

@@ -63,9 +63,9 @@ export class GenericRepositoryFileSystem<T extends Identifiable>
     return entities;
   }
 
-  async remove(entityInfos: Partial<T>[]): Promise<boolean> {
+  async remove(spec: RepositoryQuerySpec<T>): Promise<boolean> {
     this.read();
-    await this.repositoryHashMap.remove(entityInfos);
+    await this.repositoryHashMap.remove(spec);
     this.write();
     return true;
   }

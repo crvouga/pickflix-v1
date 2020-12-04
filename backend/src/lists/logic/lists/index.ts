@@ -178,19 +178,32 @@ export async function getListAggergations(
 
 export async function editList(
   this: ListLogic,
-  listInfo: Partial<List> & Pick<List, "id">
+  {
+    listId,
+    userId,
+    edits,
+  }: {
+    listId: ListId;
+    userId: UserId;
+    edits: {
+      title?: string;
+      description?: string;
+    };
+  }
 ) {
-  const { id, ...edits } = listInfo;
+  if (!(await this.isEditorOrOwner({ userId, listId }))) {
+    throw new Error("User not allowed to edit list");
+  }
 
-  const [found] = await this.listRepository.find([{ id }]);
+  const [found] = await this.listRepository.find([{ id: listId }]);
 
   if (!found) {
-    throw new Error("try to edit list that does not exists");
+    throw new Error("Try to edit list that does not exists");
   }
 
   const updated = updateList(found, edits);
 
-  await this.listRepository.update(id, updated);
+  await this.listRepository.update(listId, updated);
 
   return updated;
 }

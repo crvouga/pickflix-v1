@@ -1,5 +1,6 @@
 import { makeUserFake } from "../../../users/models";
 import { buildListLogicTest } from "../build";
+import { buildLogicTest } from "../../../app/build/build-test";
 
 describe("list permission logic", () => {
   it("add list editors", async () => {
@@ -145,5 +146,48 @@ describe("list permission logic", () => {
         userId: someUserId,
       })
     ).toEqual(false);
+  });
+
+  it("transfer ownership of list", async () => {
+    const { listLogic } = buildListLogicTest();
+    const owner = makeUserFake();
+    const editor = makeUserFake();
+
+    for (const user of [owner, editor]) {
+      await listLogic.userRepository.add(user);
+    }
+
+    const list = await listLogic.addList({
+      ownerId: owner.id,
+      title: "shared list",
+    });
+
+    await listLogic.addEditors({
+      listId: list.id,
+      userId: owner.id,
+      editorIds: [editor.id],
+    });
+
+    const [before] = await listLogic.getListAggergations({
+      id: list.id,
+    });
+
+    await listLogic.transferOwnership({
+      ownerId: owner.id,
+      listId: list.id,
+      editorId: editor.id,
+    });
+
+    const [after] = await listLogic.getListAggergations({
+      id: list.id,
+    });
+
+    expect(before.owner).toEqual(owner);
+    expect(before.editors.length).toBe(1);
+    expect(before.editors).toContainEqual(editor);
+    //
+    expect(after.owner).toEqual(editor);
+    expect(after.editors.length).toBe(1);
+    expect(after.editors).toContainEqual(owner);
   });
 });

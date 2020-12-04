@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { ResponsiveDialog } from "../../common/components/ResponsiveDialog";
-import { closeDialog } from "../../common/utility";
+import { closeModal } from "../../common/utility";
 import useVideoState from "../../media/video/useVideoState";
 import { YoutubeDetailsContainer } from "../../media/youtube/YoutubeVideo";
 import { MovieVideoListItem } from "./VideoListItem";
@@ -34,7 +34,7 @@ export default (props: DialogProps) => {
               size="large"
               color="primary"
               onClick={() => {
-                closeDialog(props);
+                closeModal(props);
               }}
             >
               Done
@@ -51,7 +51,7 @@ export default (props: DialogProps) => {
           <Box
             key={video.key}
             onClick={() => {
-              closeDialog(props);
+              closeModal(props);
               videoState.setCurrentVideo(video);
               videoState.setIsPlaying(true);
               videoState.setLight();

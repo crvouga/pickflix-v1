@@ -15,7 +15,7 @@ import React, { useState } from "react";
 import { ResponsiveDialog } from "../../common/components/ResponsiveDialog";
 import SearchTextField from "../../search/input/SearchTextField";
 import { PersonMovieCreditsResponse } from "../../media/tmdb/types";
-import { closeDialog } from "../../common/utility";
+import { closeModal } from "../../common/utility";
 import PersonCreditListItem from "./PersonCreditListItem";
 
 export default ({
@@ -49,7 +49,7 @@ export default ({
               size="large"
               color="primary"
               onClick={() => {
-                closeDialog(props);
+                closeModal(props);
               }}
             >
               Done

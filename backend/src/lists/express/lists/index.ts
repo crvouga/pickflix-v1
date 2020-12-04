@@ -74,6 +74,8 @@ export const lists = ({ listLogic, middlewares }: Dependencies) => (
     middlewares.isAuthenticated,
     async (req, res, next) => {
       try {
+        const userId = castUserId(req.user?.id);
+
         const listId = castListId(req.params.listId);
 
         const title = isNullOrUndefined(req.body.title)
@@ -84,14 +86,13 @@ export const lists = ({ listLogic, middlewares }: Dependencies) => (
           ? undefined
           : castListDescription(req.body.description);
 
-        const edits = removeNullOrUndefinedEntries({
-          title,
-          description,
-        });
-
         const editedList = await listLogic.editList({
-          id: listId,
-          ...edits,
+          userId,
+          listId,
+          edits: {
+            title,
+            description,
+          },
         });
 
         res.status(204).json(editedList).end();

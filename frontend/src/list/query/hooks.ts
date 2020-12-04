@@ -31,6 +31,8 @@ import {
   PostListEditorsParams,
   PostListParams,
   deleteListEditors,
+  PostTransferOwnershipParams,
+  postTransferOwnership,
 } from "./lists";
 import { ListAggergation, ListItemAggergation } from "./types";
 
@@ -304,20 +306,77 @@ export const useAddEditorsMutation = () => {
 
 */
 
+const optimisticUpdateDeleteEditors = (
+  previous: GetListsData,
+  { listId, editorIds }: DeleteListEditorsParams
+) => {
+  return previous.map((page) => ({
+    ...page,
+    results: page.results.map((list) => ({
+      ...list,
+      editors: list.editors.filter((editor) =>
+        editorIds.every((editorId) => editorId !== editor.id)
+      ),
+    })),
+  }));
+};
+
 export const useDeleteEditorsMutation = () => {
   const queryCache = useQueryCache();
   return async (params: DeleteListEditorsParams) => {
+    const queryKey1 = makeGetListsQueryKey({
+      id: params.listId,
+    });
+    const queryKey2 = makeGetListsQueryKey({});
+
+    const previous1 = queryCache.getQueryData<GetListsData>(queryKey1);
+    if (previous1) {
+      console.log({ previous1 });
+      queryCache.setQueryData(
+        queryKey1,
+        optimisticUpdateDeleteEditors(previous1, params)
+      );
+    }
+
+    const previous2 = queryCache.getQueryData<GetListsData>(queryKey2);
+    if (previous2) {
+      queryCache.setQueryData(
+        queryKey2,
+        optimisticUpdateDeleteEditors(previous2, params)
+      );
+    }
+
     try {
       await deleteListEditors(params);
     } catch (error) {
+      queryCache.setQueryData(queryKey1, previous1);
+      queryCache.setQueryData(queryKey2, previous2);
       throw error;
     } finally {
-      queryCache.invalidateQueries(
-        makeGetListsQueryKey({
-          id: params.listId,
-        })
-      );
-      queryCache.invalidateQueries(makeGetListsQueryKey({}));
+      queryCache.invalidateQueries(queryKey1);
+      queryCache.invalidateQueries(queryKey2);
+    }
+  };
+};
+
+/*
+
+*/
+
+export const useTransferOwnershipMutation = () => {
+  const queryCache = useQueryCache();
+  return async (params: PostTransferOwnershipParams) => {
+    const queryKey1 = makeGetListsQueryKey({
+      id: params.listId,
+    });
+    const queryKey2 = makeGetListsQueryKey({});
+    try {
+      await postTransferOwnership(params);
+    } catch (error) {
+      throw error;
+    } finally {
+      queryCache.invalidateQueries(queryKey1);
+      queryCache.invalidateQueries(queryKey2);
     }
   };
 };

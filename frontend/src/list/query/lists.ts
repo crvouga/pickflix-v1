@@ -52,6 +52,29 @@ export const deleteListEditors = async ({
 
 */
 
+export type PostTransferOwnershipParams = {
+  editorId: string;
+  listId: string;
+};
+
+export const postTransferOwnership = async ({
+  listId,
+  editorId,
+}: PostTransferOwnershipParams) => {
+  const { data } = await BackendAPI.post<undefined>(
+    `/api/lists/${listId}/transfer`,
+    {
+      editorId,
+    }
+  );
+  return data;
+};
+
+/* 
+
+
+*/
+
 export type GetListsFromMediaIdParams = {
   mediaId: MediaId;
 };
