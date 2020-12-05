@@ -13,6 +13,8 @@ import { PermissionFormModal } from "../forms/permissions-form/PermissionForm";
 import { List, ListAggergation } from "../query";
 import WithAuthentication from "../../user/auth/WithAuthentication";
 import { UserAggergation } from "../../user/query";
+import AddIcon from "@material-ui/icons/Add";
+import { AddListItemFormModal } from "../forms/add-list-item-form/AddListItemForm";
 
 const EditListButton = ({ list }: { list: List }) => {
   const editListFormModal = useModal("EditListForm");
@@ -46,7 +48,7 @@ const DeleteListButton = ({ list }: { list: List }) => {
   );
 };
 
-const AddUserButton = () => {
+const PermissionFormButton = () => {
   const permissionFormModal = useModal("PermissionForm");
   return (
     <IconButton
@@ -55,6 +57,20 @@ const AddUserButton = () => {
       }}
     >
       <GroupAddOutlinedIcon />
+    </IconButton>
+  );
+};
+
+const AddListItemButton = () => {
+  const addListItemFormModal = useModal("AddListItemForm");
+
+  return (
+    <IconButton
+      onClick={() => {
+        addListItemFormModal.open();
+      }}
+    >
+      <AddIcon />
     </IconButton>
   );
 };
@@ -78,9 +94,12 @@ export default ({
         </React.Fragment>
       )}
 
-      <AddUserButton />
+      <PermissionFormButton />
       <PermissionFormModal list={list} />
       <AddPermissionFormModal list={list} />
+
+      <AddListItemButton />
+      <AddListItemFormModal listId={list.list.id} />
     </Toolbar>
   );
 };

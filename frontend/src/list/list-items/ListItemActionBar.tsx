@@ -40,6 +40,7 @@ export const ListItemActionBar = ({
   return (
     <React.Fragment>
       <Chip
+        disabled={list.listItemCount === 0}
         clickable
         onClick={() => {
           if (isSelecting) {

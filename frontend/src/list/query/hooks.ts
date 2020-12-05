@@ -13,6 +13,7 @@ import {
   getListItems,
   GetListItemsParams,
   postListItem,
+  PostListItemParams,
 } from "./list-items";
 import {
   deleteList,
@@ -152,22 +153,33 @@ export const useDeleteListItemsMutation = () => {
 
 export const useAddListItemMutation = () => {
   const queryCache = useQueryCache();
-  const [mutate] = useMutation(postListItem, {
-    onMutate: (params) => {
-      return () => {};
-    },
-    onSettled: (listItem) => {
-      if (listItem) {
-        queryCache.invalidateQueries((query) =>
-          query.queryKey.some(
-            (item) =>
-              equals(item, listItem.mediaId) || equals(item, listItem.listId)
-          )
-        );
-      }
-    },
-  });
-  return mutate;
+  return async (params: PostListItemParams) => {
+    const queryKey1 = makeGetListItemsQueryKey({
+      listId: params.listId,
+    });
+    const queryKey2 = makeGetListItemsQueryKey({
+      listId: params.listId,
+      mediaId: params.mediaId,
+    });
+    const queryKey3 = makeGetListsQueryKey({
+      id: params.listId,
+    });
+    try {
+      const listItem = await postListItem(params);
+      queryCache.invalidateQueries((query) =>
+        query.queryKey.some(
+          (item) =>
+            equals(item, listItem.mediaId) || equals(item, listItem.listId)
+        )
+      );
+    } catch (error) {
+      throw error;
+    } finally {
+      queryCache.invalidateQueries(queryKey1);
+      queryCache.invalidateQueries(queryKey2);
+      queryCache.invalidateQueries(queryKey3);
+    }
+  };
 };
 
 /* 

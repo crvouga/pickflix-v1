@@ -275,3 +275,21 @@ export const useQuerySearchUsers = (params: {
     }
   );
 };
+
+export const useQuerySearchMovies = (params: {
+  text: string;
+  debounceTimeout?: number;
+}) => {
+  const searchQuery = useSearchQuery(params);
+
+  return useInfiniteQueryPagination(
+    ["search", "movies", searchQuery],
+    ({ lastPage }): Promise<Paginated<MovieResult>> => {
+      const params: GetSearchParams = {
+        page: lastPage,
+        query: searchQuery,
+      };
+      return getSearchMovie(params);
+    }
+  );
+};

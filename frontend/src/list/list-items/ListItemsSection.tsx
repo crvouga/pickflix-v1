@@ -2,11 +2,15 @@ import { Box, makeStyles } from "@material-ui/core";
 import React from "react";
 import { APP_BAR_HEIGHT } from "../../app/navigation/constants";
 import WithAuthentication from "../../user/auth/WithAuthentication";
-import { User } from "../../user/query";
 import RemoveListItemFormModal from "../forms/remove-list-items-form/RemoveListItemFormModal";
+import {
+  AutoListAggergation,
+  isEditorOrOwner,
+  ListAggergation,
+} from "../query";
 import ListItemActionBar from "./ListItemActionBar";
 import ListItemGrid from "./ListItemGrid";
-import { ListAggergation, AutoList, AutoListAggergation } from "../query";
+import ListItemCardCallToAction from "./ListItemCardCallToAction";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -26,14 +30,20 @@ export default ({ list }: { list: ListAggergation | AutoListAggergation }) => {
 
       <WithAuthentication
         renderAuthenticated={(currentUser) =>
-          list.owner.id === currentUser.user.id && (
+          isEditorOrOwner(currentUser.user, list) && (
             <Box className={classes.appBar}>
               <ListItemActionBar list={list} />
             </Box>
           )
         }
       />
-      <ListItemGrid list={list} />
+      {list.listItemCount === 0 ? (
+        <Box p={2}>
+          <ListItemCardCallToAction />
+        </Box>
+      ) : (
+        <ListItemGrid list={list} />
+      )}
     </React.Fragment>
   );
 };

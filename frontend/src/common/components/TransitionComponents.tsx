@@ -6,6 +6,10 @@ export const SlideUp = React.forwardRef((props: TransitionProps, ref) => {
   return <Slide ref={ref} direction="up" {...props} />;
 });
 
+export const SlideDown = React.forwardRef((props: TransitionProps, ref) => {
+  return <Slide ref={ref} direction="down" {...props} />;
+});
+
 export const SlideLeft = React.forwardRef((props: TransitionProps, ref) => {
   return <Slide ref={ref} direction="left" {...props} />;
 });
