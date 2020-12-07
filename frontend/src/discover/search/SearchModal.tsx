@@ -4,9 +4,13 @@ import {
   useMediaQuery,
   useTheme,
   Box,
+  Paper,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import { ResponsiveDialog } from "../../common/components/ResponsiveDialog";
+import {
+  ResponsiveDialog,
+  RESPONSIVE_DIALOG_MAX_WIDTH,
+} from "../../common/components/ResponsiveDialog";
 import useModal from "../../app/modals/useModal";
 import SearchTextField from "../../search/input/SearchTextField";
 import { DiscoverMovieTag } from "../query/types";
@@ -35,7 +39,13 @@ export default () => {
       open={discoverMovieTagSearchModal.isOpen}
       onClose={() => discoverMovieTagSearchModal.close()}
     >
-      <AppBar color="default" position="fixed">
+      <Box
+        component={Paper}
+        zIndex={2}
+        position="fixed"
+        width="100%"
+        maxWidth={RESPONSIVE_DIALOG_MAX_WIDTH}
+      >
         <Box display="flex" p={1}>
           <SearchTextField
             placeholder="Search Tags"
@@ -51,7 +61,7 @@ export default () => {
             </Button>
           )}
         </Box>
-      </AppBar>
+      </Box>
       <AppBarGutter />
       <SearchResults onClick={handleClick} searchQuery={searchQuery} />
     </ResponsiveDialog>

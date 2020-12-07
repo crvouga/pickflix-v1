@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   input: {
+    maxWidth: "100%",
     fontSize: "1.25em",
     fontWeight: "bold",
   },

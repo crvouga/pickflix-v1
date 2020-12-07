@@ -1,6 +1,7 @@
 import { MediaId } from "../../media/tmdb/types";
 
 export type Modals = {
+  MovieVideo: void;
   MovieCredits: void;
   AddListItemForm: void;
   CreateListForm: void;
@@ -42,6 +43,7 @@ export enum ModalStateType {
 export const modalNameToModalStateType: {
   [modalName in keyof Modals]: ModalStateType;
 } = {
+  MovieVideo: ModalStateType.Location,
   MovieRelated: ModalStateType.Location,
   AddPermissionForm: ModalStateType.Location,
   PermissionForm: ModalStateType.Location,

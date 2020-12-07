@@ -37,7 +37,7 @@ export default ({
 
   return (
     <ResponsiveDialog {...props}>
-      <AppBar position="sticky" color="default">
+      <AppBar position="sticky" color="default" style={{ maxWidth: "100%" }}>
         <Box p={1} display="flex">
           <SearchTextField
             placeholder="Search Credits"

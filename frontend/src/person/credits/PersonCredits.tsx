@@ -1,16 +1,24 @@
-import { Box, MenuItem, Select, Tab, Tabs } from "@material-ui/core";
-import { ascend, descend, sort, uniqBy } from "ramda";
+import {
+  Box,
+  Chip,
+  IconButton,
+  Menu,
+  MenuItem,
+  Tab,
+  Tabs,
+} from "@material-ui/core";
+import SortOutlinedIcon from "@material-ui/icons/SortOutlined";
+import { uniq, uniqBy } from "ramda";
 import React, { ChangeEvent, useState } from "react";
+import HorizontalScroll from "../../common/components/HorizontalScroll";
 import useBoolean from "../../common/hooks/useBoolean";
-import MoviePosterGrid from "../../movie/components/MoviePosterGrid";
 import {
   PersonDetailsResponse,
   PersonMovieCredit,
   PersonMovieCreditsResponse,
 } from "../../media/tmdb/types";
+import MoviePosterGrid from "../../movie/components/MoviePosterGrid";
 import PersonCreditsDialog from "./PersonCreditsDialog";
-import moment from "moment";
-
 const TabPanel = (props: {
   children?: React.ReactNode;
   index: any;
@@ -57,6 +65,9 @@ const sortBySortKey = {
       ),
 };
 
+const CAST_TAB_INDEX = 0;
+const CREW_TAB_INDEX = 1;
+
 export default ({ details, credits }: Props) => {
   const isDialogOpen = useBoolean(false);
   const { cast, crew } = credits;
@@ -65,7 +76,9 @@ export default ({ details, credits }: Props) => {
     (details.knownForDepartment || "acting").toLowerCase() === "acting" &&
     cast.length > 0;
 
-  const [index, setIndex] = useState(knownForCast ? 0 : 1);
+  const [index, setIndex] = useState(
+    knownForCast ? CAST_TAB_INDEX : CREW_TAB_INDEX
+  );
 
   const handleChangeIndex = (event: ChangeEvent<{}>, newIndex: number) => {
     setIndex(newIndex);
@@ -76,9 +89,33 @@ export default ({ details, credits }: Props) => {
     setSortKey(event.target.value as SortKey);
   };
 
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const [departmentKey, setDepartmentKey] = useState<string | undefined>(
+    details.knownForDepartment || undefined
+  );
+  const departments = uniq(crew.map((credit) => credit.department));
+  console.log({ departmentKey });
   const movies = uniqBy(
     (_) => _.id,
-    sortBySortKey[sortKey](index === 0 ? cast : crew)
+    sortBySortKey[sortKey](
+      index === 0
+        ? cast
+        : crew.filter(
+            (credit) =>
+              !Boolean(departmentKey) ||
+              departmentKey === "Acting" ||
+              departmentKey === credit.department
+          )
+    )
   );
 
   return (
@@ -91,6 +128,8 @@ export default ({ details, credits }: Props) => {
       <Box display="flex" flexWrap="wrap">
         <Box flex={1} paddingRight={4} p={2}>
           <Tabs
+            variant="fullWidth"
+            centered
             value={index}
             onChange={handleChangeIndex}
             indicatorColor="primary"
@@ -100,20 +139,58 @@ export default ({ details, credits }: Props) => {
             <Tab disabled={crew.length === 0} label={`Crew · ${crew.length}`} />
           </Tabs>
         </Box>
-        <Box display="flex" justifyContent="center" alignItems="center" p={2}>
-          <Select
-            variant="outlined"
-            value={sortKey}
-            onChange={handleChangeSortKey}
-            autoWidth
-          >
-            {Object.entries(SortKey).map(([key, value]) => (
-              <MenuItem key={key} value={value}>
-                {value}
-              </MenuItem>
+      </Box>
+
+      <Box
+        display="flex"
+        flexDirection="row-reverse"
+        justifyContent="space-between"
+        alignItems="center"
+        justifyItems="center"
+        paddingBottom={1}
+      >
+        <IconButton onClick={handleClick}>
+          <SortOutlinedIcon />
+        </IconButton>
+        <Menu
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          {Object.entries(SortKey).map(([key, value]) => (
+            <MenuItem
+              key={key}
+              selected={sortKey === value}
+              onClick={() => {
+                setSortKey(value);
+                handleClose();
+              }}
+            >
+              {value}
+            </MenuItem>
+          ))}
+        </Menu>
+        {index === CREW_TAB_INDEX && (
+          <HorizontalScroll paddingLeft={2}>
+            {departments.map((department) => (
+              <Box key={department} marginRight={1}>
+                <Chip
+                  clickable
+                  label={department}
+                  variant={
+                    departmentKey === department ? "default" : "outlined"
+                  }
+                  onClick={() => {
+                    setDepartmentKey((departmentKey) =>
+                      departmentKey === department ? undefined : department
+                    );
+                  }}
+                />
+              </Box>
             ))}
-          </Select>
-        </Box>
+          </HorizontalScroll>
+        )}
       </Box>
 
       <MoviePosterGrid movies={movies} />

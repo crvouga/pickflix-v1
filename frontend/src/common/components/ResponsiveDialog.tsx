@@ -14,6 +14,8 @@ import DoneIcon from "@material-ui/icons/Done";
 import React from "react";
 import { SlideUp } from "./TransitionComponents";
 
+export const RESPONSIVE_DIALOG_MAX_WIDTH = "480px";
+
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
     // backgroundColor: theme.palette.background.default,
@@ -22,7 +24,9 @@ const useStylesDialog = makeStyles((theme) => ({
       marginBottom: "auto",
       minHeight: "360px",
       // maxHeight: "480px",
-      width: "480px",
+
+      width: RESPONSIVE_DIALOG_MAX_WIDTH,
+
       zIndex: theme.zIndex.snackbar - 1,
     },
   },
@@ -37,6 +41,7 @@ export const ResponsiveDialog = (props: DialogProps) => {
       TransitionComponent={SlideUp}
       classes={classesDialog}
       fullScreen={isMobile}
+      scroll="paper"
       {...props}
     />
   );

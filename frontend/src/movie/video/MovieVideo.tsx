@@ -15,6 +15,7 @@ import useVideoState from "../../media/video/useVideoState";
 import { YoutubeStatusAlertError } from "../../media/youtube/YoutubeStatusAlert";
 import MovieVideoDialog from "./MovieVideoDialog";
 import { MovieVideoListItem } from "./VideoListItem";
+import useModal from "../../app/modals/useModal";
 
 const VIDEO_MAX_LENGTH = 3;
 
@@ -48,7 +49,7 @@ export default ({
   videos: MovieVideos;
 }) => {
   const videoState = useVideoState();
-  const isDialogOpen = useBoolean(false);
+  const { open, isOpen, close } = useModal("MovieVideo");
 
   useEffect(() => {
     const trailer = videos.results.find((video) => video.type === "Trailer");
@@ -71,13 +72,19 @@ export default ({
   return (
     <React.Fragment>
       <MovieVideoDialog
-        open={isDialogOpen.value}
-        onClose={isDialogOpen.setFalse}
+        open={isOpen}
+        onClose={() => {
+          close();
+        }}
       />
 
       <Paper>
         <List disablePadding>
-          <ListItem onClick={isDialogOpen.setTrue}>
+          <ListItem
+            onClick={() => {
+              open();
+            }}
+          >
             <ListItemText
               primaryTypographyProps={{ variant: "h6" }}
               primary="Videos"

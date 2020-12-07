@@ -1,13 +1,18 @@
-import { AppBar, Box, Toolbar, Typography } from "@material-ui/core";
+import {
+  AppBar,
+  Box,
+  IconButton,
+  Toolbar,
+  Typography,
+} from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 import { descend, head, sort, sortBy, thunkify } from "ramda";
 import React from "react";
 import { useQuery } from "react-query";
 import useModal from "../app/modals/useModal";
-import BackButton from "../app/navigation/BackButton";
 import HorizontalScroll from "../common/components/HorizontalScroll";
 import LoadingBox from "../common/components/LoadingBox";
 import { ResponsiveDialog } from "../common/components/ResponsiveDialog";
-import { SlideUp } from "../common/components/TransitionComponents";
 import BaseTag from "./BaseTag";
 import { getMovieCertifications, queryKeys } from "./query";
 import {
@@ -19,7 +24,6 @@ import {
   yearRangeToName,
 } from "./query/types";
 import useDiscoverState from "./useDiscoverState";
-
 const ReleaseYearRangeSection = () => {
   const discoverTuneModal = useModal("DiscoverTune");
   const { activateTag } = useDiscoverState();
@@ -144,22 +148,26 @@ export default () => {
 
   return (
     <ResponsiveDialog
-      TransitionComponent={SlideUp}
       open={discoverTuneModal.isOpen}
       onClose={discoverTuneModal.close}
     >
-      <AppBar color="default" position="sticky">
-        <Toolbar>
-          <BackButton onClick={discoverTuneModal.close} edge="start" />
-          <Box flex={1}>
-            <Typography variant="h6">Tune</Typography>
-          </Box>
-        </Toolbar>
-      </AppBar>
+      <Box paddingBottom={2}>
+        <AppBar color="default" position="sticky">
+          <Toolbar>
+            <IconButton onClick={discoverTuneModal.close} edge="start">
+              <CloseIcon />
+            </IconButton>
 
-      <ReleaseYearRangeSection />
-      <SortBySection />
-      <CertificationSection />
+            <Box flex={1}>
+              <Typography variant="h6">Tune</Typography>
+            </Box>
+          </Toolbar>
+        </AppBar>
+
+        <ReleaseYearRangeSection />
+        <SortBySection />
+        <CertificationSection />
+      </Box>
     </ResponsiveDialog>
   );
 };

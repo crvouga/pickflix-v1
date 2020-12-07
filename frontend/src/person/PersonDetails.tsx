@@ -8,6 +8,8 @@ import {
   CardContent,
   makeStyles,
   CardActions,
+  IconButton,
+  Container,
 } from "@material-ui/core";
 import makeImageUrl from "../media/tmdb/makeImageUrl";
 import { PersonDetailsResponse } from "../media/tmdb/types";
@@ -31,30 +33,42 @@ export default ({ details }: Props) => {
   const profileUrl = makeImageUrl(3, details);
   return (
     <Card>
-      <CardContent>
-        <Box
-          display="flex"
-          justifyContent="center"
-          width="100%"
-          paddingBottom={2}
-        >
-          <Avatar className={classes.avatar} src={profileUrl} />
-        </Box>
-        <Box>
-          <Typography variant="h5" align="center">
-            {details.name}
-          </Typography>
-          {details.knownForDepartment && (
-            <Typography
-              variant="subtitle1"
-              color="textSecondary"
-              align="center"
-            >
-              Known For {details.knownForDepartment}
+      <Container maxWidth="md">
+        <CardContent>
+          <Box
+            display="flex"
+            justifyContent="center"
+            width="100%"
+            paddingBottom={2}
+          >
+            <Avatar className={classes.avatar} src={profileUrl} />
+          </Box>
+          <Box>
+            <Typography variant="h5" align="center">
+              {details.name}
             </Typography>
-          )}
-        </Box>
-      </CardContent>
+            {details.knownForDepartment && (
+              <Typography
+                variant="subtitle1"
+                color="textSecondary"
+                align="center"
+              >
+                Known For {details.knownForDepartment}
+              </Typography>
+            )}
+          </Box>
+        </CardContent>
+        <CardActions>
+          <OpenDiscoverButton
+            tag={{
+              type: TagType.withPeople,
+              id: details.id,
+              name: details.name,
+              profilePath: details.profilePath,
+            }}
+          />
+        </CardActions>
+      </Container>
     </Card>
   );
 };

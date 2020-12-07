@@ -15,7 +15,7 @@ export default ({ tag, ...props }: Props) => {
 
   const handleClick = () => {
     discoverLogic.clear();
-    discoverLogic.activateTag(tag);
+    discoverLogic.setActiveTags([tag]);
     history.push("/discover");
   };
 

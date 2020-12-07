@@ -9,9 +9,13 @@ import {
   ListItem,
   ListItemText,
   makeStyles,
+  Paper,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import { ResponsiveDialog } from "../../common/components/ResponsiveDialog";
+import {
+  ResponsiveDialog,
+  RESPONSIVE_DIALOG_MAX_WIDTH,
+} from "../../common/components/ResponsiveDialog";
 import SearchTextField from "../../search/input/SearchTextField";
 import { MovieCredits } from "../../media/tmdb/types";
 import matchSorter from "match-sorter";
@@ -47,26 +51,33 @@ export default ({
 
   return (
     <ResponsiveDialog fullScreen={isMobile} {...props}>
-      <AppBar position="fixed" color="default">
-        <Box p={1} display="flex">
-          <SearchTextField
-            placeholder="Search Credits"
-            onChange={(e) => setText(e.target.value)}
-            autoFocus={false}
-          />
-          {isMobile && (
-            <Button
-              size="large"
-              color="primary"
-              onClick={() => {
-                close(props);
-              }}
-            >
-              Done
-            </Button>
-          )}
-        </Box>
-      </AppBar>
+      <Box
+        component={Paper}
+        zIndex={2}
+        p={1}
+        display="flex"
+        position="fixed"
+        width="100%"
+        maxWidth={RESPONSIVE_DIALOG_MAX_WIDTH}
+      >
+        <SearchTextField
+          placeholder="Search Credits"
+          onChange={(e) => setText(e.target.value)}
+          autoFocus={false}
+        />
+        {isMobile && (
+          <Button
+            size="large"
+            color="primary"
+            onClick={() => {
+              close(props);
+            }}
+          >
+            Done
+          </Button>
+        )}
+      </Box>
+
       <AppBarGutter />
       <List>
         {Object.entries(groupedByDepartment).map(([department, credits]) => (

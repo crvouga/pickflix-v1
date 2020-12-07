@@ -1,38 +1,21 @@
 import {
   Box,
-  Dialog,
+  Button,
   DialogProps,
-  makeStyles,
   Paper,
   Tab,
   Tabs,
   useMediaQuery,
   useTheme,
-  AppBar,
-  Button,
 } from "@material-ui/core";
 import React, { ChangeEvent, useState } from "react";
-import LoadingBox from "../../common/components/LoadingBox";
-import { useInfiniteQueryPagination } from "../../common/infinite-scroll";
-import MoviePosterGrid, {
-  MoviePosterGridSkeleton,
-} from "../components/MoviePosterGrid";
-import { getMovieSimilar, queryKeys, getMovieRecommendations } from "../query";
-import { uniqBy } from "ramda";
-import MoviePosterGridInfinite from "../components/MoviePosterGridInfinite";
-import { ResponsiveDialog } from "../../common/components/ResponsiveDialog";
 import { AppBarGutter } from "../../common/components/AppBarGutter";
-
-const useStylesDialog = makeStyles((theme) => ({
-  paper: {
-    backgroundColor: theme.palette.background.default,
-    [theme.breakpoints.up("sm")]: {
-      marginTop: "60px",
-      marginBottom: "60px",
-      width: "80%",
-    },
-  },
-}));
+import {
+  ResponsiveDialog,
+  RESPONSIVE_DIALOG_MAX_WIDTH,
+} from "../../common/components/ResponsiveDialog";
+import MoviePosterGridInfinite from "../components/MoviePosterGridInfinite";
+import { getMovieRecommendations, getMovieSimilar, queryKeys } from "../query";
 
 const TabPanel = (props: {
   children?: React.ReactNode;
@@ -76,7 +59,6 @@ export default ({
   tmdbMediaId,
   ...props
 }: { tmdbMediaId: string } & DialogProps) => {
-  const classesDialog = useStylesDialog();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
@@ -87,8 +69,14 @@ export default ({
   };
 
   return (
-    <ResponsiveDialog classes={classesDialog} fullScreen={isMobile} {...props}>
-      <AppBar color="default" position="fixed">
+    <ResponsiveDialog {...props}>
+      <Box
+        zIndex={2}
+        component={Paper}
+        position="fixed"
+        width="100%"
+        maxWidth={RESPONSIVE_DIALOG_MAX_WIDTH}
+      >
         {isMobile && (
           <Box
             display="flex"
@@ -112,7 +100,7 @@ export default ({
           <Tab label="Similar" />
           <Tab label="Recommendations" />
         </Tabs>
-      </AppBar>
+      </Box>
       {isMobile && <AppBarGutter />}
       <AppBarGutter />
       <Box paddingY={1}>
