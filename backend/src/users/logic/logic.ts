@@ -98,16 +98,22 @@ export class UserLogic {
   }
 
   async aggergateUser(user: User) {
-    const [reviewCount, listCount, autoListCount] = await Promise.all([
+    const [
+      reviewCount,
+      permissionCount,
+      listCount,
+      autoListCount,
+    ] = await Promise.all([
       this.reviewRepository.count({ authorId: user.id }),
       this.permissionRepository.count({ userId: user.id }),
+      this.listRepository.count({ ownerId: user.id }),
       this.autoListRepository.count({ ownerId: user.id }),
     ]);
 
     return {
       user,
       reviewCount,
-      listCount,
+      listCount: permissionCount + listCount,
       autoListCount,
     };
   }
