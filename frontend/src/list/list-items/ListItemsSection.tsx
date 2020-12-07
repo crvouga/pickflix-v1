@@ -8,7 +8,7 @@ import {
   isEditorOrOwner,
   ListAggergation,
 } from "../query";
-import ListItemActionBar from "./ListItemActionBar";
+import { ListItemActionBar } from "./ListItemActionBar";
 import ListItemGrid from "./ListItemGrid";
 import ListItemCardCallToAction from "./ListItemCardCallToAction";
 

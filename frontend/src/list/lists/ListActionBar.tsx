@@ -4,6 +4,7 @@ import EditIcon from "@material-ui/icons/EditOutlined";
 import GroupAddOutlinedIcon from "@material-ui/icons/GroupAddOutlined";
 import React from "react";
 import useModal from "../../app/modals/useModal";
+import { UserAggergation } from "../../user/query";
 import DeleteListFormModal from "../forms/delete-list-form/DeleteListFormModal";
 import useDeleteListForm from "../forms/delete-list-form/useDeleteListForm";
 import EditListFormModal from "../forms/edit-list-form/EditListFormModal";
@@ -11,10 +12,6 @@ import useEditListForm from "../forms/edit-list-form/useEditListForm";
 import { AddPermissionFormModal } from "../forms/permissions-form/AddPermissionForm";
 import { PermissionFormModal } from "../forms/permissions-form/PermissionForm";
 import { List, ListAggergation } from "../query";
-import WithAuthentication from "../../user/auth/WithAuthentication";
-import { UserAggergation } from "../../user/query";
-import AddIcon from "@material-ui/icons/Add";
-import { AddListItemFormModal } from "../forms/add-list-item-form/AddListItemForm";
 
 const EditListButton = ({ list }: { list: List }) => {
   const editListFormModal = useModal("EditListForm");
@@ -61,20 +58,6 @@ const PermissionFormButton = () => {
   );
 };
 
-const AddListItemButton = () => {
-  const addListItemFormModal = useModal("AddListItemForm");
-
-  return (
-    <IconButton
-      onClick={() => {
-        addListItemFormModal.open();
-      }}
-    >
-      <AddIcon />
-    </IconButton>
-  );
-};
-
 export default ({
   currentUser,
   list,
@@ -97,9 +80,6 @@ export default ({
       <PermissionFormButton />
       <PermissionFormModal list={list} />
       <AddPermissionFormModal list={list} />
-
-      <AddListItemButton />
-      <AddListItemFormModal listId={list.list.id} />
     </Toolbar>
   );
 };
