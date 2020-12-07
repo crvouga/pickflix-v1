@@ -13,6 +13,7 @@ import { MovieRecommendations, MovieSimilar } from "../../media/tmdb/types";
 import MoviePosterScroll from "../components/MoviePosterScroll";
 import useBoolean from "../../common/hooks/useBoolean";
 import MovieRelatedDialog from "./MovieRelatedDialog";
+import useModal from "../../app/modals/useModal";
 
 export default ({
   tmdbMediaId,
@@ -23,7 +24,7 @@ export default ({
   similar: MovieSimilar;
   recommendations: MovieRecommendations;
 }) => {
-  const isOpen = useBoolean(false);
+  const { isOpen, open, close } = useModal("MovieRelated");
   const movies = take(
     15,
     uniqBy((movie) => movie.id, [
@@ -40,17 +41,28 @@ export default ({
     <React.Fragment>
       <MovieRelatedDialog
         tmdbMediaId={tmdbMediaId}
-        open={isOpen.value}
-        onClose={isOpen.setFalse}
+        open={isOpen}
+        onClose={close}
       />
       <List disablePadding>
-        <ListItem button onClick={isOpen.setTrue}>
+        <ListItem
+          button
+          onClick={() => {
+            open();
+          }}
+        >
           <ListItemText
             primaryTypographyProps={{ variant: "h6" }}
             primary="People Also Liked"
           />
           <ListItemSecondaryAction>
-            <Button onClick={isOpen.setTrue}>See All</Button>
+            <Button
+              onClick={() => {
+                open();
+              }}
+            >
+              See All
+            </Button>
           </ListItemSecondaryAction>
         </ListItem>
       </List>

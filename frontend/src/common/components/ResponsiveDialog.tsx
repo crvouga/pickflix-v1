@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import DoneIcon from "@material-ui/icons/Done";
 import React from "react";
+import { SlideUp } from "./TransitionComponents";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
@@ -31,7 +32,14 @@ export const ResponsiveDialog = (props: DialogProps) => {
   const classesDialog = useStylesDialog();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
-  return <Dialog classes={classesDialog} fullScreen={isMobile} {...props} />;
+  return (
+    <Dialog
+      TransitionComponent={SlideUp}
+      classes={classesDialog}
+      fullScreen={isMobile}
+      {...props}
+    />
+  );
 };
 
 export const DoneButton = ({ onClick }: { onClick?: () => void }) => {

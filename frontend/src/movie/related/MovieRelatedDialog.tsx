@@ -20,6 +20,8 @@ import MoviePosterGrid, {
 import { getMovieSimilar, queryKeys, getMovieRecommendations } from "../query";
 import { uniqBy } from "ramda";
 import MoviePosterGridInfinite from "../components/MoviePosterGridInfinite";
+import { ResponsiveDialog } from "../../common/components/ResponsiveDialog";
+import { AppBarGutter } from "../../common/components/AppBarGutter";
 
 const useStylesDialog = makeStyles((theme) => ({
   paper: {
@@ -85,20 +87,20 @@ export default ({
   };
 
   return (
-    <Dialog classes={classesDialog} fullScreen={isMobile} {...props}>
-      <AppBar color="default" position="sticky">
-        <Box
-          display="flex"
-          flexDirection="row-reverse"
-          paddingX={2}
-          paddingY={1}
-        >
-          {isMobile && (
+    <ResponsiveDialog classes={classesDialog} fullScreen={isMobile} {...props}>
+      <AppBar color="default" position="fixed">
+        {isMobile && (
+          <Box
+            display="flex"
+            flexDirection="row-reverse"
+            paddingX={2}
+            paddingY={1}
+          >
             <Button onClick={() => close(props)} color="primary" size="large">
               Done
             </Button>
-          )}
-        </Box>
+          </Box>
+        )}
         <Tabs
           value={value}
           onChange={handleChange}
@@ -111,6 +113,8 @@ export default ({
           <Tab label="Recommendations" />
         </Tabs>
       </AppBar>
+      {isMobile && <AppBarGutter />}
+      <AppBarGutter />
       <Box paddingY={1}>
         <TabPanel index={0} value={value}>
           <Similar tmdbMediaId={tmdbMediaId} />
@@ -119,6 +123,6 @@ export default ({
           <Recommendations tmdbMediaId={tmdbMediaId} />
         </TabPanel>
       </Box>
-    </Dialog>
+    </ResponsiveDialog>
   );
 };

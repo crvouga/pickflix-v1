@@ -24,6 +24,7 @@ export type Modals = {
   SignOutForm: void;
   PermissionForm: void;
   AddPermissionForm: void;
+  MovieRelated: void;
 };
 
 export type IModal<K extends keyof Modals> = {
@@ -41,6 +42,7 @@ export enum ModalStateType {
 export const modalNameToModalStateType: {
   [modalName in keyof Modals]: ModalStateType;
 } = {
+  MovieRelated: ModalStateType.Location,
   AddPermissionForm: ModalStateType.Location,
   PermissionForm: ModalStateType.Location,
   AddListItemForm: ModalStateType.Location,

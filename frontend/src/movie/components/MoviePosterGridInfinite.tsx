@@ -8,6 +8,7 @@ import MoviePosterGrid, {
 } from "../components/MoviePosterGrid";
 import { Movie } from "./MoviePosterCard";
 import { InfiniteScrollBottom } from "../../common/infinite-scroll";
+import NothingHere from "../../common/components/NothingHere";
 
 export default ({
   queryKey,
@@ -31,7 +32,7 @@ export default ({
   }
 
   if (query.data[0] && query.data[0].results.length === 0) {
-    return null;
+    return <NothingHere />;
   }
 
   const movies = uniqBy(
