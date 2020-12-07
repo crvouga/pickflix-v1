@@ -18,13 +18,13 @@ const SigningIn = () => {
   });
 
   useListener(authEventEmitter, "signInSuccess", (user) => {
+    history.push("/");
     snackbar.display({
       message: `Signed in as ${user.username}`,
     });
   });
 
   useListener(authEventEmitter, "signInSettled", () => {
-    history.push("/");
     isLoading.setFalse();
     queryCache.invalidateQueries((query) =>
       query.queryKey.includes("current-user")
