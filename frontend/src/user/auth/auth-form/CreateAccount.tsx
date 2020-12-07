@@ -1,8 +1,16 @@
-import { Box, Button, TextField, Typography } from "@material-ui/core";
+import {
+  Box,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from "@material-ui/core";
+import VisibilityIcon from "@material-ui/icons/Visibility";
+import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
 import React, { useState } from "react";
-import { signUp } from "../query/mutations";
 import { SubmitButton } from "../../../common/components/SubmitButton";
-
+import useBoolean from "../../../common/hooks/useBoolean";
+import { signUp } from "../query/mutations";
 export default ({
   emailAddress,
   username,
@@ -12,6 +20,7 @@ export default ({
   username: string;
   displayName: string;
 }) => {
+  const isPasswordVisible = useBoolean(false);
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
 
@@ -38,7 +47,7 @@ export default ({
       <Box paddingBottom={2}>
         <TextField
           variant="outlined"
-          type="password"
+          type={isPasswordVisible.value ? undefined : "password"}
           label="Password"
           fullWidth
           autoCorrect="off"
@@ -47,13 +56,30 @@ export default ({
           onChange={(e) => {
             setPassword(e.target.value);
           }}
+          helperText="Make it something simple"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={isPasswordVisible.toggle}
+                >
+                  {isPasswordVisible.value ? (
+                    <VisibilityOffIcon />
+                  ) : (
+                    <VisibilityIcon />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
         />
       </Box>
 
       <Box paddingBottom={2}>
         <TextField
           variant="outlined"
-          type="password"
+          type={isPasswordVisible.value ? undefined : "password"}
           label="Repeat Password"
           fullWidth
           autoCorrect="off"
@@ -64,6 +90,22 @@ export default ({
           }
           onChange={(e) => {
             setPasswordRepeat(e.target.value);
+          }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={isPasswordVisible.toggle}
+                >
+                  {isPasswordVisible.value ? (
+                    <VisibilityOffIcon />
+                  ) : (
+                    <VisibilityIcon />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            ),
           }}
         />
       </Box>
