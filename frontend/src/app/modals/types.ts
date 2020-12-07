@@ -1,6 +1,7 @@
 import { MediaId } from "../../media/tmdb/types";
 
 export type Modals = {
+  MovieCredits: void;
   AddListItemForm: void;
   CreateListForm: void;
   CreateListWithListItemsForm: {
@@ -60,4 +61,5 @@ export const modalNameToModalStateType: {
   ToggleListItemForm: ModalStateType.Location,
   SignInCallToAction: ModalStateType.Location,
   SignOutForm: ModalStateType.Redux,
+  MovieCredits: ModalStateType.Location,
 };

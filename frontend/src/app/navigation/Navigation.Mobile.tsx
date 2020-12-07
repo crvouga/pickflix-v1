@@ -45,11 +45,6 @@ const useStylesBottomNavigationAction = makeStyles((theme) => ({
   },
 }));
 
-export const BottomNavigationGutter = () => {
-  const classes = useStyles();
-  return <div className={classes.gutter} />;
-};
-
 export default () => {
   const classesBottomNavigation = useStylesBottomNavigation();
   const classesBottomNavigationAction = useStylesBottomNavigationAction();

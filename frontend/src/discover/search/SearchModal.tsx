@@ -12,6 +12,8 @@ import SearchTextField from "../../search/input/SearchTextField";
 import { DiscoverMovieTag } from "../query/types";
 import useDiscoverState from "../useDiscoverState";
 import SearchResults from "./SearchResults";
+import { AppBarGutter } from "../../common/components/AppBarGutter";
+import { SlideUp } from "../../common/components/TransitionComponents";
 
 export default () => {
   const discoverMovieTagSearchModal = useModal("DiscoverSearch");
@@ -29,10 +31,11 @@ export default () => {
 
   return (
     <ResponsiveDialog
+      TransitionComponent={SlideUp}
       open={discoverMovieTagSearchModal.isOpen}
       onClose={() => discoverMovieTagSearchModal.close()}
     >
-      <AppBar color="default" position="sticky">
+      <AppBar color="default" position="fixed">
         <Box display="flex" p={1}>
           <SearchTextField
             placeholder="Search Tags"
@@ -49,6 +52,7 @@ export default () => {
           )}
         </Box>
       </AppBar>
+      <AppBarGutter />
       <SearchResults onClick={handleClick} searchQuery={searchQuery} />
     </ResponsiveDialog>
   );

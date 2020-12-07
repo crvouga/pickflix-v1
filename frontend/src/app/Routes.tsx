@@ -1,8 +1,8 @@
 import React, { Suspense } from "react";
 import { Route, Switch } from "react-router";
+import { AppBarGutter } from "../common/components/AppBarGutter";
 import LoadingPage from "../common/page/LoadingPage";
 import Modals from "./modals/Modals";
-import { BottomNavigationGutter } from "./navigation/Navigation.Mobile";
 import Snackbar from "./snackbar/Snackbar";
 
 const HomePage = React.lazy(() => import("../home/HomePage"));
@@ -43,7 +43,7 @@ export default () => {
       </Suspense>
       <Modals />
       <Snackbar />
-      <BottomNavigationGutter />
+      <AppBarGutter />
     </React.Fragment>
   );
 };

@@ -14,23 +14,25 @@ import { MovieCredits } from "../../media/tmdb/types";
 import CreditsListCard from "./CreditsListCard";
 import CreditsDialog from "./CreditsDialog";
 import useBoolean from "../../common/hooks/useBoolean";
+import useModal from "../../app/modals/useModal";
 
 export default ({ credits }: { credits: MovieCredits }) => {
   const { cast, crew } = credits;
   const [directors, restOfCrew] = partition(whereEq({ job: "Director" }), crew);
   const topCredits = take(10, [...directors, ...cast, ...restOfCrew]);
 
-  const isOpen = useBoolean(false);
+  const { isOpen, open, close } = useModal("MovieCredits");
 
   return (
     <React.Fragment>
-      <CreditsDialog
-        credits={credits}
-        open={isOpen.value}
-        onClose={isOpen.setFalse}
-      />
+      <CreditsDialog credits={credits} open={isOpen} onClose={close} />
       <List disablePadding>
-        <ListItem button onClick={isOpen.setTrue}>
+        <ListItem
+          button
+          onClick={() => {
+            open();
+          }}
+        >
           <ListItemText
             primaryTypographyProps={{
               variant: "h6",
@@ -53,7 +55,9 @@ export default ({ credits }: { credits: MovieCredits }) => {
         <Button
           variant="outlined"
           endIcon={<ArrowForwardIcon />}
-          onClick={isOpen.setTrue}
+          onClick={() => {
+            open();
+          }}
         >
           See All
         </Button>

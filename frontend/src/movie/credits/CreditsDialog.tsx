@@ -8,6 +8,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  makeStyles,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { ResponsiveDialog } from "../../common/components/ResponsiveDialog";
@@ -16,6 +17,8 @@ import { MovieCredits } from "../../media/tmdb/types";
 import matchSorter from "match-sorter";
 import CreditsListItem from "./CreditsListItem";
 import { groupBy } from "ramda";
+import { APP_BAR_HEIGHT } from "../../app/navigation/constants";
+import { AppBarGutter } from "../../common/components/AppBarGutter";
 
 const close = (props: DialogProps) => {
   if (props.onClose) {
@@ -28,6 +31,7 @@ export default ({
   ...props
 }: { credits: MovieCredits } & DialogProps) => {
   const theme = useTheme();
+
   const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
   const [text, setText] = useState("");
 
@@ -43,7 +47,7 @@ export default ({
 
   return (
     <ResponsiveDialog fullScreen={isMobile} {...props}>
-      <AppBar position="sticky" color="default">
+      <AppBar position="fixed" color="default">
         <Box p={1} display="flex">
           <SearchTextField
             placeholder="Search Credits"
@@ -63,6 +67,7 @@ export default ({
           )}
         </Box>
       </AppBar>
+      <AppBarGutter />
       <List>
         {Object.entries(groupedByDepartment).map(([department, credits]) => (
           <React.Fragment key={department}>

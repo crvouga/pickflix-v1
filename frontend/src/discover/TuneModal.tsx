@@ -1,19 +1,13 @@
-import {
-  AppBar,
-  Box,
-  Dialog,
-  fade,
-  makeStyles,
-  Toolbar,
-  Typography,
-} from "@material-ui/core";
+import { AppBar, Box, Toolbar, Typography } from "@material-ui/core";
 import { descend, head, sort, sortBy, thunkify } from "ramda";
 import React from "react";
 import { useQuery } from "react-query";
+import useModal from "../app/modals/useModal";
+import BackButton from "../app/navigation/BackButton";
 import HorizontalScroll from "../common/components/HorizontalScroll";
 import LoadingBox from "../common/components/LoadingBox";
-import BackButton from "../app/navigation/BackButton";
-import useModal from "../app/modals/useModal";
+import { ResponsiveDialog } from "../common/components/ResponsiveDialog";
+import { SlideUp } from "../common/components/TransitionComponents";
 import BaseTag from "./BaseTag";
 import { getMovieCertifications, queryKeys } from "./query";
 import {
@@ -25,7 +19,6 @@ import {
   yearRangeToName,
 } from "./query/types";
 import useDiscoverState from "./useDiscoverState";
-import { ResponsiveDialog } from "../common/components/ResponsiveDialog";
 
 const ReleaseYearRangeSection = () => {
   const discoverTuneModal = useModal("DiscoverTune");
@@ -151,6 +144,7 @@ export default () => {
 
   return (
     <ResponsiveDialog
+      TransitionComponent={SlideUp}
       open={discoverTuneModal.isOpen}
       onClose={discoverTuneModal.close}
     >
