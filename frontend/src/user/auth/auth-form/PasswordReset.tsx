@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
 import { putPasswordReset } from "./query";
 import { useHistory } from "react-router";
+import { SubmitButton } from "../../../common/components/SubmitButton";
 
 export default ({
   emailAddress,
@@ -78,15 +79,9 @@ export default ({
         />
       </Box>
 
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleSubmit}
-        fullWidth
-        disabled={disabled}
-      >
+      <SubmitButton onClick={handleSubmit} fullWidth disabled={disabled}>
         Reset Password
-      </Button>
+      </SubmitButton>
     </React.Fragment>
   );
 };

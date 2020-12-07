@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
 import { User } from "../../query";
 import { postForgotPassword } from "./query";
+import { SubmitButton } from "../../../common/components/SubmitButton";
 
 export default ({ user }: { user: User }) => {
   const [hasSentEmail, setHasSentEmail] = useState(false);
@@ -69,14 +70,9 @@ export default ({ user }: { user: User }) => {
         </Typography>
       </Box>
 
-      <Button
-        variant="contained"
-        color="primary"
-        fullWidth
-        onClick={handleSubmit}
-      >
+      <SubmitButton fullWidth onClick={handleSubmit}>
         Send Email
-      </Button>
+      </SubmitButton>
     </React.Fragment>
   );
 };

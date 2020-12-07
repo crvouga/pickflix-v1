@@ -19,6 +19,7 @@ import {
   sendResetPasswordEmail,
 } from "./reset-password";
 import { IPermissionRepository } from "../../lists/repositories/permission-repository";
+import { PermissionType } from "../../lists/models";
 
 export class UserLogic {
   userRepository: IUserRepository;
@@ -100,12 +101,15 @@ export class UserLogic {
   async aggergateUser(user: User) {
     const [
       reviewCount,
-      permissionCount,
-      listCount,
+      editorEermissionCount,
+      ownerPermissionCount,
       autoListCount,
     ] = await Promise.all([
       this.reviewRepository.count({ authorId: user.id }),
-      this.permissionRepository.count({ userId: user.id }),
+      this.permissionRepository.count({
+        permissionType: PermissionType.Editor,
+        userId: user.id,
+      }),
       this.listRepository.count({ ownerId: user.id }),
       this.autoListRepository.count({ ownerId: user.id }),
     ]);
@@ -113,7 +117,7 @@ export class UserLogic {
     return {
       user,
       reviewCount,
-      listCount: permissionCount + listCount,
+      listCount: editorEermissionCount + ownerPermissionCount,
       autoListCount,
     };
   }

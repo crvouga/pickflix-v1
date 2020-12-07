@@ -2,6 +2,7 @@ import { Box, Button, TextField, Typography } from "@material-ui/core";
 import * as EmailValidator from "email-validator";
 import React, { useRef, useState } from "react";
 import { useHistory } from "react-router";
+import { SubmitButton } from "../../../common/components/SubmitButton";
 
 export default () => {
   const history = useHistory();
@@ -39,15 +40,9 @@ export default () => {
         />
       </Box>
       <Box paddingBottom={2}>
-        <Button
-          variant="contained"
-          color="primary"
-          disabled={disabled}
-          fullWidth
-          onClick={handleSubmit}
-        >
+        <SubmitButton disabled={disabled} fullWidth onClick={handleSubmit}>
           Continue
-        </Button>
+        </SubmitButton>
       </Box>
     </React.Fragment>
   );

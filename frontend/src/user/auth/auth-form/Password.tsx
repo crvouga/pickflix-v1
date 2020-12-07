@@ -14,6 +14,7 @@ import { useHistory } from "react-router";
 import AvatarUser from "../../components/AvatarUser";
 import { User } from "../../query";
 import { signIn } from "../query/mutations";
+import { SubmitButton } from "../../../common/components/SubmitButton";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -62,7 +63,9 @@ export default ({ user }: { user: User }) => {
       </Box>
 
       <Box paddingBottom={2}>
-        <Typography align="center">{user.emailAddress}</Typography>
+        <Typography align="center" variant="h6">
+          {user.emailAddress}
+        </Typography>
       </Box>
 
       <Box paddingBottom={2}>
@@ -94,15 +97,9 @@ export default ({ user }: { user: User }) => {
       </Box>
 
       <Box paddingBottom={2}>
-        <Button
-          onClick={handleSubmit}
-          variant="contained"
-          color="primary"
-          fullWidth
-          disabled={disabled}
-        >
+        <SubmitButton fullWidth disabled={disabled} onClick={handleSubmit}>
           Sign In
-        </Button>
+        </SubmitButton>
       </Box>
       <Box
         paddingBottom={2}

@@ -1,6 +1,7 @@
 import { Box, Button, TextField, Typography } from "@material-ui/core";
 import React, { useState } from "react";
 import { signUp } from "../query/mutations";
+import { SubmitButton } from "../../../common/components/SubmitButton";
 
 export default ({
   emailAddress,
@@ -14,7 +15,7 @@ export default ({
   const [password, setPassword] = useState("");
   const [passwordRepeat, setPasswordRepeat] = useState("");
 
-  const disabled = password !== passwordRepeat;
+  const disabled = password !== passwordRepeat || password === "";
 
   const handleSubmit = async () => {
     await signUp({
@@ -27,29 +28,12 @@ export default ({
 
   return (
     <React.Fragment>
-      <Box paddingBottom={2}>
-        <Typography variant="h5" align="center">
-          Create an account
-        </Typography>
-      </Box>
-
-      <Box paddingBottom={2}>
-        <Typography align="center">{emailAddress}</Typography>
-        <Typography align="center">{username}</Typography>
-      </Box>
-
-      {/* <Box paddingBottom={2}>
-        <TextField
-          type="name"
-          autoFocus
-          variant="outlined"
-          label="Display Name"
-          fullWidth
-          onChange={(e) => {
-            setDisplayName(e.target.value);
-          }}
-        />
-      </Box> */}
+      <Typography align="center" variant="h6">
+        {emailAddress}
+      </Typography>
+      <Typography align="center" gutterBottom variant="h6">
+        {username}
+      </Typography>
 
       <Box paddingBottom={2}>
         <TextField
@@ -84,15 +68,9 @@ export default ({
         />
       </Box>
 
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleSubmit}
-        fullWidth
-        disabled={disabled}
-      >
+      <SubmitButton onClick={handleSubmit} fullWidth disabled={disabled}>
         Create Account
-      </Button>
+      </SubmitButton>
     </React.Fragment>
   );
 };

@@ -9,6 +9,7 @@ import {
   UsernameTextField,
   useUsernameTextFieldState,
 } from "../../forms/UsernameTextField";
+import { SubmitButton } from "../../../common/components/SubmitButton";
 
 export default ({ emailAddress }: { emailAddress: string }) => {
   const history = useHistory();
@@ -34,30 +35,18 @@ export default ({ emailAddress }: { emailAddress: string }) => {
 
   return (
     <React.Fragment>
-      <Box paddingBottom={1}>
-        <Typography variant="h5" align="center">
-          Pick a username
-        </Typography>
-      </Box>
+      <Typography align="center" variant="h6" gutterBottom>
+        {emailAddress}
+      </Typography>
+
+      <UsernameTextField state={usernameTextFieldState} />
       <Box paddingBottom={2}>
-        <Typography align="center">{emailAddress}</Typography>
+        <DisplayNameTextField state={displayNameTextFieldState} />
       </Box>
 
-      <DisplayNameTextField state={displayNameTextFieldState} />
-
-      <Box paddingBottom={2}>
-        <UsernameTextField state={usernameTextFieldState} />
-      </Box>
-
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleSubmit}
-        fullWidth
-        disabled={disabled}
-      >
+      <SubmitButton onClick={handleSubmit} fullWidth disabled={disabled}>
         Next
-      </Button>
+      </SubmitButton>
     </React.Fragment>
   );
 };
