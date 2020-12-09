@@ -1,10 +1,9 @@
 import { makeUserFake } from "../../../users/models";
 import { buildListLogicTest } from "../build";
-import { buildLogicTest } from "../../../app/build/build-test";
 
 describe("list permission logic", () => {
   it("add list editors", async () => {
-    const { listLogic } = buildListLogicTest();
+    const { listLogic } = await buildListLogicTest();
 
     const user1 = makeUserFake({
       username: "user1",
@@ -40,7 +39,7 @@ describe("list permission logic", () => {
   });
 
   it("remove editor", async () => {
-    const { listLogic } = buildListLogicTest();
+    const { listLogic } = await buildListLogicTest();
 
     const user1 = makeUserFake({
       username: "user1",
@@ -89,7 +88,7 @@ describe("list permission logic", () => {
   });
 
   it("checks is user is owner or editor", async () => {
-    const { listLogic } = buildListLogicTest();
+    const { listLogic } = await buildListLogicTest();
     const owner = makeUserFake();
     const editor = makeUserFake();
     const someUser = makeUserFake();
@@ -149,7 +148,7 @@ describe("list permission logic", () => {
   });
 
   it("transfer ownership of list", async () => {
-    const { listLogic } = buildListLogicTest();
+    const { listLogic } = await buildListLogicTest();
     const owner = makeUserFake();
     const editor = makeUserFake();
 

@@ -1,14 +1,14 @@
 import * as R from "ramda";
 import { pipe } from "remeda";
 import {
-  RepositoryQueryOptions,
+  GenericRepositoryQueryOptions,
   Identifiable,
   RepositoryQuerySpec,
   IGenericRepository,
 } from "./types";
 import { matchSorter } from "match-sorter";
 
-const optionsToCompartors = <T>(options?: RepositoryQueryOptions<T>) => {
+const optionsToCompartors = <T>(options?: GenericRepositoryQueryOptions<T>) => {
   const comparators: ((a: T, b: T) => number)[] = [];
   if (options?.orderBy) {
     for (const [key, direction] of options.orderBy) {
@@ -26,7 +26,7 @@ const optionsToCompartors = <T>(options?: RepositoryQueryOptions<T>) => {
 };
 
 const optionsToIndexRange = <T>(
-  options?: RepositoryQueryOptions<T>
+  options?: GenericRepositoryQueryOptions<T>
 ): [number, number] | [] => {
   if (options?.pagination) {
     const { pageSize, page } = options.pagination;
@@ -37,8 +37,8 @@ const optionsToIndexRange = <T>(
   return [];
 };
 
-export class GenericRepositoryHashMap<T extends Identifiable>
-  implements IGenericRepository<T> {
+export class GenericRepositoryHashMap<I, T extends Identifiable<I>>
+  implements IGenericRepository<I, T> {
   hashMap: {
     [id: string]: T;
   };
@@ -49,7 +49,7 @@ export class GenericRepositoryHashMap<T extends Identifiable>
 
   async find(
     spec: RepositoryQuerySpec<T>,
-    options?: RepositoryQueryOptions<T>
+    options?: GenericRepositoryQueryOptions<T>
   ): Promise<T[]> {
     return pipe(
       this.hashMap,
@@ -63,10 +63,10 @@ export class GenericRepositoryHashMap<T extends Identifiable>
     );
   }
 
-  async search(
+  async search<K extends keyof T>(
     query: string,
-    keys: (keyof T)[],
-    options?: RepositoryQueryOptions<T>
+    keys: K[],
+    options?: GenericRepositoryQueryOptions<T>
   ): Promise<T[]> {
     return pipe(
       this.hashMap,
@@ -83,30 +83,27 @@ export class GenericRepositoryHashMap<T extends Identifiable>
     return found.length;
   }
 
-  async add(entities: T[]): Promise<T[]> {
+  async add(entities: T[]) {
     for (const entity of entities) {
-      this.hashMap[entity.id] = entity;
+      this.hashMap[String(entity.id)] = entity;
     }
-    return entities;
   }
 
-  async remove(spec: Partial<T>[]): Promise<boolean> {
+  async remove(spec: Partial<T>[]) {
     for (const andSpec of spec) {
       this.hashMap = R.reject(R.whereEq(andSpec), this.hashMap);
     }
-    return true;
   }
 
-  async update({ id, ...entityInfo }: Partial<T> & Pick<T, "id">): Promise<T> {
-    const entity = this.hashMap[id];
+  async update(id: I, partial: Partial<T>) {
+    const entity = this.hashMap[String(id)];
     if (!entity) {
       throw new Error("entity does not exists");
     }
     const updated = {
       ...entity,
-      ...entityInfo,
+      ...partial,
     };
-    this.hashMap[id] = updated;
-    return updated;
+    this.hashMap[String(id)] = updated;
   }
 }

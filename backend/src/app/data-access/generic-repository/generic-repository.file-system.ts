@@ -1,20 +1,20 @@
 import fs from "fs";
-import configuration from "../configuration";
+import configuration from "../../configuration";
 import { GenericRepositoryHashMap } from "./generic-repository.hash-map";
 import {
   Identifiable,
   IGenericRepository,
-  RepositoryQueryOptions,
+  GenericRepositoryQueryOptions,
   RepositoryQuerySpec,
 } from "./types";
 
-export class GenericRepositoryFileSystem<T extends Identifiable>
-  implements IGenericRepository<T> {
+export class GenericRepositoryFileSystem<I, T extends Identifiable<I>>
+  implements IGenericRepository<I, T> {
   filePath: string;
-  repositoryHashMap: GenericRepositoryHashMap<T>;
+  repositoryHashMap: GenericRepositoryHashMap<I, T>;
 
   constructor(filePath: string) {
-    this.repositoryHashMap = new GenericRepositoryHashMap<T>({});
+    this.repositoryHashMap = new GenericRepositoryHashMap<I, T>({});
     this.filePath = filePath;
   }
 
@@ -36,7 +36,7 @@ export class GenericRepositoryFileSystem<T extends Identifiable>
 
   async find(
     spec: RepositoryQuerySpec<T>,
-    options?: RepositoryQueryOptions<T>
+    options?: GenericRepositoryQueryOptions<T>
   ): Promise<T[]> {
     this.read();
     return await this.repositoryHashMap.find(spec, options);
@@ -45,7 +45,7 @@ export class GenericRepositoryFileSystem<T extends Identifiable>
   async search(
     query: string,
     keys: (keyof T)[],
-    options?: RepositoryQueryOptions<T>
+    options?: GenericRepositoryQueryOptions<T>
   ): Promise<T[]> {
     this.read();
     return await this.repositoryHashMap.search(query, keys, options);
@@ -56,24 +56,21 @@ export class GenericRepositoryFileSystem<T extends Identifiable>
     return await this.repositoryHashMap.count(spec);
   }
 
-  async add(entities: T[]): Promise<T[]> {
+  async add(entities: T[]) {
     this.read();
     await this.repositoryHashMap.add(entities);
     this.write();
-    return entities;
   }
 
-  async remove(spec: RepositoryQuerySpec<T>): Promise<boolean> {
+  async remove(spec: RepositoryQuerySpec<T>) {
     this.read();
     await this.repositoryHashMap.remove(spec);
     this.write();
-    return true;
   }
 
-  async update(entityInfos: Partial<T> & Pick<T, "id">): Promise<T> {
+  async update(id: I, partial: Partial<T>) {
     this.read();
-    const updatedEntities = await this.repositoryHashMap.update(entityInfos);
+    await this.repositoryHashMap.update(id, partial);
     this.write();
-    return updatedEntities;
   }
 }

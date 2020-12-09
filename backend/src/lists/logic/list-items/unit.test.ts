@@ -4,7 +4,7 @@ import { buildListLogicTest } from "../build";
 
 describe("getting list items", () => {
   it("get aggergated list items", async () => {
-    const { listLogic } = buildListLogicTest();
+    const { listLogic } = await buildListLogicTest();
 
     const user = makeUserFake();
     const list = await listLogic.addList({
@@ -31,7 +31,7 @@ describe("getting list items", () => {
     }
   });
   it("rejects if duplicate list items", async () => {
-    const { listLogic } = buildListLogicTest();
+    const { listLogic } = await buildListLogicTest();
 
     const currentUser = makeUserFake();
 
@@ -68,7 +68,7 @@ describe("getting list items", () => {
   });
 
   it("removes list item by list id and media ids", async () => {
-    const { listLogic } = buildListLogicTest();
+    const { listLogic } = await buildListLogicTest();
 
     const currentUser = makeUserFake();
 

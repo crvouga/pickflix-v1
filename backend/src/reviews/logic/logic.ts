@@ -1,8 +1,9 @@
-import { IUnitOfWork, PaginationOptions } from "../../app/data-access/types";
+import { PaginationOptions } from "../../app/pagination";
 import { removeNullOrUndefinedEntries } from "../../app/utils";
 import { MediaLogic } from "../../media/logic/logic";
 import { MediaId } from "../../media/models/types";
 import { UserId } from "../../users/models/make-user";
+import { IUserRepository } from "../../users/repositories/user-repository";
 import {
   makeReview,
   PartialReview,
@@ -10,14 +11,9 @@ import {
   ReviewId,
   updateReview,
 } from "../models/make-review";
-import {
-  makeReviewVote,
-  PartialReviewVote,
-  ReviewVoteValue,
-} from "../models/make-review-vote";
+import { makeReviewVote, ReviewVoteValue } from "../models/make-review-vote";
 import { IReviewRepository } from "../repositories/review-repository";
 import { IReviewVoteRepository } from "../repositories/review-vote-repository";
-import { IUserRepository } from "../../users/repositories/user-repository";
 
 export class ReviewLogic {
   reviewRepository: IReviewRepository;

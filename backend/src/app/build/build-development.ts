@@ -4,7 +4,8 @@ import { ListLogic } from "../../lists/logic/logic";
 import { MediaLogic } from "../../media/logic/logic";
 import { ReviewLogic } from "../../reviews/logic/logic";
 import { UserLogic } from "../../users/logic/logic";
-import keyv from "../data-access/mongodb/keyv";
+import { PostgresDatabaseDeveloplment } from "../data-access/database.postgres";
+import keyv from "../data-access/keyv.mongo";
 import { EmailLogic } from "../email";
 import { createEventEmitter, Events } from "../events";
 import {
@@ -13,10 +14,12 @@ import {
 } from "../express/authentication-middleware";
 import { makeExpressApp } from "../express/make-express-app";
 import { ExpressAppDependencies } from "../express/types";
-import { buildRepositoriesFileSystem } from "./build-repositories";
+import { buildRepositoriesPostgres } from "./build-repositories";
 
-export const buildLogicDevelopment = () => {
-  const repositories = buildRepositoriesFileSystem();
+export const buildLogicDevelopment = async () => {
+  const database = new PostgresDatabaseDeveloplment();
+
+  const { repositories } = await buildRepositoriesPostgres(database);
 
   const eventEmitter = createEventEmitter<Events>();
 
@@ -52,7 +55,7 @@ export const buildLogicDevelopment = () => {
 };
 
 export const buildAppDevelopment = async () => {
-  const appLogic = buildLogicDevelopment();
+  const appLogic = await buildLogicDevelopment();
 
   const dependencies: ExpressAppDependencies = {
     ...appLogic,

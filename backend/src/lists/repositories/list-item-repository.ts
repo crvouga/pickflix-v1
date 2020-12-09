@@ -1,78 +1,84 @@
-import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository.file-system";
-import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository.hash-map";
-import { RepositoryQueryOptions } from "../../app/data-access/types";
+import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository/generic-repository.file-system";
+import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository/generic-repository.hash-map";
+import { GenericRepositoryQueryOptions } from "../../app/data-access/generic-repository/types";
 import { ListItemId } from "../models";
 import { ListItem } from "../models/make-list-item";
 
-type ListItemSpec = Partial<ListItem>[];
-
 export interface IListItemRepository {
   find(
-    spec: ListItemSpec,
-    options?: RepositoryQueryOptions<ListItem>
+    spec: Partial<ListItem>[],
+    options?: GenericRepositoryQueryOptions<ListItem>
   ): Promise<ListItem[]>;
 
-  count(spec: ListItemSpec): Promise<number>;
+  count(spec: Partial<ListItem>[]): Promise<number>;
 
   add(listItems: ListItem[]): void;
 
   remove(id: ListItemId): void;
 
-  removeWhere(specs: ListItemSpec): void;
+  removeWhere(specs: Partial<ListItem>[]): void;
 }
 
 export class ListItemRepositoryHashMap implements IListItemRepository {
-  repository: GenericRepositoryHashMap<ListItem>;
+  repository: GenericRepositoryHashMap<ListItemId, ListItem>;
 
   constructor() {
-    this.repository = new GenericRepositoryHashMap<ListItem>({});
+    this.repository = new GenericRepositoryHashMap<ListItemId, ListItem>({});
   }
 
-  async find(spec: ListItemSpec, options: RepositoryQueryOptions<ListItem>) {
-    return this.repository.find(spec, options);
+  async find(
+    spec: Partial<ListItem>[],
+    options: GenericRepositoryQueryOptions<ListItem>
+  ) {
+    return await this.repository.find(spec, options);
   }
 
-  async count(spec: ListItemSpec) {
+  async count(spec: Partial<ListItem>[]) {
     return this.repository.count(spec);
   }
 
   async add(listItems: ListItem[]) {
-    this.repository.add(listItems);
+    await this.repository.add(listItems);
   }
 
   async remove(id: ListItemId) {
-    this.repository.remove([{ id }]);
+    await this.repository.remove([{ id }]);
   }
 
-  async removeWhere(specs: ListItemSpec) {
-    this.repository.remove(specs);
+  async removeWhere(specs: Partial<ListItem>[]) {
+    await this.repository.remove(specs);
   }
 }
 
 export class ListItemRepositoryFileSystem implements IListItemRepository {
-  repository: GenericRepositoryFileSystem<ListItem>;
+  repository: GenericRepositoryFileSystem<ListItemId, ListItem>;
 
   constructor(filePath: string) {
-    this.repository = new GenericRepositoryFileSystem<ListItem>(filePath);
+    this.repository = new GenericRepositoryFileSystem<ListItemId, ListItem>(
+      filePath
+    );
   }
 
-  async find(spec: ListItemSpec, options: RepositoryQueryOptions<ListItem>) {
-    return this.repository.find(spec, options);
+  async find(
+    spec: Partial<ListItem>[],
+    options: GenericRepositoryQueryOptions<ListItem>
+  ) {
+    return await this.repository.find(spec, options);
   }
 
-  async count(spec: ListItemSpec) {
+  async count(spec: Partial<ListItem>[]) {
     return this.repository.count(spec);
   }
 
   async add(listItems: ListItem[]) {
-    this.repository.add(listItems);
+    await this.repository.add(listItems);
   }
 
   async remove(id: ListItemId) {
-    this.repository.remove([{ id }]);
+    await this.repository.remove([{ id }]);
   }
 
-  async removeWhere(specs: ListItemSpec) {
-    this.repository.remove(specs);
+  async removeWhere(specs: Partial<ListItem>[]) {
+    await this.repository.remove(specs);
   }
 }

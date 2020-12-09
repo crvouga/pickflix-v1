@@ -1,12 +1,12 @@
-import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository.hash-map";
-import { RepositoryQueryOptions } from "../../app/data-access/types";
+import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository/generic-repository.hash-map";
+import { GenericRepositoryQueryOptions } from "../../app/data-access/generic-repository/types";
 import { Review, ReviewId } from "../models/make-review";
-import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository.file-system";
+import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository/generic-repository.file-system";
 
 export interface IReviewRepository {
   find(
     spec: Partial<Review>,
-    options?: RepositoryQueryOptions<Review>
+    options?: GenericRepositoryQueryOptions<Review>
   ): Promise<Review[]>;
 
   add(review: Review): void;
@@ -19,22 +19,25 @@ export interface IReviewRepository {
 }
 
 export class ReviewRepositoryHashMap implements IReviewRepository {
-  repository: GenericRepositoryHashMap<Review>;
+  repository: GenericRepositoryHashMap<ReviewId, Review>;
 
   constructor(hashMap: { [id: string]: Review }) {
-    this.repository = new GenericRepositoryHashMap<Review>(hashMap);
+    this.repository = new GenericRepositoryHashMap<ReviewId, Review>(hashMap);
   }
 
-  async find(spec: Partial<Review>, options?: RepositoryQueryOptions<Review>) {
+  async find(
+    spec: Partial<Review>,
+    options?: GenericRepositoryQueryOptions<Review>
+  ) {
     return this.repository.find([spec], options);
   }
 
   async add(review: Review) {
-    this.repository.add([review]);
+    await this.repository.add([review]);
   }
 
   async remove(id: ReviewId) {
-    this.repository.remove([{ id }]);
+    await this.repository.remove([{ id }]);
   }
 
   async count(spec: Partial<Review>) {
@@ -42,27 +45,32 @@ export class ReviewRepositoryHashMap implements IReviewRepository {
   }
 
   async update(id: ReviewId, partial: Partial<Review>) {
-    this.repository.update({ id, ...partial });
+    await this.repository.update(id, partial);
   }
 }
 
 export class ReviewRepositoryFileSystem implements IReviewRepository {
-  repository: GenericRepositoryFileSystem<Review>;
+  repository: GenericRepositoryFileSystem<ReviewId, Review>;
 
   constructor(filePath: string) {
-    this.repository = new GenericRepositoryFileSystem<Review>(filePath);
+    this.repository = new GenericRepositoryFileSystem<ReviewId, Review>(
+      filePath
+    );
   }
 
-  async find(spec: Partial<Review>, options?: RepositoryQueryOptions<Review>) {
+  async find(
+    spec: Partial<Review>,
+    options?: GenericRepositoryQueryOptions<Review>
+  ) {
     return this.repository.find([spec], options);
   }
 
   async add(review: Review) {
-    this.repository.add([review]);
+    await this.repository.add([review]);
   }
 
   async remove(id: ReviewId) {
-    this.repository.remove([{ id }]);
+    await this.repository.remove([{ id }]);
   }
 
   async count(spec: Partial<Review>) {
@@ -70,6 +78,6 @@ export class ReviewRepositoryFileSystem implements IReviewRepository {
   }
 
   async update(id: ReviewId, partial: Partial<Review>) {
-    this.repository.update({ id, ...partial });
+    await this.repository.update(id, partial);
   }
 }

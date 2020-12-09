@@ -4,7 +4,7 @@ import { ListLogic } from "../../lists/logic/logic";
 import { MediaLogic } from "../../media/logic/logic";
 import { ReviewLogic } from "../../reviews/logic/logic";
 import { UserLogic } from "../../users/logic/logic";
-import keyv from "../data-access/mongodb/keyv";
+import keyv from "../data-access/keyv.mongo";
 import { EmailLogic } from "../email";
 import { createEventEmitter, Events } from "../events";
 import {
@@ -15,8 +15,8 @@ import { makeExpressApp } from "../express/make-express-app";
 import { ExpressAppDependencies } from "../express/types";
 import { buildRepositoriesHashMap } from "./build-repositories";
 
-export const buildLogicProduction = () => {
-  const repositories = buildRepositoriesHashMap();
+export const buildLogicProduction = async () => {
+  const { repositories } = buildRepositoriesHashMap();
 
   const eventEmitter = createEventEmitter<Events>();
 
@@ -52,7 +52,7 @@ export const buildLogicProduction = () => {
 };
 
 export const buildAppProduction = async () => {
-  const appLogic = buildLogicProduction();
+  const appLogic = await buildLogicProduction();
 
   const dependencies: ExpressAppDependencies = {
     ...appLogic,

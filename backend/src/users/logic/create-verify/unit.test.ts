@@ -5,7 +5,7 @@ import { buildUserLogicTest } from "../build";
 
 describe("user logic", () => {
   it("creates and gets user", async () => {
-    const { userLogic } = buildUserLogicTest();
+    const { userLogic } = await buildUserLogicTest();
     const user = await userLogic.createUserWithPassword({
       emailAddress: "crvouga@gmail.com",
       displayName: "Chris",
@@ -21,7 +21,7 @@ describe("user logic", () => {
   });
 
   it("only allows unique email and or username", async () => {
-    const { userLogic } = buildUserLogicTest();
+    const { userLogic } = await buildUserLogicTest();
     const info = {
       emailAddress: "crvouga@gmail.com",
       username: "123",
@@ -39,7 +39,7 @@ describe("user logic", () => {
   });
 
   it("verifies username and password", async () => {
-    const { userLogic } = buildUserLogicTest();
+    const { userLogic } = await buildUserLogicTest();
 
     const PASSWORD = "password";
 

@@ -1,5 +1,9 @@
-import { PaginationOptions } from "../data-access/types";
 import { castArray, castPositiveNumber } from "../utils";
+
+export type PaginationOptions = {
+  page: number;
+  pageSize: number;
+};
 
 export const DEFAULT_PAGE_SIZE = 20;
 

@@ -1,21 +1,15 @@
+import { buildRepositoriesDependingOnTestEnvironment } from "../../app/build/build-repositories";
 import { buildMediaLogicTest } from "../../media/logic/build";
-import { UserRepositoryHashMap } from "../../users/repositories/user-repository";
-import { ReviewRepositoryHashMap } from "../repositories/review-repository";
-import { ReviewVoteRepositoryHashMap } from "../repositories/review-vote-repository";
 import { ReviewLogic } from "./logic";
 
-export const buildReviewLogicTest = () => {
+export const buildReviewLogicTest = async () => {
   const { mediaLogic } = buildMediaLogicTest();
 
-  const userRepository = new UserRepositoryHashMap();
-  const reviewRepository = new ReviewRepositoryHashMap({});
-  const reviewVoteRepository = new ReviewVoteRepositoryHashMap({});
+  const { repositories } = await buildRepositoriesDependingOnTestEnvironment();
 
   const reviewLogic = new ReviewLogic({
-    userRepository,
+    ...repositories,
     mediaLogic,
-    reviewRepository,
-    reviewVoteRepository,
   });
 
   return { reviewLogic };

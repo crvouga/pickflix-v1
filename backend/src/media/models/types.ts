@@ -62,3 +62,15 @@ export const makeMediaIdFake = (overrides?: Partial<MediaId>): MediaId => {
     ...overrides,
   };
 };
+
+const seperator = " ";
+export const serializeMediaId = (mediaId: MediaId): string => {
+  return [mediaId.tmdbMediaType, mediaId.tmdbMediaId].join(seperator);
+};
+export const deserializeMediaId = (mediaId: string): MediaId => {
+  const [tmdbMediaType, tmdbMediaId] = mediaId.split(seperator);
+  return castMediaId({
+    tmdbMediaId: Number(tmdbMediaId),
+    tmdbMediaType,
+  });
+};

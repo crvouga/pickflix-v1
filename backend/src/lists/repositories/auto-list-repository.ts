@@ -1,6 +1,7 @@
-import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository.hash-map";
+import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository/generic-repository.hash-map";
 import { AutoList } from "../models/make-auto-list";
-import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository.file-system";
+import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository/generic-repository.file-system";
+import { ListId } from "../models";
 
 export interface IAutoListRepository {
   find(spec: Partial<AutoList>): Promise<AutoList[]>;
@@ -11,10 +12,10 @@ export interface IAutoListRepository {
 }
 
 export class AutoListRepositoryHashMap implements IAutoListRepository {
-  repository: GenericRepositoryHashMap<AutoList>;
+  repository: GenericRepositoryHashMap<ListId, AutoList>;
 
   constructor() {
-    this.repository = new GenericRepositoryHashMap<AutoList>({});
+    this.repository = new GenericRepositoryHashMap<ListId, AutoList>({});
   }
 
   async find(spec: Partial<AutoList>) {
@@ -31,10 +32,12 @@ export class AutoListRepositoryHashMap implements IAutoListRepository {
 }
 
 export class AutoListRepositoryFileSystem implements IAutoListRepository {
-  repository: GenericRepositoryFileSystem<AutoList>;
+  repository: GenericRepositoryFileSystem<ListId, AutoList>;
 
   constructor(filePath: string) {
-    this.repository = new GenericRepositoryFileSystem<AutoList>(filePath);
+    this.repository = new GenericRepositoryFileSystem<ListId, AutoList>(
+      filePath
+    );
   }
 
   async find(spec: Partial<AutoList>) {

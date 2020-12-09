@@ -1,5 +1,5 @@
-import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository.file-system";
-import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository.hash-map";
+import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository/generic-repository.file-system";
+import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository/generic-repository.hash-map";
 import { ReviewVote, ReviewVoteId } from "../models/make-review-vote";
 
 export interface IReviewVoteRepository {
@@ -15,10 +15,12 @@ export interface IReviewVoteRepository {
 }
 
 export class ReviewVoteRepositoryHashMap implements IReviewVoteRepository {
-  repository: GenericRepositoryHashMap<ReviewVote>;
+  repository: GenericRepositoryHashMap<ReviewVoteId, ReviewVote>;
 
   constructor(hashMap: { [id: string]: ReviewVote }) {
-    this.repository = new GenericRepositoryHashMap<ReviewVote>(hashMap);
+    this.repository = new GenericRepositoryHashMap<ReviewVoteId, ReviewVote>(
+      hashMap
+    );
   }
 
   async find(spec: Partial<ReviewVote>) {
@@ -26,11 +28,11 @@ export class ReviewVoteRepositoryHashMap implements IReviewVoteRepository {
   }
 
   async add(reviewVote: ReviewVote) {
-    this.repository.add([reviewVote]);
+    await this.repository.add([reviewVote]);
   }
 
   async remove(id: ReviewVoteId) {
-    this.repository.remove([{ id }]);
+    await this.repository.remove([{ id }]);
   }
 
   async count(spec: Partial<ReviewVote>) {
@@ -38,15 +40,17 @@ export class ReviewVoteRepositoryHashMap implements IReviewVoteRepository {
   }
 
   async update(id: ReviewVoteId, partial: Partial<ReviewVote>) {
-    this.repository.update({ id, ...partial });
+    await this.repository.update(id, partial);
   }
 }
 
 export class ReviewVoteRepositoryFileSystem implements IReviewVoteRepository {
-  repository: GenericRepositoryFileSystem<ReviewVote>;
+  repository: GenericRepositoryFileSystem<ReviewVoteId, ReviewVote>;
 
   constructor(filePath: string) {
-    this.repository = new GenericRepositoryFileSystem<ReviewVote>(filePath);
+    this.repository = new GenericRepositoryFileSystem<ReviewVoteId, ReviewVote>(
+      filePath
+    );
   }
 
   async find(spec: Partial<ReviewVote>) {
@@ -54,11 +58,11 @@ export class ReviewVoteRepositoryFileSystem implements IReviewVoteRepository {
   }
 
   async add(reviewVote: ReviewVote) {
-    this.repository.add([reviewVote]);
+    await this.repository.add([reviewVote]);
   }
 
   async remove(id: ReviewVoteId) {
-    this.repository.remove([{ id }]);
+    await this.repository.remove([{ id }]);
   }
 
   async count(spec: Partial<ReviewVote>) {
@@ -66,6 +70,6 @@ export class ReviewVoteRepositoryFileSystem implements IReviewVoteRepository {
   }
 
   async update(id: ReviewVoteId, partial: Partial<ReviewVote>) {
-    this.repository.update({ id, ...partial });
+    await this.repository.update(id, partial);
   }
 }

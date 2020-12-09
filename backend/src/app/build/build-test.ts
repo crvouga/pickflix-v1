@@ -1,47 +1,18 @@
 import { AxiosRequestConfig } from "axios";
 import { Handler } from "express";
 import { ListLogic } from "../../lists/logic/logic";
-import { AutoListRepositoryHashMap } from "../../lists/repositories/auto-list-repository";
-import { ListItemRepositoryHashMap } from "../../lists/repositories/list-item-repository";
-import { ListRepositoryHashMap } from "../../lists/repositories/list-repository";
-import { PermissionRepositoryHashMap } from "../../lists/repositories/permission-repository";
 import { MediaLogic } from "../../media/logic/logic";
 import { ReviewLogic } from "../../reviews/logic/logic";
-import { ReviewRepositoryHashMap } from "../../reviews/repositories/review-repository";
-import { ReviewVoteRepositoryHashMap } from "../../reviews/repositories/review-vote-repository";
 import { UserLogic } from "../../users/logic/logic";
 import { makeUserFake } from "../../users/models/make-user.fake";
-import { CredentialRepositoryHashMap } from "../../users/repositories/credential-repository";
-import { UserRepositoryHashMap } from "../../users/repositories/user-repository";
 import { emailLogicStub } from "../email";
 import { createEventEmitter, Events } from "../events";
 import { makeExpressApp } from "../express/make-express-app";
 import { ExpressAppDependencies } from "../express/types";
-
-export const buildRepositoriesTest = () => {
-  const userRepository = new UserRepositoryHashMap();
-  const credentialRepository = new CredentialRepositoryHashMap();
-  const reviewRepository = new ReviewRepositoryHashMap({});
-  const reviewVoteRepository = new ReviewVoteRepositoryHashMap({});
-  const listRepository = new ListRepositoryHashMap();
-  const listItemRepository = new ListItemRepositoryHashMap();
-  const autoListRepository = new AutoListRepositoryHashMap();
-  const permissionRepository = new PermissionRepositoryHashMap();
-
-  return {
-    userRepository,
-    credentialRepository,
-    reviewRepository,
-    reviewVoteRepository,
-    listRepository,
-    listItemRepository,
-    autoListRepository,
-    permissionRepository,
-  };
-};
+import { buildRepositoriesHashMap } from "./build-repositories";
 
 export const buildLogicTest = () => {
-  const repositories = buildRepositoriesTest();
+  const { repositories } = buildRepositoriesHashMap();
 
   const eventEmitter = createEventEmitter<Events>();
 
@@ -85,6 +56,7 @@ export const buildAppTest = async () => {
   const appLogic = buildLogicTest();
 
   const currentUser = makeUserFake();
+
   appLogic.userLogic.userRepository.add(currentUser);
 
   const handlerStub: Handler = (req, res, next) => {

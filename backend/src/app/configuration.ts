@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import path from "path";
+import { ClientConfig } from "pg";
 dotenv.config();
 
 if (!process.env.YOUTUBE_API_KEY) {
@@ -7,7 +8,7 @@ if (!process.env.YOUTUBE_API_KEY) {
 }
 
 if (!process.env.TMDB_API_KEY) {
-  throw "env.TMDB_API_KEY required";
+  throw "TMDB_API_KEY required";
 }
 
 if (!process.env.MONGODB_CONNECTION_URI) {
@@ -26,11 +27,36 @@ if (!process.env.SECRET) {
   throw "SECRET required";
 }
 
-const castNodeEnv = (env: any): "test" | "development" | "production" => {
+type NodeEnv = "test" | "development" | "production";
+
+const castNodeEnv = (env: any): NodeEnv => {
   if (env === "development" || env === "test" || env === "production") {
     return env;
   }
   return "development";
+};
+
+const PG_CLIENT_CONFIGS: { [key in NodeEnv]: ClientConfig } = {
+  test: {
+    user: "postgres",
+    host: "localhost",
+    port: 5432,
+    database: "pickflix_test",
+  },
+
+  development: {
+    user: "postgres",
+    host: "localhost",
+    port: 5432,
+    database: "pickflix_development",
+  },
+
+  production: {
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  },
 };
 
 const configuration = Object.freeze({
@@ -58,6 +84,8 @@ const configuration = Object.freeze({
   // used by Heroku postgres add on
   // SOURCE: https://dashboard.heroku.com/apps/pickflix-backend
   DATABASE_URL: process.env.DATABASE_URL,
+  // for connecting to postgres
+  PG_CLIENT_CONFIGS,
 
   // for movie data
   // SOURCE: https://www.themoviedb.org/settings/api.

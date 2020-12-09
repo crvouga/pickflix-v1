@@ -1,13 +1,14 @@
-import { makeUserFake } from "../../users/models";
-import { UserRepositoryHashMap } from "../../users/repositories/user-repository";
 import { GenericRepositoryHashMap } from "./generic-repository.hash-map";
 
 describe("hash map respository", () => {
   it("searches entities by keys", async () => {
-    const repository = new GenericRepositoryHashMap<{
-      id: string;
-      word: string;
-    }>({});
+    const repository = new GenericRepositoryHashMap<
+      string,
+      {
+        id: string;
+        word: string;
+      }
+    >({});
     const words = ["hi", "hey", "hello", "sup", "yo"];
 
     for (let i = 0; i < words.length; i++) {

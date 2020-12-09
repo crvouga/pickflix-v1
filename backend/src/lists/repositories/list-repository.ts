@@ -1,12 +1,13 @@
-import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository.file-system";
-import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository.hash-map";
-import { RepositoryQueryOptions } from "../../app/data-access/types";
+import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository/generic-repository.file-system";
+import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository/generic-repository.hash-map";
+import { GenericRepositoryQueryOptions } from "../../app/data-access/generic-repository/types";
 import { List, ListId } from "../models/make-list";
 
-type ListSpec = Partial<List>[];
-
 export interface IListRepository {
-  find(spec: ListSpec, options?: RepositoryQueryOptions<List>): Promise<List[]>;
+  find(
+    spec: Partial<List>[],
+    options?: GenericRepositoryQueryOptions<List>
+  ): Promise<List[]>;
 
   add(list: List): void;
 
@@ -18,57 +19,62 @@ export interface IListRepository {
 }
 
 export class ListRepositoryHashMap implements IListRepository {
-  repository: GenericRepositoryHashMap<List>;
+  repository: GenericRepositoryHashMap<ListId, List>;
 
   constructor() {
-    this.repository = new GenericRepositoryHashMap<List>({});
+    this.repository = new GenericRepositoryHashMap<ListId, List>({});
   }
-
-  async find(spec: ListSpec, options: RepositoryQueryOptions<List>) {
-    return this.repository.find(spec, options);
+  async find(
+    spec: Partial<List>[],
+    options: GenericRepositoryQueryOptions<List>
+  ) {
+    return await this.repository.find(spec, options);
   }
 
   async add(list: List) {
-    this.repository.add([list]);
+    await this.repository.add([list]);
   }
 
   async remove(id: ListId) {
-    this.repository.remove([{ id }]);
+    await this.repository.remove([{ id }]);
   }
 
   async update(id: ListId, partial: Partial<List>) {
-    this.repository.update({ id, ...partial });
+    await this.repository.update(id, partial);
   }
 
   async count(spec: Partial<List>) {
-    return this.repository.count([spec]);
+    return await this.repository.count([spec]);
   }
 }
 
 export class ListRepositoryFileSystem implements IListRepository {
-  repository: GenericRepositoryFileSystem<List>;
+  repository: GenericRepositoryFileSystem<ListId, List>;
 
   constructor(filePath: string) {
-    this.repository = new GenericRepositoryFileSystem<List>(filePath);
+    this.repository = new GenericRepositoryFileSystem<ListId, List>(filePath);
   }
 
-  async find(spec: ListSpec, options: RepositoryQueryOptions<List>) {
-    return this.repository.find(spec, options);
+  async find(
+    spec: Partial<List>[],
+    options: GenericRepositoryQueryOptions<List>
+  ) {
+    return await this.repository.find(spec, options);
   }
 
   async add(list: List) {
-    this.repository.add([list]);
+    await this.repository.add([list]);
   }
 
   async remove(id: ListId) {
-    this.repository.remove([{ id }]);
+    await this.repository.remove([{ id }]);
   }
 
   async update(id: ListId, partial: Partial<List>) {
-    this.repository.update({ id, ...partial });
+    await this.repository.update(id, partial);
   }
 
   async count(spec: Partial<List>) {
-    return this.repository.count([spec]);
+    return await this.repository.count([spec]);
   }
 }

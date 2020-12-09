@@ -3,7 +3,7 @@ import { buildListLogicTest } from "../build";
 
 describe("auto list logic", () => {
   it("creates auto lists", async () => {
-    const { listLogic } = buildListLogicTest();
+    const { listLogic } = await buildListLogicTest();
     const user = makeUserFake();
     const added = await listLogic.initializeAutoLists({ user });
     const got = await listLogic.getAutoListAggergations({ ownerId: user.id });

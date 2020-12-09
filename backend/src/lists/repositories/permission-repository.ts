@@ -1,5 +1,5 @@
-import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository.file-system";
-import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository.hash-map";
+import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository/generic-repository.file-system";
+import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository/generic-repository.hash-map";
 import { Permission, PermissionId } from "../models";
 
 export interface IPermissionRepository {
@@ -13,49 +13,53 @@ export interface IPermissionRepository {
 }
 
 export class PermissionRepositoryHashMap implements IPermissionRepository {
-  repository: GenericRepositoryHashMap<Permission>;
+  repository: GenericRepositoryHashMap<PermissionId, Permission>;
 
   constructor() {
-    this.repository = new GenericRepositoryHashMap<Permission>({});
+    this.repository = new GenericRepositoryHashMap<PermissionId, Permission>(
+      {}
+    );
   }
 
   async find(spec: Partial<Permission>) {
-    return this.repository.find([spec]);
+    return await this.repository.find([spec]);
   }
 
   async add(permission: Permission) {
-    this.repository.add([permission]);
+    await this.repository.add([permission]);
   }
 
   async remove(id: PermissionId) {
-    this.repository.remove([{ id }]);
+    await this.repository.remove([{ id }]);
   }
 
   async count(spec: Partial<Permission>) {
-    return this.repository.count([spec]);
+    return await this.repository.count([spec]);
   }
 }
 
 export class PermissionRepositoryFileSystem implements IPermissionRepository {
-  repository: GenericRepositoryFileSystem<Permission>;
+  repository: GenericRepositoryFileSystem<PermissionId, Permission>;
 
   constructor(filePath: string) {
-    this.repository = new GenericRepositoryFileSystem<Permission>(filePath);
+    this.repository = new GenericRepositoryFileSystem<PermissionId, Permission>(
+      filePath
+    );
   }
 
   async find(spec: Partial<Permission>) {
-    return this.repository.find([spec]);
+    return await this.repository.find([spec]);
   }
 
   async add(permission: Permission) {
-    this.repository.add([permission]);
+    await this.repository.add([permission]);
   }
 
   async remove(id: PermissionId) {
-    this.repository.remove([{ id }]);
+    await this.repository.remove([{ id }]);
   }
 
   async count(spec: Partial<Permission>) {
-    return this.repository.count([spec]);
+    return await this.repository.count([spec]);
   }
 }

@@ -21,7 +21,7 @@ export const castUserId = (userId: any) => {
   if (isValidId(userId)) {
     return userId as UserId;
   }
-  throw new Error("invalid userId");
+  throw new Error(`invalid userId: ${userId}`);
 };
 
 const USERNAME_REGEXP = /^(?!.*\.\.)(?!.*\.$)[^\W][\w.]{0,29}$/;

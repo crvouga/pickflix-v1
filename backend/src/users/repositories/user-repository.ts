@@ -1,17 +1,20 @@
 import { User, UserId } from "../models/make-user";
-import { RepositoryQueryOptions } from "../../app/data-access/types";
-import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository.hash-map";
-import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository.file-system";
+import { GenericRepositoryQueryOptions } from "../../app/data-access/generic-repository/types";
+import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository/generic-repository.hash-map";
+import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository/generic-repository.file-system";
 
 type UserSpec = Partial<User>[];
 
 export interface IUserRepository {
-  find(spec: UserSpec, options?: RepositoryQueryOptions<User>): Promise<User[]>;
+  find(
+    spec: UserSpec,
+    options?: GenericRepositoryQueryOptions<User>
+  ): Promise<User[]>;
 
   search(
     query: string,
-    keys: (keyof User)[],
-    options?: RepositoryQueryOptions<User>
+    keys: ("username" | "displayName")[],
+    options?: GenericRepositoryQueryOptions<User>
   ): Promise<User[]>;
 
   add(user: User): void;
@@ -22,22 +25,26 @@ export interface IUserRepository {
 }
 
 export class UserRepositoryHashMap implements IUserRepository {
-  repository: GenericRepositoryHashMap<User>;
+  repository: GenericRepositoryHashMap<UserId, User>;
 
   constructor() {
-    this.repository = new GenericRepositoryHashMap<User>({});
+    this.repository = new GenericRepositoryHashMap<UserId, User>({});
   }
 
-  async find(spec: UserSpec, options: RepositoryQueryOptions<User>) {
+  async find(spec: UserSpec, options: GenericRepositoryQueryOptions<User>) {
     return this.repository.find(spec, options);
   }
 
   async search(
     query: string,
-    keys: (keyof User)[],
-    options?: RepositoryQueryOptions<User>
+    keys: ("username" | "displayName")[],
+    options?: GenericRepositoryQueryOptions<User>
   ) {
-    return this.repository.search(query, keys, options);
+    return this.repository.search<"username" | "displayName">(
+      query,
+      keys,
+      options
+    );
   }
 
   async add(user: User) {
@@ -49,25 +56,25 @@ export class UserRepositoryHashMap implements IUserRepository {
   }
 
   async update(id: UserId, partial: Partial<User>) {
-    this.repository.update({ id, ...partial });
+    this.repository.update(id, partial);
   }
 }
 
 export class UserRepositoryFileSystem implements IUserRepository {
-  repository: GenericRepositoryFileSystem<User>;
+  repository: GenericRepositoryFileSystem<UserId, User>;
 
   constructor(filePath: string) {
-    this.repository = new GenericRepositoryFileSystem<User>(filePath);
+    this.repository = new GenericRepositoryFileSystem<UserId, User>(filePath);
   }
 
-  async find(spec: UserSpec, options: RepositoryQueryOptions<User>) {
+  async find(spec: UserSpec, options: GenericRepositoryQueryOptions<User>) {
     return this.repository.find(spec, options);
   }
 
   async search(
     query: string,
     keys: (keyof User)[],
-    options?: RepositoryQueryOptions<User>
+    options?: GenericRepositoryQueryOptions<User>
   ) {
     return this.repository.search(query, keys, options);
   }
@@ -81,6 +88,6 @@ export class UserRepositoryFileSystem implements IUserRepository {
   }
 
   async update(id: UserId, partial: Partial<User>) {
-    this.repository.update({ id, ...partial });
+    this.repository.update(id, partial);
   }
 }

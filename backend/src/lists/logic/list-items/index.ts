@@ -1,4 +1,4 @@
-import { PaginationOptions } from "../../../app/data-access/types";
+import { PaginationOptions } from "../../../app/pagination";
 import { removeNullOrUndefinedEntries } from "../../../app/utils";
 import { MediaId } from "../../../media/models/types";
 import { UserId } from "../../../users/models";

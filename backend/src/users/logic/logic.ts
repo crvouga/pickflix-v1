@@ -1,9 +1,10 @@
-import { PaginationOptions } from "../../app/data-access/types";
 import { IEmailLogic } from "../../app/email";
 import { Emitter, Events } from "../../app/events";
-import { removeNullOrUndefinedEntries } from "../../app/utils";
+import { PaginationOptions } from "../../app/pagination";
+import { PermissionType } from "../../lists/models";
 import { IAutoListRepository } from "../../lists/repositories/auto-list-repository";
 import { IListRepository } from "../../lists/repositories/list-repository";
+import { IPermissionRepository } from "../../lists/repositories/permission-repository";
 import { IReviewRepository } from "../../reviews/repositories/review-repository";
 import { CredentialType } from "../models/make-credential";
 import { updateUser, User, UserId } from "../models/make-user";
@@ -18,8 +19,6 @@ import {
   resetPassword,
   sendResetPasswordEmail,
 } from "./reset-password";
-import { IPermissionRepository } from "../../lists/repositories/permission-repository";
-import { PermissionType } from "../../lists/models";
 
 export class UserLogic {
   userRepository: IUserRepository;
@@ -70,7 +69,7 @@ export class UserLogic {
   async getPasswordCredential({ userId }: { userId: UserId }) {
     const [passwordCredential] = await this.credentialRepository.find({
       userId,
-      type: CredentialType.password,
+      credentialType: CredentialType.password,
     });
 
     if (!passwordCredential) {
@@ -146,25 +145,27 @@ export class UserLogic {
     return userAggergations;
   }
 
-  async getCredentialTypesForEmailAddress({
-    emailAddress,
-  }: {
-    emailAddress: string;
-  }) {
-    const [user] = await this.userRepository.find([{ emailAddress }]);
+  // async getCredentialTypesForEmailAddress({
+  //   emailAddress,
+  // }: {
+  //   emailAddress: string;
+  // }) {
+  //   const [user] = await this.userRepository.find([{ emailAddress }]);
 
-    if (!user) {
-      return [];
-    }
+  //   if (!user) {
+  //     return [];
+  //   }
 
-    const credentials = await this.credentialRepository.find({
-      userId: user.id,
-    });
+  //   const credentials = await this.credentialRepository.find({
+  //     userId: user.id,
+  //   });
 
-    const credentialTypes = credentials.map((credential) => credential.type);
+  //   const credentialTypes = credentials.map(
+  //     (credential) => credential.credentialType
+  //   );
 
-    return credentialTypes;
-  }
+  //   return credentialTypes;
+  // }
 
   async searchByUsernameAndDisplayName(
     query: string,

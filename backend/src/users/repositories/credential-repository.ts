@@ -1,6 +1,6 @@
 import { Credential, CredentialId } from "../models/make-credential";
-import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository.hash-map";
-import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository.file-system";
+import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository/generic-repository.hash-map";
+import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository/generic-repository.file-system";
 
 export interface ICredentialRepository {
   find(spec: Partial<Credential>): Promise<Credential[]>;
@@ -13,10 +13,12 @@ export interface ICredentialRepository {
 }
 
 export class CredentialRepositoryHashMap implements ICredentialRepository {
-  repository: GenericRepositoryHashMap<Credential>;
+  repository: GenericRepositoryHashMap<CredentialId, Credential>;
 
   constructor() {
-    this.repository = new GenericRepositoryHashMap<Credential>({});
+    this.repository = new GenericRepositoryHashMap<CredentialId, Credential>(
+      {}
+    );
   }
 
   async find(spec: Partial<Credential>) {
@@ -32,15 +34,17 @@ export class CredentialRepositoryHashMap implements ICredentialRepository {
   }
 
   async update(id: CredentialId, partial: Partial<Credential>) {
-    this.repository.update({ id, ...partial });
+    this.repository.update(id, partial);
   }
 }
 
 export class CredentialRepositoryFileSystem implements ICredentialRepository {
-  repository: GenericRepositoryFileSystem<Credential>;
+  repository: GenericRepositoryFileSystem<CredentialId, Credential>;
 
   constructor(filePath: string) {
-    this.repository = new GenericRepositoryFileSystem<Credential>(filePath);
+    this.repository = new GenericRepositoryFileSystem<CredentialId, Credential>(
+      filePath
+    );
   }
 
   async find(spec: Partial<Credential>) {
@@ -56,6 +60,6 @@ export class CredentialRepositoryFileSystem implements ICredentialRepository {
   }
 
   async update(id: CredentialId, partial: Partial<Credential>) {
-    this.repository.update({ id, ...partial });
+    this.repository.update(id, partial);
   }
 }

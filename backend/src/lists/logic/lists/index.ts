@@ -1,7 +1,4 @@
-import {
-  PaginationOptions,
-  RepositoryQueryOptions,
-} from "../../../app/data-access/types";
+import { GenericRepositoryQueryOptions } from "../../../app/data-access/generic-repository/types";
 import { MediaId } from "../../../media/models/types";
 import { UserId } from "../../../users/models/make-user";
 import {
@@ -19,7 +16,7 @@ import { innerJoin } from "ramda";
 export async function getListsFromUserId(
   this: ListLogic,
   { userId }: { userId: UserId },
-  queryOptions?: RepositoryQueryOptions<List>
+  queryOptions?: GenericRepositoryQueryOptions<List>
 ) {
   const permissions = await this.permissionRepository.find({ userId });
 
@@ -38,7 +35,7 @@ export async function getListsFromUserId(
 export async function getListsFromMediaIdAndUserId(
   this: ListLogic,
   { userId, mediaId }: { userId: UserId; mediaId: MediaId },
-  queryOptions?: RepositoryQueryOptions<List>
+  queryOptions?: GenericRepositoryQueryOptions<List>
 ) {
   const [autoListsFromUserId, listsFromUserId] = await Promise.all([
     this.autoListRepository.find({
@@ -128,7 +125,7 @@ export async function aggergateList(
 export async function getListAggergationsFromId(
   this: ListLogic,
   spec: { id: ListId },
-  queryOptions?: RepositoryQueryOptions<List>
+  queryOptions?: GenericRepositoryQueryOptions<List>
 ) {
   const lists = await this.listRepository.find([spec], queryOptions);
 
@@ -142,7 +139,7 @@ export async function getListAggergationsFromId(
 export async function getListAggergationsFromUserId(
   this: ListLogic,
   { userId }: { userId: UserId },
-  queryOptions?: RepositoryQueryOptions<List>
+  queryOptions?: GenericRepositoryQueryOptions<List>
 ) {
   const permissions = await this.permissionRepository.find({
     userId,
@@ -165,7 +162,7 @@ export async function getListAggergationsFromUserId(
 export async function getListAggergations(
   this: ListLogic,
   spec: { id: ListId } | { userId: UserId },
-  queryOptions?: RepositoryQueryOptions<List>
+  queryOptions?: GenericRepositoryQueryOptions<List>
 ) {
   if ("id" in spec) {
     return this.getListAggergationsFromId(spec, queryOptions);

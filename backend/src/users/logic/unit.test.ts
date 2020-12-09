@@ -1,18 +1,18 @@
-import { buildUserLogicTest } from "./build";
 import { makeUserFake } from "../models";
+import { buildUserLogicTest } from "./build";
 
 describe("user logic", () => {
   it("searchs users by username and displayName", async () => {
-    const { userLogic } = buildUserLogicTest();
+    const { userLogic } = await buildUserLogicTest();
 
     const user1 = makeUserFake({
-      username: "1",
+      username: "11",
     });
     const user2 = makeUserFake({
-      username: "12",
+      username: "112",
     });
     const user3 = makeUserFake({
-      username: "123",
+      username: "1123",
     });
     for (const user of [user1, user2, user3]) {
       await userLogic.userRepository.add(user);
@@ -32,7 +32,7 @@ describe("user logic", () => {
   });
 
   it("edit username", async () => {
-    const { userLogic } = buildUserLogicTest();
+    const { userLogic } = await buildUserLogicTest();
     const before = makeUserFake({
       username: "before",
     });

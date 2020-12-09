@@ -4,7 +4,7 @@ import { buildListLogicTest } from "../build";
 
 describe("list logic", () => {
   it("gets lists by media id", async () => {
-    const { listLogic } = buildListLogicTest();
+    const { listLogic } = await buildListLogicTest();
     const user = makeUserFake();
 
     const added = [];
@@ -61,7 +61,7 @@ describe("list logic", () => {
   });
 
   it("removes lists", async () => {
-    const { listLogic } = buildListLogicTest();
+    const { listLogic } = await buildListLogicTest();
     const user = makeUserFake();
 
     const added = [];
@@ -97,7 +97,7 @@ describe("list logic", () => {
     );
   });
   it("gets same list by ownerId or listId", async () => {
-    const { listLogic } = buildListLogicTest();
+    const { listLogic } = await buildListLogicTest();
     const user = makeUserFake();
 
     const list = await listLogic.addList({
@@ -126,7 +126,7 @@ describe("list logic", () => {
   });
 
   it("rejects invalid edits", async () => {
-    const { listLogic } = buildListLogicTest();
+    const { listLogic } = await buildListLogicTest();
     const user = makeUserFake();
     const added = await listLogic.addList({
       ownerId: user.id,
@@ -149,7 +149,7 @@ describe("list logic", () => {
 
   it("adds lists", async () => {
     try {
-      const { listLogic } = buildListLogicTest();
+      const { listLogic } = await buildListLogicTest();
       const user = makeUserFake();
       const partial = { ownerId: user.id, title: "my list" };
       const added = await listLogic.addList(partial);
@@ -160,7 +160,7 @@ describe("list logic", () => {
   });
 
   it("only allows owner of list to remove list", async () => {
-    const { listLogic } = buildListLogicTest();
+    const { listLogic } = await buildListLogicTest();
     const owner = makeUserFake();
     const editor = makeUserFake();
     const list = await listLogic.addList({

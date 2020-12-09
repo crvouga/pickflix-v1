@@ -42,19 +42,19 @@ export const useAuthRouter = ({ userLogic, middlewares }: Dependencies) => (
 
   router.post("/auth", middlewares.authenticate);
 
-  router.get("/auth/methods", async (req, res, next) => {
-    try {
-      const emailAddress = req.query.emailAddress as string;
-      const credentialTypes = await userLogic.getCredentialTypesForEmailAddress(
-        {
-          emailAddress,
-        }
-      );
-      res.status(200).json(credentialTypes);
-    } catch (error) {
-      next(error);
-    }
-  });
+  // router.get("/auth/methods", async (req, res, next) => {
+  //   try {
+  //     const emailAddress = req.query.emailAddress as string;
+  //     const credentialTypes = await userLogic.getCredentialTypesForEmailAddress(
+  //       {
+  //         emailAddress,
+  //       }
+  //     );
+  //     res.status(200).json(credentialTypes);
+  //   } catch (error) {
+  //     next(error);
+  //   }
+  // });
 };
 
 export const useUsersRouter = ({ userLogic, middlewares }: Dependencies) => (

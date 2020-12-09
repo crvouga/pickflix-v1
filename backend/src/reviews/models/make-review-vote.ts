@@ -17,6 +17,13 @@ export const castReviewVoteValue = (voteValue: any): ReviewVoteValue => {
 
 export type ReviewVoteId = Id & { ReviewVoteId: true };
 
+export const castReviewVoteId = (id: any) => {
+  if (isValidId(id)) {
+    return id as ReviewVoteId;
+  }
+  throw new Error("failed to cast review vote id");
+};
+
 export type ReviewVote = {
   id: ReviewVoteId;
   userId: UserId;

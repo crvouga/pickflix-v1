@@ -1,5 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
-import keyv from "../../app/data-access/mongodb/keyv";
+import { AxiosRequestConfig } from "axios";
 import { MediaLogic } from "./logic";
 
 const buildKeyvStub = () => {

@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "test": "clear && npx jest --runInBand --detectOpenHandles",
+    "tests-with-postgres": "clear && respositoryImplementation=postgres npx jest --runInBand",
+    "tests-with-hash-maps": "clear && respositoryImplementation=hashMap npx jest",
     "tsc": "tsc -p tsconfig.production.json",
     "postinstall": "npm run tsc",
     "start": "node build/index.js",
@@ -60,6 +61,7 @@
     "humps": "^2.0.1",
     "jsonwebtoken": "^8.5.1",
     "keyv": "^4.0.1",
+    "knex": "^0.21.12",
     "match-sorter": "^5.0.0",
     "morgan": "^1.10.0",
     "node-html-parser": "^2.0.0",
@@ -71,6 +73,7 @@
     "ramda-adjunct": "^2.28.0",
     "remeda": "0.0.27",
     "session-file-store": "^1.5.0",
+    "sql-template-strings": "^2.2.2",
     "swagger-jsdoc": "^4.0.0",
     "swagger-ui-express": "^4.1.4",
     "ts-node": "^9.0.0",
@@ -82,6 +85,7 @@
     "fast-check": "^2.2.1",
     "gts": "^2.0.2",
     "jest": "^26.6.1",
+    "jest-serial-runner": "^1.1.0",
     "nodemon": "^2.0.4",
     "pg-tools": "^0.1.0",
     "pgtools": "^0.3.0",
