@@ -2,7 +2,7 @@ import { Box, Grid, GridProps, Typography } from "@material-ui/core";
 import React from "react";
 import { InfiniteScrollBottom } from "../../../common/infinite-scroll";
 import WithAuthentication from "../../../user/auth/WithAuthentication";
-import AutoListCard from "../../auto-lists/AutoListCard";
+import AutoListCard from "./AutoListCard";
 import {
   AutoListAggergation,
   GetAutoListParams,
@@ -116,14 +116,15 @@ export const ListCardGridContainer = ({
   ItemProps,
   limit,
   renderOverLimit,
-  ...params
-}: GetListsParams & {
+  GetListParams,
+}: {
+  GetListParams: GetListsParams;
   ItemProps?: GridProps;
   limit?: number;
   count: number;
   renderOverLimit?: () => React.ReactNode;
 }) => {
-  const query = useQueryLists(params);
+  const query = useQueryLists(GetListParams);
 
   if (query.data === undefined) {
     return <ListCardGridSkeleton ItemProps={ItemProps} count={count} />;
@@ -135,7 +136,7 @@ export const ListCardGridContainer = ({
     return (
       <WithAuthentication
         renderAuthenticated={(currentUser) =>
-          doesIncludeUserId(currentUser.user.id, params) ? (
+          doesIncludeUserId(currentUser.user.id, GetListParams) ? (
             <ListCardCallToAction />
           ) : (
             <ListCardGridEmpty />

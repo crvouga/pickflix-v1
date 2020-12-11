@@ -35,7 +35,9 @@ export default ({ user }: { user: UserAggergation }) => {
           </Typography>
 
           <ListCardGridContainer
-            ownerId={user.user.id}
+            GetListParams={{
+              userId: user.user.id,
+            }}
             count={user.listCount}
             limit={3}
             ItemProps={{ xs: 12 }}

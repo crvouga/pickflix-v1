@@ -1,15 +1,30 @@
 import {
   Box,
   Card,
-  CardHeader,
   CardHeaderProps,
   Grid,
   Typography,
+  useTheme,
+  makeStyles,
 } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router";
+import { pluralize } from "../../../common/utility";
 import { ListAggergation } from "../../query";
 import ListImageBox from "./ListCardImage";
+import { AvatarGroup } from "@material-ui/lab";
+import AvatarUser from "../../../user/components/AvatarUser";
+
+const useStyles = makeStyles((theme) => ({
+  small: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
+    fontSize: theme.spacing(1.5),
+  },
+  avatarGroup: {
+    marginLeft: theme.spacing(1),
+  },
+}));
 
 export default ({
   list,
@@ -18,6 +33,7 @@ export default ({
   list: ListAggergation;
   CardHeaderProps?: CardHeaderProps;
 }) => {
+  const classes = useStyles();
   const history = useHistory();
   return (
     <Card onClick={() => history.push(`/list/${list.list.id}`)}>
@@ -28,27 +44,34 @@ export default ({
           </Box>
         </Grid>
         <Grid item zeroMinWidth xs>
-          <CardHeader
-            title={list.list.title}
-            subheader={
-              <Box display="flex" alignItems="center">
-                <Box marginRight={1}>
-                  <Typography variant="subtitle1" color="textSecondary" noWrap>
-                    {list.listItemCount} items
-                  </Typography>
-                </Box>
-                {/* <Box>
-                  <ChipUser
-                    clickable={false}
-                    onClick={() => {}}
-                    size="small"
-                    user={list.owner}
-                  />
-                </Box> */}
-              </Box>
-            }
-            {...CardHeaderProps}
-          />
+          <Box
+            paddingX={1}
+            height="100%"
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+          >
+            <Typography variant="h5" noWrap>
+              {list.list.title}
+            </Typography>
+            <Box display="flex" alignItems="center">
+              <Typography variant="subtitle1" color="textSecondary" noWrap>
+                {pluralize(list.listItemCount, "item")}
+              </Typography>
+              {list.editors.length > 0 && (
+                <AvatarGroup className={classes.avatarGroup}>
+                  <AvatarUser className={classes.small} user={list.owner} />
+                  {list.editors.map((editor) => (
+                    <AvatarUser
+                      className={classes.small}
+                      key={editor.id}
+                      user={editor}
+                    />
+                  ))}
+                </AvatarGroup>
+              )}
+            </Box>
+          </Box>
         </Grid>
       </Grid>
     </Card>

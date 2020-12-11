@@ -23,7 +23,10 @@ export default ({ user }: { user: UserAggergation }) => {
           Lists
         </Typography>
 
-        <ListCardGridContainer ownerId={user.user.id} count={user.listCount} />
+        <ListCardGridContainer
+          GetListParams={{ userId: user.user.id }}
+          count={user.listCount}
+        />
       </Box>
     </React.Fragment>
   );

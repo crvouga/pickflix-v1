@@ -34,6 +34,8 @@ export type User = {
 export type UserAggergation = {
   user: User;
   reviewCount: number;
+  editorListCount: number;
+  ownerListCount: number;
   listCount: number;
   autoListCount: number;
 };

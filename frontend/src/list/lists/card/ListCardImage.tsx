@@ -1,12 +1,10 @@
 import { Box, BoxProps, makeStyles } from "@material-ui/core";
-import MovieIcon from "@material-ui/icons/Movie";
+import MovieCreationOutlinedIcon from "@material-ui/icons/MovieCreationOutlined";
 import { Skeleton } from "@material-ui/lab";
 import clsx from "clsx";
 import React from "react";
-import AspectRatio from "../../../common/components/AspectRatio";
 import makeImageUrl from "../../../media/tmdb/makeImageUrl";
 import { ListAggergation } from "../../query";
-import classes from "*.module.css";
 
 const useStyles = makeStyles((theme) => ({
   borderRadius: {
@@ -41,22 +39,10 @@ const PosterBox = ({
   );
 };
 
-const useStylesMovieIconBox = makeStyles((theme) => ({
-  iconContainer: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: theme.palette.grey[700],
-  },
-  icon: {
-    width: "66%",
-    height: "66%",
-    color: "black",
-  },
-}));
-
-export const MovieIconBox = (props: BoxProps) => {
-  const classes = useStylesMovieIconBox();
+export const ListCardImageIconWrapperBox = ({
+  children,
+  ...props
+}: BoxProps) => {
   return (
     <Box paddingTop="100%" position="relative" {...props}>
       <Box
@@ -65,9 +51,11 @@ export const MovieIconBox = (props: BoxProps) => {
         left={0}
         bottom={0}
         right={0}
-        className={classes.iconContainer}
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
       >
-        <MovieIcon className={classes.icon} />
+        {children}
       </Box>
     </Box>
   );
@@ -87,7 +75,16 @@ export default ({ list, ...props }: { list: ListAggergation } & BoxProps) => {
   const classes = useStyles();
 
   if (list.listItemCount === 0) {
-    return <MovieIconBox className={classes.borderRadius} {...props} />;
+    return (
+      <ListCardImageIconWrapperBox {...props}>
+        <MovieCreationOutlinedIcon
+          style={{
+            width: "66%",
+            height: "66%",
+          }}
+        />
+      </ListCardImageIconWrapperBox>
+    );
   }
 
   if (list.listItemCount < 4) {

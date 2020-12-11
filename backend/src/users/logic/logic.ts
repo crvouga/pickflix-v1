@@ -6,6 +6,7 @@ import { IAutoListRepository } from "../../lists/repositories/auto-list-reposito
 import { IListRepository } from "../../lists/repositories/list-repository";
 import { IPermissionRepository } from "../../lists/repositories/permission-repository";
 import { IReviewRepository } from "../../reviews/repositories/review-repository";
+import { UserAggergation } from "../models";
 import { CredentialType } from "../models/make-credential";
 import { updateUser, User, UserId } from "../models/make-user";
 import { ICredentialRepository } from "../repositories/credential-repository";
@@ -97,11 +98,11 @@ export class UserLogic {
     return user;
   }
 
-  async aggergateUser(user: User) {
+  async aggergateUser(user: User): Promise<UserAggergation> {
     const [
       reviewCount,
-      editorEermissionCount,
-      ownerPermissionCount,
+      editorListCount,
+      ownerListCount,
       autoListCount,
     ] = await Promise.all([
       this.reviewRepository.count({ authorId: user.id }),
@@ -116,7 +117,9 @@ export class UserLogic {
     return {
       user,
       reviewCount,
-      listCount: editorEermissionCount + ownerPermissionCount,
+      editorListCount,
+      ownerListCount,
+      listCount: editorListCount + ownerListCount,
       autoListCount,
     };
   }
