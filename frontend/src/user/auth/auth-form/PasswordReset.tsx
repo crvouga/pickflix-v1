@@ -1,9 +1,15 @@
-import { Box, Button, TextField, Typography } from "@material-ui/core";
-import React, { useState } from "react";
-import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
-import { putPasswordReset } from "./query";
+import { Box, Typography } from "@material-ui/core";
+import React from "react";
 import { useHistory } from "react-router";
+import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
 import { SubmitButton } from "../../../common/components/SubmitButton";
+import {
+  PasswordRepeatTextField,
+  PasswordTextField,
+  usePasswordRepeatTextFieldState,
+  usePasswordTextFieldState,
+} from "../../forms/PasswordTextField";
+import { putPasswordReset } from "./query";
 
 export default ({
   emailAddress,
@@ -15,16 +21,20 @@ export default ({
   const history = useHistory();
   const snacknar = useSnackbar();
 
-  const [newPassword, setNewPassword] = useState("");
-  const [newPasswordRepeat, setNewPasswordRepeat] = useState("");
-  const disabled =
-    newPassword !== newPasswordRepeat || newPassword.length === 0;
+  const passwordTextFieldState = usePasswordTextFieldState();
+  const passwordRepeatTextFieldState = usePasswordRepeatTextFieldState(
+    passwordTextFieldState
+  );
+
+  const disabled = !(
+    passwordTextFieldState.isValid && passwordRepeatTextFieldState.isValid
+  );
 
   const handleSubmit = async () => {
     try {
       await putPasswordReset({
         resetPasswordToken,
-        newPassword,
+        newPassword: passwordTextFieldState.password,
       });
       snacknar.display({
         message: "Password was changed",
@@ -49,34 +59,11 @@ export default ({
       </Box>
 
       <Box paddingBottom={2}>
-        <TextField
-          variant="outlined"
-          type="password"
-          label="New Password"
-          fullWidth
-          autoCorrect="off"
-          autoCapitalize="none"
-          onChange={(e) => {
-            setNewPassword(e.target.value);
-          }}
-        />
+        <PasswordTextField state={passwordTextFieldState} />
       </Box>
 
       <Box paddingBottom={2}>
-        <TextField
-          variant="outlined"
-          type="password"
-          label="Repeat New Password"
-          fullWidth
-          autoCorrect="off"
-          autoCapitalize="none"
-          helperText={
-            newPassword !== newPasswordRepeat ? "Does not match password" : ""
-          }
-          onChange={(e) => {
-            setNewPasswordRepeat(e.target.value);
-          }}
-        />
+        <PasswordRepeatTextField state={passwordRepeatTextFieldState} />
       </Box>
 
       <SubmitButton onClick={handleSubmit} fullWidth disabled={disabled}>

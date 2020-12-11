@@ -109,10 +109,8 @@ export const PasswordRepeatTextField = ({
     <TextField
       variant="outlined"
       type={state.showPassword ? undefined : "password"}
-      name="password"
-      label="Password"
+      label="Repeat Password"
       fullWidth
-      autoFocus
       autoComplete="on"
       helperText={state.helperText}
       InputProps={{
