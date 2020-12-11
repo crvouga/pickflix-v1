@@ -1,4 +1,7 @@
 import { isNullOrUndefined } from "util";
+import pPipe from "p-pipe";
+
+export const pipePromise = pPipe;
 
 export const castPositiveNumber = (anything: any) => {
   const number = Number(anything);

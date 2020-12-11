@@ -5,7 +5,7 @@ import {
   Identifiable,
   IGenericRepository,
   GenericRepositoryQueryOptions,
-  RepositoryQuerySpec,
+  GenericRepositoryQuerySpec,
 } from "./types";
 
 export class GenericRepositoryFileSystem<I, T extends Identifiable<I>>
@@ -35,7 +35,7 @@ export class GenericRepositoryFileSystem<I, T extends Identifiable<I>>
   }
 
   async find(
-    spec: RepositoryQuerySpec<T>,
+    spec: GenericRepositoryQuerySpec<T>,
     options?: GenericRepositoryQueryOptions<T>
   ): Promise<T[]> {
     this.read();
@@ -51,7 +51,7 @@ export class GenericRepositoryFileSystem<I, T extends Identifiable<I>>
     return await this.repositoryHashMap.search(query, keys, options);
   }
 
-  async count(spec: RepositoryQuerySpec<T>): Promise<number> {
+  async count(spec: GenericRepositoryQuerySpec<T>): Promise<number> {
     this.read();
     return await this.repositoryHashMap.count(spec);
   }
@@ -62,7 +62,7 @@ export class GenericRepositoryFileSystem<I, T extends Identifiable<I>>
     this.write();
   }
 
-  async remove(spec: RepositoryQuerySpec<T>) {
+  async remove(spec: GenericRepositoryQuerySpec<T>) {
     this.read();
     await this.repositoryHashMap.remove(spec);
     this.write();

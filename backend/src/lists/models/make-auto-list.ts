@@ -8,7 +8,6 @@ export enum AutoListKeys {
 }
 
 export type AutoList = {
-  type: "autoList";
   id: AutoListId;
   key: AutoListKeys;
   ownerId: UserId;
@@ -46,7 +45,6 @@ export const castAutoListId = (id: any) => {
 
 export const makeAutoList = ({ key, ownerId }: PartialAutoList): AutoList => {
   return Object.freeze({
-    type: "autoList",
     id: makeId() as AutoListId,
     ownerId: castUserId(ownerId),
     key: castAutoListKey(key),

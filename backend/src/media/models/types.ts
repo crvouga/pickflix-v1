@@ -21,14 +21,6 @@ export type Entity = {
   };
 };
 
-export const tmdbMediaToEntity = ({
-  tmdbMediaId,
-  tmdbMediaType,
-}: TmdbMedia): Entity => ({
-  id: `${tmdbMediaType}/${tmdbMediaId}`,
-  type: "tmdbMedia",
-});
-
 export type MediaId = {
   tmdbMediaId: TmdbMediaId;
   tmdbMediaType: TmdbMediaType;

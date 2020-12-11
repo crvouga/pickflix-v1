@@ -11,15 +11,15 @@ export type GenericRepositoryQueryOptions<T> = {
   pagination?: PaginationOptions;
 };
 
-export type RepositoryQuerySpec<T> = Partial<T>[];
+export type GenericRepositoryQuerySpec<T> = Partial<T>[];
 
 export interface IGenericRepository<I, T extends Identifiable<I>> {
   find: (
-    spec: RepositoryQuerySpec<T>,
+    spec: GenericRepositoryQuerySpec<T>,
     options?: GenericRepositoryQueryOptions<T>
   ) => Promise<T[]>;
 
-  count: (spec: RepositoryQuerySpec<T>) => Promise<number>;
+  count: (spec: GenericRepositoryQuerySpec<T>) => Promise<number>;
 
   search: (
     query: string,
@@ -29,7 +29,7 @@ export interface IGenericRepository<I, T extends Identifiable<I>> {
 
   add: (entities: T[]) => void;
 
-  remove: (spec: RepositoryQuerySpec<T>) => void;
+  remove: (spec: GenericRepositoryQuerySpec<T>) => void;
 
   update: (id: I, entity: T) => void;
 }

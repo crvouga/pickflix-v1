@@ -20,7 +20,7 @@ export const makePaginationOptions = ({
   };
 };
 
-type Paginated<Result> = {
+export type Paginated<Result> = {
   page: number;
   totalPages?: number;
   results: Result[];

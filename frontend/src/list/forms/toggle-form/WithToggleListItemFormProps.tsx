@@ -1,22 +1,21 @@
+import { useEffect } from "react";
+import { useListener } from "../../../common/utility";
 import { MediaId } from "../../../media/tmdb/types";
 import {
+  GetListsParams,
   useQueryAutoLists,
   useQueryLists,
   useQueryListsFromMediaId,
 } from "../../query";
-import { ToggleListItemFormProps } from "./ToggleListItemForm";
-import {
-  useToggleFormState,
-  toInitialMarkedListIds,
-} from "./toggle-list-item-form";
-import { useEffect } from "react";
-import { useListener } from "../../../common/utility";
 import { eventEmitterCreateListWithListItemsForm } from "../create-list-with-list-items-form/create-list-with-list-items-form";
+import { useToggleFormState } from "./toggle-list-item-form";
+import { ToggleListItemFormProps } from "./ToggleListItemForm";
 
 type Node = JSX.Element | null | false;
 
 type Props = {
   mediaId: MediaId;
+  GetListsParams: GetListsParams;
   renderDefault?: () => Node;
   renderSuccess?: (_: ToggleListItemFormProps) => Node;
 };
@@ -25,9 +24,10 @@ export const WithToggleListItemFormProps = ({
   mediaId,
   renderDefault,
   renderSuccess,
+  GetListsParams,
 }: Props) => {
   const queryAutoLists = useQueryAutoLists({});
-  const { fetchMoreRef, ...queryLists } = useQueryLists({});
+  const { fetchMoreRef, ...queryLists } = useQueryLists(GetListsParams);
   const queryListsFromMediaId = useQueryListsFromMediaId({ mediaId });
 
   useListener(eventEmitterCreateListWithListItemsForm, "submitSuccess", () => {

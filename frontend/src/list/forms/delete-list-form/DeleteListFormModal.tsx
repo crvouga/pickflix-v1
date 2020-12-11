@@ -5,14 +5,21 @@ import useModal from "../../../app/modals/useModal";
 import LoadingDialog from "../../../common/components/LoadingDialog";
 import { ZoomIn } from "../../../common/components/TransitionComponents";
 import useBoolean from "../../../common/hooks/useBoolean";
-import { useListener } from "../../../common/utility";
+import { createEventEmitter, useListener } from "../../../common/utility";
 import { makeCurrentUserPageRoute } from "../../../user/CurrentUserPage";
-import useDeleteListForm, { eventEmitterListForm } from "./useDeleteListForm";
+import { useDeleteListMutation } from "../../query";
+
+export const eventEmitterDeleteListForm = createEventEmitter<{
+  submit: undefined;
+  submitSuccess: undefined;
+  submitError: undefined;
+  submitSettled: undefined;
+}>();
 
 const Loading = () => {
   const isLoading = useBoolean(false);
-  useListener(eventEmitterListForm, "submit", isLoading.setTrue);
-  useListener(eventEmitterListForm, "submitSettled", isLoading.setFalse);
+  useListener(eventEmitterDeleteListForm, "submit", isLoading.setTrue);
+  useListener(eventEmitterDeleteListForm, "submitSettled", isLoading.setFalse);
   return (
     <LoadingDialog
       open={isLoading.value}
@@ -21,18 +28,25 @@ const Loading = () => {
   );
 };
 
-export default () => {
+export default ({ userId, listId }: { userId: string; listId: string }) => {
   const history = useHistory();
   const { isOpen, close } = useModal("DeleteListForm");
-  const { listId, submit } = useDeleteListForm();
+  const mutate = useDeleteListMutation();
 
-  const handleSubmit = () => {
-    if (listId) {
-      submit({ listId });
+  const submit = async () => {
+    eventEmitterDeleteListForm.emit("submit");
+    try {
+      await mutate({ userId, listId });
+      eventEmitterDeleteListForm.emit("submitSuccess");
+    } catch (error) {
+      eventEmitterDeleteListForm.emit("submitError");
+      throw error;
+    } finally {
+      eventEmitterDeleteListForm.emit("submitSettled");
     }
   };
 
-  useListener(eventEmitterListForm, "submitSuccess", () => {
+  useListener(eventEmitterDeleteListForm, "submitSuccess", () => {
     close();
     history.push(makeCurrentUserPageRoute());
   });
@@ -45,7 +59,7 @@ export default () => {
         <Button size="large" onClick={close}>
           Cancel
         </Button>
-        <Button size="large" onClick={handleSubmit}>
+        <Button size="large" onClick={submit}>
           Delete
         </Button>
       </DialogActions>

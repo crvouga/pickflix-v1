@@ -122,20 +122,35 @@ export const getAutoLists = async ({ id, ownerId }: GetAutoListParams) => {
 */
 
 export type GetListsParams = {
-  ownerId?: string;
-  id?: string;
   page?: number;
+} & (
+  | {
+      editorId: string;
+    }
+  | {
+      userId: string;
+    }
+  | {
+      ownerId: string;
+    }
+  | {
+      listId: string;
+    }
+);
+
+export const doesIncludeUserId = (userId: string, params: GetListsParams) => {
+  return (
+    ("editorId" in params && params.editorId === userId) ||
+    ("userId" in params && params.userId === userId) ||
+    ("ownerId" in params && params.ownerId === userId)
+  );
 };
 
 export type GetListsResponse = Paginated<ListAggergation>;
 
-export const getLists = async ({ ownerId, id, page }: GetListsParams) => {
+export const getLists = async (params: GetListsParams) => {
   const { data } = await BackendAPI.get<GetListsResponse>(`/api/lists`, {
-    params: {
-      ownerId,
-      id,
-      page,
-    },
+    params: params,
   });
   return data;
 };

@@ -10,7 +10,6 @@ export type EmailAddress = Opaque<string, "EmailAddress">;
 export type DisplayName = Opaque<string, "DisplayName">;
 
 export type User = {
-  type: "user";
   id: UserId;
   username: string;
   emailAddress: string;
@@ -73,7 +72,7 @@ export const castDisplayName = (displayName: any) => {
   return displayName;
 };
 
-export const castUser = (user: any) => {
+export const castUser = (user: any): User => {
   if (
     "id" in user &&
     "username" in user &&
@@ -81,12 +80,11 @@ export const castUser = (user: any) => {
     "displayName" in user
   ) {
     return {
-      type: "user",
       id: castUserId(user.id),
       username: castUsername(user.username),
       emailAddress: castEmailAddress(user.emailAddress),
       displayName: castDisplayName(user.displayName),
-    } as User;
+    };
   }
   throw new Error("invalid user");
 };
@@ -105,7 +103,6 @@ export const makeUser = ({
   displayName?: string;
 }): User => {
   return Object.freeze({
-    type: "user",
     id: makeUserId(),
     emailAddress: castEmailAddress(emailAddress),
     username: castUsername(username),

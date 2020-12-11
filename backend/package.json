@@ -1,11 +1,12 @@
 {
   "scripts": {
-    "tests-with-postgres": "clear && respositoryImplementation=postgres npx jest --runInBand",
-    "tests-with-hash-maps": "clear && respositoryImplementation=hashMap npx jest",
+    "tests-with-postgres": "respositoryImplementation=postgres npx jest --runInBand --detectOpenHandles --unhandled-rejections=strict",
+    "tests": "npx jest",
+    "development-with-postgres": "respositoryImplementation=postgres nodemon build/index.js",
+    "development": "nodemon build/index.js",
     "tsc": "tsc -p tsconfig.production.json",
     "postinstall": "npm run tsc",
-    "start": "node build/index.js",
-    "dev": "nodemon build/index.js"
+    "start": "node build/index.js"
   },
   "engines": {
     "node": "12.18.2",
@@ -65,6 +66,7 @@
     "match-sorter": "^5.0.0",
     "morgan": "^1.10.0",
     "node-html-parser": "^2.0.0",
+    "p-pipe": "^3.1.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "pg": "^8.3.3",

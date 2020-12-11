@@ -31,7 +31,7 @@ const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
       .status(400)
       .json({
         message: "There was an error",
-        error: JSON.stringify(error),
+        error: error.toString(),
       })
       .end();
   } else {

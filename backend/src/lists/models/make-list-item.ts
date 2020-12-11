@@ -19,7 +19,6 @@ export const castListItemId = (listItemId: any) => {
 };
 
 export type ListItem = {
-  type: "listItem";
   id: ListItemId;
   userId: UserId;
   listId: ListId;
@@ -57,7 +56,6 @@ export const makeListItem = (partial: PartialListItem): ListItem => {
   }
 
   return Object.freeze({
-    type: "listItem",
     id,
     userId,
     listId,

@@ -1,26 +1,45 @@
 import { removeNullOrUndefinedEntries } from "../../utils";
 import {
   IPostgresDatabase,
-  queryBuilder,
   IPostgresRespository,
+  queryBuilder,
 } from "../database.postgres";
 import {
   GenericRepositoryQueryOptions,
   Identifiable,
   IGenericRepository,
-  RepositoryQuerySpec,
+  GenericRepositoryQuerySpec,
 } from "./types";
 
 // just in case limit
 const LIMIT = 10000;
 
+type KnexOrderBy<T> = { column: keyof T; order: "asc" | "desc" }[];
+
+type KnexQueryOptions<T> = {
+  orderBy: KnexOrderBy<T>;
+  offset: number;
+  limit: number;
+};
+
+const cleanEntitySpec = <T>(specs: GenericRepositoryQuerySpec<T>) => {
+  return specs
+    .map((spec) => removeNullOrUndefinedEntries(spec))
+    .filter((spec) => Object.entries(spec).length > 0);
+};
+
 export class GenericRepositoryPostgres<I, Entity extends Identifiable<I>, Row>
   implements IGenericRepository<I, Entity>, IPostgresRespository {
   database: IPostgresDatabase;
   tableName: string;
+  //
   mapPartialEntityToPartialRow: (partial: Partial<Entity>) => Partial<Row>;
   mapRowToEntity: (row: Row) => Entity;
   mapEntityKeyToRowKey: (key: keyof Entity) => keyof Row;
+  //
+  queryOptionsToKnexQueryOptions: (
+    options?: GenericRepositoryQueryOptions<Entity>
+  ) => KnexQueryOptions<Row>;
 
   constructor({
     database,
@@ -37,9 +56,38 @@ export class GenericRepositoryPostgres<I, Entity extends Identifiable<I>, Row>
   }) {
     this.database = database;
     this.tableName = tableName;
+    //
     this.mapPartialEntityToPartialRow = mapPartialEntityToPartialRow;
     this.mapRowToEntity = mapRowToEntity;
     this.mapEntityKeyToRowKey = mapEntityKeyToRowKey;
+
+    //
+    this.queryOptionsToKnexQueryOptions = (
+      options?: GenericRepositoryQueryOptions<Entity>
+    ): {
+      orderBy: { column: keyof Row; order: "asc" | "desc" }[];
+      offset: number;
+      limit: number;
+    } => {
+      const orderBy: KnexOrderBy<Row> =
+        options?.orderBy?.map(([key, direction]) => ({
+          column: this.mapEntityKeyToRowKey(key),
+          order: direction === "ascend" ? "asc" : "desc",
+        })) || [];
+
+      const offset = options?.pagination
+        ? (Math.max(options.pagination.page, 1) - 1) *
+          Math.max(options.pagination.pageSize, 1)
+        : 0;
+
+      const limit = options?.pagination?.pageSize || LIMIT;
+
+      return {
+        offset,
+        limit,
+        orderBy,
+      };
+    };
   }
 
   async initializeTables() {
@@ -47,20 +95,18 @@ export class GenericRepositoryPostgres<I, Entity extends Identifiable<I>, Row>
   }
 
   async find(
-    specs: RepositoryQuerySpec<Entity>,
+    specs: GenericRepositoryQuerySpec<Entity>,
     options?: GenericRepositoryQueryOptions<Entity>
   ): Promise<Entity[]> {
-    const orderBy: { column: keyof Row; order: "asc" | "desc" }[] =
-      options?.orderBy?.map(([key, direction]) => ({
-        column: this.mapEntityKeyToRowKey(key),
-        order: direction === "ascend" ? "asc" : "desc",
-      })) || [];
+    const cleanedSpecs = cleanEntitySpec(specs);
 
-    const offset = options?.pagination
-      ? options.pagination.page * options.pagination.pageSize
-      : 0;
+    if (cleanedSpecs.length === 0) {
+      return [];
+    }
 
-    const limit = options?.pagination?.pageSize || LIMIT;
+    const { limit, offset, orderBy } = this.queryOptionsToKnexQueryOptions(
+      options
+    );
 
     const sql = queryBuilder(this.tableName)
       .where((builder) => {
@@ -87,22 +133,9 @@ export class GenericRepositoryPostgres<I, Entity extends Identifiable<I>, Row>
     keys: K[],
     options?: GenericRepositoryQueryOptions<Entity>
   ): Promise<Entity[]> {
-    const orderBy: { column: keyof Row; order: "asc" | "desc" }[] =
-      options?.orderBy?.map(([key, direction]) => {
-        const column = this.mapEntityKeyToRowKey(key);
-        const order = direction === "ascend" ? "asc" : "desc";
-
-        return {
-          column,
-          order,
-        };
-      }) || [];
-
-    const offset = options?.pagination
-      ? options.pagination.page * options.pagination.pageSize
-      : 0;
-
-    const limit = options?.pagination?.pageSize || LIMIT;
+    const { limit, offset, orderBy } = this.queryOptionsToKnexQueryOptions(
+      options
+    );
 
     const sql = queryBuilder<Row>(this.tableName)
       .where((builder) => {
@@ -123,7 +156,13 @@ export class GenericRepositoryPostgres<I, Entity extends Identifiable<I>, Row>
     return entities;
   }
 
-  async count(specs: RepositoryQuerySpec<Entity>): Promise<number> {
+  async count(specs: GenericRepositoryQuerySpec<Entity>): Promise<number> {
+    const cleanedSpecs = cleanEntitySpec(specs);
+
+    if (cleanedSpecs.length === 0) {
+      return 0;
+    }
+
     const sql = queryBuilder(this.tableName)
       .count()
       .where((builder) => {

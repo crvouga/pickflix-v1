@@ -1,22 +1,19 @@
-import React, { useEffect } from "react";
+import React from "react";
 import useModal from "../../../app/modals/useModal";
+import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
+import { LinkButton } from "../../../app/snackbar/Snackbar";
+import { useListener } from "../../../common/utility";
 import { MediaId } from "../../../media/tmdb/types";
 import WithAuthentication from "../../../user/auth/WithAuthentication";
 import { AutoListKeys, toAutoListName } from "../../query";
 import { AutoListToggleButton, ToggleFormModalButton } from "./buttons";
+import { useToggleFormState } from "./toggle-list-item-form";
+import { eventEmitterToggleForm } from "./toggle-list-item-form-saga";
 import {
-  useToggleFormState,
-  toInitialMarkedListIds,
-} from "./toggle-list-item-form";
-import {
-  ToggleListItemFormProps,
   ToggleListItemFormModal,
+  ToggleListItemFormProps,
 } from "./ToggleListItemForm";
 import { WithToggleListItemFormProps } from "./WithToggleListItemFormProps";
-import { useListener } from "../../../common/utility";
-import { eventEmitterToggleForm } from "./toggle-list-item-form-saga";
-import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
-import { LinkButton } from "../../../app/snackbar/Snackbar";
 
 export const AUTO_LIST_KEY_ORDER = [AutoListKeys.Liked, AutoListKeys.WatchNext];
 
@@ -133,6 +130,9 @@ export const ToggleListItemActionBarContainer = ({
       renderAuthenticated={(currentUser) => (
         <WithToggleListItemFormProps
           mediaId={mediaId}
+          GetListsParams={{
+            userId: currentUser.user.id,
+          }}
           renderDefault={() => <ToggleListItemActionBarDisabled />}
           renderSuccess={(props) => <ToggleListItemActionBar {...props} />}
         />

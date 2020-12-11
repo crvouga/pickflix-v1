@@ -78,17 +78,31 @@ export type Credential = CredentialPassword;
 export const makeCredential = ({
   userId,
   passwordHash,
-  verifiedAt,
 }: {
   userId: UserId;
   passwordHash: string;
-  verifiedAt: number;
 }): Credential => {
   return {
     id: castCredentialId(makeId()),
     credentialType: castCredentialType(CredentialType.password),
     userId: castUserId(userId),
     passwordHash: castPasswordHash(passwordHash),
-    verifiedAt: castVerifiedAt(verifiedAt),
+    verifiedAt: castVerifiedAt(Date.now()),
+  };
+};
+
+export const updateCredential = (
+  credential: Credential,
+  edits: { verifiedAt: number }
+): Credential => {
+  return {
+    id: castCredentialId(credential.id),
+    credentialType: castCredentialType(credential.credentialType),
+    userId: castUserId(credential.userId),
+    passwordHash: castPasswordHash(credential.passwordHash),
+    verifiedAt:
+      "verifiedAt" in edits
+        ? castVerifiedAt(edits.verifiedAt)
+        : credential.verifiedAt,
   };
 };

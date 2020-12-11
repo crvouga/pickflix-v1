@@ -12,7 +12,7 @@ import ListSection from "./ListSection";
 
 export default () => {
   const { listId } = useParams<{ listId: string }>();
-  const query = useQueryLists({ id: listId });
+  const query = useQueryLists({ listId: listId });
 
   if (query.error) {
     return <ErrorPage />;

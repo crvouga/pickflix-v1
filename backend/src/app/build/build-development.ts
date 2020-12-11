@@ -4,7 +4,6 @@ import { ListLogic } from "../../lists/logic/logic";
 import { MediaLogic } from "../../media/logic/logic";
 import { ReviewLogic } from "../../reviews/logic/logic";
 import { UserLogic } from "../../users/logic/logic";
-import { PostgresDatabaseDeveloplment } from "../data-access/database.postgres";
 import keyv from "../data-access/keyv.mongo";
 import { EmailLogic } from "../email";
 import { createEventEmitter, Events } from "../events";
@@ -14,12 +13,12 @@ import {
 } from "../express/authentication-middleware";
 import { makeExpressApp } from "../express/make-express-app";
 import { ExpressAppDependencies } from "../express/types";
-import { buildRepositoriesPostgres } from "./build-repositories";
+import { buildRepositoriesDependingOnDevelopmentEnvironment } from "./build-repositories";
 
 export const buildLogicDevelopment = async () => {
-  const database = new PostgresDatabaseDeveloplment();
-
-  const { repositories } = await buildRepositoriesPostgres(database);
+  const {
+    repositories,
+  } = await buildRepositoriesDependingOnDevelopmentEnvironment();
 
   const eventEmitter = createEventEmitter<Events>();
 
@@ -46,16 +45,20 @@ export const buildLogicDevelopment = async () => {
     mediaLogic,
   });
 
-  return {
+  const appLogic = {
     userLogic,
     mediaLogic,
     listLogic,
     reviewLogic,
   };
+
+  return {
+    appLogic,
+  };
 };
 
 export const buildAppDevelopment = async () => {
-  const appLogic = await buildLogicDevelopment();
+  const { appLogic } = await buildLogicDevelopment();
 
   const dependencies: ExpressAppDependencies = {
     ...appLogic,

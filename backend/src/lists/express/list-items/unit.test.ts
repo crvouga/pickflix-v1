@@ -2,7 +2,7 @@ import supertest from "supertest";
 import { buildAppTest } from "../../../app/build/build-test";
 import { makeMediaIdFake } from "../../../media/models/types";
 
-describe("get list items", () => {
+describe("list items endpoints", () => {
   it("gets items", async (done) => {
     const { app, listLogic, currentUser } = await buildAppTest();
 
@@ -33,9 +33,6 @@ describe("get list items", () => {
 
     done();
   });
-});
-
-describe("posting list items", () => {
   it("adds item to list", async (done) => {
     const { currentUser, listLogic, app } = await buildAppTest();
 
@@ -55,9 +52,6 @@ describe("posting list items", () => {
 
     done();
   });
-});
-
-describe("delete list items", () => {
   it("deletes list item", async (done) => {
     const { app, listLogic, currentUser } = await buildAppTest();
 

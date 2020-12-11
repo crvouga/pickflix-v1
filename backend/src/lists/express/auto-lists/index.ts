@@ -2,7 +2,6 @@ import { IRouter } from "express";
 import { castUserId } from "../../../users/models";
 import { castAutoListId } from "../../models";
 import { Dependencies } from "../types";
-import { castMediaId } from "../../../media/models/types";
 
 export const autoLists = ({ listLogic }: Dependencies) => (router: IRouter) => {
   /* 

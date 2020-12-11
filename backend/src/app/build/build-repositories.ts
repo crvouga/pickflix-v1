@@ -42,6 +42,7 @@ import configuration from "../configuration";
 import {
   IPostgresDatabase,
   PostgresDatabaseTest,
+  PostgresDatabaseDeveloplment,
 } from "../data-access/database.postgres";
 
 export const buildRepositoriesHashMap = () => {
@@ -149,9 +150,8 @@ export const buildRepositoriesPostgres = async (
     await permissionRepository.initializeTables();
   };
 
-  await initializeAllTables();
-
   return {
+    initializeAllTables,
     repositories,
   };
 };
@@ -168,29 +168,65 @@ const castRepositoryImplementation = (
   ) {
     return repositoryImplementation;
   }
-  return "hashMap";
+  throw new Error("failed to cast repository implementation");
 };
 
-export const buildRepositoriesTest = async (
+const postgresDatabaseTest = new PostgresDatabaseTest();
+
+const buildRepositoriesTest = async (
   repositoryImplementation: RepositoryImplementation
 ) => {
   switch (repositoryImplementation) {
-    case "hashMap":
-      return buildRepositoriesHashMap();
-
-    case "fileSystem":
-      return buildRepositoriesFileSystem();
-
     case "postgres":
-      const database = new PostgresDatabaseTest();
-      await database.clearTables();
-      return buildRepositoriesPostgres(database);
+      await postgresDatabaseTest.clearTables();
+      const {
+        repositories,
+        initializeAllTables,
+      } = await buildRepositoriesPostgres(postgresDatabaseTest);
+      await initializeAllTables();
+      return {
+        repositories,
+      };
+
+    default:
+      return buildRepositoriesHashMap();
   }
 };
 
 export const buildRepositoriesDependingOnTestEnvironment = async () => {
   const respositoryImplementation = castRepositoryImplementation(
-    process.env.respositoryImplementation
+    process.env.respositoryImplementation || "hashMap"
   );
   return buildRepositoriesTest(respositoryImplementation);
+};
+
+const postgresDatabaseDevelopment = new PostgresDatabaseDeveloplment();
+
+const buildRepositoriesDevelopment = async (
+  repositoryImplementation: RepositoryImplementation
+) => {
+  switch (repositoryImplementation) {
+    case "postgres":
+      const {
+        repositories,
+        initializeAllTables,
+      } = await buildRepositoriesPostgres(postgresDatabaseDevelopment);
+      await initializeAllTables();
+      return {
+        repositories,
+      };
+
+    case "fileSystem":
+      return await buildRepositoriesFileSystem();
+
+    default:
+      return buildRepositoriesHashMap();
+  }
+};
+
+export const buildRepositoriesDependingOnDevelopmentEnvironment = async () => {
+  const respositoryImplementation = castRepositoryImplementation(
+    process.env.respositoryImplementation || "fileSystem"
+  );
+  return buildRepositoriesDevelopment(respositoryImplementation);
 };

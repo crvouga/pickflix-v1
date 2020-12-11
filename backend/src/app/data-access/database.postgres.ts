@@ -67,6 +67,7 @@ export class PostgresDatabase implements IPostgresDatabase {
 
   async createTable<Row>(tableName: string, table: IPostgresTable<Row>) {
     const sql = makeCreateTableQuery(tableName, table);
+
     await this.query(sql);
   }
 
@@ -102,6 +103,7 @@ export class PostgresDatabaseTest extends PostgresDatabase {
       GRANT ALL ON SCHEMA public TO postgres;
       GRANT ALL ON SCHEMA public TO public;
     `;
+
     await this.query(sql);
   }
 }
@@ -109,6 +111,15 @@ export class PostgresDatabaseTest extends PostgresDatabase {
 export class PostgresDatabaseDeveloplment extends PostgresDatabase {
   constructor() {
     super(configuration.PG_CLIENT_CONFIGS.development);
+  }
+  async clearTables() {
+    const sql = `
+      DROP SCHEMA public CASCADE;
+      CREATE SCHEMA public;
+      GRANT ALL ON SCHEMA public TO postgres;
+      GRANT ALL ON SCHEMA public TO public;
+    `;
+    await this.query(sql);
   }
 }
 

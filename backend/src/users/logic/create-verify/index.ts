@@ -1,9 +1,9 @@
-import { EventTypes } from "../../../app/events/types";
 import {
   makeCredential,
   makePasswordHash,
   makeUser,
   passwordHashCompare,
+  updateCredential,
 } from "../../models";
 import { UserLogic } from "../logic";
 
@@ -24,8 +24,7 @@ export async function verifyEmailAddressAndPassword(
   });
 
   if (await passwordHashCompare(password, passwordCredential.passwordHash)) {
-    const updated = makeCredential({
-      ...passwordCredential,
+    const updated = updateCredential(passwordCredential, {
       verifiedAt: Date.now(),
     });
     await this.credentialRepository.update(updated.id, updated);
@@ -49,7 +48,7 @@ export async function createUserWithPassword(
     password: string;
   }
 ) {
-  const [foundUsernames, foundEmails] = await Promise.all([
+  const [foundUsernames, foundEmailAddresses] = await Promise.all([
     this.userRepository.find([
       {
         username,
@@ -62,18 +61,12 @@ export async function createUserWithPassword(
     ]),
   ]);
 
-  const errors = [];
-
   if (foundUsernames.length > 0) {
-    errors.push({ key: "username", message: "Username taken." });
+    throw new Error("Username taken");
   }
 
-  if (foundEmails.length > 0) {
-    errors.push({ key: "emailAddress", message: "Email taken." });
-  }
-
-  if (errors.length > 0) {
-    throw errors;
+  if (foundEmailAddresses.length > 0) {
+    throw new Error("Email address taken");
   }
 
   const newUser = makeUser({ username, displayName, emailAddress });
@@ -81,7 +74,6 @@ export async function createUserWithPassword(
   const passwordCredential = makeCredential({
     userId: newUser.id,
     passwordHash: await makePasswordHash(password),
-    verifiedAt: Date.now(),
   });
 
   await Promise.all([

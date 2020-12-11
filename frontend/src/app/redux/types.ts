@@ -2,7 +2,6 @@ import { DiscoverActiveTags } from "../../discover/redux/discover-active-tags";
 import { DiscoverTagsState } from "../../discover/redux/discover-tags";
 import { PageHistoryState } from "../../home/page-history/page-history";
 import { CreateListWithListItemsFormState } from "../../list/forms/create-list-with-list-items-form/create-list-with-list-items-form";
-import { DeleteListFormState } from "../../list/forms/delete-list-form/delete-list-form";
 import { EditListFormState } from "../../list/forms/edit-list-form/edit-list-form";
 import { RemoveListItemsFormState } from "../../list/forms/remove-list-items-form/remove-list-items-form";
 import { ToggleFormState } from "../../list/forms/toggle-form/toggle-list-item-form";
@@ -24,7 +23,6 @@ export type AppState = {
   modal: ModalState;
   editUserForm: EditUserFormState;
   toggleForm: ToggleFormState;
-  deleteListForm: DeleteListFormState;
   removeListItemsForm: RemoveListItemsFormState;
   deleteReviewForm: DeleteReviewFormState;
   reviewForm: ReviewFormState;

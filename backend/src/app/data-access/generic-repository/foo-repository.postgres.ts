@@ -24,18 +24,18 @@ const castColor = (color: any): Color => {
 type Id = string;
 
 type Foo = {
-  type: "foo";
   id: Id;
   name: string;
   favoriteColor: Color;
+  createdAt: number;
 };
 
 export const makeFooArbitrary = (overrides?: Partial<Foo>): Foo => {
   return {
-    type: "foo",
     id: makeId(),
     name: "bar baz",
     favoriteColor: "yellow",
+    createdAt: Date.now(),
     ...overrides,
   };
 };
@@ -44,6 +44,7 @@ type FooRow = {
   id: string;
   name: string;
   favorite_color: string;
+  created_at: number;
 };
 
 const tableName = "foos";
@@ -52,6 +53,7 @@ const table: IPostgresTable<FooRow> = {
   id: "TEXT",
   name: "TEXT",
   favorite_color: "TEXT",
+  created_at: "BIGINT",
 };
 
 const mapPartialEntityToPartialRow = (
@@ -61,15 +63,16 @@ const mapPartialEntityToPartialRow = (
     id: entity.id,
     name: entity.name,
     favorite_color: entity.favoriteColor,
+    created_at: entity.createdAt,
   };
 };
 
 const mapRowToEntity = (row: FooRow): Foo => {
   return {
-    type: "foo",
     id: row.id,
     favoriteColor: castColor(row.favorite_color),
     name: row.name,
+    createdAt: Number(row.created_at),
   };
 };
 

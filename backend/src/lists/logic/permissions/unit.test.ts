@@ -1,5 +1,6 @@
 import { makeUserFake } from "../../../users/models";
 import { buildListLogicTest } from "../build";
+import { pipePromise } from "../../../app/utils";
 
 describe("list permission logic", () => {
   it("add list editors", async () => {
@@ -167,9 +168,13 @@ describe("list permission logic", () => {
       editorIds: [editor.id],
     });
 
-    const [before] = await listLogic.getListAggergations({
-      id: list.id,
-    });
+    const [before] = await listLogic
+      .getListsFromSpec({
+        listId: list.id,
+      })
+      .then((lists) =>
+        Promise.all(lists.map((list) => listLogic.aggergateList(list)))
+      );
 
     await listLogic.transferOwnership({
       ownerId: owner.id,
@@ -177,9 +182,13 @@ describe("list permission logic", () => {
       editorId: editor.id,
     });
 
-    const [after] = await listLogic.getListAggergations({
-      id: list.id,
-    });
+    const [after] = await listLogic
+      .getListsFromSpec({
+        listId: list.id,
+      })
+      .then((lists) =>
+        Promise.all(lists.map((list) => listLogic.aggergateList(list)))
+      );
 
     expect(before.owner).toEqual(owner);
     expect(before.editors.length).toBe(1);
@@ -189,4 +198,6 @@ describe("list permission logic", () => {
     expect(after.editors.length).toBe(1);
     expect(after.editors).toContainEqual(owner);
   });
+
+  it("aggerg", async () => {});
 });

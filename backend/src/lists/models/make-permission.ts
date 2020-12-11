@@ -9,7 +9,6 @@ export enum PermissionType {
 export type PermissionId = Id & { PermissionId: true };
 
 export type Permission = {
-  type: "permission";
   permissionType: PermissionType;
   id: PermissionId;
   userId: UserId;
@@ -41,7 +40,6 @@ export const makePermission = ({
   listId: ListId;
 }): Permission => {
   return Object.freeze({
-    type: "permission",
     id: castPermissionId(makeId()),
     permissionType: castPermissionType(permissionType),
     userId: castUserId(userId),

@@ -9,7 +9,6 @@ const MAX_LENGTH_DESCRIPTION = 500;
 export type ListId = Id & { ListId: true };
 
 export type List = {
-  type: "list";
   id: ListId;
   title: string;
   description: string;
@@ -65,7 +64,6 @@ const castDate = (date: any) => {
 
 export const castList = (list: any): List => {
   if (
-    "type" in list &&
     "id" in list &&
     "ownerId" in list &&
     "title" in list &&
@@ -74,7 +72,6 @@ export const castList = (list: any): List => {
     "updatedAt" in list
   ) {
     return Object.freeze({
-      type: "list",
       id: castListId(list.id),
       title: castListTitle(list.title),
       description: castListDescription(list.description),
@@ -92,7 +89,6 @@ export const makeList = ({
   ownerId,
 }: PartialList): List => {
   return castList({
-    type: "list",
     id: makeId(),
     ownerId,
     title,

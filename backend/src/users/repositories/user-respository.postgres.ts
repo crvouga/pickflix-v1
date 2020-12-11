@@ -45,7 +45,6 @@ const mapPartialEntityToPartialRow = (
 
 const mapRowToEntity = (row: UserRow): User => {
   return {
-    type: "user",
     id: castUserId(row.id),
     username: castUsername(row.username),
     displayName: castDisplayName(row.display_name),
@@ -63,8 +62,6 @@ const mapEntityKeyToRowKey = (key: keyof User): keyof UserRow => {
       return "email_address";
     case "username":
       return "username";
-    case "type":
-      throw new Error("unsupported case");
   }
 };
 

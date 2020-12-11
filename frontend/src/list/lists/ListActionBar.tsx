@@ -6,7 +6,6 @@ import React from "react";
 import useModal from "../../app/modals/useModal";
 import { UserAggergation } from "../../user/query";
 import DeleteListFormModal from "../forms/delete-list-form/DeleteListFormModal";
-import useDeleteListForm from "../forms/delete-list-form/useDeleteListForm";
 import EditListFormModal from "../forms/edit-list-form/EditListFormModal";
 import useEditListForm from "../forms/edit-list-form/useEditListForm";
 import { AddPermissionFormModal } from "../forms/permissions-form/AddPermissionForm";
@@ -32,11 +31,10 @@ const EditListButton = ({ list }: { list: List }) => {
 
 const DeleteListButton = ({ list }: { list: List }) => {
   const deleteListFormModal = useModal("DeleteListForm");
-  const deleteListForm = useDeleteListForm();
+
   return (
     <IconButton
       onClick={() => {
-        deleteListForm.setListId(list.id);
         deleteListFormModal.open();
       }}
     >
@@ -73,7 +71,7 @@ export default ({
       {currentUser.user.id === list.owner.id && (
         <React.Fragment>
           <DeleteListButton list={list.list} />
-          <DeleteListFormModal />
+          <DeleteListFormModal listId={list.list.id} userId={list.owner.id} />
         </React.Fragment>
       )}
 

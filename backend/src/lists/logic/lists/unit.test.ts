@@ -87,17 +87,20 @@ describe("list logic", () => {
       userId: user.id,
       listId: list1.id,
     });
+
     await listLogic.removeList({ userId: user.id, listId: list3.id });
 
-    const after = await listLogic.getListAggergationsFromUserId({
+    const after = await listLogic.getListsFromSpec({
       userId: user.id,
     });
-    expect(after.map((_) => _.list)).toEqual(
+
+    expect(after).toEqual(
       expect.arrayContaining([expect.objectContaining(list2)])
     );
   });
   it("gets same list by ownerId or listId", async () => {
     const { listLogic } = await buildListLogicTest();
+
     const user = makeUserFake();
 
     const list = await listLogic.addList({
@@ -106,6 +109,7 @@ describe("list logic", () => {
     });
 
     const mediaId = makeMediaIdFake();
+
     await listLogic.addListItems([
       {
         userId: user.id,
@@ -114,15 +118,17 @@ describe("list logic", () => {
       },
     ]);
 
-    const [aggergatedList1] = await listLogic.getListAggergations({
-      id: list.id,
+    const [list1] = await listLogic.getListsFromSpec({
+      listId: list.id,
     });
 
-    const [aggergatedList2] = await listLogic.getListAggergations({
+    const [list2] = await listLogic.getListsFromSpec({
       userId: user.id,
     });
 
-    expect(aggergatedList1).toStrictEqual(aggergatedList2);
+    expect(await listLogic.aggergateList(list1)).toStrictEqual(
+      await listLogic.aggergateList(list2)
+    );
   });
 
   it("rejects invalid edits", async () => {

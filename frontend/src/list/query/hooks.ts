@@ -4,6 +4,7 @@ import {
   useMutation,
   useQuery,
   useQueryCache,
+  QueryKey,
 } from "react-query";
 import { useInfiniteQueryPagination } from "../../common/infinite-scroll";
 import { Paginated } from "../../common/types";
@@ -64,6 +65,9 @@ export const useQueryAutoLists = (params: GetAutoListParams) => {
 };
 
 type GetListsData = Paginated<ListAggergation>[];
+
+export const isGetListsQueryKey = (queryKey: any) =>
+  Array.isArray(queryKey) && queryKey.includes("lists");
 
 export const makeGetListsQueryKey = (params: GetListsParams) => [
   "lists",
@@ -140,7 +144,7 @@ export const useDeleteListItemsMutation = () => {
       queryCache.setQueryData(queryKey, previous);
       throw error;
     } finally {
-      queryCache.invalidateQueries(makeGetListsQueryKey({ id: listId }));
+      queryCache.invalidateQueries(makeGetListsQueryKey({ listId: listId }));
       queryCache.invalidateQueries(makeGetListItemsQueryKey({ listId }));
     }
   };
@@ -162,7 +166,7 @@ export const useAddListItemMutation = () => {
       mediaId: params.mediaId,
     });
     const queryKey3 = makeGetListsQueryKey({
-      id: params.listId,
+      listId: params.listId,
     });
     try {
       const listItem = await postListItem(params);
@@ -192,10 +196,10 @@ export const useCreateListMutation = () => {
   return async (params: PostListParams) => {
     try {
       const list = await postList(params);
-      queryCache.invalidateQueries(
-        makeGetListsQueryKey({ ownerId: list.ownerId })
+
+      queryCache.invalidateQueries((query) =>
+        isGetListsQueryKey(query.queryKey)
       );
-      queryCache.invalidateQueries(makeGetListsQueryKey({}));
       return list;
     } catch (error) {
       throw error;
@@ -220,8 +224,11 @@ const optimisticUpdateDeleteList = (
 
 export const useDeleteListMutation = () => {
   const queryCache = useQueryCache();
-  return async (params: DeleteListParams) => {
-    const queryKey = makeGetListsQueryKey({});
+  return async ({
+    userId,
+    ...params
+  }: DeleteListParams & { userId: string }) => {
+    const queryKey = makeGetListsQueryKey({ userId });
     const previous = queryCache.getQueryData<GetListsData>(queryKey);
     if (previous) {
       queryCache.setQueryData(
@@ -269,7 +276,7 @@ export const useEditListMutation = () => {
   const queryCache = useQueryCache();
   return async (params: PatchListParams) => {
     const queryKey = makeGetListsQueryKey({
-      id: params.listId,
+      listId: params.listId,
     });
 
     const previous = queryCache.getQueryData<GetListsData>(queryKey);
@@ -304,12 +311,9 @@ export const useAddEditorsMutation = () => {
     } catch (error) {
       throw error;
     } finally {
-      queryCache.invalidateQueries(
-        makeGetListsQueryKey({
-          id: params.listId,
-        })
+      queryCache.invalidateQueries((query) =>
+        isGetListsQueryKey(query.queryKey)
       );
-      queryCache.invalidateQueries(makeGetListsQueryKey({}));
     }
   };
 };
@@ -337,9 +341,8 @@ export const useDeleteEditorsMutation = () => {
   const queryCache = useQueryCache();
   return async (params: DeleteListEditorsParams) => {
     const queryKey1 = makeGetListsQueryKey({
-      id: params.listId,
+      listId: params.listId,
     });
-    const queryKey2 = makeGetListsQueryKey({});
 
     const previous1 = queryCache.getQueryData<GetListsData>(queryKey1);
     if (previous1) {
@@ -350,23 +353,16 @@ export const useDeleteEditorsMutation = () => {
       );
     }
 
-    const previous2 = queryCache.getQueryData<GetListsData>(queryKey2);
-    if (previous2) {
-      queryCache.setQueryData(
-        queryKey2,
-        optimisticUpdateDeleteEditors(previous2, params)
-      );
-    }
-
     try {
       await deleteListEditors(params);
     } catch (error) {
       queryCache.setQueryData(queryKey1, previous1);
-      queryCache.setQueryData(queryKey2, previous2);
+
       throw error;
     } finally {
-      queryCache.invalidateQueries(queryKey1);
-      queryCache.invalidateQueries(queryKey2);
+      queryCache.invalidateQueries((query) =>
+        isGetListsQueryKey(query.queryKey)
+      );
     }
   };
 };
@@ -378,17 +374,14 @@ export const useDeleteEditorsMutation = () => {
 export const useTransferOwnershipMutation = () => {
   const queryCache = useQueryCache();
   return async (params: PostTransferOwnershipParams) => {
-    const queryKey1 = makeGetListsQueryKey({
-      id: params.listId,
-    });
-    const queryKey2 = makeGetListsQueryKey({});
     try {
       await postTransferOwnership(params);
     } catch (error) {
       throw error;
     } finally {
-      queryCache.invalidateQueries(queryKey1);
-      queryCache.invalidateQueries(queryKey2);
+      queryCache.invalidateQueries((query) =>
+        isGetListsQueryKey(query.queryKey)
+      );
     }
   };
 };

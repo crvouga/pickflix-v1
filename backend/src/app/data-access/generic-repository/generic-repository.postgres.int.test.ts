@@ -3,6 +3,8 @@ import {
   FooRepositoryPostgres,
   makeFooArbitrary,
 } from "./foo-repository.postgres";
+import { range } from "ramda";
+import { PaginationOptions } from "../../pagination";
 
 const buildFooRepositoryPostgres = async () => {
   const database = new PostgresDatabaseTest();
@@ -12,17 +14,41 @@ const buildFooRepositoryPostgres = async () => {
   return repository;
 };
 
+const pagination: PaginationOptions = {
+  page: 1,
+  pageSize: 20,
+};
+
 describe("generic postgres repository", () => {
+  it("returns no entities when spec is empty", async () => {
+    const repository = await buildFooRepositoryPostgres();
+
+    const foo = makeFooArbitrary();
+
+    await repository.add([foo]);
+
+    const found = await repository.find([]);
+    const count = await repository.count([]);
+
+    expect(found).toHaveLength(0);
+    expect(count).toEqual(0);
+  });
+
   it("adds and finds entities", async () => {
     const repository = await buildFooRepositoryPostgres();
 
     const foo = makeFooArbitrary();
 
-    const before = await repository.find([
+    const before = await repository.find(
+      [
+        {
+          id: foo.id,
+        },
+      ],
       {
-        id: foo.id,
-      },
-    ]);
+        pagination,
+      }
+    );
 
     await repository.add([foo]);
 
@@ -37,16 +63,20 @@ describe("generic postgres repository", () => {
     expect(after).toContainEqual(foo);
   });
 
-  it("counts all entities", async () => {
+  it("counts  entities", async () => {
     const repository = await buildFooRepositoryPostgres();
 
     const expected = 10;
 
     for (let i = 0; i < expected; i++) {
-      await repository.add([makeFooArbitrary()]);
+      await repository.add([makeFooArbitrary({ favoriteColor: "blue" })]);
     }
 
-    const actual = await repository.count([]);
+    const actual = await repository.count([
+      {
+        favoriteColor: "blue",
+      },
+    ]);
 
     expect(actual).toEqual(expected);
   });
@@ -88,7 +118,14 @@ describe("generic postgres repository", () => {
       },
     ]);
 
-    const actualCount = await repository.count([]);
+    const actualCount = await repository.count([
+      {
+        name: "bar",
+      },
+      {
+        favoriteColor: "red",
+      },
+    ]);
 
     expect(actualRedCount).toEqual(expectedRedCount);
     expect(actualBarCount).toEqual(expectedBarCount);
@@ -110,20 +147,26 @@ describe("generic postgres repository", () => {
     await repository.add(foos);
 
     const query1 = "h";
-    const results1 = await repository.search(query1, ["name"]);
+    const results1 = await repository.search(query1, ["name"], {
+      pagination,
+    });
     expect(results1).toHaveLength(3);
     for (const result of results1) {
       expect(result.name).toContainEqual(query1);
     }
 
     const query2 = "y";
-    const results2 = await repository.search(query2, ["name"]);
+    const results2 = await repository.search(query2, ["name"], {
+      pagination,
+    });
     expect(results2).toHaveLength(2);
     for (const result of results2) {
       expect(result.name).toContainEqual(query2);
     }
     const query3 = "z";
-    const results3 = await repository.search(query3, ["name"]);
+    const results3 = await repository.search(query3, ["name"], {
+      pagination,
+    });
     expect(results3).toHaveLength(0);
   });
 
@@ -134,11 +177,15 @@ describe("generic postgres repository", () => {
 
     await repository.add([foo]);
 
-    const before = await repository.find([{ id: foo.id }]);
+    const before = await repository.find([{ id: foo.id }], {
+      pagination,
+    });
 
     await repository.remove([{ id: foo.id }]);
 
-    const after = await repository.find([{ id: foo.id }]);
+    const after = await repository.find([{ id: foo.id }], {
+      pagination,
+    });
 
     expect(before).toHaveLength(1);
     expect(before).toContainEqual(foo);
@@ -154,11 +201,15 @@ describe("generic postgres repository", () => {
 
     await repository.add([foo]);
 
-    const [before] = await repository.find([{ id: foo.id }]);
+    const [before] = await repository.find([{ id: foo.id }], {
+      pagination,
+    });
 
     await repository.update(foo.id, { favoriteColor: "red" });
 
-    const [after] = await repository.find([{ id: foo.id }]);
+    const [after] = await repository.find([{ id: foo.id }], {
+      pagination,
+    });
 
     expect(before.favoriteColor).toEqual("blue");
     expect(after.favoriteColor).toEqual("red");
@@ -185,28 +236,34 @@ describe("generic postgres repository", () => {
 
     await repository.add([a, b, c]);
 
-    const result1 = await repository.find([]);
-    expect(await repository.count([])).toEqual(3);
-    expect(result1).toContainEqual(a);
-    expect(result1).toContainEqual(b);
-    expect(result1).toContainEqual(c);
+    const result1 = await repository.find([], {
+      pagination,
+    });
 
-    const result2 = await repository.find([{ favoriteColor: "blue" }]);
+    expect(result1).toHaveLength(0);
+
+    const result2 = await repository.find([{ favoriteColor: "blue" }], {
+      pagination,
+    });
     expect(await repository.count([{ favoriteColor: "blue" }])).toEqual(2);
     expect(result2).toContainEqual(a);
     expect(result2).toContainEqual(b);
     expect(result2).not.toContainEqual(c);
 
-    const result3 = await repository.find([{ favoriteColor: "red" }]);
+    const result3 = await repository.find([{ favoriteColor: "red" }], {
+      pagination,
+    });
     expect(await repository.count([{ favoriteColor: "red" }])).toEqual(1);
     expect(result3).not.toContainEqual(a);
     expect(result3).not.toContainEqual(b);
     expect(result3).toContainEqual(c);
 
-    const result4 = await repository.find([
-      { favoriteColor: "red" },
-      { id: b.id },
-    ]);
+    const result4 = await repository.find(
+      [{ favoriteColor: "red" }, { id: b.id }],
+      {
+        pagination,
+      }
+    );
     expect(
       await repository.count([{ favoriteColor: "red" }, { id: b.id }])
     ).toEqual(2);
@@ -214,9 +271,12 @@ describe("generic postgres repository", () => {
     expect(result4).toContainEqual(b);
     expect(result4).toContainEqual(c);
 
-    const result5 = await repository.find([
-      { favoriteColor: "blue", name: "foo" },
-    ]);
+    const result5 = await repository.find(
+      [{ favoriteColor: "blue", name: "foo" }],
+      {
+        pagination,
+      }
+    );
     expect(
       await repository.count([{ favoriteColor: "blue", name: "foo" }])
     ).toEqual(1);
@@ -224,11 +284,12 @@ describe("generic postgres repository", () => {
     expect(result5).not.toContainEqual(b);
     expect(result5).not.toContainEqual(c);
 
-    const result6 = await repository.find([
-      { id: a.id },
-      { id: b.id },
-      { id: c.id },
-    ]);
+    const result6 = await repository.find(
+      [{ id: a.id }, { id: b.id }, { id: c.id }],
+      {
+        pagination,
+      }
+    );
     expect(
       await repository.count([{ id: a.id }, { id: b.id }, { id: c.id }])
     ).toEqual(3);
@@ -258,14 +319,34 @@ describe("generic postgres repository", () => {
 
     await repository.add([a, b, c]);
 
-    const before = await repository.find([]);
+    const before = await repository.find([
+      {
+        id: a.id,
+      },
+      {
+        id: b.id,
+      },
+      {
+        id: c.id,
+      },
+    ]);
 
     await repository.remove([
       { favoriteColor: "blue" },
       { favoriteColor: "yellow" },
     ]);
 
-    const after = await repository.find([]);
+    const after = await repository.find([
+      {
+        id: a.id,
+      },
+      {
+        id: b.id,
+      },
+      {
+        id: c.id,
+      },
+    ]);
 
     expect(before).toContainEqual(a);
     expect(before).toContainEqual(b);

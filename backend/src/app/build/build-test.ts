@@ -4,15 +4,15 @@ import { ListLogic } from "../../lists/logic/logic";
 import { MediaLogic } from "../../media/logic/logic";
 import { ReviewLogic } from "../../reviews/logic/logic";
 import { UserLogic } from "../../users/logic/logic";
-import { makeUserFake } from "../../users/models/make-user.fake";
 import { emailLogicStub } from "../email";
 import { createEventEmitter, Events } from "../events";
 import { makeExpressApp } from "../express/make-express-app";
 import { ExpressAppDependencies } from "../express/types";
-import { buildRepositoriesHashMap } from "./build-repositories";
+import { buildRepositoriesDependingOnTestEnvironment } from "./build-repositories";
+import supertest from "supertest";
 
-export const buildLogicTest = () => {
-  const { repositories } = buildRepositoriesHashMap();
+export const buildLogicTest = async () => {
+  const { repositories } = await buildRepositoriesDependingOnTestEnvironment();
 
   const eventEmitter = createEventEmitter<Events>();
 
@@ -43,21 +43,34 @@ export const buildLogicTest = () => {
     mediaLogic,
   });
 
-  return {
+  const appLogic = {
     eventEmitter,
     userLogic,
     mediaLogic,
     listLogic,
     reviewLogic,
   };
+
+  return {
+    appLogic,
+  };
 };
 
 export const buildAppTest = async () => {
-  const appLogic = buildLogicTest();
+  const { appLogic } = await buildLogicTest();
 
-  const currentUser = makeUserFake();
+  const userInfo = {
+    displayName: "mr test",
+    username: "testuser",
+    emailAddress: "test@test.com",
+    password: "password",
+  };
 
-  appLogic.userLogic.userRepository.add(currentUser);
+  await appLogic.userLogic.createUserWithPassword(userInfo);
+
+  const currentUser = await appLogic.userLogic.getUser({
+    username: userInfo.username,
+  });
 
   const handlerStub: Handler = (req, res, next) => {
     req.user = currentUser;
@@ -74,9 +87,12 @@ export const buildAppTest = async () => {
 
   const { app } = makeExpressApp(dependencies);
 
+  const agent = supertest(app);
+
   return {
     ...dependencies,
     app,
     currentUser,
+    agent,
   };
 };

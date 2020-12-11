@@ -47,7 +47,6 @@ const mapPartialEntityToPartialRow = (
 
 const mapRowToEntity = (row: AutoListRow): AutoList => {
   return {
-    type: "autoList",
     id: castListId(row.id),
     key: castAutoListKey(row.auto_list_key),
     ownerId: castUserId(row.owner_id),

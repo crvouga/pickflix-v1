@@ -57,7 +57,6 @@ const mapPartialEntityToPartialRow = (
 
 const mapRowToEntity = (row: ListItemRow): ListItem => {
   return {
-    type: "listItem",
     id: castListItemId(row.id),
     listId: castListId(row.list_id),
     userId: castUserId(row.user_id),

@@ -32,7 +32,7 @@ export default ({ user }: { user: User }) => {
   const [passwordError, setPasswordError] = useState<string | undefined>();
 
   const handleChange = (e: React.ChangeEvent<{ value: string }>) => {
-    setDisabled(e.target.value.length <= 2);
+    setDisabled(e.target.value.length === 0);
   };
 
   const handleForgotPassword = () => {

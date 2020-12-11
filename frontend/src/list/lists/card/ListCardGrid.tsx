@@ -10,6 +10,7 @@ import {
   ListAggergation,
   useQueryAutoLists,
   useQueryLists,
+  doesIncludeUserId,
 } from "../../query";
 import ListCard from "./ListCard";
 import ListCardCallToAction from "./ListCardCallToAction";
@@ -134,7 +135,7 @@ export const ListCardGridContainer = ({
     return (
       <WithAuthentication
         renderAuthenticated={(currentUser) =>
-          currentUser.user.id === params.ownerId ? (
+          doesIncludeUserId(currentUser.user.id, params) ? (
             <ListCardCallToAction />
           ) : (
             <ListCardGridEmpty />

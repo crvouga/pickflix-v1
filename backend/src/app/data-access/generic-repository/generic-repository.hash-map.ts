@@ -3,7 +3,7 @@ import { pipe } from "remeda";
 import {
   GenericRepositoryQueryOptions,
   Identifiable,
-  RepositoryQuerySpec,
+  GenericRepositoryQuerySpec,
   IGenericRepository,
 } from "./types";
 import { matchSorter } from "match-sorter";
@@ -48,7 +48,7 @@ export class GenericRepositoryHashMap<I, T extends Identifiable<I>>
   }
 
   async find(
-    spec: RepositoryQuerySpec<T>,
+    spec: GenericRepositoryQuerySpec<T>,
     options?: GenericRepositoryQueryOptions<T>
   ): Promise<T[]> {
     return pipe(
@@ -78,7 +78,7 @@ export class GenericRepositoryHashMap<I, T extends Identifiable<I>>
     );
   }
 
-  async count(spec: RepositoryQuerySpec<T>): Promise<number> {
+  async count(spec: GenericRepositoryQuerySpec<T>): Promise<number> {
     const found = await this.find(spec);
     return found.length;
   }

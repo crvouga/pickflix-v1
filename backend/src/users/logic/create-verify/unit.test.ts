@@ -1,13 +1,10 @@
-import { EventEmitter } from "events";
-import { EventTypes } from "../../../app/events/types";
-import { makeUserFake } from "../../models";
 import { buildUserLogicTest } from "../build";
 
 describe("user logic", () => {
   it("creates and gets user", async () => {
     const { userLogic } = await buildUserLogicTest();
     const user = await userLogic.createUserWithPassword({
-      emailAddress: "crvouga@gmail.com",
+      emailAddress: "testEmail@email.com",
       displayName: "Chris",
       username: "crvouga",
       password: "password",

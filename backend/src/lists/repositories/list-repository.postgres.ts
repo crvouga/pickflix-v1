@@ -14,6 +14,7 @@ import {
   ListId,
 } from "../models";
 import { IListRepository } from "./list-repository";
+import { composeP } from "ramda";
 
 const tableName = "lists";
 
@@ -69,7 +70,6 @@ const mapPartialEntityToPartialRow = (
 
 const mapRowToEntity = (row: ListRow): List => {
   return {
-    type: "list",
     id: castListId(row.id),
     title: castListTitle(row.title),
     description: castListDescription(row.description),

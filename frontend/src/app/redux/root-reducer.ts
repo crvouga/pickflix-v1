@@ -3,7 +3,7 @@ import { discoverActiveTags } from "../../discover/redux/discover-active-tags";
 import { discoverTags } from "../../discover/redux/discover-tags";
 import { pageHistory } from "../../home/page-history/page-history";
 import { createListWithListItemsForm } from "../../list/forms/create-list-with-list-items-form/create-list-with-list-items-form";
-import { deleteListForm } from "../../list/forms/delete-list-form/delete-list-form";
+
 import { editListForm } from "../../list/forms/edit-list-form/edit-list-form";
 import { removeListItemsForm } from "../../list/forms/remove-list-items-form/remove-list-items-form";
 import { toggleForm } from "../../list/forms/toggle-form/toggle-list-item-form";
@@ -26,7 +26,6 @@ const reducers: { [key in keyof AppState]: Reducer } = {
   modal: modal.reducer,
   editUserForm: editUserForm.reducer,
   createListWithListItemsForm: createListWithListItemsForm.reducer,
-  deleteListForm: deleteListForm.reducer,
   deleteReviewForm: deleteReviewForm.reducer,
   discoverActiveTags: discoverActiveTags.reducer,
   discoverTags: discoverTags.reducer,

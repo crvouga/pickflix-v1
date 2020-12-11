@@ -63,7 +63,6 @@ const mapPartialEntityToPartialRow = (
 
 const mapRowToEntity = (row: PermissionRow): Permission => {
   return {
-    type: "permission",
     permissionType: castPermissionType(row.permission_type),
     id: castPermissionId(row.id),
     userId: castUserId(row.user_id),

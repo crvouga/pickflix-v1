@@ -3,69 +3,64 @@ import { isNullOrUndefined } from "util";
 import {
   makePaginationOptions,
   makePaginationResponse,
+  Paginated,
 } from "../../../app/pagination";
-import { removeNullOrUndefinedEntries } from "../../../app/utils";
-import { castUserId, UserId } from "../../../users/models";
-import {
-  castListDescription,
-  castListId,
-  castListTitle,
-  ListId,
-} from "../../models";
+import { castUserId } from "../../../users/models";
+import { castListDescription, castListId, castListTitle } from "../../models";
 import { Dependencies } from "../types";
+import { ListAggergation } from "../../models/types";
+
+export type GetListsResponse = Paginated<ListAggergation>;
 
 export const lists = ({ listLogic, middlewares }: Dependencies) => (
   router: IRouter
 ) => {
-  /* 
-    
-    NOTE: list id take presedence over owner id 
-
-  */
   router.get("/lists", async (req, res) => {
     try {
-      const userId = req.query.ownerId
+      const userId = req.query.userId
+        ? castUserId(req.query.userId)
+        : undefined;
+
+      const editorId = req.query.editorId
+        ? castUserId(req.query.editorId)
+        : undefined;
+
+      const ownerId = req.query.ownerId
         ? castUserId(req.query.ownerId)
-        : req.user
-        ? castUserId(req.user.id)
         : undefined;
 
-      const id = req.query.id ? castListId(req.query.id) : undefined;
-
-      const spec: { id: ListId } | { userId: UserId } | undefined = id
-        ? {
-            id,
-          }
-        : userId
-        ? {
-            userId,
-          }
+      const listId = req.query.listId
+        ? castListId(req.query.listId)
         : undefined;
 
-      if (!spec) {
-        throw new Error("invalid list query");
-      }
+      const spec = {
+        listId,
+        userId,
+        editorId,
+        ownerId,
+      };
 
       const paginationOptions = makePaginationOptions({
         page: req.query.page,
       });
 
-      const listAggergations = await listLogic.getListAggergations(spec, {
+      const lists = await listLogic.getListsFromSpec(spec, {
         pagination: paginationOptions,
         orderBy: [["updatedAt", "descend"]],
       });
 
-      res
-        .status(200)
-        .json(
-          makePaginationResponse({
-            ...paginationOptions,
-            results: listAggergations,
-          })
-        )
-        .end();
+      const results = await Promise.all(
+        lists.map((list) => listLogic.aggergateList(list))
+      );
+
+      const response: GetListsResponse = makePaginationResponse({
+        ...paginationOptions,
+        results,
+      });
+
+      res.status(200).json(response).end();
     } catch (error) {
-      res.status(400).json({ error }).end();
+      res.status(400).json({ error: error.toString() }).end();
     }
   });
 
