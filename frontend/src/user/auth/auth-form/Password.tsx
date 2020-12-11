@@ -15,6 +15,10 @@ import AvatarUser from "../../components/AvatarUser";
 import { User } from "../../query";
 import { signIn } from "../query/mutations";
 import { SubmitButton } from "../../../common/components/SubmitButton";
+import {
+  usePasswordTextFieldState,
+  PasswordTextField,
+} from "../../forms/PasswordTextField";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
@@ -26,14 +30,7 @@ export default ({ user }: { user: User }) => {
   const classes = useStyles();
   const history = useHistory();
 
-  const refPassword = useRef<HTMLInputElement>();
-  const [disabled, setDisabled] = useState(true);
-  const [showPassword, setShowPassword] = useState(false);
-  const [passwordError, setPasswordError] = useState<string | undefined>();
-
-  const handleChange = (e: React.ChangeEvent<{ value: string }>) => {
-    setDisabled(e.target.value.length === 0);
-  };
+  const passwordTextFieldState = usePasswordTextFieldState();
 
   const handleForgotPassword = () => {
     history.push(
@@ -42,19 +39,21 @@ export default ({ user }: { user: User }) => {
   };
 
   const handleSubmit = async () => {
-    const password = refPassword.current?.value || "";
     try {
       await signIn({
         emailAddress: user.emailAddress,
-        password,
+        password: passwordTextFieldState.password,
       });
     } catch (error) {
       if (error?.response?.status === 400) {
-        setPasswordError("Incorrect Password");
+        passwordTextFieldState.setIsError(true);
+        passwordTextFieldState.setHelperText("Incorrect Password");
       } else {
       }
     }
   };
+
+  const disabled = !passwordTextFieldState.isValid;
 
   return (
     <React.Fragment>
@@ -69,31 +68,7 @@ export default ({ user }: { user: User }) => {
       </Box>
 
       <Box paddingBottom={2}>
-        <TextField
-          variant="outlined"
-          inputRef={refPassword}
-          type={showPassword ? undefined : "password"}
-          name="password"
-          label="Password"
-          fullWidth
-          onChange={handleChange}
-          autoFocus
-          autoComplete="on"
-          error={Boolean(passwordError)}
-          helperText={passwordError}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={() => setShowPassword((_) => !_)}
-                >
-                  {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+        <PasswordTextField state={passwordTextFieldState} />
       </Box>
 
       <Box paddingBottom={2}>

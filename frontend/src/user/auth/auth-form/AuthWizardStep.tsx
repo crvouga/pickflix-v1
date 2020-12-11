@@ -51,13 +51,7 @@ export default () => {
   }
 
   if (users.length === 0 && username) {
-    return (
-      <CreateAccount
-        displayName={displayName}
-        username={username}
-        emailAddress={emailAddress}
-      />
-    );
+    return <CreateAccount username={username} emailAddress={emailAddress} />;
   }
 
   const user = users[0];
