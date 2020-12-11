@@ -1,8 +1,8 @@
 import { User } from "../../models";
 import {
   CredentialPassword,
-  makeCredential,
   makePasswordHash,
+  updateCredential,
 } from "../../models/make-credential";
 import { UserLogic } from "../logic";
 import { castLink, makeResetPasswordEmail } from "./email";
@@ -14,14 +14,15 @@ export const makeResetPasswordToken = ({
 }: {
   user: User;
   passwordCredential: CredentialPassword;
-}) =>
-  encodeToken({
+}) => {
+  return encodeToken({
     createdAt: Date.now(),
     passwordVerifiedAt: passwordCredential.verifiedAt,
     passwordHash: passwordCredential.passwordHash,
     emailAddress: user.emailAddress,
     userId: user.id,
   });
+};
 
 const makeResetPasswordLink = ({
   redirectUrl,
@@ -129,8 +130,7 @@ export async function resetPassword(
 
   const passwordHash = await makePasswordHash(newPassword);
 
-  const updatedPasswordCredential = makeCredential({
-    ...passwordCredential,
+  const updatedPasswordCredential = updateCredential(passwordCredential, {
     passwordHash,
   });
 

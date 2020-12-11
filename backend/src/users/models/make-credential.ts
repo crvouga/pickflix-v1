@@ -93,16 +93,17 @@ export const makeCredential = ({
 
 export const updateCredential = (
   credential: Credential,
-  edits: { verifiedAt: number }
+  edits: { verifiedAt?: number; passwordHash?: string }
 ): Credential => {
   return {
     id: castCredentialId(credential.id),
     credentialType: castCredentialType(credential.credentialType),
     userId: castUserId(credential.userId),
-    passwordHash: castPasswordHash(credential.passwordHash),
-    verifiedAt:
-      "verifiedAt" in edits
-        ? castVerifiedAt(edits.verifiedAt)
-        : credential.verifiedAt,
+    passwordHash: castPasswordHash(
+      "passwordHash" in edits ? edits.passwordHash : credential.passwordHash
+    ),
+    verifiedAt: castVerifiedAt(
+      "verifiedAt" in edits ? edits.verifiedAt : credential.verifiedAt
+    ),
   };
 };
