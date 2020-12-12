@@ -1,5 +1,5 @@
 import { Box, Typography } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { useDebounce } from "use-debounce/lib";
 import ErrorBox from "../common/components/ErrorBox";
 import { InfiniteScrollBottom } from "../common/infinite-scroll";

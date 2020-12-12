@@ -258,8 +258,54 @@ const tagToParamReducer = (
   }
 };
 
-export const tagsToParams = (tags: DiscoverMovieTag[]) => {
+export const tagsToParams = (
+  tags: DiscoverMovieTag[]
+): DiscoverMovieQueryParams => {
   return tags.reduce(tagToParamReducer, {});
+};
+
+export const paramsToTags = (
+  params: DiscoverMovieQueryParams
+): DiscoverMovieTag[] => {
+  const tags: DiscoverMovieTag[] = [];
+
+  if (params.certification && params.certificationCountry) {
+    const { certification, certificationCountry } = params;
+    const tag: CertificationTag = {
+      type: TagType.certification,
+      id: certification,
+      certification,
+      certificationCountry,
+    };
+    tags.push(tag);
+  }
+
+  if (params.sortBy) {
+    const tag: SortByTag = {
+      type: TagType.sortBy,
+      id: params.sortBy,
+      sortBy: params.sortBy,
+    };
+    tags.push(tag);
+  }
+
+  if (params["primaryReleaseDate.gte"] && params["primaryReleaseDate.lte"]) {
+    const gte = Number(params["primaryReleaseDate.gte"].split("-")[0]);
+    const lte = Number(params["primaryReleaseDate.lte"].split("-")[0]);
+    const range: [number, number] = [gte, lte];
+    const tag: ReleaseYearRangeTag = {
+      type: TagType.releaseYearRange,
+      id: range.toString(),
+      range,
+    };
+    tags.push(tag);
+  }
+
+  if (params.withPeople) {
+    for (const personId of params.withPeople) {
+    }
+  }
+  return tags;
 };
 
 /* 

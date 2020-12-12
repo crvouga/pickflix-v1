@@ -14,7 +14,8 @@ import undoable, {
   UndoableOptions,
 } from "redux-undo";
 import { AppState } from "../../app/redux/types";
-import { DiscoverMovieTag } from "../query/types";
+import { DiscoverMovieTag, uniqueTagTypes } from "../query/types";
+import { uniqBy } from "ramda";
 
 const name = "discoverActiveTags";
 
@@ -72,7 +73,10 @@ const reducer = createReducer(initialPresentState, {
     state,
     action: PayloadAction<DiscoverMovieTag[]>
   ) => {
-    state.activeTags = action.payload;
+    state.activeTags = uniqBy(
+      (tag) => (uniqueTagTypes.includes(tag.type) ? tag.type : tag.id),
+      action.payload
+    );
   },
 });
 
