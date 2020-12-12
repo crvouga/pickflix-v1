@@ -59,6 +59,8 @@ const makeGetAutoListsQueryKey = (params: GetAutoListParams) => [
   "auto-lists",
   params,
 ];
+export const isGetAutoListsQueryKey = (queryKey: any) =>
+  Array.isArray(queryKey) && queryKey.includes("auto-lists");
 
 export const useQueryAutoLists = (params: GetAutoListParams) => {
   return useQuery(makeGetAutoListsQueryKey(params), () => getAutoLists(params));
@@ -146,6 +148,9 @@ export const useDeleteListItemsMutation = () => {
     } finally {
       queryCache.invalidateQueries(makeGetListsQueryKey({ listId: listId }));
       queryCache.invalidateQueries(makeGetListItemsQueryKey({ listId }));
+      queryCache.invalidateQueries((query) =>
+        isGetAutoListsQueryKey(query.queryKey)
+      );
     }
   };
 };
@@ -182,6 +187,9 @@ export const useAddListItemMutation = () => {
       queryCache.invalidateQueries(queryKey1);
       queryCache.invalidateQueries(queryKey2);
       queryCache.invalidateQueries(queryKey3);
+      queryCache.invalidateQueries((query) =>
+        isGetAutoListsQueryKey(query.queryKey)
+      );
     }
   };
 };

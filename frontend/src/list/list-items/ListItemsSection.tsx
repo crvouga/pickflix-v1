@@ -37,13 +37,8 @@ export default ({ list }: { list: ListAggergation | AutoListAggergation }) => {
           )
         }
       />
-      {list.listItemCount === 0 ? (
-        <Box p={2}>
-          <ListItemCardCallToAction />
-        </Box>
-      ) : (
-        <ListItemGrid list={list} />
-      )}
+
+      <ListItemGrid list={list} />
     </React.Fragment>
   );
 };

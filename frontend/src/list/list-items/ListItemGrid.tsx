@@ -17,7 +17,10 @@ import {
   AutoListAggergation,
   ListAggergation,
   useQueryListItems,
+  isEditorOrOwner,
 } from "../query";
+import WithAuthentication from "../../user/auth/WithAuthentication";
+import ListItemCardCallToAction from "./ListItemCardCallToAction";
 
 const useStyles = makeStyles((theme) => ({
   selected: {
@@ -49,7 +52,20 @@ export default ({ list }: { list: ListAggergation | AutoListAggergation }) => {
   const listItems = ensureArray(query.data).flatMap((_) => _.results);
 
   if (listItems.length === 0) {
-    return <NothingHere />;
+    return (
+      <WithAuthentication
+        renderAuthenticated={(currentUser) =>
+          isEditorOrOwner(currentUser.user, list) ? (
+            <Box paddingX={2}>
+              <ListItemCardCallToAction />
+            </Box>
+          ) : (
+            <NothingHere />
+          )
+        }
+        renderDefault={() => <NothingHere />}
+      />
+    );
   }
 
   return (
