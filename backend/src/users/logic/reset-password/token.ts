@@ -1,6 +1,12 @@
 import jwt from "jsonwebtoken";
 import configuration from "../../../app/configuration";
-import { UserId } from "../../models/make-user";
+import {
+  UserId,
+  castEmailAddress,
+  castUserId,
+  User,
+} from "../../models/make-user";
+import { castPasswordHash, CredentialPassword } from "../../models";
 
 export type ResetPasswordTokenData = {
   createdAt: number;
@@ -35,6 +41,43 @@ const castResetPasswordTokenData = (obj: any): ResetPasswordTokenData => {
     };
   }
   throw Error("Failed to cast token");
+};
+
+export const makeResetPasswordTokenData = ({
+  passwordVerifiedAt,
+  passwordHash,
+  emailAddress,
+  userId,
+}: {
+  passwordVerifiedAt: number;
+  passwordHash: string;
+  emailAddress: string;
+  userId: UserId;
+}): ResetPasswordTokenData => {
+  return {
+    createdAt: Date.now(),
+    passwordVerifiedAt: Number(passwordVerifiedAt),
+    passwordHash: castPasswordHash(passwordHash),
+    emailAddress: castEmailAddress(emailAddress),
+    userId: castUserId(userId),
+  };
+};
+
+export const makeResetPasswordToken = ({
+  user,
+  passwordCredential,
+}: {
+  user: User;
+  passwordCredential: CredentialPassword;
+}) => {
+  return encodeToken(
+    makeResetPasswordTokenData({
+      passwordVerifiedAt: passwordCredential.verifiedAt,
+      passwordHash: passwordCredential.passwordHash,
+      emailAddress: user.emailAddress,
+      userId: user.id,
+    })
+  );
 };
 
 export const encodeToken = (token: ResetPasswordTokenData) => {

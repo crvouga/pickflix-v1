@@ -148,28 +148,6 @@ export class UserLogic {
     return userAggergations;
   }
 
-  // async getCredentialTypesForEmailAddress({
-  //   emailAddress,
-  // }: {
-  //   emailAddress: string;
-  // }) {
-  //   const [user] = await this.userRepository.find([{ emailAddress }]);
-
-  //   if (!user) {
-  //     return [];
-  //   }
-
-  //   const credentials = await this.credentialRepository.find({
-  //     userId: user.id,
-  //   });
-
-  //   const credentialTypes = credentials.map(
-  //     (credential) => credential.credentialType
-  //   );
-
-  //   return credentialTypes;
-  // }
-
   async searchByUsernameAndDisplayName(
     query: string,
     pagination?: PaginationOptions

@@ -1,28 +1,10 @@
-import { User } from "../../models";
 import {
-  CredentialPassword,
   makePasswordHash,
   updateCredential,
 } from "../../models/make-credential";
 import { UserLogic } from "../logic";
 import { castLink, makeResetPasswordEmail } from "./email";
-import { decodeToken, encodeToken } from "./token";
-
-export const makeResetPasswordToken = ({
-  user,
-  passwordCredential,
-}: {
-  user: User;
-  passwordCredential: CredentialPassword;
-}) => {
-  return encodeToken({
-    createdAt: Date.now(),
-    passwordVerifiedAt: passwordCredential.verifiedAt,
-    passwordHash: passwordCredential.passwordHash,
-    emailAddress: user.emailAddress,
-    userId: user.id,
-  });
-};
+import { decodeToken, makeResetPasswordToken } from "./token";
 
 const makeResetPasswordLink = ({
   redirectUrl,
@@ -93,6 +75,8 @@ export async function sendResetPasswordEmail(
   await this.emailLogic.sendEmail(email);
 }
 
+export const ONE_DAY_IN_MILLISECONDS = 1000 * 60 * 60 * 60 * 24;
+
 export async function resetPassword(
   this: UserLogic,
   {
@@ -123,8 +107,7 @@ export async function resetPassword(
     throw new Error("User is using different email");
   }
 
-  const ONE_DAY = 1000 * 60 * 60 * 60 * 24;
-  if (Date.now() - tokenData.createdAt > ONE_DAY) {
+  if (Date.now() - tokenData.createdAt > ONE_DAY_IN_MILLISECONDS) {
     throw new Error("Token expired");
   }
 

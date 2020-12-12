@@ -106,7 +106,7 @@ export const makeUser = ({
     id: makeUserId(),
     emailAddress: castEmailAddress(emailAddress),
     username: castUsername(username),
-    displayName: castDisplayName(displayName),
+    displayName: castDisplayName(displayName ? displayName : ""),
   });
 };
 
