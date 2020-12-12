@@ -1,19 +1,17 @@
 import * as EmailValidator from "email-validator";
 import { isNullOrUndefined } from "util";
 import { isValidId, makeId } from "../../app/id";
-import { Id } from "../../app/id";
-import { Opaque } from "../../app/utils";
 
-export type UserId = Opaque<Id, "UserId">;
-export type Username = Opaque<string, "Username">;
-export type EmailAddress = Opaque<string, "EmailAddress">;
-export type DisplayName = Opaque<string, "DisplayName">;
+export type UserId = string & { _: "UserId" };
+export type Username = string & { _: "Username" };
+export type EmailAddress = string & { _: "EmailAddress" };
+export type DisplayName = string & { _: "DisplayName" };
 
 export type User = {
   id: UserId;
-  username: string;
-  emailAddress: string;
-  displayName: string;
+  username: Username;
+  emailAddress: EmailAddress;
+  displayName: DisplayName;
 };
 
 export const castUserId = (userId: any) => {
@@ -43,19 +41,19 @@ export const castUsername = (username: any) => {
   if (!USERNAME_REGEXP.test(username)) {
     throw new Error("invalid username");
   }
-  return username;
+  return username as Username;
 };
 
 export const castEmailAddress = (emailAddress: any) => {
   if (typeof emailAddress !== "string") {
-    throw new Error("emailAdress must be a string");
+    throw new Error("emailAddress must be a string");
   }
 
   if (!EmailValidator.validate(emailAddress)) {
-    throw new Error("invalid emailAddress");
+    throw new Error("invalid email address");
   }
 
-  return emailAddress;
+  return emailAddress as EmailAddress;
 };
 
 const MAX_DISPLAY_NAME_LENGTH = 30;
@@ -69,7 +67,7 @@ export const castDisplayName = (displayName: any) => {
     throw new Error("displayName is too long");
   }
 
-  return displayName;
+  return displayName as DisplayName;
 };
 
 export const castUser = (user: any): User => {
@@ -86,11 +84,7 @@ export const castUser = (user: any): User => {
       displayName: castDisplayName(user.displayName),
     };
   }
-  throw new Error("invalid user");
-};
-
-const makeUserId = () => {
-  return makeId() as UserId;
+  throw new Error("failed to cast user");
 };
 
 export const makeUser = ({
@@ -103,7 +97,7 @@ export const makeUser = ({
   displayName?: string;
 }): User => {
   return Object.freeze({
-    id: makeUserId(),
+    id: castUserId(makeId()),
     emailAddress: castEmailAddress(emailAddress),
     username: castUsername(username),
     displayName: castDisplayName(displayName ? displayName : ""),
@@ -118,7 +112,7 @@ export const updateUser = (
     username,
   }: { displayName?: string; emailAddress?: string; username?: string }
 ) => {
-  return {
+  return castUser({
     ...castUser(user),
 
     ...(isNullOrUndefined(displayName)
@@ -132,5 +126,5 @@ export const updateUser = (
     ...(isNullOrUndefined(username)
       ? {}
       : { username: castUsername(username) }),
-  };
+  });
 };

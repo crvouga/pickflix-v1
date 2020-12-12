@@ -15,6 +15,7 @@ import {
   ListId,
 } from "../models";
 import { IPermissionRepository } from "./permission-repository";
+import { Timestamp, castTimestamp } from "../../app/utils";
 
 const tableName = "permissions";
 
@@ -23,7 +24,7 @@ type PermissionRow = {
   id: PermissionId;
   user_id: UserId;
   list_id: ListId;
-  created_at: number;
+  created_at: Timestamp;
 };
 
 const table: IPostgresTable<PermissionRow> = {
@@ -79,7 +80,7 @@ const mapRowToEntity = (row: PermissionRow): Permission => {
     id: castPermissionId(row.id),
     userId: castUserId(row.user_id),
     listId: castListId(row.list_id),
-    createdAt: Number(row.created_at),
+    createdAt: castTimestamp(row.created_at),
   };
 };
 

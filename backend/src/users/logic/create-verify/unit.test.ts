@@ -1,14 +1,10 @@
 import { buildUserLogicTest } from "../build";
+import { castEmailAddress, FAKE_USER_INFO, castPassword } from "../../models";
 
 describe("user logic", () => {
   it("creates and gets user", async () => {
     const { userLogic } = await buildUserLogicTest();
-    const user = await userLogic.createUserWithPassword({
-      emailAddress: "testEmail@email.com",
-      displayName: "Chris",
-      username: "crvouga",
-      password: "password",
-    });
+    const user = await userLogic.createUserWithPassword(FAKE_USER_INFO);
     const got1 = await userLogic.getUser({ id: user.id });
     const got2 = await userLogic.getUser({ username: user.username });
     const got3 = await userLogic.getUser({ emailAddress: user.emailAddress });
@@ -19,17 +15,12 @@ describe("user logic", () => {
 
   it("only allows unique email and or username", async () => {
     const { userLogic } = await buildUserLogicTest();
-    const info = {
-      emailAddress: "crvouga@gmail.com",
-      username: "123",
-      displayName: "chris",
-      password: "password",
-    };
-    await userLogic.createUserWithPassword(info);
+
+    await userLogic.createUserWithPassword(FAKE_USER_INFO);
 
     expect.assertions(1);
     try {
-      await userLogic.createUserWithPassword(info);
+      await userLogic.createUserWithPassword(FAKE_USER_INFO);
     } catch (error) {
       expect(error).toBeTruthy();
     }
@@ -38,16 +29,12 @@ describe("user logic", () => {
   it("verifies username and password", async () => {
     const { userLogic } = await buildUserLogicTest();
 
-    const PASSWORD = "password";
+    const PASSWORD = castPassword("password");
 
-    const userInfo = {
-      emailAddress: "crvouga@gmail.com",
-      username: "crvouga",
+    const created = await userLogic.createUserWithPassword({
+      ...FAKE_USER_INFO,
       password: PASSWORD,
-      displayName: "Christopher Vouga",
-    };
-
-    const created = await userLogic.createUserWithPassword(userInfo);
+    });
 
     const verified = await userLogic.verifyEmailAddressAndPassword({
       emailAddress: created.emailAddress,

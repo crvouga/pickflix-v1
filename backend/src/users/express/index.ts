@@ -3,12 +3,13 @@ import {
   makePaginationOptions,
   makePaginationResponse,
 } from "../../app/pagination";
-import { removeNullOrUndefinedEntries } from "../../app/utils";
+import { removeNullOrUndefinedEntries, castLink } from "../../app/utils";
 import {
   castDisplayName,
   castEmailAddress,
   castUserId,
   castUsername,
+  castPassword,
 } from "../models";
 import { Dependencies } from "./types";
 
@@ -62,8 +63,8 @@ export const useUsersRouter = ({ userLogic, middlewares }: Dependencies) => (
 ) => {
   router.post("/password/forgot", async (req, res, next) => {
     try {
-      const redirectUrl = req.body.redirectUrl;
-      const emailAddress = req.body.emailAddress;
+      const redirectUrl = castLink(req.body.redirectUrl);
+      const emailAddress = castEmailAddress(req.body.emailAddress);
 
       await userLogic.sendResetPasswordEmail({
         emailAddress,
@@ -79,7 +80,8 @@ export const useUsersRouter = ({ userLogic, middlewares }: Dependencies) => (
   router.put("/password/reset", async (req, res, next) => {
     try {
       const resetPasswordToken = req.body.resetPasswordToken as string;
-      const newPassword = req.body.newPassword as string;
+      const newPassword = castPassword(req.body.newPassword);
+
       await userLogic.resetPassword({
         newPassword,
         resetPasswordToken,

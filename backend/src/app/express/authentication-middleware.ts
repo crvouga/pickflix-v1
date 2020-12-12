@@ -6,8 +6,9 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import configuration from "../configuration";
 import { UserLogic } from "../../users/logic/logic";
-import { User, UserId } from "../../users/models/make-user";
+import { User, UserId, castEmailAddress } from "../../users/models/make-user";
 import makeFileStore from "session-file-store";
+import { castPassword } from "../../users/models";
 
 const getSessionStore = () => {
   switch (configuration.NODE_ENV) {
@@ -79,8 +80,8 @@ export const useAuthenticationMiddleware = ({
       async (emailAddress, password, callback) => {
         try {
           const user = await userLogic.verifyEmailAddressAndPassword({
-            emailAddress,
-            password,
+            emailAddress: castEmailAddress(emailAddress),
+            password: castPassword(password),
           });
           callback(null, user ? user : false);
         } catch (error) {

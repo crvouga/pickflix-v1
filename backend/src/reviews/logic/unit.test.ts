@@ -1,6 +1,6 @@
 import { makeId } from "../../app/id";
-import { makeMediaIdFake } from "../../media/models/types";
-import { UserId } from "../../users/models";
+import { castTmdbMediaId, makeMediaIdFake } from "../../media/models/types";
+import { castUserId } from "../../users/models";
 import { makeUserFake } from "../../users/models/make-user.fake";
 import { ReviewVoteValue } from "../models/make-review-vote";
 import { makeReviewFake } from "../models/make-review.fake";
@@ -13,7 +13,7 @@ describe("review logic", () => {
     const reviewsByUser = [1, 2, 3].map((n) =>
       makeReviewFake({
         authorId: user.id,
-        mediaId: makeMediaIdFake({ tmdbMediaId: n }),
+        mediaId: makeMediaIdFake({ tmdbMediaId: castTmdbMediaId(n) }),
       })
     );
 
@@ -27,7 +27,7 @@ describe("review logic", () => {
 
     const users = [1, 2, 3].map(() =>
       makeUserFake({
-        id: makeId() as UserId,
+        id: castUserId(makeId()),
       })
     );
     const mediaId = makeMediaIdFake();

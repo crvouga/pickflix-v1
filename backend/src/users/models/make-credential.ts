@@ -1,10 +1,25 @@
 import bcrypt from "bcrypt";
-import { makeId, isValidId } from "../../app/id";
-import { Id } from "../../app/id";
-import { UserId, castUserId } from "./make-user";
+import { isValidId, makeId } from "../../app/id";
+import { Timestamp, castTimestamp, makeTimestamp } from "../../app/utils";
+import { castUserId, UserId } from "./make-user";
 
-export const makePasswordHash = (password: string) => bcrypt.hash(password, 10);
-export const passwordHashCompare = (password: string, hash: string) =>
+export type CredentialPassword = {
+  id: CredentialId;
+  userId: UserId;
+  credentialType: CredentialType.password;
+  passwordHash: PasswordHash;
+  verifiedAt: Timestamp;
+};
+
+export type CredentialId = string & { _: "CredentialId" };
+export type Password = string & { _: "Password" };
+export type PasswordHash = string & { _: "PasswordHash" };
+export type Credential = CredentialPassword;
+
+export const makePasswordHash = (password: Password) =>
+  bcrypt.hash(password, 10);
+
+export const passwordHashCompare = (password: Password, hash: PasswordHash) =>
   bcrypt.compare(password, hash);
 
 export enum CredentialType {
@@ -30,18 +45,9 @@ export const castCredentialId = (id: any) => {
 
 export const castPasswordHash = (hash: any) => {
   if (typeof hash === "string") {
-    return hash;
+    return hash as PasswordHash;
   }
   throw new Error("failed to cast password hash");
-};
-
-export const castVerifiedAt = (verifiedAt: any): number => {
-  if (typeof verifiedAt === "number") {
-    return verifiedAt as number;
-  }
-  throw new Error(
-    `failed to cast credential verified at: ${verifiedAt.toString()}`
-  );
 };
 
 export const castCredential = (credential: any): Credential => {
@@ -57,23 +63,18 @@ export const castCredential = (credential: any): Credential => {
       userId: castUserId(credential.userId),
       credentialType: castCredentialType(credential.credentialType),
       passwordHash: castPasswordHash(credential.passwordHash),
-      verifiedAt: castVerifiedAt(credential.verifiedAt),
+      verifiedAt: castTimestamp(credential.verifiedAt),
     };
   }
   throw new Error("failed to cast credential");
 };
 
-export type CredentialPassword = {
-  id: CredentialId;
-  userId: UserId;
-  credentialType: CredentialType.password;
-  passwordHash: string;
-  verifiedAt: number;
+export const castPassword = (password: any) => {
+  if (typeof password === "string" && password.length > 0) {
+    return password as Password;
+  }
+  throw new Error("failed to cast password");
 };
-
-export type CredentialId = Id & { CredentialId: true };
-
-export type Credential = CredentialPassword;
 
 export const makeCredential = ({
   userId,
@@ -87,7 +88,7 @@ export const makeCredential = ({
     credentialType: castCredentialType(CredentialType.password),
     userId: castUserId(userId),
     passwordHash: castPasswordHash(passwordHash),
-    verifiedAt: castVerifiedAt(Date.now()),
+    verifiedAt: makeTimestamp(),
   };
 };
 
@@ -102,7 +103,7 @@ export const updateCredential = (
     passwordHash: castPasswordHash(
       "passwordHash" in edits ? edits.passwordHash : credential.passwordHash
     ),
-    verifiedAt: castVerifiedAt(
+    verifiedAt: castTimestamp(
       "verifiedAt" in edits ? edits.verifiedAt : credential.verifiedAt
     ),
   };

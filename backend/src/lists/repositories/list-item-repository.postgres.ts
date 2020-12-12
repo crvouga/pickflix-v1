@@ -5,19 +5,30 @@ import {
 } from "../../app/data-access/database.postgres";
 import { GenericRepositoryPostgres } from "../../app/data-access/generic-repository/generic-repository.postgres";
 import { GenericRepositoryQueryOptions } from "../../app/data-access/generic-repository/types";
-import { deserializeMediaId, serializeMediaId } from "../../media/models/types";
-import { castUserId } from "../../users/models";
-import { castListId, castListItemId, ListItem, ListItemId } from "../models";
+import { castTimestamp, Timestamp } from "../../app/utils";
+import {
+  deserializeMediaId,
+  SerializedMediaId,
+  serializeMediaId,
+} from "../../media/models/types";
+import { castUserId, UserId } from "../../users/models";
+import {
+  castListId,
+  castListItemId,
+  ListId,
+  ListItem,
+  ListItemId,
+} from "../models";
 import { IListItemRepository } from "./list-item-repository";
 
 const tableName = "list_items";
 
 type ListItemRow = {
-  id: string;
-  user_id: string;
-  list_id: string;
-  created_at: number;
-  media_id: string;
+  id: ListItemId;
+  user_id: UserId;
+  list_id: ListId;
+  created_at: Timestamp;
+  media_id: SerializedMediaId;
 };
 
 const table: IPostgresTable<ListItemRow> = {
@@ -71,7 +82,7 @@ const mapRowToEntity = (row: ListItemRow): ListItem => {
     listId: castListId(row.list_id),
     userId: castUserId(row.user_id),
     mediaId: deserializeMediaId(row.media_id),
-    createdAt: Number(row.created_at),
+    createdAt: castTimestamp(row.created_at),
   };
 };
 

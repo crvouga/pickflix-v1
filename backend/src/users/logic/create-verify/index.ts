@@ -4,6 +4,10 @@ import {
   makeUser,
   passwordHashCompare,
   updateCredential,
+  Username,
+  DisplayName,
+  EmailAddress,
+  Password,
 } from "../../models";
 import { UserLogic } from "../logic";
 
@@ -13,8 +17,8 @@ export async function verifyEmailAddressAndPassword(
     emailAddress,
     password,
   }: {
-    emailAddress: string;
-    password: string;
+    emailAddress: EmailAddress;
+    password: Password;
   }
 ) {
   const user = await this.getUser({ emailAddress });
@@ -42,10 +46,10 @@ export async function createUserWithPassword(
     emailAddress,
     password,
   }: {
-    username: string;
-    displayName?: string;
-    emailAddress: string;
-    password: string;
+    username: Username;
+    displayName?: DisplayName;
+    emailAddress: EmailAddress;
+    password: Password;
   }
 ) {
   const [foundUsernames, foundEmailAddresses] = await Promise.all([

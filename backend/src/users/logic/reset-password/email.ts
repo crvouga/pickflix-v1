@@ -1,15 +1,6 @@
 import { Email } from "../../../app/email";
+import { Link } from "../../../app/utils";
 import { User } from "../../models";
-
-export type Link = string & { Link: true };
-export const castLink = (link: string): Link => {
-  try {
-    new URL(link);
-    return link as Link;
-  } catch (error) {
-    throw new Error("Invalid link");
-  }
-};
 
 const SEND_GRID_REGISTERED_EMAIL_ADDRESS = "pickflix1@gmail.com";
 

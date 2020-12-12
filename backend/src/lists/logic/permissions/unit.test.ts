@@ -1,19 +1,18 @@
-import { makeUserFake } from "../../../users/models";
+import { castUsername, makeUserFake, castUser } from "../../../users/models";
 import { buildListLogicTest } from "../build";
-import { pipePromise } from "../../../app/utils";
 
 describe("list permission logic", () => {
   it("add list editors", async () => {
     const { listLogic } = await buildListLogicTest();
 
     const user1 = makeUserFake({
-      username: "user1",
+      username: castUsername("user1"),
     });
     const user2 = makeUserFake({
-      username: "user2",
+      username: castUsername("user2"),
     });
     const user3 = makeUserFake({
-      username: "user3",
+      username: castUsername("user3"),
     });
 
     for (const user of [user1, user2, user3]) {
@@ -43,13 +42,13 @@ describe("list permission logic", () => {
     const { listLogic } = await buildListLogicTest();
 
     const user1 = makeUserFake({
-      username: "user1",
+      username: castUsername("user1"),
     });
     const user2 = makeUserFake({
-      username: "user2",
+      username: castUsername("user2"),
     });
     const user3 = makeUserFake({
-      username: "user3",
+      username: castUsername("user3"),
     });
 
     for (const user of [user1, user2, user3]) {

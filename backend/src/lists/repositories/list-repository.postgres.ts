@@ -5,25 +5,27 @@ import {
 } from "../../app/data-access/database.postgres";
 import { GenericRepositoryPostgres } from "../../app/data-access/generic-repository/generic-repository.postgres";
 import { GenericRepositoryQueryOptions } from "../../app/data-access/generic-repository/types";
+import { castTimestamp, Timestamp } from "../../app/utils";
 import { castUserId, UserId } from "../../users/models";
 import {
   castListDescription,
   castListId,
   castListTitle,
   List,
+  ListDescription,
   ListId,
+  ListTitle,
 } from "../models";
 import { IListRepository } from "./list-repository";
-import { composeP } from "ramda";
 
 const tableName = "lists";
 
 type ListRow = {
   id: ListId;
-  title: string;
-  description: string;
-  created_at: number;
-  updated_at: number;
+  title: ListTitle;
+  description: ListDescription;
+  created_at: Timestamp;
+  updated_at: Timestamp;
   owner_id: UserId;
 };
 
@@ -85,8 +87,8 @@ const mapRowToEntity = (row: ListRow): List => {
     id: castListId(row.id),
     title: castListTitle(row.title),
     description: castListDescription(row.description),
-    createdAt: Number(row.created_at),
-    updatedAt: Number(row.updated_at),
+    createdAt: castTimestamp(row.created_at),
+    updatedAt: castTimestamp(row.updated_at),
     ownerId: castUserId(row.owner_id),
   };
 };

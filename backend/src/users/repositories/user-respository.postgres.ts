@@ -10,8 +10,11 @@ import {
   castEmailAddress,
   castUserId,
   castUsername,
+  DisplayName,
+  EmailAddress,
   User,
   UserId,
+  Username,
 } from "../models";
 import { IUserRepository } from "./user-repository";
 
@@ -19,9 +22,9 @@ const tableName = "users";
 
 type UserRow = {
   id: UserId;
-  username: string;
-  email_address: string;
-  display_name: string;
+  username: Username;
+  email_address: EmailAddress;
+  display_name: DisplayName;
 };
 
 const table: IPostgresTable<UserRow> = {

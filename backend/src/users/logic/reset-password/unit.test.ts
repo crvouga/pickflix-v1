@@ -3,6 +3,9 @@ import {
   makeCredential,
   makePasswordHash,
   passwordHashCompare,
+  castUsername,
+  castEmailAddress,
+  castPassword,
 } from "../../models";
 import { ONE_DAY_IN_MILLISECONDS } from ".";
 import {
@@ -13,6 +16,7 @@ import {
   ResetPasswordTokenData,
 } from "./token";
 import { buildUserLogicTest } from "../build";
+import { castTimestamp } from "../../../app/utils";
 
 describe("resetting password", () => {
   it("encodes and decodes password reset token", async () => {
@@ -20,7 +24,7 @@ describe("resetting password", () => {
 
     const credential = makeCredential({
       userId: user.id,
-      passwordHash: await makePasswordHash("password"),
+      passwordHash: await makePasswordHash(castPassword("password")),
     });
 
     const before = makeResetPasswordToken({
@@ -38,12 +42,12 @@ describe("resetting password", () => {
   it("updates password", async () => {
     const { userLogic } = await buildUserLogicTest();
 
-    const beforePassword = "password";
-    const afterPassword = "new password";
+    const beforePassword = castPassword("password");
+    const afterPassword = castPassword("new password");
 
     const user = await userLogic.createUserWithPassword({
-      username: "crvouga",
-      emailAddress: "crvouga@gmail.com",
+      username: castUsername("crvouga"),
+      emailAddress: castEmailAddress("crvouga@gmail.com"),
       password: beforePassword,
     });
 
@@ -83,9 +87,9 @@ describe("resetting password", () => {
     const { userLogic } = await buildUserLogicTest();
 
     const user = await userLogic.createUserWithPassword({
-      username: "crvouga",
-      emailAddress: "crvouga@gmail.com",
-      password: "password",
+      username: castUsername("crvouga"),
+      emailAddress: castEmailAddress("crvouga@gmail.com"),
+      password: castPassword("password"),
     });
 
     const credential = await userLogic.getPasswordCredential({
@@ -99,8 +103,7 @@ describe("resetting password", () => {
         emailAddress: user.emailAddress,
         userId: user.id,
       }),
-      // token data was created 2 days ago
-      createdAt: Date.now() - ONE_DAY_IN_MILLISECONDS * 2,
+      createdAt: castTimestamp(Date.now() - ONE_DAY_IN_MILLISECONDS * 2),
     };
 
     const resetPasswordToken = encodeToken(resetPasswordTokenData);
@@ -109,7 +112,7 @@ describe("resetting password", () => {
     try {
       await userLogic.resetPassword({
         resetPasswordToken,
-        newPassword: "new password",
+        newPassword: castPassword("new password"),
       });
     } catch (error) {
       expect(error).toBeTruthy();

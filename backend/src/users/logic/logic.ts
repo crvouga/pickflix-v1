@@ -8,7 +8,13 @@ import { IPermissionRepository } from "../../lists/repositories/permission-repos
 import { IReviewRepository } from "../../reviews/repositories/review-repository";
 import { UserAggergation } from "../models";
 import { CredentialType } from "../models/make-credential";
-import { updateUser, User, UserId } from "../models/make-user";
+import {
+  EmailAddress,
+  updateUser,
+  User,
+  UserId,
+  Username,
+} from "../models/make-user";
 import { ICredentialRepository } from "../repositories/credential-repository";
 import { IUserRepository } from "../repositories/user-repository";
 import {
@@ -81,13 +87,19 @@ export class UserLogic {
   }
 
   async getUsers(
-    spec: { username: string } | { id: UserId } | { emailAddress: string }
+    spec:
+      | { username: Username }
+      | { id: UserId }
+      | { emailAddress: EmailAddress }
   ) {
     return await this.userRepository.find([spec]);
   }
 
   async getUser(
-    spec: { username: string } | { id: UserId } | { emailAddress: string }
+    spec:
+      | { username: Username }
+      | { id: UserId }
+      | { emailAddress: EmailAddress }
   ) {
     const [user] = await this.userRepository.find([spec]);
 
@@ -130,10 +142,10 @@ export class UserLogic {
           id: UserId;
         }
       | {
-          username: string;
+          username: Username;
         }
       | {
-          emailAddress: string;
+          emailAddress: EmailAddress;
         },
     pagination?: PaginationOptions
   ) {

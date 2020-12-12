@@ -10,6 +10,13 @@ import { makeExpressApp } from "../express/make-express-app";
 import { ExpressAppDependencies } from "../express/types";
 import { buildRepositoriesDependingOnTestEnvironment } from "./build-repositories";
 import supertest from "supertest";
+import {
+  castDisplayName,
+  castUsername,
+  castEmailAddress,
+  castPassword,
+  FAKE_USER_INFO,
+} from "../../users/models";
 
 export const buildLogicTest = async () => {
   const { repositories } = await buildRepositoriesDependingOnTestEnvironment();
@@ -59,17 +66,10 @@ export const buildLogicTest = async () => {
 export const buildAppTest = async () => {
   const { appLogic } = await buildLogicTest();
 
-  const userInfo = {
-    displayName: "mr test",
-    username: "testuser",
-    emailAddress: "test@test.com",
-    password: "password",
-  };
-
-  await appLogic.userLogic.createUserWithPassword(userInfo);
+  await appLogic.userLogic.createUserWithPassword(FAKE_USER_INFO);
 
   const currentUser = await appLogic.userLogic.getUser({
-    username: userInfo.username,
+    username: FAKE_USER_INFO.username,
   });
 
   const handlerStub: Handler = (req, res, next) => {

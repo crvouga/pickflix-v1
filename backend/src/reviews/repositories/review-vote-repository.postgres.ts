@@ -4,23 +4,24 @@ import {
   IPostgresTable,
 } from "../../app/data-access/database.postgres";
 import { GenericRepositoryPostgres } from "../../app/data-access/generic-repository/generic-repository.postgres";
-import { castUserId } from "../../users/models";
-import { castReviewId } from "../models/make-review";
+import { castUserId, UserId } from "../../users/models";
+import { castReviewId, ReviewId } from "../models/make-review";
 import {
   castReviewVoteId,
   castReviewVoteValue,
   ReviewVote,
   ReviewVoteId,
+  ReviewVoteValue,
 } from "../models/make-review-vote";
 import { IReviewVoteRepository } from "./review-vote-repository";
 
 const tableName = "review_votes";
 
 type ReviewVoteRow = {
-  id: string;
-  user_id: string;
-  review_id: string;
-  vote_value: string;
+  id: ReviewVoteId;
+  user_id: UserId;
+  review_id: ReviewId;
+  vote_value: ReviewVoteValue;
 };
 
 const table: IPostgresTable<ReviewVoteRow> = {

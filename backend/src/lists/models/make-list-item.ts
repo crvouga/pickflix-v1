@@ -1,13 +1,9 @@
-import {
-  TmdbMediaId,
-  TmdbMediaType,
-  TmdbMedia,
-  MediaId,
-} from "../../media/models/types";
-import { UserId } from "../../users/models/make-user";
-import { Id } from "../../app/id";
 import { ListId } from ".";
-import { makeId, isValidId } from "../../app/id";
+import { Id, isValidId, makeId } from "../../app/id";
+import { makeTimestamp, Timestamp } from "../../app/utils";
+import { castMediaId, MediaId } from "../../media/models/types";
+import { castUserId, UserId } from "../../users/models/make-user";
+import { castListId } from "./make-list";
 
 export type ListItemId = Id & { ListItemId: true };
 
@@ -22,44 +18,24 @@ export type ListItem = {
   id: ListItemId;
   userId: UserId;
   listId: ListId;
-  createdAt: number;
+  createdAt: Timestamp;
   mediaId: MediaId;
 };
 
 export type PartialListItem = {
-  id?: ListItemId;
   userId: UserId;
   listId: ListId;
   mediaId: MediaId;
-  createdAt?: number;
 };
 
 export const makeListItem = (partial: PartialListItem): ListItem => {
-  const {
-    id = makeId() as ListItemId,
-    createdAt = Date.now(),
-    userId,
-    listId,
-    mediaId,
-  } = partial;
-
-  if (!isValidId(id)) {
-    throw new Error("invalid id");
-  }
-
-  if (!isValidId(listId)) {
-    throw new Error("invalid list id");
-  }
-
-  if (!isValidId(userId)) {
-    throw new Error("invalid user id");
-  }
+  const { userId, listId, mediaId } = partial;
 
   return Object.freeze({
-    id,
-    userId,
-    listId,
-    mediaId,
-    createdAt,
+    id: castListItemId(makeId()),
+    userId: castUserId(userId),
+    listId: castListId(listId),
+    mediaId: castMediaId(mediaId),
+    createdAt: makeTimestamp(),
   });
 };

@@ -29,3 +29,28 @@ export const removeNullOrUndefinedEntries = <T>(obj: T) => {
 };
 
 export type Opaque<T, U extends string> = T & { readonly __TYPE__: U };
+
+export type Link = string & { _: "Link" };
+
+export const castLink = (link: string): Link => {
+  try {
+    new URL(link);
+    return link as Link;
+  } catch (error) {
+    throw new Error("failed to cast link");
+  }
+};
+
+export type Timestamp = number & { _: "Timestamp" };
+
+export const castTimestamp = (_timestamp: any) => {
+  const timestamp = Number(_timestamp);
+  // SOURCE: https://stackoverflow.com/questions/12422918/how-to-validate-timestamp-in-javascript
+  if (new Date(timestamp).getTime() > 0) {
+    return timestamp as Timestamp;
+  }
+  throw new Error("Failed to cast timestamp");
+};
+export const makeTimestamp = () => {
+  return castTimestamp(Date.now());
+};

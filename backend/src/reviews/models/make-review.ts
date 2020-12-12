@@ -1,9 +1,11 @@
-import { isValidId, makeId } from "../../app/id";
-import { Id } from "../../app/id";
-import { MediaId, castMediaId } from "../../media/models/types";
+import { Id, isValidId, makeId } from "../../app/id";
+import { makeTimestamp, Timestamp } from "../../app/utils";
+import { castMediaId, MediaId } from "../../media/models/types";
 import { UserId } from "../../users/models/make-user";
 
 export type ReviewId = Id & { ReviewId: true };
+export type ReviewContent = string & { _: "ReviewContent" };
+export type ReviewRating = number & { _: "ReviewRating" };
 
 export const castReviewId = (id: any) => {
   if (isValidId(id)) {
@@ -15,16 +17,15 @@ export const castReviewId = (id: any) => {
 export type Review = {
   id: ReviewId;
   authorId: UserId;
-  content?: string;
-  rating: number;
+  content?: ReviewContent;
+  rating: ReviewRating;
   mediaId: MediaId;
-  createdAt: number;
-  updatedAt: number;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
 };
 
 export const MAX_RATING = 5;
 export const MIN_RATING = 1;
-export const RATINGS = [1, 2, 3, 4, 5];
 
 const MIN_CONTENT_LENGTH = 0;
 const MAX_CONTENT_LENGTH = 600;
@@ -46,10 +47,11 @@ export const castReviewContent = (content: any) => {
   if (content.length < MIN_CONTENT_LENGTH) {
     throw new Error("content too short");
   }
-  return content;
+  return content as ReviewContent;
 };
 
-export const castReviewRating = (rating: any) => {
+export const castReviewRating = (_rating: any) => {
+  const rating = Number(_rating);
   if (typeof rating !== "number") {
     throw new Error("rating must be a number");
   }
@@ -59,8 +61,10 @@ export const castReviewRating = (rating: any) => {
   if (rating < MIN_RATING) {
     throw new Error("rating too small");
   }
-  return rating;
+  return rating as ReviewRating;
 };
+
+export const RATINGS: ReviewRating[] = [1, 2, 3, 4, 5].map(castReviewRating);
 
 export const castAuthorId = (authorId: any) => {
   if (!isValidId(authorId)) {
@@ -83,8 +87,8 @@ export const makeReview = ({
     content: castReviewContent(content || ""),
     rating: castReviewRating(rating),
     mediaId: castMediaId(mediaId),
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
+    createdAt: makeTimestamp(),
+    updatedAt: makeTimestamp(),
   });
 };
 
@@ -102,6 +106,6 @@ export const updateReview = (
     ...review,
     ...(rating !== undefined ? { rating: castReviewRating(rating) } : {}),
     ...(content !== undefined ? { content: castReviewContent(content) } : {}),
-    updatedAt: Date.now(),
+    updatedAt: makeTimestamp(),
   };
 };

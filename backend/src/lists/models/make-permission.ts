@@ -1,6 +1,7 @@
 import { UserId, castUserId } from "../../users/models";
 import { ListId, castListId } from "./make-list";
 import { Id, makeId, isValidId } from "../../app/id";
+import { Timestamp, makeTimestamp } from "../../app/utils";
 
 export enum PermissionType {
   Editor = "Editor",
@@ -13,7 +14,7 @@ export type Permission = {
   id: PermissionId;
   userId: UserId;
   listId: ListId;
-  createdAt: number;
+  createdAt: Timestamp;
 };
 
 export const castPermissionType = (permissionType: any) => {
@@ -44,6 +45,6 @@ export const makePermission = ({
     permissionType: castPermissionType(permissionType),
     userId: castUserId(userId),
     listId: castListId(listId),
-    createdAt: Date.now(),
+    createdAt: makeTimestamp(),
   });
 };

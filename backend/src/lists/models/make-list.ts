@@ -1,19 +1,22 @@
 import { Id, isValidId, makeId } from "../../app/id";
 import { castUserId, UserId } from "../../users/models";
 import { isNullOrUndefined } from "util";
+import { Timestamp, castTimestamp, makeTimestamp } from "../../app/utils";
 
 const MIN_LENGTH_TITLE = 1;
 const MAX_LENGTH_TITLE = 100;
 const MAX_LENGTH_DESCRIPTION = 500;
 
 export type ListId = Id & { ListId: true };
+export type ListDescription = string & { _: "ListDescription" };
+export type ListTitle = string & { _: "ListTitle" };
 
 export type List = {
   id: ListId;
-  title: string;
-  description: string;
-  createdAt: number;
-  updatedAt: number;
+  title: ListTitle;
+  description: ListDescription;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
   ownerId: UserId;
 };
 
@@ -39,7 +42,7 @@ export const castListDescription = (description: any) => {
     typeof description === "string" &&
     description.trim().length <= MAX_LENGTH_DESCRIPTION
   ) {
-    return description.trim();
+    return description.trim() as ListDescription;
   }
   throw new Error("invalid list description");
 };
@@ -50,16 +53,9 @@ export const castListTitle = (title: any) => {
     MIN_LENGTH_TITLE <= title.trim().length &&
     title.trim().length <= MAX_LENGTH_TITLE
   ) {
-    return title.trim();
+    return title.trim() as ListTitle;
   }
   throw new Error("invalid list title");
-};
-
-const castDate = (date: any) => {
-  if (typeof date === "number") {
-    return Number(date);
-  }
-  throw new Error("invalid date");
 };
 
 export const castList = (list: any): List => {
@@ -76,8 +72,8 @@ export const castList = (list: any): List => {
       title: castListTitle(list.title),
       description: castListDescription(list.description),
       ownerId: castUserId(list.ownerId),
-      createdAt: castDate(list.createdAt),
-      updatedAt: castDate(list.updatedAt),
+      createdAt: castTimestamp(list.createdAt),
+      updatedAt: castTimestamp(list.updatedAt),
     });
   }
   throw new Error("failed to cast list becuase of missing key");
@@ -93,8 +89,8 @@ export const makeList = ({
     ownerId,
     title,
     description,
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
+    createdAt: makeTimestamp(),
+    updatedAt: makeTimestamp(),
   });
 };
 
@@ -115,6 +111,6 @@ export const updateList = (
     ...(isNullOrUndefined(title) ? {} : { title }),
     ...(isNullOrUndefined(description) ? {} : { description }),
     ...(isNullOrUndefined(ownerId) ? {} : { ownerId }),
-    updatedAt: Date.now(),
+    updatedAt: makeTimestamp(),
   });
 };

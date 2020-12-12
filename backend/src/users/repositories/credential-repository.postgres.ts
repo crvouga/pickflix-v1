@@ -4,17 +4,25 @@ import {
   IPostgresTable,
 } from "../../app/data-access/database.postgres";
 import { GenericRepositoryPostgres } from "../../app/data-access/generic-repository/generic-repository.postgres";
-import { castCredential, Credential, CredentialId } from "../models";
+import { Timestamp } from "../../app/utils";
+import {
+  castCredential,
+  Credential,
+  CredentialId,
+  CredentialType,
+  PasswordHash,
+  UserId,
+} from "../models";
 import { ICredentialRepository } from "./credential-repository";
 
 const tableName = "credentials";
 
 type CredentialRow = {
-  id: string;
-  user_id: string;
-  credential_type: string;
-  password_hash: string;
-  verified_at: number;
+  id: CredentialId;
+  user_id: UserId;
+  credential_type: CredentialType;
+  password_hash: PasswordHash;
+  verified_at: Timestamp;
 };
 
 const table: IPostgresTable<CredentialRow> = {

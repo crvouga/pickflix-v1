@@ -1,9 +1,12 @@
+import { castLink, Link } from "../../../app/utils";
+import { EmailAddress } from "../../models";
 import {
   makePasswordHash,
+  Password,
   updateCredential,
 } from "../../models/make-credential";
 import { UserLogic } from "../logic";
-import { castLink, makeResetPasswordEmail } from "./email";
+import { makeResetPasswordEmail } from "./email";
 import { decodeToken, makeResetPasswordToken } from "./token";
 
 const makeResetPasswordLink = ({
@@ -11,9 +14,9 @@ const makeResetPasswordLink = ({
   token,
   emailAddress,
 }: {
-  redirectUrl: string;
+  redirectUrl: Link;
   token: string;
-  emailAddress: string;
+  emailAddress: EmailAddress;
 }) => {
   const url = new URL(redirectUrl);
   url.searchParams.append("resetPasswordToken", token);
@@ -28,8 +31,8 @@ export async function getResetPasswordEmail(
     emailAddress,
     redirectUrl,
   }: {
-    emailAddress: string;
-    redirectUrl: string;
+    emailAddress: EmailAddress;
+    redirectUrl: Link;
   }
 ) {
   const user = await this.getUser({ emailAddress });
@@ -63,8 +66,8 @@ export async function sendResetPasswordEmail(
     emailAddress,
     redirectUrl,
   }: {
-    emailAddress: string;
-    redirectUrl: string;
+    emailAddress: EmailAddress;
+    redirectUrl: Link;
   }
 ) {
   const email = await this.getResetPasswordEmail({
@@ -84,7 +87,7 @@ export async function resetPassword(
     newPassword,
   }: {
     resetPasswordToken: string;
-    newPassword: string;
+    newPassword: Password;
   }
 ) {
   const tokenData = decodeToken(resetPasswordToken);

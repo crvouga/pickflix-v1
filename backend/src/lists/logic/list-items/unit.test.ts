@@ -1,4 +1,4 @@
-import { makeMediaIdFake } from "../../../media/models/types";
+import { castTmdbMediaId, makeMediaIdFake } from "../../../media/models/types";
 import { makeUserFake } from "../../../users/models/make-user.fake";
 import { buildListLogicTest } from "../build";
 
@@ -17,7 +17,7 @@ describe("getting list items", () => {
         userId: user.id,
         listId: list.id,
         mediaId: makeMediaIdFake({
-          tmdbMediaId: n,
+          tmdbMediaId: castTmdbMediaId(n),
         }),
       }))
     );
@@ -78,10 +78,10 @@ describe("getting list items", () => {
     });
 
     const mediaId1 = makeMediaIdFake({
-      tmdbMediaId: 550,
+      tmdbMediaId: castTmdbMediaId(550),
     });
     const mediaId2 = makeMediaIdFake({
-      tmdbMediaId: 123123,
+      tmdbMediaId: castTmdbMediaId(123123),
     });
 
     await listLogic.addListItems([

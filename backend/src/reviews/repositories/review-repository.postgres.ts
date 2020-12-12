@@ -5,27 +5,34 @@ import {
 } from "../../app/data-access/database.postgres";
 import { GenericRepositoryPostgres } from "../../app/data-access/generic-repository/generic-repository.postgres";
 import { GenericRepositoryQueryOptions } from "../../app/data-access/generic-repository/types";
-import { deserializeMediaId, serializeMediaId } from "../../media/models/types";
-import { castUserId } from "../../users/models";
+import { castTimestamp, Timestamp } from "../../app/utils";
 import {
-  castReviewId,
-  Review,
-  ReviewId,
-  castReviewRating,
+  deserializeMediaId,
+  SerializedMediaId,
+  serializeMediaId,
+} from "../../media/models/types";
+import { castUserId, UserId } from "../../users/models";
+import {
   castReviewContent,
+  castReviewId,
+  castReviewRating,
+  Review,
+  ReviewContent,
+  ReviewId,
+  ReviewRating,
 } from "../models/make-review";
 import { IReviewRepository } from "./review-repository";
 
 const tableName = "reviews";
 
 type ReviewRow = {
-  id: string;
-  author_id: string;
-  content: string;
-  rating: number;
-  media_id: string;
-  created_at: number;
-  updated_at: number;
+  id: ReviewId;
+  author_id: UserId;
+  content: ReviewContent;
+  rating: ReviewRating;
+  media_id: SerializedMediaId;
+  created_at: Timestamp;
+  updated_at: Timestamp;
 };
 
 const table: IPostgresTable<ReviewRow> = {
@@ -90,9 +97,9 @@ const mapRowToEntity = (row: ReviewRow): Review => {
     id: castReviewId(row.id),
     authorId: castUserId(row.author_id),
     content: castReviewContent(row.content),
-    rating: castReviewRating(Number(row.rating)),
-    createdAt: Number(row.created_at),
-    updatedAt: Number(row.updated_at),
+    rating: castReviewRating(row.rating),
+    createdAt: castTimestamp(row.created_at),
+    updatedAt: castTimestamp(row.updated_at),
     mediaId: deserializeMediaId(row.media_id),
   };
 };

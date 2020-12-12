@@ -1,4 +1,5 @@
-export type TmdbMediaId = number;
+export type TmdbMediaId = number & { _: TmdbMediaId };
+
 export enum TmdbMediaType {
   movie = "movie",
   tv = "tv",
@@ -26,8 +27,12 @@ export type MediaId = {
   tmdbMediaType: TmdbMediaType;
 };
 
-const castTmdbMediaId = (id: any): number => {
-  return Number(id);
+export const castTmdbMediaId = (_id: any) => {
+  const id = Number(_id);
+  if (id >= 0) {
+    return id as TmdbMediaId;
+  }
+  throw new Error("failed to cast tmdb media id");
 };
 
 const castTmdbMediaType = (type: string): TmdbMediaType => {
@@ -49,20 +54,37 @@ export const castMediaId = (mediaId: any): MediaId => {
 
 export const makeMediaIdFake = (overrides?: Partial<MediaId>): MediaId => {
   return {
-    tmdbMediaId: 550,
+    tmdbMediaId: castTmdbMediaId(550),
     tmdbMediaType: TmdbMediaType.movie,
     ...overrides,
   };
 };
 
-const seperator = " ";
-export const serializeMediaId = (mediaId: MediaId): string => {
-  return [mediaId.tmdbMediaType, mediaId.tmdbMediaId].join(seperator);
-};
-export const deserializeMediaId = (mediaId: string): MediaId => {
-  const [tmdbMediaType, tmdbMediaId] = mediaId.split(seperator);
+const SEPERATOR = " ";
+
+export type SerializedMediaId = string & { _: "SerializedMediaId" };
+
+export const deserializeMediaId = (
+  serializedMediaId: SerializedMediaId
+): MediaId => {
+  const [tmdbMediaType, tmdbMediaId] = serializedMediaId.split(SEPERATOR);
   return castMediaId({
     tmdbMediaId: Number(tmdbMediaId),
     tmdbMediaType,
   });
+};
+
+const castSerializedMediaId = (serializedMediaId: any) => {
+  try {
+    deserializeMediaId(serializedMediaId as SerializedMediaId);
+    return serializedMediaId as SerializedMediaId;
+  } catch (error) {
+    throw new Error(`failed to cast serialized media id: ${serializedMediaId}`);
+  }
+};
+
+export const serializeMediaId = (mediaId: MediaId): SerializedMediaId => {
+  return castSerializedMediaId(
+    [mediaId.tmdbMediaType, mediaId.tmdbMediaId].join(SEPERATOR)
+  );
 };
