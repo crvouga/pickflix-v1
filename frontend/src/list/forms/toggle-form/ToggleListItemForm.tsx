@@ -89,10 +89,13 @@ const CreateListButtonContainer = ({
 
   return (
     <React.Fragment>
-      <CreateListButton onClick={handleClick} />
-      <Box p={2}>
-        <ListCardCallToAction onClick={handleClick} />
-      </Box>
+      {listCount === 0 ? (
+        <Box p={2}>
+          <ListCardCallToAction onClick={handleClick} />
+        </Box>
+      ) : (
+        <CreateListButton onClick={handleClick} />
+      )}
     </React.Fragment>
   );
 };
