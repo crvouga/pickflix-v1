@@ -1,6 +1,7 @@
 import { makeMediaIdFake } from "../../../media/models/types";
 import { makeUserFake } from "../../../users/models/make-user.fake";
 import { buildListLogicTest } from "../build";
+import { makeList } from "../../models";
 
 describe("list logic", () => {
   it("gets lists by media id", async () => {
@@ -180,15 +181,44 @@ describe("list logic", () => {
       editorIds: [editor.id],
     });
 
-    const before = await listLogic.getList({ listId: list.id });
+    const [before] = await listLogic.getListsFromSpec({ listId: list.id });
 
     await listLogic.removeList({
       listId: list.id,
       userId: editor.id,
     });
 
-    const after = await listLogic.getList({ listId: list.id });
+    const [after] = await listLogic.getListsFromSpec({ listId: list.id });
 
     expect(before).toEqual(after);
+  });
+
+  it("gets all lists associated with user", async () => {
+    const { listLogic } = await buildListLogicTest();
+    const userA = makeUserFake();
+    const userB = makeUserFake();
+
+    const listA = await listLogic.addList({
+      title: "some title",
+      ownerId: userA.id,
+    });
+    const listB = await listLogic.addList({
+      title: "some title",
+      ownerId: userB.id,
+    });
+
+    await listLogic.addEditors({
+      listId: listA.id,
+      userId: userA.id,
+      editorIds: [userB.id],
+    });
+
+    const listsFromUserB = await listLogic.getListsFromUserId({
+      userId: userB.id,
+    });
+
+    expect(listsFromUserB).toHaveLength(2);
+    expect(listsFromUserB).toContainEqual(listA);
+    expect(listsFromUserB).toContainEqual(listB);
   });
 });

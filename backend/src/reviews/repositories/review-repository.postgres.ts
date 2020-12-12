@@ -29,13 +29,27 @@ type ReviewRow = {
 };
 
 const table: IPostgresTable<ReviewRow> = {
-  id: "TEXT",
-  author_id: "TEXT",
-  content: "TEXT",
-  rating: "BIGINT",
-  media_id: "TEXT",
-  created_at: "BIGINT",
-  updated_at: "BIGINT",
+  id: {
+    dataType: "TEXT",
+  },
+  author_id: {
+    dataType: "TEXT",
+  },
+  content: {
+    dataType: "TEXT",
+  },
+  rating: {
+    dataType: "BIGINT",
+  },
+  media_id: {
+    dataType: "TEXT",
+  },
+  created_at: {
+    dataType: "BIGINT",
+  },
+  updated_at: {
+    dataType: "BIGINT",
+  },
 };
 
 const mapEntityKeyToRowKey = (key: keyof Review): keyof ReviewRow => {

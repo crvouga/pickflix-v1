@@ -6,30 +6,37 @@ import {
 import { GenericRepositoryPostgres } from "../../app/data-access/generic-repository/generic-repository.postgres";
 import { GenericRepositoryQueryOptions } from "../../app/data-access/generic-repository/types";
 import {
-  castUser,
-  User,
-  UserId,
-  castUserId,
-  castUsername,
   castDisplayName,
   castEmailAddress,
+  castUserId,
+  castUsername,
+  User,
+  UserId,
 } from "../models";
 import { IUserRepository } from "./user-repository";
 
 const tableName = "users";
 
 type UserRow = {
-  id: string;
+  id: UserId;
   username: string;
   email_address: string;
   display_name: string;
 };
 
 const table: IPostgresTable<UserRow> = {
-  id: "TEXT",
-  username: "TEXT",
-  email_address: "TEXT",
-  display_name: "TEXT",
+  id: {
+    dataType: "TEXT",
+  },
+  username: {
+    dataType: "TEXT",
+  },
+  email_address: {
+    dataType: "TEXT",
+  },
+  display_name: {
+    dataType: "TEXT",
+  },
 };
 
 const mapPartialEntityToPartialRow = (

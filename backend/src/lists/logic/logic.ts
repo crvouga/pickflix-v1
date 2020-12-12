@@ -23,7 +23,6 @@ import {
   addList,
   aggergateList,
   editList,
-  getList,
   getListsFromEditorId,
   getListsFromMediaIdAndUserId,
   getListsFromOwnerId,
@@ -102,7 +101,7 @@ export class ListLogic {
   editList = editList;
   getListsFromMediaIdAndUserId = getListsFromMediaIdAndUserId;
   getListsFromUserId = getListsFromUserId;
-  getList = getList;
+
   //
   addEditors = addEditors;
   removeEditors = removeEditors;

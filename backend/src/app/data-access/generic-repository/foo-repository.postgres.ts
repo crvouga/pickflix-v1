@@ -50,10 +50,18 @@ type FooRow = {
 const tableName = "foos";
 
 const table: IPostgresTable<FooRow> = {
-  id: "TEXT",
-  name: "TEXT",
-  favorite_color: "TEXT",
-  created_at: "BIGINT",
+  id: {
+    dataType: "TEXT",
+  },
+  name: {
+    dataType: "TEXT",
+  },
+  favorite_color: {
+    dataType: "TEXT",
+  },
+  created_at: {
+    dataType: "BIGINT",
+  },
 };
 
 const mapPartialEntityToPartialRow = (

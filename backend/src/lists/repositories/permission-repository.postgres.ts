@@ -4,32 +4,44 @@ import {
   IPostgresTable,
 } from "../../app/data-access/database.postgres";
 import { GenericRepositoryPostgres } from "../../app/data-access/generic-repository/generic-repository.postgres";
-import { castUserId } from "../../users/models";
+import { castUserId, UserId } from "../../users/models";
 import {
   castListId,
   castPermissionId,
   castPermissionType,
   Permission,
   PermissionId,
+  PermissionType,
+  ListId,
 } from "../models";
 import { IPermissionRepository } from "./permission-repository";
 
 const tableName = "permissions";
 
 type PermissionRow = {
-  permission_type: string;
-  id: string;
-  user_id: string;
-  list_id: string;
+  permission_type: PermissionType;
+  id: PermissionId;
+  user_id: UserId;
+  list_id: ListId;
   created_at: number;
 };
 
 const table: IPostgresTable<PermissionRow> = {
-  permission_type: "TEXT",
-  id: "TEXT",
-  user_id: "TEXT",
-  list_id: "TEXT",
-  created_at: "BIGINT",
+  permission_type: {
+    dataType: "TEXT",
+  },
+  id: {
+    dataType: "TEXT",
+  },
+  user_id: {
+    dataType: "TEXT",
+  },
+  list_id: {
+    dataType: "TEXT",
+  },
+  created_at: {
+    dataType: "BIGINT",
+  },
 };
 
 const mapEntityKeyToRowKey = (key: keyof Permission): keyof PermissionRow => {
@@ -56,7 +68,7 @@ const mapPartialEntityToPartialRow = (
     id: entity.id,
     permission_type: entity.permissionType,
     user_id: entity.userId,
-    list_id: entity.userId,
+    list_id: entity.listId,
     created_at: entity.createdAt,
   };
 };

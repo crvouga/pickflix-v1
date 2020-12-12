@@ -1,4 +1,4 @@
-import { innerJoin, unfold } from "ramda";
+import { innerJoin } from "ramda";
 import { GenericRepositoryQueryOptions } from "../../../app/data-access/generic-repository/types";
 import { MediaId } from "../../../media/models/types";
 import { UserId } from "../../../users/models/make-user";
@@ -57,20 +57,6 @@ export async function getListsFromMediaIdAndUserId(
   return listsFromMediaIdAndUserId;
 }
 
-// export async function getListsId(
-//   this: ListLogic,
-//   spec: { id: ListId },
-//   queryOptions?: GenericRepositoryQueryOptions<List>
-// ) {
-//   const lists = await this.listRepository.find([spec], queryOptions);
-
-//   const aggergatedLists = await Promise.all(
-//     lists.map((list) => this.aggergateList(list))
-//   );
-
-//   return aggergatedLists;
-// }
-
 export async function getListsFromEditorId(
   this: ListLogic,
   { editorId }: { editorId: UserId },
@@ -96,16 +82,6 @@ export async function getListsFromOwnerId(
   const lists = await this.listRepository.find([{ ownerId }], queryOptions);
 
   return lists;
-}
-
-export async function getList(this: ListLogic, { listId }: { listId: ListId }) {
-  const found = await this.listRepository.find([{ id: listId }]);
-
-  if (found.length === 0) {
-    throw new Error("Failed to get list");
-  }
-
-  return found[0];
 }
 
 type ListSpec = {

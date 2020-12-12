@@ -21,11 +21,21 @@ type ListItemRow = {
 };
 
 const table: IPostgresTable<ListItemRow> = {
-  id: "TEXT",
-  user_id: "TEXT",
-  list_id: "TEXT",
-  created_at: "BIGINT",
-  media_id: "TEXT",
+  id: {
+    dataType: "TEXT",
+  },
+  user_id: {
+    dataType: "TEXT",
+  },
+  list_id: {
+    dataType: "TEXT",
+  },
+  created_at: {
+    dataType: "BIGINT",
+  },
+  media_id: {
+    dataType: "TEXT",
+  },
 };
 
 const mapEntityKeyToRowKey = (key: keyof ListItem): keyof ListItemRow => {

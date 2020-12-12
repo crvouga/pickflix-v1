@@ -18,11 +18,21 @@ type CredentialRow = {
 };
 
 const table: IPostgresTable<CredentialRow> = {
-  id: "TEXT",
-  user_id: "TEXT",
-  credential_type: "TEXT",
-  password_hash: "TEXT",
-  verified_at: "BIGINT",
+  id: {
+    dataType: "TEXT",
+  },
+  user_id: {
+    dataType: "TEXT",
+  },
+  credential_type: {
+    dataType: "TEXT",
+  },
+  password_hash: {
+    dataType: "TEXT",
+  },
+  verified_at: {
+    dataType: "BIGINT",
+  },
 };
 
 const mapRowToEntity = (row: CredentialRow): Credential => {

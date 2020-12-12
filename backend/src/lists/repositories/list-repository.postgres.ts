@@ -5,7 +5,7 @@ import {
 } from "../../app/data-access/database.postgres";
 import { GenericRepositoryPostgres } from "../../app/data-access/generic-repository/generic-repository.postgres";
 import { GenericRepositoryQueryOptions } from "../../app/data-access/generic-repository/types";
-import { castUserId } from "../../users/models";
+import { castUserId, UserId } from "../../users/models";
 import {
   castListDescription,
   castListId,
@@ -19,21 +19,33 @@ import { composeP } from "ramda";
 const tableName = "lists";
 
 type ListRow = {
-  id: string;
+  id: ListId;
   title: string;
   description: string;
   created_at: number;
   updated_at: number;
-  owner_id: string;
+  owner_id: UserId;
 };
 
 const table: IPostgresTable<ListRow> = {
-  id: "TEXT",
-  title: "TEXT",
-  description: "TEXT",
-  created_at: "BIGINT",
-  updated_at: "BIGINT",
-  owner_id: "TEXT",
+  id: {
+    dataType: "TEXT",
+  },
+  title: {
+    dataType: "TEXT",
+  },
+  description: {
+    dataType: "TEXT",
+  },
+  created_at: {
+    dataType: "BIGINT",
+  },
+  updated_at: {
+    dataType: "BIGINT",
+  },
+  owner_id: {
+    dataType: "TEXT",
+  },
 };
 
 const mapEntityKeyToRowKey = (key: keyof List): keyof ListRow => {

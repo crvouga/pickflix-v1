@@ -112,7 +112,6 @@ export class GenericRepositoryPostgres<I, Entity extends Identifiable<I>, Row>
       .where((builder) => {
         for (const spec of specs) {
           const row = this.mapPartialEntityToPartialRow(spec);
-
           builder.orWhere(removeNullOrUndefinedEntries(row));
         }
       })

@@ -8,8 +8,12 @@ type FooRow = {
 };
 
 const table: IPostgresTable<FooRow> = {
-  id: "TEXT",
-  favorite_color: "TEXT",
+  id: {
+    dataType: "TEXT",
+  },
+  favorite_color: {
+    dataType: "TEXT",
+  },
 };
 
 describe("postgres database", () => {

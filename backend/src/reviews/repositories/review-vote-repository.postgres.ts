@@ -24,10 +24,18 @@ type ReviewVoteRow = {
 };
 
 const table: IPostgresTable<ReviewVoteRow> = {
-  id: "TEXT",
-  user_id: "TEXT",
-  review_id: "TEXT",
-  vote_value: "TEXT",
+  id: {
+    dataType: "TEXT",
+  },
+  user_id: {
+    dataType: "TEXT",
+  },
+  review_id: {
+    dataType: "TEXT",
+  },
+  vote_value: {
+    dataType: "TEXT",
+  },
 };
 
 const mapEntityKeyToRowKey = (key: keyof ReviewVote): keyof ReviewVoteRow => {

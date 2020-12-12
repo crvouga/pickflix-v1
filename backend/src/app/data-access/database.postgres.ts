@@ -9,7 +9,9 @@ export const queryBuilder = Knex({
 export type PostgresDataType = "TEXT" | "BIGINT";
 
 export type IPostgresTable<Row> = {
-  [key in keyof Row]: PostgresDataType;
+  [key in keyof Row]: {
+    dataType: PostgresDataType;
+  };
 };
 
 const makeCreateTableQuery = <Row>(
@@ -19,7 +21,7 @@ const makeCreateTableQuery = <Row>(
   return queryBuilder.schema
     .createTable(tableName, (tableBuilder) => {
       for (const columnName in tableSpec) {
-        const dataType: PostgresDataType = tableSpec[columnName];
+        const dataType: PostgresDataType = tableSpec[columnName].dataType;
         switch (dataType) {
           case "BIGINT":
             tableBuilder.bigInteger(String(columnName));

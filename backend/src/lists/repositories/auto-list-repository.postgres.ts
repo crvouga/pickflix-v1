@@ -17,9 +17,15 @@ type AutoListRow = {
 };
 
 const table: IPostgresTable<AutoListRow> = {
-  id: "TEXT",
-  auto_list_key: "TEXT",
-  owner_id: "TEXT",
+  id: {
+    dataType: "TEXT",
+  },
+  auto_list_key: {
+    dataType: "TEXT",
+  },
+  owner_id: {
+    dataType: "TEXT",
+  },
 };
 
 const mapEntityKeyToRowKey = (key: keyof AutoList): keyof AutoListRow => {
