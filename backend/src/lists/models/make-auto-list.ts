@@ -45,7 +45,7 @@ export const castAutoListId = (id: any) => {
 
 export const makeAutoList = ({ key, ownerId }: PartialAutoList): AutoList => {
   return Object.freeze({
-    id: makeId() as AutoListId,
+    id: castAutoListId(makeId()),
     ownerId: castUserId(ownerId),
     key: castAutoListKey(key),
   });

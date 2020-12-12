@@ -22,6 +22,7 @@ import {
 } from "../../../common/infinite-scroll";
 import { MediaId } from "../../../media/tmdb/types";
 import MovieListItemContainer from "../../../movie/components/MovieListItemContainer";
+import ListCardCallToAction from "../../lists/card/ListCardCallToAction";
 import {
   AutoListAggergation,
   ListAggergation,
@@ -70,17 +71,29 @@ export const ToggleListItemFormSkeleton = ({
   );
 };
 
-const CreateListButtonContainer = ({ mediaId }: { mediaId: MediaId }) => {
+const CreateListButtonContainer = ({
+  mediaId,
+  listCount,
+}: {
+  mediaId: MediaId;
+  listCount: number;
+}) => {
   const { open } = useModal("CreateListWithListItemsForm");
   const toggleListItemFormModal = useModal("ToggleListItemForm");
+  const handleClick = () => {
+    toggleListItemFormModal.close();
+    setTimeout(() => {
+      open({ mediaIds: [mediaId] });
+    }, 1000 / 3);
+  };
 
   return (
-    <CreateListButton
-      onClick={() => {
-        toggleListItemFormModal.close();
-        open({ mediaIds: [mediaId] });
-      }}
-    />
+    <React.Fragment>
+      <CreateListButton onClick={handleClick} />
+      <Box p={2}>
+        <ListCardCallToAction onClick={handleClick} />
+      </Box>
+    </React.Fragment>
   );
 };
 
@@ -145,7 +158,7 @@ const ToggleListItemForm = (props: ToggleListItemFormProps) => {
         />
       </ListItem>
 
-      <CreateListButtonContainer mediaId={mediaId} />
+      <CreateListButtonContainer mediaId={mediaId} listCount={lists.length} />
 
       {lists.map((list) => (
         <ToggleButton
