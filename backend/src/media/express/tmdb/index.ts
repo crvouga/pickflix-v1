@@ -1,21 +1,69 @@
-import express, {IRouter} from 'express';
-import {Dependencies} from '../types';
+import express, { IRouter } from "express";
+import { Dependencies } from "../types";
+import { castUserId } from "../../../users/models";
+import { serializeJson } from "../../../utils";
+import { castTmdbDiscoverTagsId } from "../../models/tmdb-discover-tags";
 
-export const tmdb = ({mediaLogic}: Dependencies) => (router: IRouter) => {
+export const tmdb = ({ middlewares, mediaLogic }: Dependencies) => (
+  router: IRouter
+) => {
   router.use(
-    '/tmdb',
+    "/tmdb",
     express
       .Router()
 
-      .all('*', async (req, res, next) => {
+      .all("*", async (req, res, next) => {
         try {
           const path = req.path as string;
-          const query = req.query as {[key: string]: string};
-          const data = await mediaLogic.requestTmdbData({path, query});
+          const query = req.query as { [key: string]: string };
+          const data = await mediaLogic.requestTmdbData({ path, query });
           res.json(data);
         } catch (error) {
           next(error);
         }
       })
+  );
+
+  router.post(
+    "/media/tmdb/discover/tags",
+    middlewares.isAuthenticated,
+    async (req, res) => {
+      try {
+        const userId = castUserId(req.user?.id);
+
+        const serializedTagsById =
+          //WARNING! This is important for tags to achieve uniqueness!
+          serializeJson(req.body.tagsById);
+
+        await mediaLogic.addTmdbDiscoverTags({
+          userId,
+          serializedTagsById,
+        });
+
+        res.status(201).end();
+      } catch (error) {
+        res.status(400).json({ error: error.toString() });
+      }
+    }
+  );
+
+  router.delete(
+    "/media/tmdb/discover/tags/:id",
+    middlewares.isAuthenticated,
+    async (req, res) => {
+      try {
+        const userId = castUserId(req.user?.id);
+        const id = castTmdbDiscoverTagsId(req.params.id);
+
+        await mediaLogic.removeTmdbDiscoverTags({
+          id,
+          userId,
+        });
+
+        res.status(204).end();
+      } catch (error) {
+        res.status(400).json({ error: error.toString() });
+      }
+    }
   );
 };

@@ -354,7 +354,6 @@ export const useDeleteEditorsMutation = () => {
 
     const previous1 = queryCache.getQueryData<GetListsData>(queryKey1);
     if (previous1) {
-      console.log({ previous1 });
       queryCache.setQueryData(
         queryKey1,
         optimisticUpdateDeleteEditors(previous1, params)

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import configuration from "../../../app/configuration";
-import { castTimestamp, Timestamp, makeTimestamp } from "../../../app/utils";
+import { castTimestamp, Timestamp, makeTimestamp } from "../../../utils";
 import {
   castPasswordHash,
   CredentialPassword,

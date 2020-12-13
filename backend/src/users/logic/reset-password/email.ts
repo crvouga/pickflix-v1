@@ -1,5 +1,5 @@
 import { Email } from "../../../app/email";
-import { Link } from "../../../app/utils";
+import { Link } from "../../../utils";
 import { User } from "../../models";
 
 const SEND_GRID_REGISTERED_EMAIL_ADDRESS = "pickflix1@gmail.com";

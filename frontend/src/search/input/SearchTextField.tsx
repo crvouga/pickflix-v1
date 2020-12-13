@@ -14,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   input: {
+    paddingLeft: theme.spacing(1),
     maxWidth: "100%",
     fontSize: "1.25em",
     fontWeight: "bold",
@@ -39,7 +40,7 @@ export default React.memo(
         inputRef={inputRef}
         placeholder="Search"
         className={classes.input}
-        startAdornment={<SearchIcon className={classes.startAdornment} />}
+        // startAdornment={<SearchIcon className={classes.startAdornment} />}
         endAdornment={
           <IconButton onClick={onClear}>
             <CloseIcon />

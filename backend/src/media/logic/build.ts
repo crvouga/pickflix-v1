@@ -1,4 +1,5 @@
 import { AxiosRequestConfig } from "axios";
+import { TmdbDiscoverTagsRepositoryHashMap } from "../repositories/TmdbDiscoverTagsRepository";
 import { MediaLogic } from "./logic";
 
 const buildKeyvStub = () => {
@@ -20,7 +21,10 @@ const axiosStub = async (_: AxiosRequestConfig) => ({
 export const buildMediaLogicTest = () => {
   const { keyv, keyvMap } = buildKeyvStub();
 
+  const tmdbDiscoverTagsRepository = new TmdbDiscoverTagsRepositoryHashMap();
+
   const mediaLogic = new MediaLogic({
+    tmdbDiscoverTagsRepository,
     keyv,
     axios: axiosStub,
   });

@@ -1,6 +1,8 @@
 import { isNullOrUndefined } from "util";
 import pPipe from "p-pipe";
 
+export * from "./json";
+
 export const pipePromise = pPipe;
 
 export const castPositiveNumber = (anything: any) => {
@@ -53,4 +55,13 @@ export const castTimestamp = (_timestamp: any) => {
 };
 export const makeTimestamp = () => {
   return castTimestamp(Date.now());
+};
+
+//
+
+export const castNonEmptyString = (string: string) => {
+  if (typeof string === "string" && string.length > 0) {
+    return string;
+  }
+  throw new Error("failed to cast non empty string");
 };

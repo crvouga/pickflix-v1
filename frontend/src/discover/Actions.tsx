@@ -10,6 +10,33 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useModal from "../app/modals/useModal";
 import { discoverActiveTags } from "./redux/discover-active-tags";
+import FolderOpenOutlinedIcon from "@material-ui/icons/FolderOpenOutlined";
+import SaveOutlinedIcon from "@material-ui/icons/SaveOutlined";
+import useDiscoverState from "./useDiscoverState";
+
+export const SaveButton = (props: IconButtonProps) => {
+  const { activeTags } = useDiscoverState();
+  const { open } = useModal("SaveDiscoverTagsForm");
+  return (
+    <IconButton
+      disabled={activeTags.length === 0}
+      onClick={() => {
+        open();
+      }}
+      {...props}
+    >
+      <SaveOutlinedIcon />
+    </IconButton>
+  );
+};
+
+export const FolderButton = (props: IconButtonProps) => {
+  return (
+    <IconButton {...props}>
+      <FolderOpenOutlinedIcon />
+    </IconButton>
+  );
+};
 
 export const UndoButton = (props: IconButtonProps) => {
   const canUndo = useSelector(discoverActiveTags.selectors.canUndo);

@@ -5,7 +5,7 @@ import {
 } from "../../app/data-access/database.postgres";
 import { GenericRepositoryPostgres } from "../../app/data-access/generic-repository/generic-repository.postgres";
 import { GenericRepositoryQueryOptions } from "../../app/data-access/generic-repository/types";
-import { castTimestamp, Timestamp } from "../../app/utils";
+import { castTimestamp, Timestamp } from "../../utils";
 import {
   deserializeMediaId,
   SerializedMediaId,

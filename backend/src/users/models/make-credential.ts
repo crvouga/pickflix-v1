@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { isValidId, makeId } from "../../app/id";
-import { Timestamp, castTimestamp, makeTimestamp } from "../../app/utils";
+import { Timestamp, castTimestamp, makeTimestamp } from "../../utils";
 import { castUserId, UserId } from "./make-user";
 
 export type CredentialPassword = {

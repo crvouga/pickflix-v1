@@ -1,4 +1,4 @@
-import { castLink, Link } from "../../../app/utils";
+import { castLink, Link } from "../../../utils";
 import { EmailAddress } from "../../models";
 import {
   makePasswordHash,

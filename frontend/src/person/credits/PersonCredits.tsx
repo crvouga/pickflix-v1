@@ -103,7 +103,7 @@ export default ({ details, credits }: Props) => {
     details.knownForDepartment || undefined
   );
   const departments = uniq(crew.map((credit) => credit.department));
-  console.log({ departmentKey });
+
   const movies = uniqBy(
     (_) => _.id,
     sortBySortKey[sortKey](

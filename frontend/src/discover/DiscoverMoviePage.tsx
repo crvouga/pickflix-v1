@@ -2,9 +2,17 @@ import { Box, Container, makeStyles, Toolbar } from "@material-ui/core";
 import React from "react";
 import { APP_BAR_HEIGHT } from "../app/navigation/constants";
 import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
-import { AddButton, RedoButton, TuneButton, UndoButton } from "./Actions";
+import {
+  AddButton,
+  FolderButton,
+  RedoButton,
+  SaveButton,
+  TuneButton,
+  UndoButton,
+} from "./Actions";
 import DiscoverMovieResults from "./DiscoverMovieResults";
 import DiscoverMovieTags from "./DiscoverMovieTags";
+import { SaveDiscoverTagsFormModal } from "./form/save-discover-tags-form/SaveDiscoverTagsFormModal";
 import SearchModal from "./search/SearchModal";
 import TuneModal from "./TuneModal";
 
@@ -28,6 +36,7 @@ export default () => {
     <React.Fragment>
       <SearchModal />
       <TuneModal />
+      <SaveDiscoverTagsFormModal />
 
       <ResponsiveNavigation />
 
@@ -38,6 +47,9 @@ export default () => {
             <TuneButton />
             <UndoButton />
             <RedoButton />
+            <Box flex={1} />
+            <FolderButton />
+            <SaveButton />
           </Toolbar>
 
           <Box paddingBottom={2}>

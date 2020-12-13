@@ -20,7 +20,7 @@ export const buildLogicProduction = async () => {
 
   const eventEmitter = createEventEmitter<Events>();
 
-  const mediaLogic = new MediaLogic({ axios, keyv });
+  const mediaLogic = new MediaLogic({ ...repositories, axios, keyv });
 
   const listLogic = new ListLogic({
     ...repositories,

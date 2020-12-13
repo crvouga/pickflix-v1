@@ -3,7 +3,7 @@ import {
   makePaginationOptions,
   makePaginationResponse,
 } from "../../app/pagination";
-import { removeNullOrUndefinedEntries, castLink } from "../../app/utils";
+import { removeNullOrUndefinedEntries, castLink } from "../../utils";
 import {
   castDisplayName,
   castEmailAddress,

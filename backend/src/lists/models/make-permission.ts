@@ -1,7 +1,7 @@
 import { UserId, castUserId } from "../../users/models";
 import { ListId, castListId } from "./make-list";
 import { Id, makeId, isValidId } from "../../app/id";
-import { Timestamp, makeTimestamp } from "../../app/utils";
+import { Timestamp, makeTimestamp } from "../../utils";
 
 export enum PermissionType {
   Editor = "Editor",

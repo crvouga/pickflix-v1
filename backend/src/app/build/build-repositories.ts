@@ -19,6 +19,11 @@ import {
 } from "../../lists/repositories/permission-repository";
 import { PermissionRepositoryPostgres } from "../../lists/repositories/permission-repository.postgres";
 import {
+  TmdbDiscoverTagsRepositoryFileSystem,
+  TmdbDiscoverTagsRepositoryHashMap,
+} from "../../media/repositories/TmdbDiscoverTagsRepository";
+import { TmdbDiscoverTagsRepositoryPostgres } from "../../media/repositories/TmdbDiscoverTagsRepository.postgres";
+import {
   ReviewRepositoryFileSystem,
   ReviewRepositoryHashMap,
 } from "../../reviews/repositories/review-repository";
@@ -41,8 +46,8 @@ import { UserRespositoryPostgres } from "../../users/repositories/user-resposito
 import configuration from "../configuration";
 import {
   IPostgresDatabase,
-  PostgresDatabaseTest,
   PostgresDatabaseDeveloplment,
+  PostgresDatabaseTest,
 } from "../data-access/database.postgres";
 
 export const buildRepositoriesHashMap = () => {
@@ -57,7 +62,10 @@ export const buildRepositoriesHashMap = () => {
   const autoListRepository = new AutoListRepositoryHashMap();
   const permissionRepository = new PermissionRepositoryHashMap();
 
+  const tmdbDiscoverTagsRepository = new TmdbDiscoverTagsRepositoryHashMap();
+
   const repositories = {
+    tmdbDiscoverTagsRepository,
     permissionRepository,
     userRepository,
     credentialRepository,
@@ -100,6 +108,10 @@ export const buildRepositoriesFileSystem = async () => {
     makeFilePath("permissions")
   );
 
+  const tmdbDiscoverTagsRepository = new TmdbDiscoverTagsRepositoryFileSystem(
+    makeFilePath("tmdbDiscoverTags")
+  );
+
   const repositories = {
     permissionRepository,
     userRepository,
@@ -109,6 +121,7 @@ export const buildRepositoriesFileSystem = async () => {
     listRepository,
     listItemRepository,
     autoListRepository,
+    tmdbDiscoverTagsRepository,
   };
 
   return {
@@ -127,8 +140,12 @@ export const buildRepositoriesPostgres = async (
   const listItemRepository = new ListItemRepositoryPostgres(database);
   const autoListRepository = new AutoListRepositoryPostgres(database);
   const permissionRepository = new PermissionRepositoryPostgres(database);
+  const tmdbDiscoverTagsRepository = new TmdbDiscoverTagsRepositoryPostgres(
+    database
+  );
 
   const repositories = {
+    tmdbDiscoverTagsRepository,
     permissionRepository,
     userRepository,
     credentialRepository,
@@ -140,6 +157,7 @@ export const buildRepositoriesPostgres = async (
   };
 
   const initializeAllTables = async () => {
+    await tmdbDiscoverTagsRepository.initializeTables();
     await userRepository.initializeTables();
     await credentialRepository.initializeTables();
     await reviewRepository.initializeTables();

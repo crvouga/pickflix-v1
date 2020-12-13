@@ -1,5 +1,5 @@
 import { PaginationOptions } from "../../app/pagination";
-import { removeNullOrUndefinedEntries } from "../../app/utils";
+import { removeNullOrUndefinedEntries } from "../../utils";
 import { MediaLogic } from "../../media/logic/logic";
 import { MediaId } from "../../media/models/types";
 import { UserId } from "../../users/models/make-user";

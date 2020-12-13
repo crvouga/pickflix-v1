@@ -1,5 +1,10 @@
 {
-  "include": ["src/**/*", "src/lists/logic/lists/.test.ts"],
+  "include": [
+    "src/**/*",
+    "src/lists/logic/lists/.test.ts",
+    "@types/express/json-stringify-deterministic.d.ts",
+    "@types/express/sort-keys-recursive.d.ts"
+  ],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
     /* Basic Options */

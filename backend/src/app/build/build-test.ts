@@ -1,22 +1,16 @@
 import { AxiosRequestConfig } from "axios";
 import { Handler } from "express";
+import supertest from "supertest";
 import { ListLogic } from "../../lists/logic/logic";
 import { MediaLogic } from "../../media/logic/logic";
 import { ReviewLogic } from "../../reviews/logic/logic";
 import { UserLogic } from "../../users/logic/logic";
+import { FAKE_USER_INFO } from "../../users/models";
 import { emailLogicStub } from "../email";
 import { createEventEmitter, Events } from "../events";
 import { makeExpressApp } from "../express/make-express-app";
 import { ExpressAppDependencies } from "../express/types";
 import { buildRepositoriesDependingOnTestEnvironment } from "./build-repositories";
-import supertest from "supertest";
-import {
-  castDisplayName,
-  castUsername,
-  castEmailAddress,
-  castPassword,
-  FAKE_USER_INFO,
-} from "../../users/models";
 
 export const buildLogicTest = async () => {
   const { repositories } = await buildRepositoriesDependingOnTestEnvironment();
@@ -24,6 +18,7 @@ export const buildLogicTest = async () => {
   const eventEmitter = createEventEmitter<Events>();
 
   const mediaLogic = new MediaLogic({
+    ...repositories,
     axios: async (_: AxiosRequestConfig) => ({
       data: {},
     }),
