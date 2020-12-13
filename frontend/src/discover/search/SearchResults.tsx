@@ -1,17 +1,17 @@
 import { List } from "@material-ui/core";
 import React from "react";
 import ListItemSkeleton from "../../common/components/ListItemSkeleton";
-import { DiscoverMovieTag } from "../query/types";
+import { IDiscoverMovieTag } from "../query/types";
 import DiscoverMovieTagListItem from "./DiscoverMovieTagListItem";
 import useSearchResults from "./useSearchResults";
 
 type Props = {
   searchQuery: string;
-  onClick: (tag: DiscoverMovieTag) => void;
+  onClick: (tag: IDiscoverMovieTag) => void;
 };
 
 export default ({ searchQuery, onClick }: Props) => {
-  const handleClick = (tag: DiscoverMovieTag) => () => {
+  const handleClick = (tag: IDiscoverMovieTag) => () => {
     onClick(tag);
   };
 

@@ -31,8 +31,14 @@ export const SaveButton = (props: IconButtonProps) => {
 };
 
 export const FolderButton = (props: IconButtonProps) => {
+  const { open } = useModal("DiscoverTagsForm");
   return (
-    <IconButton {...props}>
+    <IconButton
+      onClick={() => {
+        open();
+      }}
+      {...props}
+    >
       <FolderOpenOutlinedIcon />
     </IconButton>
   );

@@ -3,6 +3,10 @@ import { Dependencies } from "../types";
 import { castUserId } from "../../../users/models";
 import { serializeJson } from "../../../utils";
 import { castTmdbDiscoverTagsId } from "../../models/tmdb-discover-tags";
+import {
+  makePaginationOptions,
+  makePaginationResponse,
+} from "../../../app/pagination";
 
 export const tmdb = ({ middlewares, mediaLogic }: Dependencies) => (
   router: IRouter
@@ -22,6 +26,36 @@ export const tmdb = ({ middlewares, mediaLogic }: Dependencies) => (
           next(error);
         }
       })
+  );
+
+  router.get(
+    "/media/tmdb/discover/tags",
+    middlewares.isAuthenticated,
+    async (req, res) => {
+      try {
+        const userId = castUserId(req.user?.id);
+
+        const paginationOptions = makePaginationOptions({
+          page: req.query.page,
+        });
+
+        const tmdbDiscoverTags = await mediaLogic.getTmdbDiscoverTags(
+          {
+            userId,
+          },
+          paginationOptions
+        );
+
+        const response = makePaginationResponse({
+          results: tmdbDiscoverTags,
+          ...paginationOptions,
+        });
+
+        res.status(200).json(response).end();
+      } catch (error) {
+        res.status(400).json({ error: error.toString() });
+      }
+    }
   );
 
   router.post(

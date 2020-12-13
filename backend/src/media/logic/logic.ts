@@ -38,23 +38,21 @@ export class MediaLogic {
     userId: UserId;
     serializedTagsById: Json;
   }) {
-    const found = await this.tmdbDiscoverTagsRepository.find({
+    const [found] = await this.tmdbDiscoverTagsRepository.find({
       userId,
       serializedTagsById,
     });
 
-    if (found.length > 0) {
-      throw new Error(
-        "user already has tags saved that are associated with the unique key"
-      );
+    if (found) {
+      await this.tmdbDiscoverTagsRepository.remove(found.id);
     }
 
-    const discoverTagsRecord = makeTmdbDiscoverTags({
+    const tmdbDiscoverTags = makeTmdbDiscoverTags({
       userId,
       serializedTagsById,
     });
 
-    await this.tmdbDiscoverTagsRepository.add(discoverTagsRecord);
+    await this.tmdbDiscoverTagsRepository.add(tmdbDiscoverTags);
   }
 
   async removeTmdbDiscoverTags({

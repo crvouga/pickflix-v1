@@ -1,7 +1,7 @@
 import { difference, union, without } from "ramda";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
-import { DiscoverMovieTag } from "./query/types";
+import { IDiscoverMovieTag } from "./query/types";
 import { discoverActiveTags } from "./redux/discover-active-tags";
 import { discoverTags } from "./redux/discover-tags";
 
@@ -27,11 +27,11 @@ export default () => {
     discoverState.activeTags
   );
 
-  const activateTag = (tag: DiscoverMovieTag) => {
+  const activateTag = (tag: IDiscoverMovieTag) => {
     discoverState.setActiveTags(union([tag], discoverState.activeTags));
   };
 
-  const deactivateTag = (tag: DiscoverMovieTag) => {
+  const deactivateTag = (tag: IDiscoverMovieTag) => {
     discoverState.setActiveTags(without([tag], discoverState.activeTags));
   };
 

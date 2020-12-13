@@ -14,7 +14,7 @@ import undoable, {
   UndoableOptions,
 } from "redux-undo";
 import { AppState } from "../../app/redux/types";
-import { DiscoverMovieTag, uniqueTagTypes } from "../query/types";
+import { IDiscoverMovieTag, uniqueTagTypes } from "../query/types";
 import { uniqBy } from "ramda";
 
 const name = "discoverActiveTags";
@@ -24,7 +24,7 @@ const name = "discoverActiveTags";
 */
 
 export type PresentState = {
-  activeTags: DiscoverMovieTag[];
+  activeTags: IDiscoverMovieTag[];
 };
 
 export type DiscoverActiveTags = StateWithHistory<PresentState>;
@@ -38,13 +38,13 @@ const initialPresentState: PresentState = {
 */
 
 const actions = {
-  setActiveTags: createAction<DiscoverMovieTag[]>(name + "/SET_ACTIVE_TAGS"),
+  setActiveTags: createAction<IDiscoverMovieTag[]>(name + "/SET_ACTIVE_TAGS"),
   //
   undo: createAction(name + "/UNDO"),
   redo: createAction(name + "/REDO"),
   //
-  activate: createAction<DiscoverMovieTag>(name + "/ACTIVATE"),
-  deactivate: createAction<DiscoverMovieTag>(name + "/DEACTIVATE"),
+  activate: createAction<IDiscoverMovieTag>(name + "/ACTIVATE"),
+  deactivate: createAction<IDiscoverMovieTag>(name + "/DEACTIVATE"),
 };
 
 /* 
@@ -71,7 +71,7 @@ const selectors = {
 const reducer = createReducer(initialPresentState, {
   [actions.setActiveTags.toString()]: (
     state,
-    action: PayloadAction<DiscoverMovieTag[]>
+    action: PayloadAction<IDiscoverMovieTag[]>
   ) => {
     state.activeTags = uniqBy(
       (tag) => (uniqueTagTypes.includes(tag.type) ? tag.type : tag.id),

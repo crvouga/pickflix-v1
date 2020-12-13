@@ -13,7 +13,7 @@ import {
 } from "../../common/components/ResponsiveDialog";
 import useModal from "../../app/modals/useModal";
 import SearchTextField from "../../search/input/SearchTextField";
-import { DiscoverMovieTag } from "../query/types";
+import { IDiscoverMovieTag } from "../query/types";
 import useDiscoverState from "../useDiscoverState";
 import SearchResults from "./SearchResults";
 import { AppBarGutter } from "../../common/components/AppBarGutter";
@@ -24,7 +24,7 @@ export default () => {
   const [searchQuery, setSearchQuery] = useState("");
   const discoverLogic = useDiscoverState();
 
-  const handleClick = (tag: DiscoverMovieTag) => {
+  const handleClick = (tag: IDiscoverMovieTag) => {
     discoverMovieTagSearchModal.close();
     discoverLogic.clear();
     discoverLogic.activateTag(tag);

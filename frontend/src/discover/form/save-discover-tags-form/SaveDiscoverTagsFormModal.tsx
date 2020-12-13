@@ -8,10 +8,12 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import useModal from "../../../app/modals/useModal";
+import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
 import { BackendAPI } from "../../../backend-api";
 import { ZoomIn } from "../../../common/components/TransitionComponents";
+import useBoolean from "../../../common/hooks/useBoolean";
 import DiscoverMovieTag from "../../DiscoverMovieTag";
-import { DiscoverMovieTag as IDiscoverMovieTag } from "../../query/types";
+import { IDiscoverMovieTag } from "../../query/types";
 import useDiscoverState from "../../useDiscoverState";
 
 const postDiscoverTags = async ({
@@ -29,6 +31,8 @@ const postDiscoverTags = async ({
 export const SaveDiscoverTagsFormModal = () => {
   const { activeTags } = useDiscoverState();
   const { isOpen, close } = useModal("SaveDiscoverTagsForm");
+  const snackbar = useSnackbar();
+  const isLoading = useBoolean(false);
 
   const handleSubmit = async () => {
     try {
@@ -39,38 +43,52 @@ export const SaveDiscoverTagsFormModal = () => {
         }),
         {}
       );
-
+      isLoading.setTrue();
+      close();
       await postDiscoverTags({
         tagsById,
       });
-    } catch (error) {}
+      snackbar.display({
+        message: "Saved tags",
+      });
+    } catch (error) {
+    } finally {
+      isLoading.setFalse();
+    }
   };
 
   return (
-    <Dialog TransitionComponent={ZoomIn} open={isOpen} onClose={close}>
-      <DialogTitle>Save?</DialogTitle>
-      <DialogContent>
-        <Box
-          display="flex"
-          flexWrap="wrap"
-          alignItems="center"
-          justifyContent="center"
-        >
-          {activeTags.map((tag) => (
-            <Box key={tag.id} m={1 / 2}>
-              <DiscoverMovieTag tag={tag} />
-            </Box>
-          ))}
-        </Box>
-      </DialogContent>
-      <DialogActions>
-        <Button size="large" onClick={close}>
-          Cancel
-        </Button>
-        <Button size="large" onClick={handleSubmit}>
-          Save
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <React.Fragment>
+      {/* <LoadingDialog
+        open={isLoading.value}
+        ListItemTextProps={{ primary: "Saving" }}
+      /> */}
+
+      <Dialog TransitionComponent={ZoomIn} open={isOpen} onClose={close}>
+        <DialogTitle>Save?</DialogTitle>
+        <DialogContent>
+          <Box
+            display="flex"
+            flexWrap="wrap"
+            alignItems="center"
+            justifyContent="center"
+          >
+            {activeTags.map((tag) => (
+              <Box key={tag.id} m={1 / 2}>
+                <DiscoverMovieTag tag={tag} />
+              </Box>
+            ))}
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button size="large" onClick={close}>
+            Cancel
+          </Button>
+          <Button size="large" onClick={handleSubmit}>
+            Save
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </React.Fragment>
   );
 };

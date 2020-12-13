@@ -15,6 +15,7 @@ import DiscoverMovieTags from "./DiscoverMovieTags";
 import { SaveDiscoverTagsFormModal } from "./form/save-discover-tags-form/SaveDiscoverTagsFormModal";
 import SearchModal from "./search/SearchModal";
 import TuneModal from "./TuneModal";
+import { DiscoverTagsFormModal } from "./form/discover-tags-form/DiscoverTagsForm";
 
 const useStyles = makeStyles((theme) => ({
   sticky: {
@@ -37,6 +38,7 @@ export default () => {
       <SearchModal />
       <TuneModal />
       <SaveDiscoverTagsFormModal />
+      <DiscoverTagsFormModal />
 
       <ResponsiveNavigation />
 

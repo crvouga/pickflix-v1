@@ -1,13 +1,13 @@
 import { difference, union } from "ramda";
 import { call, fork, put, select, takeEvery } from "redux-saga/effects";
 import { getMovieGenres } from "../query";
-import { DiscoverMovieTag, TagType, uniqueTagTypes } from "../query/types";
+import { IDiscoverMovieTag, TagType, uniqueTagTypes } from "../query/types";
 import { discoverActiveTags } from "./discover-active-tags";
 import { discoverTags } from "./discover-tags";
 
 const getMovieGenreTags = async () => {
   const genresResponse = await getMovieGenres();
-  const movieGenreTags: DiscoverMovieTag[] = genresResponse.genres.map(
+  const movieGenreTags: IDiscoverMovieTag[] = genresResponse.genres.map(
     (genre) => ({
       type: TagType.withGenres,
       ...genre,
@@ -17,15 +17,15 @@ const getMovieGenreTags = async () => {
 };
 
 function* addMovieGenreTagsSaga() {
-  const movieGenreTags: DiscoverMovieTag[] = yield call(getMovieGenreTags);
-  const tags: DiscoverMovieTag[] = yield select(discoverTags.selectors.tags);
+  const movieGenreTags: IDiscoverMovieTag[] = yield call(getMovieGenreTags);
+  const tags: IDiscoverMovieTag[] = yield select(discoverTags.selectors.tags);
   yield put(discoverTags.actions.setTags(union(tags, movieGenreTags)));
 }
 
 function* activeTagsLogic() {
   yield takeEvery(discoverActiveTags.actions.deactivate, function* (action) {
     const tag = action.payload;
-    const activeTags: DiscoverMovieTag[] = yield select(
+    const activeTags: IDiscoverMovieTag[] = yield select(
       discoverActiveTags.selectors.activeTags
     );
     const newActiveTags = difference(activeTags, [tag]);
@@ -35,7 +35,7 @@ function* activeTagsLogic() {
   yield takeEvery(discoverActiveTags.actions.activate, function* (action) {
     const tag = action.payload;
 
-    const activeTags: DiscoverMovieTag[] = yield select(
+    const activeTags: IDiscoverMovieTag[] = yield select(
       discoverActiveTags.selectors.activeTags
     );
 

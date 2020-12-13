@@ -1,7 +1,7 @@
 import { createAction, createReducer, createSelector } from "@reduxjs/toolkit";
 import { union } from "ramda";
 import { AppState } from "../../app/redux/types";
-import { DiscoverMovieTag } from "../query/types";
+import { IDiscoverMovieTag } from "../query/types";
 import { discoverActiveTags } from "./discover-active-tags";
 
 const name = "discoverTags";
@@ -11,7 +11,7 @@ const name = "discoverTags";
 */
 
 export type DiscoverTagsState = {
-  tags: DiscoverMovieTag[];
+  tags: IDiscoverMovieTag[];
 };
 
 const initialState: DiscoverTagsState = {
@@ -34,7 +34,7 @@ const selectors = {
 */
 
 const actions = {
-  setTags: createAction<DiscoverMovieTag[]>(name + "/SET_TAGS"),
+  setTags: createAction<IDiscoverMovieTag[]>(name + "/SET_TAGS"),
 };
 
 /* 

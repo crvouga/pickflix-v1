@@ -27,6 +27,7 @@ export type Modals = {
   AddPermissionForm: void;
   MovieRelated: void;
   SaveDiscoverTagsForm: void;
+  DiscoverTagsForm: void;
 };
 
 export type IModal<K extends keyof Modals> = {
@@ -68,4 +69,5 @@ export const modalNameToModalStateType: {
   SignOutForm: ModalStateType.Redux,
   MovieCredits: ModalStateType.Location,
   SaveDiscoverTagsForm: ModalStateType.Location,
+  DiscoverTagsForm: ModalStateType.Location,
 };

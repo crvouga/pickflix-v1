@@ -192,7 +192,7 @@ export type WithKeywordsTag = {
   name: string;
 };
 
-export type DiscoverMovieTag =
+export type IDiscoverMovieTag =
   | WithGenresTag
   | WithPeopleTag
   | WithCompaniesTag
@@ -203,7 +203,7 @@ export type DiscoverMovieTag =
 
 const tagToParamReducer = (
   params: DiscoverMovieQueryParams,
-  tag: DiscoverMovieTag
+  tag: IDiscoverMovieTag
 ) => {
   switch (tag.type) {
     case "certification":
@@ -259,15 +259,15 @@ const tagToParamReducer = (
 };
 
 export const tagsToParams = (
-  tags: DiscoverMovieTag[]
+  tags: IDiscoverMovieTag[]
 ): DiscoverMovieQueryParams => {
   return tags.reduce(tagToParamReducer, {});
 };
 
 export const paramsToTags = (
   params: DiscoverMovieQueryParams
-): DiscoverMovieTag[] => {
-  const tags: DiscoverMovieTag[] = [];
+): IDiscoverMovieTag[] => {
+  const tags: IDiscoverMovieTag[] = [];
 
   if (params.certification && params.certificationCountry) {
     const { certification, certificationCountry } = params;

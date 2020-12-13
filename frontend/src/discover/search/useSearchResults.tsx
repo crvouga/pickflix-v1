@@ -1,7 +1,7 @@
 import matchSorter from "match-sorter";
 import { uniqBy } from "ramda";
 import { useDebounce } from "use-debounce";
-import { DiscoverMovieTag, TagType } from "../query/types";
+import { IDiscoverMovieTag, TagType } from "../query/types";
 import useDiscoverState from "../useDiscoverState";
 import useSearchQuery from "./useSearchQuery";
 
@@ -9,7 +9,7 @@ type Props = {
   searchQuery: string;
 };
 
-const filter = (searchQuery: string, tags: DiscoverMovieTag[]) => {
+const filter = (searchQuery: string, tags: IDiscoverMovieTag[]) => {
   return matchSorter(tags, searchQuery, {
     keys: ["name"],
   });
@@ -40,21 +40,21 @@ export default ({ searchQuery }: Props) => {
     };
   }
 
-  const withPeopleTags: DiscoverMovieTag[] = personSearchQuery.data.results.map(
+  const withPeopleTags: IDiscoverMovieTag[] = personSearchQuery.data.results.map(
     (result) => ({
       type: TagType.withPeople,
       ...result,
     })
   );
 
-  const withKeywordsTags: DiscoverMovieTag[] = keywordSearchQuery.data.results.map(
+  const withKeywordsTags: IDiscoverMovieTag[] = keywordSearchQuery.data.results.map(
     (result) => ({
       type: TagType.withKeywords,
       ...result,
     })
   );
 
-  const withCompaniesTags: DiscoverMovieTag[] = companySearchQuery.data.results.map(
+  const withCompaniesTags: IDiscoverMovieTag[] = companySearchQuery.data.results.map(
     (result) => ({
       type: TagType.withCompanies,
       ...result,

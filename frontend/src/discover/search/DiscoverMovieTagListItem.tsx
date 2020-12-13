@@ -10,14 +10,14 @@ import React from "react";
 import makeImageUrl from "../../media/tmdb/makeImageUrl";
 import { capitalizeWords } from "../../common/utility";
 import {
-  DiscoverMovieTag,
+  IDiscoverMovieTag,
   sortByKeyToName,
   TagType,
   yearRangeToName,
 } from "../query/types";
 
 type Props = Omit<ListItemProps, "button"> & {
-  tag: DiscoverMovieTag;
+  tag: IDiscoverMovieTag;
 };
 
 export default (props: Props) => {

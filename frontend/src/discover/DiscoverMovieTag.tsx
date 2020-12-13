@@ -5,14 +5,14 @@ import makeImageUrl from "../media/tmdb/makeImageUrl";
 import { capitalizeWords } from "../common/utility";
 import Tag from "./BaseTag";
 import {
-  DiscoverMovieTag,
+  IDiscoverMovieTag,
   sortByKeyToName,
   TagType,
   yearRangeToName,
 } from "./query/types";
 
 type Props = ChipProps & {
-  tag: DiscoverMovieTag;
+  tag: IDiscoverMovieTag;
 };
 
 export default (props: Props) => {
