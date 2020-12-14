@@ -22,6 +22,7 @@ export default ({ searchQuery, onClick }: Props) => {
       {tags.map((tag) => (
         <DiscoverMovieTagListItem
           key={tag.id}
+          button={true}
           onClick={handleClick(tag)}
           tag={tag}
         />

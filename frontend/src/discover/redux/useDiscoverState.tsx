@@ -1,19 +1,14 @@
-import { descend } from "ramda";
-import { useDispatch, useSelector } from "react-redux";
-import { bindActionCreators } from "redux";
-import { IDiscoverTag } from "../query/types";
-import {
-  discoverActiveTags,
-  useDiscoverActiveTagsState,
-} from "./discover-active-tags";
-import { discoverTags, useDiscoverTagsState } from "./discover-tags";
+import { descend, dissoc } from "ramda";
+import { IDiscoverTag, UNIQUE_TAG_TYPES } from "../query/types";
+import { useDiscoverActiveTagsState } from "./discover-active-tags";
+import { useDiscoverTagsState } from "./discover-tags";
 
 export default () => {
   const activeTagState = useDiscoverActiveTagsState();
   const tagState = useDiscoverTagsState();
 
   const setActiveTagsById = (tagsById: { [id: string]: IDiscoverTag }) => {
-    const activeTagsById = Object.entries(tagsById).reduce(
+    const newActiveTagsById = Object.entries(tagsById).reduce(
       (byId, [id, tag]) => ({
         ...byId,
         [id]: {
@@ -24,28 +19,38 @@ export default () => {
       {}
     );
 
-    activeTagState.setActiveTagsById(activeTagsById);
+    activeTagState.setActiveTagsById(newActiveTagsById);
 
     tagState.setTagsById({
       ...tagState.tagsById,
-      ...activeTagsById,
+      ...newActiveTagsById,
     });
   };
 
-  const activateTag = (tag: IDiscoverTag) => {
-    const activeTagsById = {
-      ...activeTagState.present.activeTagsById,
-      [tag.id]: tag,
-    };
-    setActiveTagsById(activeTagsById);
+  const activateTag = (newActiveTag: IDiscoverTag) => {
+    const activeTagsById = activeTagState.present.activeTagsById;
+
+    const newActiveTagsById: { [id: string]: IDiscoverTag } = Object.entries(
+      activeTagsById
+    ).reduce(
+      (byId, [id, activeTag]) =>
+        activeTag.type === newActiveTag.type &&
+        newActiveTag.type in UNIQUE_TAG_TYPES
+          ? byId
+          : {
+              ...byId,
+              [id]: activeTag,
+            },
+      {}
+    );
+
+    newActiveTagsById[newActiveTag.id] = newActiveTag;
+
+    setActiveTagsById(newActiveTagsById);
   };
 
   const deactivateTag = (tag: IDiscoverTag) => {
-    const {
-      [tag.id]: _,
-      ...activeTagsById
-    } = activeTagState.present.activeTagsById;
-    setActiveTagsById(activeTagsById);
+    setActiveTagsById(dissoc(tag.id, activeTagState.present.activeTagsById));
   };
 
   const clear = () => {

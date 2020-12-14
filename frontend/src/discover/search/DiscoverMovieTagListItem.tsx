@@ -7,8 +7,8 @@ import {
 } from "@material-ui/core";
 import BusinessIcon from "@material-ui/icons/Business";
 import React from "react";
-import makeImageUrl from "../../media/tmdb/makeImageUrl";
 import { capitalizeWords } from "../../common/utility";
+import makeImageUrl from "../../media/tmdb/makeImageUrl";
 import {
   IDiscoverTag,
   sortByKeyToName,
@@ -16,11 +16,11 @@ import {
   yearRangeToName,
 } from "../query/types";
 
-type Props = Omit<ListItemProps, "button"> & {
+type Props<D extends React.ElementType<any> = "li"> = ListItemProps<D> & {
   tag: IDiscoverTag;
 };
 
-export default (props: Props) => {
+export default <D extends React.ElementType<any> = "li">(props: Props<D>) => {
   const { tag, ...listItemProps } = props;
 
   switch (tag.type) {
@@ -96,5 +96,8 @@ export default (props: Props) => {
           <ListItemText primary={tag.name} secondary="Genre" />
         </ListItem>
       );
+
+    default:
+      return null;
   }
 };

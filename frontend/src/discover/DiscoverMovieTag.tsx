@@ -62,7 +62,12 @@ const DiscoverMovieTag = (props: Props) => {
       );
 
     default:
-      return <Tag label={capitalizeWords(tag?.name || "")} {...chipProps} />;
+      return (
+        <Tag
+          label={capitalizeWords("name" in tag && tag.name ? tag.name : "")}
+          {...chipProps}
+        />
+      );
   }
 };
 

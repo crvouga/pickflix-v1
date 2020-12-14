@@ -11,20 +11,41 @@ import UndoIcon from "@material-ui/icons/Undo";
 import React from "react";
 import useModal from "../app/modals/useModal";
 import useDiscoverState from "./redux/useDiscoverState";
+import WithAuthentication from "../user/auth/WithAuthentication";
 
 export const SaveButton = (props: IconButtonProps) => {
   const { activeTags } = useDiscoverState();
   const { open } = useModal("SaveDiscoverTagsForm");
+  const signInCallToAction = useModal("SignInCallToAction");
   return (
-    <IconButton
-      disabled={activeTags.length === 0}
-      onClick={() => {
-        open();
-      }}
-      {...props}
-    >
-      <SaveOutlinedIcon />
-    </IconButton>
+    <WithAuthentication
+      renderAuthenticated={(currentUser) => (
+        <IconButton
+          disabled={activeTags.length === 0}
+          onClick={() => {
+            open();
+          }}
+          {...props}
+        >
+          <SaveOutlinedIcon />
+        </IconButton>
+      )}
+      renderUnathenticated={() => (
+        <IconButton
+          onClick={() => {
+            signInCallToAction.open();
+          }}
+          {...props}
+        >
+          <SaveOutlinedIcon />
+        </IconButton>
+      )}
+      renderDefault={() => (
+        <IconButton disabled {...props}>
+          <SaveOutlinedIcon />
+        </IconButton>
+      )}
+    ></WithAuthentication>
   );
 };
 

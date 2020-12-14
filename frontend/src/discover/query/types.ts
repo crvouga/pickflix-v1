@@ -139,17 +139,24 @@ export enum TagType {
   withPeople = "withPeople",
   withKeywords = "withKeywords",
   withCompanies = "withCompanies",
+  runtimeRange = "runtimeRange",
 }
 
-export const uniqueTagTypes = [
-  TagType.certification,
-  TagType.releaseYearRange,
-  TagType.sortBy,
-];
+export const UNIQUE_TAG_TYPES = {
+  [TagType.certification]: TagType.certification,
+  [TagType.releaseYearRange]: TagType.releaseYearRange,
+  [TagType.sortBy]: TagType.sortBy,
+  [TagType.runtimeRange]: TagType.runtimeRange,
+};
 
 type BaseTag = {
   id: string;
   lastActiveAt?: number;
+};
+
+export type RuntimeRangeTag = {
+  type: TagType.runtimeRange;
+  range: [number, number];
 };
 
 export type CertificationTag = {
@@ -199,6 +206,7 @@ export type IDiscoverTag = BaseTag &
     | ReleaseYearRangeTag
     | SortByTag
     | CertificationTag
+    | RuntimeRangeTag
   );
 
 const tagToParamReducer = (
@@ -206,7 +214,7 @@ const tagToParamReducer = (
   tag: IDiscoverTag
 ) => {
   switch (tag.type) {
-    case "certification":
+    case TagType.certification:
       const { certification, certificationCountry } = tag;
       return {
         ...params,
@@ -214,40 +222,46 @@ const tagToParamReducer = (
         certificationCountry,
       };
 
-    case "sortBy":
+    case TagType.sortBy:
       const { sortBy } = tag;
       return {
         ...params,
         sortBy,
       };
 
-    case "releaseYearRange":
-      const { range } = tag;
+    case TagType.runtimeRange:
       return {
         ...params,
-        "primaryReleaseDate.gte": `${range[0]}-01-01`,
-        "primaryReleaseDate.lte": `${range[1]}-12-31`,
+        "withRuntime.gte": tag.range[0],
+        "withRuntime.lte": tag.range[1],
       };
 
-    case "withPeople":
+    case TagType.releaseYearRange:
+      return {
+        ...params,
+        "primaryReleaseDate.gte": `${tag.range[0]}-01-01`,
+        "primaryReleaseDate.lte": `${tag.range[1]}-12-31`,
+      };
+
+    case TagType.withPeople:
       return {
         ...params,
         withPeople: [...(params?.withPeople || []), tag.id],
       };
 
-    case "withGenres":
+    case TagType.withGenres:
       return {
         ...params,
         withGenres: [...(params?.withGenres || []), tag.id],
       };
 
-    case "withCompanies":
+    case TagType.withCompanies:
       return {
         ...params,
         withCompanies: [...(params?.withCompanies || []), tag.id],
       };
 
-    case "withKeywords":
+    case TagType.withKeywords:
       return {
         ...params,
         withKeywords: [...(params?.withKeywords || []), tag.id],
