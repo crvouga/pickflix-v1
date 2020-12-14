@@ -1,5 +1,5 @@
 import { Box, Container, makeStyles, Toolbar } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { APP_BAR_HEIGHT } from "../app/navigation/constants";
 import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
 import {
@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
+
   return (
     <React.Fragment>
       <SearchModal />

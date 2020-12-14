@@ -4,6 +4,8 @@ import {
   IconButton,
   Toolbar,
   Typography,
+  Hidden,
+  Divider,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { descend, head, sort, sortBy, thunkify } from "ramda";
@@ -12,7 +14,10 @@ import { useQuery } from "react-query";
 import useModal from "../app/modals/useModal";
 import HorizontalScroll from "../common/components/HorizontalScroll";
 import LoadingBox from "../common/components/LoadingBox";
-import { ResponsiveDialog } from "../common/components/ResponsiveDialog";
+import {
+  ResponsiveDialog,
+  DoneButton,
+} from "../common/components/ResponsiveDialog";
 import BaseTag from "./BaseTag";
 import { getMovieCertifications, queryKeys } from "./query";
 import {
@@ -23,7 +28,7 @@ import {
   TagType,
   yearRangeToName,
 } from "./query/types";
-import useDiscoverState from "./useDiscoverState";
+import useDiscoverState from "./redux/useDiscoverState";
 const ReleaseYearRangeSection = () => {
   const discoverTuneModal = useModal("DiscoverTune");
   const { activateTag } = useDiscoverState();
@@ -144,26 +149,11 @@ const CertificationSection = () => {
 };
 
 export default () => {
-  const discoverTuneModal = useModal("DiscoverTune");
+  const { isOpen, close } = useModal("DiscoverTune");
 
   return (
-    <ResponsiveDialog
-      open={discoverTuneModal.isOpen}
-      onClose={discoverTuneModal.close}
-    >
+    <ResponsiveDialog open={isOpen} onClose={close} showDoneButton>
       <Box paddingBottom={2}>
-        <AppBar color="default" position="sticky">
-          <Toolbar>
-            <IconButton onClick={discoverTuneModal.close} edge="start">
-              <CloseIcon />
-            </IconButton>
-
-            <Box flex={1}>
-              <Typography variant="h6">Tune</Typography>
-            </Box>
-          </Toolbar>
-        </AppBar>
-
         <ReleaseYearRangeSection />
         <SortBySection />
         <CertificationSection />

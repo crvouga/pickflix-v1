@@ -8,7 +8,7 @@ import MoviePosterGrid, {
 } from "../movie/components/MoviePosterGrid";
 import { tagsToParams } from "./query/types";
 import useDiscoverMovieQuery from "./useDiscoverQuery";
-import useDiscoverState from "./useDiscoverState";
+import useDiscoverState from "./redux/useDiscoverState";
 
 export default () => {
   const { activeTags } = useDiscoverState();

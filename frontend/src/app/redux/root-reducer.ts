@@ -1,9 +1,9 @@
 import { combineReducers, Reducer } from "@reduxjs/toolkit";
 import { discoverActiveTags } from "../../discover/redux/discover-active-tags";
+import { discoverPageUi } from "../../discover/redux/discover-page-ui";
 import { discoverTags } from "../../discover/redux/discover-tags";
 import { pageHistory } from "../../home/page-history/page-history";
 import { createListWithListItemsForm } from "../../list/forms/create-list-with-list-items-form/create-list-with-list-items-form";
-
 import { editListForm } from "../../list/forms/edit-list-form/edit-list-form";
 import { removeListItemsForm } from "../../list/forms/remove-list-items-form/remove-list-items-form";
 import { toggleForm } from "../../list/forms/toggle-form/toggle-list-item-form";
@@ -21,6 +21,7 @@ import { snackbar } from "../snackbar/redux/snackbar";
 import { AppState } from "./types";
 
 const reducers: { [key in keyof AppState]: Reducer } = {
+  discoverPageUi: discoverPageUi.reducer,
   reviewVoteStates: reviewVoteStates.reducer,
   userPageUi: userPageUi.reducer,
   modal: modal.reducer,

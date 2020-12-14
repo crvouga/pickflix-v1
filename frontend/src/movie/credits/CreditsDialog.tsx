@@ -50,7 +50,7 @@ export default ({
   );
 
   return (
-    <ResponsiveDialog fullScreen={isMobile} {...props}>
+    <ResponsiveDialog {...props}>
       <Box
         component={Paper}
         zIndex={2}

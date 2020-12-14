@@ -147,63 +147,63 @@ export const uniqueTagTypes = [
   TagType.sortBy,
 ];
 
+type BaseTag = {
+  id: string;
+  lastActiveAt?: number;
+};
+
 export type CertificationTag = {
   type: TagType.certification;
-  id: string;
   certificationCountry: string;
   certification: string;
 };
 
 export type ReleaseYearRangeTag = {
   type: TagType.releaseYearRange;
-  id: string;
   range: [number, number];
 };
 
 export type SortByTag = {
   type: TagType.sortBy;
-  id: string;
   sortBy: SortByKey;
 };
 
 export type WithGenresTag = {
   type: TagType.withGenres;
-  id: string;
   name: string;
 };
 
 export type WithPeopleTag = {
   type: TagType.withPeople;
-  id: string;
   name: string;
   profilePath?: string | null;
 };
 
 export type WithCompaniesTag = {
   type: TagType.withCompanies;
-  id: string;
   name: string;
   logoPath?: string | null;
 };
 
 export type WithKeywordsTag = {
   type: TagType.withKeywords;
-  id: string;
   name: string;
 };
 
-export type IDiscoverMovieTag =
-  | WithGenresTag
-  | WithPeopleTag
-  | WithCompaniesTag
-  | WithKeywordsTag
-  | ReleaseYearRangeTag
-  | SortByTag
-  | CertificationTag;
+export type IDiscoverTag = BaseTag &
+  (
+    | WithGenresTag
+    | WithPeopleTag
+    | WithCompaniesTag
+    | WithKeywordsTag
+    | ReleaseYearRangeTag
+    | SortByTag
+    | CertificationTag
+  );
 
 const tagToParamReducer = (
   params: DiscoverMovieQueryParams,
-  tag: IDiscoverMovieTag
+  tag: IDiscoverTag
 ) => {
   switch (tag.type) {
     case "certification":
@@ -259,19 +259,19 @@ const tagToParamReducer = (
 };
 
 export const tagsToParams = (
-  tags: IDiscoverMovieTag[]
+  tags: IDiscoverTag[]
 ): DiscoverMovieQueryParams => {
   return tags.reduce(tagToParamReducer, {});
 };
 
 export const paramsToTags = (
   params: DiscoverMovieQueryParams
-): IDiscoverMovieTag[] => {
-  const tags: IDiscoverMovieTag[] = [];
+): IDiscoverTag[] => {
+  const tags: IDiscoverTag[] = [];
 
   if (params.certification && params.certificationCountry) {
     const { certification, certificationCountry } = params;
-    const tag: CertificationTag = {
+    const tag: IDiscoverTag = {
       type: TagType.certification,
       id: certification,
       certification,
@@ -281,7 +281,7 @@ export const paramsToTags = (
   }
 
   if (params.sortBy) {
-    const tag: SortByTag = {
+    const tag: IDiscoverTag = {
       type: TagType.sortBy,
       id: params.sortBy,
       sortBy: params.sortBy,
@@ -293,7 +293,7 @@ export const paramsToTags = (
     const gte = Number(params["primaryReleaseDate.gte"].split("-")[0]);
     const lte = Number(params["primaryReleaseDate.lte"].split("-")[0]);
     const range: [number, number] = [gte, lte];
-    const tag: ReleaseYearRangeTag = {
+    const tag: IDiscoverTag = {
       type: TagType.releaseYearRange,
       id: range.toString(),
       range,

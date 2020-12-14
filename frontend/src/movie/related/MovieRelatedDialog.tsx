@@ -59,9 +59,6 @@ export default ({
   tmdbMediaId,
   ...props
 }: { tmdbMediaId: string } & DialogProps) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
-
   const [value, setValue] = useState(0);
 
   const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
@@ -69,7 +66,7 @@ export default ({
   };
 
   return (
-    <ResponsiveDialog {...props}>
+    <ResponsiveDialog {...props} showDoneButton>
       <Box
         zIndex={2}
         component={Paper}
@@ -77,18 +74,6 @@ export default ({
         width="100%"
         maxWidth={RESPONSIVE_DIALOG_MAX_WIDTH}
       >
-        {isMobile && (
-          <Box
-            display="flex"
-            flexDirection="row-reverse"
-            paddingX={2}
-            paddingY={1}
-          >
-            <Button onClick={() => close(props)} color="primary" size="large">
-              Done
-            </Button>
-          </Box>
-        )}
         <Tabs
           value={value}
           onChange={handleChange}
@@ -101,7 +86,6 @@ export default ({
           <Tab label="Recommendations" />
         </Tabs>
       </Box>
-      {isMobile && <AppBarGutter />}
       <AppBarGutter />
       <Box paddingY={1}>
         <TabPanel index={0} value={value}>

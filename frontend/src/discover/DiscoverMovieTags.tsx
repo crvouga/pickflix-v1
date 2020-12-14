@@ -1,8 +1,8 @@
 import { Box, makeStyles } from "@material-ui/core";
-import { thunkify } from "ramda";
 import React, { useEffect, useRef } from "react";
 import DiscoverMovieTag from "./DiscoverMovieTag";
-import useDiscoverState from "./useDiscoverState";
+import useDiscoverState from "./redux/useDiscoverState";
+import { descend, sort } from "ramda";
 
 const useStyles = makeStyles((theme) => ({
   chipContainer: {
@@ -40,7 +40,9 @@ export default () => {
             variant="default"
             tag={tag}
             clickable
-            onClick={thunkify(deactivateTag)(tag)}
+            onClick={() => {
+              deactivateTag(tag);
+            }}
           />
         </Box>
       ))}
@@ -50,7 +52,9 @@ export default () => {
             variant="outlined"
             tag={tag}
             clickable
-            onClick={thunkify(activateTag)(tag)}
+            onClick={() => {
+              activateTag(tag);
+            }}
           />
         </Box>
       ))}

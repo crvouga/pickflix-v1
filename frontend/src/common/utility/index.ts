@@ -36,3 +36,20 @@ export const toggleKey = (key: string, object: { [key: string]: any }) => {
     return addKey(key, object);
   }
 };
+
+const serializeKeys = <T>(object: T) =>
+  JSON.stringify(Object.keys(object).sort());
+
+export const isEqualKeys = <T, U>(objectA: T, objectB: U) =>
+  serializeKeys(objectA) === serializeKeys(objectB);
+
+export const mapObject = <T, U>(
+  f: (x: T) => U,
+  x: { [index: string]: T }
+): { [index: string]: U } => {
+  const y: { [index: string]: U } = {};
+  for (const key in x) {
+    y[key] = f(x[key]);
+  }
+  return y;
+};

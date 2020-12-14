@@ -1,58 +1,36 @@
-import { difference, union } from "ramda";
-import { call, fork, put, select, takeEvery } from "redux-saga/effects";
+import { call, put, select } from "redux-saga/effects";
 import { getMovieGenres } from "../query";
-import { IDiscoverMovieTag, TagType, uniqueTagTypes } from "../query/types";
-import { discoverActiveTags } from "./discover-active-tags";
+import { IDiscoverTag, TagType } from "../query/types";
 import { discoverTags } from "./discover-tags";
 
-const getMovieGenreTags = async () => {
+export const getMovieGenreTagsById = async () => {
   const genresResponse = await getMovieGenres();
-  const movieGenreTags: IDiscoverMovieTag[] = genresResponse.genres.map(
-    (genre) => ({
-      type: TagType.withGenres,
-      ...genre,
-    })
+  const movieGenreTagsById: {
+    [id: string]: IDiscoverTag;
+  } = genresResponse.genres.reduce(
+    (byId, genre) => ({
+      ...byId,
+      [genre.id]: {
+        type: TagType.withGenres,
+        ...genre,
+      },
+    }),
+    {}
   );
-  return movieGenreTags;
+  return movieGenreTagsById;
 };
 
-function* addMovieGenreTagsSaga() {
-  const movieGenreTags: IDiscoverMovieTag[] = yield call(getMovieGenreTags);
-  const tags: IDiscoverMovieTag[] = yield select(discoverTags.selectors.tags);
-  yield put(discoverTags.actions.setTags(union(tags, movieGenreTags)));
-}
-
-function* activeTagsLogic() {
-  yield takeEvery(discoverActiveTags.actions.deactivate, function* (action) {
-    const tag = action.payload;
-    const activeTags: IDiscoverMovieTag[] = yield select(
-      discoverActiveTags.selectors.activeTags
-    );
-    const newActiveTags = difference(activeTags, [tag]);
-    yield put(discoverActiveTags.actions.setActiveTags(newActiveTags));
-  });
-
-  yield takeEvery(discoverActiveTags.actions.activate, function* (action) {
-    const tag = action.payload;
-
-    const activeTags: IDiscoverMovieTag[] = yield select(
-      discoverActiveTags.selectors.activeTags
-    );
-
-    if (uniqueTagTypes.includes(tag.type)) {
-      const newActiveTags = union(
-        [tag],
-        activeTags.filter((_) => _.type !== tag.type)
-      );
-      yield put(discoverActiveTags.actions.setActiveTags(newActiveTags));
-    } else {
-      const newActiveTags = union([tag], activeTags);
-      yield put(discoverActiveTags.actions.setActiveTags(newActiveTags));
-    }
-  });
-}
-
 export function* discoverMovieSaga() {
-  yield fork(addMovieGenreTagsSaga);
-  yield fork(activeTagsLogic);
+  const movieGenreTagsById: { [id: string]: IDiscoverTag } = yield call(
+    getMovieGenreTagsById
+  );
+  const tagsById: { [id: string]: IDiscoverTag } = yield select(
+    discoverTags.selectors.tagsById
+  );
+  yield put(
+    discoverTags.actions.setTagsById({
+      ...movieGenreTagsById,
+      ...tagsById,
+    })
+  );
 }

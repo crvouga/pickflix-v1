@@ -13,8 +13,8 @@ import {
 } from "../../common/components/ResponsiveDialog";
 import useModal from "../../app/modals/useModal";
 import SearchTextField from "../../search/input/SearchTextField";
-import { IDiscoverMovieTag } from "../query/types";
-import useDiscoverState from "../useDiscoverState";
+import { IDiscoverTag } from "../query/types";
+import useDiscoverState from "../redux/useDiscoverState";
 import SearchResults from "./SearchResults";
 import { AppBarGutter } from "../../common/components/AppBarGutter";
 import { SlideUp } from "../../common/components/TransitionComponents";
@@ -24,7 +24,7 @@ export default () => {
   const [searchQuery, setSearchQuery] = useState("");
   const discoverLogic = useDiscoverState();
 
-  const handleClick = (tag: IDiscoverMovieTag) => {
+  const handleClick = (tag: IDiscoverTag) => {
     discoverMovieTagSearchModal.close();
     discoverLogic.clear();
     discoverLogic.activateTag(tag);

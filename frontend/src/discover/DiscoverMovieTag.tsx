@@ -1,21 +1,22 @@
-import { Avatar, ChipProps } from "@material-ui/core";
+import { Avatar, Box, ChipProps } from "@material-ui/core";
 import BusinessIcon from "@material-ui/icons/Business";
 import React from "react";
-import makeImageUrl from "../media/tmdb/makeImageUrl";
 import { capitalizeWords } from "../common/utility";
+import makeImageUrl from "../media/tmdb/makeImageUrl";
 import Tag from "./BaseTag";
 import {
-  IDiscoverMovieTag,
+  IDiscoverTag,
   sortByKeyToName,
   TagType,
   yearRangeToName,
 } from "./query/types";
+import ScheduleIcon from "@material-ui/icons/Schedule";
 
 type Props = ChipProps & {
-  tag: IDiscoverMovieTag;
+  tag: IDiscoverTag;
 };
 
-export default (props: Props) => {
+const DiscoverMovieTag = (props: Props) => {
   const { tag, ...chipProps } = props;
 
   switch (tag.type) {
@@ -26,7 +27,17 @@ export default (props: Props) => {
       return <Tag label={sortByKeyToName(tag.sortBy)} {...chipProps} />;
 
     case TagType.releaseYearRange:
-      return <Tag label={yearRangeToName(tag.range)} {...chipProps} />;
+      return (
+        <Tag
+          avatar={
+            <Avatar>
+              <ScheduleIcon />
+            </Avatar>
+          }
+          label={yearRangeToName(tag.range)}
+          {...chipProps}
+        />
+      );
 
     case TagType.withPeople:
       return (
@@ -54,3 +65,23 @@ export default (props: Props) => {
       return <Tag label={capitalizeWords(tag?.name || "")} {...chipProps} />;
   }
 };
+
+export const DiscoverMovieTagGroup = ({
+  tagsById,
+  ChipProps,
+}: {
+  tagsById: { [id: string]: IDiscoverTag };
+  ChipProps?: ChipProps;
+}) => {
+  return (
+    <Box display="flex" flexWrap="wrap" alignItems="center">
+      {Object.values(tagsById).map((tag) => (
+        <Box key={tag.id} m={1 / 2}>
+          <DiscoverMovieTag tag={tag} {...ChipProps} />
+        </Box>
+      ))}
+    </Box>
+  );
+};
+
+export default DiscoverMovieTag;

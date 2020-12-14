@@ -1,24 +1,24 @@
 import matchSorter from "match-sorter";
 import { uniqBy } from "ramda";
 import { useDebounce } from "use-debounce";
-import { IDiscoverMovieTag, TagType } from "../query/types";
-import useDiscoverState from "../useDiscoverState";
+import { IDiscoverTag, TagType } from "../query/types";
+import useDiscoverState from "../redux/useDiscoverState";
 import useSearchQuery from "./useSearchQuery";
 
 type Props = {
   searchQuery: string;
 };
 
-const filter = (searchQuery: string, tags: IDiscoverMovieTag[]) => {
+const filter = (searchQuery: string, tags: IDiscoverTag[]) => {
   return matchSorter(tags, searchQuery, {
     keys: ["name"],
   });
 };
 
 export default ({ searchQuery }: Props) => {
-  const { tags } = useDiscoverState();
+  const { tagState } = useDiscoverState();
 
-  const filteredTags = filter(searchQuery, tags);
+  const filteredTags = filter(searchQuery, Object.values(tagState.tagsById));
 
   const [debounced] = useDebounce(searchQuery, 500);
 
@@ -40,21 +40,21 @@ export default ({ searchQuery }: Props) => {
     };
   }
 
-  const withPeopleTags: IDiscoverMovieTag[] = personSearchQuery.data.results.map(
+  const withPeopleTags: IDiscoverTag[] = personSearchQuery.data.results.map(
     (result) => ({
       type: TagType.withPeople,
       ...result,
     })
   );
 
-  const withKeywordsTags: IDiscoverMovieTag[] = keywordSearchQuery.data.results.map(
+  const withKeywordsTags: IDiscoverTag[] = keywordSearchQuery.data.results.map(
     (result) => ({
       type: TagType.withKeywords,
       ...result,
     })
   );
 
-  const withCompaniesTags: IDiscoverMovieTag[] = companySearchQuery.data.results.map(
+  const withCompaniesTags: IDiscoverTag[] = companySearchQuery.data.results.map(
     (result) => ({
       type: TagType.withCompanies,
       ...result,

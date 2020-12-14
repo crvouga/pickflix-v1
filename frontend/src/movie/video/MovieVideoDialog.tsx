@@ -16,36 +16,9 @@ import { MovieVideoListItem } from "./VideoListItem";
 
 export default (props: DialogProps) => {
   const videoState = useVideoState();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
   return (
-    <ResponsiveDialog {...props}>
-      <AppBar position="sticky" color="default">
-        <Box
-          display="flex"
-          width="100%"
-          flexDirection="row-reverse"
-          paddingX={2}
-          paddingY={1}
-        >
-          {isMobile && (
-            <Button
-              size="large"
-              color="primary"
-              onClick={() => {
-                closeModal(props);
-              }}
-            >
-              Done
-            </Button>
-          )}
-        </Box>
-
-        {/* {videoState.currentVideo && (
-          <YoutubeDetailsContainer videoId={videoState.currentVideo.id} />
-        )} */}
-      </AppBar>
+    <ResponsiveDialog {...props} showDoneButton>
       <List>
         {videoState.playlist.map((video) => (
           <Box

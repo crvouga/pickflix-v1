@@ -1,8 +1,12 @@
-import { createAction, createReducer, createSelector } from "@reduxjs/toolkit";
-import { union } from "ramda";
+import {
+  bindActionCreators,
+  createAction,
+  createReducer,
+  createSelector,
+} from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../app/redux/types";
-import { IDiscoverMovieTag } from "../query/types";
-import { discoverActiveTags } from "./discover-active-tags";
+import { IDiscoverTag } from "../query/types";
 
 const name = "discoverTags";
 
@@ -11,11 +15,11 @@ const name = "discoverTags";
 */
 
 export type DiscoverTagsState = {
-  tags: IDiscoverMovieTag[];
+  tagsById: { [id: string]: IDiscoverTag };
 };
 
 const initialState: DiscoverTagsState = {
-  tags: [],
+  tagsById: {},
 };
 
 /* 
@@ -23,10 +27,10 @@ const initialState: DiscoverTagsState = {
 */
 
 const slice = (state: AppState) => state.discoverTags;
-const tags = createSelector([slice], (slice) => slice.tags);
+const tagsById = createSelector([slice], (slice) => slice.tagsById);
 const selectors = {
   slice,
-  tags,
+  tagsById,
 };
 
 /* 
@@ -34,7 +38,9 @@ const selectors = {
 */
 
 const actions = {
-  setTags: createAction<IDiscoverMovieTag[]>(name + "/SET_TAGS"),
+  setTagsById: createAction<{ [id: string]: IDiscoverTag }>(
+    name + "/SET_TAGS_BY_ID"
+  ),
 };
 
 /* 
@@ -42,11 +48,8 @@ const actions = {
 */
 
 const reducer = createReducer(initialState, {
-  [discoverActiveTags.actions.setActiveTags.toString()]: (state, action) => {
-    state.tags = union(action.payload, state.tags);
-  },
-  [actions.setTags.toString()]: (state, action) => {
-    state.tags = action.payload;
+  [actions.setTagsById.toString()]: (state, action) => {
+    state.tagsById = action.payload;
   },
 });
 
@@ -58,4 +61,18 @@ export const discoverTags = {
   selectors,
   actions,
   reducer,
+};
+
+/* 
+
+*/
+
+export const useDiscoverTagsState = () => {
+  const dispatch = useDispatch();
+  const actions = bindActionCreators(discoverTags.actions, dispatch);
+  const slice = useSelector(discoverTags.selectors.slice);
+  return {
+    ...actions,
+    ...slice,
+  };
 };

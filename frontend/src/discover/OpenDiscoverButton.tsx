@@ -2,21 +2,22 @@ import { IconButton, IconButtonProps } from "@material-ui/core";
 import ExploreOutlinedIcon from "@material-ui/icons/ExploreOutlined";
 import React from "react";
 import { useHistory } from "react-router";
-import { IDiscoverMovieTag } from "./query/types";
-import useDiscoverState from "./useDiscoverState";
+import { IDiscoverTag } from "./query/types";
+import useDiscoverState from "./redux/useDiscoverState";
 
 type Props = IconButtonProps & {
-  tag: IDiscoverMovieTag;
+  tag: IDiscoverTag;
 };
 
 export default ({ tag, ...props }: Props) => {
   const history = useHistory();
-  const discoverLogic = useDiscoverState();
+  const discoverState = useDiscoverState();
 
   const handleClick = () => {
-    discoverLogic.clear();
-    discoverLogic.setActiveTags([tag]);
     history.push("/discover");
+    discoverState.setActiveTagsById({
+      [tag.id]: tag,
+    });
   };
 
   return (

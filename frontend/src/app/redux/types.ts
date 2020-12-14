@@ -1,4 +1,5 @@
 import { DiscoverActiveTags } from "../../discover/redux/discover-active-tags";
+import { DiscoverPageUiState } from "../../discover/redux/discover-page-ui";
 import { DiscoverTagsState } from "../../discover/redux/discover-tags";
 import { PageHistoryState } from "../../home/page-history/page-history";
 import { CreateListWithListItemsFormState } from "../../list/forms/create-list-with-list-items-form/create-list-with-list-items-form";
@@ -18,6 +19,7 @@ import { ModalState } from "../modals/redux/modal";
 import { SnackbarState } from "../snackbar/redux/snackbar";
 
 export type AppState = {
+  discoverPageUi: DiscoverPageUiState;
   reviewVoteStates: ReviewVoteStatesState;
   userPageUi: UserPageUiState;
   modal: ModalState;
