@@ -1,8 +1,7 @@
 import { AxiosRequestConfig } from "axios";
 import { BackendAPI } from "../../../backend-api";
-import { Movie, Person } from "../../../media/tmdb/types";
-import { DiscoverMovieQueryParams, DiscoverMovieResponse } from "../types";
 import { Paginated } from "../../../common/types";
+import { DiscoverMovieQueryParams, DiscoverMovieResponse } from "../types";
 
 type Certification = {
   certification: string;
@@ -79,6 +78,12 @@ type KeywordResult = {
   name: string;
 };
 
+type CompanyResult = {
+  id: string;
+  name: string;
+  logoPath?: string | null;
+};
+
 export const getSearchKeyword = async (
   params: SearchParams,
   config?: AxiosRequestConfig
@@ -94,12 +99,6 @@ export const getSearchKeyword = async (
     }
   );
   return data;
-};
-
-type CompanyResult = {
-  id: string;
-  name: string;
-  logoPath?: string | null;
 };
 
 export const getSearchCompany = async (

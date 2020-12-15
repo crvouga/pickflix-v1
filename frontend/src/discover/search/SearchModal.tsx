@@ -5,8 +5,10 @@ import {
   useTheme,
   Box,
   Paper,
+  Divider,
+  Chip,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   ResponsiveDialog,
   RESPONSIVE_DIALOG_MAX_WIDTH,
@@ -17,17 +19,45 @@ import { IDiscoverTag } from "../query/types";
 import useDiscoverState from "../redux/useDiscoverState";
 import SearchResults from "./SearchResults";
 import { AppBarGutter } from "../../common/components/AppBarGutter";
-import { SlideUp } from "../../common/components/TransitionComponents";
+import { SlideRight } from "../../common/components/TransitionComponents";
+import { DiscoverTagsSearchFilter } from "../../search/query";
 
 export default () => {
-  const discoverMovieTagSearchModal = useModal("DiscoverSearch");
+  const { isOpen, close } = useModal("DiscoverSearch");
+  const discoverState = useDiscoverState();
+
+  const inputRef = useRef<HTMLInputElement>();
+
+  const handleClear = () => {
+    if (inputRef.current) {
+      inputRef.current.value = "";
+      inputRef.current.focus();
+    }
+  };
+
   const [searchQuery, setSearchQuery] = useState("");
-  const discoverLogic = useDiscoverState();
+  const [searchFilter, setSearchFilter] = useState<
+    DiscoverTagsSearchFilter | undefined
+  >();
+
+  const toggleSearchFilter = (selected: DiscoverTagsSearchFilter) => {
+    setSearchFilter((searchFilter) =>
+      searchFilter === selected ? undefined : selected
+    );
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      handleClear();
+      setSearchQuery("");
+      setSearchFilter(undefined);
+    }
+  }, [isOpen]);
 
   const handleClick = (tag: IDiscoverTag) => {
-    discoverMovieTagSearchModal.close();
-    discoverLogic.clear();
-    discoverLogic.activateTag(tag);
+    close();
+    discoverState.clear();
+    discoverState.activateTag(tag);
   };
 
   const theme = useTheme();
@@ -35,35 +65,61 @@ export default () => {
 
   return (
     <ResponsiveDialog
-      TransitionComponent={SlideUp}
-      open={discoverMovieTagSearchModal.isOpen}
-      onClose={() => discoverMovieTagSearchModal.close()}
+      TransitionComponent={SlideRight}
+      open={isOpen}
+      onClose={close}
+      keepMounted
     >
       <Box
         component={Paper}
         zIndex={2}
         position="fixed"
         width="100%"
-        maxWidth={RESPONSIVE_DIALOG_MAX_WIDTH}
+        maxWidth={isMobile ? "100%" : RESPONSIVE_DIALOG_MAX_WIDTH}
       >
         <Box display="flex" p={1}>
           <SearchTextField
+            ref={inputRef}
             placeholder="Search Tags"
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+            }}
+            onClear={() => {
+              handleClear();
+            }}
           />
           {isMobile && (
-            <Button
-              color="primary"
-              size="large"
-              onClick={() => discoverMovieTagSearchModal.close()}
-            >
+            <Button color="primary" size="large" onClick={close}>
               Done
             </Button>
           )}
         </Box>
+        <Box paddingX={2} paddingY={1} display="flex">
+          {Object.values(DiscoverTagsSearchFilter).map((filter) => (
+            <Box m={1 / 2} key={filter}>
+              <Chip
+                clickable
+                label={filter}
+                variant={filter === searchFilter ? "default" : "outlined"}
+                onClick={() => {
+                  toggleSearchFilter(filter);
+                }}
+              />
+            </Box>
+          ))}
+        </Box>
+
+        <Divider />
       </Box>
+
       <AppBarGutter />
-      <SearchResults onClick={handleClick} searchQuery={searchQuery} />
+      <AppBarGutter />
+
+      <SearchResults
+        onClick={handleClick}
+        searchQuery={searchQuery}
+        searchFilter={searchFilter}
+      />
     </ResponsiveDialog>
   );
 };

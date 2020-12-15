@@ -55,6 +55,19 @@ export type MultiResult =
 
 export type SearchResult = PersonResult | MovieResult | TvResult | UserResult;
 
+export type KeywordResult = {
+  type: "keyword";
+  id: string;
+  name: string;
+};
+
+export type CompanyResult = {
+  type: "company";
+  id: string;
+  name: string;
+  logoPath?: string | null;
+};
+
 /* 
 
 
@@ -170,6 +183,53 @@ export const getSearchUsers = async (
     results: data.results.map((result) => ({
       ...result,
       type: "user",
+    })),
+  };
+};
+
+export const getSearchKeyword = async (
+  params: GetSearchParams,
+  config?: AxiosRequestConfig
+): Promise<Paginated<KeywordResult>> => {
+  if (params.query.length === 0) {
+    return makeEmptyPaginatedResponse<KeywordResult>();
+  }
+  const { data } = await BackendAPI.get<Paginated<KeywordResult>>(
+    "/api/tmdb/search/keyword",
+    {
+      ...config,
+      params,
+    }
+  );
+
+  return {
+    ...data,
+    results: data.results.map((result) => ({
+      ...result,
+      type: "keyword",
+    })),
+  };
+};
+
+export const getSearchCompany = async (
+  params: GetSearchParams,
+  config?: AxiosRequestConfig
+): Promise<Paginated<CompanyResult>> => {
+  if (params.query.length === 0) {
+    return makeEmptyPaginatedResponse<CompanyResult>();
+  }
+  const { data } = await BackendAPI.get<Paginated<CompanyResult>>(
+    "/api/tmdb/search/company",
+    {
+      ...config,
+      params,
+    }
+  );
+  return {
+    ...data,
+    results: data.results.map((result) => ({
+      ...result,
+      type: "company",
     })),
   };
 };
@@ -290,6 +350,88 @@ export const useQuerySearchMovies = (params: {
         query: searchQuery,
       };
       return getSearchMovie(params);
+    }
+  );
+};
+
+/* 
+
+
+
+
+*/
+
+export const getSearchDiscoverAll = async (
+  params: GetSearchParams,
+  config?: AxiosRequestConfig
+): Promise<Paginated<CompanyResult | KeywordResult | PersonResult>> => {
+  if (params.query.length === 0) {
+    return makeEmptyPaginatedResponse<
+      CompanyResult | KeywordResult | PersonResult
+    >();
+  }
+
+  const [companyResponse, keywordResponse, personResponse] = await Promise.all([
+    getSearchCompany(params, config),
+    getSearchKeyword(params, config),
+    getSearchPerson(params, config),
+  ]);
+
+  const results = matchSorter(
+    [
+      ...companyResponse.results,
+      ...keywordResponse.results,
+      ...personResponse.results,
+    ],
+    params.query,
+    {
+      keys: ["name"],
+    }
+  );
+
+  return {
+    ...companyResponse,
+    ...keywordResponse,
+    ...personResponse,
+    results,
+  };
+};
+
+export enum DiscoverTagsSearchFilter {
+  Keyword = "Keyword",
+  Company = "Company",
+  Person = "Person",
+}
+
+export const useQuerySearchDiscoverTags = ({
+  filter,
+  text,
+  debounceTimeout = DEBOUNCE_TIMEOUT,
+}: {
+  filter?: DiscoverTagsSearchFilter;
+  text: string;
+  debounceTimeout?: number;
+}) => {
+  const searchQuery = useSearchQuery({ text, debounceTimeout });
+
+  return useInfiniteQueryPagination(
+    ["search", "discover", filter, searchQuery],
+    ({
+      lastPage,
+    }): Promise<Paginated<CompanyResult | KeywordResult | PersonResult>> => {
+      const params: GetSearchParams = {
+        page: lastPage,
+        query: searchQuery,
+      };
+      switch (filter) {
+        case DiscoverTagsSearchFilter.Company:
+          return getSearchCompany(params);
+        case DiscoverTagsSearchFilter.Keyword:
+          return getSearchKeyword(params);
+        case DiscoverTagsSearchFilter.Person:
+          return getSearchPerson(params);
+      }
+      return getSearchDiscoverAll(params);
     }
   );
 };

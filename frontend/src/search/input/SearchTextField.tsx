@@ -42,7 +42,13 @@ export default React.memo(
         className={classes.input}
         // startAdornment={<SearchIcon className={classes.startAdornment} />}
         endAdornment={
-          <IconButton onClick={onClear}>
+          <IconButton
+            onClick={() => {
+              if (onClear) {
+                onClear();
+              }
+            }}
+          >
             <CloseIcon />
           </IconButton>
         }
