@@ -12,15 +12,7 @@ export default () => {
       justifyContent="center"
       flexDirection="column"
     >
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        flexDirection="column"
-        marginBottom={6}
-      >
-        <PickflixLogo marginBottom={4} scale={1.5} />
-      </Box>
+      <PickflixLogo marginBottom={4} scale={1.5} />
     </Box>
   );
 };

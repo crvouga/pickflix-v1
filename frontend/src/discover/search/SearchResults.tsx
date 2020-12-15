@@ -1,16 +1,11 @@
 import { List } from "@material-ui/core";
 import React from "react";
 import ListItemSkeleton from "../../common/components/ListItemSkeleton";
-import {
-  CompanyResult,
-  DiscoverTagsSearchFilter,
-  KeywordResult,
-  PersonResult,
-  useQuerySearchDiscoverTags,
-} from "../../search/query";
+import { CompanyResult, KeywordResult, PersonResult } from "../../search/query";
 import { IDiscoverTag, TagType } from "../query/types";
 import useDiscoverState from "../redux/useDiscoverState";
 import DiscoverTagListItem from "./DiscoverTagListItem";
+import { DiscoverTagsSearchFilter, useQuerySearchDiscoverTags } from "./query";
 
 type Props = {
   searchQuery: string;

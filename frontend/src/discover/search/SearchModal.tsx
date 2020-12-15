@@ -1,26 +1,25 @@
 import {
-  AppBar,
+  Box,
   Button,
+  Chip,
+  Divider,
+  Paper,
   useMediaQuery,
   useTheme,
-  Box,
-  Paper,
-  Divider,
-  Chip,
 } from "@material-ui/core";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import useModal from "../../app/modals/useModal";
+import { AppBarGutter } from "../../common/components/AppBarGutter";
 import {
   ResponsiveDialog,
   RESPONSIVE_DIALOG_MAX_WIDTH,
 } from "../../common/components/ResponsiveDialog";
-import useModal from "../../app/modals/useModal";
+import { SlideRight } from "../../common/components/TransitionComponents";
 import SearchTextField from "../../search/input/SearchTextField";
 import { IDiscoverTag } from "../query/types";
 import useDiscoverState from "../redux/useDiscoverState";
+import { DiscoverTagsSearchFilter } from "./query";
 import SearchResults from "./SearchResults";
-import { AppBarGutter } from "../../common/components/AppBarGutter";
-import { SlideRight } from "../../common/components/TransitionComponents";
-import { DiscoverTagsSearchFilter } from "../../search/query";
 
 export default () => {
   const { isOpen, close } = useModal("DiscoverSearch");
@@ -28,10 +27,16 @@ export default () => {
 
   const inputRef = useRef<HTMLInputElement>();
 
+  const focus = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
   const handleClear = () => {
     if (inputRef.current) {
       inputRef.current.value = "";
-      inputRef.current.focus();
+      focus();
     }
   };
 
@@ -77,7 +82,7 @@ export default () => {
         width="100%"
         maxWidth={isMobile ? "100%" : RESPONSIVE_DIALOG_MAX_WIDTH}
       >
-        <Box display="flex" p={1}>
+        <Box display="flex" p={1} paddingBottom={0}>
           <SearchTextField
             ref={inputRef}
             placeholder="Search Tags"
@@ -94,7 +99,7 @@ export default () => {
             </Button>
           )}
         </Box>
-        <Box paddingX={2} paddingY={1} display="flex">
+        <Box paddingX={2} paddingBottom={1} display="flex">
           {Object.values(DiscoverTagsSearchFilter).map((filter) => (
             <Box m={1 / 2} key={filter}>
               <Chip
@@ -102,6 +107,7 @@ export default () => {
                 label={filter}
                 variant={filter === searchFilter ? "default" : "outlined"}
                 onClick={() => {
+                  focus();
                   toggleSearchFilter(filter);
                 }}
               />

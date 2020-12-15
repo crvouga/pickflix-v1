@@ -272,7 +272,7 @@ const deduplicateWhitespace = (string: string) => string.replace(/\s+/g, " ");
 const textToSearchQuery = (text: string) =>
   deduplicateWhitespace(text.trim()).substr(0, MAX_QUERY_LENGTH);
 
-const useSearchQuery = ({
+export const useSearchQuery = ({
   text,
   debounceTimeout = DEBOUNCE_TIMEOUT,
 }: {
@@ -350,88 +350,6 @@ export const useQuerySearchMovies = (params: {
         query: searchQuery,
       };
       return getSearchMovie(params);
-    }
-  );
-};
-
-/* 
-
-
-
-
-*/
-
-export const getSearchDiscoverAll = async (
-  params: GetSearchParams,
-  config?: AxiosRequestConfig
-): Promise<Paginated<CompanyResult | KeywordResult | PersonResult>> => {
-  if (params.query.length === 0) {
-    return makeEmptyPaginatedResponse<
-      CompanyResult | KeywordResult | PersonResult
-    >();
-  }
-
-  const [companyResponse, keywordResponse, personResponse] = await Promise.all([
-    getSearchCompany(params, config),
-    getSearchKeyword(params, config),
-    getSearchPerson(params, config),
-  ]);
-
-  const results = matchSorter(
-    [
-      ...companyResponse.results,
-      ...keywordResponse.results,
-      ...personResponse.results,
-    ],
-    params.query,
-    {
-      keys: ["name"],
-    }
-  );
-
-  return {
-    ...companyResponse,
-    ...keywordResponse,
-    ...personResponse,
-    results,
-  };
-};
-
-export enum DiscoverTagsSearchFilter {
-  Keyword = "Keyword",
-  Company = "Company",
-  Person = "Person",
-}
-
-export const useQuerySearchDiscoverTags = ({
-  filter,
-  text,
-  debounceTimeout = DEBOUNCE_TIMEOUT,
-}: {
-  filter?: DiscoverTagsSearchFilter;
-  text: string;
-  debounceTimeout?: number;
-}) => {
-  const searchQuery = useSearchQuery({ text, debounceTimeout });
-
-  return useInfiniteQueryPagination(
-    ["search", "discover", filter, searchQuery],
-    ({
-      lastPage,
-    }): Promise<Paginated<CompanyResult | KeywordResult | PersonResult>> => {
-      const params: GetSearchParams = {
-        page: lastPage,
-        query: searchQuery,
-      };
-      switch (filter) {
-        case DiscoverTagsSearchFilter.Company:
-          return getSearchCompany(params);
-        case DiscoverTagsSearchFilter.Keyword:
-          return getSearchKeyword(params);
-        case DiscoverTagsSearchFilter.Person:
-          return getSearchPerson(params);
-      }
-      return getSearchDiscoverAll(params);
     }
   );
 };

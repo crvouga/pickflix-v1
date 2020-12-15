@@ -21,6 +21,7 @@ import {
   VOTE_AVERAGE_LTE_TAGS,
 } from "./query/types";
 import useDiscoverState from "./redux/useDiscoverState";
+import { getMovieGenreTagsById } from "./redux/discover-saga";
 
 const Title = (props: TypographyProps) => (
   <Box p={2} paddingBottom={1 / 2}>
@@ -62,7 +63,7 @@ const TagsSkeleton = () => {
   );
 };
 
-const TagsRatingContainer = ({
+const TagsCertificationContainer = ({
   onClick,
 }: {
   onClick?: (tag: IDiscoverTag) => void;
@@ -92,6 +93,28 @@ const TagsRatingContainer = ({
   return <Tags onClick={onClick} tags={certificationsUSTags} />;
 };
 
+const TagsGenreContainer = ({
+  onClick,
+}: {
+  onClick?: (tag: IDiscoverTag) => void;
+}) => {
+  const query = useQuery(["movie", "genre", "tags"], () =>
+    getMovieGenreTagsById()
+  );
+
+  if (query.error) {
+    return null;
+  }
+
+  if (!query.data) {
+    return <TagsSkeleton />;
+  }
+
+  const genreTags = Object.values(query.data);
+
+  return <Tags onClick={onClick} tags={genreTags} />;
+};
+
 export default () => {
   const { isOpen, close } = useModal("DiscoverTune");
   const { activateTag } = useDiscoverState();
@@ -108,12 +131,16 @@ export default () => {
         <Tags tags={RELEASE_YEAR_TAGS} onClick={handleClick} />
         <Divider />
 
+        <Title>Genres</Title>
+        <TagsGenreContainer onClick={handleClick} />
+        <Divider />
+
         <Title>Sort By</Title>
         <Tags tags={SORT_BY_TAGS} onClick={handleClick} />
         <Divider />
 
         <Title>Rating</Title>
-        <TagsRatingContainer onClick={handleClick} />
+        <TagsCertificationContainer onClick={handleClick} />
         <Divider />
 
         <Title>Vote Count Less Than</Title>

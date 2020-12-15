@@ -30,11 +30,11 @@ const DiscoverTag = (props: Props) => {
     case TagType.releaseYearRange:
       return (
         <Tag
-          avatar={
-            <Avatar>
-              <ScheduleIcon />
-            </Avatar>
-          }
+          // avatar={
+          //   <Avatar>
+          //     <ScheduleIcon />
+          //   </Avatar>
+          // }
           label={yearRangeToName(tag.range)}
           {...chipProps}
         />

@@ -87,7 +87,9 @@ export const DiscoverTagsHistoryForm = () => {
         </DialogActions>
       </Dialog>
 
-      {disabled && <NothingHere />}
+      {disabled && Object.keys(presentState.activeTagsById).length === 0 && (
+        <NothingHere />
+      )}
 
       {futureStates.length > 0 && (
         <React.Fragment>
