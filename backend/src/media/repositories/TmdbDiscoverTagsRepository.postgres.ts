@@ -5,7 +5,13 @@ import {
 } from "../../app/data-access/database.postgres";
 import { GenericRepositoryPostgres } from "../../app/data-access/generic-repository/generic-repository.postgres";
 import { GenericRepositoryQueryOptions } from "../../app/data-access/generic-repository/types";
-import { castJson, castTimestamp, Json, Timestamp } from "../../utils";
+import {
+  castJson,
+  castTimestamp,
+  Json,
+  Timestamp,
+  castNonEmptyString,
+} from "../../utils";
 import { castUserId, UserId } from "../../users/models";
 import {
   castTmdbDiscoverTagsId,
@@ -18,7 +24,8 @@ const tableName = "tmdb_discover_tags";
 
 type TmdbDiscoverTagsRow = {
   id: TmdbDiscoverTagsId;
-  serialized_tags_by_id: Json;
+  tags_by_id: Json;
+  key: string;
   user_id: UserId;
   created_at: Timestamp;
 };
@@ -27,7 +34,10 @@ const table: IPostgresTable<TmdbDiscoverTagsRow> = {
   id: {
     dataType: "TEXT",
   },
-  serialized_tags_by_id: {
+  tags_by_id: {
+    dataType: "TEXT",
+  },
+  key: {
     dataType: "TEXT",
   },
   user_id: {
@@ -45,8 +55,11 @@ const mapEntityKeyToRowKey = (
     case "id":
       return "id";
 
-    case "serializedTagsById":
-      return "serialized_tags_by_id";
+    case "tagsById":
+      return "tags_by_id";
+
+    case "key":
+      return "key";
 
     case "userId":
       return "user_id";
@@ -61,7 +74,8 @@ const mapPartialEntityToPartialRow = (
 ): Partial<TmdbDiscoverTagsRow> => {
   return {
     id: entity.id,
-    serialized_tags_by_id: entity.serializedTagsById,
+    tags_by_id: entity.tagsById,
+    key: entity.key,
     user_id: entity.userId,
     created_at: entity.createdAt,
   };
@@ -70,7 +84,8 @@ const mapPartialEntityToPartialRow = (
 const mapRowToEntity = (row: TmdbDiscoverTagsRow): TmdbDiscoverTags => {
   return {
     id: castTmdbDiscoverTagsId(row.id),
-    serializedTagsById: castJson(row.serialized_tags_by_id),
+    tagsById: castJson(row.tags_by_id),
+    key: castNonEmptyString(row.key),
     userId: castUserId(row.user_id),
     createdAt: castTimestamp(row.created_at),
   };

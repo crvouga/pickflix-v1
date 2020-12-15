@@ -27,7 +27,7 @@ export default () => {
 
   if (data[0] && data[0].results.length === 0) {
     return (
-      <Box p={4}>
+      <Box marginTop={12}>
         <Typography variant="h6" align="center" color="textSecondary">
           Couldn't find anything
         </Typography>

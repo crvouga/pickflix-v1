@@ -24,9 +24,9 @@ export const DiscoverTagsFormModal = () => {
   const renderTab = (tabValue: DiscoverTagsTabValue) => {
     switch (tabValue) {
       case "Saved":
-        return <Tab icon={<SaveOutlinedIcon />} />;
+        return <Tab key={tabValue} icon={<SaveOutlinedIcon />} />;
       case "History":
-        return <Tab icon={<HistoryOutlinedIcon />} />;
+        return <Tab key={tabValue} icon={<HistoryOutlinedIcon />} />;
     }
   };
 
@@ -67,11 +67,7 @@ export const DiscoverTagsFormModal = () => {
           textColor="primary"
           variant="fullWidth"
         >
-          {discoverPageUi.discoverTagsTabOrder.map((discoverTagTabValue) => (
-            <React.Fragment key={discoverTagTabValue}>
-              {renderTab(discoverTagTabValue)}
-            </React.Fragment>
-          ))}
+          {discoverPageUi.discoverTagsTabOrder.map(renderTab)}
         </Tabs>
         <Divider />
       </Box>

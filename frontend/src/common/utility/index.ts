@@ -53,3 +53,11 @@ export const mapObject = <T, U>(
   }
   return y;
 };
+
+export const rangeStep = (start: number, end: number, step: number) => {
+  const numbers: number[] = [];
+  for (let n = start; n < end; n += step) {
+    numbers.push(n);
+  }
+  return numbers;
+};

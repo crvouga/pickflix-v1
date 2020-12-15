@@ -38,8 +38,17 @@ export const toBudget = ({ budget }: { budget?: number }) =>
 export const toRevenue = ({ revenue }: { revenue?: number }) =>
   revenue ? `$${commas(revenue)}` : null;
 
-export const toRuntime = ({ runtime }: MovieDetails) =>
+export const toRuntime = ({ runtime }: { runtime?: number | null }) =>
   runtime ? moment.duration(runtime, "minutes").format("h[h] m[m]") : null;
+
+export const toRuntimeShort = ({ runtime }: { runtime?: number | null }) =>
+  runtime
+    ? moment
+        .duration(runtime, "minutes")
+        .format("h[h] m[m]")
+        .replace(" 0m", "")
+        .trim()
+    : null;
 
 export const toReleaseYear = ({
   releaseDate,

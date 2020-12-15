@@ -1,15 +1,13 @@
-import { Chip, ChipProps, makeStyles } from "@material-ui/core";
-import React from "react";
+import { Chip, withStyles } from "@material-ui/core";
 
-export const useStylesChip = makeStyles((theme) => ({
+export default withStyles((theme) => ({
   root: {
-    fontSize: "1.25em",
+    padding: `${theme.spacing(2)}px ${theme.spacing(1)}px`,
+    borderRadius: theme.spacing(2),
+  },
+  label: {
+    fontSize: "1.5em",
     fontWeight: "bold",
   },
-}));
-
-export default (props: ChipProps) => {
-  const classesChip = useStylesChip();
-
-  return <Chip classes={classesChip} {...props} />;
-};
+  avatar: {},
+}))(Chip);

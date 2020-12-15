@@ -17,9 +17,10 @@ import React from "react";
 import useModal from "../../../app/modals/useModal";
 import { ZoomIn } from "../../../common/components/TransitionComponents";
 import useBoolean from "../../../common/hooks/useBoolean";
-import { DiscoverMovieTagGroup } from "../../DiscoverMovieTag";
+import { DiscoverTagGroup } from "../../DiscoverTag";
 import { IDiscoverTag } from "../../query/types";
 import useDiscoverState from "../../redux/useDiscoverState";
+import NothingHere from "../../../common/components/NothingHere";
 
 export const DiscoverTagsHistoryForm = () => {
   const { setActiveTagsById, activeTagState } = useDiscoverState();
@@ -42,6 +43,8 @@ export const DiscoverTagsHistoryForm = () => {
     (state) => Object.keys(state.activeTagsById).length > 0
   );
 
+  const disabled = futureStates.length === 0 && pastStates.length === 0;
+
   return (
     <List>
       <ListItem>
@@ -51,8 +54,11 @@ export const DiscoverTagsHistoryForm = () => {
         />
 
         <ListItemSecondaryAction>
-          <IconButton onClick={isClearHistoryDialogOpen.setTrue}>
-            <Box color="text.secondary">
+          <IconButton
+            disabled={disabled}
+            onClick={isClearHistoryDialogOpen.setTrue}
+          >
+            <Box color={disabled ? "action.disabled" : "text.secondary"}>
               <DeleteIcon style={{ color: "inherit" }} />
             </Box>
           </IconButton>
@@ -81,6 +87,8 @@ export const DiscoverTagsHistoryForm = () => {
         </DialogActions>
       </Dialog>
 
+      {disabled && <NothingHere />}
+
       {futureStates.length > 0 && (
         <React.Fragment>
           <ListSubheader>Future</ListSubheader>
@@ -92,7 +100,7 @@ export const DiscoverTagsHistoryForm = () => {
                 handleClick(activeTagsById);
               }}
             >
-              <DiscoverMovieTagGroup
+              <DiscoverTagGroup
                 tagsById={activeTagsById}
                 ChipProps={{ variant: "outlined" }}
               />
@@ -111,7 +119,7 @@ export const DiscoverTagsHistoryForm = () => {
               handleClick(presentState.activeTagsById);
             }}
           >
-            <DiscoverMovieTagGroup
+            <DiscoverTagGroup
               tagsById={presentState.activeTagsById}
               ChipProps={{ variant: "outlined" }}
             />
@@ -131,7 +139,7 @@ export const DiscoverTagsHistoryForm = () => {
                 handleClick(activeTagsById);
               }}
             >
-              <DiscoverMovieTagGroup
+              <DiscoverTagGroup
                 tagsById={activeTagsById}
                 ChipProps={{ variant: "outlined" }}
               />

@@ -1,5 +1,11 @@
 import { isValidId, makeId } from "../../app/id";
-import { castJson, Json, makeTimestamp, Timestamp } from "../../utils";
+import {
+  castJson,
+  Json,
+  makeTimestamp,
+  Timestamp,
+  castNonEmptyString,
+} from "../../utils";
 import { castUserId, UserId } from "../../users/models";
 
 export type TmdbDiscoverTagsId = string & { _: "TmdbDiscoverTagsId" };
@@ -7,7 +13,8 @@ export type TmdbDiscoverTagsId = string & { _: "TmdbDiscoverTagsId" };
 export type TmdbDiscoverTags = {
   id: TmdbDiscoverTagsId;
   userId: UserId;
-  serializedTagsById: Json;
+  tagsById: Json;
+  key: string;
   createdAt: Timestamp;
 };
 
@@ -19,15 +26,18 @@ export const castTmdbDiscoverTagsId = (id: any) => {
 };
 
 export const makeTmdbDiscoverTags = ({
-  serializedTagsById,
+  key,
+  tagsById,
   userId,
 }: {
-  serializedTagsById: Json;
+  key: string;
+  tagsById: Json;
   userId: UserId;
 }): TmdbDiscoverTags => {
   return {
     id: castTmdbDiscoverTagsId(makeId()),
-    serializedTagsById: castJson(serializedTagsById),
+    key: castNonEmptyString(key),
+    tagsById: castJson(tagsById),
     userId: castUserId(userId),
     createdAt: makeTimestamp(),
   };

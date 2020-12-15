@@ -28,6 +28,13 @@ const cleanEntitySpec = <T>(specs: GenericRepositoryQuerySpec<T>) => {
     .filter((spec) => Object.entries(spec).length > 0);
 };
 
+/* 
+
+
+DOCS: http://knexjs.org/
+
+*/
+
 export class GenericRepositoryPostgres<I, Entity extends Identifiable<I>, Row>
   implements IGenericRepository<I, Entity>, IPostgresRespository {
   database: IPostgresDatabase;
@@ -140,7 +147,8 @@ export class GenericRepositoryPostgres<I, Entity extends Identifiable<I>, Row>
       .where((builder) => {
         for (const key of keys) {
           const column = String(this.mapEntityKeyToRowKey(key));
-          builder.orWhere(column, "like", `%${query}%`);
+          //WHATS "~*"? https://stackoverflow.com/questions/20336665/lower-like-vs-ilike
+          builder.orWhere(column, "~*", `${query}`);
         }
       })
       .orderBy(orderBy)

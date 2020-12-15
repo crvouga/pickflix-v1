@@ -1,10 +1,9 @@
+import { PaginationOptions } from "../../pagination";
 import { PostgresDatabaseTest } from "../database.postgres";
 import {
   FooRepositoryPostgres,
   makeFooArbitrary,
 } from "./foo-repository.postgres";
-import { range } from "ramda";
-import { PaginationOptions } from "../../pagination";
 
 const buildFooRepositoryPostgres = async () => {
   const database = new PostgresDatabaseTest();

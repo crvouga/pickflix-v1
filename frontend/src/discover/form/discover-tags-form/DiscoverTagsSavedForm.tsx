@@ -19,15 +19,17 @@ import {
   useInfiniteQueryPagination,
 } from "../../../common/infinite-scroll";
 import { Paginated } from "../../../common/types";
-import { DiscoverMovieTagGroup } from "../../DiscoverMovieTag";
-import { IDiscoverTag } from "../../query/types";
-import useDiscoverState from "../../redux/useDiscoverState";
 import { isEqualKeys } from "../../../common/utility";
+import SignInCallToAction from "../../../user/auth/SignInCallToAction";
+import WithAuthentication from "../../../user/auth/WithAuthentication";
+import { DiscoverTagGroup } from "../../DiscoverTag";
+import useDiscoverState from "../../redux/useDiscoverState";
 
-type TmdbDiscoverTags = {
+export type TmdbDiscoverTags = {
   id: string;
   userId: string;
-  serializedTagsById: string;
+  tagsById: string;
+  key: string;
   createdAt: number;
 };
 
@@ -99,7 +101,7 @@ const DiscoverTagsFormListItem = ({
   const removeDiscoverTagsMutation = useMutationRemoveDiscoverTags();
   const { close } = useModal("DiscoverTagsForm");
   const { activeTagState, setActiveTagsById } = useDiscoverState();
-  const tagsById = JSON.parse(tmdbDiscoverTags.serializedTagsById);
+  const tagsById = JSON.parse(tmdbDiscoverTags.tagsById);
 
   return (
     <ListItem
@@ -111,7 +113,7 @@ const DiscoverTagsFormListItem = ({
         setActiveTagsById(tagsById);
       }}
     >
-      <DiscoverMovieTagGroup
+      <DiscoverTagGroup
         tagsById={tagsById}
         ChipProps={{ variant: "outlined" }}
       />
@@ -132,7 +134,7 @@ const DiscoverTagsFormListItem = ({
   );
 };
 
-export const DiscoverTagsSavedForm = () => {
+export const DiscoverTagsSavedFormQueryContainer = () => {
   const query = useQueryDiscoverTags();
 
   if (query.error) {
@@ -165,5 +167,21 @@ export const DiscoverTagsSavedForm = () => {
         fetchMoreRef={query.fetchMoreRef}
       />
     </List>
+  );
+};
+
+export const DiscoverTagsSavedForm = () => {
+  return (
+    <WithAuthentication
+      renderAuthenticated={(currentUser) => {
+        return <DiscoverTagsSavedFormQueryContainer />;
+      }}
+      renderUnathenticated={() => {
+        return <SignInCallToAction />;
+      }}
+      renderDefault={() => {
+        return <LoadingBox marginTop={12} />;
+      }}
+    />
   );
 };

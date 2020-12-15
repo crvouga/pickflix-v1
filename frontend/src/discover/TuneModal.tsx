@@ -1,109 +1,72 @@
-import { Box, Typography, Switch, Divider } from "@material-ui/core";
-import Slider from "@material-ui/core/Slider";
-import { makeStyles } from "@material-ui/core/styles";
-import { descend, head, sort, sortBy, thunkify } from "ramda";
+import { Box, Divider, Typography, TypographyProps } from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
+import { sortBy } from "ramda";
 import React from "react";
 import { useQuery } from "react-query";
 import useModal from "../app/modals/useModal";
 import HorizontalScroll from "../common/components/HorizontalScroll";
-import LoadingBox from "../common/components/LoadingBox";
 import { ResponsiveDialog } from "../common/components/ResponsiveDialog";
-import BaseTag from "./BaseTag";
+import DiscoverTag from "./DiscoverTag";
 import { getMovieCertifications, queryKeys } from "./query";
 import {
-  getDecades,
-  SortByKey,
-  sortByKeys,
-  sortByKeyToName,
+  IDiscoverTag,
+  RELEASE_YEAR_TAGS,
+  RUNTIME_GTE_TAGS,
+  RUNTIME_LTE_TAGS,
+  SORT_BY_TAGS,
   TagType,
-  yearRangeToName,
+  VOTE_COUNT_LTE_TAGS,
+  VOTE_COUNT_GTE_TAGS,
+  VOTE_AVERAGE_GTE_TAGS,
+  VOTE_AVERAGE_LTE_TAGS,
 } from "./query/types";
 import useDiscoverState from "./redux/useDiscoverState";
-import { Skeleton } from "@material-ui/lab";
 
-const ReleaseYearRangeSection = () => {
-  const discoverTuneModal = useModal("DiscoverTune");
-  const { activateTag } = useDiscoverState();
+const Title = (props: TypographyProps) => (
+  <Box p={2} paddingBottom={1 / 2}>
+    <Typography variant="h6" {...props} />
+  </Box>
+);
 
-  const handleClick = (decade: [number, number]) => {
-    activateTag({
-      type: TagType.releaseYearRange,
-      id: decade.toString(),
-      range: decade,
-    });
-
-    discoverTuneModal.close();
-  };
-
+const Tags = ({
+  tags,
+  onClick,
+}: {
+  tags: IDiscoverTag[];
+  onClick?: (tag: IDiscoverTag) => void;
+}) => {
   return (
-    <React.Fragment>
-      <Box p={2} paddingBottom={1}>
-        <Typography variant="h6">Decades</Typography>
-      </Box>
-
-      <HorizontalScroll paddingX={2} p={1} marginBottom={1}>
-        {sort(descend(head), getDecades()).map((decade) => (
-          <Box key={decade.toString()} m={1 / 2}>
-            <BaseTag
-              clickable
-              variant="outlined"
-              label={yearRangeToName(decade)}
-              onClick={thunkify(handleClick)(decade)}
-            />
-          </Box>
-        ))}
-      </HorizontalScroll>
-    </React.Fragment>
+    <HorizontalScroll paddingX={2} p={1} marginBottom={1}>
+      {tags.map((tag) => (
+        <Box
+          key={tag.id}
+          m={1 / 2}
+          onClick={() => {
+            if (onClick) {
+              onClick(tag);
+            }
+          }}
+        >
+          <DiscoverTag clickable variant="outlined" tag={tag} />
+        </Box>
+      ))}
+    </HorizontalScroll>
   );
 };
 
-const SortBySection = () => {
-  const discoverTuneModal = useModal("DiscoverTune");
-  const { activateTag } = useDiscoverState();
-
-  const handleClick = (sortBy: SortByKey) => {
-    activateTag({
-      type: TagType.sortBy,
-      id: sortBy,
-      sortBy,
-    });
-    discoverTuneModal.close();
-  };
-
+const TagsSkeleton = () => {
   return (
-    <React.Fragment>
-      <Box p={2} paddingBottom={1}>
-        <Typography variant="h6">Sort By</Typography>
-      </Box>
-      <HorizontalScroll paddingX={2} p={1} marginBottom={1}>
-        {sortByKeys.map((sortBy) => (
-          <Box key={sortBy} marginRight={1} marginBottom={1}>
-            <BaseTag
-              clickable
-              variant="outlined"
-              label={sortByKeyToName(sortBy)}
-              onClick={thunkify(handleClick)(sortBy)}
-            />
-          </Box>
-        ))}
-      </HorizontalScroll>
-    </React.Fragment>
+    <HorizontalScroll paddingX={2} p={1} marginBottom={1}>
+      <Skeleton variant="rect" height="2.5em" width="100%" />
+    </HorizontalScroll>
   );
 };
 
-const CertificationsUS = () => {
-  const discoverTuneModal = useModal("DiscoverTune");
-  const { activateTag } = useDiscoverState();
-
-  const handleClick = (certification: string) => {
-    activateTag({
-      type: TagType.certification,
-      id: certification,
-      certification,
-      certificationCountry: "US",
-    });
-    discoverTuneModal.close();
-  };
+const TagsRatingContainer = ({
+  onClick,
+}: {
+  onClick?: (tag: IDiscoverTag) => void;
+}) => {
   const query = useQuery(queryKeys.certifications(), () =>
     getMovieCertifications()
   );
@@ -113,79 +76,69 @@ const CertificationsUS = () => {
   }
 
   if (!query.data) {
-    return (
-      <Box paddingX={2}>
-        <Skeleton variant="rect" height="2.75em" width="100%" />
-      </Box>
-    );
+    return <TagsSkeleton />;
   }
 
-  const certificationsUS = sortBy((_) => _.order, query.data.certifications.US);
+  const certificationsUSTags: IDiscoverTag[] = sortBy(
+    (_) => _.order,
+    query.data.certifications.US
+  ).map((certification) => ({
+    type: TagType.certification,
+    id: certification.certification,
+    certification: certification.certification,
+    certificationCountry: "US",
+  }));
 
-  return (
-    <HorizontalScroll paddingX={2} p={1} marginBottom={1}>
-      {certificationsUS.map((certification) => (
-        <Box key={certification.certification} marginRight={1}>
-          <BaseTag
-            onClick={() => handleClick(certification.certification)}
-            variant="outlined"
-            clickable
-            label={certification.certification}
-          />
-        </Box>
-      ))}
-    </HorizontalScroll>
-  );
-};
-
-const CertificationSection = () => {
-  return (
-    <React.Fragment>
-      <Box p={2} paddingBottom={1}>
-        <Typography variant="h6">Rating</Typography>
-      </Box>
-      <CertificationsUS />
-    </React.Fragment>
-  );
-};
-
-const RuntimeRangeSection = () => {
-  const [value, setValue] = React.useState<number[]>([20, 37]);
-
-  const handleChange = (event: any, newValue: number | number[]) => {
-    setValue(newValue as number[]);
-  };
-
-  return (
-    <React.Fragment>
-      <Box display="flex" alignItems="center" p={2} paddingBottom={4}>
-        <Box flex={1}>
-          <Typography variant="h6">Runtime</Typography>
-        </Box>
-        <Box>
-          <Switch color="primary" />
-        </Box>
-      </Box>
-      <Box paddingX={4}>
-        <Slider value={value} onChange={handleChange} valueLabelDisplay="on" />
-      </Box>
-    </React.Fragment>
-  );
+  return <Tags onClick={onClick} tags={certificationsUSTags} />;
 };
 
 export default () => {
   const { isOpen, close } = useModal("DiscoverTune");
+  const { activateTag } = useDiscoverState();
+
+  const handleClick = (tag: IDiscoverTag) => {
+    close();
+    activateTag(tag);
+  };
 
   return (
     <ResponsiveDialog open={isOpen} onClose={close} showDoneButton>
       <Box paddingBottom={2}>
-        <ReleaseYearRangeSection />
+        <Title>Decades</Title>
+        <Tags tags={RELEASE_YEAR_TAGS} onClick={handleClick} />
         <Divider />
-        <SortBySection />
+
+        <Title>Sort By</Title>
+        <Tags tags={SORT_BY_TAGS} onClick={handleClick} />
         <Divider />
-        <CertificationSection />
+
+        <Title>Rating</Title>
+        <TagsRatingContainer onClick={handleClick} />
         <Divider />
-        <RuntimeRangeSection />
+
+        <Title>Vote Count Less Than</Title>
+        <Tags tags={VOTE_COUNT_LTE_TAGS} onClick={handleClick} />
+        <Divider />
+
+        <Title>Vote Count Greater Than</Title>
+        <Tags tags={VOTE_COUNT_GTE_TAGS} onClick={handleClick} />
+        <Divider />
+
+        <Title>Vote Average Less Than</Title>
+        <Tags tags={VOTE_AVERAGE_LTE_TAGS} onClick={handleClick} />
+        <Divider />
+
+        <Title>Vote Average Greater Than</Title>
+        <Tags tags={VOTE_AVERAGE_GTE_TAGS} onClick={handleClick} />
+        <Divider />
+
+        <Title>Runtime Less Than</Title>
+        <Tags tags={RUNTIME_LTE_TAGS} onClick={handleClick} />
+        <Divider />
+
+        <Title>Runtime Greater Than</Title>
+        <Tags tags={RUNTIME_GTE_TAGS} onClick={handleClick} />
+        <Divider />
       </Box>
     </ResponsiveDialog>
   );

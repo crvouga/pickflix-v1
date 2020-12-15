@@ -1,7 +1,7 @@
 import express, { IRouter } from "express";
 import { Dependencies } from "../types";
 import { castUserId } from "../../../users/models";
-import { serializeJson } from "../../../utils";
+import { serializeJson, castNonEmptyString, castJson } from "../../../utils";
 import { castTmdbDiscoverTagsId } from "../../models/tmdb-discover-tags";
 import {
   makePaginationOptions,
@@ -65,13 +65,14 @@ export const tmdb = ({ middlewares, mediaLogic }: Dependencies) => (
       try {
         const userId = castUserId(req.user?.id);
 
-        const serializedTagsById =
-          //WARNING! This is important for tags to achieve uniqueness!
-          serializeJson(req.body.tagsById);
+        const key = castNonEmptyString(req.body.key);
+
+        const tagsById = castJson(JSON.stringify(req.body.tagsById));
 
         await mediaLogic.addTmdbDiscoverTags({
           userId,
-          serializedTagsById,
+          key,
+          tagsById,
         });
 
         res.status(201).end();

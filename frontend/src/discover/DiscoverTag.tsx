@@ -1,8 +1,10 @@
 import { Avatar, Box, ChipProps } from "@material-ui/core";
 import BusinessIcon from "@material-ui/icons/Business";
+import ScheduleIcon from "@material-ui/icons/Schedule";
 import React from "react";
 import { capitalizeWords } from "../common/utility";
 import makeImageUrl from "../media/tmdb/makeImageUrl";
+import { commas, toRuntimeShort } from "../movie/utils";
 import Tag from "./BaseTag";
 import {
   IDiscoverTag,
@@ -10,13 +12,12 @@ import {
   TagType,
   yearRangeToName,
 } from "./query/types";
-import ScheduleIcon from "@material-ui/icons/Schedule";
 
 type Props = ChipProps & {
   tag: IDiscoverTag;
 };
 
-const DiscoverMovieTag = (props: Props) => {
+const DiscoverTag = (props: Props) => {
   const { tag, ...chipProps } = props;
 
   switch (tag.type) {
@@ -61,6 +62,38 @@ const DiscoverMovieTag = (props: Props) => {
         />
       );
 
+    case TagType.runtimeGte:
+      return (
+        <Tag
+          label={`> ${toRuntimeShort({ runtime: tag.runtime })}`}
+          {...chipProps}
+        />
+      );
+
+    case TagType.runtimeLte:
+      return (
+        <Tag
+          label={`< ${toRuntimeShort({ runtime: tag.runtime })}`}
+          {...chipProps}
+        />
+      );
+
+    case TagType.voteAverageGte:
+      return <Tag label={`> ${tag.voteAverage}/10 ★`} {...chipProps} />;
+
+    case TagType.voteAverageLte:
+      return <Tag label={`< ${tag.voteAverage}/10 ★`} {...chipProps} />;
+
+    case TagType.voteCountGte:
+      return (
+        <Tag label={`> ${commas(tag.voteCount)} ★ count`} {...chipProps} />
+      );
+
+    case TagType.voteCountLte:
+      return (
+        <Tag label={`< ${commas(tag.voteCount)} ★ count`} {...chipProps} />
+      );
+
     default:
       return (
         <Tag
@@ -71,7 +104,7 @@ const DiscoverMovieTag = (props: Props) => {
   }
 };
 
-export const DiscoverMovieTagGroup = ({
+export const DiscoverTagGroup = ({
   tagsById,
   ChipProps,
 }: {
@@ -82,11 +115,11 @@ export const DiscoverMovieTagGroup = ({
     <Box display="flex" flexWrap="wrap" alignItems="center">
       {Object.values(tagsById).map((tag) => (
         <Box key={tag.id} m={1 / 2}>
-          <DiscoverMovieTag tag={tag} {...ChipProps} />
+          <DiscoverTag tag={tag} {...ChipProps} />
         </Box>
       ))}
     </Box>
   );
 };
 
-export default DiscoverMovieTag;
+export default DiscoverTag;

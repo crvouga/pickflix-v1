@@ -1,8 +1,7 @@
 import { Box, makeStyles } from "@material-ui/core";
 import React, { useEffect, useRef } from "react";
-import DiscoverMovieTag from "./DiscoverMovieTag";
+import DiscoverTag from "./DiscoverTag";
 import useDiscoverState from "./redux/useDiscoverState";
-import { descend, sort } from "ramda";
 
 const useStyles = makeStyles((theme) => ({
   chipContainer: {
@@ -36,7 +35,7 @@ export default () => {
     <div ref={chipContainerRef} className={classes.chipContainer}>
       {activeTags.map((tag) => (
         <Box key={tag.id} marginRight={1}>
-          <DiscoverMovieTag
+          <DiscoverTag
             variant="default"
             tag={tag}
             clickable
@@ -48,7 +47,7 @@ export default () => {
       ))}
       {nonActiveTags.map((tag) => (
         <Box key={tag.id} marginRight={1}>
-          <DiscoverMovieTag
+          <DiscoverTag
             variant="outlined"
             tag={tag}
             clickable

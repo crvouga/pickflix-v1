@@ -11,21 +11,30 @@ import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
 import { BackendAPI } from "../../../backend-api";
 import { ZoomIn } from "../../../common/components/TransitionComponents";
 import useBoolean from "../../../common/hooks/useBoolean";
-import { DiscoverMovieTagGroup } from "../../DiscoverMovieTag";
+import { DiscoverTagGroup } from "../../DiscoverTag";
 import { IDiscoverTag } from "../../query/types";
 import useDiscoverState from "../../redux/useDiscoverState";
 import { useDiscoverPageUi } from "../../redux/discover-page-ui";
 
 const postDiscoverTags = async ({
+  key,
   tagsById,
 }: {
+  key: string;
   tagsById: {
     [id: string]: IDiscoverTag;
   };
 }) => {
   await BackendAPI.post("/api/media/tmdb/discover/tags", {
+    key,
     tagsById,
   });
+};
+
+const tagsByIdToKey = (tagsById: { [id: string]: IDiscoverTag }) => {
+  const ids = Object.keys(tagsById);
+  ids.sort();
+  return ids.join(",");
 };
 
 export const SaveDiscoverTagsFormModal = () => {
@@ -39,7 +48,9 @@ export const SaveDiscoverTagsFormModal = () => {
     try {
       isLoading.setTrue();
       close();
+
       await postDiscoverTags({
+        key: tagsByIdToKey(activeTagState.present.activeTagsById),
         tagsById: activeTagState.present.activeTagsById,
       });
       discoverPageUi.setDiscoverTagsTabValue("Saved");
@@ -56,9 +67,7 @@ export const SaveDiscoverTagsFormModal = () => {
     <Dialog TransitionComponent={ZoomIn} open={isOpen} onClose={close}>
       <DialogTitle>Save?</DialogTitle>
       <DialogContent>
-        <DiscoverMovieTagGroup
-          tagsById={activeTagState.present.activeTagsById}
-        />
+        <DiscoverTagGroup tagsById={activeTagState.present.activeTagsById} />
       </DialogContent>
       <DialogActions>
         <Button size="large" onClick={close}>

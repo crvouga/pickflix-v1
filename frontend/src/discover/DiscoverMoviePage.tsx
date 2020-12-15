@@ -1,5 +1,5 @@
 import { Box, Container, makeStyles, Toolbar } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React from "react";
 import { APP_BAR_HEIGHT } from "../app/navigation/constants";
 import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
 import {
@@ -11,11 +11,11 @@ import {
   UndoButton,
 } from "./Actions";
 import DiscoverMovieResults from "./DiscoverMovieResults";
-import DiscoverMovieTags from "./DiscoverMovieTags";
+import DiscoverTags from "./DiscoverTags";
+import { DiscoverTagsFormModal } from "./form/discover-tags-form/DiscoverTagsForm";
 import { SaveDiscoverTagsFormModal } from "./form/save-discover-tags-form/SaveDiscoverTagsFormModal";
 import SearchModal from "./search/SearchModal";
 import TuneModal from "./TuneModal";
-import { DiscoverTagsFormModal } from "./form/discover-tags-form/DiscoverTagsForm";
 
 const useStyles = makeStyles((theme) => ({
   sticky: {
@@ -56,7 +56,7 @@ export default () => {
           </Toolbar>
 
           <Box paddingBottom={2}>
-            <DiscoverMovieTags />
+            <DiscoverTags />
           </Box>
         </Container>
       </Box>

@@ -33,14 +33,16 @@ export class MediaLogic {
 
   async addTmdbDiscoverTags({
     userId,
-    serializedTagsById,
+    key,
+    tagsById,
   }: {
     userId: UserId;
-    serializedTagsById: Json;
+    key: string;
+    tagsById: Json;
   }) {
     const [found] = await this.tmdbDiscoverTagsRepository.find({
       userId,
-      serializedTagsById,
+      key,
     });
 
     if (found) {
@@ -49,7 +51,8 @@ export class MediaLogic {
 
     const tmdbDiscoverTags = makeTmdbDiscoverTags({
       userId,
-      serializedTagsById,
+      key,
+      tagsById,
     });
 
     await this.tmdbDiscoverTagsRepository.add(tmdbDiscoverTags);

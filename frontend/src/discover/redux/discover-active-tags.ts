@@ -1,10 +1,10 @@
 import {
+  bindActionCreators,
   createAction,
   createReducer,
-  createSelector,
-  bindActionCreators,
 } from "@reduxjs/toolkit";
 import equals from "fast-deep-equal";
+import { useDispatch, useSelector } from "react-redux";
 import undoable, {
   includeAction,
   StateWithHistory,
@@ -12,7 +12,6 @@ import undoable, {
 } from "redux-undo";
 import { AppState } from "../../app/redux/types";
 import { IDiscoverTag } from "../query/types";
-import { useDispatch, useSelector } from "react-redux";
 
 const name = "discoverActiveTags";
 

@@ -2,7 +2,7 @@ import { List } from "@material-ui/core";
 import React from "react";
 import ListItemSkeleton from "../../common/components/ListItemSkeleton";
 import { IDiscoverTag } from "../query/types";
-import DiscoverMovieTagListItem from "./DiscoverMovieTagListItem";
+import DiscoverTagListItem from "./DiscoverTagListItem";
 import useSearchResults from "./useSearchResults";
 
 type Props = {
@@ -20,7 +20,7 @@ export default ({ searchQuery, onClick }: Props) => {
   return (
     <List>
       {tags.map((tag) => (
-        <DiscoverMovieTagListItem
+        <DiscoverTagListItem
           key={tag.id}
           button={true}
           onClick={handleClick(tag)}

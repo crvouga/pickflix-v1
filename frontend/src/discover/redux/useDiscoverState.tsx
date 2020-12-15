@@ -1,5 +1,5 @@
 import { descend, dissoc } from "ramda";
-import { IDiscoverTag, UNIQUE_TAG_TYPES } from "../query/types";
+import { IDiscoverTag, UNIQUE_TAG_TYPES, TagType } from "../query/types";
 import { useDiscoverActiveTagsState } from "./discover-active-tags";
 import { useDiscoverTagsState } from "./discover-tags";
 
@@ -30,23 +30,22 @@ export default () => {
   const activateTag = (newActiveTag: IDiscoverTag) => {
     const activeTagsById = activeTagState.present.activeTagsById;
 
-    const newActiveTagsById: { [id: string]: IDiscoverTag } = Object.entries(
-      activeTagsById
-    ).reduce(
-      (byId, [id, activeTag]) =>
+    const byId: { [id: string]: IDiscoverTag } = {};
+
+    for (const [id, activeTag] of Object.entries(activeTagsById)) {
+      if (
         activeTag.type === newActiveTag.type &&
         newActiveTag.type in UNIQUE_TAG_TYPES
-          ? byId
-          : {
-              ...byId,
-              [id]: activeTag,
-            },
-      {}
-    );
+      ) {
+        continue;
+      }
 
-    newActiveTagsById[newActiveTag.id] = newActiveTag;
+      byId[id] = activeTag;
+    }
 
-    setActiveTagsById(newActiveTagsById);
+    byId[newActiveTag.id] = newActiveTag;
+
+    setActiveTagsById(byId);
   };
 
   const deactivateTag = (tag: IDiscoverTag) => {
