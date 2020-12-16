@@ -173,6 +173,7 @@ export interface MovieCreditCast {
   castId?: string;
   character?: string;
   order?: number;
+  popularity: number;
 }
 
 export interface MovieCreditCrew {
@@ -183,6 +184,7 @@ export interface MovieCreditCrew {
   gender?: number | null;
   department?: string;
   job?: string;
+  popularity: number;
 }
 
 export type MovieCredit = MovieCreditCast & MovieCreditCrew;

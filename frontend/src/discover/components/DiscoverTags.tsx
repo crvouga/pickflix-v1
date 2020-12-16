@@ -1,4 +1,4 @@
-import { Box, ChipProps } from "@material-ui/core";
+import { Box, ChipProps, BoxProps } from "@material-ui/core";
 import React from "react";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
 import { IDiscoverTag } from "../query/types";
@@ -8,13 +8,19 @@ export const DiscoverTags = ({
   tags,
   onClick,
   ChipProps,
+  BoxProps = {
+    paddingX: 2,
+    paddingBottom: 1,
+    marginBottom: 1,
+  },
 }: {
   tags: IDiscoverTag[];
   onClick?: (tag: IDiscoverTag) => void;
   ChipProps?: ChipProps;
+  BoxProps?: BoxProps;
 }) => {
   return (
-    <HorizontalScroll paddingX={2} p={1} marginBottom={1}>
+    <HorizontalScroll {...BoxProps}>
       {tags.map((tag) => (
         <Box
           key={tag.id}

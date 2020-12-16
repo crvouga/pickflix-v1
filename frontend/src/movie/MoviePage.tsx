@@ -36,6 +36,7 @@ import ReviewsAndComments from "./review/ReviewsAndComments";
 import ReviewsSummary from "./review/ReviewsSummary";
 import YourReview from "./review/YourReview";
 import MovieVideo from "./video/MovieVideo";
+import MovieDiscover from "./discover/MovieDiscover";
 
 const ToggleIcon = ({ on }: { on: boolean }) => {
   return on ? <ToggleOnOutlinedIcon /> : <ToggleOffOutlinedIcon />;
@@ -152,6 +153,13 @@ export default () => {
         <Box paddingBottom={2}>
           <MovieCredits credits={credits} />
         </Box>
+
+        <MovieDiscover
+          releaseDates={releaseDates}
+          details={details}
+          credits={credits}
+        />
+
         {details.belongsToCollection && (
           <Box paddingBottom={2}>
             <MovieCollection collectionId={details.belongsToCollection.id} />

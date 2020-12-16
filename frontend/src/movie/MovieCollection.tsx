@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { BackendAPI } from "../backend-api";
 import { Collection } from "../media/tmdb/types";
 import MoviePosterScroll from "./components/MoviePosterScroll";
+import ReadMoreTypography from "../common/components/ReadMoreTypography";
 
 const queryKeys = {
   collection: (collectionId: string) => ["collection", collectionId],
@@ -37,9 +38,9 @@ export default ({ collectionId }: { collectionId: string }) => {
     <React.Fragment>
       <Box paddingX={2} paddingBottom={1}>
         <Typography variant="h6">{name}</Typography>
-        <Typography color="textSecondary" variant="body2">
+        <ReadMoreTypography color="textSecondary" variant="body2">
           {overview}
-        </Typography>
+        </ReadMoreTypography>
       </Box>
       <MoviePosterScroll movies={parts} />
     </React.Fragment>
