@@ -15,15 +15,10 @@ import {
 import ListCard from "./ListCard";
 import ListCardCallToAction from "./ListCardCallToAction";
 import ListCardSkeleton from "./ListCardSkeleton";
+import NothingHere from "../../../common/components/NothingHere";
 
 export const ListCardGridEmpty = () => {
-  return (
-    <Box m={6}>
-      <Typography align="center" variant="h6" color="textSecondary">
-        No Lists
-      </Typography>
-    </Box>
-  );
+  return <NothingHere />;
 };
 
 const DEFAULT_ITEM_PROPS: GridProps = {

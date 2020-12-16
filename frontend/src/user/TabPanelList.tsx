@@ -1,10 +1,10 @@
 import {
   Box,
+  Chip,
   IconButton,
   Menu,
   MenuItem,
   Typography,
-  Chip,
 } from "@material-ui/core";
 import FilterListOutlinedIcon from "@material-ui/icons/FilterListOutlined";
 import React, { useState } from "react";
@@ -13,7 +13,6 @@ import {
   ListCardGridContainer,
 } from "../list/lists/card/ListCardGrid";
 import { UserAggergation } from "./query";
-import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 enum Filter {
   Owner = "Owner",
   Editor = "Editor",

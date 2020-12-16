@@ -132,6 +132,8 @@ export const buildRepositoriesFileSystem = async () => {
 export const buildRepositoriesPostgres = async (
   database: IPostgresDatabase
 ) => {
+  console.log("using postgres");
+
   const userRepository = new UserRespositoryPostgres(database);
   const credentialRepository = new CredentialRepositoryPostgres(database);
   const reviewRepository = new ReviewRepositoryPostgres(database);

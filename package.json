@@ -5,7 +5,7 @@
     "heroku-postbuild": "cd frontend && npm install && npm run build",
     "heroku-write-env": "heroku config -s -a crvouga-pickflix > .env",
     "start": "cd backend && npm run start",
-    "heroku-local": "npm run heroku-write-env && npm install && npm run heroku-postbuild && PORT=9000 heroku local"
+    "heroku-local": "npm run heroku-write-env && npm install && npm run heroku-postbuild && respositoryImplementation=postgres PORT=9000 heroku local"
   },
   "name": "pickflix",
   "version": "1.0.0",

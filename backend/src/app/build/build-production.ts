@@ -4,6 +4,7 @@ import { ListLogic } from "../../lists/logic/logic";
 import { MediaLogic } from "../../media/logic/logic";
 import { ReviewLogic } from "../../reviews/logic/logic";
 import { UserLogic } from "../../users/logic/logic";
+import { PostgresDatabaseProduction } from "../data-access/database.postgres";
 import keyv from "../data-access/keyv.mongo";
 import { EmailLogic } from "../email";
 import { createEventEmitter, Events } from "../events";
@@ -13,16 +14,16 @@ import {
 } from "../express/authentication-middleware";
 import { makeExpressApp } from "../express/make-express-app";
 import { ExpressAppDependencies } from "../express/types";
-import {
-  buildRepositoriesHashMap,
-  buildRepositoriesPostgres,
-} from "./build-repositories";
-import { PostgresDatabaseProduction } from "../data-access/database.postgres";
+import { buildRepositoriesPostgres } from "./build-repositories";
 
 const database = new PostgresDatabaseProduction();
 
 export const buildLogicProduction = async () => {
-  const { repositories } = buildRepositoriesHashMap();
+  const { repositories, initializeAllTables } = await buildRepositoriesPostgres(
+    database
+  );
+
+  await initializeAllTables();
 
   const eventEmitter = createEventEmitter<Events>();
 

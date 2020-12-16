@@ -5,8 +5,10 @@ import configuration from "./configuration";
 const buildAppSwitch = () => {
   switch (configuration.NODE_ENV) {
     case "production":
+      console.log("using production build");
       return buildAppProduction();
     default:
+      console.log("using development build");
       return buildAppDevelopment();
   }
 };

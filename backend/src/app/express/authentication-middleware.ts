@@ -11,16 +11,16 @@ import makeFileStore from "session-file-store";
 import { castPassword } from "../../users/models";
 
 const getSessionStore = () => {
+  const FileStore = makeFileStore(session);
+
   switch (configuration.NODE_ENV) {
     case "production":
-      const MongoStore = makeMongoStore(session);
-      return new MongoStore({
-        url: configuration.MONGODB_CONNECTION_URI,
-        mongoOptions: {},
+      return new FileStore({
+        logFn: () => {},
+        path: `${configuration.PATH_TO_FILE_STORE}/session`,
       });
 
     case "development":
-      const FileStore = makeFileStore(session);
       return new FileStore({
         logFn: () => {},
         path: `${configuration.PATH_TO_FILE_STORE}/session`,
