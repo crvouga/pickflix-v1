@@ -37,6 +37,31 @@ const tagsByIdToKey = (tagsById: { [id: string]: IDiscoverTag }) => {
   return ids.join(",");
 };
 
+export const useSaveDiscoverTagsMutation = () => {
+  const { activeTagState } = useDiscoverState();
+  const discoverPageUi = useDiscoverPageUi();
+  const snackbar = useSnackbar();
+
+  const submit = async () => {
+    try {
+      await postDiscoverTags({
+        key: tagsByIdToKey(activeTagState.present.activeTagsById),
+        tagsById: activeTagState.present.activeTagsById,
+      });
+      discoverPageUi.setDiscoverTagsTabValue("Saved");
+      snackbar.display({
+        message: "Saved",
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  return {
+    submit,
+  };
+};
+
 export const SaveDiscoverTagsFormModal = () => {
   const { activeTagState } = useDiscoverState();
   const discoverPageUi = useDiscoverPageUi();

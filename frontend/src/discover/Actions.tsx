@@ -12,10 +12,11 @@ import React from "react";
 import useModal from "../app/modals/useModal";
 import useDiscoverState from "./redux/useDiscoverState";
 import WithAuthentication from "../user/auth/WithAuthentication";
+import { useSaveDiscoverTagsMutation } from "./form/save-discover-tags-form/SaveDiscoverTagsFormModal";
 
 export const SaveButton = (props: IconButtonProps) => {
   const { activeTags } = useDiscoverState();
-  const { open } = useModal("SaveDiscoverTagsForm");
+  const { submit } = useSaveDiscoverTagsMutation();
   const signInCallToAction = useModal("SignInCallToAction");
   return (
     <WithAuthentication
@@ -23,7 +24,7 @@ export const SaveButton = (props: IconButtonProps) => {
         <IconButton
           disabled={activeTags.length === 0}
           onClick={() => {
-            open();
+            submit();
           }}
           {...props}
         >
