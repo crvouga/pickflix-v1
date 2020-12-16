@@ -25,6 +25,7 @@ import SwapHorizIcon from "@material-ui/icons/SwapHoriz";
 import React from "react";
 import { useHistory } from "react-router";
 import useModal from "../../../app/modals/useModal";
+import LoadingDialog from "../../../common/components/LoadingDialog";
 import {
   DoneButton,
   ResponsiveDialog,
@@ -45,7 +46,6 @@ import {
   useDeleteEditorsMutation,
   useTransferOwnershipMutation,
 } from "../../query";
-import LoadingDialog from "../../../common/components/LoadingDialog";
 
 const EditorListItem = ({
   list,
@@ -208,9 +208,9 @@ export const PermissionForm = ({ list }: { list: ListAggergation }) => {
   const addPermissionFormModal = useModal("AddPermissionForm");
   return (
     <List>
-      <ListCard list={list} />
+      {/* <ListCard list={list} /> */}
 
-      <Divider />
+      {/* <Divider /> */}
 
       <ListItem
         button
