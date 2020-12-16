@@ -40,7 +40,6 @@ import WithAuthentication from "../../../user/auth/WithAuthentication";
 import AvatarUser from "../../../user/components/AvatarUser";
 import { User } from "../../../user/query";
 import { makeUserPageRoute } from "../../../user/UserPage";
-import ListCard from "../../lists/card/ListCard";
 import {
   ListAggergation,
   useDeleteEditorsMutation,

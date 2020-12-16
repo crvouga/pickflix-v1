@@ -25,8 +25,6 @@ export const reviews = ({ reviewLogic, middlewares }: Dependencies) => (
     try {
       const userId = req.query.userId
         ? castUserId(req.query.userId)
-        : req.user
-        ? castUserId(req.user.id)
         : undefined;
 
       const id = req.query.id ? castReviewId(req.query.id) : undefined;

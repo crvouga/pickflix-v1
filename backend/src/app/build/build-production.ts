@@ -13,7 +13,13 @@ import {
 } from "../express/authentication-middleware";
 import { makeExpressApp } from "../express/make-express-app";
 import { ExpressAppDependencies } from "../express/types";
-import { buildRepositoriesHashMap } from "./build-repositories";
+import {
+  buildRepositoriesHashMap,
+  buildRepositoriesPostgres,
+} from "./build-repositories";
+import { PostgresDatabaseProduction } from "../data-access/database.postgres";
+
+const database = new PostgresDatabaseProduction();
 
 export const buildLogicProduction = async () => {
   const { repositories } = buildRepositoriesHashMap();

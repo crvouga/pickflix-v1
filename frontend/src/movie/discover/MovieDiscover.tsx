@@ -1,5 +1,5 @@
 import { Box, Typography, TypographyProps } from "@material-ui/core";
-import { descend, sort } from "ramda";
+import { descend, sort, uniqBy } from "ramda";
 import React from "react";
 import { useHistory } from "react-router";
 import { DiscoverTags } from "../../discover/components/DiscoverTags";
@@ -32,12 +32,15 @@ const creditToWithPeopleTag = (credit: MovieCredit): IDiscoverTag => ({
 });
 
 const creditsToPeopleTags = (credits: MovieCredits): IDiscoverTag[] =>
-  sort(
-    descend((credit) => credit.popularity || 0),
-    [...credits.crew, ...credits.cast]
-  )
-    .map(creditToWithPeopleTag)
-    .slice(0, 100);
+  uniqBy(
+    (tag) => tag.id,
+    sort(
+      descend((credit) => credit.popularity || 0),
+      [...credits.crew, ...credits.cast]
+    )
+      .map(creditToWithPeopleTag)
+      .slice(0, 100)
+  );
 
 const detailsToGenreTags = (details: MovieDetails): IDiscoverTag[] =>
   details.genres.map((genre) => ({
