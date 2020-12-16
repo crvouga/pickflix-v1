@@ -1,5 +1,5 @@
 import { Box, Container, makeStyles, Toolbar } from "@material-ui/core";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { APP_BAR_HEIGHT } from "../app/navigation/constants";
 import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
 import {
@@ -10,10 +10,11 @@ import {
   TuneButton,
   UndoButton,
 } from "./Actions";
+import DiscoverTag from "./components/DiscoverTag";
 import DiscoverMovieResults from "./DiscoverMovieResults";
-import DiscoverTags from "./DiscoverTags";
 import { DiscoverTagsFormModal } from "./form/discover-tags-form/DiscoverTagsForm";
 import { SaveDiscoverTagsFormModal } from "./form/save-discover-tags-form/SaveDiscoverTagsFormModal";
+import useDiscoverState from "./redux/useDiscoverState";
 import SearchModal from "./search/SearchModal";
 import TuneModal from "./TuneModal";
 
@@ -29,10 +30,32 @@ const useStyles = makeStyles((theme) => ({
       top: APP_BAR_HEIGHT,
     },
   },
+  chipContainer: {
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "nowrap",
+    overflowX: "scroll",
+    //
+    paddingLeft: theme.spacing(2),
+  },
 }));
 
 export default () => {
   const classes = useStyles();
+
+  const {
+    activeTags,
+    nonActiveTags,
+    deactivateTag,
+    activateTag,
+  } = useDiscoverState();
+
+  const chipContainerRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (chipContainerRef.current) {
+      chipContainerRef.current.scrollLeft = 0;
+    }
+  }, [activeTags.length]);
 
   return (
     <React.Fragment>
@@ -56,7 +79,32 @@ export default () => {
           </Toolbar>
 
           <Box paddingBottom={2}>
-            <DiscoverTags />
+            <div ref={chipContainerRef} className={classes.chipContainer}>
+              {activeTags.map((tag) => (
+                <Box key={tag.id} marginRight={1}>
+                  <DiscoverTag
+                    tag={tag}
+                    onClick={() => {
+                      deactivateTag(tag);
+                    }}
+                    clickable
+                    variant="default"
+                  />
+                </Box>
+              ))}
+              {nonActiveTags.map((tag) => (
+                <Box key={tag.id} marginRight={1}>
+                  <DiscoverTag
+                    tag={tag}
+                    onClick={() => {
+                      activateTag(tag);
+                    }}
+                    clickable
+                    variant="outlined"
+                  />
+                </Box>
+              ))}
+            </div>
           </Box>
         </Container>
       </Box>

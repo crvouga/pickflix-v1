@@ -17,7 +17,7 @@ import React from "react";
 import useModal from "../../../app/modals/useModal";
 import { ZoomIn } from "../../../common/components/TransitionComponents";
 import useBoolean from "../../../common/hooks/useBoolean";
-import { DiscoverTagGroup } from "../../DiscoverTag";
+import { DiscoverTagGroup } from "../../components/DiscoverTag";
 import { IDiscoverTag } from "../../query/types";
 import useDiscoverState from "../../redux/useDiscoverState";
 import NothingHere from "../../../common/components/NothingHere";

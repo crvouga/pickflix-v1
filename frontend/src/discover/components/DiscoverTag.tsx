@@ -2,16 +2,16 @@ import { Avatar, Box, ChipProps } from "@material-ui/core";
 import BusinessIcon from "@material-ui/icons/Business";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 import React from "react";
-import { capitalizeWords } from "../common/utility";
-import makeImageUrl from "../media/tmdb/makeImageUrl";
-import { commas, toRuntimeShort } from "../movie/utils";
+import { capitalizeWords } from "../../common/utility";
+import makeImageUrl from "../../media/tmdb/makeImageUrl";
+import { commas, toRuntimeShort } from "../../movie/utils";
 import Tag from "./BaseTag";
 import {
   IDiscoverTag,
   sortByKeyToName,
   TagType,
   yearRangeToName,
-} from "./query/types";
+} from "../query/types";
 
 type Props = ChipProps & {
   tag: IDiscoverTag;
@@ -54,7 +54,11 @@ const DiscoverTag = (props: Props) => {
         <Tag
           label={tag.name}
           avatar={
-            <Avatar variant="square" src={makeImageUrl(1, tag)}>
+            <Avatar
+              style={{ backgroundColor: "white" }}
+              variant="square"
+              src={makeImageUrl(1, tag)}
+            >
               <BusinessIcon />
             </Avatar>
           }

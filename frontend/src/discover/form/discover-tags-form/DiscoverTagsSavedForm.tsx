@@ -22,7 +22,7 @@ import { Paginated } from "../../../common/types";
 import { isEqualKeys } from "../../../common/utility";
 import SignInCallToAction from "../../../user/auth/SignInCallToAction";
 import WithAuthentication from "../../../user/auth/WithAuthentication";
-import { DiscoverTagGroup } from "../../DiscoverTag";
+import { DiscoverTagGroup } from "../../components/DiscoverTag";
 import useDiscoverState from "../../redux/useDiscoverState";
 
 export type TmdbDiscoverTags = {

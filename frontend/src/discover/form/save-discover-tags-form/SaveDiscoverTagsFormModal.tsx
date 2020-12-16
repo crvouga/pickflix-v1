@@ -11,7 +11,7 @@ import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
 import { BackendAPI } from "../../../backend-api";
 import { ZoomIn } from "../../../common/components/TransitionComponents";
 import useBoolean from "../../../common/hooks/useBoolean";
-import { DiscoverTagGroup } from "../../DiscoverTag";
+import { DiscoverTagGroup } from "../../components/DiscoverTag";
 import { IDiscoverTag } from "../../query/types";
 import useDiscoverState from "../../redux/useDiscoverState";
 import { useDiscoverPageUi } from "../../redux/discover-page-ui";

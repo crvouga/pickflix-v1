@@ -6,7 +6,7 @@ import { useQuery } from "react-query";
 import useModal from "../app/modals/useModal";
 import HorizontalScroll from "../common/components/HorizontalScroll";
 import { ResponsiveDialog } from "../common/components/ResponsiveDialog";
-import DiscoverTag from "./DiscoverTag";
+import DiscoverTag from "./components/DiscoverTag";
 import { getMovieCertifications, queryKeys } from "./query";
 import {
   IDiscoverTag,
