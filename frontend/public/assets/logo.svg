@@ -27,5 +27,4 @@
 
   <text mask="url(#myMask)" text-anchor="middle" x="50%" y="100px" fill="url(#bluegreen)" class="root">PF</text>
   
-  
 </svg>
