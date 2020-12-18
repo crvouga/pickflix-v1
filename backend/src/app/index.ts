@@ -1,24 +1,25 @@
+import { getNodeEnv } from "../config";
 import { buildAppDevelopment } from "./build/build-development";
 import { buildAppProduction } from "./build/build-production";
-import configuration from "./configuration";
 
 const buildAppSwitch = () => {
-  switch (configuration.NODE_ENV) {
+  switch (getNodeEnv()) {
     case "production":
-      console.log("using production build");
       return buildAppProduction();
-    default:
-      console.log("using development build");
+
+    case "development":
       return buildAppDevelopment();
+
+    default:
+      throw new Error("unsupported case");
   }
 };
 
 export const startServer = async () => {
   const { app } = await buildAppSwitch();
 
-  app.listen(configuration.PORT, () => {
-    console.info(
-      `\n\nServer Listening!\nhttp://localhost:${configuration.PORT}/\n\n`
-    );
+  const PORT = process.env.PORT || "5000";
+  app.listen(PORT, () => {
+    console.info(`\n\nServer Listening!\nhttp://localhost:${PORT}/\n\n`);
   });
 };

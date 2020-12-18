@@ -1,12 +1,13 @@
 {
   "scripts": {
-    "tests-with-postgres": "respositoryImplementation=postgres npx jest --runInBand --detectOpenHandles --unhandled-rejections=strict",
+    "tests-with-postgres": "REPOSITORY_IMPLEMENTATION=postgres npx jest --runInBand --detectOpenHandles --unhandled-rejections=strict",
     "tests": "npx jest",
-    "development-with-postgres": "respositoryImplementation=postgres nodemon build/index.js",
+    "development-with-postgres": "REPOSITORY_IMPLEMENTATION=postgres nodemon build/index.js",
     "development": "nodemon build/index.js",
     "tsc": "tsc -p tsconfig.production.json",
     "postinstall": "npm run tsc",
-    "start": "node build/index.js"
+    "start": "node build/index.js",
+    "heroku-write-env": "heroku config -s -a crvouga-pickflix > .env"
   },
   "engines": {
     "node": "12.18.2",
@@ -19,8 +20,11 @@
   "license": "ISC",
   "dependencies": {
     "@keyv/mongo": "^1.1.0",
+    "@keyv/postgres": "^1.0.16",
+    "@keyv/redis": "^2.1.2",
     "@sendgrid/mail": "^7.3.0",
     "@types/bcrypt": "^3.0.0",
+    "@types/connect-pg-simple": "^4.2.2",
     "@types/cookie-parser": "^1.4.2",
     "@types/cors": "^2.8.7",
     "@types/csurf": "^1.11.0",
@@ -31,6 +35,7 @@
     "@types/humps": "^2.0.0",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/keyv": "^3.1.1",
+    "@types/keyv__redis": "^1.3.1",
     "@types/match-sorter": "^5.0.0",
     "@types/morgan": "^1.9.1",
     "@types/node": "^13.13.29",
@@ -49,6 +54,7 @@
     "body-parser": "^1.19.0",
     "compose-middleware": "^5.0.1",
     "connect-mongo": "^3.2.0",
+    "connect-pg-simple": "^6.2.1",
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "csurf": "^1.11.0",
@@ -62,7 +68,7 @@
     "humps": "^2.0.1",
     "json-stringify-deterministic": "^1.0.1",
     "jsonwebtoken": "^8.5.1",
-    "keyv": "^4.0.1",
+    "keyv": "^4.0.3",
     "knex": "^0.21.12",
     "match-sorter": "^5.0.0",
     "morgan": "^1.10.0",

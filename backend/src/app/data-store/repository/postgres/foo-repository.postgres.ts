@@ -1,9 +1,9 @@
-import { makeId } from "../../id";
+import { makeId } from "../../../id";
 import {
   IPostgresDatabase,
   IPostgresRespository,
   IPostgresTable,
-} from "../database.postgres";
+} from "./database.postgres";
 import { GenericRepositoryPostgres } from "./generic-repository.postgres";
 
 type Color = "red" | "blue" | "green" | "yellow";

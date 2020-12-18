@@ -1,15 +1,15 @@
-import { removeNullOrUndefinedEntries } from "../../../utils";
+import { removeNullOrUndefinedEntries } from "../../../../utils";
 import {
   IPostgresDatabase,
   IPostgresRespository,
   queryBuilder,
-} from "../database.postgres";
+} from "./database.postgres";
 import {
   GenericRepositoryQueryOptions,
   Identifiable,
   IGenericRepository,
   GenericRepositoryQuerySpec,
-} from "./types";
+} from "../types";
 
 // just in case limit
 const LIMIT = 10000;

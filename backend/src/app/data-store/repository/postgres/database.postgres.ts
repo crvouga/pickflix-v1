@@ -1,6 +1,5 @@
 import Knex from "knex";
 import { ClientConfig, Pool } from "pg";
-import configuration from "../configuration";
 
 export const queryBuilder = Knex({
   client: "pg",
@@ -36,6 +35,8 @@ const makeCreateTableQuery = <Row>(
 };
 
 export interface IPostgresDatabase {
+  pool: Pool;
+
   query<Row>(sql: string): Promise<Row[]>;
 
   doesTableExists(tableName: string): Promise<boolean>;
@@ -60,6 +61,10 @@ export class PostgresDatabase implements IPostgresDatabase {
 
   constructor(config: ClientConfig) {
     this.pool = new Pool(config);
+    this.pool.on("error", (error) => {
+      console.error(error.toString());
+      throw error;
+    });
   }
 
   async query<Row>(sql: string) {
@@ -93,40 +98,13 @@ export class PostgresDatabase implements IPostgresDatabase {
   }
 }
 
-export class PostgresDatabaseTest extends PostgresDatabase {
-  constructor() {
-    super(configuration.PG_CLIENT_CONFIGS.test);
-  }
+export const clearTables = async (database: IPostgresDatabase) => {
+  const sql = `
+    DROP SCHEMA public CASCADE;
+    CREATE SCHEMA public;
+    GRANT ALL ON SCHEMA public TO postgres;
+    GRANT ALL ON SCHEMA public TO public;
+  `;
 
-  async clearTables() {
-    const sql = `
-      DROP SCHEMA public CASCADE;
-      CREATE SCHEMA public;
-      GRANT ALL ON SCHEMA public TO postgres;
-      GRANT ALL ON SCHEMA public TO public;
-    `;
-
-    await this.query(sql);
-  }
-}
-
-export class PostgresDatabaseDeveloplment extends PostgresDatabase {
-  constructor() {
-    super(configuration.PG_CLIENT_CONFIGS.development);
-  }
-  async clearTables() {
-    const sql = `
-      DROP SCHEMA public CASCADE;
-      CREATE SCHEMA public;
-      GRANT ALL ON SCHEMA public TO postgres;
-      GRANT ALL ON SCHEMA public TO public;
-    `;
-    await this.query(sql);
-  }
-}
-
-export class PostgresDatabaseProduction extends PostgresDatabase {
-  constructor() {
-    super(configuration.PG_CLIENT_CONFIGS.production);
-  }
-}
+  await database.query(sql);
+};

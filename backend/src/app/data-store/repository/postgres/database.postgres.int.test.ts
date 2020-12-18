@@ -1,4 +1,4 @@
-import { PostgresDatabaseTest, IPostgresTable } from "./database.postgres";
+import { IPostgresTable, PostgresDatabase } from "./database.postgres";
 
 const tableName = "foo";
 
@@ -18,7 +18,7 @@ const table: IPostgresTable<FooRow> = {
 
 describe("postgres database", () => {
   it("creates tables and checks if they exists", async () => {
-    const database = new PostgresDatabaseTest();
+    const database = new PostgresDatabase({});
 
     expect(await database.doesTableExists(tableName)).toEqual(false);
 

@@ -1,54 +1,44 @@
 import {
   AutoListRepositoryFileSystem,
   AutoListRepositoryHashMap,
-} from "../../lists/repositories/auto-list-repository";
-import { AutoListRepositoryPostgres } from "../../lists/repositories/auto-list-repository.postgres";
-import {
+  AutoListRepositoryPostgres,
   ListItemRepositoryFileSystem,
   ListItemRepositoryHashMap,
-} from "../../lists/repositories/list-item-repository";
-import { ListItemRepositoryPostgres } from "../../lists/repositories/list-item-repository.postgres";
-import {
+  ListItemRepositoryPostgres,
   ListRepositoryFileSystem,
   ListRepositoryHashMap,
-} from "../../lists/repositories/list-repository";
-import { ListRepositoryPostgres } from "../../lists/repositories/list-repository.postgres";
-import {
+  ListRepositoryPostgres,
   PermissionRepositoryFileSystem,
   PermissionRepositoryHashMap,
-} from "../../lists/repositories/permission-repository";
-import { PermissionRepositoryPostgres } from "../../lists/repositories/permission-repository.postgres";
+  PermissionRepositoryPostgres,
+} from "../../lists/repositories";
 import {
   TmdbDiscoverTagsRepositoryFileSystem,
   TmdbDiscoverTagsRepositoryHashMap,
-} from "../../media/repositories/TmdbDiscoverTagsRepository";
-import { TmdbDiscoverTagsRepositoryPostgres } from "../../media/repositories/TmdbDiscoverTagsRepository.postgres";
+  TmdbDiscoverTagsRepositoryPostgres,
+} from "../../media/repositories";
 import {
   ReviewRepositoryFileSystem,
   ReviewRepositoryHashMap,
-} from "../../reviews/repositories/review-repository";
-import { ReviewRepositoryPostgres } from "../../reviews/repositories/review-repository.postgres";
-import {
+  ReviewRepositoryPostgres,
   ReviewVoteRepositoryFileSystem,
   ReviewVoteRepositoryHashMap,
-} from "../../reviews/repositories/review-vote-repository";
-import { ReviewVoteRepositoryPostgres } from "../../reviews/repositories/review-vote-repository.postgres";
+  ReviewVoteRepositoryPostgres,
+} from "../../reviews/repositories";
 import {
   CredentialRepositoryFileSystem,
   CredentialRepositoryHashMap,
-} from "../../users/repositories/credential-repository";
-import { CredentialRepositoryPostgres } from "../../users/repositories/credential-repository.postgres";
-import {
+  CredentialRepositoryPostgres,
   UserRepositoryFileSystem,
   UserRepositoryHashMap,
-} from "../../users/repositories/user-repository";
-import { UserRespositoryPostgres } from "../../users/repositories/user-respository.postgres";
-import configuration from "../configuration";
-import {
-  IPostgresDatabase,
-  PostgresDatabaseDeveloplment,
-  PostgresDatabaseTest,
-} from "../data-access/database.postgres";
+  UserRespositoryPostgres,
+} from "../../users/repositories";
+import { IPostgresDatabase } from "../data-store/repository/postgres/database.postgres";
+
+/* 
+
+
+*/
 
 export const buildRepositoriesHashMap = () => {
   const userRepository = new UserRepositoryHashMap();
@@ -81,35 +71,34 @@ export const buildRepositoriesHashMap = () => {
   };
 };
 
-const makeFilePath = (name: string) =>
-  `${configuration.PATH_TO_FILE_STORE}/${name}.json`;
+/* 
 
-export const buildRepositoriesFileSystem = async () => {
-  const userRepository = new UserRepositoryFileSystem(makeFilePath("users"));
+
+*/
+
+export const buildRepositoriesFileSystem = async (pathToFileStore: string) => {
+  const path = (name: string) => `${pathToFileStore}/${name}.json`;
+
+  const userRepository = new UserRepositoryFileSystem(path("users"));
   const credentialRepository = new CredentialRepositoryFileSystem(
-    makeFilePath("credentials")
+    path("credentials")
   );
-
-  const reviewRepository = new ReviewRepositoryFileSystem(
-    makeFilePath("reviews")
-  );
+  const reviewRepository = new ReviewRepositoryFileSystem(path("reviews"));
   const reviewVoteRepository = new ReviewVoteRepositoryFileSystem(
-    makeFilePath("reviewVotes")
+    path("reviewVotes")
   );
-
-  const listRepository = new ListRepositoryFileSystem(makeFilePath("lists"));
+  const listRepository = new ListRepositoryFileSystem(path("lists"));
   const listItemRepository = new ListItemRepositoryFileSystem(
-    makeFilePath("listItems")
+    path("listItems")
   );
   const autoListRepository = new AutoListRepositoryFileSystem(
-    makeFilePath("autoLists")
+    path("autoLists")
   );
   const permissionRepository = new PermissionRepositoryFileSystem(
-    makeFilePath("permissions")
+    path("permissions")
   );
-
   const tmdbDiscoverTagsRepository = new TmdbDiscoverTagsRepositoryFileSystem(
-    makeFilePath("tmdbDiscoverTags")
+    path("tmdbDiscoverTags")
   );
 
   const repositories = {
@@ -129,11 +118,14 @@ export const buildRepositoriesFileSystem = async () => {
   };
 };
 
+/* 
+
+
+*/
+
 export const buildRepositoriesPostgres = async (
   database: IPostgresDatabase
 ) => {
-  console.log("using postgres");
-
   const userRepository = new UserRespositoryPostgres(database);
   const credentialRepository = new CredentialRepositoryPostgres(database);
   const reviewRepository = new ReviewRepositoryPostgres(database);
@@ -174,79 +166,4 @@ export const buildRepositoriesPostgres = async (
     initializeAllTables,
     repositories,
   };
-};
-
-type RepositoryImplementation = "postgres" | "hashMap" | "fileSystem";
-
-const castRepositoryImplementation = (
-  repositoryImplementation: any
-): RepositoryImplementation => {
-  if (
-    repositoryImplementation === "postgres" ||
-    repositoryImplementation === "hashMap" ||
-    repositoryImplementation === "fileSystem"
-  ) {
-    return repositoryImplementation;
-  }
-  throw new Error("failed to cast repository implementation");
-};
-
-const postgresDatabaseTest = new PostgresDatabaseTest();
-
-const buildRepositoriesTest = async (
-  repositoryImplementation: RepositoryImplementation
-) => {
-  switch (repositoryImplementation) {
-    case "postgres":
-      await postgresDatabaseTest.clearTables();
-      const {
-        repositories,
-        initializeAllTables,
-      } = await buildRepositoriesPostgres(postgresDatabaseTest);
-      await initializeAllTables();
-      return {
-        repositories,
-      };
-
-    default:
-      return buildRepositoriesHashMap();
-  }
-};
-
-export const buildRepositoriesDependingOnTestEnvironment = async () => {
-  const respositoryImplementation = castRepositoryImplementation(
-    process.env.respositoryImplementation || "hashMap"
-  );
-  return buildRepositoriesTest(respositoryImplementation);
-};
-
-const postgresDatabaseDevelopment = new PostgresDatabaseDeveloplment();
-
-const buildRepositoriesDevelopment = async (
-  repositoryImplementation: RepositoryImplementation
-) => {
-  switch (repositoryImplementation) {
-    case "postgres":
-      const {
-        repositories,
-        initializeAllTables,
-      } = await buildRepositoriesPostgres(postgresDatabaseDevelopment);
-      await initializeAllTables();
-      return {
-        repositories,
-      };
-
-    case "fileSystem":
-      return await buildRepositoriesFileSystem();
-
-    default:
-      return buildRepositoriesHashMap();
-  }
-};
-
-export const buildRepositoriesDependingOnDevelopmentEnvironment = async () => {
-  const respositoryImplementation = castRepositoryImplementation(
-    process.env.respositoryImplementation || "fileSystem"
-  );
-  return buildRepositoriesDevelopment(respositoryImplementation);
 };

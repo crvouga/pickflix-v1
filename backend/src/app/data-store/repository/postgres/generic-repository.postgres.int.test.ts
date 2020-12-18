@@ -1,14 +1,14 @@
-import { PaginationOptions } from "../../pagination";
-import { PostgresDatabaseTest } from "../database.postgres";
+import { postgresDatabaseTest } from "../../../build/build-test";
+import { PaginationOptions } from "../../../pagination";
+import { clearTables } from "./database.postgres";
 import {
   FooRepositoryPostgres,
   makeFooArbitrary,
 } from "./foo-repository.postgres";
 
 const buildFooRepositoryPostgres = async () => {
-  const database = new PostgresDatabaseTest();
-  const repository = new FooRepositoryPostgres(database);
-  await database.clearTables();
+  const repository = new FooRepositoryPostgres(postgresDatabaseTest);
+  await clearTables(postgresDatabaseTest);
   await repository.initializeTables();
   return repository;
 };

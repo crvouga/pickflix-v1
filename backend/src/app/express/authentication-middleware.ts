@@ -1,55 +1,9 @@
-import makeMongoStore from "connect-mongo";
-import cookieParser from "cookie-parser";
 import { Application, Handler } from "express";
-import session from "express-session";
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
-import configuration from "../configuration";
 import { UserLogic } from "../../users/logic/logic";
-import { User, UserId, castEmailAddress } from "../../users/models/make-user";
-import makeFileStore from "session-file-store";
 import { castPassword } from "../../users/models";
-
-const getSessionStore = () => {
-  const FileStore = makeFileStore(session);
-
-  switch (configuration.NODE_ENV) {
-    case "production":
-      return new FileStore({
-        logFn: () => {},
-        path: `${configuration.PATH_TO_FILE_STORE}/session`,
-      });
-
-    case "development":
-      return new FileStore({
-        logFn: () => {},
-        path: `${configuration.PATH_TO_FILE_STORE}/session`,
-      });
-
-    default:
-      return undefined;
-  }
-};
-
-const getSessionCookieConfig = () => {
-  switch (configuration.NODE_ENV) {
-    case "production":
-      return {
-        maxAge: 10 * 365 * 24 * 60 * 60, // 10 years,
-        secure: true,
-        path: "/",
-        sameSite: "strict" as "strict",
-        httpOnly: true,
-      };
-    default:
-      return {
-        maxAge: 10 * 365 * 24 * 60 * 60, // 10 years,
-        path: "/",
-        secure: false,
-        httpOnly: true,
-      };
-  }
-};
+import { castEmailAddress, User, UserId } from "../../users/models/make-user";
 
 export const useAuthenticationMiddleware = ({
   userLogic,
@@ -57,19 +11,6 @@ export const useAuthenticationMiddleware = ({
   userLogic: UserLogic;
 }) => (app: Application) => {
   app.set("trust proxy", 1);
-
-  app.use(cookieParser());
-
-  app.use(
-    session({
-      name: "pickflix-session",
-      store: getSessionStore(),
-      secret: configuration.SECRET,
-      resave: false,
-      saveUninitialized: false,
-      cookie: getSessionCookieConfig(),
-    })
-  );
 
   passport.use(
     new LocalStrategy(

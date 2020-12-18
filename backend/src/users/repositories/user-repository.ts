@@ -1,7 +1,7 @@
 import { User, UserId } from "../models/make-user";
-import { GenericRepositoryQueryOptions } from "../../app/data-access/generic-repository/types";
-import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository/generic-repository.hash-map";
-import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository/generic-repository.file-system";
+import { GenericRepositoryQueryOptions } from "../../app/data-store/repository/types";
+import { GenericRepositoryHashMap } from "../../app/data-store/repository/generic-repository.hash-map";
+import { GenericRepositoryFileSystem } from "../../app/data-store/repository/generic-repository.file-system";
 
 type UserSpec = Partial<User>[];
 

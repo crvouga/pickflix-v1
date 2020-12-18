@@ -1,19 +1,66 @@
 import { AxiosRequestConfig } from "axios";
 import { Handler } from "express";
 import supertest from "supertest";
+import { getRepositoryImplementation } from "../../config";
 import { ListLogic } from "../../lists/logic/logic";
 import { MediaLogic } from "../../media/logic/logic";
 import { ReviewLogic } from "../../reviews/logic/logic";
 import { UserLogic } from "../../users/logic/logic";
 import { FAKE_USER_INFO } from "../../users/models";
+import { HashMapCache } from "../data-store/cache/cache.hash-map";
+import {
+  clearTables,
+  PostgresDatabase,
+} from "../data-store/repository/postgres/database.postgres";
 import { emailLogicStub } from "../email";
 import { createEventEmitter, Events } from "../events";
-import { makeExpressApp } from "../express/make-express-app";
+import { buildExpressApp } from "../express/build-app";
 import { ExpressAppDependencies } from "../express/types";
-import { buildRepositoriesDependingOnTestEnvironment } from "./build-repositories";
+import {
+  buildRepositoriesHashMap,
+  buildRepositoriesPostgres,
+} from "./build-repositories";
+
+/* 
+
+
+*/
+
+export const postgresDatabaseTest = new PostgresDatabase({
+  user: "postgres",
+  host: "localhost",
+  port: 5432,
+  database: "pickflix_test",
+});
+
+export const buildRepositoriesTest = async () => {
+  switch (getRepositoryImplementation()) {
+    case "postgres":
+      await clearTables(postgresDatabaseTest);
+
+      const {
+        repositories,
+        initializeAllTables,
+      } = await buildRepositoriesPostgres(postgresDatabaseTest);
+
+      await initializeAllTables();
+
+      return {
+        repositories,
+      };
+
+    default:
+      return buildRepositoriesHashMap();
+  }
+};
+
+/* 
+
+
+*/
 
 export const buildLogicTest = async () => {
-  const { repositories } = await buildRepositoriesDependingOnTestEnvironment();
+  const { repositories } = await buildRepositoriesTest();
 
   const eventEmitter = createEventEmitter<Events>();
 
@@ -22,10 +69,7 @@ export const buildLogicTest = async () => {
     axios: async (_: AxiosRequestConfig) => ({
       data: {},
     }),
-    keyv: {
-      set: async (k: any, v: any) => {},
-      get: async (k: any) => {},
-    },
+    cache: new HashMapCache(),
   });
 
   const listLogic = new ListLogic({
@@ -58,6 +102,11 @@ export const buildLogicTest = async () => {
   };
 };
 
+/* 
+
+
+*/
+
 export const buildAppTest = async () => {
   const { appLogic } = await buildLogicTest();
 
@@ -74,13 +123,14 @@ export const buildAppTest = async () => {
 
   const dependencies: ExpressAppDependencies = {
     ...appLogic,
+    postgresDatabase: postgresDatabaseTest,
     middlewares: {
       authenticate: handlerStub,
       isAuthenticated: handlerStub,
     },
   };
 
-  const { app } = makeExpressApp(dependencies);
+  const { app } = await buildExpressApp(dependencies);
 
   const agent = supertest(app);
 

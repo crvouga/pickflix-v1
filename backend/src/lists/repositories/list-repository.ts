@@ -1,6 +1,6 @@
-import { GenericRepositoryFileSystem } from "../../app/data-access/generic-repository/generic-repository.file-system";
-import { GenericRepositoryHashMap } from "../../app/data-access/generic-repository/generic-repository.hash-map";
-import { GenericRepositoryQueryOptions } from "../../app/data-access/generic-repository/types";
+import { GenericRepositoryFileSystem } from "../../app/data-store/repository/generic-repository.file-system";
+import { GenericRepositoryHashMap } from "../../app/data-store/repository/generic-repository.hash-map";
+import { GenericRepositoryQueryOptions } from "../../app/data-store/repository/types";
 import { List, ListId } from "../models/make-list";
 
 export interface IListRepository {

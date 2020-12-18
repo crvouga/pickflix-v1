@@ -1,8 +1,9 @@
 import { camelizeKeys, decamelize, decamelizeKeys } from "humps";
 import qs from "qs";
-import config from "../../../app/configuration";
+
 import { MediaLogic } from "../logic";
 import { MediaId } from "../../models/types";
+import { secrets } from "../../../config";
 
 type Params = (
   | {
@@ -28,7 +29,7 @@ export async function requestTmdbData(this: MediaLogic, params: Params) {
     qs.stringify(
       decamelizeKeys({
         ...params.query,
-        apiKey: config.TMDB_API_KEY,
+        apiKey: secrets.tmdbApiKey,
       }),
       {
         arrayFormat: "comma",

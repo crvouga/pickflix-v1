@@ -1,10 +1,11 @@
 import csrf from "csurf";
 import { Application } from "express";
-import configuration from "../configuration";
+
 import { ExpressAppDependencies } from "./types";
+import { getNodeEnv } from "../../config";
 
 const getCSRFCookieConfig = () => {
-  switch (configuration.NODE_ENV) {
+  switch (getNodeEnv()) {
     case "production":
       return {
         secure: true,
@@ -27,7 +28,7 @@ export const useSecurityMiddleware = (dependencies: ExpressAppDependencies) => (
 ) => {
   app.set("trust proxy", 1);
 
-  if (configuration.NODE_ENV !== "test") {
+  if (getNodeEnv() !== "test") {
     app.use(
       csrf({
         cookie: getCSRFCookieConfig(),

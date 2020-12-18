@@ -1,15 +1,15 @@
 import qs from "qs";
-import config from "../../../app/configuration";
-
 import { MediaLogic } from "../logic";
-import configuration from "../../../app/configuration";
+import { secrets } from "../../../config";
 
 const stringifyConfig: qs.IStringifyOptions = {
   arrayFormat: "comma",
   encode: false,
 };
 
-const timeToLive = 1000 * 60 * 60 * 24 * 7;
+const ONE_DAY = 1000 * 60 * 60 * 24;
+
+const YOUTUBE_API_URL = "https://www.googleapis.com/youtube/v3";
 
 export async function requestYoutubeData(
   this: MediaLogic,
@@ -23,22 +23,20 @@ export async function requestYoutubeData(
 ) {
   const params = {
     ...query,
-    key: config.YOUTUBE_API_KEY,
+    key: secrets.youtubeApiKey,
   };
 
   const url = path + "?" + qs.stringify(params, stringifyConfig);
 
-  const cached = await this.keyv.get(url);
+  const cached = await this.cache.get(url);
 
   if (cached) {
     return cached;
   }
 
-  const { data } = await this.axios.get(
-    "https://www.googleapis.com/youtube/v3" + url
-  );
+  const { data } = await this.axios.get(YOUTUBE_API_URL + url);
 
-  await this.keyv.set(url, data, timeToLive);
+  await this.cache.set(url, data, ONE_DAY * 3);
 
   return data;
 }

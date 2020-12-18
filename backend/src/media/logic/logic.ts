@@ -1,5 +1,7 @@
+import { ICache } from "../../app/data-store/cache/types";
 import { PaginationOptions } from "../../app/pagination";
 import { UserId } from "../../users/models";
+import { Json } from "../../utils";
 import {
   makeTmdbDiscoverTags,
   TmdbDiscoverTagsId,
@@ -7,24 +9,23 @@ import {
 import { ITmdbDiscoverTagsRepository } from "../repositories/TmdbDiscoverTagsRepository";
 import { requestTmdbData } from "./request-tmdb-data";
 import { requestYoutubeData } from "./request-youtube-data";
-import { Json } from "../../utils";
 
 export class MediaLogic {
   axios: any;
-  keyv: any;
+  cache: ICache<string, string>;
   tmdbDiscoverTagsRepository: ITmdbDiscoverTagsRepository;
 
   constructor({
     tmdbDiscoverTagsRepository,
     axios,
-    keyv,
+    cache,
   }: {
     tmdbDiscoverTagsRepository: ITmdbDiscoverTagsRepository;
     axios: any;
-    keyv: any;
+    cache: ICache<string, string>;
   }) {
     this.axios = axios;
-    this.keyv = keyv;
+    this.cache = cache;
     this.tmdbDiscoverTagsRepository = tmdbDiscoverTagsRepository;
   }
 

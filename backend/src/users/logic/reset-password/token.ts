@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import configuration from "../../../app/configuration";
-import { castTimestamp, Timestamp, makeTimestamp } from "../../../utils";
+import { secrets } from "../../../config";
+import { castTimestamp, makeTimestamp, Timestamp } from "../../../utils";
 import {
   castPasswordHash,
   CredentialPassword,
@@ -87,11 +87,11 @@ export const makeResetPasswordToken = ({
 };
 
 export const encodeToken = (token: ResetPasswordTokenData) => {
-  return jwt.sign(token, configuration.SECRET);
+  return jwt.sign(token, secrets.secret);
 };
 
 export const decodeToken = (token: string): ResetPasswordTokenData => {
-  if (!jwt.verify(token, configuration.SECRET)) {
+  if (!jwt.verify(token, secrets.secret)) {
     throw new Error("Failed to decode token");
   }
   return castResetPasswordTokenData(jwt.decode(token, { json: true }));

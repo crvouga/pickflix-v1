@@ -1,11 +1,10 @@
 import fs from "fs";
-import configuration from "../../configuration";
 import { GenericRepositoryHashMap } from "./generic-repository.hash-map";
 import {
-  Identifiable,
-  IGenericRepository,
   GenericRepositoryQueryOptions,
   GenericRepositoryQuerySpec,
+  Identifiable,
+  IGenericRepository,
 } from "./types";
 
 export class GenericRepositoryFileSystem<I, T extends Identifiable<I>>

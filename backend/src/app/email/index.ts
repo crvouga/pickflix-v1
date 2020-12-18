@@ -1,5 +1,5 @@
 import { MailService } from "@sendgrid/mail";
-import configuration from "../configuration";
+import { secrets } from "../../config";
 
 export type Email = {
   to: string;
@@ -21,7 +21,7 @@ export class EmailLogic implements IEmailLogic {
 
   constructor({ emailService }: { emailService: MailService }) {
     this.emailService = emailService;
-    this.emailService.setApiKey(configuration.SEND_GRID_API_KEY);
+    this.emailService.setApiKey(secrets.sendGridApiKey);
   }
 
   async sendEmail(email: Email) {

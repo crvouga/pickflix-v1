@@ -1,27 +1,27 @@
 import bodyParser from "body-parser";
 import express, { Application, ErrorRequestHandler } from "express";
 import path from "path";
-import configuration from "../configuration";
 import { useApiRouter } from "./api-router";
 import { useAuthenticationMiddleware } from "./authentication-middleware";
 import { useSecurityMiddleware } from "./security-middleware";
+import { useSessionMiddleware } from "./session-middleware";
 import { ExpressAppDependencies } from "./types";
 
-const useMiddleware = (dependencies: ExpressAppDependencies) => (
-  app: Application
-) => {
-  app.use(bodyParser.json());
-
-  useAuthenticationMiddleware(dependencies)(app);
-
-  useSecurityMiddleware(dependencies)(app);
-};
+const FRONTEND_BUILD_PATH = path.join(
+  __dirname,
+  "..",
+  "..",
+  "..",
+  "..",
+  "frontend",
+  "build"
+);
 
 const useFrontendRouter = () => (app: Application) => {
-  app.use(express.static(configuration.PATH_TO_FRONTEND_BUILD));
+  app.use(express.static(FRONTEND_BUILD_PATH));
 
   app.get("*", (req, res) => {
-    res.sendFile(path.join(configuration.PATH_TO_FRONTEND_BUILD, "index.html"));
+    res.sendFile(path.join(FRONTEND_BUILD_PATH, "index.html"));
   });
 };
 
@@ -39,14 +39,20 @@ const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
   }
 };
 
-export const makeExpressApp = (dependencies: ExpressAppDependencies) => {
+export const buildExpressApp = async (dependencies: ExpressAppDependencies) => {
   const app = express();
 
-  useMiddleware(dependencies)(app);
+  app.use(bodyParser.json());
 
-  useApiRouter(dependencies)(app);
+  await useSessionMiddleware(dependencies)(app);
 
-  useFrontendRouter()(app);
+  await useAuthenticationMiddleware(dependencies)(app);
+
+  await useSecurityMiddleware(dependencies)(app);
+
+  await useApiRouter(dependencies)(app);
+
+  await useFrontendRouter()(app);
 
   app.use(errorHandler);
 
