@@ -1,29 +1,25 @@
 import {
   Avatar,
   BoxProps,
-  Button,
-  ButtonGroup,
   Card,
   CardContent,
   CardHeader,
-  Dialog,
   IconButton,
-  makeStyles,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
+  makeStyles,
 } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
+import LaunchIcon from "@material-ui/icons/Launch";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import React from "react";
 import MarkdownTypography from "../../common/components/MarkdownTypography";
-import useBoolean from "../../common/hooks/useBoolean";
-import * as TMDb from "../../media/tmdb/attribution";
-import { MovieReview } from "../../media/tmdb/types";
-import { nameToInitials } from "../../common/utility";
 import ResponsiveDialogDrawer from "../../common/components/ResponsiveDialogDrawer";
-import LaunchIcon from "@material-ui/icons/Launch";
-import CloseIcon from "@material-ui/icons/Close";
+import useBoolean from "../../common/hooks/useBoolean";
+import { nameToInitials } from "../../common/utility";
+import { MovieReview } from "../../media/tmdb/types";
 
 const TmdbReviewOptionsList = ({
   onSeeReview,
@@ -53,8 +49,8 @@ const TmdbReviewOptionsList = ({
 const useStyles = makeStyles((theme) => ({
   avatar: {
     textDecoration: "none",
-    color: TMDb.palette.primary,
-    background: `linear-gradient(${TMDb.palette.tertiary}, ${TMDb.palette.secondary})`,
+    color: theme.palette.primary.main,
+    background: `linear-gradient(${theme.palette.secondary.main}, ${theme.palette.secondary.main})`,
   },
 }));
 

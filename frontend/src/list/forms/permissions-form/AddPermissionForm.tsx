@@ -78,7 +78,7 @@ const AutoCompeleteUsers = ({
               endAdornment: (
                 <React.Fragment>
                   {isLoading ? (
-                    <CircularProgress disableShrink color="inherit" size={20} />
+                    <CircularProgress color="inherit" size={20} />
                   ) : null}
                   {params.InputProps.endAdornment}
                 </React.Fragment>

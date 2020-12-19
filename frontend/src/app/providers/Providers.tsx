@@ -1,25 +1,26 @@
 import React from "react";
 import TmdbConfigurationGate from "../../media/tmdb/TmdbConfigurationGate";
-import AppLoadingPage from "../AppLoadingPage";
+
 import HistoryProvider from "./HistoryProvider";
 import QueryProvider from "./QueryProvider";
 import ReduxProvider from "./ReduxProvider";
 import ThemeProvider from "./ThemeProvider";
+import LoadingPage from "../../common/page/LoadingPage";
 
 type Props = React.PropsWithChildren<{}>;
 
 export default ({ children }: Props) => {
   return (
-    <ThemeProvider>
-      <ReduxProvider>
-        <HistoryProvider>
+    <HistoryProvider>
+      <ThemeProvider>
+        <ReduxProvider>
           <QueryProvider>
-            <TmdbConfigurationGate loading={<AppLoadingPage />}>
+            <TmdbConfigurationGate loading={<LoadingPage />}>
               {children}
             </TmdbConfigurationGate>
           </QueryProvider>
-        </HistoryProvider>
-      </ReduxProvider>
-    </ThemeProvider>
+        </ReduxProvider>
+      </ThemeProvider>
+    </HistoryProvider>
   );
 };

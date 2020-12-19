@@ -19,7 +19,7 @@ export default ({
       <List>
         <ListItem>
           <ListItemIcon>
-            <CircularProgress disableShrink />
+            <CircularProgress />
           </ListItemIcon>
           <ListItemText {...ListItemTextProps} />
         </ListItem>

@@ -19,7 +19,7 @@ export default () => {
     <React.Fragment>
       <ResponsiveNavigation />
       <div className={classes.root}>
-        <CircularProgress color="inherit" disableShrink size="2em" />
+        <CircularProgress color="inherit" size="2em" />
       </div>
     </React.Fragment>
   );

@@ -1,0 +1,9 @@
+{
+  "name": "Pickflix",
+  "short_name": "Pickflix",
+  "theme_color": null,
+  "background_color": null,
+  "display": "standalone",
+  "icons": [],
+  "start_url": "index.html"
+}

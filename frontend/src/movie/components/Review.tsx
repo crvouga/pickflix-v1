@@ -7,17 +7,15 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import ExpandHeight from "../../common/components/ExpandHeight";
-import Markdown from "../../common/components/Markdown";
-import useBoolean from "../../common/hooks/useBoolean";
-import * as TMDb from "../../media/tmdb/attribution";
-import { MovieReview } from "../../media/tmdb/types";
 import MarkdownTypography from "../../common/components/MarkdownTypography";
+import useBoolean from "../../common/hooks/useBoolean";
+import { MovieReview } from "../../media/tmdb/types";
 
 const useStyles = makeStyles((theme) => ({
   avatar: {
     textDecoration: "none",
-    color: TMDb.palette.primary,
-    background: `linear-gradient(${TMDb.palette.tertiary}, ${TMDb.palette.secondary})`,
+    color: theme.palette.primary.main,
+    background: `linear-gradient(${theme.palette.secondary.main}, ${theme.palette.secondary.main})`,
   },
 }));
 

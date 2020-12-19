@@ -1,5 +1,9 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
+# generated assets
+/public/assets/generated
+/public/index.html
+
 # dependencies
 /node_modules
 

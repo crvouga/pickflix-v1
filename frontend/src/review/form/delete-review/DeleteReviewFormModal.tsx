@@ -31,7 +31,7 @@ const LoadingDialog = () => {
       <List>
         <ListItem>
           <ListItemIcon>
-            <CircularProgress disableShrink />
+            <CircularProgress />
           </ListItemIcon>
           <ListItemText primary="Deleting" />
         </ListItem>
