@@ -55,7 +55,11 @@ const generateAssets = async () => {
     icons: iconAssets.manifestJsonContent,
   };
 
-  const manifestMetaHtml = `<link rel="manifest" href="manifest.json">`;
+  const manifestMetaHtml = `
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content=${themeColor}>
+    <meta name="background-color" content=${backgroundColor}>
+  `;
 
   fs.writeFileSync("./public/manifest.json", JSON.stringify(manifest), {});
 

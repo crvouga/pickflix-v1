@@ -18,7 +18,7 @@ const FRONTEND_BUILD_PATH = path.join(
 );
 
 const useFrontendRouter = () => (app: Application) => {
-  app.use(express.static(FRONTEND_BUILD_PATH));
+  app.use(express.static(FRONTEND_BUILD_PATH, { maxAge: "30d" }));
 
   app.get("*", (req, res) => {
     res.sendFile(path.join(FRONTEND_BUILD_PATH, "index.html"));

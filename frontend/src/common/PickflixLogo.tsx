@@ -19,8 +19,6 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
   },
   logo: {
-    objectFit: "cover",
-    objectPosition: "50% 50%",
     height: 36,
     width: 36 * 3,
   },

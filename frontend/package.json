@@ -66,6 +66,8 @@
     "query-string": "^6.13.1",
     "ramda": "^0.27.0",
     "react": "^16.13.0",
+    "react-app-rewire-workbox": "^2.0.1",
+    "react-app-rewired": "^2.1.8",
     "react-dom": "^16.13.0",
     "react-flip-toolkit": "^7.0.12",
     "react-hook-form": "^6.0.8",
@@ -96,7 +98,9 @@
     "uuid": "^8.3.0",
     "yup": "^0.29.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "workbox-webpack-plugin": "^6.0.2"
+  },
   "browserslist": {
     "production": [
       ">0.2%",

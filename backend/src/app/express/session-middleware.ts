@@ -9,36 +9,23 @@ import { ExpressAppDependencies } from "./types";
 
 const PostgresSessionStore = buildPostgresSessionStore(session);
 
-const getSessionCookieConfig = () => {
-  switch (getNodeEnv()) {
-    case "production":
-      return {
-        secure: true,
-        path: "/",
-        sameSite: "strict" as "strict",
-        httpOnly: true,
-      };
-    default:
-      return {
-        path: "/",
-        secure: false,
-        httpOnly: true,
-      };
-  }
-};
+const ONE_DAY = 1000 * 60 * 60 * 24;
+const ONE_MONTH = ONE_DAY * 30;
 
 //DOCS: https://www.npmjs.com/package/connect-pg-simple
+const TABLE_NAME = "session";
+const SESSION_TABLE_PATH = "node_modules/connect-pg-simple/table.sql";
 const getSessionStore = async (postgresDatabase: IPostgresDatabase) => {
-  const TABLE_NAME = "session";
-  const SESSION_TABLE_PATH = "node_modules/connect-pg-simple/table.sql";
-
   if (getNodeEnv() === "test") {
     return undefined;
   }
 
   if (!(await postgresDatabase.doesTableExists(TABLE_NAME))) {
-    const sql = fs.readFileSync(SESSION_TABLE_PATH).toString();
-    await postgresDatabase.query(sql);
+    const createSessionTableSql = fs
+      .readFileSync(SESSION_TABLE_PATH)
+      .toString();
+
+    await postgresDatabase.query(createSessionTableSql);
   }
 
   const store = new PostgresSessionStore({
@@ -56,15 +43,27 @@ export const useSessionMiddleware = ({
 
   const store = await getSessionStore(postgresDatabase);
 
-  const cookie = getSessionCookieConfig();
-
   const sessionOptions: session.SessionOptions = {
     name: "pickflix-session",
     store: store,
     secret: secrets.secret,
     resave: false,
     saveUninitialized: true,
-    cookie: cookie,
+    cookie:
+      getNodeEnv() === "production"
+        ? {
+            secure: true,
+            path: "/",
+            sameSite: "strict" as "strict",
+            httpOnly: true,
+            maxAge: ONE_MONTH,
+          }
+        : {
+            path: "/",
+            secure: false,
+            httpOnly: true,
+            maxAge: ONE_MONTH,
+          },
   };
 
   app.use(session(sessionOptions));

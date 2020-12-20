@@ -1,5 +1,5 @@
 import csrf from "csurf";
-import { Application } from "express";
+import { Application, Handler } from "express";
 
 import { ExpressAppDependencies } from "./types";
 import { getNodeEnv } from "../../config";
@@ -23,12 +23,19 @@ const getCSRFCookieConfig = () => {
   }
 };
 
+const ensureHttps: Handler = (req, res, next) => {
+  if (req.secure) {
+    return next();
+  }
+  res.redirect("https://" + req.hostname + req.url);
+};
+
 export const useSecurityMiddleware = (dependencies: ExpressAppDependencies) => (
   app: Application
 ) => {
   app.set("trust proxy", 1);
 
-  if (getNodeEnv() !== "test") {
+  if (getNodeEnv() === "production") {
     app.use(
       csrf({
         cookie: getCSRFCookieConfig(),
@@ -39,5 +46,7 @@ export const useSecurityMiddleware = (dependencies: ExpressAppDependencies) => (
       res.cookie("XSRF-TOKEN", req.csrfToken());
       next();
     });
+
+    app.use(ensureHttps);
   }
 };
