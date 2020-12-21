@@ -9,13 +9,11 @@ import {
 } from "@material-ui/core";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import React, { useEffect } from "react";
-import useBoolean from "../../common/hooks/useBoolean";
+import useModal from "../../app/modals/useModal";
 import { MovieVideo, MovieVideos } from "../../media/tmdb/types";
 import useVideoState from "../../media/video/useVideoState";
-import { YoutubeStatusAlertError } from "../../media/youtube/YoutubeStatusAlert";
 import MovieVideoDialog from "./MovieVideoDialog";
 import { MovieVideoListItem } from "./VideoListItem";
-import useModal from "../../app/modals/useModal";
 
 const VIDEO_MAX_LENGTH = 3;
 
@@ -28,7 +26,7 @@ const VideosScroll = ({
 }) => {
   return (
     <React.Fragment>
-      <Box overflow="scroll" maxHeight="360px">
+      <Box overflow="scroll" maxHeight="360px" p={1 / 2}>
         <List>
           {videos.map((video) => (
             <Box key={video.key} onClick={() => onVideoClick(video)}>
@@ -62,8 +60,6 @@ export default ({
     videoState.setCurrentVideo(video);
     videoState.setIsPlaying(true);
   };
-
-  const handleOpen = () => {};
 
   if (videoState.playlist.length === 0) {
     return null;

@@ -50,7 +50,7 @@ const generateAssets = async () => {
   console.log("generated image assets");
 
   const webManifest = {
-    ...manifestweb mTemplate,
+    ...manifestTemplate,
     background_color: backgroundColor,
     theme_color: themeColor,
     icons: iconAssets.manifestJsonContent,
