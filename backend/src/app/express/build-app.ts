@@ -1,29 +1,11 @@
 import bodyParser from "body-parser";
-import express, { Application, ErrorRequestHandler } from "express";
-import path from "path";
+import express, { ErrorRequestHandler } from "express";
 import { useApiRouter } from "./api-router";
 import { useAuthenticationMiddleware } from "./authentication-middleware";
+import { useFrontendRouter } from "./frontend-router";
 import { useSecurityMiddleware } from "./security-middleware";
 import { useSessionMiddleware } from "./session-middleware";
 import { ExpressAppDependencies } from "./types";
-
-const FRONTEND_BUILD_PATH = path.join(
-  __dirname,
-  "..",
-  "..",
-  "..",
-  "..",
-  "frontend",
-  "build"
-);
-
-const useFrontendRouter = () => (app: Application) => {
-  app.use(express.static(FRONTEND_BUILD_PATH, { maxAge: "30d" }));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(FRONTEND_BUILD_PATH, "index.html"));
-  });
-};
 
 const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
   if (error) {

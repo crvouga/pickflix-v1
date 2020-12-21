@@ -2,7 +2,6 @@
 
 # generated assets
 /public/assets/generated
-/public/index.html
 
 # dependencies
 /node_modules

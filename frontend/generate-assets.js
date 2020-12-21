@@ -20,36 +20,37 @@ const themeColor = palette.primary;
 */
 
 const generateAssets = async () => {
-  console.log("started generating image assets");
+  console.log("started generating assets");
 
-  const iconAssets = await pwaAssetGenerator.generateImages(
-    "public/assets/icon.png",
-    "public/assets/generated",
-    {
-      background: palette.default,
-      pathOverride: "assets/generated",
-      log: false,
-      iconOnly: true,
-    }
-  );
+  const [iconAssets, splashAssets] = await Promise.all([
+    //
+    pwaAssetGenerator.generateImages(
+      "public/assets/icon.png",
+      "public/assets/generated",
+      {
+        background: palette.default,
+        log: false,
+        iconOnly: true,
+        pathOverride: "assets/generated",
+      }
+    ),
+    //
+    pwaAssetGenerator.generateImages(
+      "public/assets/logo.png",
+      "public/assets/generated",
+      {
+        background: palette.default,
+        log: false,
+        splashOnly: true,
+        pathOverride: "assets/generated",
+      }
+    ),
+  ]);
 
-  const splashAssets = await pwaAssetGenerator.generateImages(
-    "public/assets/logo.png",
-    "public/assets/generated",
-    {
-      background: palette.default,
-      pathOverride: "assets/generated",
-      log: false,
-      splashOnly: true,
-    }
-  );
+  console.log("generated image assets");
 
-  console.log("finished generating image assets");
-
-  console.log("started generating web manifest");
-
-  const manifest = {
-    ...manifestTemplate,
+  const webManifest = {
+    ...manifestweb mTemplate,
     background_color: backgroundColor,
     theme_color: themeColor,
     icons: iconAssets.manifestJsonContent,
@@ -61,18 +62,18 @@ const generateAssets = async () => {
     <meta name="background-color" content=${backgroundColor}>
   `;
 
-  fs.writeFileSync("./public/manifest.json", JSON.stringify(manifest), {});
+  fs.writeFileSync(
+    "./public/manifest.json",
+    JSON.stringify(webManifest, null, 2),
+    {}
+  );
 
-  console.log("finished generating web manifest");
-
-  console.log("started generating index.html");
+  console.log("generated web manifest");
 
   const indexHtmlTemplate = fs.readFileSync("./public/index.template.html");
   const dom = new jsdom.JSDOM(indexHtmlTemplate);
   const document = dom.window.document;
   const headNode = document.getElementsByTagName("head")[0];
-
-  headNode.insertAdjacentHTML("beforeend", manifestMetaHtml);
 
   for (const key in iconAssets.htmlMeta) {
     const html = iconAssets.htmlMeta[key];
@@ -88,11 +89,13 @@ const generateAssets = async () => {
     }
   }
 
+  headNode.insertAdjacentHTML("beforeend", manifestMetaHtml);
+
   const indexHtml = dom.serialize();
 
   fs.writeFileSync("./public/index.html", indexHtml, {});
 
-  console.log("finished generating index.html");
+  console.log("generated index.html");
 };
 
 generateAssets();

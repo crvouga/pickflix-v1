@@ -10,8 +10,6 @@ export const useAuthenticationMiddleware = ({
 }: {
   userLogic: UserLogic;
 }) => (app: Application) => {
-  app.set("trust proxy", 1);
-
   passport.use(
     new LocalStrategy(
       {
