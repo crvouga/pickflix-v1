@@ -26,23 +26,23 @@ const generateAssets = async () => {
     //
     pwaAssetGenerator.generateImages(
       "public/assets/icon.png",
-      "public/assets/generated",
+      "public/assets",
       {
         background: palette.default,
         log: false,
         iconOnly: true,
-        pathOverride: "assets/generated",
+        pathOverride: "assets",
       }
     ),
     //
     pwaAssetGenerator.generateImages(
       "public/assets/logo.png",
-      "public/assets/generated",
+      "public/assets",
       {
         background: palette.default,
         log: false,
         splashOnly: true,
-        pathOverride: "assets/generated",
+        pathOverride: "assets",
       }
     ),
   ]);

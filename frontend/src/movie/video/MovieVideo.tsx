@@ -15,8 +15,6 @@ import useVideoState from "../../media/video/useVideoState";
 import MovieVideoDialog from "./MovieVideoDialog";
 import { MovieVideoListItem } from "./VideoListItem";
 
-const VIDEO_MAX_LENGTH = 3;
-
 const VideosScroll = ({
   videos,
   onVideoClick,
