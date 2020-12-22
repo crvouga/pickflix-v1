@@ -26,6 +26,7 @@ import SignInCallToAction from "../user/auth/SignInCallToAction";
 import WithAuthentication from "../user/auth/WithAuthentication";
 import { UserAggergation } from "../user/query";
 import { InfiniteScrollBottom } from "../common/infinite-scroll";
+import { useHistory } from "react-router";
 
 const CurrentUserFeedTitle = () => {
   return (
@@ -77,9 +78,15 @@ const NoListItemsCallToAction = () => {
 };
 
 const FeedItem = ({ listItem }: { listItem: ListItemAggergation }) => {
+  const history = useHistory();
   return (
     <React.Fragment>
-      <ListItem>
+      <ListItem
+        button
+        onClick={() => {
+          history.push(`/movie/${listItem.listItem.mediaId.tmdbMediaId}`);
+        }}
+      >
         <ListItemAvatar>
           <MovieAvatar movie={listItem.tmdbData} />
         </ListItemAvatar>
