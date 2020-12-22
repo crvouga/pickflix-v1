@@ -27,8 +27,12 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     fontWeight: "bold",
     color: theme.palette.text.primary,
-    backgroundColor: ({ user }: { user: User }) =>
-      stringToHslColor(user.username, 50, 50),
+    background: ({ user }: { user: User }) =>
+      `linear-gradient(${stringToHslColor(
+        user.username,
+        50,
+        50
+      )}, ${stringToHslColor(user.username, 40, 40)})`,
   },
 }));
 

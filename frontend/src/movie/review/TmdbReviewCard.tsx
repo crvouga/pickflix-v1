@@ -49,8 +49,8 @@ const TmdbReviewOptionsList = ({
 const useStyles = makeStyles((theme) => ({
   avatar: {
     textDecoration: "none",
-    color: theme.palette.primary.main,
-    background: `linear-gradient(${theme.palette.secondary.main}, ${theme.palette.secondary.main})`,
+    color: theme.palette.text.primary,
+    background: `linear-gradient(${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
   },
 }));
 
