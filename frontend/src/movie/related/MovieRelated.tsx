@@ -1,41 +1,18 @@
 import {
   Button,
-  Box,
-  Typography,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
   List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
 } from "@material-ui/core";
-import { take, uniqBy } from "ramda";
 import React from "react";
-import { MovieRecommendations, MovieSimilar } from "../../media/tmdb/types";
-import MoviePosterScroll from "../components/MoviePosterScroll";
-import useBoolean from "../../common/hooks/useBoolean";
-import MovieRelatedDialog from "./MovieRelatedDialog";
 import useModal from "../../app/modals/useModal";
+import { MoviePosterScrollInfinite } from "../components/MoviePosterScroll";
+import { getMovieRecommendations } from "../query";
+import MovieRelatedDialog from "./MovieRelatedDialog";
 
-export default ({
-  tmdbMediaId,
-  similar,
-  recommendations,
-}: {
-  tmdbMediaId: string;
-  similar: MovieSimilar;
-  recommendations: MovieRecommendations;
-}) => {
+export default ({ tmdbMediaId }: { tmdbMediaId: string }) => {
   const { isOpen, open, close } = useModal("MovieRelated");
-  const movies = take(
-    15,
-    uniqBy((movie) => movie.id, [
-      ...similar.results,
-      ...recommendations.results,
-    ])
-  );
-
-  if (movies.length === 0) {
-    return null;
-  }
 
   return (
     <React.Fragment>
@@ -66,7 +43,10 @@ export default ({
           </ListItemSecondaryAction>
         </ListItem>
       </List>
-      <MoviePosterScroll movies={movies} />
+      <MoviePosterScrollInfinite
+        queryKey={["movies", "related", tmdbMediaId]}
+        queryFn={({ page }) => getMovieRecommendations({ tmdbMediaId, page })}
+      />
     </React.Fragment>
   );
 };

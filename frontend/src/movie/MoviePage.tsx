@@ -95,8 +95,7 @@ export default () => {
     credits,
     images,
     videos,
-    similar,
-    recommendations,
+
     releaseDates,
     keywords,
     ...details
@@ -158,6 +157,7 @@ export default () => {
           releaseDates={releaseDates}
           details={details}
           credits={credits}
+          keywords={keywords}
         />
 
         {details.belongsToCollection && (
@@ -167,11 +167,7 @@ export default () => {
         )}
 
         <Box paddingBottom={2}>
-          <MovieRelated
-            tmdbMediaId={details.id}
-            similar={similar}
-            recommendations={recommendations}
-          />
+          <MovieRelated tmdbMediaId={details.id} />
         </Box>
 
         <Grid container>

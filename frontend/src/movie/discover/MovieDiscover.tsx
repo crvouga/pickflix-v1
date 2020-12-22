@@ -10,9 +10,11 @@ import {
   MovieCredits,
   MovieDetails,
   MovieReleaseDates,
+  MovieKeywords,
 } from "../../media/tmdb/types";
 
 type Props = {
+  keywords: MovieKeywords;
   details: MovieDetails;
   credits: MovieCredits;
   releaseDates: MovieReleaseDates;
@@ -42,6 +44,12 @@ const creditsToPeopleTags = (credits: MovieCredits): IDiscoverTag[] =>
       .slice(0, 100)
   );
 
+const keywordsToWithKeywordsTags = (keywords: MovieKeywords): IDiscoverTag[] =>
+  keywords.keywords.map((keyword) => ({
+    type: TagType.withKeywords,
+    ...keyword,
+  }));
+
 const detailsToGenreTags = (details: MovieDetails): IDiscoverTag[] =>
   details.genres.map((genre) => ({
     ...genre,
@@ -62,10 +70,11 @@ export default (props: Props) => {
     history.push("/discover");
   };
 
-  const { credits, details } = props;
+  const { credits, details, keywords } = props;
   const peopleTags = creditsToPeopleTags(credits);
   const genreTags = detailsToGenreTags(details);
   const companyTags = detailsToCompanyTags(details);
+  const keywordTags = keywordsToWithKeywordsTags(keywords);
 
   if (
     peopleTags.length === 0 &&
@@ -90,6 +99,12 @@ export default (props: Props) => {
         <React.Fragment>
           <Subtitle>Genres</Subtitle>
           <DiscoverTags tags={genreTags} onClick={handleClick} />
+        </React.Fragment>
+      )}
+      {keywordTags.length > 0 && (
+        <React.Fragment>
+          <Subtitle>Keywords</Subtitle>
+          <DiscoverTags tags={keywordTags} onClick={handleClick} />
         </React.Fragment>
       )}
       {companyTags.length > 0 && (

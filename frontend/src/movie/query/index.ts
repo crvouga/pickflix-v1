@@ -16,8 +16,8 @@ export type MoviePageData = {
   credits: MovieCredits;
   keywords: MovieKeywords;
   images: MovieImages;
-  similar: MovieSimilar;
-  recommendations: MovieRecommendations;
+  // similar: MovieSimilar;
+  // recommendations: MovieRecommendations;
   videos: MovieVideos;
   releaseDates: MovieReleaseDates;
 } & MovieDetails;
@@ -29,8 +29,8 @@ export const getMoviePage = async (tmdbMediaId: number) => {
       params: {
         appendToResponse: [
           "credits",
-          "similar",
-          "recommendations",
+          // "similar",
+          // "recommendations",
           "keywords",
           "videos",
           "images",
