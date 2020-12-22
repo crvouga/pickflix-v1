@@ -4,6 +4,9 @@ import {
   ListItemAvatar,
   ListItemIcon,
   ListItemText,
+  Card,
+  CardContent,
+  Typography,
 } from "@material-ui/core";
 import MovieCreationOutlinedIcon from "@material-ui/icons/MovieCreationOutlined";
 import { uniqBy } from "ramda";
@@ -55,6 +58,21 @@ const CurrentUserFeedSkeleton = () => {
       <FeedItemSkeleton />
       <FeedItemSkeleton />
     </React.Fragment>
+  );
+};
+
+const NoListItemsCallToAction = () => {
+  return (
+    <Card>
+      <CardContent>
+        <Typography align="center" variant="h5">
+          You haven't added any movies a to list!
+        </Typography>
+        <Typography variant="h5">
+          Add some movies to some lists and come back to see your feed.
+        </Typography>
+      </CardContent>
+    </Card>
   );
 };
 
@@ -119,6 +137,12 @@ const CurrentUserFeed = ({ currentUser }: { currentUser: UserAggergation }) => {
   return (
     <React.Fragment>
       <CurrentUserFeedTitle />
+
+      {visibleListItems.length === 0 && (
+        <Box p={2}>
+          <NoListItemsCallToAction />
+        </Box>
+      )}
 
       {visibleListItems.map((listItem) => (
         <Box key={listItem.listItem.id}>
