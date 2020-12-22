@@ -14,10 +14,10 @@ const name: "homePageUi" = "homePageUi";
 
 */
 
-export type HomePageTabValue = "Trending" | "For You" | "Recent";
-export const tabOrder: ["Trending", "For You", "Recent"] = [
+export type HomePageTabValue = "Trending" | "From Lists" | "Recent";
+export const tabOrder: ["Trending", "From Lists", "Recent"] = [
   "Trending",
-  "For You",
+  "From Lists",
   "Recent",
 ];
 

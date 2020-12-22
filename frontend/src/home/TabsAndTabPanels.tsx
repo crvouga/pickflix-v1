@@ -13,7 +13,7 @@ export default () => {
     switch (tabValue) {
       case "Trending":
         return <TabPanelTrending />;
-      case "For You":
+      case "From Lists":
         return <TabPanelCurrentUser />;
       case "Recent":
         return <TabPanelPageHistory />;
