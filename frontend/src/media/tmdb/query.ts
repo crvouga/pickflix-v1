@@ -48,41 +48,103 @@ export const getTmdbConfiguration = async () => {
   return data;
 };
 
-export const getPopularMovies = async () => {
+export const getPopularMovies = async ({ page }: { page?: number } = {}) => {
   const { data } = await BackendAPI.get<Paginated<Movie>>(
-    "/api/tmdb/movie/popular"
+    "/api/tmdb/movie/popular",
+    {
+      params: {
+        page,
+      },
+    }
   );
   return data;
 };
 
-export const getPopularPersons = async () => {
+export const getPopularPersons = async ({ page }: { page?: number } = {}) => {
   const { data } = await BackendAPI.get<Paginated<Person>>(
-    "/api/tmdb/person/popular"
+    "/api/tmdb/person/popular",
+    {
+      params: {
+        page,
+      },
+    }
   );
   return data;
 };
 
-export const getUpcomingMovies = async () => {
+export const getUpcomingMovies = async ({ page }: { page?: number } = {}) => {
   const { data } = await BackendAPI.get<Paginated<Movie>>(
-    "/api/tmdb/movie/upcoming"
+    "/api/tmdb/movie/upcoming",
+    {
+      params: {
+        page,
+      },
+    }
   );
   return data;
 };
 
-export const getTopRatedMovies = async () => {
+export const getTopRatedMovies = async ({ page }: { page?: number } = {}) => {
   const { data } = await BackendAPI.get<Paginated<Movie>>(
-    "/api/tmdb/discover/movie?vote_count.gte=8000&vote_average.gte=8.0"
+    "/api/tmdb/discover/movie",
+    {
+      params: {
+        page,
+        "vote_count.gte": 8000,
+        "vote_average.gte": 8.0,
+      },
+    }
   );
   return data;
 };
 
-export const getNowPlayingMovies = async () => {
+export const getNowPlayingMovies = async ({ page }: { page?: number } = {}) => {
   const { data } = await BackendAPI.get<Paginated<Movie>>(
-    "/api/tmdb/movie/nowPlaying"
+    "/api/tmdb/movie/nowPlaying",
+    {
+      params: {
+        page,
+      },
+    }
   );
   return data;
 };
 
+export const getMoviesSimilar = async ({
+  mediaId,
+  page,
+}: {
+  mediaId: MediaId;
+  page?: number;
+}) => {
+  const { data } = await BackendAPI.get<Paginated<Movie>>(
+    `/api/tmdb/movie/${mediaId.tmdbMediaId}/similar`,
+    {
+      params: {
+        page,
+      },
+    }
+  );
+  return data;
+};
+
+export const getMoviesRecommendations = async ({
+  mediaId,
+  page,
+}: {
+  mediaId: MediaId;
+  page?: number;
+}) => {
+  const { data } = await BackendAPI.get<Paginated<Movie>>(
+    `/api/tmdb/movie/${mediaId.tmdbMediaId}/recommendations`,
+    {
+      params: {
+        page,
+      },
+    }
+  );
+  return data;
+};
 export const getSearchMovies = async ({
   query,
   page,

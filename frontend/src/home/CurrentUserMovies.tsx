@@ -35,7 +35,7 @@ export default ({ user }: Props) => {
 
   return (
     <React.Fragment>
-      {watchNext.listItems.slice(0, 10).map(
+      {/* {watchNext.listItems.slice(0, 10).map(
         (item) =>
           item.tmdbData.similar.results.length > 0 && (
             <React.Fragment key={item.listItem.id}>
@@ -56,7 +56,7 @@ export default ({ user }: Props) => {
               <MoviePosterScroll movies={item.tmdbData.similar.results} />
             </React.Fragment>
           )
-      )}
+      )} */}
     </React.Fragment>
   );
 };

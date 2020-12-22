@@ -45,14 +45,13 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
     }
   );
 
-  /* 
-    
-    NOTE: list id take presedence over user id 
-
-  */
   router.get("/list-items", async (req, res) => {
     try {
-      const userId = req.user ? castUserId(req.user.id) : undefined;
+      const userId = req.query.userId
+        ? castUserId(req.query.userId)
+        : req.user
+        ? castUserId(req.user.id)
+        : undefined;
 
       const listId = req.query.listId
         ? castListId(req.query.listId)
@@ -71,13 +70,18 @@ export const listItems = ({ listLogic, middlewares }: Dependencies) => (
             listId,
             mediaId,
           }
-        : {
+        : mediaId
+        ? {
             mediaId,
+            userId,
+          }
+        : {
             userId,
           };
 
       const paginationOptions = makePaginationOptions({
         page: req.query.page,
+        pageSize: req.query.pageSize,
       });
 
       const listItems = await listLogic.getListItemAggergations(

@@ -1,13 +1,4 @@
-import {
-  Box,
-  Button,
-  DialogProps,
-  Paper,
-  Tab,
-  Tabs,
-  useMediaQuery,
-  useTheme,
-} from "@material-ui/core";
+import { Box, DialogProps, Paper, Tab, Tabs } from "@material-ui/core";
 import React, { ChangeEvent, useState } from "react";
 import { AppBarGutter } from "../../common/components/AppBarGutter";
 import {

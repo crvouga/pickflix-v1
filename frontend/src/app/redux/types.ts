@@ -1,7 +1,7 @@
 import { DiscoverActiveTags } from "../../discover/redux/discover-active-tags";
 import { DiscoverPageUiState } from "../../discover/redux/discover-page-ui";
 import { DiscoverTagsState } from "../../discover/redux/discover-tags";
-import { PageHistoryState } from "../../home/page-history/page-history";
+import { HomePageUiState } from "../../home/redux/home-page-ui";
 import { CreateListWithListItemsFormState } from "../../list/forms/create-list-with-list-items-form/create-list-with-list-items-form";
 import { EditListFormState } from "../../list/forms/edit-list-form/edit-list-form";
 import { RemoveListItemsFormState } from "../../list/forms/remove-list-items-form/remove-list-items-form";
@@ -19,6 +19,7 @@ import { ModalState } from "../modals/redux/modal";
 import { SnackbarState } from "../snackbar/redux/snackbar";
 
 export type AppState = {
+  homePageUi: HomePageUiState;
   discoverPageUi: DiscoverPageUiState;
   reviewVoteStates: ReviewVoteStatesState;
   userPageUi: UserPageUiState;
@@ -31,7 +32,6 @@ export type AppState = {
   editListForm: EditListFormState;
   createListWithListItemsForm: CreateListWithListItemsFormState;
   video: VideoState;
-  pageHistory: PageHistoryState;
   snackbar: SnackbarState;
   search: SearchState;
   personPageUi: PersonPageUiState;

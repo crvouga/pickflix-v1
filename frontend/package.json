@@ -84,6 +84,7 @@
     "react-scripts": "3.4.0",
     "react-swipeable-views": "^0.13.9",
     "react-swipeable-views-utils": "^0.13.9",
+    "react-use-localstorage": "^3.5.3",
     "react-youtube": "^7.13.0",
     "read-more-react": "^1.0.10",
     "reduce-reducers": "^1.0.4",

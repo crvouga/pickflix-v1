@@ -28,9 +28,6 @@ export async function aggergateListItem(
 ): Promise<ListItemAggergation> {
   const tmdbData = await this.mediaLogic.requestTmdbData({
     mediaId: listItem.mediaId,
-    query: {
-      appendToResponse: "similar",
-    },
   });
 
   return {

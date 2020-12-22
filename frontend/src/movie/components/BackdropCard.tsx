@@ -12,13 +12,13 @@ import makeImageUrl from "../../media/tmdb/makeImageUrl";
 
 type Props = {
   movie: {
-    title: string;
+    title?: string;
     backdropPath?: string;
     posterPath?: string;
-    releaseDate: string;
-    overview: string;
+    releaseDate?: string;
+    overview?: string;
   };
-  onClick: () => void;
+  onClick?: () => void;
 };
 
 export default ({ movie, onClick }: Props) => {

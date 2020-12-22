@@ -10,7 +10,7 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
-import usePageHistory from "../home/page-history/usePageHistory";
+// import usePageHistory from "../home/page-history/usePageHistory";
 import BackButton from "../app/navigation/BackButton";
 import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
 import PersonCredits from "./credits/PersonCredits";
@@ -23,12 +23,12 @@ export default () => {
     getPersonPage(tmdbMediaId)
   );
 
-  const pageHistory = usePageHistory();
-  useEffect(() => {
-    if (query.data) {
-      pageHistory.push({ mediaType: "person", ...query.data });
-    }
-  }, [query.data]);
+  // const pageHistory = usePageHistory();
+  // useEffect(() => {
+  //   if (query.data) {
+  //     pageHistory.push({ mediaType: "person", ...query.data });
+  //   }
+  // }, [query.data]);
 
   if (query.error) {
     return <ErrorPage />;

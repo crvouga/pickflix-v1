@@ -11,7 +11,9 @@ import { ListItem, ListItemAggergation } from "./types";
 export type GetListItemsParams = {
   listId?: string;
   mediaId?: MediaId;
+  userId?: string;
   page?: number;
+  pageSize?: number;
 };
 
 export const getListItems = async (params: GetListItemsParams) => {
@@ -19,8 +21,10 @@ export const getListItems = async (params: GetListItemsParams) => {
     `/api/list-items`,
     {
       params: {
+        userId: params.userId,
         listId: params.listId,
         page: params.page,
+        pageSize: params.pageSize,
         ...(params.mediaId ? params.mediaId : {}),
       },
     }
