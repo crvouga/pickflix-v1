@@ -30,9 +30,9 @@ const useStyles = makeStyles((theme) => ({
     background: ({ user }: { user: User }) =>
       `linear-gradient(${stringToHslColor(
         user.username,
-        50,
-        50
-      )}, ${stringToHslColor(user.username, 40, 40)})`,
+        55,
+        55
+      )}, ${stringToHslColor(user.username, 45, 45)})`,
   },
 }));
 

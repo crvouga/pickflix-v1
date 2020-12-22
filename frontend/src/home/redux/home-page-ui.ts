@@ -37,7 +37,7 @@ const slice = (state: AppState) => state[name];
 const selectors = {
   slice,
   tabIndex: createSelector([slice], (slice) =>
-    tabOrder.indexOf(slice.tabValue)
+    Math.max(0, tabOrder.indexOf(slice.tabValue))
   ),
 };
 
