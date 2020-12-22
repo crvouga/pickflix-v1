@@ -66,10 +66,10 @@ const NoListItemsCallToAction = () => {
     <Card>
       <CardContent>
         <Typography align="center" variant="h5">
-          You haven't added any movies a to list!
+          You haven't added any movies to a list!
         </Typography>
         <Typography variant="subtitle1" color="textSecondary">
-          Add some movies to some lists and come back to see your feed.
+          Add some movies to some a list and come back to see your feed.
         </Typography>
       </CardContent>
     </Card>
