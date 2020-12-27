@@ -1,5 +1,5 @@
 import { Box, BoxProps } from "@material-ui/core";
-import { repeat, uniqBy } from "ramda";
+import { repeat, uniqBy, identity } from "ramda";
 import React from "react";
 import { QueryKey } from "react-query";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
@@ -40,9 +40,11 @@ export const MoviePosterScrollSkeleton = ({
 export const MoviePosterScrollInfinite = ({
   queryKey,
   queryFn,
+  mapPage = identity,
 }: {
   queryKey: QueryKey;
   queryFn: ({ page }: { page: number }) => Promise<Paginated<Movie>>;
+  mapPage?: (page: Paginated<Movie>) => Paginated<Movie>;
 }) => {
   const query = useInfiniteQueryPagination(
     queryKey,
@@ -64,7 +66,7 @@ export const MoviePosterScrollInfinite = ({
 
   const movies = uniqBy(
     (_) => _.id,
-    query.data.flatMap((_) => _.results)
+    query.data.map(mapPage).flatMap((page) => page.results)
   );
 
   const ratio = MOVIE_POSTER_ASPECT_RATIO[0] / MOVIE_POSTER_ASPECT_RATIO[1];
