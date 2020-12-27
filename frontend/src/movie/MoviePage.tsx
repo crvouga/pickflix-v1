@@ -107,7 +107,7 @@ export default () => {
 
       <Hidden smUp>
         <AppBar color="default" position="sticky">
-          <Toolbar>
+          <Toolbar style={{ height: APP_BAR_HEIGHT }}>
             <BackButton />
 
             <Typography variant="h6" noWrap style={{ flex: 1 }}>

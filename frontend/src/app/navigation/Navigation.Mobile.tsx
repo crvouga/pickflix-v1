@@ -16,10 +16,6 @@ import {
 
 export const BOTTOM_NAVIGATION_BAR_HEIGHT = 56;
 
-const useStyles = makeStyles((theme) => ({
-  gutter: theme.mixins.toolbar,
-}));
-
 const useStylesBottomNavigation = makeStyles((theme) => ({
   root: {
     position: "fixed",

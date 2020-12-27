@@ -1,12 +1,23 @@
-import { AppBar, Container, Tab, Tabs } from "@material-ui/core";
+import { AppBar, Container, Tab, Tabs, makeStyles } from "@material-ui/core";
 import React from "react";
 import TabPanel from "../common/components/TabPanel";
 import { HomePageTabValue, useHomePageUi } from "./redux/home-page-ui";
 import { TabPanelPageHistory } from "./TabPanelPageHistory";
 import { TabPanelTrending } from "./TabPanelTrending";
 import { TabPanelCurrentUser } from "./TabPanelCurrentUser";
+import { APP_BAR_HEIGHT } from "../app/navigation/constants";
+
+const useStyles = makeStyles((theme) => ({
+  appBar: {
+    [theme.breakpoints.up("sm")]: {
+      top: APP_BAR_HEIGHT,
+    },
+  },
+}));
 
 export default () => {
+  const classes = useStyles();
+
   const homePageUi = useHomePageUi();
 
   const tabValueToTabComponent = (tabValue: HomePageTabValue) => {
@@ -28,7 +39,7 @@ export default () => {
 
   return (
     <React.Fragment>
-      <AppBar color="default" position="sticky" style={{ top: 0 }}>
+      <AppBar color="default" position="sticky" className={classes.appBar}>
         <Container maxWidth="md">
           <Tabs
             value={homePageUi.tabIndex}

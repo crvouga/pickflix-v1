@@ -23,6 +23,8 @@ import CurrentUserActions, {
 } from "./CurrentUserActions";
 import { useQueryUsers, UserAggergation } from "./query";
 import TabsAndTabPanels from "./TabsAndTabPanels";
+import useHeight from "../common/hooks/useHeight";
+import { APP_BAR_HEIGHT } from "../app/navigation/constants";
 
 export const makeUserPageRoute = ({ userId }: { userId: string }) =>
   `/user/${userId}`;
@@ -51,7 +53,7 @@ export const UserPage = ({ user }: { user: UserAggergation }) => {
       <ResponsiveNavigation />
       <Hidden smUp>
         <AppBar color="default" position="sticky">
-          <Toolbar>
+          <Toolbar style={{ height: APP_BAR_HEIGHT }}>
             <WithAuthentication
               renderAuthenticated={(currentUser) =>
                 user.user.id === currentUser.user.id ? (
