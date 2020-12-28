@@ -1,16 +1,13 @@
-import { Box, ButtonBase, Typography } from "@material-ui/core";
+import { Box, ButtonBase, List, Typography } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import moment from "moment";
 import numeral from "numeral";
 import React from "react";
-import { useQuery } from "react-query";
 import { MovieVideo } from "../../media/tmdb/types";
 import {
-  getYoutubeVideoDetails,
-  queryKeys,
+  useQueryYoutubeVideoDetails,
   videoKeyToThumbnailURL,
   YoutubeVideo,
-  useQueryYoutubeVideoDetails,
 } from "../../media/youtube/query";
 
 export const toViewCount = (video: Partial<YoutubeVideo>) =>
@@ -29,10 +26,12 @@ export const VideoListItem = ({
   image,
   title,
   subtitle,
+  selected,
 }: {
   image?: string;
   title?: string;
   subtitle?: string;
+  selected?: boolean;
 }) => {
   return (
     <Box
@@ -43,6 +42,7 @@ export const VideoListItem = ({
       width="100%"
       paddingX={2}
       paddingY={1}
+      bgcolor={selected ? "action.selected" : "transparent"}
     >
       <Box
         minWidth={`${(1 / 3) * 100}%`}
@@ -131,9 +131,16 @@ export const YoutubeVideoListItem = ({
   );
 };
 
-export const MovieVideoListItem = ({ video }: { video: MovieVideo }) => {
+export const MovieVideoListItem = ({
+  video,
+  selected,
+}: {
+  selected?: boolean;
+  video: MovieVideo;
+}) => {
   return (
     <VideoListItem
+      selected={selected}
       image={videoKeyToThumbnailURL(video.key)}
       title={video.name}
       subtitle={video.type}
@@ -158,4 +165,35 @@ export const YoutubeVideoListItemContainer = ({
   const video = query.data.items[0];
 
   return <YoutubeVideoListItem video={video} />;
+};
+
+export const MovieVideoList = ({
+  selectedVideo,
+  videos,
+  onClick,
+}: {
+  selectedVideo?: MovieVideo;
+  videos: MovieVideo[];
+  onClick?: (video: MovieVideo) => void;
+}) => {
+  return (
+    <List>
+      {videos.map((video) => (
+        <Box
+          key={video.key}
+          p={1 / 2}
+          onClick={() => {
+            if (onClick) {
+              onClick(video);
+            }
+          }}
+        >
+          <MovieVideoListItem
+            selected={selectedVideo?.key === video.key}
+            video={video}
+          />
+        </Box>
+      ))}
+    </List>
+  );
 };

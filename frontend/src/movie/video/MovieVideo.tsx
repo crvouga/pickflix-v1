@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Hidden,
   List,
   ListItem,
@@ -13,29 +14,7 @@ import useModal from "../../app/modals/useModal";
 import { MovieVideo, MovieVideos } from "../../media/tmdb/types";
 import useVideoState from "../../media/video/useVideoState";
 import MovieVideoDialog from "./MovieVideoDialog";
-import { MovieVideoListItem } from "./VideoListItem";
-
-const VideosScroll = ({
-  videos,
-  onVideoClick,
-}: {
-  videos: MovieVideo[];
-  onVideoClick: (video: MovieVideo) => void;
-}) => {
-  return (
-    <React.Fragment>
-      <Box overflow="scroll" maxHeight="360px" p={1 / 2}>
-        <List>
-          {videos.map((video) => (
-            <Box key={video.key} onClick={() => onVideoClick(video)}>
-              <MovieVideoListItem video={video} />
-            </Box>
-          ))}
-        </List>
-      </Box>
-    </React.Fragment>
-  );
-};
+import { MovieVideoList, MovieVideoListItem } from "./VideoListItem";
 
 export default ({
   tmdbMediaId,
@@ -53,11 +32,6 @@ export default ({
     videoState.setPlaylist(videos.results);
     videoState.setError(undefined);
   }, [tmdbMediaId]);
-
-  const handleClick = (video: MovieVideo) => {
-    videoState.setCurrentVideo(video);
-    videoState.setIsPlaying(true);
-  };
 
   if (videoState.playlist.length === 0) {
     return null;
@@ -91,10 +65,25 @@ export default ({
         </List>
 
         <Hidden xsDown>
-          <VideosScroll
-            videos={videoState.playlist}
-            onVideoClick={handleClick}
+          <MovieVideoList
+            selectedVideo={videoState.currentVideo}
+            videos={videoState.playlist.slice(0, 3)}
+            onClick={videoState.selectVideo}
           />
+          {videoState.playlist.length > 3 && (
+            <Box p={2} paddingTop={0}>
+              <Button
+                size="large"
+                variant="outlined"
+                fullWidth
+                onClick={() => {
+                  open();
+                }}
+              >
+                See All
+              </Button>
+            </Box>
+          )}
         </Hidden>
       </Paper>
     </React.Fragment>

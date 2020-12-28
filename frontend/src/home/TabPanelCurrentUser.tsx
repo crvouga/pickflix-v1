@@ -7,6 +7,7 @@ import {
   Card,
   CardContent,
   Typography,
+  Container,
 } from "@material-ui/core";
 import MovieCreationOutlinedIcon from "@material-ui/icons/MovieCreationOutlined";
 import { uniqBy } from "ramda";
@@ -69,7 +70,7 @@ const NoListItemsCallToAction = () => {
         <Typography align="center" variant="h5">
           You haven't added any movies to a list!
         </Typography>
-        <Typography variant="subtitle1" color="textSecondary">
+        <Typography align="center" variant="subtitle1" color="textSecondary">
           Add some movies to a list and come back to see your feed.
         </Typography>
       </CardContent>
@@ -139,34 +140,53 @@ const CurrentUserFeed = ({ currentUser }: { currentUser: UserAggergation }) => {
     listItems
   );
 
-  const visibleListItems = uniqueListItems.slice(0, PAGE_SIZE * page);
+  const visibleUniqueListItems = uniqueListItems.slice(0, PAGE_SIZE * page);
+
+  if (visibleUniqueListItems.length === 0) {
+    return (
+      <React.Fragment>
+        <CurrentUserFeedTitle />
+        <Container maxWidth="xs">
+          <NoListItemsCallToAction />
+        </Container>
+      </React.Fragment>
+    );
+  }
 
   return (
     <React.Fragment>
       <CurrentUserFeedTitle />
 
-      {visibleListItems.length === 0 && (
-        <Box p={2}>
-          <NoListItemsCallToAction />
-        </Box>
-      )}
-
-      {visibleListItems.map((listItem) => (
+      {visibleUniqueListItems.map((listItem) => (
         <Box key={listItem.listItem.id}>
           <FeedItem listItem={listItem} />
         </Box>
       ))}
 
-      {visibleListItems.length < uniqueListItems.length && (
+      {visibleUniqueListItems.length < uniqueListItems.length && (
         <InfiniteScrollBottom fetchMoreRef={inViewRef} canFetchMore={true} />
       )}
 
-      {uniqueListItems.length === visibleListItems.length && (
-        <InfiniteScrollBottom
-          fetchMoreRef={query.fetchMoreRef}
-          canFetchMore={query.canFetchMore}
-        />
-      )}
+      {visibleUniqueListItems.length === uniqueListItems.length &&
+        (query.canFetchMore ? (
+          <InfiniteScrollBottom
+            fetchMoreRef={query.fetchMoreRef}
+            canFetchMore={query.canFetchMore}
+          />
+        ) : (
+          <Container maxWidth="xs">
+            <Box p={4}>
+              <Typography
+                color="textSecondary"
+                variant="subtitle2"
+                align="center"
+              >
+                End of feed. Add some more movies to your lists to make your
+                feed longer.
+              </Typography>
+            </Box>
+          </Container>
+        ))}
     </React.Fragment>
   );
 };

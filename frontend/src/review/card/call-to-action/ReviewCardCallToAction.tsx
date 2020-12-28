@@ -4,10 +4,12 @@ import {
   CardActionArea,
   CardContent,
   Typography,
+  Button,
 } from "@material-ui/core";
 import RateReviewOutlinedIcon from "@material-ui/icons/RateReviewOutlined";
 import { Rating } from "@material-ui/lab";
 import React from "react";
+import { SubmitButton } from "../../../common/components/SubmitButton";
 
 export type ReviewCardCallToActionProps = {
   onClick?: () => void;
@@ -47,6 +49,11 @@ export const ReviewCardCallToAction = ({
               {subtitle}
             </Typography>
             <Rating disabled name="rating" size="large" max={5} />
+            <Box p={2}>
+              <Button variant="outlined" size="large">
+                Write Review
+              </Button>
+            </Box>
           </Box>
         </CardContent>
       </CardActionArea>

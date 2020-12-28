@@ -4,6 +4,7 @@ import {
   CardActionArea,
   CardContent,
   Typography,
+  Button,
 } from "@material-ui/core";
 import MovieCreationOutlinedIcon from "@material-ui/icons/MovieCreationOutlined";
 import React from "react";
@@ -38,6 +39,11 @@ export default ({
           <Typography variant="subtitle1" color="textSecondary" align="center">
             {subtitle}
           </Typography>
+          <Box p={2} width="100%" display="flex" justifyContent="center">
+            <Button size="large" variant="outlined">
+              Add Movie
+            </Button>
+          </Box>
         </CardContent>
       </CardActionArea>
     </Card>

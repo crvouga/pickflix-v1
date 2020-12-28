@@ -4,6 +4,8 @@ import {
   CardActionArea,
   CardContent,
   Typography,
+  Container,
+  Button,
 } from "@material-ui/core";
 import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import React from "react";
@@ -37,6 +39,11 @@ export default ({
           <Typography variant="subtitle1" color="textSecondary" align="center">
             {subtitle}
           </Typography>
+          <Box p={2} width="100%" display="flex" justifyContent="center">
+            <Button size="large" variant="outlined">
+              Make List
+            </Button>
+          </Box>
         </CardContent>
       </CardActionArea>
     </Card>
