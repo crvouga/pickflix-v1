@@ -17,6 +17,7 @@ export type ListItem = {
 export enum AutoListKeys {
   WatchNext = "watch-next",
   Liked = "liked",
+  Favorite = "favorite",
 }
 
 export const toAutoListName = (autoListKey: AutoListKeys) => {
@@ -25,6 +26,8 @@ export const toAutoListName = (autoListKey: AutoListKeys) => {
       return "Liked";
     case AutoListKeys.WatchNext:
       return "Watch Next";
+    case AutoListKeys.Favorite:
+      return "Favorite";
   }
 };
 

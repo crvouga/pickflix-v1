@@ -15,7 +15,11 @@ import {
 } from "./ToggleListItemForm";
 import { WithToggleListItemFormProps } from "./WithToggleListItemFormProps";
 
-export const AUTO_LIST_KEY_ORDER = [AutoListKeys.Liked, AutoListKeys.WatchNext];
+export const AUTO_LIST_KEY_ORDER = [
+  AutoListKeys.Liked,
+  AutoListKeys.WatchNext,
+  AutoListKeys.Favorite,
+];
 
 export const ToggleListItemActionBar = (props: ToggleListItemFormProps) => {
   const { mediaId, autoLists } = props;

@@ -73,8 +73,8 @@ export class ListLogic {
     this.autoListRepository = autoListRepository;
     this.eventEmitter = eventEmitter;
 
-    this.eventEmitter.on("UserCreated", async (newUser) => {
-      await this.initializeAutoLists({ user: newUser });
+    this.eventEmitter.on("UserVerified", async (verifiedUser) => {
+      await this.initializeAutoLists({ user: verifiedUser });
     });
   }
 

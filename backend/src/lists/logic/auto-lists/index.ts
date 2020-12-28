@@ -13,29 +13,22 @@ export async function initializeAutoLists(
   this: ListLogic,
   { user }: { user: User }
 ) {
-  for (const { key } of INITIAL_AUTO_LIST_INFOS) {
+  for (const info of INITIAL_AUTO_LIST_INFOS) {
     const found = await this.autoListRepository.find({
       ownerId: user.id,
-      key,
+      key: info.key,
     });
 
-    if (found.length > 0) {
-      throw new Error("auto lists already initialized");
+    if (found.length === 0) {
+      const autoList = makeAutoList({
+        key: info.key,
+        ownerId: user.id,
+      });
+      console.log("added", { info, autoList });
+
+      await this.autoListRepository.add(autoList);
     }
   }
-
-  const autoLists = INITIAL_AUTO_LIST_INFOS.map((info) =>
-    makeAutoList({
-      ...info,
-      ownerId: user.id,
-    })
-  );
-
-  for (const autoList of autoLists) {
-    await this.autoListRepository.add(autoList);
-  }
-
-  return autoLists;
 }
 
 export async function aggergateAutoList(

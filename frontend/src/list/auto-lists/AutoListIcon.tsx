@@ -1,6 +1,8 @@
 import { SvgIconProps } from "@material-ui/core";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
 import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
 import React from "react";
@@ -30,11 +32,19 @@ export default ({
       ) : (
         <BookmarkBorderIcon {...iconProps} />
       );
+
     case AutoListKeys.Liked:
       return filled ? (
         <ThumbUpAltIcon {...iconProps} />
       ) : (
         <ThumbUpOutlinedIcon {...iconProps} />
+      );
+
+    case AutoListKeys.Favorite:
+      return filled ? (
+        <FavoriteIcon {...iconProps} />
+      ) : (
+        <FavoriteBorderIcon {...iconProps} />
       );
   }
 };

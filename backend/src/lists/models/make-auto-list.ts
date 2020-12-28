@@ -5,6 +5,7 @@ import { ListId } from "./make-list";
 export enum AutoListKeys {
   WatchNext = "watch-next",
   Liked = "liked",
+  Favorite = "favorite",
 }
 
 export type AutoList = {
@@ -25,13 +26,20 @@ export const INITIAL_AUTO_LIST_INFOS: { key: AutoListKeys }[] = [
   {
     key: AutoListKeys.Liked,
   },
+  {
+    key: AutoListKeys.Favorite,
+  },
 ];
 
 export type AutoListId = ListId;
 
-export const castAutoListKey = (key: any) => {
-  if (key === AutoListKeys.Liked || key === AutoListKeys.WatchNext) {
-    return key as AutoListKeys;
+export const castAutoListKey = (key: any): AutoListKeys => {
+  if (
+    key === AutoListKeys.Liked ||
+    key === AutoListKeys.WatchNext ||
+    key === AutoListKeys.Favorite
+  ) {
+    return key;
   }
   throw new Error("failed to cast auto list key");
 };

@@ -40,7 +40,7 @@ export default ({ user }: { user: UserAggergation }) => {
         <AutoListCardGridContainer
           ownerId={user.user.id}
           count={user.autoListCount}
-          ItemProps={{ xs: 12 }}
+          // ItemProps={{ xs: 12 }}
         />
       </Box>
       <Box p={2}>

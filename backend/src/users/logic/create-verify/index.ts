@@ -31,7 +31,11 @@ export async function verifyEmailAddressAndPassword(
     const updated = updateCredential(passwordCredential, {
       verifiedAt: Date.now(),
     });
+
     await this.credentialRepository.update(updated.id, updated);
+
+    this.eventEmitter.emit("UserVerified", user);
+
     return user;
   }
 
