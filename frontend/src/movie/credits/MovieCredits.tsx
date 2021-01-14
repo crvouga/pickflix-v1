@@ -44,9 +44,9 @@ export default ({ credits }: { credits: MovieCredits }) => {
           </ListItemSecondaryAction>
         </ListItem>
       </List>
-      <HorizontalSnapScroll paddingLeft={2}>
+      <HorizontalSnapScroll>
         {topCredits.map((credit) => (
-          <Box width="150px" key={credit.creditId} marginX={1}>
+          <Box width="150px" key={credit.creditId} marginLeft={1 + 1 / 2}>
             <CreditsListCard credit={credit} />
           </Box>
         ))}

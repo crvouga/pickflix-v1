@@ -50,11 +50,11 @@ export default () => {
 
   const navigationActions: BottomNavigationActionProps[] = [
     {
-      value: "/",
+      value: "/home",
       icon: <HomePageIcon />,
       label: "Home",
       onClick: () => {
-        history.push("/");
+        history.push("/home");
       },
     },
     {
