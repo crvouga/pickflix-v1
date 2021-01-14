@@ -51,15 +51,18 @@ export default ({ credits }: { credits: MovieCredits }) => {
           </Box>
         ))}
 
-        <Button
-          variant="outlined"
-          endIcon={<ArrowForwardIcon />}
-          onClick={() => {
-            open();
-          }}
-        >
-          See All
-        </Button>
+        <Box width="150px" height="100%" marginLeft={1 + 1 / 2}>
+          <Button
+            style={{ width: "100%", height: "100%" }}
+            variant="outlined"
+            endIcon={<ArrowForwardIcon />}
+            onClick={() => {
+              open();
+            }}
+          >
+            See All
+          </Button>
+        </Box>
         <Box height="100%" width="auto" marginRight={2} />
       </HorizontalSnapScroll>
     </React.Fragment>
