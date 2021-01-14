@@ -35,8 +35,15 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "row",
     flexWrap: "nowrap",
     overflowX: "scroll",
-    //
-    paddingLeft: theme.spacing(2),
+    overflowY: "hidden",
+    transform: "translateZ(0)",
+    "& *": {
+      flexShrink: 0,
+    },
+    scrollSnapType: "x mandatory",
+  },
+  chipWrapper: {
+    scrollSnapAlign: "start",
   },
 }));
 
@@ -81,7 +88,11 @@ export default () => {
           <Box paddingBottom={2}>
             <div ref={chipContainerRef} className={classes.chipContainer}>
               {activeTags.map((tag) => (
-                <Box key={tag.id} marginRight={1}>
+                <Box
+                  key={tag.id}
+                  marginRight={1}
+                  className={classes.chipWrapper}
+                >
                   <DiscoverTag
                     tag={tag}
                     onClick={() => {
@@ -93,7 +104,11 @@ export default () => {
                 </Box>
               ))}
               {nonActiveTags.map((tag) => (
-                <Box key={tag.id} marginRight={1}>
+                <Box
+                  key={tag.id}
+                  marginRight={1}
+                  className={classes.chipWrapper}
+                >
                   <DiscoverTag
                     tag={tag}
                     onClick={() => {

@@ -3,6 +3,7 @@ import React from "react";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
 import { IDiscoverTag } from "../query/types";
 import DiscoverTag from "./DiscoverTag";
+import HorizontalSnapScroll from "../../common/components/HorizontalSnapScroll";
 
 export const DiscoverTags = ({
   tags,
@@ -20,7 +21,7 @@ export const DiscoverTags = ({
   BoxProps?: BoxProps;
 }) => {
   return (
-    <HorizontalScroll {...BoxProps}>
+    <HorizontalSnapScroll {...BoxProps}>
       {tags.map((tag) => (
         <Box
           key={tag.id}
@@ -34,6 +35,6 @@ export const DiscoverTags = ({
           <DiscoverTag clickable variant="outlined" tag={tag} {...ChipProps} />
         </Box>
       ))}
-    </HorizontalScroll>
+    </HorizontalSnapScroll>
   );
 };

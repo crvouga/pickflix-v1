@@ -5,6 +5,7 @@ import React from "react";
 import { useQuery } from "react-query";
 import useModal from "../app/modals/useModal";
 import HorizontalScroll from "../common/components/HorizontalScroll";
+import HorizontalSnapScroll from "../common/components/HorizontalSnapScroll";
 import { ResponsiveDialog } from "../common/components/ResponsiveDialog";
 import DiscoverTag from "./components/DiscoverTag";
 import { getMovieCertifications, queryKeys } from "./query";
@@ -15,13 +16,13 @@ import {
   RUNTIME_LTE_TAGS,
   SORT_BY_TAGS,
   TagType,
-  VOTE_COUNT_LTE_TAGS,
-  VOTE_COUNT_GTE_TAGS,
   VOTE_AVERAGE_GTE_TAGS,
   VOTE_AVERAGE_LTE_TAGS,
+  VOTE_COUNT_GTE_TAGS,
+  VOTE_COUNT_LTE_TAGS,
 } from "./query/types";
-import useDiscoverState from "./redux/useDiscoverState";
 import { getMovieGenreTagsById } from "./redux/discover-saga";
+import useDiscoverState from "./redux/useDiscoverState";
 
 const Title = (props: TypographyProps) => (
   <Box p={2} paddingBottom={1 / 2}>
@@ -37,7 +38,7 @@ const Tags = ({
   onClick?: (tag: IDiscoverTag) => void;
 }) => {
   return (
-    <HorizontalScroll paddingX={2} p={1} marginBottom={1}>
+    <HorizontalSnapScroll paddingX={2} p={1} marginBottom={1}>
       {tags.map((tag) => (
         <Box
           key={tag.id}
@@ -51,7 +52,7 @@ const Tags = ({
           <DiscoverTag clickable variant="outlined" tag={tag} />
         </Box>
       ))}
-    </HorizontalScroll>
+    </HorizontalSnapScroll>
   );
 };
 
