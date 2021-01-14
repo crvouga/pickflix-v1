@@ -2,10 +2,10 @@ import {
   Box,
   BoxProps,
   Fab,
-  makeStyles,
-  useTheme,
   Grow,
+  makeStyles,
   useMediaQuery,
+  useTheme,
 } from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
@@ -50,15 +50,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default ({ children, ...props }: BoxProps) => {
-  const classes = useStyles();
+interface IController {
+  scrollLeft: () => void;
+  scrollRight: () => void;
+  leftDisabled: boolean;
+  rightDisabled: boolean;
+  reset: () => void;
+  ref: React.MutableRefObject<HTMLDivElement | null>;
+}
+
+export const useHorizontalSnapScrollController = (): IController => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [leftDisabled, setLeftDisabled] = useState(true);
   const [rightDisabled, setRightDisabled] = useState(true);
 
   const theme = useTheme();
-
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const updatedDisabled = (nextLeft: number) => {
     if (ref.current) {
@@ -106,8 +112,45 @@ export default ({ children, ...props }: BoxProps) => {
     updatedDisabled(0);
   }, [ref.current]);
 
+  const reset = () => {
+    if (ref.current) {
+      const left = 0;
+      ref.current.scroll({
+        left,
+        behavior: "smooth",
+      });
+      updatedDisabled(left);
+    }
+  };
+
+  return {
+    reset,
+    scrollRight,
+    scrollLeft,
+    leftDisabled,
+    rightDisabled,
+    ref,
+  };
+};
+
+export const HorizontalSnapScroll = ({
+  children,
+  controller,
+}: {
+  controller: IController;
+} & BoxProps) => {
+  const classes = useStyles();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const {
+    leftDisabled,
+    scrollLeft,
+    rightDisabled,
+    scrollRight,
+    ref,
+  } = controller;
   return (
-    <Box position="relative" {...props}>
+    <Box position="relative">
       <Grow in={!leftDisabled && !isMobile}>
         <Fab size="small" className={classes.backButton} onClick={scrollLeft}>
           <ArrowBackIcon />
@@ -131,4 +174,9 @@ export default ({ children, ...props }: BoxProps) => {
       </Grow>
     </Box>
   );
+};
+
+export default (props: BoxProps) => {
+  const controller = useHorizontalSnapScrollController();
+  return <HorizontalSnapScroll controller={controller} {...props} />;
 };

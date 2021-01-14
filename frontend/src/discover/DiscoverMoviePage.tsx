@@ -1,7 +1,11 @@
 import { Box, Container, makeStyles, Toolbar } from "@material-ui/core";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { APP_BAR_HEIGHT } from "../app/navigation/constants";
 import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
+import {
+  HorizontalSnapScroll,
+  useHorizontalSnapScrollController,
+} from "../common/components/HorizontalSnapScroll";
 import {
   AddButton,
   FolderButton,
@@ -57,11 +61,12 @@ export default () => {
     activateTag,
   } = useDiscoverState();
 
-  const chipContainerRef = useRef<HTMLDivElement | null>(null);
+  const controller = useHorizontalSnapScrollController();
+
   useEffect(() => {
-    if (chipContainerRef.current) {
-      chipContainerRef.current.scrollLeft = 0;
-    }
+    setTimeout(() => {
+      controller.reset();
+    }, 500);
   }, [activeTags.length]);
 
   return (
@@ -85,8 +90,8 @@ export default () => {
             <SaveButton />
           </Toolbar>
 
-          <Box paddingBottom={2}>
-            <div ref={chipContainerRef} className={classes.chipContainer}>
+          <Box paddingBottom={3}>
+            <HorizontalSnapScroll controller={controller}>
               {activeTags.map((tag) => (
                 <Box
                   key={tag.id}
@@ -119,7 +124,7 @@ export default () => {
                   />
                 </Box>
               ))}
-            </div>
+            </HorizontalSnapScroll>
           </Box>
         </Container>
       </Box>
