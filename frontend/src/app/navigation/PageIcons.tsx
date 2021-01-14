@@ -11,7 +11,11 @@ import { useLocation } from "react-router";
 
 export const DiscoverPageIcon = () => {
   const location = useLocation();
-  return location.pathname === "/" ? <ExploreIcon /> : <ExploreOutlinedIcon />;
+  return location.pathname === "/discover" || location.pathname === "/" ? (
+    <ExploreIcon />
+  ) : (
+    <ExploreOutlinedIcon />
+  );
 };
 
 export const ProfilePageIcon = () => {
