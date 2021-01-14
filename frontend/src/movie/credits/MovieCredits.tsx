@@ -9,12 +9,11 @@ import {
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import { partition, take, whereEq } from "ramda";
 import React from "react";
-import HorizontalScroll from "../../common/components/HorizontalScroll";
-import { MovieCredits } from "../../media/tmdb/types";
-import CreditsListCard from "./CreditsListCard";
-import CreditsDialog from "./CreditsDialog";
-import useBoolean from "../../common/hooks/useBoolean";
 import useModal from "../../app/modals/useModal";
+import HorizontalSnapScroll from "../../common/components/HorizontalSnapScroll";
+import { MovieCredits } from "../../media/tmdb/types";
+import CreditsDialog from "./CreditsDialog";
+import CreditsListCard from "./CreditsListCard";
 
 export default ({ credits }: { credits: MovieCredits }) => {
   const { cast, crew } = credits;
@@ -45,9 +44,9 @@ export default ({ credits }: { credits: MovieCredits }) => {
           </ListItemSecondaryAction>
         </ListItem>
       </List>
-      <HorizontalScroll paddingLeft={2}>
+      <HorizontalSnapScroll paddingLeft={2}>
         {topCredits.map((credit) => (
-          <Box width="150px" key={credit.creditId} marginRight={1}>
+          <Box width="150px" key={credit.creditId} marginX={1}>
             <CreditsListCard credit={credit} />
           </Box>
         ))}
@@ -62,7 +61,7 @@ export default ({ credits }: { credits: MovieCredits }) => {
           See All
         </Button>
         <Box height="100%" width="auto" marginRight={2} />
-      </HorizontalScroll>
+      </HorizontalSnapScroll>
     </React.Fragment>
   );
 };
