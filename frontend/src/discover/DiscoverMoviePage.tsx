@@ -1,11 +1,11 @@
 import { Box, Container, makeStyles, Toolbar } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { APP_BAR_HEIGHT } from "../app/navigation/constants";
-import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
 import {
   HorizontalSnapScroll,
   useHorizontalSnapScrollController,
 } from "../common/components/HorizontalSnapScroll";
+import Page from "../common/page/Page";
 import {
   AddButton,
   FolderButton,
@@ -70,13 +70,11 @@ export default () => {
   }, [activeTags.length]);
 
   return (
-    <React.Fragment>
+    <Page>
       <SearchModal />
       <TuneModal />
       <SaveDiscoverTagsFormModal />
       <DiscoverTagsFormModal />
-
-      <ResponsiveNavigation />
 
       <Box className={classes.sticky}>
         <Container maxWidth="lg" disableGutters>
@@ -132,6 +130,6 @@ export default () => {
       <Container maxWidth="md" disableGutters>
         <DiscoverMovieResults />
       </Container>
-    </React.Fragment>
+    </Page>
   );
 };

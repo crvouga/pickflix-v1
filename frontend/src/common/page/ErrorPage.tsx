@@ -1,7 +1,7 @@
 import { Button, makeStyles, Typography } from "@material-ui/core";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import React from "react";
-import ResponsiveNavigation from "../../app/navigation/ResponsiveNavigation";
+import Page from "./Page";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,8 +23,7 @@ export default () => {
   };
 
   return (
-    <React.Fragment>
-      <ResponsiveNavigation />
+    <Page>
       <div className={classes.root}>
         <Typography variant="h6">Something went wrong</Typography>
         <Typography gutterBottom color="textSecondary">
@@ -39,6 +38,6 @@ export default () => {
           Try again
         </Button>
       </div>
-    </React.Fragment>
+    </Page>
   );
 };

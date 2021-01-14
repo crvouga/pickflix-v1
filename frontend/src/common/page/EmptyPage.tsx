@@ -1,7 +1,7 @@
 import { Box, Button, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router";
-import ResponsiveNavigation from "../../app/navigation/ResponsiveNavigation";
+import Page from "./Page";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,8 +30,7 @@ export default ({
   const history = useHistory();
 
   return (
-    <React.Fragment>
-      <ResponsiveNavigation />
+    <Page>
       <div className={classes.root}>
         <Box paddingBottom={2}>
           <Typography align="center" variant="h5">
@@ -67,6 +66,6 @@ export default ({
           </Button>
         </Box>
       </div>
-    </React.Fragment>
+    </Page>
   );
 };

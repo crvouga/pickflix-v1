@@ -1,10 +1,10 @@
 import { Container, Hidden, Paper } from "@material-ui/core";
 import React from "react";
 import { useParams } from "react-router";
-import ResponsiveNavigation from "../../app/navigation/ResponsiveNavigation";
 import EmptyPage from "../../common/page/EmptyPage";
 import ErrorPage from "../../common/page/ErrorPage";
 import LoadingPage from "../../common/page/LoadingPage";
+import Page from "../../common/page/Page";
 import ListItemsSection from "../list-items/ListItemsSection";
 import ListPageAppBar from "../ListPageAppBar";
 import { useQueryLists } from "../query";
@@ -36,9 +36,7 @@ export default () => {
   const list = lists[0].results[0];
 
   return (
-    <React.Fragment>
-      <ResponsiveNavigation />
-
+    <Page>
       <Hidden smUp>
         <ListPageAppBar title={list.list.title} />
       </Hidden>
@@ -52,6 +50,6 @@ export default () => {
       <Container disableGutters maxWidth="md">
         <ListItemsSection list={list} />
       </Container>
-    </React.Fragment>
+    </Page>
   );
 };

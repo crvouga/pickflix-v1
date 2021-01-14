@@ -16,17 +16,18 @@ import ToggleOnOutlinedIcon from "@material-ui/icons/ToggleOnOutlined";
 import clsx from "clsx";
 import React, { useEffect } from "react";
 import { useParams } from "react-router";
-import ErrorPage from "../common/page/ErrorPage";
-import LoadingPage from "../common/page/LoadingPage";
-import usePageHistory from "../home/page-history/usePageHistory";
 import BackButton from "../app/navigation/BackButton";
 import { APP_BAR_HEIGHT } from "../app/navigation/constants";
-import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
+import ErrorPage from "../common/page/ErrorPage";
+import LoadingPage from "../common/page/LoadingPage";
+import Page from "../common/page/Page";
+import usePageHistory from "../home/page-history/usePageHistory";
 import makeImageUrl from "../media/tmdb/makeImageUrl";
 import { MediaId, TmdbMediaType } from "../media/tmdb/types";
 import useVideoState from "../media/video/useVideoState";
 import VideoPlayer from "../media/video/VideoPlayer";
 import MovieCredits from "./credits/MovieCredits";
+import MovieDiscover from "./discover/MovieDiscover";
 import MovieCollection from "./MovieCollection";
 import MovieDetails from "./MovieDetails";
 import { useQueryMoviePage } from "./query";
@@ -36,7 +37,6 @@ import ReviewsAndComments from "./review/ReviewsAndComments";
 import ReviewsSummary from "./review/ReviewsSummary";
 import YourReview from "./review/YourReview";
 import MovieVideo from "./video/MovieVideo";
-import MovieDiscover from "./discover/MovieDiscover";
 
 const ToggleIcon = ({ on }: { on: boolean }) => {
   return on ? <ToggleOnOutlinedIcon /> : <ToggleOffOutlinedIcon />;
@@ -102,9 +102,7 @@ export default () => {
   } = query.data;
 
   return (
-    <React.Fragment>
-      <ResponsiveNavigation />
-
+    <Page>
       <Hidden smUp>
         <AppBar color="default" position="sticky">
           <Toolbar style={{ height: APP_BAR_HEIGHT }}>
@@ -185,6 +183,6 @@ export default () => {
 
         <ReviewsAndComments mediaId={mediaId} />
       </Container>
-    </React.Fragment>
+    </Page>
   );
 };

@@ -1,9 +1,9 @@
 import { Container, Hidden, Paper } from "@material-ui/core";
 import React from "react";
 import { useParams } from "react-router";
-import ResponsiveNavigation from "../../app/navigation/ResponsiveNavigation";
 import ErrorPage from "../../common/page/ErrorPage";
 import LoadingPage from "../../common/page/LoadingPage";
+import Page from "../../common/page/Page";
 import ListItemsSection from "../list-items/ListItemsSection";
 import ListPageAppBar from "../ListPageAppBar";
 import { toAutoListName } from "../query";
@@ -32,8 +32,7 @@ export default () => {
   }
 
   return (
-    <React.Fragment>
-      <ResponsiveNavigation />
+    <Page>
       <Hidden smUp>
         <ListPageAppBar title={toAutoListName(autoList.autoList.key)} />
       </Hidden>
@@ -47,6 +46,6 @@ export default () => {
       <Container disableGutters maxWidth="md">
         <ListItemsSection list={autoList} />
       </Container>
-    </React.Fragment>
+    </Page>
   );
 };

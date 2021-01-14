@@ -1,6 +1,6 @@
 import { CircularProgress, makeStyles } from "@material-ui/core";
 import React from "react";
-import ResponsiveNavigation from "../../app/navigation/ResponsiveNavigation";
+import Page from "./Page";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,11 +16,10 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const classes = useStyles();
   return (
-    <React.Fragment>
-      <ResponsiveNavigation />
+    <Page>
       <div className={classes.root}>
-        <CircularProgress color="inherit" size="2em" />
+        <CircularProgress color="inherit" disableShrink />
       </div>
-    </React.Fragment>
+    </Page>
   );
 };

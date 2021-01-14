@@ -1,5 +1,6 @@
-import { Hidden, Container, makeStyles, Paper, Box } from "@material-ui/core";
+import { Container, Hidden, makeStyles } from "@material-ui/core";
 import React from "react";
+import Page from "../../../common/page/Page";
 import AuthWizard from "./AuthWizard";
 
 const useStyles = makeStyles((theme) => ({
@@ -15,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 export default () => {
   const classes = useStyles();
   return (
-    <React.Fragment>
+    <Page>
       <Hidden xsDown>
         <Container className={classes.center} maxWidth="xs">
           <AuthWizard />
@@ -24,6 +25,6 @@ export default () => {
       <Hidden smUp>
         <AuthWizard />
       </Hidden>
-    </React.Fragment>
+    </Page>
   );
 };

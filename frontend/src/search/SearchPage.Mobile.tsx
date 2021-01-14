@@ -1,14 +1,13 @@
 import React from "react";
-import NavigationMobile from "../app/navigation/Navigation.Mobile";
+import Page from "../common/page/Page";
 import SearchBar from "./input/SearchBar";
 import SearchResults from "./results/SearchResults";
 
 export default () => {
   return (
-    <React.Fragment>
+    <Page>
       <SearchBar />
       <SearchResults />
-      <NavigationMobile />
-    </React.Fragment>
+    </Page>
   );
 };

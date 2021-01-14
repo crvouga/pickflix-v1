@@ -1,12 +1,11 @@
 import React from "react";
-import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
+import Page from "../common/page/Page";
 import TabsAndTabPanels from "./TabsAndTabPanels";
 
 export default () => {
   return (
-    <React.Fragment>
-      <ResponsiveNavigation />
+    <Page>
       <TabsAndTabPanels />
-    </React.Fragment>
+    </Page>
   );
 };

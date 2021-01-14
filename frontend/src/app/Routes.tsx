@@ -4,7 +4,7 @@ import { AppBarGutter } from "../common/components/AppBarGutter";
 import LoadingPage from "../common/page/LoadingPage";
 import Modals from "./modals/Modals";
 import Snackbar from "./snackbar/Snackbar";
-
+import { AnimatePresence } from "framer-motion";
 const HomePage = React.lazy(() => import("../home/HomePage"));
 const EmptyPage = React.lazy(() => import("../common/page/EmptyPage"));
 const DiscoverMoviePage = React.lazy(
@@ -26,21 +26,23 @@ export default () => {
   return (
     <React.Fragment>
       <Suspense fallback={<LoadingPage />}>
-        <Switch>
-          <Route exact path="/" component={DiscoverMoviePage} />
-          <Route exact path="/discover" component={DiscoverMoviePage} />
-          <Route path="/home" component={HomePage} />
-          <Route path="/search" component={SearchPage} />
-          <Route path="/movie/:tmdbMediaId" component={MoviePage} />
-          <Route path="/person/:tmdbMediaId" component={PersonPage} />
-          <Route path="/list/:listId" component={ListPage} />
-          <Route path="/auto-list/:autoListId" component={AutoListPage} />
-          <Route path="/user/:userId" component={UserPage} />
-          <Route path="/review/:reviewId" component={ReviewPage} />
-          <Route path="/current-user" component={CurrentUserPage} />
-          <Route path="/auth" component={AuthPage} />
-          <Route component={EmptyPage} />
-        </Switch>
+        <AnimatePresence>
+          <Switch>
+            <Route exact path="/" component={DiscoverMoviePage} />
+            <Route path="/discover" component={DiscoverMoviePage} />
+            <Route path="/home" component={HomePage} />
+            <Route path="/search" component={SearchPage} />
+            <Route path="/movie/:tmdbMediaId" component={MoviePage} />
+            <Route path="/person/:tmdbMediaId" component={PersonPage} />
+            <Route path="/list/:listId" component={ListPage} />
+            <Route path="/auto-list/:autoListId" component={AutoListPage} />
+            <Route path="/user/:userId" component={UserPage} />
+            <Route path="/review/:reviewId" component={ReviewPage} />
+            <Route path="/current-user" component={CurrentUserPage} />
+            <Route path="/auth" component={AuthPage} />
+            <Route component={EmptyPage} />
+          </Switch>
+        </AnimatePresence>
       </Suspense>
       <Modals />
       <Snackbar />

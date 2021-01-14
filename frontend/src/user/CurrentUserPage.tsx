@@ -1,7 +1,7 @@
 import { Box, Container } from "@material-ui/core";
 import React from "react";
-import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
 import LoadingPage from "../common/page/LoadingPage";
+import Page from "../common/page/Page";
 import SignInCallToAction from "./auth/SignInCallToAction";
 import WithAuthentication from "./auth/WithAuthentication";
 import { UserPage } from "./UserPage";
@@ -10,9 +10,7 @@ export const makeCurrentUserPageRoute = () => "/current-user";
 
 const SignInPage = () => {
   return (
-    <React.Fragment>
-      <ResponsiveNavigation />
-
+    <Page>
       <Container maxWidth="md">
         <Box
           width="100%"
@@ -25,7 +23,7 @@ const SignInPage = () => {
           <SignInCallToAction />
         </Box>
       </Container>
-    </React.Fragment>
+    </Page>
   );
 };
 

@@ -5,17 +5,16 @@ import {
   Hidden,
   makeStyles,
   Paper,
-  Tab,
-  Tabs,
   Toolbar,
   Typography,
 } from "@material-ui/core";
 import React from "react";
-import { useHistory, useParams } from "react-router";
-import ResponsiveNavigation from "../app/navigation/ResponsiveNavigation";
+import { useParams } from "react-router";
+import { APP_BAR_HEIGHT } from "../app/navigation/constants";
 import EmptyPage from "../common/page/EmptyPage";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
+import Page from "../common/page/Page";
 import WithAuthentication from "./auth/WithAuthentication";
 import AvatarUser from "./components/AvatarUser";
 import CurrentUserActions, {
@@ -23,8 +22,6 @@ import CurrentUserActions, {
 } from "./CurrentUserActions";
 import { useQueryUsers, UserAggergation } from "./query";
 import TabsAndTabPanels from "./TabsAndTabPanels";
-import useHeight from "../common/hooks/useHeight";
-import { APP_BAR_HEIGHT } from "../app/navigation/constants";
 
 export const makeUserPageRoute = ({ userId }: { userId: string }) =>
   `/user/${userId}`;
@@ -49,8 +46,7 @@ export const UserPage = ({ user }: { user: UserAggergation }) => {
   );
 
   return (
-    <React.Fragment>
-      <ResponsiveNavigation />
+    <Page>
       <Hidden smUp>
         <AppBar color="default" position="sticky">
           <Toolbar style={{ height: APP_BAR_HEIGHT }}>
@@ -101,7 +97,7 @@ export const UserPage = ({ user }: { user: UserAggergation }) => {
       </Paper>
 
       <TabsAndTabPanels user={user} />
-    </React.Fragment>
+    </Page>
   );
 };
 
