@@ -1,7 +1,6 @@
 import {
   Box,
   Fab,
-  Grow,
   makeStyles,
   useMediaQuery,
   useTheme,
@@ -10,10 +9,16 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import React, { useEffect, useRef, useState } from "react";
 
-const ICON_BUTTON_HEIGHT = "24px";
+const HIDE_SCROLL_BARS = {
+  "&::-webkit-scrollbar": {
+    display: "none",
+  },
+  scrollBarWidth: "none",
+  "-ms-overflow-style": "none",
+};
 
-const useStyles = makeStyles((theme) => ({
-  root: {
+const useStyles = makeStyles(() => ({
+  scrollContainer: {
     display: "flex",
     flexDirection: "row",
     flexWrap: "nowrap",
@@ -24,28 +29,11 @@ const useStyles = makeStyles((theme) => ({
       flexShrink: 0,
     },
     scrollSnapType: "x mandatory",
-    "&::-webkit-scrollbar": {
-      display: "none",
-    },
-    scrollBarWidth: "none",
-    "-ms-overflow-style": "none",
+
+    ...HIDE_SCROLL_BARS,
   },
   childWrapper: {
     scrollSnapAlign: "start",
-  },
-  backButton: {
-    fontWeight: "bolder",
-    zIndex: 3,
-    position: "absolute",
-    top: `calc(50% - ${ICON_BUTTON_HEIGHT})`,
-    left: theme.spacing(2),
-  },
-  forwardButton: {
-    fontWeight: "bolder",
-    zIndex: 3,
-    position: "absolute",
-    top: `calc(50% - ${ICON_BUTTON_HEIGHT})`,
-    right: theme.spacing(2),
   },
 }));
 
@@ -70,7 +58,7 @@ export const useHorizontalSnapScrollController = (): IController => {
       setLeftDisabled(nextLeft === 0);
 
       setRightDisabled(
-        ref.current.scrollWidth === ref.current.getBoundingClientRect().width
+        ref.current.scrollWidth <= ref.current.getBoundingClientRect().width
       );
     }
   };
@@ -140,7 +128,7 @@ export const HorizontalSnapScroll = ({
 }>) => {
   const classes = useStyles();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
   const {
     leftDisabled,
     scrollLeft,
@@ -148,29 +136,40 @@ export const HorizontalSnapScroll = ({
     scrollRight,
     ref,
   } = controller;
-  return (
-    <Box position="relative">
-      <Grow in={!leftDisabled && !isMobile}>
-        <Fab size="small" className={classes.backButton} onClick={scrollLeft}>
-          <ArrowBackIcon />
-        </Fab>
-      </Grow>
 
-      <div ref={ref} className={classes.root}>
-        {React.Children.map(children, (child) => (
-          <Box className={classes.childWrapper}>{child}</Box>
-        ))}
-      </div>
-      <Grow in={!rightDisabled && !isMobile}>
-        <Fab
-          disabled={rightDisabled}
-          size="small"
-          className={classes.forwardButton}
-          onClick={scrollRight}
-        >
-          <ArrowForwardIcon />
-        </Fab>
-      </Grow>
+  const component = (
+    <div ref={ref} className={classes.scrollContainer}>
+      {React.Children.map(children, (child) => (
+        <div className={classes.childWrapper}>{child}</div>
+      ))}
+    </div>
+  );
+
+  if (isMobile) {
+    return component;
+  }
+
+  const canScroll = !(leftDisabled && rightDisabled);
+
+  return (
+    <Box display="flex" alignItems="center">
+      {canScroll && (
+        <Box>
+          <Fab size="small" onClick={scrollLeft} disabled={leftDisabled}>
+            <ArrowBackIcon />
+          </Fab>
+        </Box>
+      )}
+
+      {component}
+
+      {canScroll && (
+        <Box>
+          <Fab size="small" onClick={scrollRight} disabled={rightDisabled}>
+            <ArrowForwardIcon />
+          </Fab>
+        </Box>
+      )}
     </Box>
   );
 };
