@@ -31,7 +31,7 @@ export default () => {
     }
   };
 
-  const handleChange = (event: React.ChangeEvent<{}>, newIndex: number) => {
+  const handleChange = (_1: React.ChangeEvent<{}>, newIndex: number) => {
     if (homePageUi.tabOrder[newIndex]) {
       homePageUi.setTabValue(homePageUi.tabOrder[newIndex]);
     }

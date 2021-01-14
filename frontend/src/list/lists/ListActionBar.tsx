@@ -29,7 +29,7 @@ const EditListButton = ({ list }: { list: List }) => {
   );
 };
 
-const DeleteListButton = ({ list }: { list: List }) => {
+const DeleteListButton = (_1: { list: List }) => {
   const deleteListFormModal = useModal("DeleteListForm");
 
   return (

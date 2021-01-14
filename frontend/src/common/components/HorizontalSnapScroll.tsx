@@ -110,7 +110,7 @@ export const useHorizontalSnapScrollController = (): IController => {
 
   useEffect(() => {
     updatedDisabled(0);
-  }, [ref.current]);
+  }, []);
 
   const reset = () => {
     if (ref.current) {

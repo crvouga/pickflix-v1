@@ -1,4 +1,4 @@
-import { Box, Grid, GridProps, Typography } from "@material-ui/core";
+import { Grid, GridProps } from "@material-ui/core";
 import React from "react";
 import NothingHere from "../../common/components/NothingHere";
 import { InfiniteScrollBottom } from "../../common/infinite-scroll";
@@ -66,10 +66,10 @@ export const ReviewCardGridContainer = ({
 }: ReviewCardGridContainerProps) => {
   const query = useQueryReviews(GetReviewParams);
 
-  useListener(eventEmitterReviewForm, "submitSuccess", (review) => {
+  useListener(eventEmitterReviewForm, "submitSuccess", () => {
     query.refetch();
   });
-  useListener(eventEmitterDeleteReview, "submitSuccess", (review) => {
+  useListener(eventEmitterDeleteReview, "submitSuccess", () => {
     query.refetch();
   });
 

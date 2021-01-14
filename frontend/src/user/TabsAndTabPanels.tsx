@@ -35,7 +35,7 @@ export default ({ user }: { user: UserAggergation }) => {
     }
   };
 
-  const handleChange = (event: React.ChangeEvent<{}>, newIndex: number) => {
+  const handleChange = (_1: React.ChangeEvent<{}>, newIndex: number) => {
     if (userPageUi.tabOrder[newIndex]) {
       userPageUi.setTabValue(userPageUi.tabOrder[newIndex]);
     }

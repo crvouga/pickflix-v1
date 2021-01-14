@@ -173,7 +173,7 @@ export const DiscoverTagsSavedFormQueryContainer = () => {
 export const DiscoverTagsSavedForm = () => {
   return (
     <WithAuthentication
-      renderAuthenticated={(currentUser) => {
+      renderAuthenticated={() => {
         return <DiscoverTagsSavedFormQueryContainer />;
       }}
       renderUnathenticated={() => {

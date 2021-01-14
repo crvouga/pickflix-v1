@@ -8,9 +8,9 @@ type Certification = {
   meaning: string;
   order: number;
 };
-type CountryCode = "US";
+
 type MovieCertificationResponse = {
-  certifications: { [key in CountryCode]: Certification[] };
+  certifications: { US: Certification[] };
 };
 
 export const getMovieCertifications = async (config?: AxiosRequestConfig) => {

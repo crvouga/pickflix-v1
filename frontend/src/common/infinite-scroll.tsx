@@ -40,7 +40,7 @@ export const useInfiniteQueryPagination = <Result,>(
       return queryFn({ lastPage });
     },
     {
-      getFetchMore: (lastPage, allPages) => {
+      getFetchMore: (lastPage) => {
         if (
           lastPage.page < lastPage.totalPages ||
           lastPage.results.length > 0

@@ -2,32 +2,28 @@ import {
   Avatar,
   Box,
   Button,
-  ButtonGroup,
   Card,
+  CardActions,
   CardContent,
   CardHeader,
-  Dialog,
   IconButton,
-  Typography,
-  CardActions,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from "@material-ui/core";
-import { red } from "@material-ui/core/colors";
+import CloseIcon from "@material-ui/icons/Close";
+import LaunchIcon from "@material-ui/icons/Launch";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import ThumbUpAltOutlinedIcon from "@material-ui/icons/ThumbUpAltOutlined";
-import YouTubeIcon from "@material-ui/icons/YouTube";
 import moment from "moment";
 import numeral from "numeral";
 import React from "react";
+import ResponsiveDialogDrawer from "../../common/components/ResponsiveDialogDrawer";
 import useBoolean from "../../common/hooks/useBoolean";
 import { youtubeCommentTextToMarkdown } from "./query";
 import { YoutubeComment } from "./query/types";
-import LaunchIcon from "@material-ui/icons/Launch";
-import CloseIcon from "@material-ui/icons/Close";
-import ResponsiveDialogDrawer from "../../common/components/ResponsiveDialogDrawer";
 
 const YoutubeCommentOptionsList = ({
   onSeeChannel,

@@ -57,8 +57,7 @@ export const getSearchDiscoverAll = async (
 
 const getSearchDiscover = async (
   params: GetSearchParams,
-  filter?: DiscoverTagsSearchFilter,
-  config?: AxiosRequestConfig
+  filter?: DiscoverTagsSearchFilter
 ): Promise<Paginated<CompanyResult | KeywordResult | PersonResult>> => {
   switch (filter) {
     case DiscoverTagsSearchFilter.Company:

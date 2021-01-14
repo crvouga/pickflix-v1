@@ -1,9 +1,8 @@
-import { Box, ChipProps, BoxProps } from "@material-ui/core";
+import { Box, BoxProps, ChipProps } from "@material-ui/core";
 import React from "react";
-import HorizontalScroll from "../../common/components/HorizontalScroll";
+import HorizontalSnapScroll from "../../common/components/HorizontalSnapScroll";
 import { IDiscoverTag } from "../query/types";
 import DiscoverTag from "./DiscoverTag";
-import HorizontalSnapScroll from "../../common/components/HorizontalSnapScroll";
 
 export const DiscoverTags = ({
   tags,

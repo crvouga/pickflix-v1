@@ -1,12 +1,12 @@
-import { Box, Button, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import React, { useState } from "react";
+import React from "react";
 import { useSnackbar } from "../../../app/snackbar/redux/snackbar";
-import { User } from "../../query";
-import { postForgotPassword } from "./query";
+import LoadingDialog from "../../../common/components/LoadingDialog";
 import { SubmitButton } from "../../../common/components/SubmitButton";
 import useBoolean from "../../../common/hooks/useBoolean";
-import LoadingDialog from "../../../common/components/LoadingDialog";
+import { User } from "../../query";
+import { postForgotPassword } from "./query";
 
 export default ({ user }: { user: User }) => {
   const isSending = useBoolean(false);

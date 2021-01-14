@@ -147,7 +147,7 @@ export const useQueryYoutubeVideoCommentThreadList = ({
       });
     },
     {
-      getFetchMore: (lastPage, allPages) => {
+      getFetchMore: (lastPage) => {
         if (lastPage.items.length > 0) {
           return lastPage.nextPageToken;
         }
@@ -162,7 +162,7 @@ export const useQueryYoutubeVideoCommentThreadList = ({
       query.fetchMore();
     }
     return () => {};
-  }, [inView]);
+  }, [inView, query]);
   return {
     ...query,
     fetchMoreRef,

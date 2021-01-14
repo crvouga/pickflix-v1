@@ -11,10 +11,10 @@ import {
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import React, { useEffect } from "react";
 import useModal from "../../app/modals/useModal";
-import { MovieVideo, MovieVideos } from "../../media/tmdb/types";
+import { MovieVideos } from "../../media/tmdb/types";
 import useVideoState from "../../media/video/useVideoState";
 import MovieVideoDialog from "./MovieVideoDialog";
-import { MovieVideoList, MovieVideoListItem } from "./VideoListItem";
+import { MovieVideoList } from "./VideoListItem";
 
 export default ({
   tmdbMediaId,

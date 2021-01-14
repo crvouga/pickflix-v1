@@ -49,7 +49,7 @@ const ReviewFormRating = () => {
       name="review-form-rating"
       value={review.rating || 0}
       size="large"
-      onChangeActive={(e, value) => {
+      onChangeActive={(_1, value) => {
         if (value > 0) {
           setRating(value);
         }
@@ -60,7 +60,7 @@ const ReviewFormRating = () => {
           rating,
         });
       }}
-      onChange={(e, value) => {
+      onChange={() => {
         //not working for some reason
       }}
     />
@@ -135,7 +135,7 @@ export default ({ onCancel }: { onCancel?: () => void }) => {
     if (refContent.current) {
       refContent.current.value = reviewFormState.review.content || "";
     }
-  }, [reviewFormState.review.content, refContent.current]);
+  }, [reviewFormState.review.content]);
 
   useListener(eventEmitterReviewForm, "submitSuccess", () => {
     snackbar.display({

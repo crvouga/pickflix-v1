@@ -1,11 +1,7 @@
 import { CircularProgress, TextField, TextFieldProps } from "@material-ui/core";
 import React, { useState } from "react";
 import { useDebounce } from "use-debounce/lib";
-import {
-  isValidEmailAddress,
-  MAX_USERNAME_LENGTH,
-  useQueryUsers,
-} from "../query";
+import { isValidEmailAddress, useQueryUsers } from "../query";
 
 type Props = {
   currentEmailAddress?: string;

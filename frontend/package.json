@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "react-scripts start",
+    "start": "EXTEND_ESLINT=true react-scripts start",
     "generate-assets": "node generate-assets.js",
     "build": "npm run generate-assets && react-scripts build",
     "test": "react-scripts test --env=jsdom"

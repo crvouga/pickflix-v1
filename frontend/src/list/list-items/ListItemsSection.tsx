@@ -10,14 +10,12 @@ import {
 } from "../query";
 import { ListItemActionBar } from "./ListItemActionBar";
 import ListItemGrid from "./ListItemGrid";
-import ListItemCardCallToAction from "./ListItemCardCallToAction";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
     zIndex: theme.zIndex.appBar,
     position: "sticky",
     top: APP_BAR_HEIGHT,
-    // backgroundColor: theme.palette.background.default,
   },
 }));
 

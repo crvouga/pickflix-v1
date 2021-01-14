@@ -1,5 +1,5 @@
 import { descend, dissoc } from "ramda";
-import { IDiscoverTag, UNIQUE_TAG_TYPES, TagType } from "../query/types";
+import { IDiscoverTag, UNIQUE_TAG_TYPES } from "../query/types";
 import { useDiscoverActiveTagsState } from "./discover-active-tags";
 import { useDiscoverTagsState } from "./discover-tags";
 

@@ -6,13 +6,7 @@ import React from "react";
 import makeImageUrl from "../../../media/tmdb/makeImageUrl";
 import { ListAggergation } from "../../query";
 
-const useStyles = makeStyles((theme) => ({
-  borderRadius: {
-    borderRadius: theme.spacing(1 / 2),
-  },
-}));
-
-const useStylesPosterBox = makeStyles((theme) => ({
+const useStylesPosterBox = makeStyles(() => ({
   poster: {
     backgroundSize: "cover",
     backgroundPosition: "center",
@@ -72,8 +66,6 @@ export const ListImageBoxSkeleton = (props: BoxProps) => {
 };
 
 export default ({ list, ...props }: { list: ListAggergation } & BoxProps) => {
-  const classes = useStyles();
-
   if (list.listItemCount === 0) {
     return (
       <ListCardImageIconWrapperBox {...props}>
@@ -108,7 +100,7 @@ export default ({ list, ...props }: { list: ListAggergation } & BoxProps) => {
         flexDirection="row"
         flexWrap="wrap"
       >
-        {list.listItems.slice(0, 4).map((listItem, index) => (
+        {list.listItems.slice(0, 4).map((listItem) => (
           <Box key={listItem.listItem.id} width="50%" height="50%">
             <PosterBox
               width="100%"

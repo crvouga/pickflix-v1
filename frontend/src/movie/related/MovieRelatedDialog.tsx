@@ -40,19 +40,13 @@ const Recommendations = ({ tmdbMediaId }: { tmdbMediaId: string }) => {
   );
 };
 
-const close = (props: DialogProps) => {
-  if (props.onClose) {
-    props.onClose({}, "backdropClick");
-  }
-};
-
 export default ({
   tmdbMediaId,
   ...props
 }: { tmdbMediaId: string } & DialogProps) => {
   const [value, setValue] = useState(0);
 
-  const handleChange = (event: ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (_1: ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
 

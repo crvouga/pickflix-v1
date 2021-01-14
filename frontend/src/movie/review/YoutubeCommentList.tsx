@@ -1,11 +1,10 @@
 import { Box } from "@material-ui/core";
 import React from "react";
-import LoadingBox from "../../common/components/LoadingBox";
 import NothingHere from "../../common/components/NothingHere";
+import { InfiniteScrollBottom } from "../../common/infinite-scroll";
 import CommentThread from "../../media/youtube/CommentThread";
 import { useQueryYoutubeVideoCommentThreadList } from "../../media/youtube/query";
 import ReviewCardSkeleton from "../../review/card/ReviewCardSkeleton";
-import { InfiniteScrollBottom } from "../../common/infinite-scroll";
 
 const YoutubeCommentList = ({ videoId }: { videoId: string }) => {
   const query = useQueryYoutubeVideoCommentThreadList({ videoId });

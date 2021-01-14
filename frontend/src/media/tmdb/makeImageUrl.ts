@@ -23,7 +23,7 @@ const makeImageUrl = (
   }
 
   const found = Object.entries(pathKeyToSizesKey).find(
-    ([pathKey, sizesKey]) => pathKey in hasPathKey
+    ([pathKey]) => pathKey in hasPathKey
   );
 
   if (!found) {

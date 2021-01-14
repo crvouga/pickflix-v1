@@ -1,15 +1,11 @@
 import { Paginated } from "../../../common/types";
 import { createEventEmitter } from "../../../common/utility";
-import {
-  deleteListItems,
-  ListItemAggergation,
-  useDeleteListItemsMutation,
-} from "../../query";
+import { ListItemAggergation, useDeleteListItemsMutation } from "../../query";
 import { useRemoveListItemsFormState } from "./remove-list-items-form";
 
 type Data = Paginated<ListItemAggergation>[];
 
-const optimisticUpdate = (
+export const optimisticUpdate = (
   data: Data,
   listItemIds: { [id: string]: string }
 ): Data => {

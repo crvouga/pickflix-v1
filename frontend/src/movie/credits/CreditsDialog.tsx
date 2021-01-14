@@ -1,28 +1,25 @@
 import {
-  AppBar,
   Box,
   Button,
   DialogProps,
-  useMediaQuery,
-  useTheme,
   List,
   ListItem,
   ListItemText,
-  makeStyles,
   Paper,
+  useMediaQuery,
+  useTheme,
 } from "@material-ui/core";
+import matchSorter from "match-sorter";
+import { groupBy } from "ramda";
 import React, { useState } from "react";
+import { AppBarGutter } from "../../common/components/AppBarGutter";
 import {
   ResponsiveDialog,
   RESPONSIVE_DIALOG_MAX_WIDTH,
 } from "../../common/components/ResponsiveDialog";
-import SearchTextField from "../../search/input/SearchTextField";
 import { MovieCredits } from "../../media/tmdb/types";
-import matchSorter from "match-sorter";
+import SearchTextField from "../../search/input/SearchTextField";
 import CreditsListItem from "./CreditsListItem";
-import { groupBy } from "ramda";
-import { APP_BAR_HEIGHT } from "../../app/navigation/constants";
-import { AppBarGutter } from "../../common/components/AppBarGutter";
 
 const close = (props: DialogProps) => {
   if (props.onClose) {
@@ -41,7 +38,6 @@ export default ({
 
   const filtered = matchSorter([...credits.cast, ...credits.crew], text, {
     keys: ["name", "department", "job", "character"],
-    // threshold: matchSorter.rankings.NO_MATCH,
   });
 
   const groupedByDepartment = groupBy(

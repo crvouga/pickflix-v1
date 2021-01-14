@@ -1,5 +1,4 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
-import { AppState } from "../../../app/redux/types";
 
 const name = "youtube";
 

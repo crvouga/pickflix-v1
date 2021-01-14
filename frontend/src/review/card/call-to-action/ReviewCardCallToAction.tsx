@@ -1,15 +1,14 @@
 import {
   Box,
+  Button,
   Card,
   CardActionArea,
   CardContent,
   Typography,
-  Button,
 } from "@material-ui/core";
 import RateReviewOutlinedIcon from "@material-ui/icons/RateReviewOutlined";
 import { Rating } from "@material-ui/lab";
 import React from "react";
-import { SubmitButton } from "../../../common/components/SubmitButton";
 
 export type ReviewCardCallToActionProps = {
   onClick?: () => void;

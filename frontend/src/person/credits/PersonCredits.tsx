@@ -19,19 +19,6 @@ import {
 } from "../../media/tmdb/types";
 import MoviePosterGrid from "../../movie/components/MoviePosterGrid";
 import PersonCreditsDialog from "./PersonCreditsDialog";
-const TabPanel = (props: {
-  children?: React.ReactNode;
-  index: any;
-  value: any;
-}) => {
-  const { children, value, index } = props;
-
-  return (
-    <Box hidden={value !== index}>
-      {value === index && <React.Fragment>{children}</React.Fragment>}
-    </Box>
-  );
-};
 
 type Props = {
   details: PersonDetailsResponse;
@@ -80,14 +67,11 @@ export default ({ details, credits }: Props) => {
     knownForCast ? CAST_TAB_INDEX : CREW_TAB_INDEX
   );
 
-  const handleChangeIndex = (event: ChangeEvent<{}>, newIndex: number) => {
+  const handleChangeIndex = (_1: ChangeEvent<{}>, newIndex: number) => {
     setIndex(newIndex);
   };
 
   const [sortKey, setSortKey] = useState<SortKey>(SortKey.MostPopular);
-  const handleChangeSortKey = (event: ChangeEvent<{ value: unknown }>) => {
-    setSortKey(event.target.value as SortKey);
-  };
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 

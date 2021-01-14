@@ -7,12 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../../app/redux/types";
 import { createEventEmitter } from "../../../common/utility";
 import { MediaId } from "../../../media/tmdb/types";
-import {
-  List,
-  useAddListItemMutation,
-  useCreateListMutation,
-  postList,
-} from "../../query";
+import { List, postList, useAddListItemMutation } from "../../query";
 
 const name: "createListWithListItemsForm" = "createListWithListItemsForm";
 
@@ -100,7 +95,7 @@ export const eventEmitterCreateListWithListItemsForm = createEventEmitter<{
 
 export const useCreateListWithListItemsForm = () => {
   const formState = useCreateListWithListItemsFormState();
-  const createListMutation = useCreateListMutation();
+
   const addListItemMutation = useAddListItemMutation();
 
   const submit = async ({

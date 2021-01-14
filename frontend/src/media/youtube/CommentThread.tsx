@@ -1,4 +1,3 @@
-import { Box } from "@material-ui/core";
 import React from "react";
 import YoutubeComment from "./Comment";
 import { YoutubeCommentThread } from "./query/types";

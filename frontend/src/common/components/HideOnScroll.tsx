@@ -12,7 +12,7 @@ interface Props {
   children: React.ReactElement;
 }
 
-function HideOnScroll(props: Props) {
+export function HideOnScroll(props: Props) {
   const { children, window } = props;
   // Note that you normally won't need to set the window ref as useScrollTrigger
   // will default to window.

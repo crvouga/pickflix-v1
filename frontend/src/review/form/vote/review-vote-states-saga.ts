@@ -1,6 +1,6 @@
-import { put, takeEvery, call, select, delay } from "redux-saga/effects";
-import { reviewVoteStates, voteReducer, VoteState } from "./review-vote-states";
+import { call, put, select, takeEvery } from "redux-saga/effects";
 import { postReviewVote } from "../../query";
+import { reviewVoteStates, voteReducer, VoteState } from "./review-vote-states";
 
 export function* reviewVoteStatesSaga() {
   yield takeEvery(reviewVoteStates.actions.vote, function* (action) {

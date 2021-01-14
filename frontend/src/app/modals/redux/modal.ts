@@ -5,7 +5,6 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import { AppState } from "../../redux/types";
-import { createPayloadReducer } from "../../redux/utils";
 import { Modals } from "../types";
 
 const name: "modal" = "modal";

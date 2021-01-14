@@ -10,9 +10,9 @@ import TuneIcon from "@material-ui/icons/Tune";
 import UndoIcon from "@material-ui/icons/Undo";
 import React from "react";
 import useModal from "../app/modals/useModal";
-import useDiscoverState from "./redux/useDiscoverState";
 import WithAuthentication from "../user/auth/WithAuthentication";
 import { useSaveDiscoverTagsMutation } from "./form/save-discover-tags-form/SaveDiscoverTagsFormModal";
+import useDiscoverState from "./redux/useDiscoverState";
 
 export const SaveButton = (props: IconButtonProps) => {
   const { activeTags } = useDiscoverState();
@@ -20,7 +20,7 @@ export const SaveButton = (props: IconButtonProps) => {
   const signInCallToAction = useModal("SignInCallToAction");
   return (
     <WithAuthentication
-      renderAuthenticated={(currentUser) => (
+      renderAuthenticated={() => (
         <IconButton
           disabled={activeTags.length === 0}
           onClick={() => {

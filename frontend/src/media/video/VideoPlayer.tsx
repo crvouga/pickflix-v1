@@ -5,7 +5,7 @@ import AspectRatio from "../../common/components/AspectRatio";
 import useVideoState from "./useVideoState";
 import { videoKeyToEmbedURL } from "../youtube/query";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   videoContainer: {
     backgroundImage: ({ light }: ReactPlayerProps) => `url(${light})`,
     backgroundSize: "cover",

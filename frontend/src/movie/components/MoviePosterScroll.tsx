@@ -1,14 +1,13 @@
 import { Box, BoxProps } from "@material-ui/core";
-import { repeat, uniqBy, identity } from "ramda";
+import { identity, repeat, uniqBy } from "ramda";
 import React from "react";
 import { QueryKey } from "react-query";
-import HorizontalScroll from "../../common/components/HorizontalScroll";
+import HorizontalSnapScroll from "../../common/components/HorizontalSnapScroll";
+import LoadingBox from "../../common/components/LoadingBox";
 import NothingHere from "../../common/components/NothingHere";
 import { useInfiniteQueryPagination } from "../../common/infinite-scroll";
 import { Paginated } from "../../common/types";
 import MovieCard, { Movie, MOVIE_POSTER_ASPECT_RATIO } from "./MoviePosterCard";
-import LoadingBox from "../../common/components/LoadingBox";
-import HorizontalSnapScroll from "../../common/components/HorizontalSnapScroll";
 
 const WIDTH = 200;
 

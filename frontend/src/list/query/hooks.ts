@@ -1,11 +1,5 @@
 import equals from "fast-deep-equal";
-import {
-  InfiniteQueryConfig,
-  useMutation,
-  useQuery,
-  useQueryCache,
-  QueryKey,
-} from "react-query";
+import { InfiniteQueryConfig, useQuery, useQueryCache } from "react-query";
 import { useInfiniteQueryPagination } from "../../common/infinite-scroll";
 import { Paginated } from "../../common/types";
 import {
@@ -18,6 +12,7 @@ import {
 } from "./list-items";
 import {
   deleteList,
+  deleteListEditors,
   DeleteListEditorsParams,
   DeleteListParams,
   GetAutoListParams,
@@ -32,9 +27,8 @@ import {
   postListEditors,
   PostListEditorsParams,
   PostListParams,
-  deleteListEditors,
-  PostTransferOwnershipParams,
   postTransferOwnership,
+  PostTransferOwnershipParams,
 } from "./lists";
 import { ListAggergation, ListItemAggergation } from "./types";
 
@@ -332,7 +326,7 @@ export const useAddEditorsMutation = () => {
 
 const optimisticUpdateDeleteEditors = (
   previous: GetListsData,
-  { listId, editorIds }: DeleteListEditorsParams
+  { editorIds }: DeleteListEditorsParams
 ) => {
   return previous.map((page) => ({
     ...page,

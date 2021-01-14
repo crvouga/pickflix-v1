@@ -1,11 +1,6 @@
+import { ListItem, ListItemAvatar, ListItemText } from "@material-ui/core";
 import React from "react";
 import { PersonMovieCredit } from "../../media/tmdb/types";
-import {
-  ListItem,
-  ListItemAvatar,
-  Avatar,
-  ListItemText,
-} from "@material-ui/core";
 import MovieAvatar from "../../movie/components/MovieAvatar";
 
 type Props = {

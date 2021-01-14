@@ -58,7 +58,7 @@ type Props = BoxProps & {
   review: MovieReview;
 };
 
-export default ({ review, ...props }: Props) => {
+export default ({ review }: Props) => {
   const classes = useStyles();
   const isDialogOpen = useBoolean(false);
   const { url, content, author } = review;

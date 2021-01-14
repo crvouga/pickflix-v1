@@ -4,13 +4,10 @@ import {
   createReducer,
   createSelector,
 } from "@reduxjs/toolkit";
-import { equals } from "ramda";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../../app/redux/types";
 import { createPayloadReducer } from "../../../app/redux/utils";
 import { MediaId } from "../../../media/tmdb/types";
-import { ToggleListItemFormProps } from "./ToggleListItemForm";
-import { ListAggergation, AutoListAggergation } from "../../query";
 
 const name: "toggleForm" = "toggleForm";
 
@@ -82,23 +79,6 @@ export const toggleForm = {
   reducer,
   selectors,
   name,
-};
-
-/*
-
-
-*/
-
-export const toInitialMarkedListIds = ({
-  mediaId,
-  autoLists,
-  lists,
-}: {
-  lists: ListAggergation[];
-  autoLists: AutoListAggergation[];
-  mediaId: MediaId;
-}): { [listId: string]: string } => {
-  return {};
 };
 
 /* 

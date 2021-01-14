@@ -1,16 +1,11 @@
-import {
-  Box,
-  BoxProps,
-  makeStyles,
-  TypographyVariant,
-} from "@material-ui/core";
+import { Box, BoxProps, makeStyles } from "@material-ui/core";
 import React from "react";
 
 type StyleProps = {
   scale: number;
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
     flexDirection: "row",

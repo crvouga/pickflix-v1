@@ -1,11 +1,4 @@
-import {
-  Card,
-  CardHeader,
-  CardMedia,
-  CardActionArea,
-  CardContent,
-  Typography,
-} from "@material-ui/core";
+import { Card, CardActionArea, CardHeader, CardMedia } from "@material-ui/core";
 import moment from "moment";
 import React from "react";
 import makeImageUrl from "../../media/tmdb/makeImageUrl";

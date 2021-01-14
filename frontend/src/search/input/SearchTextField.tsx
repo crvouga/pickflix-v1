@@ -5,7 +5,6 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import SearchIcon from "@material-ui/icons/Search";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({
@@ -26,8 +25,7 @@ type Props = InputBaseProps & {
 };
 
 // prevent lag while typing
-const shouldNotComponentUpdate = (previousProps: Props, nextProps: Props) =>
-  true;
+const shouldNotComponentUpdate = (_1: Props, _2: Props) => true;
 
 export default React.memo(
   React.forwardRef(({ onClear, ...props }: Props, inputRef) => {

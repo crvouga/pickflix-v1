@@ -1,4 +1,4 @@
-import { TmdbMediaType, Movie, MediaId } from "../../media/tmdb/types";
+import { MediaId, Movie } from "../../media/tmdb/types";
 import { User } from "../../user/query";
 
 export type Review = {

@@ -26,7 +26,7 @@ import TabsAndTabPanels from "./TabsAndTabPanels";
 export const makeUserPageRoute = ({ userId }: { userId: string }) =>
   `/user/${userId}`;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   avatar: {
     fontSize: "4em",
     width: "120px",
@@ -88,9 +88,7 @@ export const UserPage = ({ user }: { user: UserAggergation }) => {
 
           <WithAuthentication
             renderAuthenticated={(currentUser) =>
-              currentUser.user.id === user.user.id && (
-                <CurrentUserActions currentUser={currentUser} />
-              )
+              currentUser.user.id === user.user.id && <CurrentUserActions />
             }
           />
         </Container>

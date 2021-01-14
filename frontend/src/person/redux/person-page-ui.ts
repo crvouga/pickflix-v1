@@ -37,7 +37,7 @@ const selectors = {
 */
 
 const reducer = createReducer(initialState, {
-  [actions.toggleGrid.toString()]: (state, action) => {
+  [actions.toggleGrid.toString()]: (state) => {
     state.isGridOn = !state.isGridOn;
   },
 });

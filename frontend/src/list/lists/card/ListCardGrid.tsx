@@ -1,21 +1,21 @@
-import { Box, Grid, GridProps, Typography } from "@material-ui/core";
+import { Grid, GridProps } from "@material-ui/core";
 import React from "react";
+import NothingHere from "../../../common/components/NothingHere";
 import { InfiniteScrollBottom } from "../../../common/infinite-scroll";
 import WithAuthentication from "../../../user/auth/WithAuthentication";
-import AutoListCard from "./AutoListCard";
 import {
   AutoListAggergation,
+  doesIncludeUserId,
   GetAutoListParams,
   GetListsParams,
   ListAggergation,
   useQueryAutoLists,
   useQueryLists,
-  doesIncludeUserId,
 } from "../../query";
+import AutoListCard from "./AutoListCard";
 import ListCard from "./ListCard";
 import ListCardCallToAction from "./ListCardCallToAction";
 import ListCardSkeleton from "./ListCardSkeleton";
-import NothingHere from "../../../common/components/NothingHere";
 
 export const ListCardGridEmpty = () => {
   return <NothingHere />;

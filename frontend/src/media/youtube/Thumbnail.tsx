@@ -4,7 +4,7 @@ import "react-lazy-load-image-component/src/effects/opacity.css";
 import AspectRatio from "../../common/components/AspectRatio";
 import { videoKeyToThumbnailURL } from "./query";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   image: {
     width: "100%",
     height: "100%",

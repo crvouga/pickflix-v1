@@ -1,11 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  CardActionArea,
-  CardContent,
-  Typography,
-} from "@material-ui/core";
+import { Box, Button, Card, CardContent, Typography } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router";
 

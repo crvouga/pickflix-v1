@@ -28,7 +28,7 @@ export default (props: Props) => {
   const min = props.min || ideal - radius;
   const max = props.max || ideal + radius;
 
-  const [headText, tailText] = trimText(text, min, ideal, max);
+  const [headText] = trimText(text, min, ideal, max);
 
   const [isIn, setIsIn] = useState(false);
   const headTextWithTrail = `${dropLast(1, headText)}...`;

@@ -1,5 +1,5 @@
 import { AppBar, Box } from "@material-ui/core";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import { useSearchState } from "../redux/search";
 import SearchFilters from "./SearchFilters";
 import SearchTextField from "./SearchTextField";
@@ -14,17 +14,17 @@ export default () => {
     }
   };
 
-  const clear = () => {
+  const clear = useCallback(() => {
     if (inputRef.current) {
       inputRef.current.value = "";
       setText("");
       setFilter(undefined);
     }
-  };
+  }, [setFilter, setText]);
 
   useEffect(() => {
     clear();
-  }, []);
+  }, [clear]);
 
   return (
     <AppBar position="sticky" color="default">

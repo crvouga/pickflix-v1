@@ -1,22 +1,20 @@
-import React from "react";
 import {
-  Typography,
-  Box,
-  Paper,
   Avatar,
+  Box,
   Card,
-  CardContent,
-  makeStyles,
   CardActions,
-  IconButton,
+  CardContent,
   Container,
+  makeStyles,
+  Typography,
 } from "@material-ui/core";
-import makeImageUrl from "../media/tmdb/makeImageUrl";
-import { PersonDetailsResponse } from "../media/tmdb/types";
+import React from "react";
 import OpenDiscoverButton from "../discover/OpenDiscoverButton";
 import { TagType } from "../discover/query/types";
+import makeImageUrl from "../media/tmdb/makeImageUrl";
+import { PersonDetailsResponse } from "../media/tmdb/types";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   avatar: {
     width: "160px",
     height: "160px",

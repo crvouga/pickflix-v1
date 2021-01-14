@@ -3,11 +3,11 @@ import { Autocomplete } from "@material-ui/lab";
 import React, { useState } from "react";
 import useModal from "../../../app/modals/useModal";
 import NonFullscreenResponsiveDialog from "../../../common/components/NonFullscreenResponsiveDialog";
+import { SlideDown } from "../../../common/components/TransitionComponents";
+import { MediaId, TmdbMediaType } from "../../../media/tmdb/types";
 import MovieListItem from "../../../movie/components/MovieListItem";
 import { MovieResult, useQuerySearchMovies } from "../../../search/query";
-import { MediaId, TmdbMediaType } from "../../../media/tmdb/types";
 import { useAddListItemMutation } from "../../query";
-import { SlideDown } from "../../../common/components/TransitionComponents";
 
 type AutoCompeleteUsersProps = {
   results: MovieResult[];
@@ -15,7 +15,6 @@ type AutoCompeleteUsersProps = {
   onTextChanged: (text: string) => void;
   onSelected: (result: MovieResult) => void;
 };
-const noop = () => {};
 
 const AutoCompeleteMovies = ({
   results,
@@ -29,7 +28,7 @@ const AutoCompeleteMovies = ({
       multiple={false}
       freeSolo={false}
       getOptionLabel={(option) => option.title}
-      onChange={(event, value) => {
+      onChange={(_1, value) => {
         if (value) {
           onSelected(value);
         }

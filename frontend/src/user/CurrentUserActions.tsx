@@ -16,7 +16,6 @@ import React from "react";
 import useModal from "../app/modals/useModal";
 import ResponsiveDialogDrawer from "../common/components/ResponsiveDialogDrawer";
 import { useReviewFormState } from "../review/form/edit-create-review/review-form";
-import { UserAggergation } from "./query";
 
 export const OpenCurrentUserActionsModalButton = () => {
   const { open } = useModal("CurrentUserActions");
@@ -138,7 +137,7 @@ export const CurrentUserActionsModal = () => {
   );
 };
 
-export default ({}: { currentUser: UserAggergation }) => {
+export default () => {
   const { onEditUser, onCreateList, onCreateReview } = useCurrentUserActions();
 
   return (

@@ -1,6 +1,7 @@
-import { Box, Button, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router";
+import { SubmitButton } from "../../../common/components/SubmitButton";
 import {
   DisplayNameTextField,
   useDisplayNameTextFieldState,
@@ -9,7 +10,6 @@ import {
   UsernameTextField,
   useUsernameTextFieldState,
 } from "../../forms/UsernameTextField";
-import { SubmitButton } from "../../../common/components/SubmitButton";
 
 export default ({ emailAddress }: { emailAddress: string }) => {
   const history = useHistory();

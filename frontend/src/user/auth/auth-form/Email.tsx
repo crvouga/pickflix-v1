@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography } from "@material-ui/core";
+import { Box, TextField, Typography } from "@material-ui/core";
 import * as EmailValidator from "email-validator";
 import React, { useRef, useState } from "react";
 import { useHistory } from "react-router";

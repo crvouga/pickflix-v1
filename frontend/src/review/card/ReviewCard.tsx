@@ -69,7 +69,7 @@ export const CardHeaderAuthor = ({
   );
 };
 
-const useStylesCardHeader = makeStyles((theme) => ({
+const useStylesCardHeader = makeStyles(() => ({
   //EXPLANATION: https://stackoverflow.com/questions/59356314/how-apply-ellipsis-to-title-in-material-ui-cardheader
   content: {
     flex: "1 1 auto",

@@ -1,26 +1,16 @@
-import {
-  Box,
-  Button,
-  IconButton,
-  InputAdornment,
-  makeStyles,
-  TextField,
-  Typography,
-} from "@material-ui/core";
-import VisibilityIcon from "@material-ui/icons/Visibility";
-import VisibilityOffIcon from "@material-ui/icons/VisibilityOff";
-import React, { useRef, useState } from "react";
+import { Box, Button, makeStyles, Typography } from "@material-ui/core";
+import React from "react";
 import { useHistory } from "react-router";
+import { SubmitButton } from "../../../common/components/SubmitButton";
 import AvatarUser from "../../components/AvatarUser";
+import {
+  PasswordTextField,
+  usePasswordTextFieldState,
+} from "../../forms/PasswordTextField";
 import { User } from "../../query";
 import { signIn } from "../query/mutations";
-import { SubmitButton } from "../../../common/components/SubmitButton";
-import {
-  usePasswordTextFieldState,
-  PasswordTextField,
-} from "../../forms/PasswordTextField";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   avatar: {
     transform: "scale(2)",
   },

@@ -13,14 +13,15 @@ import {
   ListCardGridContainer,
 } from "../list/lists/card/ListCardGrid";
 import { UserAggergation } from "./query";
-enum Filter {
+
+export enum Filter {
   Owner = "Owner",
   Editor = "Editor",
 }
 
 export default ({ user }: { user: UserAggergation }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedFilter, setSelectedFilter] = useState<null | Filter>(null);
+  const [selectedFilter, setSelectedFilter] = useState<Filter | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);

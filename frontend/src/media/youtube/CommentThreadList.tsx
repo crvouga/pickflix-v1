@@ -12,7 +12,7 @@ export default ({ commentThreadList }: Props) => {
 
   return (
     <React.Fragment>
-      {items.map((commentThread, i) => (
+      {items.map((commentThread) => (
         <Box key={commentThread.id} paddingX={2} paddingY={1}>
           <YoutubeCommentThread commentThread={commentThread} />
         </Box>

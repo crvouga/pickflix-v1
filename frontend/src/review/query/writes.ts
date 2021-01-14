@@ -1,5 +1,5 @@
 import { BackendAPI } from "../../backend-api";
-import { TmdbMediaType, MediaId } from "../../media/tmdb/types";
+import { MediaId } from "../../media/tmdb/types";
 import { Review, ReviewVote, VoteValue } from "./types";
 
 /*

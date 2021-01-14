@@ -40,10 +40,10 @@ const AutoCompeleteUsers = ({
       multiple
       freeSolo={false}
       getOptionLabel={(option) => option.username}
-      onInputChange={(event, input) => {
+      onInputChange={(_1, input) => {
         onTextChanged(input);
       }}
-      onChange={(event, value) => {
+      onChange={(_1, value) => {
         onSelectedUsersChanged(value);
       }}
       renderTags={(tags, getTagProps) => {

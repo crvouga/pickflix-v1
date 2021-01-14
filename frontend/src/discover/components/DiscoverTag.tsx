@@ -1,17 +1,16 @@
 import { Avatar, Box, ChipProps } from "@material-ui/core";
 import BusinessIcon from "@material-ui/icons/Business";
-import ScheduleIcon from "@material-ui/icons/Schedule";
 import React from "react";
 import { capitalizeWords } from "../../common/utility";
 import makeImageUrl from "../../media/tmdb/makeImageUrl";
 import { commas, toRuntimeShort } from "../../movie/utils";
-import Tag from "./BaseTag";
 import {
   IDiscoverTag,
   sortByKeyToName,
   TagType,
   yearRangeToName,
 } from "../query/types";
+import Tag from "./BaseTag";
 
 type Props = ChipProps & {
   tag: IDiscoverTag;

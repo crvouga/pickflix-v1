@@ -33,10 +33,10 @@ const MediaSearch = React.forwardRef(
 
     return (
       <Autocomplete
-        onInputChange={(e, newText) => {
+        onInputChange={(_1, newText) => {
           setText(newText);
         }}
-        onChange={(e, option) => {
+        onChange={(_1, option) => {
           if (option) {
             const mediaId: MediaId = {
               tmdbMediaId: Number(option.id),
@@ -81,10 +81,6 @@ export default () => {
 
   const isFocused = useBoolean(false);
 
-  const handleClick = () => {
-    isFocused.setTrue();
-  };
-
   const handleSelect = (mediaId: MediaId) => {
     reviewFormState.setReview({
       ...reviewFormState.review,
@@ -100,14 +96,5 @@ export default () => {
     );
   }
 
-  return (
-    <MovieCardHeaderContainer
-      mediaId={mediaId}
-      // action={
-      //   <IconButton onClick={handleClick}>
-      //     <SearchIcon />
-      //   </IconButton>
-      // }
-    />
-  );
+  return <MovieCardHeaderContainer mediaId={mediaId} />;
 };

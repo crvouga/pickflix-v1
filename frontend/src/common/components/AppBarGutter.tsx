@@ -1,4 +1,4 @@
-import { Box, BoxProps, DialogProps, makeStyles } from "@material-ui/core";
+import { Box, BoxProps, makeStyles } from "@material-ui/core";
 import React from "react";
 
 const useStyles = makeStyles((theme) => ({

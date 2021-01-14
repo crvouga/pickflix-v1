@@ -4,7 +4,6 @@ import {
   IconButton,
   makeStyles,
   Toolbar,
-  useTheme,
 } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router";
@@ -32,7 +31,6 @@ export default () => {
   const classes = useStyles();
   const history = useHistory();
   const searchModal = useModal("Search");
-  const theme = useTheme();
 
   const handleClickLogo = () => {
     history.push("/");

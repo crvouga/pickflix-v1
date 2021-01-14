@@ -1,6 +1,4 @@
-import React from "react";
 import { useParams } from "react-router";
-
 import { useQueryReviews } from "./query";
 
 export default () => {

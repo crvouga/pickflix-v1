@@ -1,5 +1,5 @@
 import { Box, Typography } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React from "react";
 import { useDebounce } from "use-debounce/lib";
 import ErrorBox from "../common/components/ErrorBox";
 import { InfiniteScrollBottom } from "../common/infinite-scroll";
@@ -7,8 +7,8 @@ import MoviePosterGrid, {
   MoviePosterGridSkeleton,
 } from "../movie/components/MoviePosterGrid";
 import { tagsToParams } from "./query/types";
-import useDiscoverMovieQuery from "./useDiscoverQuery";
 import useDiscoverState from "./redux/useDiscoverState";
+import useDiscoverMovieQuery from "./useDiscoverQuery";
 
 export default () => {
   const { activeTags } = useDiscoverState();

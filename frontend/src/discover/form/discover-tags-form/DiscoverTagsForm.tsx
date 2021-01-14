@@ -43,7 +43,7 @@ export const DiscoverTagsFormModal = () => {
     discoverPageUi.discoverTagsTabValue
   );
 
-  const handleChange = (event: React.ChangeEvent<{}>, newIndex: number) => {
+  const handleChange = (_1: React.ChangeEvent<{}>, newIndex: number) => {
     if (discoverPageUi.discoverTagsTabOrder[newIndex]) {
       discoverPageUi.setDiscoverTagsTabValue(
         discoverPageUi.discoverTagsTabOrder[newIndex]

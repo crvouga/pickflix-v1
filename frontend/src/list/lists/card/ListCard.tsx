@@ -3,17 +3,16 @@ import {
   Card,
   CardHeaderProps,
   Grid,
-  Typography,
-  useTheme,
   makeStyles,
+  Typography,
 } from "@material-ui/core";
+import { AvatarGroup } from "@material-ui/lab";
 import React from "react";
 import { useHistory } from "react-router";
 import { pluralize } from "../../../common/utility";
+import AvatarUser from "../../../user/components/AvatarUser";
 import { ListAggergation } from "../../query";
 import ListImageBox from "./ListCardImage";
-import { AvatarGroup } from "@material-ui/lab";
-import AvatarUser from "../../../user/components/AvatarUser";
 
 const useStyles = makeStyles((theme) => ({
   small: {
@@ -28,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default ({
   list,
-  CardHeaderProps,
 }: {
   list: ListAggergation;
   CardHeaderProps?: CardHeaderProps;

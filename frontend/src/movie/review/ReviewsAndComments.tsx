@@ -19,7 +19,7 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
     moviePageUi.setReviewCommentsTabValue("pickflix");
   });
 
-  const handleChange = (event: React.ChangeEvent<{}>, newIndex: number) => {
+  const handleChange = (_1: React.ChangeEvent<{}>, newIndex: number) => {
     if (moviePageUi.reviewCommentsTabOrder[newIndex]) {
       moviePageUi.setReviewCommentsTabValue(
         moviePageUi.reviewCommentsTabOrder[newIndex]

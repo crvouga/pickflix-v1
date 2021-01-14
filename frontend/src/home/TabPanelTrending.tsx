@@ -11,16 +11,6 @@ import {
   getUpcomingMovies,
 } from "../media/tmdb/query";
 import { MoviePosterScrollInfinite } from "../movie/components/MoviePosterScroll";
-import { sortBy } from "ramda";
-import { Paginated } from "../common/types";
-import { Movie } from "../movie/components/MoviePosterCard";
-
-const shuffle = sortBy(Math.random);
-//why?: so popular, now playing, and trending sections looks different
-const shufflePage = (page: Paginated<Movie>) => ({
-  ...page,
-  results: shuffle(page.results),
-});
 
 export const TabPanelTrending = () => {
   return (

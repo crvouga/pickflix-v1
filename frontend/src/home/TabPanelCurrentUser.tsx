@@ -1,21 +1,22 @@
 import {
   Box,
+  Card,
+  CardContent,
+  Container,
   ListItem,
   ListItemAvatar,
   ListItemIcon,
   ListItemText,
-  Card,
-  CardContent,
   Typography,
-  Container,
 } from "@material-ui/core";
 import MovieCreationOutlinedIcon from "@material-ui/icons/MovieCreationOutlined";
 import { uniqBy } from "ramda";
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import { useHistory } from "react-router";
 import ErrorBox from "../common/components/ErrorBox";
 import ListItemSkeleton from "../common/components/ListItemSkeleton";
-import useBoolean from "../common/hooks/useBoolean";
+import { InfiniteScrollBottom } from "../common/infinite-scroll";
 import { ListItemAggergation, useQueryListItems } from "../list/query";
 import { getMoviesRecommendations } from "../media/tmdb/query";
 import MovieAvatar from "../movie/components/MovieAvatar";
@@ -26,8 +27,6 @@ import {
 import SignInCallToAction from "../user/auth/SignInCallToAction";
 import WithAuthentication from "../user/auth/WithAuthentication";
 import { UserAggergation } from "../user/query";
-import { InfiniteScrollBottom } from "../common/infinite-scroll";
-import { useHistory } from "react-router";
 
 const CurrentUserFeedTitle = () => {
   return (

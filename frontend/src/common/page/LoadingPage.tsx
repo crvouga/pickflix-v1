@@ -2,7 +2,7 @@ import { CircularProgress, makeStyles } from "@material-ui/core";
 import React from "react";
 import Page from "./Page";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     display: "flex",
     justifyContent: "center",
