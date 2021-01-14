@@ -51,7 +51,6 @@ export const TabPanelTrending = () => {
       <MoviePosterScrollInfinite
         queryFn={getPopularMovies}
         queryKey={["popular", "movies"]}
-        mapPage={shufflePage}
       />
 
       <ListItem>
@@ -66,7 +65,6 @@ export const TabPanelTrending = () => {
       <MoviePosterScrollInfinite
         queryFn={getNowPlayingMovies}
         queryKey={["now playing", "movies"]}
-        mapPage={shufflePage}
       />
 
       <ListItem>
@@ -81,7 +79,6 @@ export const TabPanelTrending = () => {
       <MoviePosterScrollInfinite
         queryFn={getUpcomingMovies}
         queryKey={["now playing", "movies"]}
-        mapPage={shufflePage}
       />
     </React.Fragment>
   );
