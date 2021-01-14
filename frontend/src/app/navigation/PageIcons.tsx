@@ -11,11 +11,7 @@ import { useLocation } from "react-router";
 
 export const DiscoverPageIcon = () => {
   const location = useLocation();
-  return location.pathname === "/discover" ? (
-    <ExploreIcon />
-  ) : (
-    <ExploreOutlinedIcon />
-  );
+  return location.pathname === "/" ? <ExploreIcon /> : <ExploreOutlinedIcon />;
 };
 
 export const ProfilePageIcon = () => {
@@ -29,10 +25,14 @@ export const ProfilePageIcon = () => {
 
 export const HomePageIcon = () => {
   const location = useLocation();
-  return location.pathname === "/" ? <HomeIcon /> : <HomeOutlinedIcon />;
+  return location.pathname === "/home" ? <HomeIcon /> : <HomeOutlinedIcon />;
 };
 
 export const SearchPageIcon = () => {
   const location = useLocation();
-  return location.pathname === "/" ? <SearchIcon /> : <SearchOutlinedIcon />;
+  return location.pathname === "/search" ? (
+    <SearchIcon />
+  ) : (
+    <SearchOutlinedIcon />
+  );
 };

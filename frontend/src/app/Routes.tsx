@@ -27,8 +27,9 @@ export default () => {
     <React.Fragment>
       <Suspense fallback={<LoadingPage />}>
         <Switch>
-          <Route exact path="/" component={HomePage} />
-          <Route path="/discover" component={DiscoverMoviePage} />
+          <Route exact path="/" component={DiscoverMoviePage} />
+          <Route exact path="/discover" component={DiscoverMoviePage} />
+          <Route path="/home" component={HomePage} />
           <Route path="/search" component={SearchPage} />
           <Route path="/movie/:tmdbMediaId" component={MoviePage} />
           <Route path="/person/:tmdbMediaId" component={PersonPage} />

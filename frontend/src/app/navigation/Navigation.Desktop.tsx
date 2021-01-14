@@ -51,7 +51,7 @@ export default () => {
   };
 
   const hanldeClickHome = () => {
-    history.push("/");
+    history.push("/home");
   };
 
   return (
