@@ -9,7 +9,7 @@ import {
   aggergateAutoList,
   getAutoList,
   getAutoListAggergations,
-  initializeAutoLists,
+  addAutoLists,
 } from "./auto-lists";
 import {
   addListItems,
@@ -73,8 +73,12 @@ export class ListLogic {
     this.autoListRepository = autoListRepository;
     this.eventEmitter = eventEmitter;
 
+    this.eventEmitter.on("UserCreated", async (createdUser) => {
+      await this.addAutoLists({ user: createdUser });
+    });
+
     this.eventEmitter.on("UserVerified", async (verifiedUser) => {
-      await this.initializeAutoLists({ user: verifiedUser });
+      await this.addAutoLists({ user: verifiedUser });
     });
   }
 
@@ -82,7 +86,7 @@ export class ListLogic {
   aggergateAutoList = aggergateAutoList;
   aggergateListItem = aggergateListItem;
   //
-  initializeAutoLists = initializeAutoLists;
+  addAutoLists = addAutoLists;
   getAutoListAggergations = getAutoListAggergations;
   getAutoList = getAutoList;
   //

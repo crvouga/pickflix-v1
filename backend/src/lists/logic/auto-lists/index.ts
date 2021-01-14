@@ -9,10 +9,7 @@ import {
 import { AutoListAggergation } from "../../models/types";
 import { ListLogic } from "../logic";
 
-export async function initializeAutoLists(
-  this: ListLogic,
-  { user }: { user: User }
-) {
+export async function addAutoLists(this: ListLogic, { user }: { user: User }) {
   for (const info of INITIAL_AUTO_LIST_INFOS) {
     const found = await this.autoListRepository.find({
       ownerId: user.id,
@@ -24,7 +21,6 @@ export async function initializeAutoLists(
         key: info.key,
         ownerId: user.id,
       });
-      console.log("added", { info, autoList });
 
       await this.autoListRepository.add(autoList);
     }
