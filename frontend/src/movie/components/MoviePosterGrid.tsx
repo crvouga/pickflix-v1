@@ -11,16 +11,15 @@ type ResponsiveGridProps<T> = {
 
 const useStyles = makeStyles(() => ({
   container: {
-    scrollSnapType: "y proximity",
-    overflowY: "scroll",
-
-    transform: "translateZ(0)",
-    "& *": {
-      flexShrink: 0,
-    },
+    // scrollSnapType: "y proximity",
+    // overflowY: "scroll",
+    // transform: "translateZ(0)",
+    // "& *": {
+    //   flexShrink: 0,
+    // },
   },
   item: {
-    scrollSnapAlign: "start",
+    // scrollSnapAlign: "start",
   },
 }));
 
