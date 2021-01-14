@@ -1,6 +1,6 @@
 import { Box, Tab, Tabs, Typography } from "@material-ui/core";
 import React from "react";
-import TabPanel from "../../common/components/TabPanel";
+import { TabPanel, TabPanelContainer } from "../../common/components/TabPanel";
 import { useListener } from "../../common/utility";
 import { MediaId } from "../../media/tmdb/types";
 import useVideoState from "../../media/video/useVideoState";
@@ -68,15 +68,17 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
           ))}
         </Tabs>
       </Box>
-      {moviePageUi.reviewCommentsTabOrder.map((tabValue, index) => (
-        <TabPanel
-          key={tabValue}
-          value={moviePageUi.reviewCommentsTabIndex}
-          index={index}
-        >
-          {tabValueToTabComponent(tabValue)}
-        </TabPanel>
-      ))}
+      <TabPanelContainer>
+        {moviePageUi.reviewCommentsTabOrder.map((tabValue, index) => (
+          <TabPanel
+            key={tabValue}
+            value={moviePageUi.reviewCommentsTabIndex}
+            index={index}
+          >
+            {tabValueToTabComponent(tabValue)}
+          </TabPanel>
+        ))}
+      </TabPanelContainer>
     </React.Fragment>
   );
 };

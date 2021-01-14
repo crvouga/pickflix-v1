@@ -1,7 +1,7 @@
 import { AppBar, Container, Tab, Tabs } from "@material-ui/core";
 import React from "react";
 import { APP_BAR_HEIGHT } from "../app/navigation/constants";
-import TabPanel from "../common/components/TabPanel";
+import { TabPanel, TabPanelContainer } from "../common/components/TabPanel";
 import { useListener } from "../common/utility";
 import { eventEmitterReviewForm } from "../review/form/edit-create-review/review-form";
 import { UserAggergation } from "./query";
@@ -63,11 +63,13 @@ export default ({ user }: { user: UserAggergation }) => {
         </Container>
       </AppBar>
       <Container maxWidth="md" disableGutters>
-        {userPageUi.tabOrder.map((tabValue, index) => (
-          <TabPanel key={tabValue} value={userPageUi.tabIndex} index={index}>
-            {tabValueToTabComponent(tabValue)}
-          </TabPanel>
-        ))}
+        <TabPanelContainer>
+          {userPageUi.tabOrder.map((tabValue, index) => (
+            <TabPanel key={tabValue} value={userPageUi.tabIndex} index={index}>
+              {tabValueToTabComponent(tabValue)}
+            </TabPanel>
+          ))}
+        </TabPanelContainer>
       </Container>
     </React.Fragment>
   );

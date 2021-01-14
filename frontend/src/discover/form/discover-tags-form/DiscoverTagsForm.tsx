@@ -8,7 +8,10 @@ import {
   ResponsiveDialog,
   RESPONSIVE_DIALOG_MAX_WIDTH,
 } from "../../../common/components/ResponsiveDialog";
-import TabPabel from "../../../common/components/TabPanel";
+import {
+  TabPanel,
+  TabPanelContainer,
+} from "../../../common/components/TabPanel";
 import {
   DiscoverTagsTabValue,
   useDiscoverPageUi,
@@ -74,11 +77,19 @@ export const DiscoverTagsFormModal = () => {
 
       <AppBarGutter />
 
-      {discoverPageUi.discoverTagsTabOrder.map((discoverTagTabValue, index) => (
-        <TabPabel key={discoverTagTabValue} value={currentIndex} index={index}>
-          {renderTabPanel(discoverTagTabValue)}
-        </TabPabel>
-      ))}
+      <TabPanelContainer>
+        {discoverPageUi.discoverTagsTabOrder.map(
+          (discoverTagTabValue, index) => (
+            <TabPanel
+              key={discoverTagTabValue}
+              value={currentIndex}
+              index={index}
+            >
+              {renderTabPanel(discoverTagTabValue)}
+            </TabPanel>
+          )
+        )}
+      </TabPanelContainer>
     </ResponsiveDialog>
   );
 };

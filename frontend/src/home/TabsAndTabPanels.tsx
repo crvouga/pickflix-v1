@@ -1,6 +1,6 @@
 import { AppBar, Container, Tab, Tabs, makeStyles } from "@material-ui/core";
 import React from "react";
-import TabPanel from "../common/components/TabPanel";
+import { TabPanel, TabPanelContainer } from "../common/components/TabPanel";
 import { HomePageTabValue, useHomePageUi } from "./redux/home-page-ui";
 import { TabPanelPageHistory } from "./TabPanelPageHistory";
 import { TabPanelTrending } from "./TabPanelTrending";
@@ -55,11 +55,13 @@ export default () => {
         </Container>
       </AppBar>
       <Container maxWidth="md" disableGutters>
-        {homePageUi.tabOrder.map((tabValue, index) => (
-          <TabPanel key={tabValue} value={homePageUi.tabIndex} index={index}>
-            {tabValueToTabComponent(tabValue)}
-          </TabPanel>
-        ))}
+        <TabPanelContainer>
+          {homePageUi.tabOrder.map((tabValue, index) => (
+            <TabPanel key={tabValue} value={homePageUi.tabIndex} index={index}>
+              {tabValueToTabComponent(tabValue)}
+            </TabPanel>
+          ))}
+        </TabPanelContainer>
       </Container>
     </React.Fragment>
   );
