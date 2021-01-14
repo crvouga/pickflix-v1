@@ -1,6 +1,5 @@
 import {
   Box,
-  BoxProps,
   Fab,
   Grow,
   makeStyles,
@@ -136,9 +135,9 @@ export const useHorizontalSnapScrollController = (): IController => {
 export const HorizontalSnapScroll = ({
   children,
   controller,
-}: {
+}: React.PropsWithChildren<{
   controller: IController;
-} & BoxProps) => {
+}>) => {
   const classes = useStyles();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -176,7 +175,7 @@ export const HorizontalSnapScroll = ({
   );
 };
 
-export default (props: BoxProps) => {
+export default (props: React.PropsWithChildren<{}>) => {
   const controller = useHorizontalSnapScrollController();
   return <HorizontalSnapScroll controller={controller} {...props} />;
 };

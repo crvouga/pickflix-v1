@@ -19,7 +19,7 @@ type MoviePosterScrollProps = {
 export const MoviePosterScroll = (props: MoviePosterScrollProps) => {
   const { movies, ItemBoxProps } = props;
   return (
-    <HorizontalSnapScroll width="100%">
+    <HorizontalSnapScroll>
       {movies.map((movie) => (
         <Box
           width={WIDTH}
@@ -77,7 +77,7 @@ export const MoviePosterScrollInfinite = ({
   const ratio = MOVIE_POSTER_ASPECT_RATIO[0] / MOVIE_POSTER_ASPECT_RATIO[1];
   const height = WIDTH / ratio;
   return (
-    <HorizontalSnapScroll width="100%">
+    <HorizontalSnapScroll>
       {movies.map((movie, index) => (
         <Box
           width={WIDTH}

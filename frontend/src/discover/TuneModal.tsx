@@ -38,7 +38,7 @@ const Tags = ({
   onClick?: (tag: IDiscoverTag) => void;
 }) => {
   return (
-    <HorizontalSnapScroll paddingX={2} p={1} marginBottom={1}>
+    <HorizontalSnapScroll>
       {tags.map((tag) => (
         <Box
           key={tag.id}
