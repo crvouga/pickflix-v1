@@ -2,9 +2,7 @@ import { Box, Typography } from "@material-ui/core";
 import React from "react";
 import { SubmitButton } from "../../../common/components/SubmitButton";
 import {
-  PasswordRepeatTextField,
   PasswordTextField,
-  usePasswordRepeatTextFieldState,
   usePasswordTextFieldState,
 } from "../../forms/PasswordTextField";
 import { signUp } from "../query/mutations";
@@ -12,30 +10,30 @@ import { signUp } from "../query/mutations";
 export default ({
   emailAddress,
   username,
+  displayName,
 }: {
   emailAddress: string;
   username: string;
+  displayName: string;
 }) => {
   const passwordTextFieldState = usePasswordTextFieldState();
-  const passwordRepeatTextFieldState = usePasswordRepeatTextFieldState(
-    passwordTextFieldState
-  );
 
-  const disabled = !(
-    passwordTextFieldState.isValid && passwordRepeatTextFieldState.isValid
-  );
+  const disabled = !passwordTextFieldState.isValid;
 
   const handleSubmit = async () => {
     await signUp({
       emailAddress,
       username,
+      displayName,
       password: passwordTextFieldState.password,
-      displayName: passwordRepeatTextFieldState.passwordRepeat,
     });
   };
 
   return (
     <React.Fragment>
+      <Typography align="center" gutterBottom variant="h5">
+        Choose a password
+      </Typography>
       <Typography align="center" variant="h6">
         {emailAddress}
       </Typography>
@@ -45,10 +43,6 @@ export default ({
 
       <Box paddingBottom={2}>
         <PasswordTextField state={passwordTextFieldState} />
-      </Box>
-
-      <Box paddingBottom={2}>
-        <PasswordRepeatTextField state={passwordRepeatTextFieldState} />
       </Box>
 
       <SubmitButton onClick={handleSubmit} fullWidth disabled={disabled}>

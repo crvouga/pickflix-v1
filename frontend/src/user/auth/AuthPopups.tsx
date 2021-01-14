@@ -6,6 +6,7 @@ import useBoolean from "../../common/hooks/useBoolean";
 import { useSnackbar } from "../../app/snackbar/redux/snackbar";
 import { useListener } from "../../common/utility";
 import { authEventEmitter } from "./query/mutations";
+import { makeCurrentUserPageRoute } from "../CurrentUserPage";
 
 const SigningIn = () => {
   const isLoading = useBoolean(false);
@@ -18,7 +19,7 @@ const SigningIn = () => {
   });
 
   useListener(authEventEmitter, "signInSuccess", (user) => {
-    history.push("/");
+    history.push(makeCurrentUserPageRoute());
     snackbar.display({
       message: `Signed in as ${user.username}`,
     });
@@ -56,7 +57,7 @@ const SigningOut = () => {
   });
 
   useListener(authEventEmitter, "signOutSettled", () => {
-    history.push("/");
+    history.push("/discover");
     isLoading.setFalse();
     queryCache.invalidateQueries(
       (query) =>
@@ -90,7 +91,7 @@ const SigningUp = () => {
   });
 
   useListener(authEventEmitter, "signUpSettled", () => {
-    history.push("/");
+    history.push(makeCurrentUserPageRoute());
     isLoading.setFalse();
     queryCache.invalidateQueries((query) =>
       query.queryKey.includes("current-user")

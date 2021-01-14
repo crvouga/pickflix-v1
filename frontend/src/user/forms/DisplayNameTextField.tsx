@@ -48,12 +48,17 @@ export const useDisplayNameTextFieldState = ({
 
 export const DisplayNameTextField = ({
   state,
+  ...props
 }: {
   state: DisplayNameTextFieldState;
-}) => {
-  const { isError, TextFieldProps } = state;
-
+} & TextFieldProps) => {
   return (
-    <TextField label="Name" fullWidth error={isError} {...TextFieldProps} />
+    <TextField
+      label="Name"
+      fullWidth
+      error={state.isError}
+      {...state.TextFieldProps}
+      {...props}
+    />
   );
 };

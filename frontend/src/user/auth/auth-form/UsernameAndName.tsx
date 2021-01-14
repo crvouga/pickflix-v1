@@ -35,13 +35,18 @@ export default ({ emailAddress }: { emailAddress: string }) => {
 
   return (
     <React.Fragment>
-      <Typography align="center" variant="h6" gutterBottom>
+      <Typography align="center" variant="h5" gutterBottom>
+        Pick a username
+      </Typography>
+      <Typography align="center" variant="h6">
         {emailAddress}
       </Typography>
-
       <UsernameTextField state={usernameTextFieldState} />
       <Box paddingBottom={2}>
-        <DisplayNameTextField state={displayNameTextFieldState} />
+        <DisplayNameTextField
+          state={displayNameTextFieldState}
+          label={"Name (Optional)"}
+        />
       </Box>
 
       <SubmitButton onClick={handleSubmit} fullWidth disabled={disabled}>
