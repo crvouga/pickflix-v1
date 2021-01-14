@@ -23,8 +23,9 @@ export default () => {
   }, [setFilter, setText]);
 
   useEffect(() => {
+    console.log("CLEAR");
     clear();
-  }, [clear]);
+  }, []);
 
   return (
     <AppBar position="sticky" color="default">
