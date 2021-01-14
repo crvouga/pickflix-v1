@@ -8,8 +8,9 @@ import { useInfiniteQueryPagination } from "../../common/infinite-scroll";
 import { Paginated } from "../../common/types";
 import MovieCard, { Movie, MOVIE_POSTER_ASPECT_RATIO } from "./MoviePosterCard";
 import LoadingBox from "../../common/components/LoadingBox";
+import HorizontalSnapScroll from "../../common/components/HorizontalSnapScroll";
 
-const WIDTH = 180;
+const WIDTH = 200;
 
 type MoviePosterScrollProps = {
   movies: Movie[];
@@ -19,13 +20,13 @@ type MoviePosterScrollProps = {
 export const MoviePosterScroll = (props: MoviePosterScrollProps) => {
   const { movies, ItemBoxProps } = props;
   return (
-    <HorizontalScroll paddingLeft={2} width="100%">
+    <HorizontalSnapScroll paddingLeft={2} width="100%">
       {movies.map((movie) => (
-        <Box width={WIDTH} key={movie.id} marginRight={1} {...ItemBoxProps}>
+        <Box width={WIDTH} key={movie.id} marginRight={2} {...ItemBoxProps}>
           <MovieCard movie={movie} />
         </Box>
       ))}
-    </HorizontalScroll>
+    </HorizontalSnapScroll>
   );
 };
 
@@ -72,9 +73,9 @@ export const MoviePosterScrollInfinite = ({
   const ratio = MOVIE_POSTER_ASPECT_RATIO[0] / MOVIE_POSTER_ASPECT_RATIO[1];
   const height = WIDTH / ratio;
   return (
-    <HorizontalScroll paddingLeft={2} width="100%">
+    <HorizontalSnapScroll paddingLeft={2} width="100%">
       {movies.map((movie, index) => (
-        <Box width="180px" key={[movie.id, index].toString()} marginRight={1}>
+        <Box width={WIDTH} key={[movie.id, index].toString()} marginX={1}>
           <MovieCard movie={movie} />
         </Box>
       ))}
@@ -90,7 +91,7 @@ export const MoviePosterScrollInfinite = ({
           <LoadingBox />
         </Box>
       )}
-    </HorizontalScroll>
+    </HorizontalSnapScroll>
   );
 };
 
