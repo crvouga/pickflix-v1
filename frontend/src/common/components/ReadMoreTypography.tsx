@@ -1,7 +1,7 @@
 import { Box, Typography, TypographyProps } from "@material-ui/core";
+import { dropLast } from "ramda";
 import React, { useState } from "react";
 import trimText from "read-more-react/dist/utils/trimText";
-import { dropLast } from "ramda";
 
 export type ReadMoreProps = {
   ideal?: number;
