@@ -1,8 +1,15 @@
-import { Box, BoxProps, Fab, makeStyles, Grow } from "@material-ui/core";
+import {
+  Box,
+  BoxProps,
+  Fab,
+  makeStyles,
+  useTheme,
+  Grow,
+  useMediaQuery,
+} from "@material-ui/core";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-import React, { useRef, useEffect, useState } from "react";
-import useBoolean from "../hooks/useBoolean";
+import React, { useEffect, useRef, useState } from "react";
 
 const ICON_BUTTON_HEIGHT = "24px";
 
@@ -18,17 +25,24 @@ const useStyles = makeStyles((theme) => ({
       flexShrink: 0,
     },
     scrollSnapType: "x mandatory",
+    "&::-webkit-scrollbar": {
+      display: "none",
+    },
+    scrollBarWidth: "none",
+    "-ms-overflow-style": "none",
   },
   childWrapper: {
     scrollSnapAlign: "start",
   },
   backButton: {
+    fontWeight: "bolder",
     zIndex: 3,
     position: "absolute",
     top: `calc(50% - ${ICON_BUTTON_HEIGHT})`,
     left: theme.spacing(2),
   },
   forwardButton: {
+    fontWeight: "bolder",
     zIndex: 3,
     position: "absolute",
     top: `calc(50% - ${ICON_BUTTON_HEIGHT})`,
@@ -42,9 +56,13 @@ export default ({ children, ...props }: BoxProps) => {
   const [leftDisabled, setLeftDisabled] = useState(true);
   const [rightDisabled, setRightDisabled] = useState(true);
 
-  const updatedDisabled = () => {
+  const theme = useTheme();
+
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const updatedDisabled = (nextLeft: number) => {
     if (ref.current) {
-      setLeftDisabled(ref.current.scrollLeft === 0);
+      setLeftDisabled(nextLeft === 0);
 
       setRightDisabled(
         ref.current.scrollWidth === ref.current.getBoundingClientRect().width
@@ -54,56 +72,63 @@ export default ({ children, ...props }: BoxProps) => {
 
   const scrollLeft = () => {
     if (ref.current) {
+      const left = Math.max(
+        0,
+        ref.current.scrollLeft -
+          (ref.current.getBoundingClientRect().width + theme.spacing(2))
+      );
+
       ref.current.scroll({
-        left: Math.max(
-          0,
-          ref.current.scrollLeft - ref.current.getBoundingClientRect().width
-        ),
+        left,
         behavior: "smooth",
       });
-      updatedDisabled();
+
+      updatedDisabled(left);
     }
   };
 
   const scrollRight = () => {
     if (ref.current) {
+      const left =
+        ref.current.scrollLeft +
+        ref.current.getBoundingClientRect().width +
+        theme.spacing(2);
       ref.current.scroll({
-        left:
-          ref.current.scrollLeft + ref.current.getBoundingClientRect().width,
+        left,
+
         behavior: "smooth",
       });
-      updatedDisabled();
+      updatedDisabled(left);
     }
   };
 
   useEffect(() => {
-    updatedDisabled();
+    updatedDisabled(0);
   }, [ref.current]);
 
   return (
     <Box position="relative" {...props}>
-      <Fab
-        disabled={leftDisabled}
-        size="small"
-        className={classes.backButton}
-        onClick={scrollLeft}
-      >
-        <ArrowBackIcon />
-      </Fab>
+      <Grow in={!leftDisabled && !isMobile}>
+        <Fab size="small" className={classes.backButton} onClick={scrollLeft}>
+          <ArrowBackIcon />
+        </Fab>
+      </Grow>
 
       <div ref={ref} className={classes.root}>
         {React.Children.map(children, (child) => (
           <Box className={classes.childWrapper}>{child}</Box>
         ))}
       </div>
-      <Fab
-        disabled={rightDisabled}
-        size="small"
-        className={classes.forwardButton}
-        onClick={scrollRight}
-      >
-        <ArrowForwardIcon />
-      </Fab>
+      <Grow in={!rightDisabled && !isMobile}>
+        <Fab
+          disabled={rightDisabled}
+          size="small"
+          className={classes.forwardButton}
+          onClick={scrollRight}
+        >
+          <ArrowForwardIcon />
+        </Fab>
+      </Grow>
     </Box>
   );
 };

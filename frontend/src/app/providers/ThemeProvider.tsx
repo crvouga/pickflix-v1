@@ -31,6 +31,13 @@ export const theme = createMuiTheme({
 
 const CssBaseline = withStyles((theme) => ({
   "@global": {
+    body: {
+      "&::-webkit-scrollbar": {
+        display: "none",
+      },
+      scrollBarWidth: "none",
+      "-ms-overflow-style": "none",
+    },
     html: {
       touchAction: "manipulation", //prevent double-tap zoom
       scrollbarColor: `${theme.palette.grey[800]} ${theme.palette.background.default}`,
