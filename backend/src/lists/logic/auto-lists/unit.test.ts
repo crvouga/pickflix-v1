@@ -6,7 +6,7 @@ describe("auto list logic", () => {
   it("creates auto lists", async () => {
     const { listLogic } = await buildListLogicTest();
     const user = makeUserFake();
-    await listLogic.initializeAutoLists({ user });
+    await listLogic.addAutoLists({ user });
 
     const got = await listLogic.getAutoListAggergations({ ownerId: user.id });
 
