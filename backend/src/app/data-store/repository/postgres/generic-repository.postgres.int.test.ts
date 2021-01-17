@@ -1,4 +1,4 @@
-import { postgresDatabaseTest } from "../../../build/build-test";
+import { postgresDatabseTest } from "../../../build/build-test";
 import { PaginationOptions } from "../../../pagination";
 import { dangerouslyClearTables } from "./database.postgres";
 import {
@@ -7,8 +7,8 @@ import {
 } from "./foo-repository.postgres";
 
 const buildFooRepositoryPostgres = async () => {
-  const repository = new FooRepositoryPostgres(postgresDatabaseTest);
-  await dangerouslyClearTables(postgresDatabaseTest);
+  const repository = new FooRepositoryPostgres(postgresDatabseTest);
+  await dangerouslyClearTables(postgresDatabseTest);
   await repository.initializeTables();
   return repository;
 };

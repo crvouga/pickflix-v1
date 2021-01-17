@@ -1,4 +1,5 @@
 import { ClientConfig, Pool } from "pg";
+import { createdb, dropdb, IPgToolsConfig } from "pg-tools";
 import { IPostgresTable, makeCreateTableQuery } from "./query-builder";
 export * from "./query-builder";
 
@@ -40,8 +41,6 @@ export class PostgresDatabase implements IPostgresDatabase {
     return response.rows;
   }
 
-  async createDatabase(databaseName: string) {}
-
   async createTable<Row>(tableName: string, table: IPostgresTable<Row>) {
     const sql = makeCreateTableQuery(tableName, table);
 
@@ -67,6 +66,36 @@ export class PostgresDatabase implements IPostgresDatabase {
     }
   }
 }
+
+export const createDatabase = async (
+  config: IPgToolsConfig,
+  databaseName: string
+) => {
+  return new Promise((resolve, reject) => {
+    createdb(config, databaseName, (error, response) => {
+      if (error) {
+        return reject(error);
+      } else {
+        return resolve(response);
+      }
+    });
+  });
+};
+
+export const dropDatabase = async (
+  config: IPgToolsConfig,
+  databaseName: string
+) => {
+  return new Promise((resolve, reject) => {
+    dropdb(config, databaseName, (error, response) => {
+      if (error) {
+        return reject(error);
+      } else {
+        return resolve(response);
+      }
+    });
+  });
+};
 
 export const dangerouslyClearTables = async (database: IPostgresDatabase) => {
   const sql = `

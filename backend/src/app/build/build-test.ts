@@ -26,22 +26,26 @@ import {
 
 */
 
-export const postgresDatabaseTest = new PostgresDatabase({
+const databaseName = "pickflix_test";
+
+const databaseConfig = {
   user: "postgres",
   host: "localhost",
   port: 5432,
-  database: "pickflix_test",
-});
+  database: databaseName,
+};
+
+export const postgresDatabseTest = new PostgresDatabase(databaseConfig);
 
 export const buildRepositoriesTest = async () => {
   switch (getRepositoryImplementation()) {
     case "postgres":
-      await dangerouslyClearTables(postgresDatabaseTest);
+      await dangerouslyClearTables(postgresDatabseTest);
 
       const {
         repositories,
         initializeAllTables,
-      } = await buildRepositoriesPostgres(postgresDatabaseTest);
+      } = await buildRepositoriesPostgres(postgresDatabseTest);
 
       await initializeAllTables();
 
@@ -123,7 +127,7 @@ export const buildAppTest = async () => {
 
   const dependencies: ExpressAppDependencies = {
     ...appLogic,
-    postgresDatabase: postgresDatabaseTest,
+    postgresDatabase: postgresDatabseTest,
     middlewares: {
       authenticate: handlerStub,
       isAuthenticated: handlerStub,

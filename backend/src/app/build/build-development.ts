@@ -5,7 +5,7 @@ import { ListLogic } from "../../lists/logic/logic";
 import { MediaLogic } from "../../media/logic/logic";
 import { ReviewLogic } from "../../reviews/logic/logic";
 import { UserLogic } from "../../users/logic/logic";
-import { HashMapCache } from "../data-store/cache/cache.hash-map";
+import { RedisCache } from "../data-store/cache/cache.redis";
 import { PostgresDatabase } from "../data-store/repository/postgres/database.postgres";
 import { EmailLogic } from "../email";
 import { createEventEmitter, Events } from "../events";
@@ -19,19 +19,26 @@ import {
   buildRepositoriesFileSystem,
   buildRepositoriesPostgres,
 } from "./build-repositories";
-import { RedisCache } from "../data-store/cache/cache.redis";
 
 /* 
 
 
 */
+const databaseName = "pickflix_development";
 
-const postgresDatabaseDevelopment = new PostgresDatabase({
+const databaseConfig = {
   user: "postgres",
   host: "localhost",
   port: 5432,
-  database: "pickflix_development",
-});
+  database: databaseName,
+};
+
+const postgresDatabaseDevelopment = new PostgresDatabase(databaseConfig);
+
+/* 
+
+
+*/
 
 const buildRepositoriesDevelopment = async () => {
   switch (getRepositoryImplementation()) {
