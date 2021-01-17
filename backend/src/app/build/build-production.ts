@@ -8,7 +8,7 @@ import { UserLogic } from "../../users/logic/logic";
 import { RedisCache } from "../persistence/cache/cache.redis";
 import { PostgresDatabase } from "../persistence/postgres/database.postgres";
 import { buildSessionStorePostgres } from "../express/session-store";
-import { EmailLogic } from "../email";
+import { EmailLogic } from "../../users/email";
 import { createEventEmitter, Events } from "../events";
 import {
   authenticate,

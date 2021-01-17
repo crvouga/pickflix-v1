@@ -1,4 +1,4 @@
-import { Email } from "../../../app/email";
+import { Email } from "../../email";
 import { Link } from "../../../utils";
 import { User } from "../../models";
 

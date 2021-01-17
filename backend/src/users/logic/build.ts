@@ -1,5 +1,5 @@
 import { buildPersistence } from "../../app/build/build-test";
-import { emailLogicStub } from "../../app/email";
+import { emailLogicStub } from "../email";
 import { createEventEmitter, Events } from "../../app/events";
 import { UserLogic } from "./logic";
 

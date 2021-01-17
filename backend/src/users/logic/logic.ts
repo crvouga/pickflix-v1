@@ -1,4 +1,4 @@
-import { IEmailLogic } from "../../app/email";
+import { IEmailLogic } from "../email";
 import { Emitter, Events } from "../../app/events";
 import { PaginationOptions } from "../../app/pagination";
 import { PermissionType } from "../../lists/models";
