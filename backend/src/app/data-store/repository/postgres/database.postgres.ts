@@ -1,38 +1,6 @@
-import Knex from "knex";
 import { ClientConfig, Pool } from "pg";
-
-export const queryBuilder = Knex({
-  client: "pg",
-});
-
-export type PostgresDataType = "TEXT" | "BIGINT";
-
-export type IPostgresTable<Row> = {
-  [key in keyof Row]: {
-    dataType: PostgresDataType;
-  };
-};
-
-const makeCreateTableQuery = <Row>(
-  tableName: string,
-  tableSpec: IPostgresTable<Row>
-): string => {
-  return queryBuilder.schema
-    .createTable(tableName, (tableBuilder) => {
-      for (const columnName in tableSpec) {
-        const dataType: PostgresDataType = tableSpec[columnName].dataType;
-        switch (dataType) {
-          case "BIGINT":
-            tableBuilder.bigInteger(String(columnName));
-            break;
-          case "TEXT":
-            tableBuilder.text(String(columnName));
-            break;
-        }
-      }
-    })
-    .toQuery();
-};
+import { IPostgresTable, makeCreateTableQuery } from "./query-builder";
+export * from "./query-builder";
 
 export interface IPostgresDatabase {
   pool: Pool;
@@ -71,6 +39,8 @@ export class PostgresDatabase implements IPostgresDatabase {
     const response = await this.pool.query<Row>(sql);
     return response.rows;
   }
+
+  async createDatabase(databaseName: string) {}
 
   async createTable<Row>(tableName: string, table: IPostgresTable<Row>) {
     const sql = makeCreateTableQuery(tableName, table);
