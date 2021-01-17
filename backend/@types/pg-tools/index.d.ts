@@ -7,36 +7,34 @@ declare module "pg-tools" {
     port: number | string;
   };
 
-  type IError = unknown;
+  type IPgToolsError = any;
 
-  type IResponse = {
+  type IPgToolsResponse = {
     command: string;
     rowCount: number;
     oid: string | null;
-    rows: Array<unknown>;
+    rows: Array<any>;
     fields: Array<string>;
-    _parsers: Array<unknown>;
-    RowCtor: unknown;
+    _parsers: Array<any>;
+    RowCtor: any;
     rowAsArray: boolean;
     _getTypeParser: Function;
   };
 
-  type ICallback = (err: IError, response: IResponse) => void;
+  export type IPgToolsCallback = (
+    err: IPgToolsError,
+    response: IPgToolsResponse
+  ) => void;
 
-  function createdb(
+  export function createdb(
     config: IPgToolsConfig,
     databaseName: string,
-    callback: ICallback
+    callback: IPgToolsCallback
   ): void;
 
-  function dropdb(
+  export function dropdb(
     config: IPgToolsConfig,
     databaseName: string,
-    callback: ICallback
+    callback: IPgToolsCallback
   ): void;
-
-  export = {
-    createdb,
-    dropdb,
-  };
 }
