@@ -9,7 +9,7 @@ import { UserLogic } from "../../users/logic/logic";
 import { FAKE_USER_INFO } from "../../users/models";
 import { HashMapCache } from "../data-store/cache/cache.hash-map";
 import {
-  clearTables,
+  dangerouslyClearTables,
   PostgresDatabase,
 } from "../data-store/repository/postgres/database.postgres";
 import { emailLogicStub } from "../email";
@@ -36,7 +36,7 @@ export const postgresDatabaseTest = new PostgresDatabase({
 export const buildRepositoriesTest = async () => {
   switch (getRepositoryImplementation()) {
     case "postgres":
-      await clearTables(postgresDatabaseTest);
+      await dangerouslyClearTables(postgresDatabaseTest);
 
       const {
         repositories,

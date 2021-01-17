@@ -68,7 +68,7 @@ export class PostgresDatabase implements IPostgresDatabase {
   }
 }
 
-export const clearTables = async (database: IPostgresDatabase) => {
+export const dangerouslyClearTables = async (database: IPostgresDatabase) => {
   const sql = `
     DROP SCHEMA public CASCADE;
     CREATE SCHEMA public;
