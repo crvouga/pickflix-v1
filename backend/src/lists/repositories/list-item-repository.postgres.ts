@@ -2,9 +2,9 @@ import {
   IPostgresDatabase,
   IPostgresRespository,
   IPostgresTable,
-} from "../../app/persistence/repository/postgres/database.postgres";
-import { GenericRepositoryPostgres } from "../../app/persistence/repository/postgres/generic-repository.postgres";
-import { GenericRepositoryQueryOptions } from "../../app/persistence/repository/types";
+} from "../../app/persistence/postgres/database.postgres";
+import { GenericRepositoryPostgres } from "../../app/persistence/generic-repository/generic-repository.postgres";
+import { GenericRepositoryQueryOptions } from "../../app/persistence/generic-repository/types";
 import { castTimestamp, Timestamp } from "../../utils";
 import {
   deserializeMediaId,

@@ -8,7 +8,7 @@ import { ReviewLogic } from "../../reviews/logic/logic";
 import { UserLogic } from "../../users/logic/logic";
 import { FAKE_USER_INFO } from "../../users/models";
 import { HashMapCache } from "../persistence/cache/cache.hash-map";
-import { PostgresDatabase } from "../persistence/repository/postgres/database.postgres";
+import { PostgresDatabase } from "../persistence/postgres/database.postgres";
 import { emailLogicStub } from "../email";
 import { createEventEmitter, Events } from "../events";
 import { buildExpressApp } from "../express/build-app";

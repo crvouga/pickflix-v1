@@ -1,6 +1,9 @@
-import { POSTGRES_TEST_CONFIG } from "../../../build/build-test";
-import { PaginationOptions } from "../../../pagination";
-import { dangerouslyClearTables, PostgresDatabase } from "./database.postgres";
+import { POSTGRES_TEST_CONFIG } from "../../build/build-test";
+import { PaginationOptions } from "../../pagination";
+import {
+  dangerouslyClearTables,
+  PostgresDatabase,
+} from "../postgres/database.postgres";
 import {
   FooRepositoryPostgres,
   makeFooArbitrary,

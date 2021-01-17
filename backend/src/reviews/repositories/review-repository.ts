@@ -1,7 +1,7 @@
-import { GenericRepositoryHashMap } from "../../app/persistence/repository/generic-repository.hash-map";
-import { GenericRepositoryQueryOptions } from "../../app/persistence/repository/types";
+import { GenericRepositoryHashMap } from "../../app/persistence/generic-repository/generic-repository.hash-map";
+import { GenericRepositoryQueryOptions } from "../../app/persistence/generic-repository/types";
 import { Review, ReviewId } from "../models/make-review";
-import { GenericRepositoryFileSystem } from "../../app/persistence/repository/generic-repository.file-system";
+import { GenericRepositoryFileSystem } from "../../app/persistence/generic-repository/generic-repository.file-system";
 
 export interface IReviewRepository {
   find(

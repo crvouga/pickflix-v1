@@ -33,7 +33,7 @@ import {
   UserRepositoryHashMap,
   UserRespositoryPostgres,
 } from "../../users/repositories";
-import { IPostgresDatabase } from "../persistence/repository/postgres/database.postgres";
+import { IPostgresDatabase } from "../persistence/postgres/database.postgres";
 
 /* 
 

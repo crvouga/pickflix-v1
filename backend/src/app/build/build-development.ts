@@ -8,7 +8,7 @@ import { ReviewLogic } from "../../reviews/logic/logic";
 import { UserLogic } from "../../users/logic/logic";
 import { HashMapCache } from "../persistence/cache/cache.hash-map";
 import { RedisCache } from "../persistence/cache/cache.redis";
-import { PostgresDatabase } from "../persistence/repository/postgres/database.postgres";
+import { PostgresDatabase } from "../persistence/postgres/database.postgres";
 import { buildSessionStorePostgres } from "../express/session-store";
 import { EmailLogic } from "../email";
 import { createEventEmitter, Events } from "../events";
