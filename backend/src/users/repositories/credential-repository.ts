@@ -1,6 +1,6 @@
 import { Credential, CredentialId } from "../models/make-credential";
-import { GenericRepositoryHashMap } from "../../app/data-store/repository/generic-repository.hash-map";
-import { GenericRepositoryFileSystem } from "../../app/data-store/repository/generic-repository.file-system";
+import { GenericRepositoryHashMap } from "../../app/persistence/repository/generic-repository.hash-map";
+import { GenericRepositoryFileSystem } from "../../app/persistence/repository/generic-repository.file-system";
 
 export interface ICredentialRepository {
   find(spec: Partial<Credential>): Promise<Credential[]>;

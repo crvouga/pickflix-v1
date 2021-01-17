@@ -1,5 +1,5 @@
 import { innerJoin } from "ramda";
-import { GenericRepositoryQueryOptions } from "../../../app/data-store/repository/types";
+import { GenericRepositoryQueryOptions } from "../../../app/persistence/repository/types";
 import { MediaId } from "../../../media/models/types";
 import { UserId } from "../../../users/models/make-user";
 import { List, ListId, PermissionType } from "../../models";

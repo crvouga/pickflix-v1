@@ -1,5 +1,5 @@
 import { AxiosRequestConfig } from "axios";
-import { HashMapCache } from "../../app/data-store/cache/cache.hash-map";
+import { HashMapCache } from "../../app/persistence/cache/cache.hash-map";
 import { TmdbDiscoverTagsRepositoryHashMap } from "../repositories/TmdbDiscoverTagsRepository";
 import { MediaLogic } from "./logic";
 

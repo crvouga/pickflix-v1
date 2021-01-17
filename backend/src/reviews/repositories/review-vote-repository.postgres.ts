@@ -2,8 +2,8 @@ import {
   IPostgresDatabase,
   IPostgresRespository,
   IPostgresTable,
-} from "../../app/data-store/repository/postgres/database.postgres";
-import { GenericRepositoryPostgres } from "../../app/data-store/repository/postgres/generic-repository.postgres";
+} from "../../app/persistence/repository/postgres/database.postgres";
+import { GenericRepositoryPostgres } from "../../app/persistence/repository/postgres/generic-repository.postgres";
 import { castUserId, UserId } from "../../users/models";
 import { castReviewId, ReviewId } from "../models/make-review";
 import {

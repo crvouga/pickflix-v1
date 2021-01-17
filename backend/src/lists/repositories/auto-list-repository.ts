@@ -1,6 +1,6 @@
-import { GenericRepositoryHashMap } from "../../app/data-store/repository/generic-repository.hash-map";
+import { GenericRepositoryHashMap } from "../../app/persistence/repository/generic-repository.hash-map";
 import { AutoList } from "../models/make-auto-list";
-import { GenericRepositoryFileSystem } from "../../app/data-store/repository/generic-repository.file-system";
+import { GenericRepositoryFileSystem } from "../../app/persistence/repository/generic-repository.file-system";
 import { ListId } from "../models";
 
 export interface IAutoListRepository {

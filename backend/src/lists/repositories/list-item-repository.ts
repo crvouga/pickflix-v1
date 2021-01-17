@@ -1,6 +1,6 @@
-import { GenericRepositoryFileSystem } from "../../app/data-store/repository/generic-repository.file-system";
-import { GenericRepositoryHashMap } from "../../app/data-store/repository/generic-repository.hash-map";
-import { GenericRepositoryQueryOptions } from "../../app/data-store/repository/types";
+import { GenericRepositoryFileSystem } from "../../app/persistence/repository/generic-repository.file-system";
+import { GenericRepositoryHashMap } from "../../app/persistence/repository/generic-repository.hash-map";
+import { GenericRepositoryQueryOptions } from "../../app/persistence/repository/types";
 import { ListItemId } from "../models";
 import { ListItem } from "../models/make-list-item";
 

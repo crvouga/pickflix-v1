@@ -2,8 +2,8 @@ import {
   IPostgresDatabase,
   IPostgresRespository,
   IPostgresTable,
-} from "../../app/data-store/repository/postgres/database.postgres";
-import { GenericRepositoryPostgres } from "../../app/data-store/repository/postgres/generic-repository.postgres";
+} from "../../app/persistence/repository/postgres/database.postgres";
+import { GenericRepositoryPostgres } from "../../app/persistence/repository/postgres/generic-repository.postgres";
 import { castUserId } from "../../users/models";
 import { AutoList, castAutoListKey, castListId, ListId } from "../models";
 import { IAutoListRepository } from "./auto-list-repository";

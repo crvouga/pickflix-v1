@@ -1,4 +1,4 @@
-import { ICache } from "../../app/data-store/cache/types";
+import { ICache } from "../../app/persistence/cache/types";
 import { PaginationOptions } from "../../app/pagination";
 import { UserId } from "../../users/models";
 import { Json } from "../../utils";

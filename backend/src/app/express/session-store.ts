@@ -1,7 +1,7 @@
 import buildPostgresSessionStore from "connect-pg-simple";
 import session from "express-session";
 import fs from "fs";
-import { IPostgresDatabase } from "../data-store/repository/postgres/database.postgres";
+import { IPostgresDatabase } from "../persistence/repository/postgres/database.postgres";
 
 const PostgresSessionStore = buildPostgresSessionStore(session);
 

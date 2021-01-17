@@ -2,9 +2,9 @@ import {
   IPostgresDatabase,
   IPostgresRespository,
   IPostgresTable,
-} from "../../app/data-store/repository/postgres/database.postgres";
-import { GenericRepositoryPostgres } from "../../app/data-store/repository/postgres/generic-repository.postgres";
-import { GenericRepositoryQueryOptions } from "../../app/data-store/repository/types";
+} from "../../app/persistence/repository/postgres/database.postgres";
+import { GenericRepositoryPostgres } from "../../app/persistence/repository/postgres/generic-repository.postgres";
+import { GenericRepositoryQueryOptions } from "../../app/persistence/repository/types";
 import { castTimestamp, Timestamp } from "../../utils";
 import { castUserId, UserId } from "../../users/models";
 import {
