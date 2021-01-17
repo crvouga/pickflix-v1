@@ -1,10 +1,12 @@
-import { postgresDatabseTest } from "../../../build/build-test";
+import { POSTGRES_TEST_CONFIG } from "../../../build/build-test";
 import { PaginationOptions } from "../../../pagination";
-import { dangerouslyClearTables } from "./database.postgres";
+import { dangerouslyClearTables, PostgresDatabase } from "./database.postgres";
 import {
   FooRepositoryPostgres,
   makeFooArbitrary,
 } from "./foo-repository.postgres";
+
+const postgresDatabseTest = new PostgresDatabase(POSTGRES_TEST_CONFIG);
 
 const buildFooRepositoryPostgres = async () => {
   const repository = new FooRepositoryPostgres(postgresDatabseTest);

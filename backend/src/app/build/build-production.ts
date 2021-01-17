@@ -7,6 +7,7 @@ import { ReviewLogic } from "../../reviews/logic/logic";
 import { UserLogic } from "../../users/logic/logic";
 import { RedisCache } from "../data-store/cache/cache.redis";
 import { PostgresDatabase } from "../data-store/repository/postgres/database.postgres";
+import { buildSessionStorePostgres } from "../express/session-store";
 import { EmailLogic } from "../email";
 import { createEventEmitter, Events } from "../events";
 import {
@@ -22,35 +23,41 @@ import { buildRepositoriesPostgres } from "./build-repositories";
 
 */
 
-const postgresDatabaseProduction = new PostgresDatabase({
+export const POSTGRES_PRODUCTION_CONFIG = {
   connectionString: secrets.posgresConnectionString,
   ssl: {
     rejectUnauthorized: false,
   },
-});
+};
 
-const redisCache = new RedisCache<string, string>({
+export const REDIS_PRODUCTION_CONFIG = {
   connectionString: secrets.redisConnectionString,
-});
+};
 
 /* 
 
 
 */
 
-export const buildLogicProduction = async () => {
+export const buildAppProduction = async () => {
+  const database = new PostgresDatabase(POSTGRES_PRODUCTION_CONFIG);
+
+  const cache = new RedisCache<string, string>(REDIS_PRODUCTION_CONFIG);
+
   const { repositories, initializeAllTables } = await buildRepositoriesPostgres(
-    postgresDatabaseProduction
+    database
   );
 
   await initializeAllTables();
+
+  const sessionStore = await buildSessionStorePostgres(database);
 
   const eventEmitter = createEventEmitter<Events>();
 
   const mediaLogic = new MediaLogic({
     ...repositories,
     axios,
-    cache: redisCache,
+    cache,
   });
 
   const listLogic = new ListLogic({
@@ -74,25 +81,16 @@ export const buildLogicProduction = async () => {
     mediaLogic,
   });
 
-  return {
+  const appLogic = {
     userLogic,
     mediaLogic,
     listLogic,
     reviewLogic,
   };
-};
-
-/*
-
-
-*/
-
-export const buildAppProduction = async () => {
-  const appLogic = await buildLogicProduction();
 
   const dependencies: ExpressAppDependencies = {
     ...appLogic,
-    postgresDatabase: postgresDatabaseProduction,
+    sessionStore,
     middlewares: {
       authenticate,
       isAuthenticated,

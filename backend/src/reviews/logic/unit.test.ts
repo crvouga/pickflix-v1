@@ -5,10 +5,11 @@ import { makeUserFake } from "../../users/models/make-user.fake";
 import { ReviewVoteValue } from "../models/make-review-vote";
 import { makeReviewFake } from "../models/make-review.fake";
 import { buildReviewLogicTest } from "./build";
+import { buildAppTest } from "../../app/build/build-test";
 
 describe("review logic", () => {
   it("gets all reviews for a user", async () => {
-    const { reviewLogic } = await buildReviewLogicTest();
+    const { reviewLogic } = await buildAppTest();
     const user = makeUserFake();
     const reviewsByUser = [1, 2, 3].map((n) =>
       makeReviewFake({

@@ -1,3 +1,4 @@
+import session from "express-session";
 import { ListLogic } from "../../lists/logic/logic";
 import { MediaLogic } from "../../media/logic/logic";
 import { ReviewLogic } from "../../reviews/logic/logic";
@@ -6,10 +7,9 @@ import {
   AuthenticateMiddleware,
   IsAuthenticatedMiddleware,
 } from "./authentication-middleware";
-import { IPostgresDatabase } from "../data-store/repository/postgres/database.postgres";
 
 export type ExpressAppDependencies = {
-  postgresDatabase: IPostgresDatabase;
+  sessionStore: session.SessionOptions["store"];
   listLogic: ListLogic;
   reviewLogic: ReviewLogic;
   mediaLogic: MediaLogic;

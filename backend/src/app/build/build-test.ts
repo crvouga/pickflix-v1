@@ -8,10 +8,7 @@ import { ReviewLogic } from "../../reviews/logic/logic";
 import { UserLogic } from "../../users/logic/logic";
 import { FAKE_USER_INFO } from "../../users/models";
 import { HashMapCache } from "../data-store/cache/cache.hash-map";
-import {
-  dangerouslyClearTables,
-  PostgresDatabase,
-} from "../data-store/repository/postgres/database.postgres";
+import { PostgresDatabase } from "../data-store/repository/postgres/database.postgres";
 import { emailLogicStub } from "../email";
 import { createEventEmitter, Events } from "../events";
 import { buildExpressApp } from "../express/build-app";
@@ -26,35 +23,59 @@ import {
 
 */
 
-const databaseName = "pickflix_test";
-
-const databaseConfig = {
+export const POSTGRES_TEST_CONFIG = {
   user: "postgres",
   host: "localhost",
   port: 5432,
-  database: databaseName,
+  database: "pickflix_test",
 };
 
-export const postgresDatabseTest = new PostgresDatabase(databaseConfig);
+/* 
 
-export const buildRepositoriesTest = async () => {
+
+*/
+
+export const buildPersistencePostgres = async () => {
+  const database = new PostgresDatabase(POSTGRES_TEST_CONFIG);
+
+  const { repositories, initializeAllTables } = await buildRepositoriesPostgres(
+    database
+  );
+
+  await initializeAllTables();
+
+  const sessionStore = undefined;
+
+  const cache = new HashMapCache<string, string>();
+
+  return {
+    cache,
+    sessionStore,
+    repositories,
+  };
+};
+
+const buildPersistenceDefault = async () => {
+  const { repositories } = await buildRepositoriesHashMap();
+
+  const sessionStore = undefined;
+
+  const cache = new HashMapCache<string, string>();
+
+  return {
+    sessionStore,
+    repositories,
+    cache,
+  };
+};
+
+export const buildPersistence = async () => {
   switch (getRepositoryImplementation()) {
     case "postgres":
-      await dangerouslyClearTables(postgresDatabseTest);
-
-      const {
-        repositories,
-        initializeAllTables,
-      } = await buildRepositoriesPostgres(postgresDatabseTest);
-
-      await initializeAllTables();
-
-      return {
-        repositories,
-      };
+      return buildPersistencePostgres();
 
     default:
-      return buildRepositoriesHashMap();
+      return buildPersistenceDefault();
   }
 };
 
@@ -63,8 +84,8 @@ export const buildRepositoriesTest = async () => {
 
 */
 
-export const buildLogicTest = async () => {
-  const { repositories } = await buildRepositoriesTest();
+export const buildAppTest = async () => {
+  const { repositories } = await buildPersistence();
 
   const eventEmitter = createEventEmitter<Events>();
 
@@ -101,19 +122,6 @@ export const buildLogicTest = async () => {
     reviewLogic,
   };
 
-  return {
-    appLogic,
-  };
-};
-
-/* 
-
-
-*/
-
-export const buildAppTest = async () => {
-  const { appLogic } = await buildLogicTest();
-
   await appLogic.userLogic.createUserWithPassword(FAKE_USER_INFO);
 
   const currentUser = await appLogic.userLogic.getUser({
@@ -127,7 +135,7 @@ export const buildAppTest = async () => {
 
   const dependencies: ExpressAppDependencies = {
     ...appLogic,
-    postgresDatabase: postgresDatabseTest,
+    sessionStore: undefined,
     middlewares: {
       authenticate: handlerStub,
       isAuthenticated: handlerStub,
