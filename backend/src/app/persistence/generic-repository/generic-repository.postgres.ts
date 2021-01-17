@@ -1,4 +1,4 @@
-import { removeNullOrUndefinedEntries } from "../../../utils";
+import { removeNullOrUndefinedEntries } from "../../../common/utils";
 import {
   IPostgresDatabase,
   IPostgresRespository,

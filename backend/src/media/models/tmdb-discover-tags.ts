@@ -1,11 +1,11 @@
-import { isValidId, makeId } from "../../app/id";
+import { isValidId, makeId } from "../../common/id";
 import {
   castJson,
   Json,
   makeTimestamp,
   Timestamp,
   castNonEmptyString,
-} from "../../utils";
+} from "../../common/utils";
 import { castUserId, UserId } from "../../users/models";
 
 export type TmdbDiscoverTagsId = string & { _: "TmdbDiscoverTagsId" };

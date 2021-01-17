@@ -16,7 +16,7 @@ import {
   ResetPasswordTokenData,
 } from "./token";
 import { buildUserLogicTest } from "../build";
-import { castTimestamp } from "../../../utils";
+import { castTimestamp } from "../../../common/utils";
 
 describe("resetting password", () => {
   it("encodes and decodes password reset token", async () => {

@@ -1,5 +1,5 @@
 import { IRouter } from "express";
-import { castArray } from "../../../utils";
+import { castArray } from "../../../common/utils";
 import { castUserId } from "../../../users/models";
 import { castListId } from "../../models";
 import { Dependencies } from "../types";

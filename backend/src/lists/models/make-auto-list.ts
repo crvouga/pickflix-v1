@@ -1,4 +1,4 @@
-import { isValidId, makeId } from "../../app/id";
+import { isValidId, makeId } from "../../common/id";
 import { castUserId, UserId } from "../../users/models/make-user";
 import { ListId } from "./make-list";
 

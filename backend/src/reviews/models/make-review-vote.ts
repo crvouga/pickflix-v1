@@ -1,5 +1,5 @@
-import { isValidId, makeId } from "../../app/id";
-import { Id } from "../../app/id";
+import { isValidId, makeId } from "../../common/id";
+import { Id } from "../../common/id";
 import { UserId } from "../../users/models/make-user";
 import { ReviewId } from "./make-review";
 

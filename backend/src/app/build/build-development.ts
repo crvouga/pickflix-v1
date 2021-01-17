@@ -11,7 +11,7 @@ import { RedisCache } from "../persistence/cache/cache.redis";
 import { PostgresDatabase } from "../persistence/postgres/database.postgres";
 import { buildSessionStorePostgres } from "../express/session-store";
 import { EmailLogic } from "../../users/email";
-import { createEventEmitter, Events } from "../events";
+import { createEventEmitter, Events } from "../../common/events";
 import {
   authenticate,
   isAuthenticated,

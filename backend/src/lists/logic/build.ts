@@ -1,5 +1,5 @@
 import { buildPersistence } from "../../app/build/build-test";
-import { createEventEmitter, Events } from "../../app/events";
+import { createEventEmitter, Events } from "../../common/events";
 import { buildMediaLogicTest } from "../../media/logic/build";
 import { ListLogic } from "./logic";
 

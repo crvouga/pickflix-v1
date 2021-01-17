@@ -1,6 +1,6 @@
 import { IEmailLogic } from "../email";
-import { Emitter, Events } from "../../app/events";
-import { PaginationOptions } from "../../app/pagination";
+import { Emitter, Events } from "../../common/events";
+import { PaginationOptions } from "../../common/pagination";
 import { PermissionType } from "../../lists/models";
 import { IAutoListRepository } from "../../lists/repositories/auto-list-repository";
 import { IListRepository } from "../../lists/repositories/list-repository";

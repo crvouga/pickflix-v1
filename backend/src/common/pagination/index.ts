@@ -1,4 +1,4 @@
-import { castArray, castPositiveNumber } from "../../utils";
+import { castArray, castPositiveNumber } from "../utils";
 
 export type PaginationOptions = {
   page: number;

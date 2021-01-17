@@ -1,7 +1,7 @@
-import { Id, isValidId, makeId } from "../../app/id";
+import { Id, isValidId, makeId } from "../../common/id";
 import { castUserId, UserId } from "../../users/models";
 import { isNullOrUndefined } from "util";
-import { Timestamp, castTimestamp, makeTimestamp } from "../../utils";
+import { Timestamp, castTimestamp, makeTimestamp } from "../../common/utils";
 
 const MIN_LENGTH_TITLE = 1;
 const MAX_LENGTH_TITLE = 100;

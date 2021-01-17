@@ -2,7 +2,7 @@ import { IRouter } from "express";
 import {
   makePaginationOptions,
   makePaginationResponse,
-} from "../../../app/pagination";
+} from "../../../common/pagination";
 import {
   castMediaId,
   MediaId,

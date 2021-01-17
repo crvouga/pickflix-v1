@@ -1,4 +1,4 @@
-import { PaginationOptions } from "../../pagination";
+import { PaginationOptions } from "../../../common/pagination";
 
 export interface Identifiable<T> {
   id: T;

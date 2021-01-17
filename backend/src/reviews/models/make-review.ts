@@ -1,5 +1,5 @@
-import { Id, isValidId, makeId } from "../../app/id";
-import { makeTimestamp, Timestamp } from "../../utils";
+import { Id, isValidId, makeId } from "../../common/id";
+import { makeTimestamp, Timestamp } from "../../common/utils";
 import { castMediaId, MediaId } from "../../media/models/types";
 import { UserId } from "../../users/models/make-user";
 

@@ -11,7 +11,7 @@ import {
   Json,
   Timestamp,
   castNonEmptyString,
-} from "../../utils";
+} from "../../common/utils";
 import { castUserId, UserId } from "../../users/models";
 import {
   castTmdbDiscoverTagsId,

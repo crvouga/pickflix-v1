@@ -1,12 +1,16 @@
 import express, { IRouter } from "express";
 import { Dependencies } from "../types";
 import { castUserId } from "../../../users/models";
-import { serializeJson, castNonEmptyString, castJson } from "../../../utils";
+import {
+  serializeJson,
+  castNonEmptyString,
+  castJson,
+} from "../../../common/utils";
 import { castTmdbDiscoverTagsId } from "../../models/tmdb-discover-tags";
 import {
   makePaginationOptions,
   makePaginationResponse,
-} from "../../../app/pagination";
+} from "../../../common/pagination";
 
 export const tmdb = ({ middlewares, mediaLogic }: Dependencies) => (
   router: IRouter

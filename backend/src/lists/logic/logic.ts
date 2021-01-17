@@ -1,4 +1,4 @@
-import { Emitter, Events } from "../../app/events";
+import { Emitter, Events } from "../../common/events";
 import { MediaLogic } from "../../media/logic/logic";
 import { IUserRepository } from "../../users/repositories/user-repository";
 import { IAutoListRepository } from "../repositories/auto-list-repository";

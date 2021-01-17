@@ -15,7 +15,7 @@ import {
   ListId,
 } from "../models";
 import { IPermissionRepository } from "./permission-repository";
-import { Timestamp, castTimestamp } from "../../utils";
+import { Timestamp, castTimestamp } from "../../common/utils";
 
 const tableName = "permissions";
 

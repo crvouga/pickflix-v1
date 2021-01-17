@@ -4,7 +4,7 @@ import {
   IPostgresTable,
 } from "../../app/persistence/postgres/database.postgres";
 import { GenericRepositoryPostgres } from "../../app/persistence/generic-repository/generic-repository.postgres";
-import { Timestamp } from "../../utils";
+import { Timestamp } from "../../common/utils";
 import {
   castCredential,
   Credential,

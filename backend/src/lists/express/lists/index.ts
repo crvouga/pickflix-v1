@@ -4,7 +4,7 @@ import {
   makePaginationOptions,
   makePaginationResponse,
   Paginated,
-} from "../../../app/pagination";
+} from "../../../common/pagination";
 import { castUserId } from "../../../users/models";
 import { castListDescription, castListId, castListTitle } from "../../models";
 import { Dependencies } from "../types";

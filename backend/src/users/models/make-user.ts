@@ -1,6 +1,6 @@
 import * as EmailValidator from "email-validator";
 import { isNullOrUndefined } from "util";
-import { isValidId, makeId } from "../../app/id";
+import { isValidId, makeId } from "../../common/id";
 
 export type UserId = string & { _: "UserId" };
 export type Username = string & { _: "Username" };

@@ -1,7 +1,7 @@
 import { ICache } from "../../app/persistence/cache/types";
-import { PaginationOptions } from "../../app/pagination";
+import { PaginationOptions } from "../../common/pagination";
 import { UserId } from "../../users/models";
-import { Json } from "../../utils";
+import { Json } from "../../common/utils";
 import {
   makeTmdbDiscoverTags,
   TmdbDiscoverTagsId,

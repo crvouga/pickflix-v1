@@ -1,6 +1,6 @@
 import { ListId } from ".";
-import { Id, isValidId, makeId } from "../../app/id";
-import { makeTimestamp, Timestamp } from "../../utils";
+import { Id, isValidId, makeId } from "../../common/id";
+import { makeTimestamp, Timestamp } from "../../common/utils";
 import { castMediaId, MediaId } from "../../media/models/types";
 import { castUserId, UserId } from "../../users/models/make-user";
 import { castListId } from "./make-list";

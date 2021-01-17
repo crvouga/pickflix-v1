@@ -1,5 +1,5 @@
 import { POSTGRES_TEST_CONFIG } from "../../build/build-test";
-import { PaginationOptions } from "../../pagination";
+import { PaginationOptions } from "../../../common/pagination";
 import {
   dangerouslyClearTables,
   PostgresDatabase,

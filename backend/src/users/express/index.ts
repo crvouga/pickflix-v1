@@ -2,8 +2,8 @@ import { IRouter } from "express";
 import {
   makePaginationOptions,
   makePaginationResponse,
-} from "../../app/pagination";
-import { removeNullOrUndefinedEntries, castLink } from "../../utils";
+} from "../../common/pagination";
+import { removeNullOrUndefinedEntries, castLink } from "../../common/utils";
 import {
   castDisplayName,
   castEmailAddress,

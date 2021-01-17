@@ -1,4 +1,4 @@
-import { makeId } from "../../id";
+import { makeId } from "../../../common/id";
 import {
   IPostgresDatabase,
   IPostgresRespository,

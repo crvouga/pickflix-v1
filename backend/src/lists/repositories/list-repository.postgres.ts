@@ -5,7 +5,7 @@ import {
 } from "../../app/persistence/postgres/database.postgres";
 import { GenericRepositoryPostgres } from "../../app/persistence/generic-repository/generic-repository.postgres";
 import { GenericRepositoryQueryOptions } from "../../app/persistence/generic-repository/types";
-import { castTimestamp, Timestamp } from "../../utils";
+import { castTimestamp, Timestamp } from "../../common/utils";
 import { castUserId, UserId } from "../../users/models";
 import {
   castListDescription,

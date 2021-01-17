@@ -1,5 +1,5 @@
 import { v4, validate } from "uuid";
-import { Opaque } from "../../utils";
+import { Opaque } from "../utils";
 
 export type Id = Opaque<string, "UUID">;
 export const makeId = () => v4() as Id;
