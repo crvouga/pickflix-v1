@@ -1,7 +1,7 @@
 import { POSTGRES_TEST_CONFIG } from "../../build/build-test";
 import { PaginationOptions } from "../../../common/pagination";
 import {
-  dangerouslyClearTables,
+  DANGEROUSLY_clearTables,
   PostgresDatabase,
 } from "../postgres/database.postgres";
 import {
@@ -13,7 +13,7 @@ const postgresDatabseTest = new PostgresDatabase(POSTGRES_TEST_CONFIG);
 
 const buildFooRepositoryPostgres = async () => {
   const repository = new FooRepositoryPostgres(postgresDatabseTest);
-  await dangerouslyClearTables(postgresDatabseTest);
+  await DANGEROUSLY_clearTables(postgresDatabseTest);
   await repository.initializeTables();
   return repository;
 };

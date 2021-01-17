@@ -97,7 +97,7 @@ export const dropDatabase = async (
   });
 };
 
-export const dangerouslyClearTables = async (database: IPostgresDatabase) => {
+export const DANGEROUSLY_clearTables = async (database: IPostgresDatabase) => {
   const sql = `
     DROP SCHEMA public CASCADE;
     CREATE SCHEMA public;

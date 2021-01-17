@@ -8,7 +8,10 @@ import { ReviewLogic } from "../../reviews/logic/logic";
 import { UserLogic } from "../../users/logic/logic";
 import { FAKE_USER_INFO } from "../../users/models";
 import { HashMapCache } from "../persistence/cache/cache.hash-map";
-import { PostgresDatabase } from "../persistence/postgres/database.postgres";
+import {
+  PostgresDatabase,
+  DANGEROUSLY_clearTables,
+} from "../persistence/postgres/database.postgres";
 import { emailLogicStub } from "../../users/email";
 import { createEventEmitter, Events } from "../../common/events";
 import { buildExpressApp } from "../express/build-app";
@@ -35,12 +38,14 @@ export const POSTGRES_TEST_CONFIG = {
 
 */
 
-export const buildPersistencePostgres = async () => {
-  const database = new PostgresDatabase(POSTGRES_TEST_CONFIG);
+const database = new PostgresDatabase(POSTGRES_TEST_CONFIG);
 
+export const buildPersistencePostgres = async () => {
   const { repositories, initializeAllTables } = await buildRepositoriesPostgres(
     database
   );
+
+  await DANGEROUSLY_clearTables(database);
 
   await initializeAllTables();
 
