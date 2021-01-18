@@ -34,14 +34,14 @@ export const REDIS_PRODUCTION_CONFIG = {
   connectionString: secrets.redisConnectionString,
 };
 
+const database = new PostgresDatabase(POSTGRES_PRODUCTION_CONFIG);
+
 /* 
 
 
 */
 
 export const buildAppProduction = async () => {
-  const database = new PostgresDatabase(POSTGRES_PRODUCTION_CONFIG);
-
   const cache = new RedisCache<string, string>(REDIS_PRODUCTION_CONFIG);
 
   const { repositories, initializeAllTables } = await buildRepositoriesPostgres(
