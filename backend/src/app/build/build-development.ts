@@ -8,7 +8,10 @@ import { ReviewLogic } from "../../reviews/logic/logic";
 import { UserLogic } from "../../users/logic/logic";
 import { HashMapCache } from "../persistence/cache/cache.hash-map";
 import { RedisCache } from "../persistence/cache/cache.redis";
-import { PostgresDatabase } from "../persistence/postgres/database.postgres";
+import {
+  PostgresDatabase,
+  createDatabase,
+} from "../persistence/postgres/database.postgres";
 import { buildSessionStorePostgres } from "../express/session-store";
 import { EmailLogic } from "../../users/email";
 import { createEventEmitter, Events } from "../../common/events";
@@ -22,6 +25,8 @@ import {
   buildRepositoriesFileSystem,
   buildRepositoriesPostgres,
 } from "./build-repositories";
+import { exec } from "child_process";
+import { promiseFromChildProcess } from "../../common/utils/shell";
 
 /* 
 

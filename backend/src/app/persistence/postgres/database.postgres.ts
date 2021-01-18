@@ -1,5 +1,5 @@
 import { ClientConfig, Pool } from "pg";
-import { createdb, dropdb, IPgToolsConfig } from "pg-tools";
+import pgTools, { IPgToolsConfig } from "pg-tools";
 import { IPostgresTable, makeCreateTableQuery } from "./query-builder";
 export * from "./query-builder";
 
@@ -72,7 +72,7 @@ export const createDatabase = async (
   databaseName: string
 ) => {
   return new Promise((resolve, reject) => {
-    createdb(config, databaseName, (error, response) => {
+    pgTools.createdb(config, databaseName, (error, response) => {
       if (error) {
         return reject(error);
       } else {
@@ -87,7 +87,7 @@ export const dropDatabase = async (
   databaseName: string
 ) => {
   return new Promise((resolve, reject) => {
-    dropdb(config, databaseName, (error, response) => {
+    pgTools.dropdb(config, databaseName, (error, response) => {
       if (error) {
         return reject(error);
       } else {
