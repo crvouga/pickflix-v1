@@ -1,5 +1,5 @@
 import { ClientConfig, Pool } from "pg";
-import pgTools, { IPgToolsConfig } from "pg-tools";
+
 import { IPostgresTable, makeCreateTableQuery } from "./query-builder";
 export * from "./query-builder";
 
@@ -30,6 +30,9 @@ export class PostgresDatabase implements IPostgresDatabase {
 
   constructor(config: ClientConfig) {
     this.pool = new Pool(config);
+    this.pool.on("connect", () => {
+      console.log("database connected!");
+    });
     this.pool.on("error", (error) => {
       console.error(error.toString());
       throw error;
@@ -66,36 +69,6 @@ export class PostgresDatabase implements IPostgresDatabase {
     }
   }
 }
-
-export const createDatabase = async (
-  config: IPgToolsConfig,
-  databaseName: string
-) => {
-  return new Promise((resolve, reject) => {
-    pgTools.createdb(config, databaseName, (error, response) => {
-      if (error) {
-        return reject(error);
-      } else {
-        return resolve(response);
-      }
-    });
-  });
-};
-
-export const dropDatabase = async (
-  config: IPgToolsConfig,
-  databaseName: string
-) => {
-  return new Promise((resolve, reject) => {
-    pgTools.dropdb(config, databaseName, (error, response) => {
-      if (error) {
-        return reject(error);
-      } else {
-        return resolve(response);
-      }
-    });
-  });
-};
 
 export const DANGEROUSLY_clearTables = async (database: IPostgresDatabase) => {
   const sql = `

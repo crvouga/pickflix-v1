@@ -1,32 +1,27 @@
 import sgMail from "@sendgrid/mail";
 import axios from "axios";
 import path from "path";
+import { createEventEmitter, Events } from "../../common/events";
 import { getRepositoryImplementation, secrets } from "../../config";
 import { ListLogic } from "../../lists/logic/logic";
 import { MediaLogic } from "../../media/logic/logic";
 import { ReviewLogic } from "../../reviews/logic/logic";
-import { UserLogic } from "../../users/logic/logic";
-import { HashMapCache } from "../persistence/cache/cache.hash-map";
-import { RedisCache } from "../persistence/cache/cache.redis";
-import {
-  PostgresDatabase,
-  createDatabase,
-} from "../persistence/postgres/database.postgres";
-import { buildSessionStorePostgres } from "../express/session-store";
 import { EmailLogic } from "../../users/email";
-import { createEventEmitter, Events } from "../../common/events";
+import { UserLogic } from "../../users/logic/logic";
 import {
   authenticate,
   isAuthenticated,
 } from "../express/authentication-middleware";
 import { buildExpressApp } from "../express/build-app";
+import { buildSessionStorePostgres } from "../express/session-store";
 import { ExpressAppDependencies } from "../express/types";
+import { HashMapCache } from "../persistence/cache/cache.hash-map";
+import { RedisCache } from "../persistence/cache/cache.redis";
+import { PostgresDatabase } from "../persistence/postgres/database.postgres";
 import {
   buildRepositoriesFileSystem,
   buildRepositoriesPostgres,
 } from "./build-repositories";
-import { exec } from "child_process";
-import { promiseFromChildProcess } from "../../common/utils/shell";
 
 /* 
 
