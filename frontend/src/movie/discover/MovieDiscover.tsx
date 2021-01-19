@@ -90,28 +90,28 @@ export default (props: Props) => {
         <Typography variant="h6">Discover</Typography>
       </Box>
       {peopleTags.length > 0 && (
-        <React.Fragment>
+        <Box paddingBottom={2}>
           <Subtitle>People</Subtitle>
           <DiscoverTags tags={peopleTags} onClick={handleClick} />
-        </React.Fragment>
+        </Box>
       )}
       {genreTags.length > 0 && (
-        <React.Fragment>
+        <Box paddingBottom={2}>
           <Subtitle>Genres</Subtitle>
           <DiscoverTags tags={genreTags} onClick={handleClick} />
-        </React.Fragment>
+        </Box>
       )}
       {keywordTags.length > 0 && (
-        <React.Fragment>
+        <Box paddingBottom={2}>
           <Subtitle>Keywords</Subtitle>
           <DiscoverTags tags={keywordTags} onClick={handleClick} />
-        </React.Fragment>
+        </Box>
       )}
       {companyTags.length > 0 && (
-        <React.Fragment>
+        <Box paddingBottom={2}>
           <Subtitle>Companies</Subtitle>
           <DiscoverTags tags={companyTags} onClick={handleClick} />
-        </React.Fragment>
+        </Box>
       )}
     </React.Fragment>
   );
