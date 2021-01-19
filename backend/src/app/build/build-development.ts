@@ -2,7 +2,11 @@ import sgMail from "@sendgrid/mail";
 import axios from "axios";
 import path from "path";
 import { createEventEmitter, Events } from "../../common/events";
-import { getRepositoryImplementation, secrets } from "../../config";
+import {
+  getRepositoryImplementation,
+  secrets,
+  RepositoryImplementation,
+} from "../../config";
 import { ListLogic } from "../../lists/logic/logic";
 import { MediaLogic } from "../../media/logic/logic";
 import { ReviewLogic } from "../../reviews/logic/logic";
@@ -44,49 +48,46 @@ const REDIS_DEVELOPMENT_CONFIG = {
 
 */
 
-export const buildPersistencePostgresRedis = async () => {
-  const database = new PostgresDatabase(POSTGRES_DEVELOPMENT_CONFIG);
+const buildPersistence = async (
+  repositoryImplementation: RepositoryImplementation
+) => {
+  switch (repositoryImplementation) {
+    case "postgres": {
+      const database = new PostgresDatabase(POSTGRES_DEVELOPMENT_CONFIG);
 
-  const { repositories, initializeAllTables } = await buildRepositoriesPostgres(
-    database
-  );
+      const {
+        repositories,
+        initializeAllTables,
+      } = await buildRepositoriesPostgres(database);
 
-  await initializeAllTables();
+      await initializeAllTables();
 
-  const sessionStore = await buildSessionStorePostgres(database);
+      const sessionStore = await buildSessionStorePostgres(database);
 
-  const cache = new RedisCache<string, string>(REDIS_DEVELOPMENT_CONFIG);
+      const cache = new RedisCache<string, string>(REDIS_DEVELOPMENT_CONFIG);
 
-  return {
-    cache,
-    sessionStore,
-    repositories,
-  };
-};
+      return {
+        cache,
+        sessionStore,
+        repositories,
+      };
+    }
 
-export const buildPersistenceDefault = async () => {
-  const filePath = path.join(__dirname, "..", "..", "..", "_store");
+    default: {
+      const filePath = path.join(__dirname, "..", "..", "..", "_store");
 
-  const { repositories } = await buildRepositoriesFileSystem(filePath);
+      const { repositories } = await buildRepositoriesFileSystem(filePath);
 
-  const sessionStore = undefined;
+      const sessionStore = undefined;
 
-  const cache = new HashMapCache<string, string>();
+      const cache = new HashMapCache<string, string>();
 
-  return {
-    sessionStore,
-    repositories,
-    cache,
-  };
-};
-
-const buildPersistence = async () => {
-  switch (getRepositoryImplementation()) {
-    case "postgres":
-      return buildPersistencePostgresRedis();
-
-    default:
-      return buildPersistenceDefault();
+      return {
+        sessionStore,
+        repositories,
+        cache,
+      };
+    }
   }
 };
 
@@ -96,7 +97,11 @@ const buildPersistence = async () => {
 */
 
 export const buildAppDevelopment = async () => {
-  const { repositories, sessionStore, cache } = await buildPersistence();
+  const repositoryImplementation = getRepositoryImplementation();
+
+  const { repositories, sessionStore, cache } = await buildPersistence(
+    repositoryImplementation
+  );
 
   const eventEmitter = createEventEmitter<Events>();
 
