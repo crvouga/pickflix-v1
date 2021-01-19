@@ -31,7 +31,7 @@ export class PostgresDatabase implements IPostgresDatabase {
   constructor(config: ClientConfig) {
     this.pool = new Pool(config);
     this.pool.on("connect", () => {
-      console.log("database connected!");
+      // console.log("database connected!");
     });
     this.pool.on("error", (error) => {
       console.error(error.toString());
