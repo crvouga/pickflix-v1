@@ -145,31 +145,27 @@ export const HorizontalSnapScroll = ({
     </div>
   );
 
-  if (isMobile) {
+  const canScroll = !(leftDisabled && rightDisabled);
+
+  if (isMobile || !canScroll) {
     return component;
   }
 
-  const canScroll = !(leftDisabled && rightDisabled);
-
   return (
     <Box display="flex" alignItems="center">
-      {canScroll && (
-        <Box>
-          <Fab size="small" onClick={scrollLeft} disabled={leftDisabled}>
-            <ArrowBackIcon />
-          </Fab>
-        </Box>
-      )}
+      <Box>
+        <Fab size="small" onClick={scrollLeft} disabled={leftDisabled}>
+          <ArrowBackIcon />
+        </Fab>
+      </Box>
 
       {component}
 
-      {canScroll && (
-        <Box>
-          <Fab size="small" onClick={scrollRight} disabled={rightDisabled}>
-            <ArrowForwardIcon />
-          </Fab>
-        </Box>
-      )}
+      <Box>
+        <Fab size="small" onClick={scrollRight} disabled={rightDisabled}>
+          <ArrowForwardIcon />
+        </Fab>
+      </Box>
     </Box>
   );
 };
