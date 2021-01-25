@@ -17,7 +17,7 @@ import {
   isAuthenticated,
 } from "../express/authentication-middleware";
 import { buildExpressApp } from "../express/build-app";
-import { buildSessionStorePostgres } from "../express/session-store";
+import { buildSessionStoreRedis } from "../express/session-store";
 import { ExpressAppDependencies } from "../express/types";
 import { HashMapCache } from "../persistence/cache/cache.hash-map";
 import { RedisCache } from "../persistence/cache/cache.redis";
@@ -62,7 +62,7 @@ const buildPersistence = async (
 
       await initializeAllTables();
 
-      const sessionStore = await buildSessionStorePostgres(database);
+      const sessionStore = await buildSessionStoreRedis();
 
       const cache = new RedisCache<string, string>(REDIS_DEVELOPMENT_CONFIG);
 

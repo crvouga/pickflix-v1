@@ -1,23 +1,22 @@
 import sgMail from "@sendgrid/mail";
 import axios from "axios";
+import { createEventEmitter, Events } from "../../common/events";
 import { secrets } from "../../config";
 import { ListLogic } from "../../lists/logic/logic";
 import { MediaLogic } from "../../media/logic/logic";
 import { ReviewLogic } from "../../reviews/logic/logic";
-import { UserLogic } from "../../users/logic/logic";
-import { RedisCache } from "../persistence/cache/cache.redis";
-import { PostgresDatabase } from "../persistence/postgres/database.postgres";
-import { buildSessionStorePostgres } from "../express/session-store";
 import { EmailLogic } from "../../users/email";
-import { createEventEmitter, Events } from "../../common/events";
+import { UserLogic } from "../../users/logic/logic";
 import {
   authenticate,
   isAuthenticated,
 } from "../express/authentication-middleware";
 import { buildExpressApp } from "../express/build-app";
+import { buildSessionStoreRedis } from "../express/session-store";
 import { ExpressAppDependencies } from "../express/types";
+import { RedisCache } from "../persistence/cache/cache.redis";
+import { PostgresDatabase } from "../persistence/postgres/database.postgres";
 import { buildRepositoriesPostgres } from "./build-repositories";
-
 /* 
 
 
@@ -50,7 +49,7 @@ export const buildAppProduction = async () => {
 
   await initializeAllTables();
 
-  const sessionStore = await buildSessionStorePostgres(database);
+  const sessionStore = await buildSessionStoreRedis();
 
   const eventEmitter = createEventEmitter<Events>();
 
