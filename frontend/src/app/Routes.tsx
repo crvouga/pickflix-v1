@@ -1,10 +1,10 @@
+import { AnimatePresence } from "framer-motion";
 import React, { Suspense } from "react";
 import { Route, Switch } from "react-router";
 import { AppBarGutter } from "../common/components/AppBarGutter";
 import LoadingPage from "../common/page/LoadingPage";
 import Modals from "./modals/Modals";
 import Snackbar from "./snackbar/Snackbar";
-import { AnimatePresence } from "framer-motion";
 const HomePage = React.lazy(() => import("../home/HomePage"));
 const EmptyPage = React.lazy(() => import("../common/page/EmptyPage"));
 const DiscoverMoviePage = React.lazy(

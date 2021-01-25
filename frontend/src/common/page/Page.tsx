@@ -1,5 +1,5 @@
-import React from "react";
 import { motion } from "framer-motion";
+import React from "react";
 import ResponsiveNavigation from "../../app/navigation/ResponsiveNavigation";
 
 type PageProps = React.PropsWithChildren<{}>;
