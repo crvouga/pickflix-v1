@@ -3,31 +3,34 @@ import {
   CssBaseline as MuiCssBaseline,
   ThemeProvider,
   withStyles,
+  responsiveFontSizes,
 } from "@material-ui/core";
 import "fontsource-roboto";
 import React from "react";
 import palette from "../../palette.json";
 
-export const theme = createMuiTheme({
-  typography: {
-    fontWeightRegular: "bold",
-  },
-  palette: {
-    type: "dark",
-    primary: {
-      main: palette.secondary,
-      dark: palette.primary,
+export const theme = responsiveFontSizes(
+  createMuiTheme({
+    typography: {
+      fontWeightRegular: "bold",
     },
-    secondary: {
-      main: palette.tertiary,
+    palette: {
+      type: "dark",
+      primary: {
+        main: palette.secondary,
+        dark: palette.primary,
+      },
+      secondary: {
+        main: palette.tertiary,
+      },
+      background: {
+        paper: "#212121",
+        default: "#101010",
+      },
     },
-    background: {
-      paper: "#212121",
-      default: "#101010",
-    },
-  },
-  overrides: {},
-});
+    overrides: {},
+  })
+);
 
 const CssBaseline = withStyles((theme) => ({
   "@global": {
