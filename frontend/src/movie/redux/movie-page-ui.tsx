@@ -20,7 +20,7 @@ export type moviePageUi = {
 };
 
 const initialState: moviePageUi = {
-  isVideoPlayerSticky: true,
+  isVideoPlayerSticky: false,
   reviewCommentsTabValue: "youtube",
 };
 
