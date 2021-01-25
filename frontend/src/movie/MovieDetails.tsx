@@ -77,7 +77,12 @@ export default ({
       />
 
       <Box p={2}>
-        <Typography align="center" variant="h6">
+        <Typography
+          style={{ wordBreak: "break-all" }}
+          align="center"
+          variant="h5"
+          gutterBottom
+        >
           {details.tagline}
         </Typography>
         <ReadMoreTypography
