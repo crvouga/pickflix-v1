@@ -1,8 +1,7 @@
 import { Email } from "../../email";
 import { Link } from "../../../common/utils";
 import { User } from "../../models";
-
-const SEND_GRID_REGISTERED_EMAIL_ADDRESS = "pickflix1@gmail.com";
+import { secrets } from "../../../config";
 
 export const makeResetEmailHtml = (resetPasswordLink: string) =>
   `
@@ -27,7 +26,7 @@ export const makeResetPasswordEmail = ({
   link: Link;
 }): Email => ({
   to: user.emailAddress,
-  from: SEND_GRID_REGISTERED_EMAIL_ADDRESS,
+  from: secrets.sendGridRegisteredEmailAddress,
   subject: "Password Reset",
   html: makeResetEmailHtml(link),
 });

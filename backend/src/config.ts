@@ -56,6 +56,7 @@ export type Secrets = Readonly<{
   // for sending emails
   // SOUCRE: https://app.sendgrid.com
   sendGridApiKey: string;
+  sendGridRegisteredEmailAddress: string;
 
   // secret for making secrets
   secret: string;
@@ -69,6 +70,7 @@ const {
   TMDB_API_KEY,
   DATABASE_URL,
   SEND_GRID_API_KEY,
+  SEND_GRID_REGISTERED_EMAIL_ADDRESS,
   SECRET,
   SESSION_COOKIE_SECRET,
   REDIS_URL,
@@ -94,6 +96,10 @@ if (!SEND_GRID_API_KEY) {
   throw "SEND_GRID_API_KEY required";
 }
 
+if (!SEND_GRID_REGISTERED_EMAIL_ADDRESS) {
+  throw "SEND_GRID_REGISTERED_EMAIL_ADDRESS required";
+}
+
 if (!SECRET) {
   throw "SECRET required";
 }
@@ -108,6 +114,7 @@ export const secrets: Secrets = {
   tmdbApiKey: TMDB_API_KEY,
   youtubeApiKey: YOUTUBE_API_KEY,
   sendGridApiKey: SEND_GRID_API_KEY,
+  sendGridRegisteredEmailAddress: SEND_GRID_REGISTERED_EMAIL_ADDRESS,
   secret: SECRET,
   sessionCookieSecret: SESSION_COOKIE_SECRET,
 };
