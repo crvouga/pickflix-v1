@@ -29,7 +29,7 @@ export default ({ tmdbMediaId }: { tmdbMediaId: string }) => {
           }}
         >
           <ListItemText
-            primaryTypographyProps={{ variant: "h6" }}
+            primaryTypographyProps={{ variant: "h4" }}
             primary="People Also Liked"
           />
           <ListItemSecondaryAction>

@@ -30,7 +30,7 @@ export default ({ mediaId }: Props) => {
   return (
     <Box width="100%" paddingX={2}>
       <Box paddingBottom={1}>
-        <Typography variant="h6">Reviews Summary</Typography>
+        <Typography variant="h4">Reviews Summary</Typography>
       </Box>
       <Box display="flex">
         <Box width="66.66%">

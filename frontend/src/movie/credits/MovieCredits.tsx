@@ -34,7 +34,7 @@ export default ({ credits }: { credits: MovieCredits }) => {
         >
           <ListItemText
             primaryTypographyProps={{
-              variant: "h6",
+              variant: "h4",
               style: { fontWeight: "bold" },
             }}
             primary="Cast & Crew"

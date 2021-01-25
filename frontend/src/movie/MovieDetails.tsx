@@ -63,7 +63,7 @@ export default ({
   return (
     <Box>
       <Box p={2}>
-        <Typography variant="h4">{details.title}</Typography>
+        <Typography variant="h2">{details.title}</Typography>
         <Typography variant="subtitle1" color="textSecondary">
           {subtitle}
         </Typography>

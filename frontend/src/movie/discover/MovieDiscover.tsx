@@ -87,7 +87,7 @@ export default (props: Props) => {
   return (
     <React.Fragment>
       <Box paddingX={2}>
-        <Typography variant="h6">Discover</Typography>
+        <Typography variant="h4">Discover</Typography>
       </Box>
       {peopleTags.length > 0 && (
         <Box paddingBottom={2}>

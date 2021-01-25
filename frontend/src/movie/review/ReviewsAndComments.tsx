@@ -53,7 +53,7 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
   return (
     <React.Fragment>
       <Box paddingX={2}>
-        <Typography variant="h6">Reviews & Comments</Typography>
+        <Typography variant="h4">Reviews & Comments</Typography>
       </Box>
       <Box paddingBottom={2}>
         <Tabs

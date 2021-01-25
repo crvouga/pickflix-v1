@@ -65,7 +65,7 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
   return (
     <Box paddingX={2}>
       <Box paddingBottom={1}>
-        <Typography variant="h6">Your Review</Typography>
+        <Typography variant="h4">Your Review</Typography>
       </Box>
       <WithAuthentication
         renderAuthenticated={(currentUser) => (
