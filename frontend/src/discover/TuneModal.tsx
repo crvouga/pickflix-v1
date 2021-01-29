@@ -38,21 +38,23 @@ const Tags = ({
   onClick?: (tag: IDiscoverTag) => void;
 }) => {
   return (
-    <HorizontalSnapScroll>
-      {tags.map((tag) => (
-        <Box
-          key={tag.id}
-          m={1 / 2}
-          onClick={() => {
-            if (onClick) {
-              onClick(tag);
-            }
-          }}
-        >
-          <DiscoverTag clickable variant="outlined" tag={tag} />
-        </Box>
-      ))}
-    </HorizontalSnapScroll>
+    <Box paddingLeft={2}>
+      <HorizontalSnapScroll>
+        {tags.map((tag) => (
+          <Box
+            key={tag.id}
+            m={1 / 2}
+            onClick={() => {
+              if (onClick) {
+                onClick(tag);
+              }
+            }}
+          >
+            <DiscoverTag clickable variant="outlined" tag={tag} />
+          </Box>
+        ))}
+      </HorizontalSnapScroll>
+    </Box>
   );
 };
 

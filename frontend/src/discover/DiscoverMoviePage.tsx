@@ -88,7 +88,7 @@ export default () => {
             <SaveButton />
           </Toolbar>
 
-          <Box paddingBottom={3}>
+          <Box paddingLeft={2} paddingBottom={3}>
             <HorizontalSnapScroll controller={controller}>
               {activeTags.map((tag) => (
                 <Box

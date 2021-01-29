@@ -20,20 +20,27 @@ export const DiscoverTags = ({
   BoxProps?: BoxProps;
 }) => {
   return (
-    <HorizontalSnapScroll {...BoxProps}>
-      {tags.map((tag) => (
-        <Box
-          key={tag.id}
-          m={1 / 2}
-          onClick={() => {
-            if (onClick) {
-              onClick(tag);
-            }
-          }}
-        >
-          <DiscoverTag clickable variant="outlined" tag={tag} {...ChipProps} />
-        </Box>
-      ))}
-    </HorizontalSnapScroll>
+    <Box paddingLeft={2}>
+      <HorizontalSnapScroll {...BoxProps}>
+        {tags.map((tag) => (
+          <Box
+            key={tag.id}
+            m={1 / 2}
+            onClick={() => {
+              if (onClick) {
+                onClick(tag);
+              }
+            }}
+          >
+            <DiscoverTag
+              clickable
+              variant="outlined"
+              tag={tag}
+              {...ChipProps}
+            />
+          </Box>
+        ))}
+      </HorizontalSnapScroll>
+    </Box>
   );
 };

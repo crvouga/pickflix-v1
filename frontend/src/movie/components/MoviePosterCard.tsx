@@ -26,7 +26,10 @@ const useStyles = makeStyles((theme) => ({
   breakWord: {
     wordBreak: "break-word",
   },
-  borderRadius: {
+  card: {
+    borderRadius: theme.spacing(1 / 2),
+  },
+  media: {
     borderRadius: theme.spacing(1 / 2),
   },
   blur: {
@@ -87,7 +90,7 @@ export default (props: Props) => {
   });
 
   return (
-    <Card className={classes.borderRadius} ref={lazyImage.ref}>
+    <Card className={classes.card} ref={lazyImage.ref}>
       <CardActionArea disabled={disabled} onClick={handleClick}>
         <AspectRatio
           ratio={MOVIE_POSTER_ASPECT_RATIO}
@@ -97,7 +100,7 @@ export default (props: Props) => {
         >
           {posterPath && lazyImage.src && (
             <CardMedia
-              className={clsx(classes.borderRadius, {
+              className={clsx(classes.media, {
                 [classes.blur]: lazyImage.src === lowQuality,
                 [classes.unblur]: lazyImage.src === highQuality,
               })}

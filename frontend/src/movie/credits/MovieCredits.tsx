@@ -44,27 +44,29 @@ export default ({ credits }: { credits: MovieCredits }) => {
           </ListItemSecondaryAction>
         </ListItem>
       </List>
-      <HorizontalSnapScroll>
-        {topCredits.map((credit) => (
-          <Box width="150px" key={credit.creditId} marginLeft={1 + 1 / 2}>
-            <CreditsListCard credit={credit} />
-          </Box>
-        ))}
+      <Box paddingLeft={2}>
+        <HorizontalSnapScroll>
+          {topCredits.map((credit) => (
+            <Box width="150px" key={credit.creditId} marginRight={1}>
+              <CreditsListCard credit={credit} />
+            </Box>
+          ))}
 
-        <Box width="150px" height="100%" marginLeft={1 + 1 / 2}>
-          <Button
-            style={{ width: "100%", height: "100%" }}
-            variant="outlined"
-            endIcon={<ArrowForwardIcon />}
-            onClick={() => {
-              open();
-            }}
-          >
-            See All
-          </Button>
-        </Box>
-        <Box height="100%" width="auto" marginRight={2} />
-      </HorizontalSnapScroll>
+          <Box width="150px" height="100%" marginRight={2}>
+            <Button
+              style={{ width: "100%", height: "100%" }}
+              variant="outlined"
+              endIcon={<ArrowForwardIcon />}
+              onClick={() => {
+                open();
+              }}
+            >
+              See All
+            </Button>
+          </Box>
+          <Box height="100%" width="auto" marginRight={2} />
+        </HorizontalSnapScroll>
+      </Box>
     </React.Fragment>
   );
 };

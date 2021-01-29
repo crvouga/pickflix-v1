@@ -9,7 +9,8 @@ import { useInfiniteQueryPagination } from "../../common/infinite-scroll";
 import { Paginated } from "../../common/types";
 import MovieCard, { Movie, MOVIE_POSTER_ASPECT_RATIO } from "./MoviePosterCard";
 
-const WIDTH = 200;
+const WIDTH = 180;
+const MAX_WIDTH = undefined;
 
 type MoviePosterScrollProps = {
   movies: Movie[];
@@ -19,18 +20,21 @@ type MoviePosterScrollProps = {
 export const MoviePosterScroll = (props: MoviePosterScrollProps) => {
   const { movies, ItemBoxProps } = props;
   return (
-    <HorizontalSnapScroll>
-      {movies.map((movie) => (
-        <Box
-          width={WIDTH}
-          key={movie.id}
-          marginLeft={1 + 1 / 2}
-          {...ItemBoxProps}
-        >
-          <MovieCard movie={movie} />
-        </Box>
-      ))}
-    </HorizontalSnapScroll>
+    <Box paddingLeft={2}>
+      <HorizontalSnapScroll>
+        {movies.map((movie) => (
+          <Box
+            maxWidth={MAX_WIDTH}
+            width={WIDTH}
+            key={movie.id}
+            marginRight={1}
+            {...ItemBoxProps}
+          >
+            <MovieCard movie={movie} />
+          </Box>
+        ))}
+      </HorizontalSnapScroll>
+    </Box>
   );
 };
 
@@ -75,31 +79,36 @@ export const MoviePosterScrollInfinite = ({
   );
 
   const ratio = MOVIE_POSTER_ASPECT_RATIO[0] / MOVIE_POSTER_ASPECT_RATIO[1];
+
   const height = WIDTH / ratio;
+
   return (
-    <HorizontalSnapScroll>
-      {movies.map((movie, index) => (
-        <Box
-          width={WIDTH}
-          key={[movie.id, index].toString()}
-          marginLeft={1 + 1 / 2}
-        >
-          <MovieCard movie={movie} />
-        </Box>
-      ))}
-      <div ref={query.fetchMoreRef} />
-      {query.canFetchMore && (
-        <Box
-          width={WIDTH}
-          height={height}
-          display="flex"
-          justifyContent="center"
-          alignContent="center"
-        >
-          <LoadingBox />
-        </Box>
-      )}
-    </HorizontalSnapScroll>
+    <Box paddingLeft={2}>
+      <HorizontalSnapScroll>
+        {movies.map((movie, index) => (
+          <Box
+            maxWidth={MAX_WIDTH}
+            width={WIDTH}
+            key={[movie.id, index].toString()}
+            marginRight={1}
+          >
+            <MovieCard movie={movie} />
+          </Box>
+        ))}
+        <div ref={query.fetchMoreRef} />
+        {query.canFetchMore && (
+          <Box
+            width={WIDTH}
+            height={height}
+            display="flex"
+            justifyContent="center"
+            alignContent="center"
+          >
+            <LoadingBox />
+          </Box>
+        )}
+      </HorizontalSnapScroll>
+    </Box>
   );
 };
 
