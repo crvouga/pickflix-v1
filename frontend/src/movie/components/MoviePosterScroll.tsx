@@ -22,7 +22,7 @@ export const MoviePosterScroll = (props: MoviePosterScrollProps) => {
   return (
     <Box paddingLeft={2}>
       <HorizontalSnapScroll>
-        {movies.map((movie, index) => (
+        {movies.map((movie) => (
           <Box
             maxWidth={MAX_WIDTH}
             width={WIDTH}
