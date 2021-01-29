@@ -2,7 +2,7 @@ import { Box, BoxProps } from "@material-ui/core";
 import { identity, repeat, uniqBy } from "ramda";
 import React from "react";
 import { QueryKey } from "react-query";
-import HorizontalSnapScroll from "../../common/components/HorizontalSnapScroll";
+import HorizontalSnapScroll from "../../common/components/horizonal-snap-scroll";
 import LoadingBox from "../../common/components/LoadingBox";
 import NothingHere from "../../common/components/NothingHere";
 import { useInfiniteQueryPagination } from "../../common/infinite-scroll";

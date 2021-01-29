@@ -5,7 +5,7 @@ import React from "react";
 import { useQuery } from "react-query";
 import useModal from "../app/modals/useModal";
 import HorizontalScroll from "../common/components/HorizontalScroll";
-import HorizontalSnapScroll from "../common/components/HorizontalSnapScroll";
+import HorizontalSnapScroll from "../common/components/horizonal-snap-scroll";
 import { ResponsiveDialog } from "../common/components/ResponsiveDialog";
 import DiscoverTag from "./components/DiscoverTag";
 import { getMovieCertifications, queryKeys } from "./query";

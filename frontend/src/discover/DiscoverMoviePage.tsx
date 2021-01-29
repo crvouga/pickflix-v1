@@ -4,7 +4,7 @@ import { APP_BAR_HEIGHT } from "../app/navigation/constants";
 import {
   HorizontalSnapScroll,
   useHorizontalSnapScrollController,
-} from "../common/components/HorizontalSnapScroll";
+} from "../common/components/horizonal-snap-scroll";
 import Page from "../common/page/Page";
 import {
   AddButton,
