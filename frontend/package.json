@@ -2,7 +2,7 @@
   "scripts": {
     "start": "EXTEND_ESLINT=true react-scripts start",
     "generate-assets": "node generate-assets.js",
-    "build": "npm generate-assets && react-scripts build",
+    "build": "npm run generate-assets && react-scripts build",
     "test": "react-scripts test --env=jsdom"
   },
   "proxy": "http://localhost:5000",
