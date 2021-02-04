@@ -1,6 +1,6 @@
 import {
   Box,
-  Fab,
+  IconButton,
   makeStyles,
   useMediaQuery,
   useTheme,
@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
   childWrapper: {
     scrollSnapAlign: "start",
   },
+  small: {},
 }));
 
 export const HorizontalSnapScroll = ({
@@ -73,17 +74,17 @@ export const HorizontalSnapScroll = ({
   return (
     <Box display="flex" alignItems="center">
       <Box>
-        <Fab size="small" onClick={scrollLeft} disabled={leftDisabled}>
+        <IconButton onClick={scrollLeft} disabled={leftDisabled}>
           <ArrowBackIcon />
-        </Fab>
+        </IconButton>
       </Box>
 
       {component}
 
       <Box>
-        <Fab size="small" onClick={scrollRight} disabled={rightDisabled}>
-          <ArrowForwardIcon />
-        </Fab>
+        <IconButton onClick={scrollRight} disabled={rightDisabled}>
+          <ArrowForwardIcon className={classes.small} />
+        </IconButton>
       </Box>
     </Box>
   );
