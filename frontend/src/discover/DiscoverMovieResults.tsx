@@ -35,9 +35,11 @@ export default () => {
     );
   }
 
+  const movies = data.flatMap((response) => response.results);
+
   return (
     <React.Fragment>
-      <MoviePosterGrid movies={data.flatMap((response) => response.results)} />
+      <MoviePosterGrid movies={movies} />
       <InfiniteScrollBottom
         canFetchMore={canFetchMore}
         fetchMoreRef={fetchMoreRef}

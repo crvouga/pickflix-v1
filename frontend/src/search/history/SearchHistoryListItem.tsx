@@ -4,6 +4,7 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemIcon,
+  ListItemProps,
   ListItemSecondaryAction,
   ListItemText,
   makeStyles,
@@ -11,15 +12,14 @@ import {
 import DeleteIcon from "@material-ui/icons/Delete";
 import HistoryIcon from "@material-ui/icons/History";
 import MovieIcon from "@material-ui/icons/Movie";
-import { ListItemProps } from "material-ui";
 import moment from "moment";
 import React from "react";
 import { useHistory } from "react-router";
 import makeImageUrl from "../../media/tmdb/makeImageUrl";
 import AvatarUser from "../../user/components/AvatarUser";
+import { makeUserPageRoute } from "../../user/UserPage";
 import { SearchResult } from "../query";
 import { useSearchState } from "../redux/search";
-import { makeUserPageRoute } from "../../user/UserPage";
 
 type Props = ListItemProps & {
   result: SearchResult;
@@ -73,8 +73,10 @@ export default ({ result, ...ListItemProps }: Props) => {
     case "movie":
       return (
         <ListItem
+          //@ts-ignore
           onClick={handleClick(result)}
           key={result.id}
+          //@ts-ignore
           button
           {...ListItemProps}
         >
@@ -99,8 +101,10 @@ export default ({ result, ...ListItemProps }: Props) => {
     case "person":
       return (
         <ListItem
+          //@ts-ignore
           onClick={handleClick(result)}
           key={result.id}
+          //@ts-ignore
           button
           {...ListItemProps}
         >
@@ -123,8 +127,10 @@ export default ({ result, ...ListItemProps }: Props) => {
     case "user":
       return (
         <ListItem
+          //@ts-ignore
           onClick={handleClick(result)}
           key={result.id}
+          //@ts-ignore
           button
           {...ListItemProps}
         >

@@ -2,18 +2,18 @@ import {
   Avatar,
   ListItem,
   ListItemAvatar,
+  ListItemProps,
   ListItemText,
 } from "@material-ui/core";
 import MovieIcon from "@material-ui/icons/Movie";
-import { ListItemProps } from "material-ui";
 import moment from "moment";
 import React from "react";
 import { useHistory } from "react-router";
 import makeImageUrl from "../../media/tmdb/makeImageUrl";
 import UserListItem from "../../user/components/UserListItem";
+import { makeUserPageRoute } from "../../user/UserPage";
 import { SearchResult } from "../query";
 import { useSearchState } from "../redux/search";
-import { makeUserPageRoute } from "../../user/UserPage";
 
 type Props = ListItemProps & {
   result: SearchResult;
@@ -43,8 +43,10 @@ export default ({ result, ...ListItemProps }: Props) => {
     case "person":
       return (
         <ListItem
+          //@ts-ignore
           onClick={handleClick(result)}
           key={result.id}
+          //@ts-ignore
           button
           {...ListItemProps}
         >
@@ -60,8 +62,10 @@ export default ({ result, ...ListItemProps }: Props) => {
     case "movie":
       return (
         <ListItem
+          //@ts-ignore
           onClick={handleClick(result)}
           key={result.id}
+          //@ts-ignore
           button
           {...ListItemProps}
         >

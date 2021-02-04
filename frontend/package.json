@@ -2,7 +2,7 @@
   "scripts": {
     "start": "EXTEND_ESLINT=true react-scripts start",
     "generate-assets": "node generate-assets.js",
-    "build": "npm run generate-assets && react-scripts build",
+    "build": "yarn generate-assets && react-scripts build",
     "test": "react-scripts test --env=jsdom"
   },
   "proxy": "http://localhost:5000",
@@ -74,9 +74,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/react-swipeable-views": "^0.13.0",
     "@types/yup": "^0.29.7",
-    "@typescript-eslint/eslint-plugin": "4.0.1",
-    "@typescript-eslint/parser": "4.0.1",
-    "typescript": "^3.9.7"
+    "typescript": "^3.7.3"
   },
   "browserslist": {
     "production": [
@@ -90,7 +88,7 @@
       "last 1 safari version"
     ]
   },
-  "resolutions": {
+  "@comment resolutions": {
     "**/@typescript-eslint/eslint-plugin": "^4.1.1",
     "**/@typescript-eslint/parser": "^4.1.1"
   }

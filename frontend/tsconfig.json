@@ -1,29 +1,31 @@
 {
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
   "compilerOptions": {
-    "target": "es5",
+    "target": "ESNEXT",
     "module": "esnext",
-    "lib": ["es2017", "dom", "esnext.array"],
-    "jsx": "preserve",
-    "outDir": "./build",
-    "strict": false,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "strictPropertyInitialization": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
+    "jsx": "react",
+    "outDir": "./dist",
+    "rootDir": ".",
+    "strict": true,
+    "types": [],
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true
-  },
-  "include": ["src", "history.ts"]
+  }
 }
