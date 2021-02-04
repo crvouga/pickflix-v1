@@ -1,12 +1,11 @@
 {
   "scripts": {
-    "test": "clear && cd backend && npm test",
     "postinstall": "cd backend && npm install",
+    "start": "cd backend && npm run start",
+    "dev": "concurrently \"cd backend && npm run dev-with-postgres\" \"cd frontend && npm run start\" ",
     "heroku-postbuild": "cd frontend && npm install && npm run build",
     "heroku-write-env": "heroku config -s -a crvouga-pickflix > .env",
-    "start": "cd backend && npm run start",
-    "heroku-local": "npm run heroku-write-env && npm install && npm run heroku-postbuild && REPOSITORY_IMPLEMENTATION=postgres PORT=9000 heroku local",
-    "dev": "concurrently \"cd backend && npm run dev-with-postgres\" \"cd frontend && npm run start\" "
+    "heroku-local": "npm run heroku-write-env && npm install && npm run heroku-postbuild && REPOSITORY_IMPLEMENTATION=postgres PORT=9000 heroku local"
   },
   "name": "pickflix",
   "version": "1.0.0",
