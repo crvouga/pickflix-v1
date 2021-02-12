@@ -58,6 +58,7 @@ export const ToggleButtonSkeleton = () => {
 export type ToggleButtonProps = {
   checked?: boolean;
   title?: string;
+  subtitle?: React.ReactNode;
   onClick?: () => void;
   onSecondaryActionClick?: () => void;
 };
@@ -67,6 +68,7 @@ export const ToggleButton = ({
   title,
   onClick,
   onSecondaryActionClick,
+  subtitle,
 }: ToggleButtonProps) => {
   return (
     <ListItem button onClick={onClick}>
@@ -74,7 +76,7 @@ export const ToggleButton = ({
         {checked ? <CheckBoxIcon /> : <CheckBoxOutlineBlankIcon />}
       </ListItemIcon>
 
-      <ListItemText primary={title} />
+      <ListItemText primary={title} secondary={subtitle} />
 
       <ListItemSecondaryAction>
         <Button color="primary" onClick={onSecondaryActionClick}>

@@ -1,5 +1,6 @@
 import {
   Box,
+  Chip,
   Divider,
   Hidden,
   List,
@@ -22,6 +23,7 @@ import {
 } from "../../../common/infinite-scroll";
 import { MediaId } from "../../../media/tmdb/types";
 import MovieListItemContainer from "../../../movie/components/MovieListItemContainer";
+import ChipUser from "../../../user/components/ChipUser";
 import ListCardCallToAction from "../../lists/card/ListCardCallToAction";
 import {
   AutoListAggergation,
@@ -168,6 +170,27 @@ const ToggleListItemForm = (props: ToggleListItemFormProps) => {
           key={list.list.id}
           checked={list.list.id in markedListIds}
           title={list.list.title}
+          subtitle={
+            <Box display="flex" flexWrap="nowrap">
+              {[list.owner, ...list.editors].slice(0, 2).map((user) => (
+                <Box key={user.id} marginRight={1 / 2}>
+                  <ChipUser
+                    user={user}
+                    size="small"
+                    clickable={false}
+                    onClick={undefined}
+                  />
+                </Box>
+              ))}
+              {[list.owner, ...list.editors].length > 2 && (
+                <Chip
+                  size="small"
+                  variant="outlined"
+                  label={`+ ${[list.owner, ...list.editors].length - 2} more`}
+                />
+              )}
+            </Box>
+          }
           onClick={() => {
             toggle({
               listId: list.list.id,
