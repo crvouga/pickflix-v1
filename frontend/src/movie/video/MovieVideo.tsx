@@ -27,13 +27,8 @@ export default ({
   const { open, isOpen, close } = useModal("MovieVideo");
 
   useEffect(() => {
-    const trailer = videos.results.find((video) => video.type === "Trailer");
-    videoState.setCurrentVideo(trailer || videos.results[0]);
     videoState.setPlaylist(videos.results);
     videoState.setError(undefined);
-    return () => {
-      videoState.setCurrentVideo(undefined);
-    };
   }, [tmdbMediaId]);
 
   if (videoState.playlist.length === 0) {

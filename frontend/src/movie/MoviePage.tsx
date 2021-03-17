@@ -128,7 +128,7 @@ export default () => {
             [classes.sticky]: moviePageUi.isVideoPlayerSticky && isMobile,
           })}
         >
-          <VideoPlayer />
+          <VideoPlayer videos={videos} />
         </Container>
       )}
 

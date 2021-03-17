@@ -1,9 +1,10 @@
 import { makeStyles } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import ReactPlayer, { ReactPlayerProps } from "react-player";
 import AspectRatio from "../../common/components/AspectRatio";
 import useVideoState from "./useVideoState";
 import { videoKeyToEmbedURL } from "../youtube/query";
+import { MovieVideo, MovieVideos } from "../tmdb/types";
 
 const useStyles = makeStyles(() => ({
   videoContainer: {
@@ -14,11 +15,27 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default (props: ReactPlayerProps) => {
+export default ({
+  videos,
+  ...props
+}: { videos: MovieVideos } & ReactPlayerProps) => {
   const classes = useStyles(props);
   const videoState = useVideoState();
 
-  const url = videoKeyToEmbedURL(videoState.currentVideo?.key);
+  const initialVideo =
+    videos.results.find((video) => video.type === "Trailer") ||
+    videos.results[0];
+
+  useEffect(() => {
+    videoState.setCurrentVideo(initialVideo);
+    return () => {
+      videoState.setCurrentVideo(undefined);
+    };
+  }, [initialVideo]);
+
+  const url = videoKeyToEmbedURL(
+    videoState.currentVideo?.key ?? initialVideo?.key
+  );
 
   return (
     <AspectRatio ratio={[16, 9]} className={classes.videoContainer}>
