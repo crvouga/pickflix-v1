@@ -1,11 +1,10 @@
 import { Box } from "@material-ui/core";
-import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 
 export const TabPanelContainer = ({
   children,
 }: React.PropsWithChildren<{}>) => {
-  return <AnimatePresence>{children}</AnimatePresence>;
+  return <div>{children}</div>;
 };
 
 export const TabPanel = (props: {
@@ -27,16 +26,7 @@ export const TabPanel = (props: {
   };
   return (
     <Box hidden={value !== index} minHeight="360px">
-      {value === index && (
-        <motion.div
-          variants={tabVariants}
-          initial="initial"
-          animate="in"
-          exit="out"
-        >
-          {children}
-        </motion.div>
-      )}
+      {value === index && children}
     </Box>
   );
 };
