@@ -6,13 +6,15 @@ import {
   Typography,
 } from "@material-ui/core";
 import clsx from "clsx";
-import React from "react";
+import React, { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import "react-lazy-load-image-component/src/effects/opacity.css";
 import { useHistory } from "react-router";
 import AspectRatio from "../../common/components/AspectRatio";
-import { useLazyImage } from "../../common/hooks/useLazyImage";
+import useBoolean from "../../common/hooks/useBoolean";
 import makeImageUrl from "../../media/tmdb/makeImageUrl";
+import { Skeleton } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   fallback: {
@@ -29,9 +31,21 @@ const useStyles = makeStyles((theme) => ({
   card: {
     borderRadius: theme.spacing(1 / 2),
   },
-  media: {
+  skeleton: {
+    zIndex: 1,
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+  },
+  image: {
+    zIndex: 2,
+    width: "100%",
+    height: "100%",
     borderRadius: theme.spacing(1 / 2),
   },
+
   blur: {
     filter: "blur(4px)",
   },
@@ -45,6 +59,20 @@ const useStyles = makeStyles((theme) => ({
     "100%": {
       filter: "blur(0px)",
     },
+  },
+  "@keyframes flicker": {
+    "0%": {
+      opacity: 1,
+    },
+    "50%": {
+      opacity: 1 / 2,
+    },
+    "100%": {
+      opacity: 1,
+    },
+  },
+  flicker: {
+    animation: `$flicker 1s infinite`,
   },
 }));
 
@@ -82,15 +110,20 @@ export default (props: Props) => {
       }
     : undefined;
 
-  const highQuality = makeImageUrl(sizeIndex, { posterPath });
-  const lowQuality = makeImageUrl(0, { posterPath });
-  const lazyImage = useLazyImage({
-    highQuality,
-    lowQuality,
-  });
+  const imageSrc = makeImageUrl(sizeIndex, { posterPath });
+
+  const { ref, inView } = useInView({});
+  const isLoading = useBoolean(true);
+  const isMounted = useBoolean(false);
+
+  useEffect(() => {
+    if (inView) {
+      isMounted.setTrue();
+    }
+  }, [inView]);
 
   return (
-    <Card className={classes.card} ref={lazyImage.ref}>
+    <Card className={clsx(classes.card)} ref={ref}>
       <CardActionArea disabled={disabled} onClick={handleClick}>
         <AspectRatio
           ratio={MOVIE_POSTER_ASPECT_RATIO}
@@ -98,18 +131,18 @@ export default (props: Props) => {
             style: { position: "relative", width: "100%" },
           }}
         >
-          {posterPath && lazyImage.src && (
-            <CardMedia
-              className={clsx(classes.media, {
-                [classes.blur]: lazyImage.src === lowQuality,
-                [classes.unblur]: lazyImage.src === highQuality,
-              })}
-              style={{
-                width: "100%",
-                height: "100%",
-              }}
-              image={lazyImage.src}
-            />
+          {posterPath && isMounted.value && (
+            <React.Fragment>
+              {isLoading.value && (
+                <Skeleton variant="rect" className={classes.skeleton} />
+              )}
+              <img
+                onError={isLoading.setFalse}
+                onLoad={isLoading.setFalse}
+                className={classes.image}
+                src={imageSrc}
+              />
+            </React.Fragment>
           )}
 
           {!posterPath && (
