@@ -113,7 +113,6 @@ export default (props: Props) => {
   const imageSrc = makeImageUrl(sizeIndex, { posterPath });
 
   const { ref, inView } = useInView({});
-  const isLoading = useBoolean(true);
   const isMounted = useBoolean(false);
 
   useEffect(() => {
@@ -132,17 +131,7 @@ export default (props: Props) => {
           }}
         >
           {posterPath && isMounted.value && (
-            <React.Fragment>
-              {isLoading.value && (
-                <Skeleton variant="rect" className={classes.skeleton} />
-              )}
-              <img
-                onError={isLoading.setFalse}
-                onLoad={isLoading.setFalse}
-                className={classes.image}
-                src={imageSrc}
-              />
-            </React.Fragment>
+            <img className={classes.image} src={imageSrc} />
           )}
 
           {!posterPath && (
