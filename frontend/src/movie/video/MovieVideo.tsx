@@ -31,6 +31,9 @@ export default ({
     videoState.setCurrentVideo(trailer || videos.results[0]);
     videoState.setPlaylist(videos.results);
     videoState.setError(undefined);
+    return () => {
+      videoState.setCurrentVideo(undefined);
+    };
   }, [tmdbMediaId]);
 
   if (videoState.playlist.length === 0) {

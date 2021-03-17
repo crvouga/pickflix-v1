@@ -59,9 +59,6 @@ export default () => {
 
   useEffect(() => {
     videoState.setIsPlaying(moviePageUi.isVideoPlayerSticky);
-    if (moviePageUi.isVideoPlayerSticky && videoState.light) {
-      videoState.setLight(undefined);
-    }
   }, [moviePageUi.isVideoPlayerSticky]);
 
   const { tmdbMediaId } = useParams<{ tmdbMediaId: string }>();
