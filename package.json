@@ -6,7 +6,8 @@
     "dev-dangerous": "NODE_ENV=production npm run dev",
     "heroku-postbuild": "cd frontend && npm install && npm run build",
     "heroku-write-env": "heroku config -s -a crvouga-pickflix > .env",
-    "heroku-local": "npm run heroku-write-env && npm install && npm run heroku-postbuild && REPOSITORY_IMPLEMENTATION=postgres PORT=9000 heroku local"
+    "heroku-local": "npm run heroku-write-env && npm install && npm run heroku-postbuild && REPOSITORY_IMPLEMENTATION=postgres PORT=9000 heroku local",
+    "heroku-logs": "heroku logs --tail --app  crvouga-pickflix"
   },
   "name": "pickflix",
   "version": "1.0.0",
