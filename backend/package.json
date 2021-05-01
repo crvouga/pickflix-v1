@@ -1,7 +1,7 @@
 {
   "scripts": {
     "tests-with-postgres": "REPOSITORY_IMPLEMENTATION=postgres npx jest --runInBand --detectOpenHandles --unhandled-rejections=strict",
-    "tests": "npx jest",
+    "tests": "REPOSITORY_IMPLEMENTATION=hashMap npx jest",
     "dev-with-postgres": "REPOSITORY_IMPLEMENTATION=postgres nodemon build/index.js",
     "dev": "npm run heroku-write-env && nodemon build/index.js",
     "tsc": "tsc -p tsconfig.production.json",
