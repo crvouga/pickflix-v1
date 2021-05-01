@@ -40,11 +40,6 @@ export type Secrets = Readonly<{
   // SOURCE: https://dashboard.heroku.com/apps/crvouga-pickflix
   posgresConnectionString: string;
 
-  // used for cache
-  // used by Heroku redis addon
-  // SOURCE: https://dashboard.heroku.com/apps/crvouga-pickflix
-  redisConnectionString: string;
-
   // for movie data
   // SOURCE: https://www.themoviedb.org/settings/api.
   tmdbApiKey: string;
@@ -73,7 +68,6 @@ const {
   SEND_GRID_REGISTERED_EMAIL_ADDRESS,
   SECRET,
   SESSION_COOKIE_SECRET,
-  REDIS_URL,
 } = process.env;
 
 if (!YOUTUBE_API_KEY) {
@@ -86,10 +80,6 @@ if (!TMDB_API_KEY) {
 
 if (!DATABASE_URL) {
   throw "DATABASE_URL required";
-}
-
-if (!REDIS_URL) {
-  throw new Error("REDIS_URL required");
 }
 
 if (!SEND_GRID_API_KEY) {
@@ -110,7 +100,7 @@ if (!SESSION_COOKIE_SECRET) {
 
 export const secrets: Secrets = {
   posgresConnectionString: DATABASE_URL,
-  redisConnectionString: REDIS_URL,
+
   tmdbApiKey: TMDB_API_KEY,
   youtubeApiKey: YOUTUBE_API_KEY,
   sendGridApiKey: SEND_GRID_API_KEY,

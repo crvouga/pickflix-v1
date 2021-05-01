@@ -12,11 +12,11 @@ import {
   isAuthenticated,
 } from "../express/authentication-middleware";
 import { buildExpressApp } from "../express/build-app";
-import { buildSessionStoreRedis } from "../express/session-store";
 import { ExpressAppDependencies } from "../express/types";
 import { HashMapCache } from "../persistence/cache/cache.hash-map";
 import { PostgresDatabase } from "../persistence/postgres/database.postgres";
 import { buildRepositoriesPostgres } from "./build-repositories";
+
 /* 
 
 
@@ -44,8 +44,6 @@ export const buildAppProduction = async () => {
   );
 
   await initializeAllTables();
-
-  const sessionStore = await buildSessionStoreRedis();
 
   const eventEmitter = createEventEmitter<Events>();
 
