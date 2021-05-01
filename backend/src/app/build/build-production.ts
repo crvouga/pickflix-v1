@@ -14,7 +14,7 @@ import {
 import { buildExpressApp } from "../express/build-app";
 import { buildSessionStoreRedis } from "../express/session-store";
 import { ExpressAppDependencies } from "../express/types";
-import { RedisCache } from "../persistence/cache/cache.redis";
+import { HashMapCache } from "../persistence/cache/cache.hash-map";
 import { PostgresDatabase } from "../persistence/postgres/database.postgres";
 import { buildRepositoriesPostgres } from "./build-repositories";
 /* 
@@ -29,10 +29,6 @@ export const POSTGRES_PRODUCTION_CONFIG = {
   },
 };
 
-export const REDIS_PRODUCTION_CONFIG = {
-  connectionString: secrets.redisConnectionString,
-};
-
 const database = new PostgresDatabase(POSTGRES_PRODUCTION_CONFIG);
 
 /* 
@@ -41,7 +37,7 @@ const database = new PostgresDatabase(POSTGRES_PRODUCTION_CONFIG);
 */
 
 export const buildAppProduction = async () => {
-  const cache = new RedisCache<string, string>(REDIS_PRODUCTION_CONFIG);
+  const cache = new HashMapCache<string, string>();
 
   const { repositories, initializeAllTables } = await buildRepositoriesPostgres(
     database
@@ -89,7 +85,6 @@ export const buildAppProduction = async () => {
 
   const dependencies: ExpressAppDependencies = {
     ...appLogic,
-    sessionStore,
     middlewares: {
       authenticate,
       isAuthenticated,

@@ -4,7 +4,6 @@ import path from "path";
 import { createEventEmitter, Events } from "../../common/events";
 import {
   getRepositoryImplementation,
-  secrets,
   RepositoryImplementation,
 } from "../../config";
 import { ListLogic } from "../../lists/logic/logic";
@@ -17,10 +16,9 @@ import {
   isAuthenticated,
 } from "../express/authentication-middleware";
 import { buildExpressApp } from "../express/build-app";
-import { buildSessionStoreRedis } from "../express/session-store";
+import { buildSessionStoreInMemory } from "../express/session-store";
 import { ExpressAppDependencies } from "../express/types";
 import { HashMapCache } from "../persistence/cache/cache.hash-map";
-import { RedisCache } from "../persistence/cache/cache.redis";
 import { PostgresDatabase } from "../persistence/postgres/database.postgres";
 import {
   buildRepositoriesFileSystem,
@@ -37,10 +35,6 @@ const POSTGRES_DEVELOPMENT_CONFIG = {
   host: "localhost",
   port: 5432,
   database: "pickflix_development",
-};
-
-const REDIS_DEVELOPMENT_CONFIG = {
-  connectionString: secrets.redisConnectionString,
 };
 
 /* 
@@ -62,9 +56,9 @@ const buildPersistence = async (
 
       await initializeAllTables();
 
-      const sessionStore = await buildSessionStoreRedis();
+      const sessionStore = await buildSessionStoreInMemory();
 
-      const cache = new RedisCache<string, string>(REDIS_DEVELOPMENT_CONFIG);
+      const cache = new HashMapCache<string, string>();
 
       return {
         cache,
@@ -99,7 +93,7 @@ const buildPersistence = async (
 export const buildAppDevelopment = async () => {
   const repositoryImplementation = getRepositoryImplementation();
 
-  const { repositories, sessionStore, cache } = await buildPersistence(
+  const { repositories, cache } = await buildPersistence(
     repositoryImplementation
   );
 
@@ -141,7 +135,6 @@ export const buildAppDevelopment = async () => {
 
   const dependencies: ExpressAppDependencies = {
     ...appLogic,
-    sessionStore,
 
     middlewares: {
       authenticate,

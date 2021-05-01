@@ -1,11 +1,13 @@
 import buildPostgresSessionStore from "connect-pg-simple";
-import redis from "redis";
 import buildRedisSessionStore from "connect-redis";
 import session from "express-session";
 import fs from "fs";
-import { IPostgresDatabase } from "../persistence/postgres/database.postgres";
+import buildMemorySessionStore from "memorystore";
+import redis from "redis";
 import { secrets } from "../../config";
+import { IPostgresDatabase } from "../persistence/postgres/database.postgres";
 
+const InMemorySessionStore = buildMemorySessionStore(session);
 const PostgresSessionStore = buildPostgresSessionStore(session);
 const RedisSessionStore = buildRedisSessionStore(session);
 
@@ -41,4 +43,8 @@ export const buildSessionStoreRedis = async () => {
   return new RedisSessionStore({
     client,
   });
+};
+
+export const buildSessionStoreInMemory = async () => {
+  return new InMemorySessionStore({});
 };

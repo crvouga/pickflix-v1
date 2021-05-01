@@ -140,7 +140,6 @@ export const buildAppTest = async () => {
 
   const dependencies: ExpressAppDependencies = {
     ...appLogic,
-    sessionStore: undefined,
     middlewares: {
       authenticate: handlerStub,
       isAuthenticated: handlerStub,

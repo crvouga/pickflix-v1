@@ -2,20 +2,16 @@ import cookieParser from "cookie-parser";
 import { Application } from "express";
 import session from "express-session";
 import { getNodeEnv, secrets } from "../../config";
-import { ExpressAppDependencies } from "./types";
 
 const ONE_DAY = 1000 * 60 * 60 * 24;
 const ONE_MONTH = ONE_DAY * 30;
 
-export const useSessionMiddleware = ({
-  sessionStore,
-}: ExpressAppDependencies) => async (app: Application) => {
+export const useSessionMiddleware = () => async (app: Application) => {
   app.use(cookieParser());
 
   const sessionOptions: session.SessionOptions = {
     ...session,
     name: "pickflix-session",
-    store: sessionStore,
     secret: secrets.secret,
     resave: false,
     saveUninitialized: true,
