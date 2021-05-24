@@ -1,4 +1,4 @@
-# https://www.pickflix.chrisvouga.dev/
+# Pickflix
 
 ![icon](frontend/public/assets/pickflix-logo.png)
 
