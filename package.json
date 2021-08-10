@@ -2,7 +2,7 @@
   "scripts": {
     "postinstall": "cd backend && npm install",
     "start": "cd backend && npm run start",
-    "dev": "concurrently \"cd backend && npm run dev-with-postgres\" \"cd frontend && npm run start\"",
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run start\"",
     "dev-dangerous": "NODE_ENV=production npm run dev",
     "heroku-postbuild": "cd frontend && npm install && npm run build",
     "heroku-write-env": "heroku config -s -a crvouga-pickflix > .env",
