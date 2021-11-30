@@ -2,7 +2,7 @@ import { User } from "../../users/models/make-user";
 
 export type Events = {
   UserCreated: User;
-  UserVerified: User;
+  UserSignedIn: User;
 };
 
 export * from "./types";

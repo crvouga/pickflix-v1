@@ -34,7 +34,7 @@ export async function verifyEmailAddressAndPassword(
 
     await this.credentialRepository.update(updated.id, updated);
 
-    this.eventEmitter.emit("UserVerified", user);
+    this.eventEmitter.emit("UserSignedIn", user);
 
     return user;
   }

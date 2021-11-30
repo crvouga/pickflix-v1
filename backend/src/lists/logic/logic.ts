@@ -77,7 +77,7 @@ export class ListLogic {
       await this.addAutoLists({ user: createdUser });
     });
 
-    this.eventEmitter.on("UserVerified", async (verifiedUser) => {
+    this.eventEmitter.on("UserSignedIn", async (verifiedUser) => {
       await this.addAutoLists({ user: verifiedUser });
     });
   }
