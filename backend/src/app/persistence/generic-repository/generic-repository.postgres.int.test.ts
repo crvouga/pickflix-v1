@@ -1,13 +1,11 @@
-import { POSTGRES_TEST_CONFIG } from "../../build/build-test";
 import { PaginationOptions } from "../../../common/pagination";
+import { POSTGRES_TEST_CONFIG } from "../../build/build-test";
 import {
   DANGEROUSLY_clearTables,
   PostgresDatabase,
 } from "../postgres/database.postgres";
-import {
-  FooRepositoryPostgres,
-  makeFooArbitrary,
-} from "./foo-repository.postgres";
+import { makeFooArbitrary } from "./foo-repository";
+import { FooRepositoryPostgres } from "./foo-repository.postgres";
 
 const postgresDatabseTest = new PostgresDatabase(POSTGRES_TEST_CONFIG);
 
@@ -51,7 +49,7 @@ describe("generic postgres repository", () => {
       ],
       {
         pagination,
-      },
+      }
     );
 
     await repository.add([foo]);
@@ -266,10 +264,10 @@ describe("generic postgres repository", () => {
       [{ favoriteColor: "red" }, { id: b.id }],
       {
         pagination,
-      },
+      }
     );
     expect(
-      await repository.count([{ favoriteColor: "red" }, { id: b.id }]),
+      await repository.count([{ favoriteColor: "red" }, { id: b.id }])
     ).toEqual(2);
     expect(result4).not.toContainEqual(a);
     expect(result4).toContainEqual(b);
@@ -279,10 +277,10 @@ describe("generic postgres repository", () => {
       [{ favoriteColor: "blue", name: "foo" }],
       {
         pagination,
-      },
+      }
     );
     expect(
-      await repository.count([{ favoriteColor: "blue", name: "foo" }]),
+      await repository.count([{ favoriteColor: "blue", name: "foo" }])
     ).toEqual(1);
     expect(result5).toContainEqual(a);
     expect(result5).not.toContainEqual(b);
@@ -292,10 +290,10 @@ describe("generic postgres repository", () => {
       [{ id: a.id }, { id: b.id }, { id: c.id }],
       {
         pagination,
-      },
+      }
     );
     expect(
-      await repository.count([{ id: a.id }, { id: b.id }, { id: c.id }]),
+      await repository.count([{ id: a.id }, { id: b.id }, { id: c.id }])
     ).toEqual(3);
     expect(result6).toContainEqual(a);
     expect(result6).toContainEqual(b);
