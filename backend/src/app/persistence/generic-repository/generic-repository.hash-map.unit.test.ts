@@ -1,31 +1,19 @@
-import { POSTGRES_TEST_CONFIG } from "../../build/build-test";
 import { PaginationOptions } from "../../../common/pagination";
-import {
-  DANGEROUSLY_clearTables,
-  PostgresDatabase,
-} from "../postgres/database.postgres";
-import {
-  FooRepositoryPostgres,
-  makeFooArbitrary,
-} from "./foo-repository.postgres";
-
-const postgresDatabseTest = new PostgresDatabase(POSTGRES_TEST_CONFIG);
-
-const buildFooRepositoryPostgres = async () => {
-  const repository = new FooRepositoryPostgres(postgresDatabseTest);
-  await DANGEROUSLY_clearTables(postgresDatabseTest);
-  await repository.initializeTables();
-  return repository;
-};
+import { Foo, Id, makeFooArbitrary } from "./foo-repository";
+import { GenericRepositoryHashMap } from "./generic-repository.hash-map";
 
 const pagination: PaginationOptions = {
   page: 1,
   pageSize: 20,
 };
 
-describe("generic postgres repository", () => {
+const buildRepo = async () => {
+  return new GenericRepositoryHashMap<Id, Foo>({});
+};
+
+describe("generic hashmap repository", () => {
   it("returns no entities when spec is empty", async () => {
-    const repository = await buildFooRepositoryPostgres();
+    const repository = await buildRepo();
 
     const foo = makeFooArbitrary();
 
@@ -39,7 +27,7 @@ describe("generic postgres repository", () => {
   });
 
   it("adds and finds entities", async () => {
-    const repository = await buildFooRepositoryPostgres();
+    const repository = await buildRepo();
 
     const foo = makeFooArbitrary();
 
@@ -68,7 +56,7 @@ describe("generic postgres repository", () => {
   });
 
   it("counts  entities", async () => {
-    const repository = await buildFooRepositoryPostgres();
+    const repository = await buildRepo();
 
     const expected = 10;
 
@@ -86,7 +74,7 @@ describe("generic postgres repository", () => {
   });
 
   it("counts entities by spec", async () => {
-    const repository = await buildFooRepositoryPostgres();
+    const repository = await buildRepo();
 
     const expectedRedCount = 36;
     const expectedBarCount = 24;
@@ -137,7 +125,7 @@ describe("generic postgres repository", () => {
   });
 
   it("full text searches", async () => {
-    const repository = await buildFooRepositoryPostgres();
+    const repository = await buildRepo();
 
     const names = ["hi", "hey", "hello", "sup", "yo"];
 
@@ -175,7 +163,7 @@ describe("generic postgres repository", () => {
   });
 
   it("adds and removed entities", async () => {
-    const repository = await buildFooRepositoryPostgres();
+    const repository = await buildRepo();
 
     const foo = makeFooArbitrary();
 
@@ -197,7 +185,7 @@ describe("generic postgres repository", () => {
   });
 
   it("adds and updates entities", async () => {
-    const repository = await buildFooRepositoryPostgres();
+    const repository = await buildRepo();
 
     const foo = makeFooArbitrary({
       favoriteColor: "blue",
@@ -220,7 +208,7 @@ describe("generic postgres repository", () => {
   });
 
   it("counts and finds entities by spec", async () => {
-    const repository = await buildFooRepositoryPostgres();
+    const repository = await buildRepo();
 
     const a = makeFooArbitrary({
       id: "1",
@@ -303,7 +291,7 @@ describe("generic postgres repository", () => {
   });
 
   it("adds and removes entities by non id spec", async () => {
-    const repository = await buildFooRepositoryPostgres();
+    const repository = await buildRepo();
 
     const a = makeFooArbitrary({
       id: "1",
@@ -336,8 +324,12 @@ describe("generic postgres repository", () => {
     ]);
 
     await repository.remove([
-      { favoriteColor: "blue" },
-      { favoriteColor: "yellow" },
+      {
+        favoriteColor: "blue",
+      },
+      {
+        favoriteColor: "yellow",
+      },
     ]);
 
     const after = await repository.find([

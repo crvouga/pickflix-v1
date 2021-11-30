@@ -1,4 +1,4 @@
-import { descend, dissoc } from "ramda";
+import * as R from "remeda";
 import { IDiscoverTag, UNIQUE_TAG_TYPES } from "../query/types";
 import { useDiscoverActiveTagsState } from "./discover-active-tags";
 import { useDiscoverTagsState } from "./discover-tags";
@@ -49,7 +49,7 @@ export default () => {
   };
 
   const deactivateTag = (tag: IDiscoverTag) => {
-    setActiveTagsById(dissoc(tag.id, activeTagState.present.activeTagsById));
+    setActiveTagsById(R.omit(activeTagState.present.activeTagsById, [tag.id]));
   };
 
   const clear = () => {
@@ -62,7 +62,7 @@ export default () => {
     (tag) => !(tag.id in activeTagState.present.activeTagsById)
   );
 
-  nonActiveTags.sort(descend((tag) => tag.lastActiveAt || 0));
+  nonActiveTags.sort((a, b) => (b.lastActiveAt ?? 0) - (a.lastActiveAt ?? 0));
 
   return {
     activateTag,

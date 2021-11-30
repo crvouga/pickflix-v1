@@ -43,6 +43,7 @@ describe("review logic", () => {
     const got = await reviewLogic.getReviews({
       mediaId,
     });
+
     expect(added).toStrictEqual(got);
   });
 

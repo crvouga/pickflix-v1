@@ -151,14 +151,14 @@ export class ReviewLogic {
       authorId?: UserId;
       mediaId?: MediaId;
     },
-    pagination?: PaginationOptions
+    pagination?: PaginationOptions,
   ) {
     const found = await this.reviewRepository.find(
       removeNullOrUndefinedEntries(reviewInfo),
       {
         orderBy: [["updatedAt", "descend"]],
         pagination,
-      }
+      },
     );
 
     const aggergations = await Promise.all(
@@ -167,7 +167,7 @@ export class ReviewLogic {
           reviewId: review.id,
           userId,
         })
-      )
+      ),
     );
 
     return aggergations;
@@ -182,6 +182,7 @@ export class ReviewLogic {
     if (found.length > 0) {
       throw new Error("A user can only have one review per media");
     }
+
     const created = makeReview(partialReview);
 
     await this.reviewRepository.add(created);
@@ -287,10 +288,9 @@ export class ReviewLogic {
       mediaId,
     });
 
-    const ratingAverage =
-      Object.entries(ratingFrequency)
-        .map(([rating, frequency]) => Number(rating) * frequency)
-        .reduce((a, b) => a + b, 0) / Math.max(ratingCount, 1);
+    const ratingAverage = Object.entries(ratingFrequency)
+      .map(([rating, frequency]) => Number(rating) * frequency)
+      .reduce((a, b) => a + b, 0) / Math.max(ratingCount, 1);
 
     return {
       ratingCount,

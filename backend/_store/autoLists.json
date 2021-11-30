@@ -1,0 +1,17 @@
+{
+  "a184abd9-8621-48fd-b944-3296519a301d": {
+    "id": "a184abd9-8621-48fd-b944-3296519a301d",
+    "ownerId": "3076f8ff-9ba0-4514-b18c-220fe6950d76",
+    "key": "watch-next"
+  },
+  "5f33d3bd-81d8-4953-b9db-a98e6c479082": {
+    "id": "5f33d3bd-81d8-4953-b9db-a98e6c479082",
+    "ownerId": "3076f8ff-9ba0-4514-b18c-220fe6950d76",
+    "key": "liked"
+  },
+  "3948c388-d4a9-498e-bfaa-00a1ed29e301": {
+    "id": "3948c388-d4a9-498e-bfaa-00a1ed29e301",
+    "ownerId": "3076f8ff-9ba0-4514-b18c-220fe6950d76",
+    "key": "favorite"
+  }
+}

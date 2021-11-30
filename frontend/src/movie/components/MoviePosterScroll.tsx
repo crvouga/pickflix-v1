@@ -1,5 +1,6 @@
 import { Box, BoxProps } from "@material-ui/core";
-import { identity, repeat, uniqBy } from "ramda";
+
+import * as R from "remeda";
 import React from "react";
 import { QueryKey } from "react-query";
 import HorizontalSnapScroll from "../../common/components/horizonal-snap-scroll";
@@ -43,13 +44,17 @@ export const MoviePosterScrollSkeleton = ({
 }: {
   posterCount: number;
 }) => {
-  return <MoviePosterScroll movies={repeat({ title: "" }, posterCount)} />;
+  return (
+    <MoviePosterScroll
+      movies={R.range(0, posterCount).map(() => ({ title: "" }))}
+    />
+  );
 };
 
 export const MoviePosterScrollInfinite = ({
   queryKey,
   queryFn,
-  mapPage = identity,
+  mapPage = (x) => x,
 }: {
   queryKey: QueryKey;
   queryFn: ({ page }: { page: number }) => Promise<Paginated<Movie>>;
@@ -73,9 +78,9 @@ export const MoviePosterScrollInfinite = ({
     return <NothingHere />;
   }
 
-  const movies = uniqBy(
-    (_) => _.id,
-    query.data.map(mapPage).flatMap((page) => page.results)
+  const movies = R.uniqBy(
+    query.data.map(mapPage).flatMap((page) => page.results),
+    (_) => _.id
   );
 
   const ratio = MOVIE_POSTER_ASPECT_RATIO[0] / MOVIE_POSTER_ASPECT_RATIO[1];

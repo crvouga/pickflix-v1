@@ -5,7 +5,7 @@ import axios from "axios";
 import { YoutubeCommentThreadListResponse } from "./youtube-comment-types";
 import { useQuery } from "react-query";
 import { useInfiniteQuery } from "react-query";
-import { last } from "ramda";
+import { last } from "remeda";
 import { useInView } from "react-intersection-observer";
 import { useEffect } from "react";
 

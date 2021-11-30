@@ -8,7 +8,7 @@ import {
   Tabs,
 } from "@material-ui/core";
 import SortOutlinedIcon from "@material-ui/icons/SortOutlined";
-import { uniq, uniqBy } from "ramda";
+import * as R from "remeda";
 import React, { ChangeEvent, useState } from "react";
 import HorizontalScroll from "../../common/components/HorizontalScroll";
 import useBoolean from "../../common/hooks/useBoolean";
@@ -86,10 +86,9 @@ export default ({ details, credits }: Props) => {
   const [departmentKey, setDepartmentKey] = useState<string | undefined>(
     details.knownForDepartment || undefined
   );
-  const departments = uniq(crew.map((credit) => credit.department));
+  const departments = R.uniq(crew.map((credit) => credit.department));
 
-  const movies = uniqBy(
-    (_) => _.id,
+  const movies = R.uniqBy(
     sortBySortKey[sortKey](
       index === 0
         ? cast
@@ -99,7 +98,8 @@ export default ({ details, credits }: Props) => {
               departmentKey === "Acting" ||
               departmentKey === credit.department
           )
-    )
+    ),
+    (_) => _.id
   );
 
   return (

@@ -1,4 +1,4 @@
-import { uniqBy } from "ramda";
+import { uniqBy } from "remeda";
 import React from "react";
 import { QueryKey } from "react-query";
 import { useInfiniteQueryPagination } from "../../common/infinite-scroll";
@@ -36,8 +36,8 @@ export default ({
   }
 
   const movies = uniqBy(
-    (_) => _.id,
-    query.data.flatMap((_) => _.results)
+    query.data.flatMap((_) => _.results),
+    (_) => _.id
   );
 
   return (

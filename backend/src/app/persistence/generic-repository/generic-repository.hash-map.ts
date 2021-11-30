@@ -1,12 +1,21 @@
-import * as R from "ramda";
-import { pipe } from "remeda";
+import * as R from "remeda";
+
 import {
   GenericRepositoryQueryOptions,
-  Identifiable,
   GenericRepositoryQuerySpec,
+  Identifiable,
   IGenericRepository,
 } from "./types";
 import { matchSorter } from "match-sorter";
+
+const whereEq = <T>(spec: T, obj: T) => {
+  return Object.entries(spec).reduce(
+    (isWhereEq, [specKey, specValue]) =>
+      //@ts-ignore
+      isWhereEq && R.equals(obj[specKey], specValue),
+    true,
+  );
+};
 
 const optionsToCompartors = <T>(options?: GenericRepositoryQueryOptions<T>) => {
   const comparators: ((a: T, b: T) => number)[] = [];
@@ -14,10 +23,12 @@ const optionsToCompartors = <T>(options?: GenericRepositoryQueryOptions<T>) => {
     for (const [key, direction] of options.orderBy) {
       switch (direction) {
         case "ascend":
-          comparators.push(R.ascend<T>((_) => _[key]));
+          //@ts-ignore
+          comparators.push((a, b) => a[key] - b[key]);
           break;
         case "descend":
-          comparators.push(R.descend<T>((_) => _[key]));
+          //@ts-ignore
+          comparators.push((a, b) => b[key] - a[key]);
           break;
       }
     }
@@ -26,7 +37,7 @@ const optionsToCompartors = <T>(options?: GenericRepositoryQueryOptions<T>) => {
 };
 
 const optionsToIndexRange = <T>(
-  options?: GenericRepositoryQueryOptions<T>
+  options?: GenericRepositoryQueryOptions<T>,
 ): [number, number] | [] => {
   if (options?.pagination) {
     const { pageSize, page } = options.pagination;
@@ -49,32 +60,40 @@ export class GenericRepositoryHashMap<I, T extends Identifiable<I>>
 
   async find(
     spec: GenericRepositoryQuerySpec<T>,
-    options?: GenericRepositoryQueryOptions<T>
+    options?: GenericRepositoryQueryOptions<T>,
   ): Promise<T[]> {
-    return pipe(
+    return R.pipe(
       this.hashMap,
       (hashMap) => Object.values(hashMap),
       (rows) =>
         rows.filter((row) =>
-          spec.some((partialSpec) => R.whereEq(partialSpec, row))
+          spec.some((partialSpec) => whereEq(partialSpec, row))
         ),
-      (rows) => R.sortWith(optionsToCompartors(options), rows),
-      (rows) => rows.slice(...optionsToIndexRange(options))
+      (rows) =>
+        optionsToCompartors(options).reduce(
+          (sorted, compartor) => R.sort(sorted, compartor),
+          rows,
+        ),
+      (rows) => rows.slice(...optionsToIndexRange(options)),
     );
   }
 
   async search<K extends keyof T>(
     query: string,
     keys: K[],
-    options?: GenericRepositoryQueryOptions<T>
+    options?: GenericRepositoryQueryOptions<T>,
   ): Promise<T[]> {
-    return pipe(
+    return R.pipe(
       this.hashMap,
       (hashMap) => Object.values(hashMap),
       (rows) =>
         matchSorter(rows, query, { keys: keys.map((key) => key.toString()) }),
-      (rows) => R.sortWith(optionsToCompartors(options), rows),
-      (rows) => rows.slice(...optionsToIndexRange(options))
+      (rows) =>
+        optionsToCompartors(options).reduce(
+          (sorted, compartor) => R.sort(sorted, compartor),
+          rows,
+        ),
+      (rows) => rows.slice(...optionsToIndexRange(options)),
     );
   }
 
@@ -89,10 +108,12 @@ export class GenericRepositoryHashMap<I, T extends Identifiable<I>>
     }
   }
 
-  async remove(spec: Partial<T>[]) {
-    for (const andSpec of spec) {
-      this.hashMap = R.reject(R.whereEq(andSpec), this.hashMap);
-    }
+  async remove(specs: Partial<T>[]) {
+    const omitKeys = Object.keys(this.hashMap).filter((id) =>
+      specs.some((spec) => whereEq(spec, this.hashMap[id]))
+    );
+
+    this.hashMap = R.omit(this.hashMap, omitKeys);
   }
 
   async update(id: I, partial: Partial<T>) {

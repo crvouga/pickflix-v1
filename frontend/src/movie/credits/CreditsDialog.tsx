@@ -10,7 +10,7 @@ import {
   useTheme,
 } from "@material-ui/core";
 import matchSorter from "match-sorter";
-import { groupBy } from "ramda";
+import { groupBy } from "remeda";
 import React, { useState } from "react";
 import { AppBarGutter } from "../../common/components/AppBarGutter";
 import {
@@ -40,9 +40,8 @@ export default ({
     keys: ["name", "department", "job", "character"],
   });
 
-  const groupedByDepartment = groupBy(
-    (credit) => ("job" in credit ? credit.department || "Crew" : "Cast"),
-    filtered
+  const groupedByDepartment = groupBy(filtered, (credit) =>
+    "job" in credit ? credit.department || "Crew" : "Cast"
   );
 
   return (

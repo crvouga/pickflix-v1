@@ -1,5 +1,5 @@
 import { Grid, Box, makeStyles } from "@material-ui/core";
-import { repeat } from "ramda";
+import * as R from "remeda";
 import React from "react";
 import MoviePosterCard, { Movie } from "./MoviePosterCard";
 
@@ -68,7 +68,11 @@ export const MoviePosterGridSkeleton = ({
 }: {
   posterCount: number;
 }) => {
-  return <MoviePosterGrid movies={repeat({ title: "" }, posterCount)} />;
+  return (
+    <MoviePosterGrid
+      movies={R.range(0, posterCount).map(() => ({ title: "" }))}
+    />
+  );
 };
 
 export default MoviePosterGrid;

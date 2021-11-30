@@ -1,5 +1,5 @@
 import { Zoom } from "@material-ui/core";
-import { last } from "ramda";
+import { last } from "remeda";
 import React, { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { InfiniteQueryConfig, QueryKey, useInfiniteQuery } from "react-query";

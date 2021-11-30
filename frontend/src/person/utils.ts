@@ -1,5 +1,5 @@
 import moment from "moment";
-import * as R from "ramda";
+import * as R from "remeda";
 import {
   PersonMovieCreditsResponse,
   PersonDetailsResponse,
@@ -20,19 +20,16 @@ export const allCredits = ({ credits }: CreditsProps): PersonMovieCredit[] => [
 ];
 
 export const allMovies = ({ credits }: CreditsProps) =>
-  R.uniqBy(R.prop("id"), allCredits({ credits }));
+  R.uniqBy(allCredits({ credits }), (_) => _.id);
 
 export const descendPopularity = (objs: PersonMovieCredit[]) =>
-  R.sort(
-    R.descend(({ popularity }) => popularity),
-    objs
-  );
+  R.sort(objs, (a, b) => b.popularity - a.popularity);
 
 export const sortByReleaseDate = (objs: { releaseDate: string }[]) =>
-  R.sortBy(({ releaseDate }) => moment(releaseDate).format("YYYYMMDD"), objs);
+  R.sortBy(objs, ({ releaseDate }) => moment(releaseDate).format("YYYYMMDD"));
 
 export const oldestMovie = (props: CreditsProps) =>
-  R.head(sortByReleaseDate(allMovies(props)));
+  R.first(sortByReleaseDate(allMovies(props)));
 
 export const newestMovie = (props: CreditsProps) =>
   R.last(sortByReleaseDate(allMovies(props)));

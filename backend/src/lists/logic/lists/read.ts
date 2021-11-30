@@ -1,4 +1,3 @@
-import { innerJoin } from "ramda";
 import { GenericRepositoryQueryOptions } from "../../../app/persistence/generic-repository/types";
 import { MediaId } from "../../../media/models/types";
 import { UserId } from "../../../users/models/make-user";
@@ -48,10 +47,10 @@ export async function getListsFromMediaIdAndUserId(
     listItemSpec
   );
 
-  const listsFromMediaIdAndUserId = innerJoin(
-    (list, listItem) => list.id === listItem.listId,
-    allListsFromUserId,
-    listItemsFromListIdsAndMediaId
+  const listsFromMediaIdAndUserId = allListsFromUserId.filter((list) =>
+    listItemsFromListIdsAndMediaId.some(
+      (listItem) => list.id === listItem.listId
+    )
   );
 
   return listsFromMediaIdAndUserId;
@@ -121,36 +120,32 @@ export async function aggergateList(
   this: ListLogic,
   list: List
 ): Promise<ListAggergation> {
-  const [
-    listItemCount,
-    listItems,
-    [owner],
-    editorPermissions,
-  ] = await Promise.all([
-    this.listItemRepository.count([
-      {
+  const [listItemCount, listItems, [owner], editorPermissions] =
+    await Promise.all([
+      this.listItemRepository.count([
+        {
+          listId: list.id,
+        },
+      ]),
+      this.getListItemAggergations(
+        {
+          listId: list.id,
+        },
+        {
+          page: 1,
+          pageSize: 4,
+        }
+      ),
+      this.userRepository.find([
+        {
+          id: list.ownerId,
+        },
+      ]),
+      this.permissionRepository.find({
         listId: list.id,
-      },
-    ]),
-    this.getListItemAggergations(
-      {
-        listId: list.id,
-      },
-      {
-        page: 1,
-        pageSize: 4,
-      }
-    ),
-    this.userRepository.find([
-      {
-        id: list.ownerId,
-      },
-    ]),
-    this.permissionRepository.find({
-      listId: list.id,
-      permissionType: PermissionType.Editor,
-    }),
-  ]);
+        permissionType: PermissionType.Editor,
+      }),
+    ]);
 
   const userSpec = editorPermissions.map((permission) => ({
     id: permission.userId,

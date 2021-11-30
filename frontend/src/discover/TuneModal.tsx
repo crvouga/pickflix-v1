@@ -1,6 +1,6 @@
 import { Box, Divider, Typography, TypographyProps } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
-import { sortBy } from "ramda";
+import { sortBy } from "remeda";
 import React from "react";
 import { useQuery } from "react-query";
 import useModal from "../app/modals/useModal";
@@ -84,8 +84,8 @@ const TagsCertificationContainer = ({
   }
 
   const certificationsUSTags: IDiscoverTag[] = sortBy(
-    (_) => _.order,
-    query.data.certifications.US
+    query.data.certifications.US,
+    (_) => _.order
   ).map((certification) => ({
     type: TagType.certification,
     id: certification.certification,

@@ -17,7 +17,7 @@ export const getNodeEnv = () =>
 export type RepositoryImplementation = "postgres" | "hashMap" | "fileSystem";
 
 export const castRepositoryImplementation = (
-  repositoryImplementation: any
+  repositoryImplementation: any,
 ): RepositoryImplementation => {
   if (
     repositoryImplementation === "postgres" ||
@@ -31,7 +31,7 @@ export const castRepositoryImplementation = (
 
 export const getRepositoryImplementation = () =>
   castRepositoryImplementation(
-    process.env.REPOSITORY_IMPLEMENTATION || "hashMap"
+    process.env.REPOSITORY_IMPLEMENTATION ?? "fileSystem",
   );
 
 export type Secrets = Readonly<{

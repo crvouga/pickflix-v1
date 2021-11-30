@@ -1,4 +1,4 @@
-import { uniqBy } from "ramda";
+import { uniqBy } from "remeda";
 
 import useLocalStorage from "react-use-localstorage";
 
@@ -38,7 +38,7 @@ export default () => {
           posterPath: entity.posterPath,
           id: entity.id,
         };
-        setEntities(uniqBy((_) => _.id, [newEntity, ...entities]));
+        setEntities(uniqBy([newEntity, ...entities], (_) => _.id));
         break;
 
       // case "person":

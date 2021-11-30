@@ -1,6 +1,8 @@
 import { Box, Typography, TypographyProps } from "@material-ui/core";
-import { dropLast } from "ramda";
+import { dropLast } from "remeda";
 import React, { useState } from "react";
+
+//@ts-ignore
 import trimText from "read-more-react/dist/utils/trimText";
 
 export type ReadMoreProps = {
@@ -28,10 +30,13 @@ export default (props: Props) => {
   const min = props.min || ideal - radius;
   const max = props.max || ideal + radius;
 
+  //@ts-ignore
   const [headText] = trimText(text, min, ideal, max);
 
   const [isIn, setIsIn] = useState(false);
-  const headTextWithTrail = `${dropLast(1, headText)}...`;
+  const headTextWithTrail = `${dropLast((headText as string).split(""), 1).join(
+    ""
+  )}...`;
 
   if (headText.length === text.length) {
     return <Typography {...TypographyProps}>{text}</Typography>;

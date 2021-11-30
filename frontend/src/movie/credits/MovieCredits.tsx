@@ -7,7 +7,7 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
-import { partition, take, whereEq } from "ramda";
+import * as R from "remeda";
 import React from "react";
 import useModal from "../../app/modals/useModal";
 import HorizontalSnapScroll from "../../common/components/horizonal-snap-scroll";
@@ -17,8 +17,11 @@ import CreditsListCard from "./CreditsListCard";
 
 export default ({ credits }: { credits: MovieCredits }) => {
   const { cast, crew } = credits;
-  const [directors, restOfCrew] = partition(whereEq({ job: "Director" }), crew);
-  const topCredits = take(10, [...directors, ...cast, ...restOfCrew]);
+  const [directors, restOfCrew] = [
+    R.filter(crew, (_) => _.job === "Director"),
+    R.reject(crew, (_) => _.job === "Director"),
+  ];
+  const topCredits = R.take([...directors, ...cast, ...restOfCrew], 10);
 
   const { isOpen, open, close } = useModal("MovieCredits");
 

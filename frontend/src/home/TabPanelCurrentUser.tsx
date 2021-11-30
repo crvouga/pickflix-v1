@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import MovieCreationOutlinedIcon from "@material-ui/icons/MovieCreationOutlined";
-import { uniqBy } from "ramda";
+import { uniqBy } from "remeda";
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useHistory } from "react-router";
@@ -135,8 +135,8 @@ const CurrentUserFeed = ({ currentUser }: { currentUser: UserAggergation }) => {
   }
 
   const uniqueListItems = uniqBy(
-    (listItem) => listItem.listItem.mediaId.tmdbMediaId,
-    listItems
+    listItems,
+    (listItem) => listItem.listItem.mediaId.tmdbMediaId
   );
 
   const visibleUniqueListItems = uniqueListItems.slice(0, PAGE_SIZE * page);

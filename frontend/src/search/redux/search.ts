@@ -3,7 +3,7 @@ import {
   createAction,
   createReducer,
 } from "@reduxjs/toolkit";
-import { uniqBy } from "ramda";
+import { uniqBy } from "remeda";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../app/redux/types";
 import { createPayloadReducer } from "../../app/redux/utils";
@@ -54,7 +54,7 @@ const reducer = createReducer(initialState, {
   [actions.setFilter.toString()]: createPayloadReducer("filter"),
   [actions.setText.toString()]: createPayloadReducer("text"),
   [actions.setHistory.toString()]: (state, action) => {
-    state.history = uniqBy((result) => result.id, action.payload);
+    state.history = uniqBy(action.payload, (result) => result.id);
   },
 });
 
@@ -79,17 +79,20 @@ export const useSearchState = () => {
   const slice = useSelector(search.selectors.slice);
   const { history, filter } = slice;
   const { setHistory, setFilter } = actions;
+
   const pushHistory = (result: SearchResult) => {
     setHistory([result, ...history]);
   };
+
   const removeHistory = ({ id }: SearchResult) => {
     setHistory(
       uniqBy(
-        (result) => result.id,
-        history.filter((result) => result.id !== id)
+        history.filter((result) => result.id !== id),
+        (result) => result.id
       )
     );
   };
+
   const toggleFilter = (selectedFilter: SearchFilter) => {
     if (filter === selectedFilter) {
       setFilter(undefined);
@@ -97,6 +100,7 @@ export const useSearchState = () => {
       setFilter(selectedFilter);
     }
   };
+
   return {
     ...actions,
     ...slice,
