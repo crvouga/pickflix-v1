@@ -16,8 +16,9 @@ export const useSessionMiddleware =
       name: "pickflix-session",
       secret: secrets.secret,
       resave: false,
-      saveUninitialized: true,
+      saveUninitialized: false,
       store: sessionStore,
+      proxy: true,
       cookie:
         getNodeEnv() === "production"
           ? {
