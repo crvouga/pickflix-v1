@@ -49,10 +49,8 @@ const buildPersistence = async (
     case "postgres": {
       const database = new PostgresDatabase(POSTGRES_DEVELOPMENT_CONFIG);
 
-      const {
-        repositories,
-        initializeAllTables,
-      } = await buildRepositoriesPostgres(database);
+      const { repositories, initializeAllTables } =
+        await buildRepositoriesPostgres(database);
 
       await initializeAllTables();
 
@@ -68,7 +66,13 @@ const buildPersistence = async (
     }
 
     default: {
-      const filePath = path.join(__dirname, "..", "..", "..", "_store");
+      const filePath = path.join(
+        __dirname,
+        "..",
+        "..",
+        "..",
+        "file-system-database"
+      );
 
       const { repositories } = await buildRepositoriesFileSystem(filePath);
 
