@@ -9,7 +9,7 @@ import { UserLogic } from "../../users/logic/logic";
 import { FAKE_USER_INFO } from "../../users/models";
 import { HashMapCache } from "../persistence/cache/cache.hash-map";
 import {
-  PostgresDatabase,
+  createElseGetPostgresDatabase,
   DANGEROUSLY_clearTables,
 } from "../persistence/postgres/database.postgres";
 import { emailLogicStub } from "../../users/email";
@@ -36,11 +36,12 @@ export const POSTGRES_TEST_CONFIG = {
 /* 
 
 
+
 */
 
-const database = new PostgresDatabase(POSTGRES_TEST_CONFIG);
-
 export const buildPersistencePostgres = async () => {
+  const database = await createElseGetPostgresDatabase(POSTGRES_TEST_CONFIG);
+
   const { repositories, initializeAllTables } = await buildRepositoriesPostgres(
     database
   );

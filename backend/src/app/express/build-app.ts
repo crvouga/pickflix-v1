@@ -26,7 +26,7 @@ export const buildExpressApp = async (dependencies: ExpressAppDependencies) => {
 
   app.use(bodyParser.json());
 
-  await useSessionMiddleware()(app);
+  await useSessionMiddleware(dependencies)(app);
 
   await useAuthenticationMiddleware(dependencies)(app);
 

@@ -12,6 +12,7 @@ import {
   isAuthenticated,
 } from "../express/authentication-middleware";
 import { buildExpressApp } from "../express/build-app";
+import { buildSessionStorePostgres } from "../express/session-store";
 import { ExpressAppDependencies } from "../express/types";
 import { HashMapCache } from "../persistence/cache/cache.hash-map";
 import { PostgresDatabase } from "../persistence/postgres/database.postgres";
@@ -36,12 +37,25 @@ const database = new PostgresDatabase(POSTGRES_PRODUCTION_CONFIG);
 
 */
 
-export const buildAppProduction = async () => {
-  const cache = new HashMapCache<string, string>();
-
+const buildPersistence = async (database: PostgresDatabase) => {
   const { repositories, initializeAllTables } = await buildRepositoriesPostgres(
     database
   );
+
+  const sessionStore = await buildSessionStorePostgres(database);
+
+  return {
+    repositories,
+    initializeAllTables,
+    sessionStore,
+  };
+};
+
+export const buildAppProduction = async () => {
+  const cache = new HashMapCache<string, string>();
+
+  const { repositories, sessionStore, initializeAllTables } =
+    await buildPersistence(database);
 
   await initializeAllTables();
 
@@ -83,6 +97,7 @@ export const buildAppProduction = async () => {
 
   const dependencies: ExpressAppDependencies = {
     ...appLogic,
+    sessionStore,
     middlewares: {
       authenticate,
       isAuthenticated,

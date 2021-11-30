@@ -16,26 +16,31 @@ import {
   isAuthenticated,
 } from "../express/authentication-middleware";
 import { buildExpressApp } from "../express/build-app";
-import { buildSessionStoreInMemory } from "../express/session-store";
+import {
+  buildSessionStoreInMemory,
+  buildSessionStorePostgres,
+} from "../express/session-store";
 import { ExpressAppDependencies } from "../express/types";
 import { HashMapCache } from "../persistence/cache/cache.hash-map";
-import { PostgresDatabase } from "../persistence/postgres/database.postgres";
+import { createElseGetPostgresDatabase } from "../persistence/postgres/database.postgres";
+import { POSTGRES_PRODUCTION_CONFIG } from "./build-production";
 import {
   buildRepositoriesFileSystem,
   buildRepositoriesPostgres,
 } from "./build-repositories";
-
 /* 
 
 
 */
 
-const POSTGRES_DEVELOPMENT_CONFIG = {
-  user: "postgres",
-  host: "localhost",
-  port: 5432,
-  database: "pickflix_development",
-};
+// const POSTGRES_DEVELOPMENT_CONFIG = {
+//   user: "postgres",
+//   host: "localhost",
+//   port: 5432,
+//   database: "pickflix_development",
+// };
+
+const POSTGRES_DEVELOPMENT_CONFIG = POSTGRES_PRODUCTION_CONFIG;
 
 /* 
 
@@ -47,14 +52,16 @@ const buildPersistence = async (
 ) => {
   switch (repositoryImplementation) {
     case "postgres": {
-      const database = new PostgresDatabase(POSTGRES_DEVELOPMENT_CONFIG);
+      const database = await createElseGetPostgresDatabase(
+        POSTGRES_DEVELOPMENT_CONFIG
+      );
 
       const { repositories, initializeAllTables } =
         await buildRepositoriesPostgres(database);
 
       await initializeAllTables();
 
-      const sessionStore = await buildSessionStoreInMemory();
+      const sessionStore = await buildSessionStorePostgres(database);
 
       const cache = new HashMapCache<string, string>();
 
@@ -97,7 +104,7 @@ const buildPersistence = async (
 export const buildAppDevelopment = async () => {
   const repositoryImplementation = getRepositoryImplementation();
 
-  const { repositories, cache } = await buildPersistence(
+  const { repositories, cache, sessionStore } = await buildPersistence(
     repositoryImplementation
   );
 
@@ -139,7 +146,7 @@ export const buildAppDevelopment = async () => {
 
   const dependencies: ExpressAppDependencies = {
     ...appLogic,
-
+    sessionStore,
     middlewares: {
       authenticate,
       isAuthenticated,

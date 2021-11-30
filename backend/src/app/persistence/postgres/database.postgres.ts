@@ -1,6 +1,6 @@
 import { ClientConfig, Pool } from "pg";
-
 import { IPostgresTable, makeCreateTableQuery } from "./query-builder";
+
 export * from "./query-builder";
 
 export interface IPostgresDatabase {
@@ -79,4 +79,9 @@ export const DANGEROUSLY_clearTables = async (database: IPostgresDatabase) => {
   `;
 
   await database.query(sql);
+};
+
+export const createElseGetPostgresDatabase = async (config: ClientConfig) => {
+  // todo create db if not exists
+  return new PostgresDatabase(config);
 };
