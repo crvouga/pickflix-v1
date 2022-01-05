@@ -26,22 +26,23 @@ export type HomePageUiState = {
 };
 
 const initialState: HomePageUiState = {
-  tabValue: "Trending",
+  tabValue: "From Lists",
 };
 
-/* 
+/*
 
 */
 
 const slice = (state: AppState) => state[name];
 const selectors = {
   slice,
-  tabIndex: createSelector([slice], (slice) =>
-    Math.max(0, tabOrder.indexOf(slice.tabValue))
+  tabIndex: createSelector(
+    [slice],
+    (slice) => Math.max(0, tabOrder.indexOf(slice.tabValue)),
   ),
 };
 
-/* 
+/*
 
 */
 
@@ -49,7 +50,7 @@ const actions = {
   setTabValue: createAction<HomePageTabValue>(name + "/SET_TAB_VALUE"),
 };
 
-/* 
+/*
 
 */
 
@@ -57,7 +58,7 @@ const reducer = createReducer(initialState, {
   [actions.setTabValue.toString()]: createPayloadReducer("tabValue"),
 });
 
-/* 
+/*
 
 */
 
@@ -67,7 +68,7 @@ export const homePageUi = {
   reducer,
 };
 
-/* 
+/*
 
 */
 
