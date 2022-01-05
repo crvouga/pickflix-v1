@@ -22,7 +22,7 @@ const initialState: DiscoverTagsState = {
   tagsById: {},
 };
 
-/* 
+/*
 
 */
 
@@ -33,17 +33,17 @@ const selectors = {
   tagsById,
 };
 
-/* 
+/*
 
 */
 
 const actions = {
   setTagsById: createAction<{ [id: string]: IDiscoverTag }>(
-    name + "/SET_TAGS_BY_ID"
+    name + "/SET_TAGS_BY_ID",
   ),
 };
 
-/* 
+/*
 
 */
 
@@ -53,7 +53,7 @@ const reducer = createReducer(initialState, {
   },
 });
 
-/* 
+/*
 
 */
 
@@ -63,7 +63,7 @@ export const discoverTags = {
   reducer,
 };
 
-/* 
+/*
 
 */
 

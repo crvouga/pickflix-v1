@@ -16,7 +16,7 @@ export default () => {
           lastActiveAt: Date.now(),
         },
       }),
-      {}
+      {},
     );
 
     activeTagState.setActiveTagsById(newActiveTagsById);
@@ -49,7 +49,9 @@ export default () => {
   };
 
   const deactivateTag = (tag: IDiscoverTag) => {
-    setActiveTagsById(R.omit(activeTagState.present.activeTagsById, [tag.id]));
+    setActiveTagsById(
+      R.omit(activeTagState.present.activeTagsById, [String(tag.id)]),
+    );
   };
 
   const clear = () => {
@@ -59,7 +61,7 @@ export default () => {
   const activeTags = Object.values(activeTagState.present.activeTagsById);
 
   const nonActiveTags = Object.values(tagState.tagsById).filter(
-    (tag) => !(tag.id in activeTagState.present.activeTagsById)
+    (tag) => !(tag.id in activeTagState.present.activeTagsById),
   );
 
   nonActiveTags.sort((a, b) => (b.lastActiveAt ?? 0) - (a.lastActiveAt ?? 0));
