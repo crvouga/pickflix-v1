@@ -5,18 +5,18 @@ import { secrets } from "../../../config";
 
 export const makeResetEmailHtml = (resetPasswordLink: string) =>
   `
+  <h1>
+    This is your pickflix password reset email.
+  </h1>
+  
   <p>
-    You are receiving this because you (or someone else) have requested the reset of the password  for your account.
+    <a href="${resetPasswordLink}">
+      <button>
+      Reset Your Password
+      </button>
+    </a>
   </p>
-  <p>
-    Please click on the following link, or paste this into your browser to complete the process:
-  </p>
-  <p>
-    <a href="${resetPasswordLink}">Reset Your Password</a>
-  </p>
-  <p>
-    If you did not request this, please ignore this email and your password will remain unchanged.
-  </p>`;
+`;
 
 export const makeResetPasswordEmail = ({
   user,
