@@ -5,22 +5,23 @@ import { useReviewsRouter } from "../../reviews/express";
 import { useAuthRouter, useUsersRouter } from "../../users/express";
 import { ExpressAppDependencies } from "./types";
 
-const buildRouterList = [
-  useListsRouter,
-  useMediaRouter,
-  useReviewsRouter,
-  useAuthRouter,
-  useUsersRouter,
-];
+export const useApiRouter = (dependencies: ExpressAppDependencies) =>
+  (
+    app: express.IRouter,
+  ) => {
+    const router = express.Router();
 
-export const useApiRouter = (dependencies: ExpressAppDependencies) => (
-  app: express.IRouter
-) => {
-  const router = express.Router();
+    for (
+      const buildRouter of [
+        useListsRouter,
+        useMediaRouter,
+        useReviewsRouter,
+        useAuthRouter,
+        useUsersRouter,
+      ]
+    ) {
+      buildRouter(dependencies)(router);
+    }
 
-  for (const buildRouter of buildRouterList) {
-    buildRouter(dependencies)(router);
-  }
-
-  app.use("/api", router);
-};
+    app.use("/api", router);
+  };
