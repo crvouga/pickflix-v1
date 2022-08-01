@@ -98,8 +98,6 @@ export default () => {
     ...details
   } = query.data;
 
-  console.log("data", query.data)
-
   const videoResults = videos?.results ?? []
 
   return (
