@@ -33,7 +33,16 @@ export default () => {
     );
   }
 
-  const list = lists[0].results[0];
+  const list = lists?.[0]?.results?.[0];
+
+  if (!list) {
+    return (
+      <EmptyPage
+        title="Could not find list"
+        subtitle="This probably means the list was deleted"
+      />
+    );
+  }
 
   return (
     <Page>

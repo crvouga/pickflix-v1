@@ -232,7 +232,7 @@ export type MovieVideoType =
 
 export type MovieVideoSize = 360 | 480 | 720 | 1080;
 
-export type MovieVideo = {
+export type MovieVideo = Partial<{
   id: string;
   iso6391: string;
   iso31661: string;
@@ -242,11 +242,11 @@ export type MovieVideo = {
   size: MovieVideoSize;
   type: MovieVideoType;
   tmdbMedia?: TmdbMedia;
-};
+}>;
 
 export type MovieVideos = {
   id: string;
-  results: MovieVideo[];
+  results?: MovieVideo[];
 };
 
 //https://developers.themoviedb.org/3/movies/get-movie-images

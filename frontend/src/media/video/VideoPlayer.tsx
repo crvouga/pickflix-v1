@@ -23,8 +23,8 @@ export default ({
   const videoState = useVideoState();
 
   const initialVideo =
-    videos.results.find((video) => video.type === "Trailer") ||
-    videos.results[0];
+    videos?.results?.find((video) => video.type === "Trailer") ??
+    videos?.results?.[0];
 
   useEffect(() => {
     videoState.setCurrentVideo(initialVideo);

@@ -18,6 +18,7 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router";
 import BackButton from "../app/navigation/BackButton";
 import { APP_BAR_HEIGHT } from "../app/navigation/constants";
+import AspectRatio from "../common/components/AspectRatio";
 import ErrorPage from "../common/page/ErrorPage";
 import LoadingPage from "../common/page/LoadingPage";
 import Page from "../common/page/Page";
@@ -92,11 +93,14 @@ export default () => {
     credits,
     images,
     videos,
-
     releaseDates,
     keywords,
     ...details
   } = query.data;
+
+  console.log("data", query.data)
+
+  const videoResults = videos?.results ?? []
 
   return (
     <Page>
@@ -120,7 +124,7 @@ export default () => {
         </AppBar>
       </Hidden>
 
-      {videos.results.length > 0 && (
+      {videos && videoResults.length > 0 ? (
         <Container
           disableGutters
           maxWidth="md"
@@ -130,17 +134,20 @@ export default () => {
         >
           <VideoPlayer videos={videos} />
         </Container>
+      ) : (
+        <Container
+          disableGutters
+          maxWidth="md"
+        >
+          <AspectRatio ratio={[16, 9]} >
+            <img width={"100%"} height={"100%"} src={makeImageUrl(1000, details)} />
+          </AspectRatio>
+        </Container>
       )}
 
       <Container disableGutters maxWidth="md">
-        <Grid container direction="row-reverse">
-          <Grid item xs={12} sm={6}>
-            <MovieVideo tmdbMediaId={details.id} videos={videos} />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <MovieDetails releaseDates={releaseDates} details={details} />
-          </Grid>
-        </Grid>
+        {videos && <MovieVideo tmdbMediaId={details.id} videos={videos} />}
+        <MovieDetails releaseDates={releaseDates} details={details} />
       </Container>
 
       <Container maxWidth="md" disableGutters>
@@ -149,7 +156,6 @@ export default () => {
         </Box>
 
         <MovieDiscover
-          releaseDates={releaseDates}
           details={details}
           credits={credits}
           keywords={keywords}

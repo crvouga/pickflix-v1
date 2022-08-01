@@ -1,4 +1,5 @@
 import { Box, Button, makeStyles, Typography } from "@material-ui/core";
+import axios from "axios";
 import React from "react";
 import { useHistory } from "react-router";
 import { SubmitButton } from "../../../common/components/SubmitButton";
@@ -35,10 +36,9 @@ export default ({ user }: { user: User }) => {
         password: passwordTextFieldState.password,
       });
     } catch (error) {
-      if (error?.response?.status === 400) {
+      if (axios.isAxiosError(error) && error.response?.status === 400) {
         passwordTextFieldState.setIsError(true);
         passwordTextFieldState.setHelperText("Incorrect Password");
-      } else {
       }
     }
   };

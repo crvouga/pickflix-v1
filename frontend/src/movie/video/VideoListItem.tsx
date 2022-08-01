@@ -138,10 +138,11 @@ export const MovieVideoListItem = ({
   selected?: boolean;
   video: MovieVideo;
 }) => {
+  const videoKey = video?.key
   return (
     <VideoListItem
       selected={selected}
-      image={videoKeyToThumbnailURL(video.key)}
+      image={videoKey ? videoKeyToThumbnailURL(videoKey) : undefined}
       title={video.name}
       subtitle={video.type}
     />
@@ -163,6 +164,10 @@ export const YoutubeVideoListItemContainer = ({
   }
 
   const video = query.data.items[0];
+
+  if (!video) {
+    return <VideoListItemSkeleton />;
+  }
 
   return <YoutubeVideoListItem video={video} />;
 };

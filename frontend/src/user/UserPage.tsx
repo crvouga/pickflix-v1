@@ -120,5 +120,9 @@ export default () => {
 
   const user = users[0];
 
+  if (!user) {
+    return <EmptyPage />
+  }
+
   return <UserPage user={user} />;
 };

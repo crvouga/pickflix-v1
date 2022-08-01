@@ -82,7 +82,7 @@ export default ({ list, ...props }: { list: ListAggergation } & BoxProps) => {
   if (list.listItemCount < 4) {
     return (
       <PosterBox
-        posterPath={list.listItems[0].tmdbData.posterPath}
+        posterPath={list.listItems?.[0]?.tmdbData?.posterPath}
         {...props}
       />
     );

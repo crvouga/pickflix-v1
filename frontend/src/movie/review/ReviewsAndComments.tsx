@@ -20,10 +20,9 @@ export default ({ mediaId }: { mediaId: MediaId }) => {
   });
 
   const handleChange = (_1: React.ChangeEvent<{}>, newIndex: number) => {
-    if (moviePageUi.reviewCommentsTabOrder[newIndex]) {
-      moviePageUi.setReviewCommentsTabValue(
-        moviePageUi.reviewCommentsTabOrder[newIndex]
-      );
+    const tabValue = moviePageUi.reviewCommentsTabOrder[newIndex]
+    if (tabValue) {
+      moviePageUi.setReviewCommentsTabValue(tabValue);
     }
   };
 

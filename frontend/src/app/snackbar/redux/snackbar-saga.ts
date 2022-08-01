@@ -7,7 +7,11 @@ export const SNACKBAR_DISPLAY_DURATION = 3000;
 export function* snackbarSaga() {
   yield put(snackbar.actions.setIsOpen(false));
   yield takeLatest(snackbar.actions.display, function* ({ payload: newProps }) {
-    if (yield select(snackbar.selectors.isOpen)) {
+    const isOpen: ReturnType<typeof snackbar.selectors.isOpen> = yield select(
+      snackbar.selectors.isOpen
+    );
+
+    if (isOpen) {
       yield put(snackbar.actions.setIsOpen(false));
       yield delay(SNACKBAR_TRANSITION_DURATION);
     }

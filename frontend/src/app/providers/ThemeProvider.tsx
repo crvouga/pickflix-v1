@@ -1,16 +1,13 @@
 import {
-  createMuiTheme,
-  CssBaseline as MuiCssBaseline,
-  ThemeProvider,
-  withStyles,
-  responsiveFontSizes,
+  createTheme, CssBaseline as MuiCssBaseline, responsiveFontSizes, ThemeProvider,
+  withStyles
 } from "@material-ui/core";
 import "fontsource-roboto";
 import React from "react";
 import palette from "../../palette.json";
 
 export const theme = responsiveFontSizes(
-  createMuiTheme({
+  createTheme({
     typography: {
       fontWeightRegular: "bold",
     },
@@ -28,7 +25,24 @@ export const theme = responsiveFontSizes(
         default: "#101010",
       },
     },
-    overrides: {},
+
+    props: {
+      MuiTypography: {
+        // shouldn't do this but its a hack to fix invalid component nesting errors
+        variantMapping: {
+          h1: 'div',
+          h2: 'div',
+          h3: 'div',
+          h4: 'div',
+          h5: 'div',
+          h6: 'div',
+          subtitle1: 'div',
+          subtitle2: 'div',
+          body1: 'div',
+          body2: 'div',
+        }
+      }
+    }
   })
 );
 

@@ -1,23 +1,20 @@
 import { Box, Typography, TypographyProps } from "@material-ui/core";
-import * as R from "remeda";
 import React from "react";
 import { useHistory } from "react-router";
+import * as R from "remeda";
 import { DiscoverTags } from "../../discover/components/DiscoverTags";
 import { IDiscoverTag, TagType } from "../../discover/query/types";
 import useDiscoverState from "../../discover/redux/useDiscoverState";
 import {
   MovieCredit,
   MovieCredits,
-  MovieDetails,
-  MovieReleaseDates,
-  MovieKeywords,
+  MovieDetails, MovieKeywords
 } from "../../media/tmdb/types";
 
 type Props = {
-  keywords: MovieKeywords;
+  keywords?: MovieKeywords;
   details: MovieDetails;
   credits: MovieCredits;
-  releaseDates: MovieReleaseDates;
 };
 
 const Subtitle = (props: TypographyProps) => {
@@ -74,7 +71,7 @@ export default (props: Props) => {
   const peopleTags = creditsToPeopleTags(credits);
   const genreTags = detailsToGenreTags(details);
   const companyTags = detailsToCompanyTags(details);
-  const keywordTags = keywordsToWithKeywordsTags(keywords);
+  const keywordTags = keywords ? keywordsToWithKeywordsTags(keywords) : [];
 
   if (
     peopleTags.length === 0 &&

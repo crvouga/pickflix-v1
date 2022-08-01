@@ -121,7 +121,7 @@ export const useDeleteListItemsMutation = () => {
   const queryCache = useQueryCache();
 
   return async (params: DeleteListItemParams) => {
-    const listId = params[0].listId;
+    const listId = params[0]?.listId;
 
     const queryKey = makeGetListItemsQueryKey({ listId });
 
@@ -140,7 +140,9 @@ export const useDeleteListItemsMutation = () => {
       queryCache.setQueryData(queryKey, previous);
       throw error;
     } finally {
-      queryCache.invalidateQueries(makeGetListsQueryKey({ listId: listId }));
+      if (listId) {
+        queryCache.invalidateQueries(makeGetListsQueryKey({ listId }));
+      }
       queryCache.invalidateQueries(makeGetListItemsQueryKey({ listId }));
       queryCache.invalidateQueries((query) =>
         isGetAutoListsQueryKey(query.queryKey)

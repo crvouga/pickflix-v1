@@ -43,7 +43,7 @@ export default ({ user, ...AvatarProps }: Props) => {
       {...AvatarProps}
       className={clsx(classes.avatar, AvatarProps.className)}
     >
-      {user.username[0].toUpperCase()}
+      {user.username?.[0]?.toUpperCase()}
     </Avatar>
   );
 };

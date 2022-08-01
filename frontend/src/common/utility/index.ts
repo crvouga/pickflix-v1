@@ -49,7 +49,10 @@ export const mapObject = <T, U>(
 ): { [index: string]: U } => {
   const y: { [index: string]: U } = {};
   for (const key in x) {
-    y[key] = f(x[key]);
+    const v = x[key];
+    if (v) {
+      y[key] = f(v);
+    }
   }
   return y;
 };

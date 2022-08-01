@@ -1,12 +1,9 @@
 import {
-  Box,
-  Button,
-  Hidden,
   List,
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  Paper,
+  Paper
 } from "@material-ui/core";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import React, { useEffect } from "react";
@@ -14,7 +11,6 @@ import useModal from "../../app/modals/useModal";
 import { MovieVideos } from "../../media/tmdb/types";
 import useVideoState from "../../media/video/useVideoState";
 import MovieVideoDialog from "./MovieVideoDialog";
-import { MovieVideoList } from "./VideoListItem";
 
 export default ({
   tmdbMediaId,
@@ -26,8 +22,10 @@ export default ({
   const videoState = useVideoState();
   const { open, isOpen, close } = useModal("MovieVideo");
 
+  const videoResults = videos?.results ?? []
+
   useEffect(() => {
-    videoState.setPlaylist(videos.results);
+    videoState.setPlaylist(videoResults);
     videoState.setError(undefined);
   }, [tmdbMediaId]);
 
@@ -47,6 +45,7 @@ export default ({
       <Paper>
         <List disablePadding>
           <ListItem
+            button
             onClick={() => {
               open();
             }}
@@ -61,28 +60,6 @@ export default ({
             </ListItemSecondaryAction>
           </ListItem>
         </List>
-
-        <Hidden xsDown>
-          <MovieVideoList
-            selectedVideo={videoState.currentVideo}
-            videos={videoState.playlist.slice(0, 3)}
-            onClick={videoState.selectVideo}
-          />
-          {videoState.playlist.length > 3 && (
-            <Box p={2} paddingTop={0}>
-              <Button
-                size="large"
-                variant="outlined"
-                fullWidth
-                onClick={() => {
-                  open();
-                }}
-              >
-                See All
-              </Button>
-            </Box>
-          )}
-        </Hidden>
       </Paper>
     </React.Fragment>
   );

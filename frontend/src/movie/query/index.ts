@@ -14,12 +14,12 @@ import {
 
 export type MoviePageData = {
   credits: MovieCredits;
-  keywords: MovieKeywords;
+  keywords?: MovieKeywords;
   images: MovieImages;
   // similar: MovieSimilar;
   // recommendations: MovieRecommendations;
-  videos: MovieVideos;
-  releaseDates: MovieReleaseDates;
+  videos?: MovieVideos;
+  releaseDates?: MovieReleaseDates;
 } & MovieDetails;
 
 export const getMoviePage = async (tmdbMediaId: number) => {

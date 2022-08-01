@@ -10,7 +10,7 @@ import {
 const clamp = (min: number, max: number, n: number) =>
   Math.max(min, Math.min(max, n));
 
-const clampIndexGet = <T>(array: Array<T>, index: number): T =>
+const clampIndexGet = <T>(array: Array<T>, index: number): T | undefined =>
   array[clamp(0, array.length - 1, index)];
 
 const makeImageUrl = (

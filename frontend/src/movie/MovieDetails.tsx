@@ -49,10 +49,10 @@ export default ({
   releaseDates,
 }: {
   details: MovieDetails;
-  releaseDates: MovieReleaseDates;
+  releaseDates?: MovieReleaseDates;
 }) => {
   const subtitle = [
-    toCertification({ releaseDates }),
+    releaseDates ? toCertification({ releaseDates }) : "",
     toReleaseYear(details),
     toGenres(details),
     toRuntime(details),

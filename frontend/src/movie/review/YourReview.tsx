@@ -50,6 +50,13 @@ const YourReview = ({
 
   const review = reviews[0];
 
+
+  if (!review) {
+    return (
+      <ReviewCardCallToActionContainer partialReview={{ mediaId: mediaId }} />
+    );
+  }
+
   return (
     <ReviewCardContainer
       ReviewCardProps={{ showAuthor: true, review: review }}
