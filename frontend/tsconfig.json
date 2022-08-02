@@ -31,6 +31,8 @@
     "allowUnusedLabels": false,
     "noImplicitAny": true,
     "noUnusedParameters": true,
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+    "noEmitHelpers": true,
+    "noStrictGenericChecks": true,
   }
 }
