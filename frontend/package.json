@@ -46,7 +46,7 @@
     "jsdom": "^16.4.0",
     "localforage": "^1.9.0",
     "match-sorter": "^4.2.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.4",
     "npm": "^6.14.4",
     "numeral": "^2.0.6",
     "pwa-asset-generator": "^4.0.2",
