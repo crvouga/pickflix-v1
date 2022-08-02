@@ -25,8 +25,8 @@
   },
   "homepage": "https://github.com/crvouga/pickflix#readme",
   "engines": {
-    "node": "12.18.2",
-    "npm": "6.14.5"
+    "node": "16.15.0",
+    "npm": "8.5.5"
   },
   "devDependencies": {
     "concurrently": "^5.3.0"
