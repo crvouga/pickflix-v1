@@ -1,7 +1,7 @@
 import { Box, CircularProgress, TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import React, { useState } from "react";
-import { useDebounce } from "use-debounce/lib";
+import { useDebounce } from "use-debounce";
 import useBoolean from "../../../common/hooks/useBoolean";
 import { useQueryMovieSearch } from "../../../media/tmdb/query";
 import { MediaId, TmdbMediaType } from "../../../media/tmdb/types";

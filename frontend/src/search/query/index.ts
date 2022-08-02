@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from "axios";
 import matchSorter from "match-sorter";
-import { useDebounce } from "use-debounce/lib";
+import { useDebounce } from "use-debounce";
 import { BackendAPI } from "../../backend-api";
 import { useInfiniteQueryPagination } from "../../common/infinite-scroll";
 import { makeEmptyPaginatedResponse, Paginated } from "../../common/types";

@@ -1,6 +1,6 @@
 import { CircularProgress, TextField, TextFieldProps } from "@material-ui/core";
 import React, { useState } from "react";
-import { useDebounce } from "use-debounce/lib";
+import { useDebounce } from "use-debounce";
 import { isValidEmailAddress, useQueryUsers } from "../query";
 
 type Props = {
@@ -48,8 +48,8 @@ export const useEmailAddressTextFieldState = ({
     isTaken && !isCurrentEmailAddress && !isLoading
       ? "Email taken"
       : !isValid
-      ? "Invalid email"
-      : "";
+        ? "Invalid email"
+        : "";
 
   const onChange = (event: React.ChangeEvent<{ value: string }>) => {
     const newEmailAddress = event.target.value.slice(0, 100);

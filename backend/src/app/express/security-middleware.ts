@@ -1,3 +1,4 @@
+import cors from "cors";
 import csrf from "csurf";
 import { Application, Handler } from "express";
 
@@ -30,23 +31,31 @@ const ensureHttps: Handler = (req, res, next) => {
   res.redirect("https://" + req.hostname + req.url);
 };
 
-export const useSecurityMiddleware = (dependencies: ExpressAppDependencies) => (
-  app: Application
-) => {
-  app.set("trust proxy", 1);
+export const useSecurityMiddleware =
+  (dependencies: ExpressAppDependencies) => (app: Application) => {
+    app.set("trust proxy", 1);
 
-  if (getNodeEnv() === "production") {
     app.use(
-      csrf({
-        cookie: getCSRFCookieConfig(),
+      cors({
+        credentials: true,
+        origin(requestOrigin, callback) {
+          return callback(null, requestOrigin);
+        },
       })
     );
 
-    app.use((req, res, next) => {
-      res.cookie("XSRF-TOKEN", req.csrfToken());
-      next();
-    });
+    if (getNodeEnv() === "production") {
+      app.use(
+        csrf({
+          cookie: getCSRFCookieConfig(),
+        })
+      );
 
-    app.use(ensureHttps);
-  }
-};
+      app.use((req, res, next) => {
+        res.cookie("XSRF-TOKEN", req.csrfToken());
+        next();
+      });
+
+      app.use(ensureHttps);
+    }
+  };

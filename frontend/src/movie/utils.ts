@@ -1,5 +1,5 @@
 import moment from "moment";
-import "moment-duration-format";
+import humanizeDuration from "humanize-duration";
 import numeral from "numeral";
 import {
   MovieCreditCrew,
@@ -38,17 +38,16 @@ export const toBudget = ({ budget }: { budget?: number }) =>
 export const toRevenue = ({ revenue }: { revenue?: number }) =>
   revenue ? `$${commas(revenue)}` : null;
 
-export const toRuntime = ({ runtime }: { runtime?: number | null }) =>
-  runtime ? moment.duration(runtime, "minutes").format("h[h] m[m]") : null;
+export const toRuntime = ({ runtime }: { runtime?: number | null }) => {
+  return runtime ? humanizeDuration(minutesToMilliseconds(runtime)) : null;
+};
+
+const minutesToMilliseconds = (mins: number): number => {
+  return mins * 60 * 1000;
+};
 
 export const toRuntimeShort = ({ runtime }: { runtime?: number | null }) =>
-  runtime
-    ? moment
-        .duration(runtime, "minutes")
-        .format("h[h] m[m]")
-        .replace(" 0m", "")
-        .trim()
-    : null;
+  runtime ? humanizeDuration(minutesToMilliseconds(runtime)) : null;
 
 export const toReleaseYear = ({
   releaseDate,

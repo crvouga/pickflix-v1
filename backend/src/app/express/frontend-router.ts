@@ -8,14 +8,13 @@ const FRONTEND_BUILD_PATH = path.join(
   "..",
   "..",
   "frontend",
-  "build",
+  "dist"
 );
 
-export const useFrontendRouter = () =>
-  async (app: Application) => {
-    app.use(express.static(FRONTEND_BUILD_PATH, { maxAge: "30d" }));
+export const useFrontendRouter = () => async (app: Application) => {
+  app.use(express.static(FRONTEND_BUILD_PATH, { maxAge: "30d" }));
 
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(FRONTEND_BUILD_PATH, "index.html"));
-    });
-  };
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(FRONTEND_BUILD_PATH, "index.html"));
+  });
+};

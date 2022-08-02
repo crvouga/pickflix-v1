@@ -1,6 +1,6 @@
 import { Box, Typography } from "@material-ui/core";
 import React from "react";
-import { useDebounce } from "use-debounce/lib";
+import { useDebounce } from "use-debounce";
 import ErrorBox from "../common/components/ErrorBox";
 import { InfiniteScrollBottom } from "../common/infinite-scroll";
 import MoviePosterGrid, {

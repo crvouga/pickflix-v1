@@ -1,6 +1,7 @@
 {
   "include": ["src/*"],
   "exclude": ["node_modules/*"],
+  "references": [{ "path": "./tsconfig.node.json" }],
   "compilerOptions": {
     "target": "ESNEXT",
     "module": "esnext",
@@ -8,7 +9,7 @@
     "outDir": "./dist",
     "rootDir": ".",
     "strict": true,
-    "types": [],
+    "types": ["vite/client"],
     "esModuleInterop": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,

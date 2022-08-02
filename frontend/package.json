@@ -1,8 +1,8 @@
 {
   "scripts": {
-    "start": "EXTEND_ESLINT=true react-scripts start",
+    "start": "vite",
     "generate-assets": "node generate-assets.js",
-    "build": "react-scripts build",
+    "build": "vite build",
     "test": "react-scripts test --env=jsdom"
   },
   "proxy": "http://localhost:5000",
@@ -33,6 +33,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/react-swipeable-views": "^0.13.0",
     "@types/yup": "^0.29.7",
+    "@vitejs/plugin-react": "^2.0.0",
     "axios": "^0.27.2",
     "email-validator": "^2.0.4",
     "events": "^3.2.0",
@@ -40,12 +41,12 @@
     "fastclick": "^1.0.6",
     "fontsource-roboto": "^3.0.3",
     "history": "^4.10.1",
+    "humanize-duration": "^3.27.2",
     "humps": "^2.0.1",
     "jsdom": "^16.4.0",
     "localforage": "^1.9.0",
     "match-sorter": "^4.2.0",
     "moment": "^2.27.0",
-    "moment-duration-format": "^2.3.2",
     "npm": "^6.14.4",
     "numeral": "^2.0.6",
     "pwa-asset-generator": "^4.0.2",
@@ -70,7 +71,8 @@
     "remeda": "0.0.30",
     "typescript": "^4.7.4",
     "units-css": "^0.4.0",
-    "use-debounce": "^5.0.1"
+    "use-debounce": "^5.0.1",
+    "vite": "^3.0.4"
   },
   "browserslist": {
     "production": [
@@ -87,5 +89,8 @@
   "@comment resolutions": {
     "**/@typescript-eslint/eslint-plugin": "^4.1.1",
     "**/@typescript-eslint/parser": "^4.1.1"
+  },
+  "devDependencies": {
+    "@types/humanize-duration": "^3.27.1"
   }
 }

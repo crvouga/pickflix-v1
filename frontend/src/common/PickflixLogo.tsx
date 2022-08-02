@@ -1,5 +1,6 @@
 import { Box, BoxProps, makeStyles } from "@material-ui/core";
 import React from "react";
+import logo from "../logo.png"
 
 type StyleProps = {
   scale: number;
@@ -30,7 +31,7 @@ export default ({ scale = 1, ...props }: Props) => {
     <Box className={classes.root} {...props}>
       <img
         className={classes.logo}
-        src={process.env.PUBLIC_URL + "/assets/logo.png"}
+        src={logo}
       />
     </Box>
   );

@@ -1,6 +1,6 @@
 import { CircularProgress, TextField, TextFieldProps } from "@material-ui/core";
 import React, { useState } from "react";
-import { useDebounce } from "use-debounce/lib";
+import { useDebounce } from "use-debounce";
 import { isValidUsername, MAX_USERNAME_LENGTH, useQueryUsers } from "../query";
 
 type Props = {
@@ -52,8 +52,8 @@ export const useUsernameTextFieldState = ({
     isTaken && !isCurrentUsername && !isLoading
       ? "Username taken"
       : !isValid
-      ? "Invalid username"
-      : "";
+        ? "Invalid username"
+        : "";
 
   const onChange = (event: React.ChangeEvent<{ value: string }>) => {
     const newUsername = event.target.value.slice(0, MAX_USERNAME_LENGTH);
