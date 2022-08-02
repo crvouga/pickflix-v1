@@ -1,9 +1,8 @@
 {
   "scripts": {
     "start": "vite",
-    "generate-assets": "node generate-assets.js",
     "build": "vite build",
-    "test": "react-scripts test --env=jsdom"
+    "generate-assets": "node generate-assets.js"
   },
   "proxy": "http://localhost:5000",
   "engines": {
