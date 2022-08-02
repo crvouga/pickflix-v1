@@ -1,10 +1,10 @@
-import { Link } from "@material-ui/core";
+// import { Link } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import React from "react";
 
-const getWebsiteAuthorUrl = () => {
-  return "https://chrisvouga.dev/";
-};
+// const getWebsiteAuthorUrl = () => {
+//   return "https://chrisvouga.dev/";
+// };
 
 export const Footer = () => {
   return (
@@ -17,13 +17,13 @@ export const Footer = () => {
       justifyContent="center"
       alignItems="center"
     >
-      <Link
+      {/* <Link
         onClick={() => {
           window.open(getWebsiteAuthorUrl());
         }}
       >
         Chris Vouga
-      </Link>
+      </Link> */}
     </Box>
   );
 };
