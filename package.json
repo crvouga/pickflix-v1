@@ -30,6 +30,5 @@
   },
   "devDependencies": {
     "concurrently": "^5.3.0"
-  },
-  "dependencies": {}
+  }
 }

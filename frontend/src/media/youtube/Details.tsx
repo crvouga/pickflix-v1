@@ -14,7 +14,7 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import moment from "moment";
 import numeral from "numeral";
 import React from "react";
-import ReactMarkdown from "react-markdown";
+import MarkdownTypography from "../../common/components/MarkdownTypography"
 import ExpandIcon from "../../common/components/ExpandIcon";
 import useBoolean from "../../common/hooks/useBoolean";
 import { YoutubeVideoSnippet, YoutubeVideoStatistics } from "./query/types";
@@ -91,11 +91,10 @@ export default ({ statistics, snippet }: Props) => {
 
   const subtitle1 = [
     viewCount &&
-      `${
-        isDetailsOpen.value
-          ? formatNumberLong(viewCount)
-          : formatNumberShort(viewCount)
-      } views`,
+    `${isDetailsOpen.value
+      ? formatNumberLong(viewCount)
+      : formatNumberShort(viewCount)
+    } views`,
     formattedPublishedAtAge,
   ]
     .filter((_) => _)
@@ -156,7 +155,7 @@ export default ({ statistics, snippet }: Props) => {
           </Box>
 
           <Typography component="div" color="textSecondary" variant="body2">
-            <ReactMarkdown className={classes.markdown} source={description} />
+            <MarkdownTypography source={description} />
           </Typography>
         </Box>
       </Collapse>

@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import React from "react";
-import ReactMarkdown from "react-markdown";
+
 
 const useStyles = makeStyles((theme) => ({
   markdown: {
@@ -29,13 +29,14 @@ export type MarkdownProps = React.PropsWithChildren<{
 export default ({ source, children }: MarkdownProps) => {
   const classes = useStyles();
   return (
-    <ReactMarkdown
+    <div
       // extremely nested <blockquote>...</blockquote> was rendering in youtube comments making it too wide
-      disallowedTypes={["blockquote"]}
+      // disallowedTypes={["blockquote"]}
       className={classes.markdown}
-      source={source}
+    // source={source}
     >
+      {source}
       {children}
-    </ReactMarkdown>
+    </div>
   );
 };
