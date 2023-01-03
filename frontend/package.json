@@ -54,7 +54,7 @@
     "react-query": "^2.23.1",
     "react-redux": "^7.2.0",
     "react-router": "^5.2.0",
-    "react-scripts": "3.4.0",
+    "react-scripts": "5.0.1",
     "react-use-localstorage": "^3.5.3",
     "read-more-react": "^1.0.10",
     "reduce-reducers": "^1.0.4",
