@@ -42,7 +42,7 @@
     "localforage": "^1.9.0",
     "match-sorter": "^4.2.0",
     "moment": "^2.27.0",
-    "npm": "^6.14.4",
+    "npm": "^9.4.1",
     "numeral": "^2.0.6",
     "pwa-asset-generator": "^4.0.2",
     "query-string": "^6.13.1",
