@@ -89,10 +89,10 @@
   "devDependencies": {
     "@types/jest": "^26.0.15",
     "fast-check": "^2.2.1",
-    "gts": "^2.0.2",
+    "gts": "^3.1.1",
     "jest": "^26.6.1",
     "jest-serial-runner": "^1.1.0",
-    "nodemon": "^2.0.4",
+    "nodemon": "^2.0.20",
     "sinon": "^9.0.3",
     "ts-jest": "^26.4.3",
     "tslint": "^6.1.3",
