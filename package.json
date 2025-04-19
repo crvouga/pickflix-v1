@@ -1,7 +1,6 @@
 {
   "scripts": {
-    "postinstall": "cd backend && npm install --legacy-peer-deps",
-    "install-all": "npm install --legacy-peer-deps && cd frontend && npm install --legacy-peer-deps",
+    "postinstall": "cd backend && npm install --legacy-peer-deps && cd ../frontend && npm install --legacy-peer-deps && npm run build",
     "start": "cd backend && npm run start",
     "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run start\"",
     "dev-dangerous": "NODE_ENV=production npm run dev",
