@@ -30,8 +30,6 @@ export const POSTGRES_PRODUCTION_CONFIG = {
   },
 };
 
-const database = new PostgresDatabase(POSTGRES_PRODUCTION_CONFIG);
-
 /* 
 
 
@@ -53,6 +51,7 @@ const buildPersistence = async (database: PostgresDatabase) => {
 
 export const buildAppProduction = async () => {
   const cache = new HashMapCache<string, string>();
+  const database = new PostgresDatabase(POSTGRES_PRODUCTION_CONFIG);
 
   const { repositories, sessionStore, initializeAllTables } =
     await buildPersistence(database);
