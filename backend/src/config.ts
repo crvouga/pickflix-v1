@@ -44,7 +44,7 @@ export type Secrets = Readonly<{
 
   // for movie data
   // SOURCE: https://www.themoviedb.org/settings/api.
-  tmdbApiKey: string;
+  TMDB_API_READ_ACCESS_TOKEN: string;
 
   // for youtube data
   // SOURCE: https://console.developers.google.com/apis/api/youtube.googleapis.com/credentials?project=pickflix.
@@ -64,7 +64,7 @@ export type Secrets = Readonly<{
 
 const {
   YOUTUBE_API_KEY,
-  TMDB_API_KEY,
+  TMDB_API_READ_ACCESS_TOKEN,
   DATABASE_URL,
   SEND_GRID_API_KEY,
   SEND_GRID_REGISTERED_EMAIL_ADDRESS,
@@ -76,8 +76,8 @@ if (!YOUTUBE_API_KEY) {
   throw "YOUTUBE_API_KEY required";
 }
 
-if (!TMDB_API_KEY) {
-  throw "TMDB_API_KEY required";
+if (!TMDB_API_READ_ACCESS_TOKEN) {
+  throw "TMDB_API_READ_ACCESS_TOKEN required";
 }
 
 if (!DATABASE_URL) {
@@ -103,7 +103,7 @@ if (!SESSION_COOKIE_SECRET) {
 export const secrets: Secrets = {
   posgresConnectionString: DATABASE_URL,
 
-  tmdbApiKey: TMDB_API_KEY,
+  TMDB_API_READ_ACCESS_TOKEN: TMDB_API_READ_ACCESS_TOKEN,
   youtubeApiKey: YOUTUBE_API_KEY,
   sendGridApiKey: SEND_GRID_API_KEY,
   sendGridRegisteredEmailAddress: SEND_GRID_REGISTERED_EMAIL_ADDRESS,

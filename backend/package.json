@@ -3,7 +3,7 @@
     "tests-with-postgres": "REPOSITORY_IMPLEMENTATION=postgres npx jest --runInBand --detectOpenHandles --unhandled-rejections=strict",
     "tests": "REPOSITORY_IMPLEMENTATION=hashMap npx jest",
     "dev-with-postgres": "REPOSITORY_IMPLEMENTATION=postgres nodemon build/index.js",
-    "dev": "npm run heroku:env && REPOSITORY_IMPLEMENTATION=fileSystem nodemon build/index.js",
+    "dev": "REPOSITORY_IMPLEMENTATION=fileSystem nodemon build/index.js",
     "tsc": "tsc -p tsconfig.production.json",
     "postinstall": "npm run tsc",
     "start": "node build/index.js",

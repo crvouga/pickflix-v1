@@ -25,6 +25,7 @@ export class EmailLogic implements IEmailLogic {
   }
 
   async sendEmail(email: Email) {
+    console.log("Sending email:", email);
     await this.emailService.send(email);
   }
 }

@@ -29,7 +29,6 @@ export async function requestTmdbData(this: MediaLogic, params: Params) {
     qs.stringify(
       decamelizeKeys({
         ...params.query,
-        apiKey: secrets.tmdbApiKey,
       }),
       {
         arrayFormat: "comma",
@@ -41,6 +40,9 @@ export async function requestTmdbData(this: MediaLogic, params: Params) {
   const tmdbResponse = await this.axios({
     method: "get",
     url: "https://api.themoviedb.org/3" + url,
+    headers: {
+      Authorization: `Bearer ${secrets.TMDB_API_READ_ACCESS_TOKEN}`,
+    },
   });
 
   const data = camelizeKeys(tmdbResponse.data, (key, convert) => {
