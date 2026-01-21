@@ -4,6 +4,7 @@
     "start": "cd backend && npm run start",
     "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run start\"",
     "dev-dangerous": "NODE_ENV=production npm run dev",
+    "build": "cd frontend && npm install && npm run build",
     "heroku-postbuild": "cd frontend && npm install && npm run build",
     "heroku:env": "heroku config -s -a crvouga-pickflix > .env",
     "heroku:local": "npm run heroku:env && npm install && npm run heroku-postbuild && REPOSITORY_IMPLEMENTATION=postgres PORT=9000 heroku local",

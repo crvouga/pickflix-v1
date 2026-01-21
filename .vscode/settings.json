@@ -1,4 +1,10 @@
 {
   "git.ignoreLimitWarning": true,
-  "cSpell.words": ["Pickflix", "tmdb"]
+  "cSpell.words": [
+    "crvouga",
+    "flixs",
+    "Pickflix",
+    "postbuild",
+    "tmdb"
+  ]
 }

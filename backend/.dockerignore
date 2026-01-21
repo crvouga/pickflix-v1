@@ -1,0 +1,17 @@
+node_modules
+build
+.git
+.gitignore
+*.test.ts
+*.test.tsx
+jest.config.js
+nodemon.json
+tslint.json
+.env
+.env.*
+file-system-database
+coverage
+.nyc_output
+*.log
+npm-debug.log*
+.DS_Store
