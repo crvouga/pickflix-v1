@@ -1,0 +1,44 @@
+# Git
+.git
+.gitignore
+
+# Node modules
+**/node_modules
+**/build
+**/dist
+
+# Test files
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+
+# Config files
+**/.env
+**/.env.*
+**/jest.config.js
+**/nodemon.json
+**/tslint.json
+
+# Backend specific
+backend/file-system-database
+backend/coverage
+backend/.nyc_output
+
+# Frontend specific
+frontend/dist
+
+# Logs
+**/*.log
+**/npm-debug.log*
+
+# OS files
+.DS_Store
+**/.DS_Store
+
+# Documentation
+**/README.md
+**/*.md
+
+# CI/CD
+.github
