@@ -9,7 +9,8 @@
     "heroku:env": "heroku config -s -a crvouga-pickflix > .env",
     "heroku:local": "npm run heroku:env && npm install && npm run heroku-postbuild && REPOSITORY_IMPLEMENTATION=postgres PORT=9000 heroku local",
     "heroku:logs": "heroku logs --tail --app crvouga-pickflix",
-    "preview": "docker build -t pickflix:preview . && echo 'Image built successfully! Run with: npm run preview:run' && docker run -p 8004:80 --env-file .env pickflix:preview"
+    "preview": "docker build -t pickflix:preview . && echo 'Image built successfully! Run with: npm run preview:run' && docker run -p 8004:80 --env-file .env pickflix:preview",
+    "cloc": "npx cloc . --exclude-dir=node_modules,dist,build,coverage --exclude-ext=lock,json,md,yml"
   },
   "name": "pickflix",
   "version": "1.0.0",

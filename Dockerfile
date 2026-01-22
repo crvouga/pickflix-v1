@@ -10,14 +10,15 @@ WORKDIR /app/backend
 COPY backend/package.json backend/package-lock.json ./
 
 # Install all dependencies (including devDependencies for TypeScript build)
-RUN npm ci --legacy-peer-deps
+# Skip postinstall script since source files aren't copied yet
+RUN npm ci --legacy-peer-deps --ignore-scripts
 
-# Copy backend source code and TypeScript config files
+# Copy backend source code, TypeScript config files, and type definitions
 COPY backend/tsconfig.json backend/tsconfig.production.json ./
 COPY backend/src/ ./src/
 COPY backend/@types/ ./@types/
 
-# Build TypeScript (runs via postinstall script)
+# Build TypeScript
 RUN npm run tsc
 
 # Frontend build stage
