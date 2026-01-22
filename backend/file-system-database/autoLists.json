@@ -1,17 +1,1 @@
-{
-  "a184abd9-8621-48fd-b944-3296519a301d": {
-    "id": "a184abd9-8621-48fd-b944-3296519a301d",
-    "ownerId": "3076f8ff-9ba0-4514-b18c-220fe6950d76",
-    "key": "watch-next"
-  },
-  "5f33d3bd-81d8-4953-b9db-a98e6c479082": {
-    "id": "5f33d3bd-81d8-4953-b9db-a98e6c479082",
-    "ownerId": "3076f8ff-9ba0-4514-b18c-220fe6950d76",
-    "key": "liked"
-  },
-  "3948c388-d4a9-498e-bfaa-00a1ed29e301": {
-    "id": "3948c388-d4a9-498e-bfaa-00a1ed29e301",
-    "ownerId": "3076f8ff-9ba0-4514-b18c-220fe6950d76",
-    "key": "favorite"
-  }
-}
+{"a184abd9-8621-48fd-b944-3296519a301d":{"id":"a184abd9-8621-48fd-b944-3296519a301d","ownerId":"3076f8ff-9ba0-4514-b18c-220fe6950d76","key":"watch-next"},"5f33d3bd-81d8-4953-b9db-a98e6c479082":{"id":"5f33d3bd-81d8-4953-b9db-a98e6c479082","ownerId":"3076f8ff-9ba0-4514-b18c-220fe6950d76","key":"liked"},"3948c388-d4a9-498e-bfaa-00a1ed29e301":{"id":"3948c388-d4a9-498e-bfaa-00a1ed29e301","ownerId":"3076f8ff-9ba0-4514-b18c-220fe6950d76","key":"favorite"},"3d5b1636-59bc-4976-9b15-cd8a8801f9fa":{"id":"3d5b1636-59bc-4976-9b15-cd8a8801f9fa","ownerId":"bbdd49b3-3d8d-4467-b34d-4f6ae6018139","key":"watch-next"},"9479120f-14d2-40bd-899a-b0a1e0f2fec5":{"id":"9479120f-14d2-40bd-899a-b0a1e0f2fec5","ownerId":"bbdd49b3-3d8d-4467-b34d-4f6ae6018139","key":"liked"},"4b877e6b-7584-446a-8135-e019d09a40fb":{"id":"4b877e6b-7584-446a-8135-e019d09a40fb","ownerId":"bbdd49b3-3d8d-4467-b34d-4f6ae6018139","key":"favorite"}}
