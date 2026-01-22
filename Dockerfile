@@ -63,11 +63,13 @@ COPY --from=backend-builder /app/backend/@types ./backend/@types
 # Copy built frontend files from builder stage
 COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
 
-# Expose port 80
-EXPOSE 80
+# Expose port 9000
+EXPOSE 9000
 
 # Set PORT environment variable
-ENV PORT=80
+ENV PORT=9000
+
+EXPOSE $PORT
 
 # Set NODE_ENV to production
 ENV NODE_ENV=production

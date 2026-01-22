@@ -28,6 +28,11 @@ const ensureHttps: Handler = (req, res, next) => {
   if (req.secure) {
     return next();
   }
+  // Allow HTTP for localhost/127.0.0.1 in preview/development environments
+  const isLocalhost = req.hostname === 'localhost' || req.hostname === '127.0.0.1' || req.hostname === '0.0.0.0';
+  if (isLocalhost) {
+    return next();
+  }
   res.redirect("https://" + req.hostname + req.url);
 };
 
