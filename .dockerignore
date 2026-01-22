@@ -4,7 +4,8 @@
 
 # Node modules
 **/node_modules
-**/build
+# Exclude compiled build directories (but not source directories like src/app/build/)
+backend/build
 **/dist
 
 # Test files
