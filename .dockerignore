@@ -22,7 +22,6 @@ backend/build
 **/tslint.json
 
 # Backend specific
-backend/file-system-database
 backend/coverage
 backend/.nyc_output
 
