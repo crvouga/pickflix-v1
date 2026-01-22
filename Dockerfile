@@ -18,11 +18,11 @@ COPY backend/tsconfig.json backend/tsconfig.production.json ./
 COPY backend/src/ ./src/
 COPY backend/@types/ ./@types/
 
+# Rebuild native modules (they weren't built due to --ignore-scripts)
+RUN npm rebuild bcrypt --legacy-peer-deps
+
 # Build TypeScript
 RUN npx tsc -p tsconfig.production.json
-
-# Remove devDependencies to reduce image size (do this in builder stage to preserve native modules)
-RUN npm prune --production --legacy-peer-deps
 
 # Frontend build stage
 FROM node:18-alpine AS frontend-builder
@@ -52,7 +52,8 @@ WORKDIR /app
 # Copy backend package files
 COPY backend/package.json backend/package-lock.json ./backend/
 
-# Copy node_modules from builder stage (already pruned, includes compiled native modules like bcrypt)
+# Copy node_modules from builder stage (includes compiled native modules like bcrypt)
+# Note: Includes devDependencies to preserve native module bindings
 COPY --from=backend-builder /app/backend/node_modules ./backend/node_modules
 
 # Copy built backend files from builder stage
