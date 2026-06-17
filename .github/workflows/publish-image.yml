@@ -1,0 +1,27 @@
+name: Publish image
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - "**/*.md"
+      - ".vscode/**"
+      - ".cursor/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  publish:
+    uses: crvouga/infra/.github/workflows/reusable-publish-image.yml@main
+    secrets:
+      DEPLOY_DISPATCH_TOKEN: ${{ secrets.DEPLOY_DISPATCH_TOKEN }}
+    with:
+      service_id: pickflix
+      dockerfile: ./Dockerfile
+      context: .
+      image_prefix: chrisvouga
+      infra_github_repo: crvouga/infra
