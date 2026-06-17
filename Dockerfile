@@ -68,11 +68,11 @@ EXPOSE 9000
 
 # Set PORT environment variable
 ENV PORT=9000
+ENV HOST=0.0.0.0
+ENV NODE_ENV=production
+ENV REPOSITORY_IMPLEMENTATION=fileSystem
 
 EXPOSE $PORT
-
-# Set NODE_ENV to production
-ENV NODE_ENV=production
 
 # Required environment variables (must be provided at runtime via docker-compose or -e flags):
 # - YOUTUBE_API_KEY
