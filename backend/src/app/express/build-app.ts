@@ -24,6 +24,10 @@ const errorHandler: ErrorRequestHandler = (error, req, res, next) => {
 export const buildExpressApp = async (dependencies: ExpressAppDependencies) => {
   const app = express();
 
+  app.get("/health", (_req, res) => {
+    res.status(200).json({ status: "ok" });
+  });
+
   app.use(bodyParser.json());
 
   await useSessionMiddleware(dependencies)(app);
