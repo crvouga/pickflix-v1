@@ -27,7 +27,7 @@ export const makeResetPasswordEmail = ({
   link: Link;
 }): Email => ({
   to: user.emailAddress,
-  from: secrets.sendGridRegisteredEmailAddress,
+  from: secrets.emailFrom,
   subject: "Pickflix Password Reset",
   html: makeResetEmailHtml(link),
 });

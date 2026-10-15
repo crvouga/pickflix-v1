@@ -1,11 +1,10 @@
-import sgMail from "@sendgrid/mail";
 import axios from "axios";
 import { createEventEmitter, Events } from "../../common/events";
 import { secrets } from "../../config";
 import { ListLogic } from "../../lists/logic/logic";
 import { MediaLogic } from "../../media/logic/logic";
 import { ReviewLogic } from "../../reviews/logic/logic";
-import { EmailLogic } from "../../users/email";
+import { ResendEmailLogic } from "../../users/email/resend";
 import { UserLogic } from "../../users/logic/logic";
 import {
   authenticate,
@@ -77,8 +76,9 @@ export const buildAppProduction = async () => {
     mediaLogic,
   });
 
-  const emailLogic = new EmailLogic({
-    emailService: sgMail,
+  const emailLogic = new ResendEmailLogic({
+    http: axios,
+    apiKey: secrets.resendApiKey,
   });
 
   const userLogic = new UserLogic({

@@ -9,7 +9,7 @@ async function main() {
   Object.assign(process.env, {
     NODE_ENV: 'production', DATABASE_URL: url,
     YOUTUBE_API_KEY: 'test', TMDB_API_READ_ACCESS_TOKEN: 'test',
-    SEND_GRID_API_KEY: 'SG.test', SEND_GRID_REGISTERED_EMAIL_ADDRESS: 'test@example.com',
+    RESEND_API_KEY: 're_test', EMAIL_FROM: 'test@example.com',
     PICKFLIX_SECRET: 'smoke-app-secret', PICKFLIX_SESSION_SECRET: 'smoke-session-secret',
   });
   const { buildApp } = require('../build/app/build');

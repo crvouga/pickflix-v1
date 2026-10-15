@@ -51,9 +51,9 @@ export type Secrets = Readonly<{
   youtubeApiKey: string;
 
   // for sending emails
-  // SOUCRE: https://app.sendgrid.com
-  sendGridApiKey: string;
-  sendGridRegisteredEmailAddress: string;
+  // SOURCE: https://resend.com/api-keys
+  resendApiKey: string;
+  emailFrom: string;
 
   // secret for making secrets
   secret: string;
@@ -66,8 +66,8 @@ const {
   YOUTUBE_API_KEY,
   TMDB_API_READ_ACCESS_TOKEN,
   DATABASE_URL,
-  SEND_GRID_API_KEY,
-  SEND_GRID_REGISTERED_EMAIL_ADDRESS,
+  RESEND_API_KEY,
+  EMAIL_FROM,
   PICKFLIX_SECRET: SECRET,
   PICKFLIX_SESSION_SECRET: SESSION_COOKIE_SECRET,
 } = process.env;
@@ -84,12 +84,12 @@ if (!DATABASE_URL) {
   throw "DATABASE_URL required";
 }
 
-if (!SEND_GRID_API_KEY) {
-  throw "SEND_GRID_API_KEY required";
+if (!RESEND_API_KEY) {
+  throw "RESEND_API_KEY required";
 }
 
-if (!SEND_GRID_REGISTERED_EMAIL_ADDRESS) {
-  throw "SEND_GRID_REGISTERED_EMAIL_ADDRESS required";
+if (!EMAIL_FROM) {
+  throw "EMAIL_FROM required";
 }
 
 if (!SECRET) {
@@ -105,8 +105,8 @@ export const secrets: Secrets = {
 
   TMDB_API_READ_ACCESS_TOKEN: TMDB_API_READ_ACCESS_TOKEN,
   youtubeApiKey: YOUTUBE_API_KEY,
-  sendGridApiKey: SEND_GRID_API_KEY,
-  sendGridRegisteredEmailAddress: SEND_GRID_REGISTERED_EMAIL_ADDRESS,
+  resendApiKey: RESEND_API_KEY,
+  emailFrom: EMAIL_FROM,
   secret: SECRET,
   sessionCookieSecret: SESSION_COOKIE_SECRET,
 };
