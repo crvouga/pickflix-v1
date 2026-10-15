@@ -25,6 +25,7 @@ import { buildRepositoriesPostgres } from "./build-repositories";
 
 export const POSTGRES_PRODUCTION_CONFIG = {
   connectionString: secrets.posgresConnectionString,
+  options: "-c search_path=pickflix",
   ssl: {
     rejectUnauthorized: false,
   },
@@ -36,7 +37,7 @@ export const POSTGRES_PRODUCTION_CONFIG = {
 */
 
 const buildPersistence = async (database: PostgresDatabase) => {
-  const { repositories, initializeAllTables } = await buildRepositoriesPostgres(
+  const { repositories } = await buildRepositoriesPostgres(
     database
   );
 
@@ -44,7 +45,6 @@ const buildPersistence = async (database: PostgresDatabase) => {
 
   return {
     repositories,
-    initializeAllTables,
     sessionStore,
   };
 };
@@ -53,10 +53,15 @@ export const buildAppProduction = async () => {
   const cache = new HashMapCache<string, string>();
   const database = new PostgresDatabase(POSTGRES_PRODUCTION_CONFIG);
 
-  const { repositories, sessionStore, initializeAllTables } =
+  const { repositories, sessionStore } =
     await buildPersistence(database);
 
-  await initializeAllTables();
+  // OpenTofu in crvouga/workspace owns all DDL. Fail before listening when
+  // the schema has not been deployed, rather than creating tables at runtime.
+  for (const table of ["users", "credentials", "reviews", "review_votes", "lists",
+    "list_items", "auto_lists", "permissions", "tmdb_discover_tags", "session"]) {
+    await database.query(`SELECT 1 FROM pickflix.${table} LIMIT 0`);
+  }
 
   const eventEmitter = createEventEmitter<Events>();
 

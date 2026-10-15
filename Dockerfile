@@ -1,5 +1,5 @@
 # Backend build stage
-FROM node:18-alpine AS backend-builder
+FROM node:22-alpine AS backend-builder
 
 # Install Python and build tools needed for native modules like bcrypt
 RUN apk add --no-cache python3 make g++
@@ -25,7 +25,7 @@ RUN npm rebuild bcrypt --legacy-peer-deps
 RUN npx tsc -p tsconfig.production.json
 
 # Frontend build stage
-FROM node:18-alpine AS frontend-builder
+FROM node:22-alpine AS frontend-builder
 
 WORKDIR /app/frontend
 
@@ -45,7 +45,7 @@ COPY frontend/index.html ./
 RUN npm run build
 
 # Production stage
-FROM node:18-alpine
+FROM node:22-alpine
 
 WORKDIR /app
 
@@ -70,7 +70,7 @@ EXPOSE 9000
 ENV PORT=9000
 ENV HOST=0.0.0.0
 ENV NODE_ENV=production
-ENV REPOSITORY_IMPLEMENTATION=fileSystem
+ENV REPOSITORY_IMPLEMENTATION=postgres
 
 EXPOSE $PORT
 
@@ -80,10 +80,10 @@ EXPOSE $PORT
 # - DATABASE_URL
 # - SEND_GRID_API_KEY
 # - SEND_GRID_REGISTERED_EMAIL_ADDRESS
-# - SECRET
-# - SESSION_COOKIE_SECRET
+# - PICKFLIX_SECRET
+# - PICKFLIX_SESSION_SECRET
 # Optional:
-# - REPOSITORY_IMPLEMENTATION (defaults to "fileSystem")
+# - REPOSITORY_IMPLEMENTATION (defaults to "postgres")
 
 # Start the server
 WORKDIR /app/backend

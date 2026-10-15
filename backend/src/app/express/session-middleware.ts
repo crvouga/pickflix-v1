@@ -14,7 +14,7 @@ export const useSessionMiddleware =
     const sessionOptions: session.SessionOptions = {
       ...session,
       name: "pickflix-session",
-      secret: secrets.secret,
+      secret: secrets.sessionCookieSecret,
       resave: false,
       saveUninitialized: false,
       store: sessionStore,

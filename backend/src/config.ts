@@ -68,8 +68,8 @@ const {
   DATABASE_URL,
   SEND_GRID_API_KEY,
   SEND_GRID_REGISTERED_EMAIL_ADDRESS,
-  SECRET,
-  SESSION_COOKIE_SECRET,
+  PICKFLIX_SECRET: SECRET,
+  PICKFLIX_SESSION_SECRET: SESSION_COOKIE_SECRET,
 } = process.env;
 
 if (!YOUTUBE_API_KEY) {
@@ -93,11 +93,11 @@ if (!SEND_GRID_REGISTERED_EMAIL_ADDRESS) {
 }
 
 if (!SECRET) {
-  throw "SECRET required";
+  throw "PICKFLIX_SECRET required";
 }
 
 if (!SESSION_COOKIE_SECRET) {
-  throw new Error("DATABASE_URL required");
+  throw new Error("PICKFLIX_SESSION_SECRET required");
 }
 
 export const secrets: Secrets = {
