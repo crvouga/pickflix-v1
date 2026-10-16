@@ -1,4 +1,4 @@
-// Run only against a disposable database prepared with workspace's Atlas HCL.
+// Run only against a disposable database migrated by Pickflix itself.
 const assert = require('assert').strict;
 const { randomUUID } = require('crypto');
 
@@ -32,6 +32,11 @@ async function main() {
       await client.query('INSERT INTO users (id, username) VALUES ($1, $2)', [sid, 'hosting-smoke']);
       const result = await client.query('SELECT username FROM pickflix.users WHERE id = $1', [sid]);
       assert.equal(result.rows[0].username, 'hosting-smoke');
+      await client.query('INSERT INTO lists (id, title, owner_id) VALUES ($1, $2, $3)', [sid, 'Movie night', sid]);
+      await client.query('INSERT INTO list_items (id, list_id, user_id, media_id) VALUES ($1, $1, $1, $2)', [sid, 'movie:1']);
+      await client.query('UPDATE lists SET updated_at = $1 WHERE id = $2', [Date.now(), sid]);
+      await client.query('DELETE FROM list_items WHERE id = $1', [sid]);
+      await client.query('DELETE FROM lists WHERE id = $1', [sid]);
     } finally {
       await client.query('ROLLBACK');
       client.release();

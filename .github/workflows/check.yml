@@ -39,17 +39,5 @@ jobs:
         working-directory: frontend
       - run: npm run build
         working-directory: frontend
-      - name: Read canonical production schema
-        uses: actions/checkout@v5
-        with:
-          repository: crvouga/workspace
-          path: workspace-schema
-          sparse-checkout: packages/infra/tofu/foundation/pickflix-schema.hcl
-          sparse-checkout-cone-mode: false
-      - uses: ariga/setup-atlas@v0
-        with:
-          version: v1.3.0
       - name: Build and smoke-test production image
-        env:
-          PICKFLIX_SCHEMA_FILE: workspace-schema/packages/infra/tofu/foundation/pickflix-schema.hcl
         run: npm run test:hosting
