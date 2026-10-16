@@ -31,7 +31,7 @@ done
 port="$(docker port "$postgres" 5432/tcp | cut -d: -f2)"
 admin="postgres://postgres:$admin_password@127.0.0.1:$port/pickflix_integration?sslmode=disable"
 # All DDL here is confined to an ephemeral local test database.
-atlas schema apply --url "$admin" --to "file://$PICKFLIX_SCHEMA_FILE" --auto-approve
+atlas schema apply --url "$admin" --schema pickflix --to "file://$PICKFLIX_SCHEMA_FILE" --auto-approve
 docker exec -i "$postgres" psql -U postgres -d pickflix_integration -v ON_ERROR_STOP=1 -v runtime_password="$runtime_password" <<'SQL'
 CREATE ROLE runtime LOGIN PASSWORD :'runtime_password';
 REVOKE CREATE ON SCHEMA public FROM PUBLIC;
