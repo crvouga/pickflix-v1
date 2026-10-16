@@ -59,6 +59,8 @@ COPY --from=backend-builder /app/backend/node_modules ./backend/node_modules
 # Copy built backend files from builder stage
 COPY --from=backend-builder /app/backend/build ./backend/build
 COPY --from=backend-builder /app/backend/@types ./backend/@types
+COPY backend/migrations ./backend/migrations
+COPY backend/scripts ./backend/scripts
 
 # Copy built frontend files from builder stage
 COPY --from=frontend-builder /app/frontend/dist ./frontend/dist

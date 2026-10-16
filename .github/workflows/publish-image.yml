@@ -1,4 +1,4 @@
-# Managed by OpenTofu github_repository_file.
+# Owned by Pickflix; the shared workflow only builds and deploys the image.
 name: Publish image
 
 on:

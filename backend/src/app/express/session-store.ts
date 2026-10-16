@@ -20,7 +20,7 @@ export const buildSessionStorePostgres = async (
   );
 
   if (!doesSessionTableExists && getNodeEnv() === "production") {
-    throw new Error("Deploy the OpenTofu-managed pickflix.session table first");
+    throw new Error("Run Pickflix database migrations before building the session store");
   }
 
   if (!doesSessionTableExists) {

@@ -15,6 +15,7 @@ import { buildSessionStorePostgres } from "../express/session-store";
 import { ExpressAppDependencies } from "../express/types";
 import { HashMapCache } from "../persistence/cache/cache.hash-map";
 import { PostgresDatabase } from "../persistence/postgres/database.postgres";
+import { migrateDatabase } from "../persistence/postgres/migrations";
 import { buildRepositoriesPostgres } from "./build-repositories";
 
 /* 
@@ -52,11 +53,12 @@ export const buildAppProduction = async () => {
   const cache = new HashMapCache<string, string>();
   const database = new PostgresDatabase(POSTGRES_PRODUCTION_CONFIG);
 
+  await migrateDatabase(database.pool);
+
   const { repositories, sessionStore } =
     await buildPersistence(database);
 
-  // OpenTofu in crvouga/workspace owns all DDL. Fail before listening when
-  // the schema has not been deployed, rather than creating tables at runtime.
+  // Verify the repository-owned migrations before accepting traffic.
   for (const table of ["users", "credentials", "reviews", "review_votes", "lists",
     "list_items", "auto_lists", "permissions", "tmdb_discover_tags", "session"]) {
     await database.query(`SELECT 1 FROM pickflix.${table} LIMIT 0`);
