@@ -1,5 +1,6 @@
 import buildPostgresSessionStore from "connect-pg-simple";
 import session from "express-session";
+import { getNodeEnv } from "../../config";
 import fs from "fs";
 import buildMemorySessionStore from "memorystore";
 import { IPostgresDatabase } from "../persistence/postgres/database.postgres";
@@ -18,6 +19,10 @@ export const buildSessionStorePostgres = async (
     TABLE_NAME
   );
 
+  if (!doesSessionTableExists && getNodeEnv() === "production") {
+    throw new Error("Deploy the OpenTofu-managed pickflix.session table first");
+  }
+
   if (!doesSessionTableExists) {
     const createSessionTableSql = fs
       .readFileSync(SESSION_TABLE_PATH)
@@ -29,6 +34,7 @@ export const buildSessionStorePostgres = async (
   const store = new PostgresSessionStore({
     pool: postgresDatabase.pool,
     tableName: TABLE_NAME,
+    schemaName: getNodeEnv() === "production" ? "pickflix" : "public",
   });
 
   return store;

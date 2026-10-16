@@ -15,7 +15,7 @@
   },
   "name": "pickflix",
   "version": "1.0.0",
-  "description": "An app that helps you pick flixs 🍿 to watch. The frontend is a React/Redux app and the backend is an Express REST API.",
+  "description": "An app that helps you pick flixs \ud83c\udf7f to watch. The frontend is a React/Redux app and the backend is an Express REST API.",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -28,8 +28,8 @@
   },
   "homepage": "https://github.com/crvouga/pickflix#readme",
   "engines": {
-    "node": "16.15.0",
-    "npm": "8.5.5"
+    "node": ">=22 <23",
+    "npm": ">=10"
   },
   "devDependencies": {
     "concurrently": "^5.3.0"

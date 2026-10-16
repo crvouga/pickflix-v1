@@ -71,6 +71,9 @@ export class PostgresDatabase implements IPostgresDatabase {
 }
 
 export const DANGEROUSLY_clearTables = async (database: IPostgresDatabase) => {
+  if (process.env.NODE_ENV !== "test") {
+    throw new Error("Database reset is restricted to tests");
+  }
   const sql = `
     DROP SCHEMA public CASCADE;
     CREATE SCHEMA public;
