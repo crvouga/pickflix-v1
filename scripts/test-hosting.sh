@@ -9,6 +9,8 @@ network="pickflix-check-$suffix"
 postgres="pickflix-postgres-$suffix"
 app="pickflix-app-$suffix"
 image="pickflix-check:$suffix"
+admin_password="$(openssl rand -hex 24)"
+runtime_password="$(openssl rand -hex 24)"
 cleanup() {
   docker logs "$app" 2>/dev/null || true
   docker rm -f "$app" "$postgres" >/dev/null 2>&1 || true
@@ -20,24 +22,24 @@ trap cleanup EXIT
 docker build -t "$image" .
 docker network create "$network" >/dev/null
 docker run -d --name "$postgres" --network "$network" \
-  -e POSTGRES_PASSWORD=ci-only -e POSTGRES_DB=pickflix_integration \
+  -e POSTGRES_PASSWORD="$admin_password" -e POSTGRES_DB=pickflix_integration \
   -p 127.0.0.1::5432 postgres:17-alpine >/dev/null
 for attempt in {1..60}; do
   if docker exec "$postgres" pg_isready -U postgres >/dev/null 2>&1; then break; fi
   sleep 1
 done
 port="$(docker port "$postgres" 5432/tcp | cut -d: -f2)"
-admin="postgres://postgres:ci-only@127.0.0.1:$port/pickflix_integration?sslmode=disable"
+admin="postgres://postgres:$admin_password@127.0.0.1:$port/pickflix_integration?sslmode=disable"
 # All DDL here is confined to an ephemeral local test database.
 atlas schema apply --url "$admin" --to "file://$PICKFLIX_SCHEMA_FILE" --auto-approve
-docker exec -i "$postgres" psql -U postgres -d pickflix_integration -v ON_ERROR_STOP=1 <<'SQL'
-CREATE ROLE runtime LOGIN PASSWORD 'ci-runtime';
+docker exec -i "$postgres" psql -U postgres -d pickflix_integration -v ON_ERROR_STOP=1 -v runtime_password="$runtime_password" <<'SQL'
+CREATE ROLE runtime LOGIN PASSWORD :'runtime_password';
 REVOKE CREATE ON SCHEMA public FROM PUBLIC;
 GRANT CONNECT ON DATABASE pickflix_integration TO runtime;
 GRANT USAGE ON SCHEMA pickflix TO runtime;
 GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA pickflix TO runtime;
 SQL
-runtime="postgres://runtime:ci-runtime@$postgres:5432/pickflix_integration?sslmode=disable"
+runtime="postgres://runtime:$runtime_password@$postgres:5432/pickflix_integration?sslmode=disable"
 docker run -d --name "$app" --network "$network" \
   -p 127.0.0.1::9000 \
   -e DATABASE_URL="$runtime" \
