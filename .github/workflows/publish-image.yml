@@ -13,7 +13,11 @@ permissions:
   pull-requests: read
 
 jobs:
+  validate:
+    uses: ./.github/workflows/check.yml
+
   pickflix:
+    needs: validate
     uses: crvouga/workspace/.github/workflows/ci.yml@main
     secrets:
       DEPLOY_DISPATCH_TOKEN: ${{ secrets.DEPLOY_DISPATCH_TOKEN }}
