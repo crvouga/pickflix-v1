@@ -1,0 +1,55 @@
+name: Check
+
+on:
+  pull_request:
+  merge_group:
+  workflow_call:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Required
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      YOUTUBE_API_KEY: test
+      TMDB_API_READ_ACCESS_TOKEN: test
+      DATABASE_URL: postgres://unused/pickflix_test
+      RESEND_API_KEY: re_test
+      EMAIL_FROM: test@example.com
+      PICKFLIX_SECRET: test-app-secret
+      PICKFLIX_SESSION_SECRET: test-session-secret
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+      - run: npm ci --legacy-peer-deps
+        working-directory: backend
+      - run: npm run tests -- --runInBand
+        working-directory: backend
+      - run: npm ci --legacy-peer-deps
+        working-directory: frontend
+      - run: npm run build
+        working-directory: frontend
+      - name: Read canonical production schema
+        uses: actions/checkout@v5
+        with:
+          repository: crvouga/workspace
+          path: workspace-schema
+          sparse-checkout: packages/infra/tofu/foundation/pickflix-schema.hcl
+          sparse-checkout-cone-mode: false
+      - uses: ariga/setup-atlas@v0
+        with:
+          version: v1.3.0
+      - name: Build and smoke-test production image
+        env:
+          PICKFLIX_SCHEMA_FILE: workspace-schema/packages/infra/tofu/foundation/pickflix-schema.hcl
+        run: npm run test:hosting

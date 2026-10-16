@@ -54,3 +54,22 @@ persistent sessions without contacting external APIs. Use Node 22.
 Email remains behind the existing `IEmailLogic` port. The production and
 local development builders select `ResendEmailLogic`; the SendGrid adapter is
 retained and accepts its API key as an explicit dependency.
+
+## Validation before shipping
+
+Every pull request and merge queue revision runs `Check / Required`: a frozen
+backend install and TypeScript compilation, all backend tests, frontend install
+and build, and a Docker production startup test. The image test uses the
+workspace's canonical Atlas schema in disposable Postgres, with a runtime role
+that cannot create tables. It checks Node 22, `/health`, the frontend, database
+CRUD and persistent sessions with Resend test credentials and no SendGrid key.
+No production credentials or external API calls are needed.
+
+Run the same image check locally with Docker and Atlas 1.3.0 installed:
+
+```sh
+PICKFLIX_SCHEMA_FILE=/path/to/workspace/packages/infra/tofu/foundation/pickflix-schema.hcl npm run test:hosting
+```
+
+The workspace-owned publisher runs this reusable check before pushing an image
+or notifying deployment. Its OpenTofu ruleset requires `Required` on `master`.
