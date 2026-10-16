@@ -25,7 +25,7 @@ docker run -d --name "$postgres" --network "$network" \
   -e POSTGRES_PASSWORD="$admin_password" -e POSTGRES_DB=pickflix_integration \
   -p 127.0.0.1::5432 postgres:17-alpine >/dev/null
 for attempt in {1..60}; do
-  if docker exec "$postgres" pg_isready -U postgres >/dev/null 2>&1; then break; fi
+  if docker exec "$postgres" pg_isready -h 127.0.0.1 -U postgres >/dev/null 2>&1; then break; fi
   sleep 1
 done
 port="$(docker port "$postgres" 5432/tcp | cut -d: -f2)"
