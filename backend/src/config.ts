@@ -85,7 +85,7 @@ if (!DATABASE_URL) {
 }
 
 if (!RESEND_API_KEY) {
-  throw "RESEND_API_KEY required";
+  throw new Error("RESEND_API_KEY required");
 }
 
 if (!EMAIL_FROM) {
