@@ -60,7 +60,7 @@
     "glob": "^7.1.6",
     "humps": "^2.0.1",
     "json-stringify-deterministic": "^1.0.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "keyv": "^4.0.3",
     "knex": "^0.21.12",
     "match-sorter": "^5.0.0",
