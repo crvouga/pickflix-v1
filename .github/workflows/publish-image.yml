@@ -26,7 +26,7 @@ jobs:
       service_id: pickflix
       dockerfile: ./Dockerfile
       context: .
-      image_owner: crvouga-organization
+      image_owner: crvouga
       image_prefix: chrisvouga
       infra_github_repo: crvouga-organization/personal
 

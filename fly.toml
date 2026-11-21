@@ -5,7 +5,7 @@ app = "crvouga-pickflix"
 primary_region = "iad"
 
 [build]
-  image = "ghcr.io/crvouga-organization/chrisvouga-pickflix:latest"
+  image = "ghcr.io/crvouga/chrisvouga-pickflix:latest"
 
 [[vm]]
   memory = "256mb"
