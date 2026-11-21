@@ -9,7 +9,7 @@ Production: https://pickflix.chrisvouga.dev
 
 This repository owns application code, database migrations, the production image,
 validation and its publisher workflow. The shared platform at
-[crvouga/workspace](https://github.com/crvouga/workspace) provides the database,
+[crvouga/workspace](https://github.com/crvouga-organization/personal) provides the database,
 Railway hosting, domain/DNS, secret delivery and generic repository policy.
 The publisher calls the platform's reusable image build/deploy workflow after
 Pickflix's `Required` check passes. The platform must not overwrite this workflow
